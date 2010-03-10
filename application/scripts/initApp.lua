@@ -1,0 +1,12 @@
+NrpLoadPlugins( "Plugins/" )
+
+--загрузка сцены авторизации пользователя
+NrpAddScene( "sceneLogin", "scripts/sceneLogin.lua" )
+
+--загрузка рабочей сцены
+NrpAddScene( "sceneWork", "scripts/sceneWork.lua" )
+	
+--устнановка начальной сцены
+NrpSetNextScene( "sceneLogin" )
+
+test_OutputDebugString()
