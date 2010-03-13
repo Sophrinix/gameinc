@@ -5,7 +5,6 @@ require("swork_terrainConfig")
 require("swork_MainMenu")
 require("swork_minimap")
 require("swork_formular")
-require("swork_globalmap")
 require("swork_camera")
 require("swork_ObjectsLoading")
 
@@ -14,6 +13,8 @@ Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 LogVideo("Идет создание ландшафта", 0xDEADBEEF)
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
+citySceneObjects = { } 
+bankSceneObjects = { }
 
 --создание рабочей сцены 
 NrpInitializeWorkScene()
@@ -32,8 +33,7 @@ AddMenuWindow()
 sceneManager:DrawProgress( 70 )
 
 --создание таблицы целей
-AddFormular()
-AddEventTable()
+AddStorePanel()
 sceneManager:DrawProgress( 77 )
 
 --создание миникарты
@@ -49,9 +49,7 @@ sceneManager:DrawProgress( 90 )
 sceneManager:DrawProgress( 95 )
 
 AddObjectsToCityScene()
+AddObjectsToBankScene()
 sceneManager:DrawProgress( 100 )
 
-Log({src=AUTH, dev=ALL}, "Авторизация пользователя Debug" )
-
-
-
+sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnScene" )

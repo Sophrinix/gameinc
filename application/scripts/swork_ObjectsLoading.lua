@@ -13,7 +13,7 @@ function AddObjectsToCityScene()
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( office:Self() )
 	office:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( office:Self(), "office" )
-				
+	citySceneObjects[ 0 ] = office:Self()				
 				
 	x = x + 1
 	local univer = CLuaSceneNode( sceneManager:AddCubeSceneNode( "univerNode" ) )
@@ -24,6 +24,7 @@ function AddObjectsToCityScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( univer:Self() ) 
 	univer:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( univer:Self(), "univer" )
+	citySceneObjects[ 1 ] = univer:Self()	
 	
 	x = x + 1; y = y + 1
 	local bank = CLuaSceneNode( sceneManager:AddCubeSceneNode( "bankNode" ) )
@@ -34,6 +35,7 @@ function AddObjectsToCityScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( bank:Self() ) 
 	bank:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( bank:Self(), "Bank" )
+	citySceneObjects[ 2 ] = bank:Self()
 	
 	x = x + 1; y = y - 1
 	local gameShop = CLuaSceneNode( sceneManager:AddCubeSceneNode( "gameShopNode" ) )
@@ -44,6 +46,7 @@ function AddObjectsToCityScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameShop:Self() ) 
     gameShop:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( gameShop:Self(), "gameShop" )
+	citySceneObjects[ 3 ] = gameShop:Self()
 	
 	x = x + 1; y = y + 1
 	local labor = CLuaSceneNode( sceneManager:AddCubeSceneNode( "laborNode" ) )
@@ -54,6 +57,7 @@ function AddObjectsToCityScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( labor:Self() ) 
     labor:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( labor:Self(), "laboratory" )
+	citySceneObjects[ 4 ] = labor:Self()
 	
 	x = x + 1; y = y - 1
 	local pr = CLuaSceneNode( sceneManager:AddCubeSceneNode( "prNode" ) )
@@ -64,6 +68,7 @@ function AddObjectsToCityScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( pr:Self() ) 
     pr:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( pr:Self(), "PR kontora" )
+	citySceneObjects[ 5 ] = pr:Self()
 	
 	x = x + 1; y = y + 1
 	local cinema = CLuaSceneNode( sceneManager:AddCubeSceneNode( "cinemaNode" ) )
@@ -74,6 +79,7 @@ function AddObjectsToCityScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( cinema:Self() ) 
     cinema:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( cinema:Self(), "Cinema" )
+	citySceneObjects[ 6 ] = cinema:Self()
 	
 	x = x + 1; y = y - 1
 	local pizza = CLuaSceneNode( sceneManager:AddCubeSceneNode( "pizzaNode" ) )
@@ -84,6 +90,7 @@ function AddObjectsToCityScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( pizza:Self() ) 
     pizza:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( pizza:Self(), "Sabotaje" )
+	citySceneObjects[ 7 ] = pizza:Self()
 	
 	x = x + 1; y = y + 1
 	local plant = CLuaSceneNode( sceneManager:AddCubeSceneNode( "plantNode" ) )
@@ -94,5 +101,68 @@ function AddObjectsToCityScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( plant:Self() ) 
 	plant:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( plant:Self(), "Proizvodstvo" )
+	citySceneObjects[ 8 ] = plant:Self()
 
+end
+
+function AddObjectsToBankScene()
+	
+	local x = 1
+	local y = 1
+	local delta = 800
+	
+	local loan = CLuaSceneNode( sceneManager:AddCubeSceneNode( "loanNode" ) )
+	loan:SetScale( 30, 40, 30 )
+	loan:SetVisible( false )
+	loan:SetPosition( x * delta, 800, y *delta )
+	loan:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	loan:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( loan:Self() )
+	loan:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( loan:Self(), "loan" )
+	bankSceneObjects[ 0 ] = loan:Self()	
+	x = x + 1
+	
+	local deposit = CLuaSceneNode( sceneManager:AddCubeSceneNode( "depositNode" ) )
+	deposit:SetScale( 30, 40, 30 )
+	deposit:SetVisible( false )
+	deposit:SetPosition( x * delta, 800, y *delta )
+	deposit:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	deposit:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( deposit:Self() )
+	deposit:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( deposit:Self(), "deposit" )
+	bankSceneObjects[ 1 ] = deposit:Self()	
+	x = x + 1
+	
+	local akcii = CLuaSceneNode( sceneManager:AddCubeSceneNode( "akciiNode" ) )
+	akcii:SetScale( 30, 40, 30 )
+	akcii:SetVisible( false )
+	akcii:SetPosition( x * delta, 800, y *delta )
+	akcii:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	akcii:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( akcii:Self() )
+	akcii:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( akcii:Self(), "akcii" )
+	bankSceneObjects[ 2 ] = akcii:Self()	
+	x = x + 1
+	
+	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitBankNode" ) )
+	exitN:SetScale( 30, 40, 30 )
+	exitN:SetVisible( false )
+	exitN:SetPosition( x * delta, 800, y *delta )
+	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	exitN:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	exitN:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	bankSceneObjects[ 3 ] = exitN:Self()	
+	x = x + 1
+end
+
+function SetVisibleObjects( array, visible )
+	for i=0, #array do
+		local node = CLuaSceneNode( array[ i ] )
+		node:SetVisible( visible )
+	end
 end

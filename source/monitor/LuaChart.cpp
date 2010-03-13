@@ -7,8 +7,6 @@
 #include "nrpChartAxis.h"
 #include "nrpChartSerie.h"
 #include "StrConversation.h"
-#include "NrpChannel.h"
-
 using namespace irr;
 
 namespace nrp
@@ -87,7 +85,7 @@ int CLuaChart::AddPoint( lua_State *L )
 
 int CLuaChart::UpdateData( lua_State *L )			//обновление графиков
 {
-	int argc = lua_gettop(L);
+	/*int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 5, 5, "Function CLuaElement::UpdateData need 4 parameter");
 
 	size_t serieNumber = (size_t)lua_tointeger( L, 2 );
@@ -113,7 +111,7 @@ int CLuaChart::UpdateData( lua_State *L )			//обновление графиков
 		object_->Update();
 	}
 
-
+*/
 	return 1;
 }
 
