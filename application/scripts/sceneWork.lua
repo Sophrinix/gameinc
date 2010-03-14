@@ -3,8 +3,8 @@ require("logdefs")
 require("elmid")
 require("swork_terrainConfig")
 require("swork_MainMenu")
-require("swork_minimap")
-require("swork_formular")
+require("swork_wndCompanyInfo")
+require("swork_StoreWindow")
 require("swork_camera")
 require("swork_ObjectsLoading")
 
@@ -12,8 +12,8 @@ Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 -- Проверка вспомогательных функций
 LogVideo("Идет создание ландшафта", 0xDEADBEEF)
 
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() 
-local app = CLuaConfig( NrpGetApplication() )
+local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
+local app = CLuaApplication( NrpGetApplication() )
 
 citySceneObjects = { } 
 bankSceneObjects = { }
@@ -55,4 +55,6 @@ AddObjectsToBankScene()
 sceneManager:DrawProgress( 100 )
 
 sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
+local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) )
 local company = CLuaCompany( app:CreateCompany( "DaleTeam" ) )
+company:SetUser( user:Self() )	  	

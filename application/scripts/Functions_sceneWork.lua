@@ -4,14 +4,36 @@ pcall( require, "NerpaActionType")
 
 --безопасная загрузка  скриптов
 
-IncludeScript("swork_NodeWindowProperties")
 IncludeScript("swork_wndCharts")
 IncludeScript("swork_wndChartsManage") 
 IncludeScript("swork_TargetCameraFunctions") 
 IncludeScript("swork_wndReport")
+IncludeScript("swork_wndLoanAction")
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
+local app = CLuaApplication( NrpGetApplication() )
+
+sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )
+app:AddFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
+app:AddFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
+app:AddFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )
+
+function sworkAppDayChange()
+
+end
+
+function sworkAppMonthChange()
+
+end
+
+function sworkAppYearChange()
+
+end
+
+function sworkMainLoop()
+	app:UpdateGameTime( ID_DATE_LABEL, ID_TIME_LABEL )	
+end
 
 function ToggleConsoleVisible( ptr )
 
