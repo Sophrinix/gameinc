@@ -12,7 +12,9 @@ Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 -- Проверка вспомогательных функций
 LogVideo("Идет создание ландшафта", 0xDEADBEEF)
 
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
+local sceneManager = CLuaSceneManager( NrpGetSceneManager() 
+local app = CLuaConfig( NrpGetApplication() )
+
 citySceneObjects = { } 
 bankSceneObjects = { }
 
@@ -52,4 +54,5 @@ AddObjectsToCityScene()
 AddObjectsToBankScene()
 sceneManager:DrawProgress( 100 )
 
-sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnScene" )
+sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
+local company = CLuaCompany( app:CreateCompany( "DaleTeam" ) )

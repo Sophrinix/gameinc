@@ -20,22 +20,37 @@ function ToggleConsoleVisible( ptr )
 
 end
 
-function sworkSelectObjectOnScene( ptr )
+function sworkSelectObjectOnCityScene( ptr )
 
 	local node = CLuaSceneNode( ptr )
 	
 	if node:GetName() == "bankNode" then
 		SetVisibleObjects( citySceneObjects, false )
 		SetVisibleObjects( bankSceneObjects, true )
+		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnBankScene" )
 		return 0
 	end
 	
-	if node:GetName() == "exitBankNode" then
-		SetVisibleObjects( bankSceneObjects, false )
-		SetVisibleObjects( citySceneObjects, true )
+end 
+
+function sworkSelectObjectOnBankScene( ptr )
+
+	local node = CLuaSceneNode( ptr )
+	local nodeName = node:GetName()
+
+	if nodeName == "loanNode" then
+		sworkCreateWindowLoanAction()
 		return 0
 	end
 
+	if nodeName == "exitBankNode" then
+		SetVisibleObjects( bankSceneObjects, false )
+		SetVisibleObjects( citySceneObjects, true )
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnBankScene" )
+		return 0
+	end
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-BANK:Не могу найти узел для работы"..nodeName )
 end
 
 function ZoomScrollBarChanged( ptr )
