@@ -134,20 +134,15 @@ function AddMenuWindow()
 										    "AdvancedFunctionFrameToggleVisible", "media/top_menu/star" )
 	x = 335;  btnCnt = btnCnt + 1
 	--создание метки с часами
-	local timeLabel = CLuaLabel( guienv:AddLabel( "Время", x - 80, imgTop, x, imgTop + 15, ID_TIME_LABEL, window:Self() ) )
+	local timeLabel = CLuaLabel( guienv:AddLabel( "Время", x - 140, imgTop, x + 40, imgTop + 15, ID_DATETIME_LABEL, window:Self() ) )
 	timeLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
-	guienv:AddTextTimeAnimator( timeLabel:Self() )
 	mainMenuButtons[ btnCnt ] = timeLabel:Self()
 	
 	btnCnt = btnCnt + 1
-	local userLabel = CLuaLabel( guienv:AddLabel( "UserName", x - 80, imgTop + 17, x, imgTop + 32, ID_USERNAME_LABEL, window:Self() ) )
+	local userLabel = CLuaLabel( guienv:AddLabel( "UserName", x - 140, imgTop + 17, x + 40, imgTop + 32, ID_USERNAME_LABEL, window:Self() ) )
 	userLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
 	mainMenuButtons[ btnCnt ] = userLabel:Self()
 	
-	btnCnt = btnCnt + 1
-	mainMenuButtons[ btnCnt ] = AddButton( window:Self(), ID_LOGOUT, x, imgTop, 
-										   "UserLogoff", "media/top_menu/logout" )
-
 	x = x + imgWidth; btnCnt = btnCnt + 1
 	mainMenuButtons[ btnCnt ] = AddButton( window:Self(), ID_QUIT, x, imgTop, 
 										   "ApplicationClose", "media/top_menu/off" )

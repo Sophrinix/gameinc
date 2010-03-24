@@ -1,12 +1,14 @@
 -- Проверка работы логов
 require("logdefs")
 require("elmid")
-require("swork_terrainConfig")
-require("swork_MainMenu")
-require("swork_wndCompanyInfo")
-require("swork_StoreWindow")
-require("swork_camera")
-require("swork_ObjectsLoading")
+IncludeScript("swork_terrainConfig")
+IncludeScript("swork_MainMenu")
+IncludeScript("swork_wndCompanyInfo")
+IncludeScript("swork_StoreWindow")
+IncludeScript("swork_camera")
+IncludeScript("swork_ObjectsLoading")
+IncludeScript("swork_wndProjectWizard")
+IncludeScript("swork_startDefinition")
 
 Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 -- Проверка вспомогательных функций
@@ -17,6 +19,7 @@ local app = CLuaApplication( NrpGetApplication() )
 
 citySceneObjects = { } 
 bankSceneObjects = { }
+officeSceneObjects = { }
 
 --создание рабочей сцены 
 NrpInitializeWorkScene()
@@ -35,11 +38,10 @@ AddMenuWindow()
 sceneManager:DrawProgress( 70 )
 
 --создание таблицы целей
-AddStorePanel()
+AddStoreWindow()
 sceneManager:DrawProgress( 77 )
 
 --создание миникарты
-AddMiniMap()
 sceneManager:DrawProgress( 85 )
 
 --создание неба
@@ -52,9 +54,10 @@ sceneManager:DrawProgress( 95 )
 
 AddObjectsToCityScene()
 AddObjectsToBankScene()
+AddObjectsToOfficeScene()
 sceneManager:DrawProgress( 100 )
 
 sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
-local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) )
-local company = CLuaCompany( app:CreateCompany( "DaleTeam" ) )
-company:SetUser( user:Self() )	  	
+AddStartPlayer()
+AddStartCompanyTechnology()
+AddStartPublicTechnology()

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include <IGUIButton.h>
 #include <irrlicht.h>
+#include <assert.h>
 
 #include "LuaButton.h"
 #include "nrpEngine.h"
@@ -30,62 +31,19 @@ CLuaButton::CLuaButton(lua_State *L)	: ILuaGuiElement(L, "CLuaButton")							//к
 int CLuaButton::SetImage( lua_State *L )							//получает имя файла с текстурой, область из которой надо брать кнопку
 																	//для текущего состояния
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 6, 6, "Function CLuaButton::setImage need 5 parameter");
-
-	std::string texturepath = lua_tostring( L, 6 );
-	core::recti rectangle;
-	rectangle.UpperLeftCorner.X = lua_tointeger( L, 2 );
-	rectangle.UpperLeftCorner.Y = lua_tointeger( L, 3 );
-	rectangle.LowerRightCorner.X = lua_tointeger( L, 4 );
-	rectangle.LowerRightCorner.Y = lua_tointeger( L, 5 );
-
-	video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath.c_str() ); //грузим текстуру в видеокарту
-	
-	IF_OBJECT_NOT_NULL_THEN	object_->setImage( txs, rectangle );								//размещаем текстуру в кнопке			
-	
-	return 1;
+	return SetImage_( L, "SetHoveredImage", TI_IMAGE );
 }
 
 int CLuaButton::SetHoveredImage( lua_State *L )						//получает имя файла с текстурой, область из которой надо брать кнопку
 																	//для текущего состояния
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 6, 6, "Function CLuaButton::setHoveredImage need 5 parameter");
-
-	std::string texturepath = lua_tostring( L, 6 );
-	core::recti rectangle;
-	rectangle.UpperLeftCorner.X = lua_tointeger( L, 2 );
-	rectangle.UpperLeftCorner.Y = lua_tointeger( L, 3 );
-	rectangle.LowerRightCorner.X = lua_tointeger( L, 4 );
-	rectangle.LowerRightCorner.Y = lua_tointeger( L, 5 );
-
-	video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath.c_str() );
-
-	IF_OBJECT_NOT_NULL_THEN	dynamic_cast< gui::CNrpButton* >( object_ )->setHoveredImage( txs, rectangle );
-
-	return 1;
+	return SetImage_( L, "SetHoveredImage", TI_HOVER );
 }
 
 int CLuaButton::SetPressedImage( lua_State *L )						//получает имя файла с текстурой, область из которой надо брать кнопку
 																	//для текущего состояния
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 6, 6, "Function CLuaButton::setPressedImage need 5 parameter"); //начинаем со второго параметра, ибо первым идет
-																	//таблица с функциями	
-
-	std::string texturepath = lua_tostring( L, 6 );
-	core::recti rectangle;
-	rectangle.UpperLeftCorner.X = lua_tointeger( L, 2 );
-	rectangle.UpperLeftCorner.Y = lua_tointeger( L, 3 );
-	rectangle.LowerRightCorner.X = lua_tointeger( L, 4 );
-	rectangle.LowerRightCorner.Y = lua_tointeger( L, 5 );
-
-	video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath.c_str() );
-
-	IF_OBJECT_NOT_NULL_THEN	object_->setPressedImage( txs, rectangle );
-
-	return 1;
+	return SetImage_( L, "SetPressedImage", TI_PRESSED );
 }
 	
 int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функции для этой кнопки	
@@ -93,17 +51,44 @@ int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функ
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaButton::SetAction need string parameter");
 
-	std::string funcName = lua_tostring( L, 2 );
+	const char* funcName = lua_tostring( L, 2 );
+	assert( funcName != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN	dynamic_cast< gui::CNrpButton* >( object_ )->setOnClickAction( funcName.c_str() );
+	IF_OBJECT_NOT_NULL_THEN	dynamic_cast< gui::CNrpButton* >( object_ )->setOnClickAction( funcName );
 
 #ifdef _DEBUG
 	char text[ MAX_PATH ];
-	sprintf_s( text, MAX_PATH, "Object: %d  FuncName:%s\n", object_, funcName.c_str() );
+	sprintf_s( text, MAX_PATH, "Object: %d  FuncName:%s\n", object_, funcName );
 	OutputDebugString( text );
 #endif
 
 	return 1;
 }
 
+int CLuaButton::SetImage_( lua_State* L, std::string funcName, TYPE_IMAGE typeimg )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 6, 6, ("Function CLuaButton:" + funcName + " need 5 parameter").c_str() ); //начинаем со второго параметра, ибо первым идет
+	//таблица с функциями	
+
+	const char* texturepath = lua_tostring( L, 6 );
+	assert( texturepath != NULL );
+	core::recti rectangle;
+	rectangle.UpperLeftCorner.X = lua_tointeger( L, 2 );
+	rectangle.UpperLeftCorner.Y = lua_tointeger( L, 3 );
+	rectangle.LowerRightCorner.X = lua_tointeger( L, 4 );
+	rectangle.LowerRightCorner.Y = lua_tointeger( L, 5 );
+
+	video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath );
+
+	IF_OBJECT_NOT_NULL_THEN
+		switch( typeimg ) 
+		{
+		case TI_IMAGE: object_->setImage( txs, rectangle ); break;
+		case TI_HOVER: dynamic_cast< gui::CNrpButton* >( object_ )->setHoveredImage( txs, rectangle ); break;
+		case TI_PRESSED: object_->setPressedImage( txs, rectangle ); break;
+		}
+
+	return 1;
+}
 }//namespace nrp

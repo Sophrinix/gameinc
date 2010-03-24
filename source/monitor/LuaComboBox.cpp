@@ -1,6 +1,6 @@
 #include "StdAfx.h"
-#include <IGUIComboBox.h>
 #include <irrlicht.h>
+#include <assert.h>
 
 #include "LuaComboBox.h"
 #include "nrpEngine.h"
@@ -71,7 +71,8 @@ int CLuaComboBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaComboBox::AddItem need 2 parameter");
 
-	std::string text = lua_tostring( L, 2 );
+	const char* text = lua_tostring( L, 2 );
+	assert( text != NULL );
 	void* object = lua_touserdata( L, 3 );
 	
 	IF_OBJECT_NOT_NULL_THEN	object_->addItem( StrToWide( text ).c_str(), (u32)object );			

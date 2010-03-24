@@ -13,32 +13,20 @@ IncludeScript("swork_wndLoanAction")
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 local app = CLuaApplication( NrpGetApplication() )
+local company = CLuaCompany( app:GetPlayerCompany() )
 
-sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )
-app:AddFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
-app:AddFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
-app:AddFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )
+function sworkAppDayChange( ptr )
+	local userLabel = CLuaLabel( guienv:GetElementByID( ID_USERNAME_LABEL ) )
+	local name = company:GetName()
+	local summ = company:GetBalance()
+	userLabel:SetText( name..":   $"..summ)
+end
 
-function sworkAppDayChange()
+function sworkAppMonthChange( ptr )
 
 end
 
-function sworkAppMonthChange()
-
-end
-
-function sworkAppYearChange()
-
-end
-
-function sworkMainLoop()
-	app:UpdateGameTime( ID_DATE_LABEL, ID_TIME_LABEL )	
-end
-
-function ToggleConsoleVisible( ptr )
-
-	local console = CLuaConsole( guienv:GetElementByName( "SystemConsole" ) )
-	console:ToggleVisible()
+function sworkAppYearChange( ptr )
 
 end
 
@@ -53,7 +41,45 @@ function sworkSelectObjectOnCityScene( ptr )
 		return 0
 	end
 	
+	if node:GetName() == "officeNode" then
+		SetVisibleObjects( citySceneObjects, false )
+		SetVisibleObjects( officeSceneObjects, true )
+		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
+		return 0		
+	end
+	
 end 
+
+function sworkMainLoop( ptr )
+	app:UpdateGameTime( ID_DATETIME_LABEL )	
+end
+
+function ToggleConsoleVisible( ptr )
+
+	local console = CLuaConsole( guienv:GetElementByName( "SystemConsole" ) )
+	console:ToggleVisible()
+
+end
+
+function sworkSelectObjectOnOfficeScene( ptr )
+	
+	local node = CLuaSceneNode( ptr )
+	local nodeName = node:GetName()
+
+	if nodeName == "createNewProjectNode" then
+		sworkCreateWindowWizardProject()
+		return 0
+	end
+
+	if nodeName == "exitOfficeNode" then
+		SetVisibleObjects( officeSceneObjects, false )
+		SetVisibleObjects( citySceneObjects, true )
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
+		return 0
+	end
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-OFFICE:Не могу найти узел для работы "..nodeName )
+end
 
 function sworkSelectObjectOnBankScene( ptr )
 
@@ -72,7 +98,7 @@ function sworkSelectObjectOnBankScene( ptr )
 		return 0
 	end
 	
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-BANK:Не могу найти узел для работы"..nodeName )
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-BANK:Не могу найти узел для работы "..nodeName )
 end
 
 function ZoomScrollBarChanged( ptr )
@@ -112,3 +138,8 @@ function CameraScaleTrackBarVisibleToggle( ptr )
 	end
 
 end
+
+sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )
+app:AddLuaFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
+app:AddLuaFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
+app:AddLuaFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )

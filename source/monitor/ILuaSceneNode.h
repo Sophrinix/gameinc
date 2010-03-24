@@ -1,4 +1,5 @@
 #pragma once
+#include <assert.h>
 
 #include "ILuaObject.h"
 #include "StrConversation.h"
@@ -32,7 +33,7 @@ public:
 	int GetTypeName( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + GetClassName() + ":GetTypeName not need parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":GetTypeName not need parameter" ).c_str() );
 
 		std::string text;
 		IF_OBJECT_NOT_NULL_THEN
@@ -57,12 +58,13 @@ public:
 	int SetMaterialTexture( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 3, 3, ("Function "+ GetClassName() + ":SetMaterialTexture need 2 parameter").c_str() );
+		luaL_argcheck(L, argc == 3, 3, ("Function "+ ClassName() + ":SetMaterialTexture need 2 parameter").c_str() );
 
 		int level = lua_tointeger( L, 2 );
-		std::string fileTexture = lua_tostring( L, 3 );						//принимает булевое значение в качестве луа-параметра
+		const char* fileTexture = lua_tostring( L, 3 );						//принимает булевое значение в качестве луа-параметра
+		assert( fileTexture != NULL );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setMaterialTexture( level, object_->getSceneManager()->getVideoDriver()->getTexture( fileTexture.c_str() ) );									
+		IF_OBJECT_NOT_NULL_THEN	object_->setMaterialTexture( level, object_->getSceneManager()->getVideoDriver()->getTexture( fileTexture ) );									
 
 		return 1;	
 	}
@@ -70,7 +72,7 @@ public:
 	int SetMaterialFlag( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 3, 3, ("Function " + GetClassName() + ":SetMaterialFlag need 2 parameter").c_str() );
+		luaL_argcheck(L, argc == 3, 3, ("Function " + ClassName() + ":SetMaterialFlag need 2 parameter").c_str() );
 
 		video::E_MATERIAL_FLAG flagName = (video::E_MATERIAL_FLAG)lua_tointeger( L, 2 );						//принимает булевое значение в качестве луа-параметра
 		bool flagValue = lua_toboolean( L, 3 ) > 0;
@@ -83,7 +85,7 @@ public:
 	int SetTriangleSelector( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + GetClassName() + ":SetTriangleSelector need ITriangleSelector parameter").c_str() );
+		luaL_argcheck(L, argc == 2, 2, ("Function " + ClassName() + ":SetTriangleSelector need ITriangleSelector parameter").c_str() );
 
 		scene::ITriangleSelector* selector = (scene::ITriangleSelector*)lua_touserdata( L, 2 );
 
@@ -96,7 +98,7 @@ public:
 	int GetName( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ("Function " + GetClassName() + ":GetName not need parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, ("Function " + ClassName() + ":GetName not need parameter" ).c_str() );
 
 		std::string name;
 
@@ -109,11 +111,12 @@ public:
 	int SetName( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ( "Function " + GetClassName() + "::SetName need string parameter" ).c_str() );
+		luaL_argcheck(L, argc == 2, 2, ( "Function " + ClassName() + "::SetName need string parameter" ).c_str() );
 
-		std::string name = lua_tostring( L, 2 );						
+		const char* name = lua_tostring( L, 2 );						
+		assert( name != NULL );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setName( name.c_str() );									
+		IF_OBJECT_NOT_NULL_THEN	object_->setName( name );									
 
 		return 1;	
 	}
@@ -121,7 +124,7 @@ public:
 	int Remove( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + GetClassName() + ":Remove not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":Remove not need any parameter" ).c_str() );
 
 		IF_OBJECT_NOT_NULL_THEN	object_->remove();
 
@@ -131,7 +134,7 @@ public:
 	int GetVisible( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + GetClassName() + ":GetVisible not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":GetVisible not need any parameter" ).c_str() );
 
 		bool visible = false;
 		IF_OBJECT_NOT_NULL_THEN visible = object_->isVisible();
@@ -143,7 +146,7 @@ public:
 	int SetVisible( lua_State *L )							//изменение видимости
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ( "Function " + GetClassName() + ":setVisible need bool parameter" ).c_str() );
+		luaL_argcheck(L, argc == 2, 2, ( "Function " + ClassName() + ":setVisible need bool parameter" ).c_str() );
 
 		bool visible = lua_toboolean( L, 2 ) > 0;						//принимает булевое значение в качестве луа-параметра
 
@@ -155,7 +158,7 @@ public:
 	int GetPosition( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + GetClassName() + ":GetPosition not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":GetPosition not need any parameter" ).c_str() );
 
 		core::vector3df pos;
 		IF_OBJECT_NOT_NULL_THEN pos = object_->getPosition();
@@ -170,7 +173,7 @@ public:
 	{
 		core::vector3df rot;
 		int argc = lua_gettop(L);
-		luaL_argcheck( L, argc == 4, 4, ( "Function " + GetClassName() + ":setRotation need three parameter" ).c_str() );
+		luaL_argcheck( L, argc == 4, 4, ( "Function " + ClassName() + ":setRotation need three parameter" ).c_str() );
 
 		rot.X = (float)lua_tonumber( L, 2 );
 		rot.Y = (float)lua_tonumber( L, 3 );
@@ -184,7 +187,7 @@ public:
 	{
 		core::vector3df scale;
 		int argc = lua_gettop(L);
-		luaL_argcheck( L, argc == 4, 4, ( "Function " + GetClassName() + ":setScale need three parameter" ).c_str() );
+		luaL_argcheck( L, argc == 4, 4, ( "Function " + ClassName() + ":setScale need three parameter" ).c_str() );
 
 		scale.X = (float)lua_tonumber( L, 2 );
 		scale.Y = (float)lua_tonumber( L, 3 );
@@ -198,7 +201,7 @@ public:
 	{
 		core::vector3df pos;
 		int argc = lua_gettop(L);
-		luaL_argcheck( L, argc == 4, 4, ( "Function " + GetClassName() + ":setPosition need three parameter" ).c_str() );
+		luaL_argcheck( L, argc == 4, 4, ( "Function " + ClassName() + ":setPosition need three parameter" ).c_str() );
 
 		pos.X = (float)lua_tonumber( L, 2 );
 		pos.Y = (float)lua_tonumber( L, 3 );

@@ -105,6 +105,36 @@ function AddObjectsToCityScene()
 
 end
 
+function AddObjectsToOfficeScene()
+	local x = 1
+	local y = 1
+	local delta = 800
+	
+	local newProj = CLuaSceneNode( sceneManager:AddCubeSceneNode( "createNewProjectNode" ) )
+	newProj:SetScale( 30, 40, 30 )
+	newProj:SetVisible( false )
+	newProj:SetPosition( x * delta, 800, y *delta )
+	newProj:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	newProj:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( newProj:Self() )
+	newProj:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( newProj:Self(), "createNewProject" )
+	officeSceneObjects[ 0 ] = newProj:Self()	
+	x = x + 1
+	
+	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitOfficeNode" ) )
+	exitN:SetScale( 30, 40, 30 )
+	exitN:SetVisible( false )
+	exitN:SetPosition( x * delta, 800, y *delta )
+	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	exitN:SetMaterialFlag( EMF_LIGHTING, false )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	exitN:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	officeSceneObjects[ 1 ] = exitN:Self()	
+
+end
+
 function AddObjectsToBankScene()
 	
 	local x = 1

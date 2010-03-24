@@ -2,6 +2,7 @@
 #include "LuaDriver.h"
 
 #include <IVideoDriver.h>
+#include <assert.h>
 
 using namespace irr;
 
@@ -45,10 +46,11 @@ int CLuaDriver::GetTexture( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaDriver:GetTexture need string parameter");
 
-	std::string fileName = lua_tostring( L, 2 );
+	const char* fileName = lua_tostring( L, 2 );
+	assert( fileName != NULL );
 
 	video::ITexture* txs = NULL;
-	IF_OBJECT_NOT_NULL_THEN txs = object_->getTexture( fileName.c_str() );
+	IF_OBJECT_NOT_NULL_THEN txs = object_->getTexture( fileName );
 	lua_pushlightuserdata( L, txs );
 
 	return 1;
@@ -61,10 +63,11 @@ int CLuaDriver::AddTexture( lua_State *L )
 
 	u32 width = (u32)lua_tointeger( L, 2 );
 	u32 height = (u32)lua_tointeger( L, 3 );
-	std::string fileName = lua_tostring( L, 4 );
+	const char* fileName = lua_tostring( L, 4 );
+	assert( fileName != NULL );
 
 	video::ITexture* txs = NULL;
-	IF_OBJECT_NOT_NULL_THEN txs = object_->addTexture( core::dimension2du( width, height ), fileName.c_str() );
+	IF_OBJECT_NOT_NULL_THEN txs = object_->addTexture( core::dimension2du( width, height ), fileName );
 	lua_pushlightuserdata( L, txs );
 
 	return 1;
@@ -75,11 +78,12 @@ int CLuaDriver::RemoveTexture( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaDriver:RemoveTexture need string parameter");
 
-	std::string fileName = lua_tostring( L, 2 );
+	const char* fileName = lua_tostring( L, 2 );
+	assert( fileName != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		video::ITexture* txs = object_->getTexture( fileName.c_str() );
+		video::ITexture* txs = object_->getTexture( fileName );
 		object_->removeTexture( txs );
 	}
 
@@ -93,10 +97,11 @@ int CLuaDriver::AddRenderTargetTexture( lua_State* L )
 
 	u32 width = (u32)lua_tointeger( L, 2 );
 	u32 height = (u32)lua_tointeger( L, 3 );
-	std::string fileName = lua_tostring( L, 4 );
+	const char* fileName = lua_tostring( L, 4 );
+	assert( fileName != NULL );
 
 	video::ITexture* txs = NULL;
-	IF_OBJECT_NOT_NULL_THEN txs = object_->addRenderTargetTexture( core::dimension2du( width, height ), fileName.c_str(), video::ECF_A8R8G8B8 );
+	IF_OBJECT_NOT_NULL_THEN txs = object_->addRenderTargetTexture( core::dimension2du( width, height ), fileName, video::ECF_A8R8G8B8 );
 	lua_pushlightuserdata( L, txs );
 
 	return 1;

@@ -72,7 +72,7 @@ function sworkChartWindowClose( ptr )
 	if windowg:Empty() == 1 then
 		Log({src=SCRIPT, dev=ODS}, "Нет окна графиков чтобы его закрывать" )
 	else
-		windowg:RemoveAllAnimators() 
+		guienv:RemoveAnimators( windowg:Self() ) 
 		guienv:AddMoveAnimator( windowg:Self(), -chartWidth, 150, STEP, false, true, true )
 	end
 	

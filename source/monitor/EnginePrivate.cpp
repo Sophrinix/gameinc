@@ -12,7 +12,7 @@ void GInsertObjectToSystemMap( nrp::INrpObject* obj )
 	if( pIter != GSystemObjectsMap.end() )
 	{
 		char text[ MAX_PATH ];
-		snprintf( text, MAX_PATH - 1, "ERROR: SystemMap duplicate object %s: name %s\n", obj->GetClassName().c_str(), obj->GetSystemName().c_str() );
+		snprintf( text, MAX_PATH - 1, "ERROR: SystemMap duplicate object %s: name %s\n", obj->ClassName().c_str(), obj->GetSystemName().c_str() );
 		OutputDebugString( text );
 	}
 	else
@@ -40,5 +40,5 @@ void GGetListSystemObject( std::vector< std::string >& stringArray )
 	NrpSystemMap::iterator pIter = GSystemObjectsMap.begin();
 
 	for( ; pIter != GSystemObjectsMap.end(); ++pIter )
-		stringArray.push_back( (*pIter).second->GetClassName() + ":" + (*pIter).first );
+		stringArray.push_back( (*pIter).second->ClassName() + ":" + (*pIter).first );
 }

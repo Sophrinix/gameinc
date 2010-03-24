@@ -11,8 +11,7 @@ ID_LOGOUT = ID_MAINMENU + 6
 ID_QUIT = ID_MAINMENU + 7
 ID_VIEWMODE_TOGGLE = ID_MAINMENU + 8
 ID_USERNAME_LABEL = ID_MAINMENU + 9
-ID_DATE_LABEL = ID_MAINMENU + 10   
-ID_TIME_LABEL = ID_MAINMENU + 11
+ID_DATETIME_LABEL = ID_MAINMENU + 10   
 --[[
  нопки функционального меню
 --]]
@@ -36,11 +35,8 @@ ID_PLAY_REC = ID_ADMINKA + 6
 --[[
 формул€р и список событий
 --]]
-ID_EVNT_SYS = 10300
-ID_FORMULAR = ID_EVNT_SYS + 1
-NAME_FORMULAR = "_SystemFormular_"
-ID_EVENT_TABLE = ID_EVNT_SYS + 2
-NAME_EVENT_TABLE = "_SystemEventTable_"
+ID_STORE_WINDOW = 10300
+NAME_STORE_WINDOW = "_SystemWindowStore_"
 --[[
 ќкно свойств объекта
 --]]
@@ -79,6 +75,25 @@ WINDOW_ADVANCED_CAMERA_ID = 10700
 --]]
 WINDOW_REPORT_NAME = "_WindowReport_"
 WINDOW_REPORT_ID = 10800
+
+--[[
+ќкно банка
+--]]
+WINDOW_LOAN_ACTION_NAME = "_WindowLoanAction_"
+WNDLOANACTION_GETLOAN_EDIT = "_WindowLoanActionGetLoanEdit_"
+WNDLOANACTION_MAXSUM_LABEL = "_WindowLoanActionMaxSumLabel_"
+WNDLOANACTION_TABLE = "_WindowLoanActionTableLoans_"
+
+--[[
+ќкно выбора создаваемого проекта
+--]]
+WINDOW_PROJECTWIZ_NAME = "_WindowSelectProjectCreating_"
+
+--[[
+ќкно создани€ проекта игры
+--]]
+WINDOW_GAME_WIZZARD = "_WindowCreateGameProject_"
+WNDGMWIZ_NAME_EDIT = "_WindowGameWizzardNameEdit_"
 
 --[[
 ‘ункци€ подключени€ скрипта с проверкой ошибок

@@ -28,7 +28,7 @@ private:
 	}
 public:
 	//имя класса
-	CLASS_NAME GetClassName() { return className_; }
+	CLASS_NAME ClassName() { return className_; }
 	//уникальное имя объекта в массиве
 	SYSTEM_NAME GetSystemName() { return systemName_; }
 

@@ -72,7 +72,7 @@ function sworkWindowAdvancedCameraClose( ptr )
 	if windowg:Empty() == 1 then
 		Log({src=SCRIPT, dev=ODS}, "Ќет окна доп.камеры чтобы его закрывать" )
 	else	
-		windowg:RemoveAllAnimators() 
+		guienv:RemoveAnimators( windowg:Self() ) 
 		guienv:AddMoveAnimator( windowg:Self(), -WND_WIDTH, 150, STEP, false, true, true )
 		sceneManager:AddToDeletionQueue( sceneManager:GetSceneNodeByName( OBJECT_ANCHORED_CAMERA ) )
 	end	

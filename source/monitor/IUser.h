@@ -22,7 +22,10 @@ public:
 private:         			
 	void Load_( char* file_name ) {}
 	std::map< std::string, int > genrePreferences_; /*< предпочтения в жанре */
-	std::map< std::string, int > genreExperience_;  /*< опыт написания игр*/		
+	std::map< std::string, int > genreExperience_;  /*< опыт написания игр*/
+	std::map< std::string, int > knowledges_;		/*< уровень знания технологий */
 };
+
+typedef IUser* PUser;
 
 }//namespace nrp

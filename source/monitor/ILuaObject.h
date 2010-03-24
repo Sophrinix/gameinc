@@ -6,8 +6,8 @@
 #include "INrpObject.h"
 #include <rect.h>
 
-#define FUNC_NOT_NEED_PARAM (std::string( "Function " ) + GetClassName() + std::string( "::self not need any parameter" )).c_str()
-#define ASSIGN_EMPTY_OBJECT (std::string( "Assign empty object in " ) + GetClassName() ).c_str()
+#define FUNC_NOT_NEED_PARAM (std::string( "Function " ) + ClassName() + std::string( "::self not need any parameter" )).c_str()
+#define ASSIGN_EMPTY_OBJECT (std::string( "Assign empty object in " ) + ClassName() ).c_str()
 #define IF_OBJECT_NOT_NULL_THEN if( object_ == NULL ) DebugReport( __FILE__, __LINE__, "Access null object" ); else
 
 #define LUNA_ILUAOBJECT_HEADER(class) LUNA_AUTONAME_FUNCTION(class,	  SetObject),\
@@ -24,6 +24,21 @@ private:
 
 protected:
 	ObjectType* object_;
+
+	int GetInteger( lua_State* vm, size_t paramNumber )
+	{
+		if( lua_typename( vm, paramNumber ) == "number" )
+		{
+
+		}
+		else
+		{
+			char errStr[ MAX_PATH ];
+			sprintf_s( errStr, MAX_PATH, "%s:%d Error: %s\n", fileName, lineNumber, text );
+			OutputDebugString( errStr );
+			return 0;
+		}
+	}
 
 	irr::core::recti ReadRect_( lua_State* vm, size_t startParam )
 	{

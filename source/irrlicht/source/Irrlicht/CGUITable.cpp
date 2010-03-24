@@ -70,7 +70,6 @@ CGUITable::~CGUITable()
 		Font->drop();
 }
 
-
 void CGUITable::addColumn(const wchar_t* caption, s32 columnIndex)
 {
 	Column tabHeader;
@@ -108,7 +107,6 @@ void CGUITable::addColumn(const wchar_t* caption, s32 columnIndex)
 
 	recalculateWidths();
 }
-
 
 //! remove a column from the table
 void CGUITable::removeColumn(u32 columnIndex)
@@ -995,7 +993,7 @@ void CGUITable::draw()
 			{
 				columnrect.UpperLeftCorner.X = columnrect.LowerRightCorner.X - CellWidthPadding - ARROW_PAD / 2 + 2;
 				columnrect.UpperLeftCorner.Y += 7;
-				skin->drawIcon(this,EGDI_CURSOR_UP,columnrect.UpperLeftCorner,0,0,false,&tableRect);
+				skin->drawIcon(this,EGDI_CURSOR_UP, columnrect.UpperLeftCorner, 0, 0, false, &tableRect);
 			}
 			else
 			{
@@ -1242,6 +1240,7 @@ void CGUITable::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWri
 void CGUITable::SetItemHeight( s32 height )
 {
 	overItemHeight_ = height;
+	ItemHeight = overItemHeight_ == 0 ? Font->getDimension(L"A").Height + (CellHeightPadding * 2) : overItemHeight_;
 }
 } // end namespace gui
 } // end namespace irr

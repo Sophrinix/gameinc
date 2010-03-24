@@ -115,7 +115,7 @@ function sworkWindowReportClose( ptr )
 		Log({src=SCRIPT, dev=ODS}, "Нет окна отчетов чтобы его закрывать" )
 	else	
 	    reportCreater:Close()
-		windowg:RemoveAllAnimators() 
+		guienv:RemoveAllAnimators( windowg:Self() ) 
 		guienv:AddMoveAnimator( windowg:Self(), -WND_WIDTH, 150, STEP, false, true, true )
 	end	
 	
