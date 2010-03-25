@@ -1,19 +1,18 @@
 local app = CLuaApplication( NrpGetApplication() )
+local company = CLuaCompany( app:CreateCompany( "DaleTeam" ) )
+local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) 
 
 function AddStartCompanyTechnology()
 	local ge = CLuaGameEngine( app:CreateGameEngine( "simpleEngine" ) )
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создан движок simpleEngine")
 	ge:AddGenre( GT_SKILL )
 	ge:SetGenreModuleNumber( 2 )
-	--[[ge:SetMainModuleCode( 10000 )
+	ge:SetCodeVolume( 10000 )
 	company:AddGameEngine( ge:Self() )
-	--]]
 end
 
 function AddStartPlayerDef()
 
-	local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) )
-	local company = CLuaCompany( app:CreateCompany( "DaleTeam" ) )
 	company:SetCEO( user:Self() )
 	
 end
