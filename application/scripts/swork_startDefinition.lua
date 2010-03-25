@@ -1,6 +1,6 @@
 local app = CLuaApplication( NrpGetApplication() )
 local company = CLuaCompany( app:CreateCompany( "DaleTeam" ) )
-local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) 
+local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) )
 
 function AddStartCompanyTechnology()
 	local ge = CLuaGameEngine( app:CreateGameEngine( "simpleEngine" ) )
