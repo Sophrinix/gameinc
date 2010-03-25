@@ -57,7 +57,8 @@ AddObjectsToBankScene()
 AddObjectsToOfficeScene()
 sceneManager:DrawProgress( 100 )
 
-sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
-AddStartPlayer()
+AddStartPlayerDef()
 AddStartCompanyTechnology()
-AddStartPublicTechnology()
+--AddStartPublicTechnology()
+
+sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )

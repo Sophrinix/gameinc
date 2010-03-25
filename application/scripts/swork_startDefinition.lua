@@ -1,5 +1,23 @@
 local app = CLuaApplication( NrpGetApplication() )
 
+function AddStartCompanyTechnology()
+	local ge = CLuaGameEngine( app:CreateGameEngine( "simpleEngine" ) )
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создан движок simpleEngine")
+	ge:AddGenre( GT_SKILL )
+	ge:SetGenreModuleNumber( 2 )
+	--[[ge:SetMainModuleCode( 10000 )
+	company:AddGameEngine( ge:Self() )
+	--]]
+end
+
+function AddStartPlayerDef()
+
+	local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) )
+	local company = CLuaCompany( app:CreateCompany( "DaleTeam" ) )
+	company:SetCEO( user:Self() )
+	
+end
+
 function AddStartPublicTechnology()
 
 	local tech = CLuaTech( app:CreateTechnology( PT_GENRE ) )
@@ -35,7 +53,7 @@ function AddStartPublicTechnology()
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VIDEO_TEXT_OUTPUT")
 	app:AddPublicTechnology( videoTech:Self() )
 	
-	local advTech( CLuaTech( app:CreateTechnology( PT_ADVANCED ) )
+	local advTech = CLuaTech( app:CreateTechnology( PT_ADVANCED ) )
 	advTech:SetTechType( ADV_MEMORY )
 	advTech:SetName( "Функции сохранения" )
 	advTech:SetBaseCode( 0.4 )
@@ -44,21 +62,4 @@ function AddStartPublicTechnology()
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология ADV_MEMORY")
 	app:AddPublicTechnology( advTech:Self() )
-end
-
-function AddStartCompanyTechnology()
-	local ge = CLuaGameEngine( app:CreateGameEngine( "simpleEngine" ) )
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создан движок simpleEngine")
-	ge:AddGenre( GT_SKILL )
-	ge:SetGenreModuleNumber( 2 )
-	ge:SetMainModuleCode( 10000 )
-	company:AddGameEngine( ge:Self() )
-end
-
-function 
-
-function AddStartPlayer()
-	local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) )
-	local company = CLuaCompany( app:CreateCompany( "DaleTeam" ) )
-	company:SetCEO( user:Self() )	  	
 end
