@@ -102,14 +102,28 @@ local function CreateAdvContentPage( tab )
 end
 
 local function CreateGenrePage( tab )
-  
-	local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Жанр", 10, 50, 10 + 50, 50 + 50, -1, tab ) )
-	linkModule:SetModuleType( PT_GENRE )
-	linkModule:SetDraggable( false )
-	--linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_DOWN, "sworkLeftMouseButtonDown" )
 	
-	linkModule:SetObject( guienv:AddLinkBox( "Модуль 1/2", 10, 200, 10 + 50, 200 + 50, -1, tab ) )
-	linkModule:SetModuleType( PT_GENRE )
+	ShowAvaibleGenreModules()
+	
+	local maxModuleNumber = project:GetGenreModuleNumber()
+
+	if maxModuleNumber > 0 then
+		local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Жанр", 10, 50, 10 + 50, 50 + 50, -1, tab ) )
+		linkModule:SetModuleType( PT_GENRE )
+		linkModule:SetData( project:GetGenre( 0 ) )
+		linkModule:SetDraggable( false )
+
+		for i=1, maxModuleNumber-1 do
+			linkModule:SetObject( guienv:AddLinkBox( "Модуль " .. i .. "/" .. maxModuleNumber, 10, 200, 10 + 50, 200 + 50, -1, tab ) )
+			linkModule:SetModuleType( PT_GENRE )
+			linkModule:SetDraggable( false )
+			linkModule:SetData( project:GetGenre( i ) )
+		end
+		
+		--linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_DOWN, "sworkLeftMouseButtonDown" )
+	else
+		
+	end
 	--linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_DOWN, "sworkLeftMouseButtonDown" )
 	
 end
