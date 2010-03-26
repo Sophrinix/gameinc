@@ -1,5 +1,6 @@
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() ) 
 local project = CLuaGameProject( nil )
+local company = CLuaCompany( applic:GetPlayerCompany() )
 
 local platform = { "pc", "console", "gamebox", "mobile" }
 local lang = { "Eng", "Den", "France", "Russian", "Jap" }
@@ -10,9 +11,7 @@ local height = 600
 local function ShowAvaibleEngines( tab )
 
 	local applic = CLuaApplication( NrpGetApplication() )
-	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local maxEngine = company:GetEnginesNumber()
-	
 	
 	for i=0, maxEngine-1 do
 	    Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:AvaibleEngines  " .. maxEngine )
@@ -101,9 +100,37 @@ local function CreateAdvContentPage( tab )
 	
 end
 
+local function ShowAvaibleGenreModules( tab )
+
+	local maxCompanyTech = company:GetTechCounter()
+	
+	for i=0, maxCompanyTech do
+		local tech = CLuaTech( company:GetTech( i ) )
+		
+		if tech:GetTechType() == PT_GENRE then
+			local linkModule = CLuaTech( guienv:AddLinkBox( tech:GetName(), 10, 10 + i * 50, 10 + 50, 10 + 50 + i * 50, -1, tab ) )
+			linkModule:SetModuleType( PT_GENRE )
+			linkModule:SetData( tech:Self() )		
+		end
+	end
+	
+	local maxPublicTech = app:GetTechCounter()
+	
+	for i=0, maxPublicTech do
+		local tech = CLuaTech( app:GetTech( i ) )
+		
+		if tech:GetTechType() == PT_GENRE then
+			local linkModule = CLuaTech( guienv:AddLinkBox( tech:GetName(), 10, 200 + i * 50, 10 + 50, 200 + 50 + i * 50, -1, tab ) )
+			linkModule:SetModuleType( PT_GENRE )
+			linkModule:SetData( tech:Self() )		
+		end
+	end	
+	
+end
+
 local function CreateGenrePage( tab )
 	
-	ShowAvaibleGenreModules()
+	ShowAvaibleGenreModules( tab )
 	
 	local maxModuleNumber = project:GetGenreModuleNumber()
 
@@ -114,7 +141,7 @@ local function CreateGenrePage( tab )
 		linkModule:SetDraggable( false )
 
 		for i=1, maxModuleNumber-1 do
-			linkModule:SetObject( guienv:AddLinkBox( "Модуль " .. i .. "/" .. maxModuleNumber, 10, 200, 10 + 50, 200 + 50, -1, tab ) )
+			linkModule:SetObject( guienv:AddLinkBox( "Модуль " .. i .. "/" .. maxModuleNumber, 10, 200 + i * 50, 10 + 50, 200 + 50 + i * 50, -1, tab ) )
 			linkModule:SetModuleType( PT_GENRE )
 			linkModule:SetDraggable( false )
 			linkModule:SetData( project:GetGenre( i ) )
