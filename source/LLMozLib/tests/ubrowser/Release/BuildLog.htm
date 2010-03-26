@@ -1,0 +1,243 @@
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" content="text/html; charset=windows-1251">
+</head>
+<body>
+<pre>
+<table width=100% bgcolor=#CFCFE5><tr> <td> <font face=arial size=+3>
+Build Log
+</font></table><table width=* cellspacing=0 cellpadding=0><tr><td width=0 bgcolor=#EDEDF5>&nbsp;</td><td width=0 bgcolor=#FFFFFF>&nbsp;</td><td width=*><pre>
+<h3>------- Build started: Project: ubrowser, Configuration: Release|Win32 -------
+</h3>
+</pre></table><table width=100% bgcolor=#DFDFE5><tr><td><font face=arial size=+2>
+Command Lines
+</font></table><table width=* cellspacing=0 cellpadding=0><tr><td width=0 bgcolor=#EDEDF5>&nbsp;</td><td width=0 bgcolor=#FFFFFF>&nbsp;</td><td width=*><pre>Creating temporary file "f:\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\ubrowser\Release\RSP000003.rsp" with contents
+[
+/OUT:"Release/ubrowser.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"..\dependencies\lib" /LIBPATH:"..\..\Release" /NODEFAULTLIB:"MSVCRT.lib" /DEBUG /PDB:"Release/ubrowser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /MACHINE:X86 opengl32.lib glu32.lib version.lib comctl32.lib glui32.lib llmozlib2.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\dependencies\lib\glui32.lib" "\Projects\Nerpa\3d\work-copy\source\LLMozLib\Release\llmozlib2.lib"
+".\Release\app.obj"
+".\Release\ubrowser.obj"
+]
+Creating command line "link.exe @"f:\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\ubrowser\Release\RSP000003.rsp""
+Creating temporary file "f:\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\ubrowser\Release\BAT000004.bat" with contents
+[
+@echo off
+if not exist "f:\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\ubrowser\Release\\chrome\" xcopy ..\..\libraries\i686-win32\runtime_release\*.* "f:\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\ubrowser\Release\" /s /y
+if not exist "f:\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\ubrowser\Release\\glut32.dll" copy ..\dependencies\bin\glut32.dll "f:\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\ubrowser\Release\" /y
+
+if errorlevel 1 goto VCReportError
+goto VCEnd
+:VCReportError
+echo Project : error PRJ0019: A tool returned an error code from "Copying  runtime files"
+exit 1
+:VCEnd
+]
+Creating command line ""f:\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\ubrowser\Release\BAT000004.bat""
+</pre></table><table width=100% bgcolor=#DFDFE5><tr><td><font face=arial size=+2>
+Output Window
+</font></table><table width=* cellspacing=0 cellpadding=0><tr><td width=0 bgcolor=#EDEDF5>&nbsp;</td><td width=0 bgcolor=#FFFFFF>&nbsp;</td><td width=*><pre>Linking...
+Copying  runtime files
+..\..\libraries\i686-win32\runtime_release\freebl3.dll
+..\..\libraries\i686-win32\runtime_release\js3250.dll
+..\..\libraries\i686-win32\runtime_release\nspr4.dll
+..\..\libraries\i686-win32\runtime_release\nss3.dll
+..\..\libraries\i686-win32\runtime_release\nssckbi.dll
+..\..\libraries\i686-win32\runtime_release\plc4.dll
+..\..\libraries\i686-win32\runtime_release\plds4.dll
+..\..\libraries\i686-win32\runtime_release\smime3.dll
+..\..\libraries\i686-win32\runtime_release\softokn3.dll
+..\..\libraries\i686-win32\runtime_release\ssl3.dll
+..\..\libraries\i686-win32\runtime_release\xpcom.dll
+..\..\libraries\i686-win32\runtime_release\xul.dll
+..\..\libraries\i686-win32\runtime_release\chrome\chromelist.txt
+..\..\libraries\i686-win32\runtime_release\chrome\classic.jar
+..\..\libraries\i686-win32\runtime_release\chrome\classic.manifest
+..\..\libraries\i686-win32\runtime_release\chrome\comm.jar
+..\..\libraries\i686-win32\runtime_release\chrome\comm.manifest
+..\..\libraries\i686-win32\runtime_release\chrome\en-US.jar
+..\..\libraries\i686-win32\runtime_release\chrome\en-US.manifest
+..\..\libraries\i686-win32\runtime_release\chrome\pippki.jar
+..\..\libraries\i686-win32\runtime_release\chrome\pippki.manifest
+..\..\libraries\i686-win32\runtime_release\chrome\toolkit.jar
+..\..\libraries\i686-win32\runtime_release\chrome\toolkit.manifest
+..\..\libraries\i686-win32\runtime_release\components\all.xpt
+..\..\libraries\i686-win32\runtime_release\components\auth.dll
+..\..\libraries\i686-win32\runtime_release\components\autoconfig.dll
+..\..\libraries\i686-win32\runtime_release\components\FeedProcessor.js
+..\..\libraries\i686-win32\runtime_release\components\jsconsole-clhandler.js
+..\..\libraries\i686-win32\runtime_release\components\nsCloseAllWindows.js
+..\..\libraries\i686-win32\runtime_release\components\nsDefaultCLH.js
+..\..\libraries\i686-win32\runtime_release\components\nsDictionary.js
+..\..\libraries\i686-win32\runtime_release\components\nsExtensionManager.js
+..\..\libraries\i686-win32\runtime_release\components\nsHelperAppDlg.js
+..\..\libraries\i686-win32\runtime_release\components\nsInterfaceInfoToIDL.js
+..\..\libraries\i686-win32\runtime_release\components\nsKillAll.js
+..\..\libraries\i686-win32\runtime_release\components\nsPostUpdateWin.js
+..\..\libraries\i686-win32\runtime_release\components\nsProgressDialog.js
+..\..\libraries\i686-win32\runtime_release\components\nsProxyAutoConfig.js
+..\..\libraries\i686-win32\runtime_release\components\nsResetPref.js
+..\..\libraries\i686-win32\runtime_release\components\nsUpdateService.js
+..\..\libraries\i686-win32\runtime_release\components\nsURLFormatter.js
+..\..\libraries\i686-win32\runtime_release\components\nsXmlRpcClient.js
+..\..\libraries\i686-win32\runtime_release\components\nsXULAppInstall.js
+..\..\libraries\i686-win32\runtime_release\components\pipboot.dll
+..\..\libraries\i686-win32\runtime_release\components\pipnss.dll
+..\..\libraries\i686-win32\runtime_release\components\pippki.dll
+..\..\libraries\i686-win32\runtime_release\components\transformiix.dll
+..\..\libraries\i686-win32\runtime_release\components\universalchardet.dll
+..\..\libraries\i686-win32\runtime_release\components\websrvcs.dll
+..\..\libraries\i686-win32\runtime_release\components\xmlextras.dll
+..\..\libraries\i686-win32\runtime_release\components\xulutil.dll
+..\..\libraries\i686-win32\runtime_release\greprefs\all.js
+..\..\libraries\i686-win32\runtime_release\greprefs\security-prefs.js
+..\..\libraries\i686-win32\runtime_release\greprefs\xpinstall.js
+..\..\libraries\i686-win32\runtime_release\plugins\npnul32.dll
+..\..\libraries\i686-win32\runtime_release\res\arrow.gif
+..\..\libraries\i686-win32\runtime_release\res\arrowd.gif
+..\..\libraries\i686-win32\runtime_release\res\bloatcycle.html
+..\..\libraries\i686-win32\runtime_release\res\broken-image.gif
+..\..\libraries\i686-win32\runtime_release\res\charsetalias.properties
+..\..\libraries\i686-win32\runtime_release\res\charsetData.properties
+..\..\libraries\i686-win32\runtime_release\res\cmessage.txt
+..\..\libraries\i686-win32\runtime_release\res\EditorOverride.css
+..\..\libraries\i686-win32\runtime_release\res\forms.css
+..\..\libraries\i686-win32\runtime_release\res\grabber.gif
+..\..\libraries\i686-win32\runtime_release\res\hiddenWindow.html
+..\..\libraries\i686-win32\runtime_release\res\html.css
+..\..\libraries\i686-win32\runtime_release\res\langGroups.properties
+..\..\libraries\i686-win32\runtime_release\res\language.properties
+..\..\libraries\i686-win32\runtime_release\res\loading-image.gif
+..\..\libraries\i686-win32\runtime_release\res\quirk.css
+..\..\libraries\i686-win32\runtime_release\res\svg.css
+..\..\libraries\i686-win32\runtime_release\res\table-add-column-after-active.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-column-after-hover.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-column-after.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-column-before-active.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-column-before-hover.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-column-before.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-row-after-active.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-row-after-hover.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-row-after.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-row-before-active.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-row-before-hover.gif
+..\..\libraries\i686-win32\runtime_release\res\table-add-row-before.gif
+..\..\libraries\i686-win32\runtime_release\res\table-remove-column-active.gif
+..\..\libraries\i686-win32\runtime_release\res\table-remove-column-hover.gif
+..\..\libraries\i686-win32\runtime_release\res\table-remove-column.gif
+..\..\libraries\i686-win32\runtime_release\res\table-remove-row-active.gif
+..\..\libraries\i686-win32\runtime_release\res\table-remove-row-hover.gif
+..\..\libraries\i686-win32\runtime_release\res\table-remove-row.gif
+..\..\libraries\i686-win32\runtime_release\res\ua.css
+..\..\libraries\i686-win32\runtime_release\res\viewer.properties
+..\..\libraries\i686-win32\runtime_release\res\viewsource.css
+..\..\libraries\i686-win32\runtime_release\res\wincharset.properties
+..\..\libraries\i686-win32\runtime_release\res\dtd\xhtml11.dtd
+..\..\libraries\i686-win32\runtime_release\res\entityTables\html40Latin1.properties
+..\..\libraries\i686-win32\runtime_release\res\entityTables\html40Special.properties
+..\..\libraries\i686-win32\runtime_release\res\entityTables\html40Symbols.properties
+..\..\libraries\i686-win32\runtime_release\res\entityTables\htmlEntityVersions.properties
+..\..\libraries\i686-win32\runtime_release\res\entityTables\transliterate.properties
+..\..\libraries\i686-win32\runtime_release\res\fonts\fontEncoding.properties
+..\..\libraries\i686-win32\runtime_release\res\fonts\fontNameMap.properties
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-audio.gif
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-binary.gif
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-find.gif
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-image.gif
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-menu.gif
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-movie.gif
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-sound.gif
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-telnet.gif
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-text.gif
+..\..\libraries\i686-win32\runtime_release\res\html\gopher-unknown.gif
+..\..\libraries\i686-win32\runtime_release\res\samples\aform.css
+..\..\libraries\i686-win32\runtime_release\res\samples\Anieyes.gif
+..\..\libraries\i686-win32\runtime_release\res\samples\beeptest.html
+..\..\libraries\i686-win32\runtime_release\res\samples\bform.css
+..\..\libraries\i686-win32\runtime_release\res\samples\bg.jpg
+..\..\libraries\i686-win32\runtime_release\res\samples\cform.css
+..\..\libraries\i686-win32\runtime_release\res\samples\checkboxTest.xul
+..\..\libraries\i686-win32\runtime_release\res\samples\demoform.css
+..\..\libraries\i686-win32\runtime_release\res\samples\find.html
+..\..\libraries\i686-win32\runtime_release\res\samples\gear1.gif
+..\..\libraries\i686-win32\runtime_release\res\samples\image_props.html
+..\..\libraries\i686-win32\runtime_release\res\samples\mozform.css
+..\..\libraries\i686-win32\runtime_release\res\samples\printsetup.html
+..\..\libraries\i686-win32\runtime_release\res\samples\raptor.jpg
+..\..\libraries\i686-win32\runtime_release\res\samples\rock_gra.gif
+..\..\libraries\i686-win32\runtime_release\res\samples\scrollbarTest1.xul
+..\..\libraries\i686-win32\runtime_release\res\samples\scrollbarTest2.xul
+..\..\libraries\i686-win32\runtime_release\res\samples\sliderTest1.xul
+..\..\libraries\i686-win32\runtime_release\res\samples\soundtest.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test.wav
+..\..\libraries\i686-win32\runtime_release\res\samples\test0.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test1.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test10.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test11.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test12.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test13.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test14.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test15.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test16.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test2.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test3.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test4.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test5.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test6.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test7.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test8-1.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test8.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test8dom.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test8sca.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test8siz.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test8tab.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test9.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test9a.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test9b.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test_ed.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test_form.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test_gfx.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test_lbox.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test_pr.html
+..\..\libraries\i686-win32\runtime_release\res\samples\test_weight.html
+..\..\libraries\i686-win32\runtime_release\res\samples\toolbarTest1.xul
+..\..\libraries\i686-win32\runtime_release\res\samples\treeTest1.css
+..\..\libraries\i686-win32\runtime_release\res\samples\treeTest1.xul
+..\..\libraries\i686-win32\runtime_release\res\samples\xulTest.css
+..\..\libraries\i686-win32\runtime_release\res\throbber\anim.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims00.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims01.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims02.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims03.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims04.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims05.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims06.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims07.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims08.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims09.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims10.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims11.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims12.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims13.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims14.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims15.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims16.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims17.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims18.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims19.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims20.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims21.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims22.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims23.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims24.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims25.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims26.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims27.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims28.gif
+..\..\libraries\i686-win32\runtime_release\res\throbber\anims29.gif
+Скопировано файлов: 197.
+Скопировано файлов:         1.
+</pre></table><table width=100% bgcolor=#DFDFE5><tr><td><font face=arial size=+2>
+Results
+</font></table><table width=* cellspacing=0 cellpadding=0><tr><td width=0 bgcolor=#EDEDF5>&nbsp;</td><td width=0 bgcolor=#FFFFFF>&nbsp;</td><td width=*><pre>
+Build log was saved at "file://f:\Projects\Nerpa\3d\work-copy\source\LLMozLib\tests\ubrowser\Release\BuildLog.htm"
+ubrowser - 0 error(s), 0 warning(s)</pre></table><table   width=100% height=20 bgcolor=#CFCFE5><tr><td><font face=arial size=+2>
+</font></table></body></html>

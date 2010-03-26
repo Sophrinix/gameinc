@@ -1,0 +1,2599 @@
+.templateparameter {
+    font-size: 9px;
+    color: darkblue;
+}
+
+table.confluenceTable
+{
+    margin: 5px;
+    border-collapse: collapse;
+}
+
+td.confluenceTd
+{
+    border: 1px solid #ccc;
+    padding: 3px 4px 3px 4px;
+}
+
+th.confluenceTh
+{
+    border: 1px solid #ccc;
+    padding: 3px 4px 3px 4px;
+    background: #f0f0f0;
+    text-align: center;
+}
+.wiki-textarea, .wiki-textfield {
+    width: 100%;
+}
+
+.preformatted {
+    border: 1px dashed ;
+    font-size: 11px;
+    font-family: Courier;
+    margin: 10px;
+    line-height: 13px;
+}
+
+.preformattedHeader {
+    background-color: #f0f0f0;
+    border-bottom: 1px dashed;
+    padding: 3px;
+    text-align: center;
+}
+
+.preformattedContent {
+    background-color: #f0f0f0;
+    padding: 3px;
+}
+
+.panel {
+    border: 1px dashed;
+    margin: 10px;
+    margin-top: 0px;
+}
+
+.panelHeader {
+    background-color: #f0f0f0;
+    border-bottom: 1px dashed;
+    padding: 3px;
+    text-align: center;
+}
+
+.panelContent {
+    background-color: #f0f0f0;
+    padding: 5px;
+}
+
+.code {
+    border: 1px dashed;
+    font-size: 11px;
+    font-family: Courier;
+    margin: 10px;
+    line-height: 13px;
+}
+
+.codeHeader {
+    background-color: #f0f0f0;
+    border-bottom: 1px dashed;
+    padding: 3px;
+    text-align: center;
+}
+
+.codeContent {
+    text-align: left;
+    background-color: #f0f0f0;
+    padding: 3px;
+}
+
+.code-keyword {
+  color: #000091;
+  background-color: inherit;
+}
+
+.code-object {
+  color: #910091;
+  background-color: inherit;
+}
+
+.code-quote {
+  color: #009100;
+  background-color: inherit;
+}
+
+.code-comment {
+  color: #808080;
+  background-color: inherit;
+}
+
+.code-xml .code-keyword {
+  color: inherit;
+  font-weight: bold;
+}
+
+.code-tag {
+  color: #000091;
+  background-color: inherit;
+}
+
+.linkerror { background-color: #fcc;}
+
+ul#squaretab {
+margin-left: 0;
+padding-left: 0;
+white-space: nowrap;
+font: bold 8px Verdana, sans-serif;
+}
+
+#squaretab li {
+display: inline;
+list-style-type: none;
+}
+
+#squaretab a {
+padding: 2px 6px;
+border: 1px solid #3c78b5;
+}
+
+#squaretab a:link, #squaretab a:visited {
+color: #fff;
+background-color: #3c78b5;
+text-decoration: none;
+}
+
+#squaretab a:hover {
+color: #ffffff;
+background-color: #3c78b5;
+border-color: #3c78b5;
+text-decoration: none;
+}
+
+#squaretab li a#current {
+background: white;
+color: black;
+}
+
+.panel {
+    border: 1px dashed ;
+    margin: 10px;
+    margin-top: 0px;
+}
+
+.panelHeader {
+    background-color: #f0f0f0;
+    border-bottom: 1px dashed ;
+    padding: 3px;
+    text-align: center;
+}
+
+.panelContent {
+    background-color: #f0f0f0;
+    padding: 5px;
+}
+
+.minitab {
+padding: 3px 0px 3px 8px;
+margin-left: 0;
+margin-top: 1px;
+margin-bottom: 0px;
+border-bottom: 1px solid #bbbbbb;
+font: bold 9px Verdana, sans-serif;
+text-decoration: none;
+float:none;
+}
+.selectedminitab {
+padding: 3px 0.5em;
+margin-left: 3px;
+margin-top: 1px;
+border: 1px solid #bbbbbb;
+background: white;
+border-bottom: 1px solid white;
+color: #000000;
+text-decoration: none;
+}
+.unselectedminitab {
+padding: 3px 0.5em;
+margin-left: 3px;
+margin-top: 1px;
+border: 1px solid #bbbbbb;
+border-bottom: none;
+background: #bbbbbb;
+color: #ffffff;
+text-decoration: none;
+}
+
+a.unselectedminitab:hover {
+color: #3c78b5;
+background: #3c78b5;
+border-color: #3c78b5;
+}
+
+a.unselectedminitab:link { color: white; }
+a.unselectedminitab:visited { color: white; }
+
+a.selectedminitab:link { color: black; }
+a.selectedminitab:visited { color: black; }
+
+.editPageInsertLinks, .editPageInsertLinks a
+{
+    font-weight: normal;
+    font-size: 9px;
+}
+
+.helpheading {
+    font-weight: bold;
+    background-color: #DDDDDD;
+        border-bottom: 1px solid #3c78b5;
+        padding: 4px 4px 4px 4px;
+        margin: 0px;
+        margin-top: 10px;
+}
+
+.helpcontent {
+        padding: 4px 4px 20px 4px;
+    background-color: #ffffff;
+}
+
+
+.gridHover {
+	background-color: #f9f9f9;
+}
+
+.navmenu {
+    border: 1px solid #ccc;
+}
+
+/* side menu highlighting (e.g. space content screen) */
+.optionPadded { padding: 2px; }
+.optionSelected { background-color: #ffffcc; padding: 2px; border: 1px solid #ddd; margin: -1px; }
+.optionSelected a { font-weight: bold; text-decoration: none; color: black; }
+
+.menuheading {
+    font-weight: bold;
+    background-color: #DDDDDD;
+ 	border-bottom: 1px solid #3c78b5;
+	padding: 4px 4px 2px 4px;
+}
+
+.menuitems {
+	padding: 4px 4px 20px 4px;
+    background-color: #f0f0f0;
+}
+
+.pagetitle {
+	font-size: 22px;
+	font-weight: bold;
+	font-family: Arial, sans-serif;
+	color: #003366;
+}
+
+.previewClass
+{
+    border: 1px solid gray;
+    background-color:#E8F1FF;
+    padding: 0 10px;
+}
+
+.selectedPreview
+{
+    border: 1px inset #bbbbbb;
+    padding: 0px;
+    background-color: #eeeeee;
+}
+
+.unselectedPreview
+{
+    border: 0px;
+    padding: 1px;
+}html, body
+{
+    height: 100%;
+}
+
+UL, OL
+{
+	padding-left: 2em;
+}
+
+tr.disabled td
+{
+    color: #cccccc!important;
+}
+
+.jiraform
+{
+    border: 1px solid #bbbbbb;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Sub form titles are a little smaller */
+
+.jiraform .jiraform .formtitle, .jiraformSectionBreak .formtitle
+{
+    padding-top: 0.3em;
+    font-size: 14px;
+}
+
+.jiraform .jiraform
+{
+    margin: 10px auto;
+}
+
+.jiraformheader, .jiraformSectionBreak
+{
+    background-color: #f0f0f0;
+}
+
+.toolbar
+{
+    float: right;
+    padding: 3px 5px;
+    border: 1px dotted #bbbbbb;
+    background-color: #fefefe;
+    vertical-align: middle;
+    text-align: right;
+}
+
+.tools
+{
+    padding: 3px 5px;
+    border: 1px dotted #bbbbbb;
+    background-color: #fefefe;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.toolbar .sectionStart
+{
+    margin-left: 16px;
+}
+
+.toolbar a
+{
+    text-decoration: none;
+}
+
+.toolbar a:hover
+{
+    text-decoration: underline;
+}
+
+.jiraform .instructions
+{
+    border-bottom: 1px solid #bbbbbb;
+}
+
+.jiraform .jiraformfooter
+{
+    text-align: center;
+}
+
+.jiraform td
+{
+    padding: 5px;
+}
+
+.jiraform .jiraformbody
+{
+    padding: 5px 5px 10px 5px;
+}
+
+.highlighted .jiraform, .highlighted .jiraform *
+{
+    border-color: #C0C030;
+}
+
+.highlighted .jiraformheader
+{
+    background-color: #eeeebb;
+}
+
+.fieldDescription
+{
+    display: block;
+    font-size: 10px;
+}
+
+.formErrors
+{
+    background-color: #ffcccc !important;
+}
+.formErrors .errorArea
+{
+    background-image: url(../images/icons/serious_warning_16.gif);
+    background-repeat: no-repeat;
+    background-position: 5px 0;
+	padding-left: 30px;
+	margin: 0;
+}
+
+.formErrors h4
+{
+	margin: 3px 0;
+	padding: 0;
+    color: #cc0000;
+}
+
+.formErrors ul
+{
+    margin: 0;
+	padding: 0;
+    list-style: none;
+}
+
+.centred
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rowClear
+{
+    background-color: #ffffff;
+}
+
+/* normal (white) background */
+
+.quickSearchInput
+{
+    font-family: Arial, Sans-Serif;
+    font-size: 10px;
+    color:black;
+    font-weight: normal;
+}
+
+/* table styles */
+
+.tableBorder
+{
+    background-color: #bbbbbb;
+}
+
+/* table row styles */
+
+.rowHover
+{
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.cellHover
+{
+    background-color: #fffff0;
+    cursor: pointer;
+}
+
+.rowHeaderDark
+{
+    background-color: #bbbbbb;
+}
+
+.rowHeader
+{
+    background-color: #f0f0f0;
+}
+
+.rowNormal
+{
+    background-color: #ffffff;
+}
+
+/* normal (white) background */
+
+.rowAlternate
+{
+    background-color: #fffff0;
+}
+
+/* alternate (pale yellow) background */
+
+.rowAlternateDark
+{
+    background-color: #ffffde;
+}
+
+.rowAlternateLightGray
+{
+    background-color: #FAFAFA;
+}
+
+/* alternate (pale yellow) background */
+
+.rowHighlighted
+{
+    background-color: #eeeebb;
+}
+
+/* alternate (pale yellow) background */
+
+/* This is the same as colHeaderLink above - we should look to remove that one in future, and use this instead */
+
+TH
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: left;
+}
+
+TH a
+{
+    text-decoration: none;
+}
+
+/* titles and headings */
+
+.pagetitle
+{
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    margin: 0 0 0 0;
+}
+
+.formtitle
+{
+    font-size: 17px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+	color: #003366;
+    margin: 0 0 2px 0;
+}
+
+.bluetext
+{
+	color: #003366;
+}
+
+.formLabel
+{
+    background-color: #fffff0;
+}
+
+.fieldLabelArea, .fieldLabelAreaTop
+{
+    background-color: #FFFFF0;
+    vertical-align: top;
+    text-align: right;
+}
+
+.fieldLabelAreaBulk
+{
+    background-color: #FFFFF0;
+    vertical-align: top;
+    text-align: left;
+    width: 30%;
+}
+
+.fieldLabelAreaSelected, .fieldLabelAreaTopSelected
+{
+    background-color: #FFFFDC;
+}
+
+.fieldValueArea
+{
+    vertical-align: top;
+}
+
+.fieldValueAreaSelected
+{
+    background-color: #F8F8F8;
+}
+
+
+.fieldLabelAreaTop
+{
+    text-align: left;
+}
+
+.required
+{
+    font-style: italic;
+}
+
+/* WebWork Stles */
+
+.label
+{
+}
+
+.errLabel
+{
+    color: red;
+}
+
+.errMsg
+{
+    color: #cc0000;
+    font-weight: bold;
+    text-align: center
+}
+
+.errorBox
+{
+    border: 1px solid #c00;
+    padding: 4px;
+    width: 90%;
+    background: #fcc;
+}
+
+.errorBox2
+{
+    border: 1px solid #c00;
+    background: #fcc;
+}
+
+.checkboxLabel
+{
+}
+
+.checkboxErrLabel
+{
+    color: red
+}
+
+/* For debugging i18n */
+
+.replaced
+{
+    background-color: #33CC66;
+}
+
+/* font styles */
+
+BODY
+{
+    margin: 0;
+    font-family: Arial, Sans-Serif, sans-serif;
+    color:black;
+}
+
+BLOCKQUOTE
+{
+    font-size: 11px;
+    font-family: Arial, Sans-Serif, sans-serif;
+	border-left: 2px solid #3c78b5;
+	margin-left: 0;
+	padding-left: 1em;
+    color: black;
+}
+
+.small
+{
+    font-size: 9px;
+}
+
+.smallfooter
+{
+    font-size: 9px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.smallgrey
+{
+    font-size: 9px;
+    color: #666;
+}
+
+.smallgreyfooter
+{
+    font-size: 9px;
+    color: #666666;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.grey
+{
+    color: #666;
+}
+
+.lightgrey
+{
+    color: #aaa;
+}
+
+.warning
+{
+    color: #FF0000;
+    font-weight:bold
+}
+
+/*created separate note to warning (DH)*/
+.note
+{
+    color: #900000;
+    font-weight:bold
+}
+
+.red-highlight, .red-highlight td
+{
+    color: #FF0000;
+    font-weight:bold
+}
+
+.green-highlight
+{
+    color: #006400;
+    font-weight:bold
+}
+
+.bright-green-highlight
+{
+    color: #33CC00;
+    font-weight:bold
+}
+
+.red-highlight-small
+{
+    color: #8B0000;
+    font-weight:bold;
+    font-size: 9px
+}
+
+.green-highlight-small
+{
+    color: #006400;
+    font-weight:bold;
+    font-size: 9px
+}
+
+.blue-highlight
+{
+    color: #6600FF;
+    font-weight:bold
+}
+
+STRONG
+{
+    font-weight: bold;
+}
+
+B
+{
+    font-weight: bold;
+}
+
+
+.bolded
+{
+    font-weight: bold;
+}
+
+/* styles for field editing page */
+
+.hiddenField
+{
+    color: #999;
+}
+
+.hidden
+{
+    display: none;
+    border: none;
+    padding: 0;
+	line-height: 0;
+}
+
+.hiddenButton
+{
+    position: absolute;
+	margin-left: -2000px;
+}
+
+.basicHide
+{
+    display: none;
+}
+
+.fullyCentered
+{
+    vertical-align: middle;
+    text-align: center;
+    margin: auto;
+}
+
+.centered
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.left-justified
+{
+    text-align: left;
+}
+
+H1
+{
+    font-weight: bold;
+    font-size: 24px;
+    font-family: Arial, Sans-Serif;
+    margin-bottom: 0;
+}
+
+H2
+{
+    font-weight: bold;
+    font-size: 18px;
+    font-family: Arial, Sans-Serif;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+H3
+{
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Arial, Sans-Serif;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+H4
+{
+    font-weight: bold;
+    font-size: 12px;
+    font-family: Arial, Sans-Serif;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+H5
+{
+    font-weight: bold;
+    font-size: 11px;
+    font-family: Arial, Sans-serif;
+    margin-bottom: 0;
+}
+
+H6
+{
+    font-weight: bold;
+    font-size: 10px;
+    font-family: Arial, Sans-Serif;
+    margin-bottom: 0;
+}
+
+.trackback
+{
+    padding: 2px;
+    margin: 0 0 5px 0;
+}
+
+.trackbackblogname
+{
+    font-size: 10px;
+    color: #999;
+}
+
+.trackbacklink
+{
+}
+
+.trackbackexcerpt
+{
+    font-size: 10px;
+    color: #999
+}
+
+.grid, .bordered
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+}
+
+.grid th, .grid td
+{
+    border: 1px solid #cccccc;
+    padding: 4px;
+    vertical-align: top;
+}
+
+.bordered th, .bordered td
+{
+	border: none;
+}
+
+.grid th
+{
+    background-color: #f0f0f0;
+}
+
+.defaultWidth
+{
+    width: 95%;
+}
+
+.maxWidth
+{
+    width: 99%;
+}
+
+.minWidth
+{
+    width: 1%;
+}
+
+.standardField
+{
+	width: 30em;
+}
+
+.minNoWrap
+{
+    width: 1%;
+    white-space: nowrap;
+}
+
+.noWrap
+{
+    white-space: nowrap;
+}
+
+.emailHeader
+{
+    font-weight:bold;
+}
+
+.date
+{
+    color:#336699;
+}
+
+.borderedBox
+{
+    border: 1px solid #bbbbbb;
+    padding: 2px;
+}
+
+.borderedBoxBlack
+{
+    border: 1px solid #000000;
+}
+
+.borderedTabBox
+{
+    border: 1px solid #bbbbbb;
+    width: 100%;
+}
+
+.borderedTabBoxHidden
+{
+    border: 1px solid #bbbbbb;
+    display: none;
+    width: 100%;
+}
+
+a.backToTop
+{
+	font-size: 10px;
+	text-decoration: none;
+	display: block;
+	float: right;
+    background-image: url(../images/icons/arrow_up_blue.gif);
+    background-repeat: no-repeat;
+    background-position: 0 3px;
+	padding: 5px 0 0 18px;
+	margin: 0;
+
+}
+
+a.backToTop:hover
+{
+	text-decoration: underline;
+}
+
+
+/*
+this makes a nicely 'gridded' table.  However, you will also need to following params:
+<table class="gridTabBox" cellpadding="3" cellspacing="1" align="center">
+If you are just using a table to create a border around something - see the 'borderedBox' style
+*/
+.gridTabBox
+{
+    border: 0;
+    padding: 0;
+    background-color:#bbbbbb;
+}
+
+.gridTabBoxHidden
+{
+    border: 0;
+    padding: 0;
+    background-color:#bbbbbb;
+    display: none;
+}
+
+.selectedTabCell
+{
+    background-color: #bbbbbb;
+}
+
+.unselectedTabCell
+{
+    background-color: #ffffff;
+}
+
+.errorTabCell
+{
+    background-color: #ffcccc;
+}
+
+.selectedTabFont
+{
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.unselectedTabFont
+{
+    font-weight: bold;
+}
+
+/*
+this makes a nicely 'gridded' table.  However, you will also need to following params:
+<table class="gridBox" cellpadding="3" cellspacing="1" width="90%" align="center">
+If you are just using a table to create a border around something - see the 'borderedBox' style
+*/
+.gridBox
+{
+    border: 0;
+    padding: 0;
+    background-color:#bbbbbb;
+}
+
+/* Email/Comment action styles */
+
+.issuePanelContainer
+{
+    border: 1px solid #bbbbbb;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.action-box
+{
+    border: thin solid #bbbbbb;
+    border-collapse: collapse;
+    margin: 2px 2px 2px 2px;
+}
+
+.action-container
+{
+    width: 100%;
+    padding: 0;
+    border-collapse: collapse;
+}
+
+.actionHeader
+{
+    border-top: 1px solid #bbbbbb;
+    padding: 2px;
+    background-color: #f0f0f0;
+    border-collapse: collapse;
+}
+
+.actionLinks
+{
+    text-align: right;
+    padding: 2px;
+    float: right;
+    vertical-align: middle;
+    background-color: #f0f0f0;
+}
+
+.changeHistory td
+{
+    border: thin solid #ffffff;
+}
+
+.actionContainer
+{
+	margin: 0;
+	padding: 0;
+    background-color: #fff;
+}
+
+.action-details
+{
+    padding: 5px 2px;
+    text-align: left;
+    background-color: #f0f0f0;
+}
+
+.action-links
+{
+    float: right;
+    padding: 5px 2px;
+    background-color: #f0f0f0;
+}
+
+.perm-link
+{
+    float: right;
+}
+
+.action-body
+{
+    margin: 2px;
+}
+
+.action-spacer
+{
+    clear: both;
+}
+
+.alertHeader
+{
+    border: 2px solid #990000;
+    margin: 4px;
+    font-weight: bold
+}
+
+/* new styles */
+
+HR
+{
+    color: #3c78b5;
+    height: 1px;
+}
+
+/* top nav bar */
+
+.navItemOver
+{
+    font-family: Verdana, Sans-Serif;
+    font-size: 10px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #003366;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.navItemOver a
+{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.navItem
+{
+    font-size: 10px;
+    font-family: Verdana, Sans-Serif;
+    font-weight: bold;
+    vertical-align: middle;
+    color: #ffffff;
+}
+
+.navItem a
+{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Projects grouped by category on the dashboard */
+
+.projectCategoryGroup
+{
+    border-width: 0 1px 1px 1px;
+    padding: 7px;
+    border-style: dashed;
+    border-color: #bbbbbb;
+}
+
+span.switch
+{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #003366;
+}
+
+/* Column header styles */
+
+TD.colHeaderLink
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.colHeaderLink a
+{
+    text-decoration: none;
+}
+
+.colHeaderOver
+{
+    background-color: #aaaaaa;
+	color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.colHeaderOver a
+{
+    text-decoration: none;
+}
+
+.colHeaderHighlight
+{
+    background-color: #aaaaaa;
+	color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.colHeaderHighlight a
+{
+    text-decoration: none;
+}
+
+BODY, P, UL, OL, DL, LI, TD, TEXTAREA, INPUT, SELECT, BUTTON, option, optgroup
+{
+    font-family: Arial, Sans-Serif;
+    font-size: 12px;
+    color:black;
+}
+
+
+
+TEXTAREA, .textfield
+{
+    width: 90%;
+}
+
+.footer
+{
+    text-align: center;
+}
+
+optgroup
+{
+    background-color: #fffff0;
+    border-top: 1px solid #cccccc;
+    padding: 0 2px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+optgroup option
+{
+    background-color: #ffffff;
+}
+
+/** Currently only works with FireFox. Degrades well in other browsers **/
+
+option.imagebacked, option.selectall, select.imagebacked option
+{
+    padding: 2px 0 2px 20px;
+    background-repeat: no-repeat;
+    background-position: 1px 2px;
+    vertical-align: middle;
+}
+
+option.selectall
+{
+    background-image: url(../images/icons/table_sql_select_16.png);
+    border-bottom: 1px #0085eb dotted;
+}
+
+ul.square, ul.square_blue, ul.config , ul.imagebacked
+{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+
+
+ul.square_blue li
+{
+    padding-left: 13px;
+    background-image: url(../images/icons/bullet_blue.gif);
+    background-repeat: no-repeat;
+    background-position: 0 0.4em;
+}
+
+ul.square_blue li ul
+{
+    background-repeat: no-repeat;
+    background-position: 0 0.4em;
+
+}
+
+ul.square_blue ul
+{
+    margin: 0;
+	padding-left: 0;
+    list-style: none;
+}
+
+
+ul.square li
+{
+    padding-left: 13px;
+    background-image: url(../images/icons/bullet_creme.gif);
+    background-repeat: no-repeat;
+    background-position: 0 0.4em;
+}
+
+ul.square li a
+{
+    font-weight: bold;
+}
+
+ul.normal li a
+{
+    font-weight: normal;
+}
+
+ul.config li a, a.config
+{
+    padding: 3px 0 3px 20px;
+    background-image: url(../images/icons/confg_16.gif);
+    background-repeat: no-repeat;
+    background-position: 0 2px;
+}
+
+ul.imagebacked li
+{
+    padding: 3px 0 3px 20px;
+    background-repeat: no-repeat;
+    background-position: 0 2px;
+}
+
+a.sort
+{
+    padding: 3px 0 3px 20px;
+    background-image: url(../images/icons/sort_az_descending.png);
+    background-repeat: no-repeat;
+    background-position: 0 2px;
+}
+
+.wizardFooter
+{
+    vertical-align: top;
+    background-color: #f0f0f0;
+    text-align: right;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.darkFooter
+{
+    vertical-align: top;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.wizardFooter #cancelButton
+{
+    margin-left: 1em;
+}
+
+.wizardFooter .wizardInfo
+{
+    float: left;
+    font-size: 0.8em;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.wizardCell
+{
+    vertical-align: middle;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.wizardRow
+{
+    background-color: #f0f0f0;
+    vertical-align: middle;
+    padding: 0;
+    height: 40px;
+
+}
+
+.codearea
+{
+    border-width: 1px;
+    border-style: dashed;
+    border-color: #bbbbbb;
+    background-color: #F6F6F6;
+    width: 80%;
+    margin: 10px auto;
+    padding: 0 1em;
+    -moz-border-radius: 10px;
+}
+
+pre.codearea h4
+{
+    border-bottom: 1px #bbbbbb solid;
+}
+
+pre.codearea textarea
+{
+    border: none;
+    width: 100%;
+    height: 300px;
+    background-color: #F6F6F6;
+    font-size: 100%;
+    margin-bottom: 1em;
+}
+
+textarea.code, pre.codearea textarea
+{
+    font-family: monospace;
+}
+
+.subText
+{
+    font-size: 10px;
+}
+
+.selectDescription
+{
+    font-size:10px;
+    vertical-align: top;
+}
+
+img
+{
+    border: 0;
+}
+
+.informationBox
+{
+    border: 1px solid #F0C000;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    background-color: #FFFFCE;
+    padding: 10px;
+}
+
+.informationBox .error
+{
+    color: #FF0000;
+    font-weight:bold;
+    font-size: 120%;
+}
+
+.informationBox .success
+{
+    color: #006400;
+    font-weight:bold;
+    font-size: 120%;
+}
+
+.informationBox .info
+{
+    color: #6600FF;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+table.blank
+{
+    margin: 0;
+    padding: 0;
+    border: none !important;
+    vertical-align: top;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table.blank td, table.blank th
+{
+    margin: 0;
+    padding: 0 5px 5px 5px;
+    border: none !important;
+    vertical-align: top;
+}
+
+table.blank th
+{
+	background-color: #f0f0f0;
+}
+
+table.noPadding, table.noPadding tr, .noPadding
+{
+    margin: 0;
+    padding: 0 !important;
+    border: none;
+    vertical-align: top;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+td.noPaddingCron
+{
+    margin: 0;
+    padding: 0;
+}
+
+table.minColumns td, table.minColumns th
+{
+    width: 1%;
+}
+
+td.normal, th.normal
+{
+    width: auto !important;
+}
+
+.nowrap
+{
+    white-space: nowrap;
+}
+
+ul.optionslist
+{
+    margin: 0;
+    padding: 0;
+    padding-left: 2px;
+    list-style: none;
+}
+
+ul.optionslist  li
+{
+    padding-left: 13px;
+    background-image: url(../images/icons/bullet_creme.gif);
+    background-repeat: no-repeat;
+    background-position: 0 0.25em;
+}
+
+ul.optionslist ul
+{
+    margin: 0;
+    margin-bottom: 0.5em;
+    padding-left: 13px;
+}
+
+ul.optionslist ul li
+{
+    display: inline;
+    padding-left: 13px;
+    background-image: url(../images/icons/navigate_right_16.gif);
+    background-repeat: no-repeat;
+    background-position: 0 0.25em;
+    font-size: 80%;
+    padding-right: 1em;
+    white-space: nowrap;
+}
+
+.percentagegraphtable, .percentagegraphtable td
+{
+    padding: 0;
+}
+
+#reloadImage
+{
+    position: relative;
+    top: 3px;
+    margin: 0 0 0 5px;
+}
+
+/* Issue Navigator width controls */
+
+#issuetable .nav, #issuetable .nav p
+{
+    font-size: 10px;
+    vertical-align: top;
+}
+
+/* Need this style to fix an IE rendering problem */
+#issuetable .nav img
+{
+    vertical-align: top;
+}
+
+#issuetable .parentIssue
+{
+    font-size: 9px;
+    color: #666;
+}
+
+#issuetable .summary
+{
+    font-size: 12px;
+    width: 20%;
+}
+
+#subtask_container #summary_container
+{
+    width: 30%;
+}
+
+#issuetable .description
+{
+    width: 30%;
+}
+
+#issuetable .issueCount
+{
+    text-align: center;
+}
+
+#issuetable .status, #issuetable .resolution, #issuetable .assignee, #issuetable .reporter, #issuetable .issuekey
+{
+	white-space: nowrap;
+}
+
+.redText
+{
+    color: #990000;
+}
+
+.greenText
+{
+    color: #006400;
+}
+
+.spaced
+{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+
+/* project Panel styles */
+
+.projectPanel
+{
+    margin: 0;
+    padding: 0;
+    border: none !important;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    vertical-align: top;
+}
+
+.projectPanel .header
+{
+    padding: 4px;
+    background-color: #f0f0f0;
+}
+
+.projectPanel .versionBanner
+{
+    background-color: #fffff0;
+    padding: 4px;
+    width: 100%;
+}
+
+.localHelp
+{
+    position: relative;
+    left: 5px;
+    top: 3px;
+}
+
+.helpLink
+{
+}
+
+/** Use these styles for when you need two "columns" **/
+
+div.container
+{
+    overflow: hidden;
+    width: 99%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.leftColumn
+{
+    width: 49%;
+    float: left;
+}
+
+.rightColumn
+{
+    width: 49%;
+    float: right;
+}
+
+/** Admin menu styles **/
+
+#adminMenu
+{
+    width: 170px;
+    vertical-align: top;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+#adminMenu .section
+{
+}
+
+#adminMenu .headerOpen, #adminMenu .headerClosed
+{
+    display: block;
+    width: 152px;
+    font-weight: bold;
+    background-color: #e2e2e2;
+    border-bottom: solid 1px #5F9ACF;
+    padding: 5px 3px 5px 16px;
+	border-collapse: collapse;
+
+    text-decoration: none;
+
+    background-repeat: no-repeat;
+    background-position: 3px 7px;
+}
+
+#adminMenu .headerOpen
+{
+    background-image: url(../images/icons/navigate_down_10.gif);
+}
+
+#adminMenu .headerClosed
+{
+    background-image: url(../images/icons/navigate_right_10.gif);
+}
+
+#adminMenu ul
+{
+    margin: 0;
+    padding: 5px 5px 10px 3px;
+    list-style: none;
+}
+
+#adminMenu li
+{
+    margin: 0;
+	padding: 0;
+}
+
+#adminMenu li a
+{
+    background-image: url(../images/icons/bullet_creme.gif);
+    background-repeat: no-repeat;
+    background-position: 0.15em 0.3em;
+
+	width: 147px;
+	display: block;
+	padding: 0 0 0 14px;
+	border: 1px solid #f2f2f2;
+}
+
+#adminMenu li a:hover
+{
+	text-decoration: none;
+}
+
+/** Some useful styles from Confluence **/
+
+.noteBox, .warningBox, .infoBox, .tipBox
+{
+    padding: 5px;
+    background-repeat: no-repeat;
+    background-position: 5px 5px;;
+	padding-left: 30px;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.noteBox a, .warningBox a, .infoBox a, .tipBox a
+{
+	font-weight: bold;
+}
+
+.noteBox
+{
+	background-image: url(../images/icons/warning_16.gif);
+    border: solid 1px #F0C000;
+    background-color: #FFFFCE;
+}
+
+.warningBox
+{
+	background-image: url(../images/icons/serious_warning_16.gif);
+    border: solid 1px #c00;
+    background-color: #fcc;
+}
+
+.infoBox
+{
+	background-image: url(../images/icons/information.gif);
+    border: solid 1px #3c78b5;
+    background-color: #D8E4F1;
+}
+
+.tipBox
+{
+    border: solid 1px #090;
+    background-color: #dfd;
+}
+
+.warningBox h4
+{
+	padding-top: 0;
+	margin-top: 0;
+	color: #c00;
+	font-weight: bold;
+}
+
+
+
+
+/* Issue Navigator stuff */
+
+.filterFormCell, .filterSummaryCell
+{
+	border-right: 1px solid #bbbbbb;
+}
+
+.filterFormCell, .filterFormCell #filterForm
+{
+	width: 300px;
+	vertical-align: top;
+}
+
+.filterSummaryCell
+{
+	width: 240px;
+	background-color: #f0f0f0;
+	vertical-align: top;
+}
+
+
+.fieldArea .fieldLabelArea
+{
+	width: 30%;
+}
+
+.fieldArea .fieldValueArea
+{
+	width: 70%;
+}
+
+.fieldArea
+{
+}
+
+
+.sortArrow
+{
+	vertical-align: middle;
+	width: 11px;
+	height: 14px;
+}
+
+#filterFormHeader td, .leftFormHeader
+{
+	background-color: #dddddd;
+	padding-top: 2px;
+	padding-bottom: 4px;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+#modifiedMarker
+{
+	float: right;
+	margin-top: 3px;
+	margin-right: 2px;
+	vertical-align: middle;
+	color: #cc0000;
+}
+
+#filterFormHeader a, #filterFormHeader .selectedItem, #filterFormHeader .item
+{
+	padding: 3px 4px 4px 4px;
+}
+
+#filterFormHeader .selectedItem
+{
+	background-color: #aaaaaa;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+#filterForm .userpickerfield
+{
+	width: 85%;
+}
+
+#filterForm .grouppickerfield
+{
+	width: 85%;
+}
+
+#filterForm .childCascadingSelect
+{
+	margin-top: 3px;
+}
+
+#filterForm .standardInputField
+{
+	width: 85%;
+}
+
+#filterForm .dateSearcher
+{
+	width: 85%;
+}
+
+#filterForm .smallInputField, #filterForm .periodSearcher
+{
+	width: 40px;
+}
+
+#filterForm .rowHeader
+{
+	border-top: 1px solid #bbbbbb;
+}
+
+#filterForm .headerOpened, #filterForm .headerClosed
+{
+    padding: 5px 3px 5px 16px;
+    background-repeat: no-repeat;
+    background-position: 3px 7px;
+    cursor: pointer;
+    cursor: hand;
+}
+
+#filterForm .headerOpened
+{
+    background-image: url(../images/icons/navigate_down_10.gif);
+}
+
+#filterForm .headerClosed
+{
+    background-image: url(../images/icons/navigate_right_10.gif);
+}
+
+
+
+#filterForm .fieldDescription
+{
+	width: 205px;
+	overflow: hidden;
+}
+
+#filterForm SELECT, #filterForm SELECT.standardInputField
+{
+	width: 85%;
+}
+
+#filterForm .tableUnderline
+{
+    width: 100%;
+}
+
+.calendarPicker
+{
+	float: right;
+	margin-right: 2px;
+}
+
+.sectionHeaderOption
+{
+    background-color: #fffff0;
+    border-top: 1px solid #cccccc;
+    padding: 0 2px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* Issue navigator */
+
+.searcherValue
+{
+    padding-left: 13px;
+    background-image: url(../images/icons/bullet_blue.gif);
+    background-repeat: no-repeat;
+    background-position: 0 0.4em;
+
+}
+
+.searcherValue .fieldLabel
+{
+    font-weight: bold;
+}
+
+.searcherValue .fieldValue
+{
+}
+
+.paramChanged, .paramChanged a
+{
+    font-weight: bold;
+	color: blue;
+}
+
+.paramRemoved, .paramRemoved a
+{
+    font-weight: bold;
+	color: red;
+}
+
+.paramAdded, .paramAdded a
+{
+    font-weight: bold;
+	color: green;
+}
+
+
+.periodDescription
+{
+	text-transform: lowercase;
+}
+
+#projectRefreshPanel, #groupRefreshPanel
+{
+	font-size: 10px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.spacer
+{
+	line-height: 2px;
+}
+
+
+.lead
+{
+	text-transform: capitalize;
+}
+
+/** Tab specific styles **/
+.tabContainer
+{
+	margin-top: 10px;
+}
+
+.tabHeader
+{
+	margin-left: 5px;
+	overflow: hidden;
+	width: 100%;
+}
+
+.tabHeader a
+{
+	float: left;
+	font-weight: bold;
+	padding: 3px 8px 3px 8px;
+	margin-right: 5px;
+}
+
+.tabHeader a.selected, .tabHeader a:hover
+{
+	color: #ffffff;
+	background-color: #bbbbbb;
+	text-decoration: none;
+}
+
+.tabHeader a.selected:hover
+{
+	text-decoration: underline;
+}
+
+.tabContent
+{
+	border: 1px #cccccc solid;
+	padding-top: 5px;
+}
+
+.licensemessage
+{
+    background-color: #ffffce;
+    font-size: 10px;
+    font-family: verdana, arial, helvetica, sans-serif;
+    text-align: center;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.licensemessagered
+{
+    background-color: #ffcccc;
+    font-size: 10px;
+    font-family: verdana, arial, helvetica, sans-serif;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.licensemessagehl
+{
+    font-weight: bold;
+    color: #990000;
+}
+
+.poweredbymessage
+{
+    font-size: 10px;
+    color: #666666;
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+.poweredbymessage a
+{
+    font-size: 10px;
+    color: #666666;
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+.halfWidth
+{
+	width: 50%;
+}
+
+/* Bulk Move Menu */
+
+ul.steps
+{
+	list-style: none;
+}
+
+.steps
+{
+	margin: 5px 0 0 10px;
+	padding: 0 0 0 20px;
+}
+.steps .steps
+{
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.steps li
+{
+	padding-left: 15px;
+    background-repeat: no-repeat;
+    background-position: 0 3px;
+}
+
+.steps li.current
+{
+	background-image: url('../images/icons/bullet_inprogress.gif');
+	font-weight: bold;
+}
+
+.steps li.todo
+{
+	background-image: url('../images/icons/bullet_notdone.gif');
+	font-weight: normal!important;
+}
+
+.steps li.done
+{
+	background-image: url('../images/icons/bullet_done.gif');
+    font-weight: normal!important;
+}
+
+div.hr
+{
+  height: 15px;
+  padding: 10px 0;
+  background: #fff url('../images/icons/hr.gif') no-repeat scroll center;
+}
+
+div.hr hr
+{
+  display: none;
+}
+
+.topBordered
+{
+	border-top: 1px solid #bbbbbb;
+	margin-top: 5px;
+	padding-top: 5px;
+}
+
+.validHighlight
+{
+	color: #009900;
+	font-weight: bold;
+}
+
+div.multiuserlist
+{
+    margin-left: 5px;
+    float: left;
+    min-width : 150px
+}
+
+ul.multiuserlist
+{
+    margin-left : 5px;
+    padding : 0;
+    margin-top: 0;
+    list-style-type : none;
+}
+
+li.multiuserlist
+{
+    font-size : 13px;
+}
+div.multiuseroperations
+{
+    margin-left: 30px;
+    float: left;
+}
+
+
+/* Report Styles */
+
+table.report
+{
+    margin: 0;
+    padding: 0;
+    border: none;
+    vertical-align: top;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table.report td, table.report th
+{
+    margin: 0;
+    padding: 5px;
+    vertical-align: top;
+}
+
+table.report th.reportHeading
+{
+	background-color: #f0f0f0;
+}
+
+table.report th.subHeading
+{
+	background-color: #fffff0;
+}
+
+table.report th.subHeading h3
+{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+table.report .graphLabel, table.report .graphDescription, table.report .percentageGraph
+{
+	float: right;
+}
+
+/* Percentage Graph Styles */
+
+.graphLabel, .graphDescription, .percentageGraph
+{
+	font-size: 10px;
+}
+
+.graphLabel
+{
+	margin-right: 1ex;
+}
+
+.subHeading h3
+{
+	float: left;
+}
+
+.percentageGraph
+{
+	width: 100px;
+}
+
+.percentageGraph .barSection
+{
+	display: block;
+	float: left;
+}
+
+.subtleButton
+{
+	font-size: 80%;
+	padding: 0 1px;
+	margin: 0;
+}
+
+
+#descriptionArea
+{
+	vertical-align: top;
+	border: 1px solid #bbb;
+	padding: 5px 5px;
+	margin: 0;
+}
+
+
+#viewLinks
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+}
+
+#viewLinks th
+{
+    background-color: #f0f0f0;
+    padding: 4px 2px 2px 6px;
+    border-bottom: 1px solid #bbbbbb;
+}
+
+#viewLinks .linkDescription
+{
+    margin-bottom: 5px;
+}
+
+.mf-hidden
+{
+    display: none;   
+}
+
+.projectTabPanelTab {
+    width: 1%;
+    white-space: nowrap;
+    text-align:center;
+    font-weight:bold;
+}
+
+.projectTabPanelTabSelected {
+    background-color:#bbb;
+    color:#fff;
+    width: 1%;
+    white-space: nowrap;
+    text-align:center;
+    font-weight:bold;
+}
+/* Distributed as part of The Coolest DHTML Calendar
+   Author: Mihai Bazon, www.bazon.net/mishoo
+   Copyright Dynarch.com 2005, www.dynarch.com
+*/
+
+/* The main calendar widget.  DIV containing a table. */
+
+div.calendar { position: relative; }
+
+.calendar, .calendar table {
+  border: 1px solid #bdb2bf;
+  font-size: 11px;
+  color: #000;
+  cursor: default;
+  background: url("/includes/js/calendar/skins/aqua/normal-bg.gif");
+  font-family: "trebuchet ms",verdana,tahoma,sans-serif;
+}
+
+.calendar {
+  border-color: #797979;
+}
+
+/* Header part -- contains navigation buttons and day names. */
+
+.calendar .button { /* "<<", "<", ">", ">>" buttons have this class */
+  text-align: center;    /* They are the navigation buttons */
+  padding: 2px;          /* Make the buttons seem like they're pressing */
+  background: url("/includes/js/calendar/skins/aqua/title-bg.gif") repeat-x 0 100%; color: #000;
+  font-weight: bold;
+}
+
+.calendar .nav {
+  font-family: verdana,tahoma,sans-serif;
+}
+
+.calendar .nav div {
+  background: transparent url("/includes/js/calendar/skins/aqua/menuarrow.gif") no-repeat 100% 100%;
+}
+
+.calendar thead tr { background: url("/includes/js/calendar/skins/aqua/title-bg.gif") repeat-x 0 100%; color: #000; }
+
+.calendar thead .title { /* This holds the current "month, year" */
+  font-weight: bold;      /* Pressing it will take you to the current date */
+  text-align: center;
+  padding: 2px;
+  background: url("/includes/js/calendar/skins/aqua/title-bg.gif") repeat-x 0 100%; color: #000;
+}
+
+.calendar thead .headrow { /* Row <TR> containing navigation buttons */
+}
+
+.calendar thead .name { /* Cells <TD> containing the day names */
+  border-bottom: 1px solid #797979;
+  padding: 2px;
+  text-align: center;
+  color: #000;
+}
+
+.calendar thead .weekend { /* How a weekend day name shows in header */
+  color: #c44;
+}
+
+.calendar thead .hilite { /* How do the buttons in header appear when hover */
+  background: url("/includes/js/calendar/skins/aqua/hover-bg.gif");
+  border-bottom: 1px solid #797979;
+  padding: 2px 2px 1px 2px;
+}
+
+.calendar thead .active { /* Active (pressed) buttons in header */
+  background: url("/includes/js/calendar/skins/aqua/active-bg.gif"); color: #fff;
+  padding: 3px 1px 0px 3px;
+  border-bottom: 1px solid #797979;
+}
+
+.calendar thead .daynames { /* Row <TR> containing the day names */
+  background: url("/includes/js/calendar/skins/aqua/dark-bg.gif");
+}
+
+/* The body part -- contains all the days in month. */
+
+.calendar tbody .day { /* Cells <TD> containing month days dates */
+  font-family: verdana,tahoma,sans-serif;
+  width: 2em;
+  color: #000;
+  text-align: right;
+  padding: 2px 4px 2px 2px;
+}
+.calendar tbody .day.othermonth {
+  font-size: 80%;
+  color: #999;
+}
+.calendar tbody .day.othermonth.oweekend {
+  color: #f99;
+}
+
+.calendar table .wn {
+  padding: 2px 3px 2px 2px;
+  border-right: 1px solid #797979;
+  background: url("/includes/js/calendar/skins/aqua/dark-bg.gif");
+}
+
+.calendar tbody .rowhilite td,
+.calendar tbody .rowhilite td.wn {
+  background: url("/includes/js/calendar/skins/aqua/rowhover-bg.gif");
+}
+
+.calendar tbody td.today { font-weight: bold; /* background: url("/includes/js/calendar/skins/aqua/today-bg.gif") no-repeat 70% 50%; */ }
+
+.calendar tbody td.hilite { /* Hovered cells <TD> */
+  background: url("/includes/js/calendar/skins/aqua/hover-bg.gif");
+  padding: 1px 3px 1px 1px;
+  border: 1px solid #bbb;
+}
+
+.calendar tbody td.active { /* Active (pressed) cells <TD> */
+  padding: 2px 2px 0px 2px;
+}
+
+.calendar tbody td.weekend { /* Cells showing weekend days */
+  color: #c44;
+}
+
+.calendar tbody td.selected { /* Cell showing selected date */
+  font-weight: bold;
+  border: 1px solid #797979;
+  padding: 1px 3px 1px 1px;
+  background: url("/includes/js/calendar/skins/aqua/active-bg.gif"); color: #fff;
+}
+
+.calendar tbody .disabled { color: #999; }
+
+.calendar tbody .emptycell { /* Empty cells (the best is to hide them) */
+  visibility: hidden;
+}
+
+.calendar tbody .emptyrow { /* Empty row (some months need less than 6 rows) */
+  display: none;
+}
+
+/* The footer part -- status bar and "Close" button */
+
+.calendar tfoot .footrow { /* The <TR> in footer (only one right now) */
+  text-align: center;
+  background: #565;
+  color: #fff;
+}
+
+.calendar tfoot .ttip { /* Tooltip (status bar) cell <TD> */
+  padding: 2px;
+  background: url("/includes/js/calendar/skins/aqua/status-bg.gif") repeat-x 0 0; color: #000;
+}
+
+.calendar tfoot .hilite { /* Hover style for buttons in footer */
+  background: #afa;
+  border: 1px solid #084;
+  color: #000;
+  padding: 1px;
+}
+
+.calendar tfoot .active { /* Active (pressed) style for buttons in footer */
+  background: #7c7;
+  padding: 2px 0px 0px 2px;
+}
+
+/* Combo boxes (menus that display months/years for direct selection) */
+
+.calendar .combo {
+  position: absolute;
+  display: none;
+  top: 0px;
+  left: 0px;
+  width: 4em;
+  cursor: default;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  border-color: #797979;
+  background: url("/includes/js/calendar/skins/aqua/normal-bg.gif"); color: #000;
+  z-index: 100;
+  font-size: 90%;
+}
+
+.calendar .combo .label,
+.calendar .combo .label-IEfix {
+  text-align: center;
+  padding: 1px;
+}
+
+.calendar .combo .label-IEfix {
+  width: 4em;
+}
+
+.calendar .combo .hilite {
+  background: url("/includes/js/calendar/skins/aqua/hover-bg.gif"); color: #000;
+}
+
+.calendar .combo .active {
+  background: url("/includes/js/calendar/skins/aqua/active-bg.gif"); color: #fff;
+  font-weight: bold;
+}
+
+.calendar td.time {
+  border-top: 1px solid #797979;
+  padding: 1px 0px;
+  text-align: center;
+  background: url("/includes/js/calendar/skins/aqua/dark-bg.gif");
+}
+
+.calendar td.time .hour,
+.calendar td.time .minute,
+.calendar td.time .ampm {
+  padding: 0px 5px 0px 6px;
+  font-weight: bold;
+  background: url("/includes/js/calendar/skins/aqua/normal-bg.gif"); color: #000;
+}
+
+.calendar td.time .hour,
+.calendar td.time .minute {
+  font-family: monospace;
+}
+
+.calendar td.time .ampm {
+  text-align: center;
+}
+
+.calendar td.time .colon {
+  padding: 0px 2px 0px 3px;
+  font-weight: bold;
+}
+
+.calendar td.time span.hilite {
+  background: url("/includes/js/calendar/skins/aqua/hover-bg.gif"); color: #000;
+}
+
+.calendar td.time span.active {
+  background: url("/includes/js/calendar/skins/aqua/active-bg.gif"); color: #fff;
+}
