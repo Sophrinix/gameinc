@@ -49,15 +49,19 @@ local function ShowAvaibleGenreModules( tab )
 
 	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local maxCompanyTech = company:GetTechNumber()
+	local showedTech = 0
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:ShowAvaibleGenreModules  company = " .. maxCompanyTech )
 	if maxCompanyTech > 0 then
 		for i=0, maxCompanyTech-1 do
 			local tech = CLuaTech( company:GetTech( i ) )
 			
 			if tech:GetTechGroup() == PT_GENRE then
-				local linkModule = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), 10, 10 + i * 50, 10 + 50, 10 + 50 + i * 50, -1, tab ) )
+				local linkModule = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), width / 2, 10 + i * 50, width / 2 + 50, 10 + 50 + i * 50, -1, tab ) )
 				linkModule:SetModuleType( PT_GENRE )
 				linkModule:SetData( tech:Self() )		
+				linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_DOWN, "sworkLeftMouseButtonDown" )
+				
+				showedTech = showedTech + 1
 			end
 		end
 	end
@@ -70,9 +74,11 @@ local function ShowAvaibleGenreModules( tab )
 			local tech = CLuaTech( applic:GetTech( i ) )
 			
 			if tech:GetTechGroup() == PT_GENRE then
-				local linkModule = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), width / 2, 200 + i * 50, width / 2 + 50, 200 + 50 + i * 50, -1, tab ) )
+				local linkModule = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), width / 2, 200 + (i + showedTech) * 50, 
+																				   width / 2 + 50, 200 + 50 + (i + showedTech) * 50, -1, tab ) )
 				linkModule:SetModuleType( PT_GENRE )
 				linkModule:SetData( tech:Self() )		
+				linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_DOWN, "sworkLeftMouseButtonDown" )
 			end
 		end	
 	end
@@ -96,9 +102,8 @@ local function CreateGenrePage( tab )
 			linkModule:SetModuleType( PT_GENRE )
 			linkModule:SetDraggable( false )
 			linkModule:SetData( project:GetGenre( i ) )
+			linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkGameProjectWizzardSetGenre" )
 		end
-		
-		--linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_DOWN, "sworkLeftMouseButtonDown" )
 	else
 		
 	end
@@ -145,6 +150,26 @@ function sworkGameProjectWizzardSetVideoEngine( ptr )
 			sendLink:Remove()
 			
 			sworkRecreatePagesDependedEngine()
+		end
+	end
+	
+end
+
+function sworkGameProjectWizzardSetGenre( ptr )
+
+	local recv = CLuaLinkBox( ptr )
+	local dragObj = CLuaElement( guienv:GetDragObject() )
+	
+	if dragObj:Empty() == 0 and dragObj:GetTypeName() == "CNrpGuiLinkBox" then
+		local sendLink = CLuaLinkBox( dragObj:Self() )
+		
+		if sendLink:GetModuleType() == PT_GENRE then
+			project:SetGenre( sendLink:GetData() )
+			recv:SetData( sendLink:GetData() )
+			recv:SetText( sendLink:GetText() )
+			sendLink:Remove()
+			
+			sworkRecreatePagesDependedGenres()
 		end
 	end
 	
