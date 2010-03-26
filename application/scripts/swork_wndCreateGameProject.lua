@@ -22,6 +22,15 @@ local height = 600
 
 local ID_CODEVOLUME = 9010
 
+local function ShowParams()
+	
+	local label = CLuaLabel( guienv:GetElementByID( ID_CODEVOLUME ) )
+	local codeVol = project:GetCodeVolume()
+	
+	label:SetText( "Код:" .. codeVol )
+	
+end
+
 local function ShowAvaibleEngines( tab )
 
 	local company = CLuaCompany( applic:GetPlayerCompany() )
@@ -98,6 +107,7 @@ local function CreateGenrePage( tab )
 		linkModule:SetModuleType( PT_GENRE )
 		linkModule:SetData( project:GetGenre( 0 ) )
 		linkModule:SetDraggable( false )
+		linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkGameProjectWizzardSetGenre" )
 
 		for i=1, maxModuleNumber-1 do
 			linkModule:SetObject( guienv:AddLinkBox( "Модуль " .. i .. "/" .. maxModuleNumber, 10, 200 + i * 50, 10 + 50, 200 + 50 + i * 50, 9100+i, tab ) )
@@ -155,6 +165,8 @@ function sworkGameProjectWizzardSetVideoEngine( ptr )
 		end
 	end
 	
+	ShowParams()
+	
 end
 
 function sworkGameProjectWizzardSetGenre( ptr )
@@ -175,6 +187,8 @@ function sworkGameProjectWizzardSetGenre( ptr )
 			sworkRecreatePagesDependedGenres()
 		end
 	end
+	
+	ShowParams()
 	
 end
 
@@ -272,7 +286,7 @@ function sworkCreateGameProject( ptr )
 	windowg:SetName( WINDOW_GAME_WIZZARD )
 	
 	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 10, 20, 10 + 140, 20 + 20, -1 ) )
-	local volCodeLabel = CLuaLabel( guienv:AddLabel( "Код", width / 2, 20, width, 20 + 20, ID_CODEVOLUME, windowg:Self() )
+	local volCodeLabel = CLuaLabel( guienv:AddLabel( "Код", width / 2, 20, width, 20 + 20, ID_CODEVOLUME, windowg:Self() ) )
 	
 	local tabContol = guienv:AddTabControl( 10, 40, 790, 590, -1, windowg:Self() )
 	pages[ "name" ] = guienv:AddTab( tabContol, pagesName[ "name" ], pagesID[ "name" ] ) --name
