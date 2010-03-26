@@ -106,3 +106,11 @@ function IncludeScript( pathName )
 		Log({src=SCRIPT, dev=ODS|CON}, message )
 	end
 end
+
+function DebugFunctionCall( func, ... )
+	local ok, message = pcall( func, ... )
+	if not ok then 
+		Log({src=SCRIPT, dev=ODS|CON}, "ERROR: Не могу выполнить функцию" )
+		Log({src=SCRIPT, dev=ODS|CON}, message )
+	end
+end

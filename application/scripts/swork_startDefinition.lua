@@ -57,8 +57,9 @@ function AddStartPublicTechnology()
 	advTech:SetName( "Функции сохранения" )
 	advTech:SetBaseCode( 0.4 )
 	advTech:SetAddingEngineCode( 0.2 )
-	advTech:SetEmployerSkillRequie( SKL_CODING, 5 )
+	advTech:SetEmployerSkillRequire( SKL_CODING, 5 )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология ADV_MEMORY")
 	app:AddPublicTechnology( advTech:Self() )
+
 end

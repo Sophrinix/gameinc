@@ -59,6 +59,6 @@ sceneManager:DrawProgress( 100 )
 
 AddStartPlayerDef()
 AddStartCompanyTechnology()
---AddStartPublicTechnology()
+DebugFunctionCall( AddStartPublicTechnology )
 
 sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
