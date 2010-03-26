@@ -1,6 +1,6 @@
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() ) 
 local project = CLuaGameProject( nil )
-local company = CLuaCompany( applic:GetPlayerCompany() )
+local applic = CLuaApplication( NrpGetApplication() )
 
 local platform = { "pc", "console", "gamebox", "mobile" }
 local lang = { "Eng", "Den", "France", "Russian", "Jap" }
@@ -10,20 +10,22 @@ local height = 600
 
 local function ShowAvaibleEngines( tab )
 
-	local applic = CLuaApplication( NrpGetApplication() )
+	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local maxEngine = company:GetEnginesNumber()
 	
 	for i=0, maxEngine-1 do
+		local  eg = CLuaGameEngine( company:GetEngine( i ) )
 	    Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:AvaibleEngines  " .. maxEngine )
 		
 		Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:x1 " .. width / 2 + 10 + 50 * i / 2 )
 		Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:y1 " .. 50 * i % 2 )
 		Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:x2 " .. width / 2 + 10 + 50 + 50 * i / 2 )
 		Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:y2 " ..  50 * i % 2 + 50 )
-		local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Äâèæîê ".. i+1 .."/"..maxEngine, width / 2 + 10 + 50 * i / 2, 50 * i % 2, 
-																						     width / 2 + 10 + 50 + 50 * i / 2, 50 * i % 2 + 50, 
+		local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Äâèæîê ".. i+1 .."/"..maxEngine .. "(" .. eg:GetName() .. ")", 
+															width / 2 + 10 + 50 * i / 2, 50 * i % 2, 
+															width / 2 + 10 + 50 + 50 * i / 2, 50 * i % 2 + 50, 
 															-1, tab ) )
-		linkModule:SetData( company:GetEngine( i ) )
+		linkModule:SetData( eg:Self() )
 		linkModule:SetModuleType( PT_GAMEENGINE )
 		linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_DOWN, "sworkLeftMouseButtonDown" )
 	end
@@ -102,6 +104,7 @@ end
 
 local function ShowAvaibleGenreModules( tab )
 
+	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local maxCompanyTech = company:GetTechCounter()
 	
 	for i=0, maxCompanyTech do
@@ -132,6 +135,7 @@ local function CreateGenrePage( tab )
 	
 	ShowAvaibleGenreModules( tab )
 	
+	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local maxModuleNumber = project:GetGenreModuleNumber()
 
 	if maxModuleNumber > 0 then
