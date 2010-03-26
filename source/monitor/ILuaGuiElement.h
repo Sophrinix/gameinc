@@ -21,7 +21,8 @@ namespace nrp
 											LUNA_AUTONAME_FUNCTION(class, GetParent ),\
 											LUNA_AUTONAME_FUNCTION(class, SetText),\
 											LUNA_AUTONAME_FUNCTION(class, GetText),\
-											LUNA_AUTONAME_FUNCTION(class, GetTypeName )
+											LUNA_AUTONAME_FUNCTION(class, GetTypeName ),\
+											LUNA_AUTONAME_FUNCTION(class, GetID)
 
 template< class T > class ILuaGuiElement : public ILuaObject< T >
 {
@@ -40,6 +41,19 @@ public:
 
 		IF_OBJECT_NOT_NULL_THEN parent = object_->getParent();
 		lua_pushlightuserdata( L, (void*)parent );
+
+		return 1;
+	}
+
+	int GetID( lua_State *L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":GetID not need any parameter" ).c_str() );
+
+		int id = 0;
+
+		IF_OBJECT_NOT_NULL_THEN id = object_->getID();
+		lua_pushinteger( L, id );
 
 		return 1;
 	}

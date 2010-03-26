@@ -20,6 +20,8 @@ pagesName[ "end" ] = "Завершить"; pagesID[ "end" ] = 9007
 local width = 800
 local height = 600
 
+local ID_CODEVOLUME = 9010
+
 local function ShowAvaibleEngines( tab )
 
 	local company = CLuaCompany( applic:GetPlayerCompany() )
@@ -92,13 +94,13 @@ local function CreateGenrePage( tab )
 	local maxModuleNumber = project:GetGenreModuleNumber()
 
 	if maxModuleNumber > 0 then
-		local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Жанр", 10, 50, 10 + 50, 50 + 50, -1, tab ) )
+		local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Жанр", 10, 50, 10 + 50, 50 + 50, 9100, tab ) )
 		linkModule:SetModuleType( PT_GENRE )
 		linkModule:SetData( project:GetGenre( 0 ) )
 		linkModule:SetDraggable( false )
 
 		for i=1, maxModuleNumber-1 do
-			linkModule:SetObject( guienv:AddLinkBox( "Модуль " .. i .. "/" .. maxModuleNumber, 10, 200 + i * 50, 10 + 50, 200 + 50 + i * 50, -1, tab ) )
+			linkModule:SetObject( guienv:AddLinkBox( "Модуль " .. i .. "/" .. maxModuleNumber, 10, 200 + i * 50, 10 + 50, 200 + 50 + i * 50, 9100+i, tab ) )
 			linkModule:SetModuleType( PT_GENRE )
 			linkModule:SetDraggable( false )
 			linkModule:SetData( project:GetGenre( i ) )
@@ -158,13 +160,14 @@ end
 function sworkGameProjectWizzardSetGenre( ptr )
 
 	local recv = CLuaLinkBox( ptr )
+	local id = recv:GetID() - 9100
 	local dragObj = CLuaElement( guienv:GetDragObject() )
 	
 	if dragObj:Empty() == 0 and dragObj:GetTypeName() == "CNrpGuiLinkBox" then
 		local sendLink = CLuaLinkBox( dragObj:Self() )
 		
 		if sendLink:GetModuleType() == PT_GENRE then
-			project:SetGenre( sendLink:GetData() )
+			project:SetGenre( sendLink:GetData(), id )
 			recv:SetData( sendLink:GetData() )
 			recv:SetText( sendLink:GetText() )
 			sendLink:Remove()
@@ -269,6 +272,7 @@ function sworkCreateGameProject( ptr )
 	windowg:SetName( WINDOW_GAME_WIZZARD )
 	
 	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 10, 20, 10 + 140, 20 + 20, -1 ) )
+	local volCodeLabel = CLuaLabel( guienv:AddLabel( "Код", width / 2, 20, width, 20 + 20, ID_CODEVOLUME, windowg:Self() )
 	
 	local tabContol = guienv:AddTabControl( 10, 40, 790, 590, -1, windowg:Self() )
 	pages[ "name" ] = guienv:AddTab( tabContol, pagesName[ "name" ], pagesID[ "name" ] ) --name
