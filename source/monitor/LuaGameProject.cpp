@@ -39,6 +39,7 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetAdvTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetAdvTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetAdvTech ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsAdvTechInclude ),
 	{0,0}
 };
 
