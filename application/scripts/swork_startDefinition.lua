@@ -53,7 +53,7 @@ function AddStartPublicTechnology()
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VIDEO_TEXT_OUTPUT")
 	app:AddPublicTechnology( videoTech:Self() )
 	
-	local advTech = CLuaTech( app:CreateTechnology( PT_ADVANCED ) )
+	local advTech = CLuaTech( app:CreateTechnology( PT_ADVTECH ) )
 	advTech:SetTechType( ADV_MEMORY )
 	advTech:SetName( "Функции сохранения" )
 	advTech:SetBaseCode( 0.4 )
