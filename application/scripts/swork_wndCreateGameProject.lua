@@ -199,145 +199,6 @@ local function CreateEndPage( tab )
 	button:SetEnabled( project:IsProjectReady() )
 end
 
-local function sworkRecreatePagesDependedEngine()
-	local elm = CLuaElement( pages[ "genre" ] )
-	elm:RemoveChilds()
-	CreateGenrePage( elm:Self() )
-	
-	elm:SetObject( pages[ "graphics" ] )
-	elm:RemoveChilds()
-	CreateVideoContentPage( elm:Self() )
-	
-	elm:SetObject( pages[ "name" ] )
-	elm:RemoveChilds()
-	CreateGameNamePage( elm:Self() )
-	
-	elm:SetObject( pages[ "end" ] )
-	elm:RemoveChilds()
-	CreateEndPage( elm:Self() )
-end
-
-function sworkGameProjectWizzardSetVideoEngine( ptr )
-	local sender = CLuaLinkBox( ptr )
-	local ge = CLuaGameEngine( sender:GetData() )
-	project:SetGameEngine( sender:GetData() )
-	sender:SetText( ge:GetName() )
-	sworkRecreatePagesDependedEngine()
-	ShowParams()
-end
-
-function sworkGameProjectWizzardSetScriptEngine( ptr )
-	local sender = CLuaLinkBox( ptr )
-	local tech = CLuaTech( sender:GetData() )
-	project:SetScriptEngine( tech:Self() )
-	sender:SetText( tech:GetName() )
-	ShowParams()
-end
-
-function sworkGameProjectWizzardSetMiniGameEngine( ptr )
-	local sender = CLuaLinkBox( ptr )
-	local tech = CLuaTech( sender:GetData() )
-	project:SetMiniGameEngine( tech:Self() )
-	sender:SetText( tech:GetName() )
-	ShowParams()
-end
-
-function sworkGameProjectWizzardSetPhysicEngine( ptr )
-	local sender = CLuaLinkBox( ptr )
-	local tech = CLuaTech( sender:GetData() )
-	project:SetPhysicEngine( tech:Self() )
-	sender:SetText( tech:GetName() )
-	ShowParams()
-end
-
-function sworkGameProjectWizzardSetGenre( ptr )
-	local sender = CLuaLinkBox( ptr )
-	local id = sender:GetID() - 9100
-	
-	local tech = CLuaTech( sender:GetData() )
-	project:SetGenre( sender:GetData(), id )
-	sender:SetText( tech:GetName() )
-	sworkRecreatePagesDependedEngine()
-	ShowParams()
-end
-
-local function ShowAvaibleScenarioAndLicense( tab )
-	local company = CLuaCompany( applic:GetPlayerCompany() )
-	local maxCompanyScenario = company:GetTechNumber()
-	local showedLinks = 0
-	
-	if maxCompanyScenario > 0 then
-		for i=0, maxCompanyScenario-1 do
-			local scenario = CLuaTech( company:GetTech( i ) )
-			
-			if scenario:GetTechGroup() == PT_SCENARIO then
-					local linkModule = CLuaLinkBox( guienv:AddLinkBox( scenario:GetName(), width / 2, 10 + showedLinks * 50, 
-																						   width / 2 + 50, 10 + 50 + showedLinks * 50, -1, tab ) )
-					linkModule:SetModuleType( PT_SCENARIO )
-					linkModule:SetData( scenario:Self() )		
-					linkModule:SetEnabled( not project:IsScenarioIncluded( scenario:GetName() ) ) 
-					linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
-					linkModule:SetDraggable( true )
-					showedLinks = showedLinks + 1
-			end
-		end
-	end
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:ShowAvaibleScenarioAndLicense  company scenario = " .. showedLinks )
-	
-	local licenseNumber = 0
-	if maxCompanyScenario > 0 then
-		for i=0, maxCompanyScenario-1 do
-			local license = CLuaTech( company:GetTech( i ) )
-			
-			if license:GetTechGroup() == PT_LICENSE then
-					local linkModule = CLuaLinkBox( guienv:AddLinkBox( license:GetName(), width / 2, 10 + showedLinks * 50,
-																						   width / 2 + 50, 10 + 50 + showedLinks * 50, -1, tab ) )
-					linkModule:SetModuleType( PT_LICENSE )
-					linkModule:SetData( license:Self() )		
-					linkModule:SetEnabled( not project:IsLicenseIncluded( license:GetName() ) ) 
-					linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
-					linkModule:SetDraggable( true )
-					showedLinks = showedLinks + 1
-					licenseNumber = licenseNumber + 1
-			end
-		end
-	end
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:ShowAvaibleScenarioAndLicense company license = " .. licenseNumber )
-end
-
-local function CreateScenarioLicensePage( tab )
-	ShowAvaibleScenarioAndLicense( tab )
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:CreateScenarioLicensePage start " )
-
-	local tech = CLuaTech( project:GetScenario() )
-	local linkScenario = CLuaLinkBox( guienv:AddLinkBox( "Сценарий", 10, 100, 10 + 50, 100 + 50, -1, tab ) )
-	linkScenario:SetModuleType( PT_SCENARIO )
-	linkScenario:SetData( tech:Self() )
-	
-	if tech:Empty() == 0 then
-		linkScenatio:SetText( tech:GetName() )
-	end
-	linkScenario:SetDraggable( false )
-	linkScenario:SetVisible( not project:HaveLicense() )
-	linkScenario:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
-	linkScenario:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
-	linkScenario:AddLuaFunction( GUIELEMENT_SET_DATA, "sworkGameProjectWizzardSetScenario" )
-	
-	local lic = CLuaTech( project:GetLicense() )
-	local linkLicense = CLuaLinkBox( guienv:AddLinkBox( "Лицензия", 10, 200, 10 + 50, 200 + 50, -1, tab ) )
-	linkLicense:SetModuleType( PT_LICENSE )
-	linkLicense:SetData( lic:Self() )
-	
-	if lic:Empty() == 0 then
-		linkLicense:SetText( lic:GetName() )
-	end
-	linkLicense:SetDraggable( false )
-	linkLicense:SetVisible( not project:HaveScenario() )
-	linkLicense:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
-	linkLicense:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
-	linkLicense:AddLuaFunction( GUIELEMENT_SET_DATA, "sworkGameProjectWizzardSetLicense" )
-end
-
 local function ShowAvaibleScriptAndMiniGames( tab )
 	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local maxCompanyScriptTech = company:GetTechNumber()
@@ -427,6 +288,7 @@ local function CreateAdvContentPage( tab )
 		linkAdv:SetModuleType( PT_ADVTECH )
 		linkAdv:SetData( tech:Self() )
 		linkAdv:SetDraggable( true )
+		linkAdv:SetEnabled( not project:IsAdvTechInclude( tech:GetTechType() ) )
 		linkAdv:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
 		linkAdv:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
 		linkAdv:AddLuaFunction( GUIELEMENT_SET_DATA, "sworkGameProjectWizzardSetAdvTech" )
@@ -439,21 +301,159 @@ local function CreateAdvContentPage( tab )
 	end
 end
 
+local function sworkRecreatePagesDependedEngine()
+	local elm = CLuaElement( pages[ "genre" ] )
+	elm:RemoveChilds()
+	CreateGenrePage( elm:Self() )
+	
+	elm:SetObject( pages[ "graphics" ] )
+	elm:RemoveChilds()
+	CreateVideoContentPage( elm:Self() )
+	
+	elm:SetObject( pages[ "name" ] )
+	elm:RemoveChilds()
+	CreateGameNamePage( elm:Self() )
+	
+	elm:SetObject( pages[ "advfunc" ] )
+	elm:RemoveChilds() 
+	CreateAdvContentPage( elm:Self() )
+	
+	elm:SetObject( pages[ "end" ] )
+	elm:RemoveChilds()
+	CreateEndPage( elm:Self() )
+end
+
+function sworkGameProjectWizzardSetVideoEngine( ptr )
+	local sender = CLuaLinkBox( ptr )
+	local ge = CLuaGameEngine( sender:GetData() )
+	project:SetGameEngine( sender:GetData() )
+	sender:SetText( ge:GetName() )
+	sworkRecreatePagesDependedEngine()
+	ShowParams()
+end
+
+function sworkGameProjectWizzardSetScriptEngine( ptr )
+	local sender = CLuaLinkBox( ptr )
+	local tech = CLuaTech( sender:GetData() )
+	project:SetScriptEngine( tech:Self() )
+	sender:SetText( tech:GetName() )
+	ShowParams()
+end
+
+function sworkGameProjectWizzardSetMiniGameEngine( ptr )
+	local sender = CLuaLinkBox( ptr )
+	local tech = CLuaTech( sender:GetData() )
+	project:SetMiniGameEngine( tech:Self() )
+	sender:SetText( tech:GetName() )
+	ShowParams()
+end
+
+function sworkGameProjectWizzardSetPhysicEngine( ptr )
+	local sender = CLuaLinkBox( ptr )
+	local tech = CLuaTech( sender:GetData() )
+	project:SetPhysicEngine( tech:Self() )
+	sender:SetText( tech:GetName() )
+	ShowParams()
+end
+
 function sworkGameProjectWizzardSetAdvTech( ptr )
 	local sender = CLuaLinkBox( ptr )
 	local id = sender:GetID() - 9200
-	local maxProjectAdvTech = project:GetAdvTechNumber()
+	local tech = CLuaTech( sender:GetData() )
 
-	if id == maxProjectAdvTech then
-		
-	else
+	project:SetAdvTech( tech:Self(), id )
+	sender:SetText( tech:GetName() )
+
+	sworkRecreatePagesDependedEngine()
+	ShowParams()
+end
+
+function sworkGameProjectWizzardSetGenre( ptr )
+	local sender = CLuaLinkBox( ptr )
+	local id = sender:GetID() - 9100
 	
-	end
 	local tech = CLuaTech( sender:GetData() )
 	project:SetGenre( sender:GetData(), id )
 	sender:SetText( tech:GetName() )
 	sworkRecreatePagesDependedEngine()
 	ShowParams()
+end
+
+local function ShowAvaibleScenarioAndLicense( tab )
+	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local maxCompanyScenario = company:GetTechNumber()
+	local showedLinks = 0
+	
+	if maxCompanyScenario > 0 then
+		for i=0, maxCompanyScenario-1 do
+			local scenario = CLuaTech( company:GetTech( i ) )
+			
+			if scenario:GetTechGroup() == PT_SCENARIO then
+					local linkModule = CLuaLinkBox( guienv:AddLinkBox( scenario:GetName(), width / 2, 10 + showedLinks * 50, 
+																						   width / 2 + 50, 10 + 50 + showedLinks * 50, -1, tab ) )
+					linkModule:SetModuleType( PT_SCENARIO )
+					linkModule:SetData( scenario:Self() )		
+					linkModule:SetEnabled( not project:IsScenarioIncluded( scenario:GetName() ) ) 
+					linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+					linkModule:SetDraggable( true )
+					showedLinks = showedLinks + 1
+			end
+		end
+	end
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:ShowAvaibleScenarioAndLicense  company scenario = " .. showedLinks )
+	
+	local licenseNumber = 0
+	if maxCompanyScenario > 0 then
+		for i=0, maxCompanyScenario-1 do
+			local license = CLuaTech( company:GetTech( i ) )
+			
+			if license:GetTechGroup() == PT_LICENSE then
+					local linkModule = CLuaLinkBox( guienv:AddLinkBox( license:GetName(), width / 2, 10 + showedLinks * 50,
+																						   width / 2 + 50, 10 + 50 + showedLinks * 50, -1, tab ) )
+					linkModule:SetModuleType( PT_LICENSE )
+					linkModule:SetData( license:Self() )		
+					linkModule:SetEnabled( not project:IsLicenseIncluded( license:GetName() ) ) 
+					linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+					linkModule:SetDraggable( true )
+					showedLinks = showedLinks + 1
+					licenseNumber = licenseNumber + 1
+			end
+		end
+	end
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:ShowAvaibleScenarioAndLicense company license = " .. licenseNumber )
+end
+
+local function CreateScenarioLicensePage( tab )
+	ShowAvaibleScenarioAndLicense( tab )
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:CreateScenarioLicensePage start " )
+
+	local tech = CLuaTech( project:GetScenario() )
+	local linkScenario = CLuaLinkBox( guienv:AddLinkBox( "Сценарий", 10, 100, 10 + 50, 100 + 50, -1, tab ) )
+	linkScenario:SetModuleType( PT_SCENARIO )
+	linkScenario:SetData( tech:Self() )
+	
+	if tech:Empty() == 0 then
+		linkScenatio:SetText( tech:GetName() )
+	end
+	linkScenario:SetDraggable( false )
+	linkScenario:SetVisible( not project:HaveLicense() )
+	linkScenario:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
+	linkScenario:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+	linkScenario:AddLuaFunction( GUIELEMENT_SET_DATA, "sworkGameProjectWizzardSetScenario" )
+	
+	local lic = CLuaTech( project:GetLicense() )
+	local linkLicense = CLuaLinkBox( guienv:AddLinkBox( "Лицензия", 10, 200, 10 + 50, 200 + 50, -1, tab ) )
+	linkLicense:SetModuleType( PT_LICENSE )
+	linkLicense:SetData( lic:Self() )
+	
+	if lic:Empty() == 0 then
+		linkLicense:SetText( lic:GetName() )
+	end
+	linkLicense:SetDraggable( false )
+	linkLicense:SetVisible( not project:HaveScenario() )
+	linkLicense:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
+	linkLicense:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+	linkLicense:AddLuaFunction( GUIELEMENT_SET_DATA, "sworkGameProjectWizzardSetLicense" )
 end
 
 local function CreateSoundContentPage( tab )
