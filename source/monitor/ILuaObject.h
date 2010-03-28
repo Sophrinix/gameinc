@@ -25,21 +25,6 @@ private:
 protected:
 	ObjectType* object_;
 
-	int GetInteger( lua_State* vm, size_t paramNumber )
-	{
-		if( lua_typename( vm, paramNumber ) == "number" )
-		{
-
-		}
-		else
-		{
-			char errStr[ MAX_PATH ];
-			sprintf_s( errStr, MAX_PATH, "%s:%d Error: %s\n", fileName, lineNumber, text );
-			OutputDebugString( errStr );
-			return 0;
-		}
-	}
-
 	irr::core::recti ReadRect_( lua_State* vm, size_t startParam )
 	{
 		irr::core::recti rectangle( 0, 0, 0, 0 );

@@ -156,6 +156,9 @@ void CImageGUISkin::draw3DButtonPostEffect(	 IGUIElement* element,		//свистелка 
 											 const core::rect<s32>& r,
 											 const core::rect<s32>* clip )
 {
+	if( !element->isEnabled() )
+		return; 
+
 	core::recti draw_rect( r );											//
 	core::recti clip_rect( *clip );
 	bool up = native_gui_->isHovered( element );						//если курсор находится над нами

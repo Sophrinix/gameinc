@@ -22,7 +22,10 @@ namespace nrp
 											LUNA_AUTONAME_FUNCTION(class, SetText),\
 											LUNA_AUTONAME_FUNCTION(class, GetText),\
 											LUNA_AUTONAME_FUNCTION(class, GetTypeName ),\
-											LUNA_AUTONAME_FUNCTION(class, GetID)
+											LUNA_AUTONAME_FUNCTION(class, GetID),\
+											LUNA_AUTONAME_FUNCTION(class, GetRelativePosition ),\
+											LUNA_AUTONAME_FUNCTION(class, SetEnabled ),\
+											LUNA_AUTONAME_FUNCTION(class, IsEnabled )
 
 template< class T > class ILuaGuiElement : public ILuaObject< T >
 {
@@ -45,6 +48,20 @@ public:
 		return 1;
 	}
 
+	int GetRelativePosition( lua_State *L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":GetPosition not need any parameter" ).c_str() );
+
+		core::position2di pos( 0, 0 );
+
+		IF_OBJECT_NOT_NULL_THEN pos = object_->getRelativePosition().UpperLeftCorner;
+		lua_pushinteger( L, pos.X );
+		lua_pushinteger( L, pos.Y );
+
+		return 2;
+	}
+
 	int GetID( lua_State *L )
 	{
 		int argc = lua_gettop(L);
@@ -54,6 +71,19 @@ public:
 
 		IF_OBJECT_NOT_NULL_THEN id = object_->getID();
 		lua_pushinteger( L, id );
+
+		return 1;
+	}
+
+	int IsEnabled( lua_State *L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":IsEnabled not need any parameter" ).c_str() );
+
+		bool enabled = false;
+
+		IF_OBJECT_NOT_NULL_THEN enabled = object_->isEnabled();
+		lua_pushboolean( L, enabled );
 
 		return 1;
 	}
@@ -80,6 +110,17 @@ public:
 		IF_OBJECT_NOT_NULL_THEN typen = object_->getTypeName();
 
 		lua_pushstring( L, typen.c_str() );
+
+		return 1;
+	}
+
+	int SetEnabled( lua_State *L )	
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 2, 2, ("Function " + ClassName() + ":SetEnabled need boolean parameter").c_str() );
+
+		bool enabled = lua_toboolean( L, 2 ) > 0;
+		IF_OBJECT_NOT_NULL_THEN object_->setEnabled( enabled );
 
 		return 1;
 	}

@@ -4,11 +4,12 @@ local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) )
 
 function AddStartCompanyTechnology()
 	local ge = CLuaGameEngine( app:CreateGameEngine( "simpleEngine" ) )
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создан движок simpleEngine")
 	ge:AddGenre( GT_SKILL )
 	ge:SetGenreModuleNumber( 2 )
 	ge:SetCodeVolume( 10000 )
 	company:AddGameEngine( ge:Self() )
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создан движок simpleEngine")
 end
 
 function AddStartPlayerDef()
@@ -61,5 +62,35 @@ function AddStartPublicTechnology()
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология ADV_MEMORY")
 	app:AddPublicTechnology( advTech:Self() )
+	
+	local scriptTech = CLuaTech( app:CreateTechnology( PT_SCRIPTS ) )
+	scriptTech:SetTechType( SCRLVL_SIMPLE )
+	scriptTech:SetName( "Файлы конфигурации" )
+	scriptTech:SetBaseCode( 1 )
+	scriptTech:SetAddingEngineCode( 0.3 )
+	scriptTech:SetEmployerSkillRequire( SKL_CODING, 10 )
+
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология SCRLVL_SIMPLE")
+	app:AddPublicTechnology( scriptTech:Self() )
+	
+	local mgTech = CLuaTech( app:CreateTechnology( PT_MINIGAME ) )
+	mgTech:SetTechType( MNGM_TEXTQUEST )
+	mgTech:SetName( "Текстовые квесты" )
+	mgTech:SetBaseCode( 1 )
+	mgTech:SetAddingEngineCode( 0.4 )
+	mgTech:SetEmployerSkillRequire( SKL_CODING, 10 )
+
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология MNGM_TEXTQUEST")
+	app:AddPublicTechnology( mgTech:Self() )
+	
+	local phTech = CLuaTech( app:CreateTechnology( PT_PHYSIC ) )
+	phTech:SetTechType( PHYS_2DCONCLUSION )
+	phTech:SetName( "Простые столкновения" )
+	phTech:SetBaseCode( 1 )
+	phTech:SetAddingEngineCode( 0.5 )
+	phTech:SetEmployerSkillRequire( SKL_CODING, 10 )
+
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология SCRLVL_SIMPLE")
+	app:AddPublicTechnology( phTech:Self() )
 
 end
