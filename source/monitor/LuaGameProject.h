@@ -39,6 +39,8 @@ public:
 	int SetPhysicEngine( lua_State* L);
 	int GetAdvTechNumber( lua_State* L );
 	int IsAdvTechInclude( lua_State* L );
+	int GetAdvTech( lua_State* L );
+	int SetAdvTech( lua_State* L );
 																
 	static const char* StaticGetLuaName() { return "CLuaGameProject"; }
 };
