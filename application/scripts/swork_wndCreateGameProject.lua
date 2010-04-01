@@ -34,26 +34,26 @@ end
 local function ShowAvaibleEngines( tab )
 	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local maxEngine = company:GetEnginesNumber()
+	local xoffset = 0
+	local rowCount = 0	
 	
 	if maxEngine > 0 then
 		for i=0, maxEngine-1 do
-			local gameeng = CLuaGameEngine( company:GetEngine( i ) )
-				
-			Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:AvaibleEngines  " .. maxEngine )
-				
-			Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:x1 " .. width / 2 + 10 + 50 * i / 2 )
-			Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:y1 " .. 50 * i % 2 )
-			Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:x2 " .. width / 2 + 10 + 50 + 50 * i / 2 )
-			Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:y2 " ..  50 * i % 2 + 50 )
+			local gameeng = CLuaGameEngine( company:GetEngine( i ) )			
 			local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Движок ".. i+1 .."/"..maxEngine .. "\r(" .. gameeng:GetName() .. ")", 
-																width / 2 + 10 + 50 * i / 2, 50 * i % 2, 
-																width / 2 + 10 + 50 + 50 * i / 2, 50 * i % 2 + 50, 
+																width / 2 + xoffset, 50 * rowCount, 
+																width / 2 + xoffset + 50, 50 * rowCount + 50, 
 																-1, tab ) )
 			linkModule:SetData( gameeng:Self() )
 			linkModule:SetModuleType( PT_GAMEENGINE )
 			linkModule:SetDraggable( true )
 			linkModule:SetEnabled( not project:IsMyGameEngine( gameeng:Self() ) )
 			linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+			
+			if xoffset * 50 > 450 then
+				xoffset = 0
+				rowCount = 0
+			end
 		end
 	end
 end
@@ -61,31 +61,21 @@ end
 local function ShowAvaibleGenreModules( tab )
 	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local maxCompanyTech = company:GetTechNumber()
-	local showedTech = 0
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:ShowAvaibleGenreModules  company = " .. maxCompanyTech )
-	if maxCompanyTech > 0 then
-		for i=0, maxCompanyTech-1 do
-			local tech = CLuaTech( company:GetTech( i ) )
-			
-			if tech:GetTechGroup() == PT_GENRE then
-					local linkModule = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), width / 2, 10 + showedTech * 50, 
-																					   width / 2 + 50, 10 + 50 + showedTech * 50, -1, tab ) )
-					linkModule:SetModuleType( PT_GENRE )
-					linkModule:SetData( tech:Self() )		
-					linkModule:SetEnabled( not project:IsGenreIncluded( tech:GetTechType() ) ) 
-					linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
-					linkModule:SetDraggable( true )
-					showedTech = showedTech + 1
-			end
-		end
-	end
-	
 	local maxPublicTech = applic:GetTechNumber()
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:ShowAvaibleGenreModules public = " .. maxPublicTech )
-	
+	local arGenres = { }
+	local showedTech = 0
+
+	if maxCompanyTech > 0 then
+		for i=0, maxCompanyTech-1 do arGenres[ i ] = conmpany:GetGenre( i )	end
+	end
+		
 	if maxPublicTech > 0 then
-		for i=0, maxPublicTech-1 do
-			local tech = CLuaTech( applic:GetTech( i ) )
+		for i=0, maxPublicTech-1 do arGenres[ maxCompanyTech + i ] = applic:GetTech( i ) end
+	end
+
+	if #arGenres > 0 then
+		for i=0, #arGenres-1 do
+			local tech = CLuaTech( arGenres[ i ] )
 			
 			if tech:GetTechGroup() == PT_GENRE then
 				local linkModule = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), width / 2, 200 + showedTech * 50, 
@@ -139,16 +129,79 @@ local function CreateGenrePage( tab )
 	end
 end
 
+local function ShowAvaibleVideoQualityAndVideoTech( tab )
+	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local showedTech = 0
+	local techs = { }
+
+	local maxCompanyTech = company:GetTechNumber()
+	local maxPublicTech = applic:GetTechNumber()
+
+	if maxCompanyTech > 0 then
+		for i=0, maxCompanyTech-1 do techs[ i ] = company:GetTech( i ) end
+	end
+
+	if maxPublicTech > 0 then
+		for i=0, maxPublicTech-1 do	techs[ maxCompanyTech + i ] = applic:GetTech( i ) end
+	end
+	
+	if #techs then
+		for i=0, #techs-1 do
+			local tech = CLuaTech( techs[ i ] )
+			local tg = tech:GetTechGroup()
+			if tg == PT_VIDEOTECH or tg == PT_VIDEOQUALITY then
+				local linkModule = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), width / 2, 200 + showedTech * 50, 
+																				   width / 2 + 50, 200 + 50 + showedTech * 50, -1, tab ) )
+				linkModule:SetModuleType( tg )
+				linkModule:SetData( tech:Self() )
+				linkModule:SetEnabled( not project:IsTechInclude( tech:GetTechType() ) )
+				linkModule:SetDraggable( true )
+				linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+				showedTech = showedTech + 1
+			end
+		end	
+	end
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEVTP:ShowAvaibleVideoQualityAndVideoTech public = " .. showedTech )
+
+end
+
 local function CreateVideoContentPage( tab )
+
+	ShowAvaibleVideoQualityAndVideoTech( tab )
 	
+	local vq = CLuaTech( project:GetVideoQuality() )
 	local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Уровень графики", 10, 10, 10 + 50, 10 + 50, -1, tab ) )
-	linkModule:SetModuleType( PT_GRAPHICLEVEL )
-	--linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_DOWN, "sworkLeftMouseButtonDown" )
+	linkModule:SetModuleType( PT_VIDEOQUALITY )
+	linkModule:SetData( vq:Self() )
+	linkModule:SetDraggable( false )
+	if vq:Empty() == 0 then
+		linkModule:SetText( vq:GetName() )
+	end
+	linkModule:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
+	linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+	linkModule:AddLuaFunction( GUIELEMENT_SET_DATA, "sworkGameProjectWizzardSetVideoQuality" )
 	
-	linkModule:SetObject( guienv:AddLinkBox( "Технология 1/2", 10, 50, 10 + 50, 50 + 50, -1, tab ) )
-	linkModule:SetModuleType( PT_VIDEOTECH )
-	--linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_DOWN, "sworkLeftMouseButtonDown" )
+	local xoffset = 70
+	local maxProjectVideoTech = project:GetVideoTechNumber()
 	
+	for i=0, maxProjectVideoTech do
+		local tech = CLuaTech( project:GetVideoTech( i ) )
+		local linkAdv = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), xoffset, 60 + showeddLinks * 50, 
+																		xoffset + 50, 60 + 50 + showeddLinks * 50, 9200 + i, tab ) )
+
+		linkAdv:SetModuleType( PT_VIDEOTECH )
+		linkAdv:SetData( tech:Self() )
+		linkAdv:SetDraggable( false )
+		linkAdv:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
+		linkAdv:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+		linkAdv:AddLuaFunction( GUIELEMENT_SET_DATA, "sworkGameProjectWizzardSetVideoTech" )
+		showeddLinks = showeddLinks + 1
+		
+		if (60 + showeddLinks * 50) > 450 then
+			showeddLinks = 0
+			xoffset = xoffset + 70
+		end
+	end	
 end
 
 local function CreateGameNamePage( tab )
@@ -202,27 +255,18 @@ end
 local function ShowAvaibleScriptAndMiniGames( tab )
 	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local maxCompanyScriptTech = company:GetTechNumber()
+	local techs = { }
 	local showeddLinks = 0
+	local maxPublicTech = applic:GetTechNumber()
 	
 	if maxCompanyScriptTech > 0 then
-		for i=0, maxCompanyScriptTech-1 do
-			local tech = CLuaTech( company:GetTech( i ) )
-			
-			local tg = tech:GetTechGroup()
-			if  tg == PT_SCRIPTS or tg == PT_MINIGAME or tg == PT_PHYSIC or tg == PT_ADVTECH then
-					local linkModule = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), width / 2, 10 + showeddLinks * 50, 
-																					   width / 2 + 50, 10 + 50 + showeddLinks * 50, -1, tab ) )
-					linkModule:SetModuleType( tg )
-					linkModule:SetData( tech:Self() )		
-					linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
-					linkModule:SetDraggable( true )
-					showeddLinks = showeddLinks + 1
-			end
-		end
+		for i=0, maxCompanyScriptTech-1 do techs[ i ] = company:GetTech( i ) end
 	end
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:ShowAvaibleScriptLevel company script = " .. showeddLinks )
 	
-	local maxPublicTech = applic:GetTechNumber()
+	if maxPublicTech > 0 then
+		for i=0, maxPublicTech-1 do techs[ maxCompanyScriptTech + i ] = applic:GetTech( i ) end
+	end
+	
 	if maxPublicTech > 0 then
 		for i=0, maxPublicTech-1 do
 			local tech = CLuaTech( applic:GetTech( i ) )
@@ -235,6 +279,7 @@ local function ShowAvaibleScriptAndMiniGames( tab )
 				linkModule:SetModuleType( tg )
 				linkModule:SetData( tech:Self() )
 				linkModule:SetDraggable( true )
+				linkModule:SetEnabled( not project:IsTechInclude( tech:GetTechType() ) )
 				linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
 				showeddLinks = showeddLinks + 1
 			end
@@ -280,6 +325,7 @@ local function CreateAdvContentPage( tab )
 	local showeddLinks = 0
 	local xoffset = 70
 	local maxProjectAdvTech = project:GetAdvTechNumber()
+	
 	for i=0, maxProjectAdvTech do
 		local tech = CLuaTech( project:GetAdvTech( i ) )
 		local linkAdv = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), xoffset, 20 + showeddLinks * 50, 
@@ -287,8 +333,7 @@ local function CreateAdvContentPage( tab )
 
 		linkAdv:SetModuleType( PT_ADVTECH )
 		linkAdv:SetData( tech:Self() )
-		linkAdv:SetDraggable( true )
-		linkAdv:SetEnabled( not project:IsAdvTechInclude( tech:GetTechType() ) )
+		linkAdv:SetDraggable( false )
 		linkAdv:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
 		linkAdv:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
 		linkAdv:AddLuaFunction( GUIELEMENT_SET_DATA, "sworkGameProjectWizzardSetAdvTech" )
@@ -318,6 +363,10 @@ local function sworkRecreatePagesDependedEngine()
 	elm:RemoveChilds() 
 	CreateAdvContentPage( elm:Self() )
 	
+	elm:SetObject( pages[ "graphics" ] )
+	elm:RemoveChilds()
+	CreateVideoContentPage( elm:Self() )
+	
 	elm:SetObject( pages[ "end" ] )
 	elm:RemoveChilds()
 	CreateEndPage( elm:Self() )
@@ -332,11 +381,21 @@ function sworkGameProjectWizzardSetVideoEngine( ptr )
 	ShowParams()
 end
 
+function sworkGameProjectWizzardSetVideoQuality( ptr )
+	local sender = CLuaLinkBox( ptr )
+	local vq = CLuaTech( sender:GetData() )
+	project:SetVideoQuality( sender:GetData() )
+	sender:SetText( vq:GetName() )
+	sworkRecreatePagesDependedEngine()
+	ShowParams()
+end
+
 function sworkGameProjectWizzardSetScriptEngine( ptr )
 	local sender = CLuaLinkBox( ptr )
 	local tech = CLuaTech( sender:GetData() )
 	project:SetScriptEngine( tech:Self() )
 	sender:SetText( tech:GetName() )
+	sworkRecreatePagesDependedEngine()
 	ShowParams()
 end
 
@@ -345,6 +404,7 @@ function sworkGameProjectWizzardSetMiniGameEngine( ptr )
 	local tech = CLuaTech( sender:GetData() )
 	project:SetMiniGameEngine( tech:Self() )
 	sender:SetText( tech:GetName() )
+	sworkRecreatePagesDependedEngine()
 	ShowParams()
 end
 
@@ -353,6 +413,7 @@ function sworkGameProjectWizzardSetPhysicEngine( ptr )
 	local tech = CLuaTech( sender:GetData() )
 	project:SetPhysicEngine( tech:Self() )
 	sender:SetText( tech:GetName() )
+	sworkRecreatePagesDependedEngine()
 	ShowParams()
 end
 

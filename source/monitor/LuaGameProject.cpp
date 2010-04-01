@@ -39,7 +39,9 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetAdvTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetAdvTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetAdvTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsAdvTechInclude ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsTechInclude ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetVideoQuality ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetVideoQuality ),
 	{0,0}
 };
 
@@ -86,7 +88,7 @@ int CLuaGameProject::GetGenre( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:GetGenre need int parameter" );
 
 	int idx = lua_tointeger( L, 2 );
-	INrpProject* ganre = NULL;
+	CNrpTechnology* ganre = NULL;
 
 	IF_OBJECT_NOT_NULL_THEN ganre = object_->GetGenre( idx );
 	lua_pushlightuserdata( L, ganre );
@@ -105,7 +107,7 @@ int CLuaGameProject::SetGenre( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaGameProject:SetGenre need INrpProject parameter" );
 
-	INrpProject* gan = (INrpProject*)lua_touserdata( L, 2 );
+	CNrpTechnology* gan = (CNrpTechnology*)lua_touserdata( L, 2 );
 	int number = lua_tointeger( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->SetGenre( gan, number );
@@ -183,7 +185,11 @@ int CLuaGameProject::SetScriptEngine( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:SetScriptEngine need PNrpTechnology parameter" );
 	PNrpTechnology engine = (PNrpTechnology)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetOption<PNrpTechnology>( SCRIPTENGINE, engine );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		object_->SetOption<PNrpTechnology>( SCRIPTENGINE, engine );
+		object_->CalculateCodeVolume();
+	}
 
 	return 1;		
 }
@@ -206,7 +212,11 @@ int CLuaGameProject::SetPhysicEngine( lua_State* L)
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:SetPhysicEngine need PNrpTechnology parameter" );
 	PNrpTechnology engine = (PNrpTechnology)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetOption<PNrpTechnology>( PHYSICSENGINE, engine );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		object_->SetOption<PNrpTechnology>( PHYSICSENGINE, engine );
+		object_->CalculateCodeVolume();
+	}
 
 	return 1;	
 }
@@ -217,7 +227,11 @@ int CLuaGameProject::SetMiniGameEngine( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:SetMiniGameEngine need PNrpTechnology parameter" );
 	PNrpTechnology engine = (PNrpTechnology)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetOption<PNrpTechnology>( MINIGAMEENGINE, engine );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		object_->SetOption<PNrpTechnology>( MINIGAMEENGINE, engine );
+		object_->CalculateCodeVolume();
+	}
 
 	return 1;	
 }
@@ -236,7 +250,7 @@ int CLuaGameProject::GetAdvTech( lua_State* L )
 	int idx = lua_tointeger( L, 2 );
 	CNrpTechnology* tech = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN tech = object_->GetAdvTech( idx );
+	IF_OBJECT_NOT_NULL_THEN tech = object_->GetTechnology( idx );
 	lua_pushlightuserdata( L, tech );
 
 	return 1;	
@@ -250,21 +264,46 @@ int CLuaGameProject::SetAdvTech( lua_State* L )
 	PNrpTechnology ptrTech = (PNrpTechnology)lua_touserdata( L, 2 );
 	int number = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetAdvTech( ptrTech, number );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		object_->SetTechnology( ptrTech, number );
+		object_->CalculateCodeVolume();
+	}
 	return 1;	
 }
 
-int CLuaGameProject::IsAdvTechInclude( lua_State* L )
+int CLuaGameProject::IsTechInclude( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsAdvTechInclude need ADV_TECH_TYPE parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsTechInclude need ADV_TECH_TYPE parameter" );
 
 	ADV_TECH_TYPE techType = ADV_TECH_TYPE( lua_tointeger( L, 2 ) );
 	bool isIncl = false;
 
-	IF_OBJECT_NOT_NULL_THEN isIncl = object_->IsAdvTechInclude( techType );
+	IF_OBJECT_NOT_NULL_THEN isIncl = object_->IsTechInclude( techType );
 	lua_pushboolean( L, isIncl );
 
 	return 1;			
+}
+
+int CLuaGameProject::GetVideoQuality( lua_State* L )
+{
+	lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetVideoQuality", GRAPHICQUALITY, NULL ) );
+	return 1;
+}
+
+int CLuaGameProject::SetVideoQuality( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaGameProject:SetVideoQuality need CNrpTechnology parameter" );
+
+	PNrpTechnology ptrTech = (PNrpTechnology)lua_touserdata( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		object_->SetOption<PNrpTechnology>( GRAPHICQUALITY, ptrTech );
+		object_->CalculateCodeVolume();
+	}
+	return 1;	
 }
 }//namespace nrp
