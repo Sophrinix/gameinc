@@ -43,6 +43,9 @@ public:
 	int SetAdvTech( lua_State* L );
 	int GetVideoQuality( lua_State* L );
 	int SetVideoQuality( lua_State* L );
+	int GetVideoTech( lua_State* L );
+	int SetVideoTech( lua_State* L );
+	int GetVideotechNumber( lua_State* L );
 																
 	static const char* StaticGetLuaName() { return "CLuaGameProject"; }
 };
