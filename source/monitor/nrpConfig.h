@@ -33,7 +33,8 @@ ELEMENT_ALIGN ALIGN_CENTER( "center" );
 OPTION_NAME BALANCE("balance");
 OPTION_NAME NAME("name");
 OPTION_NAME TYPE( "type" );
-
+OPTION_NAME QUALITY( "quality" );
+OPTION_NAME READYWORKPERCENT( "readyWorkPercent" );
 
 class INrpConfig : public INrpObject
 {

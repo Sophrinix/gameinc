@@ -75,6 +75,7 @@ public:
 	int GetFocusedElement( lua_State* L );
 	int SetDragObject( lua_State* L );
 	int GetDragObject( lua_State* L );
+	int AddComponentListBox( lua_State* L );
 	
 	static const char* StaticGetLuaName() { return "CLuaGuiEnvironment"; }	
 };

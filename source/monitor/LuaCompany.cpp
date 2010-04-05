@@ -3,6 +3,8 @@
 #include "IUser.h"
 #include "NrpCompany.h"
 #include "NrpGameEngine.h"
+#include "NrpGameProject.h"
+#include <assert.h>
 
 namespace nrp
 {
@@ -19,6 +21,7 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddGameEngine ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateGameProject ),
 	{0,0}
 };
 
@@ -97,5 +100,21 @@ int CLuaCompany::GetTech( lua_State* L )
 
 	lua_pushlightuserdata( L, tech );
 	return 1;
+}
+
+int CLuaCompany::CreateGameProject( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetTech need int parameter" );
+
+	CNrpGameProject* ptrData = (CNrpGameProject*)lua_touserdata( L, 2 );
+	assert( ptrData != NULL );
+
+	CNrpGameProject* result = NULL;
+	
+	IF_OBJECT_NOT_NULL_THEN	result = object_->AddGameProject( new CNrpGameProject( *ptrData ) );
+
+	lua_pushlightuserdata( L, result );
+	return 1;	
 }
 }//namespace nrp

@@ -11,11 +11,12 @@ OPTION_NAME CEO("ceo");
 OPTION_NAME ENGINES_NUMBER( "engineNumber" );
 OPTION_NAME TECHS_NUMBER( "techsNumber" );
 
-class CNrpProject;
+class INrpProject;
 class CNrpGame;
 class CNrpGameEngine;
 class IUser;
 class CNrpTechnology;
+class CNrpGameProject;
 
 class CNrpCompany : public INrpConfig
 {
@@ -29,11 +30,12 @@ public:
 	void AddGameEngine( CNrpGameEngine* ptrEng );
 	CNrpGameEngine* GetGameEngine( int index );
 	CNrpTechnology* GetTech( int index );
+	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
 
 private:
 	void Load_( char* file_name ) {}
 	
-	std::map< std::string, CNrpProject* > projects_; 
+	std::map< std::string, INrpProject* > projects_; 
 	ENGINE_LIST engines_;
 	TECH_MAP technologies_;
 	std::map< std::string, CNrpGame* > games_;

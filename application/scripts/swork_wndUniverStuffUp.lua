@@ -1,6 +1,6 @@
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local config = CLuaApplication( NrpGetApplication() )
+local applic = CLuaApplication( NrpGetApplication() )
 local mode = { }
 mode[ "Программисты" ] = "coder"
 mode[ "Дизайнеы" ] = "designer"
@@ -10,7 +10,35 @@ mode[ "Тестировщики" ] = "tester"
 
 local modeUserView = "coder"
 
-local function sworkCreateUsers( ptr )
+local width = 800
+local height = 600
+
+local function ShowAvaibleEmployers( ptr )
+	local maxuser = applic:GetEmployerNumber()
+	local hTemp = height / 8
+	
+	local xoffset = 10
+	
+	local cnt = 0
+	for i=1, maxuser do
+		local user = CLuaUser( applic:GetUser( i-1 ) )
+		if mode == user:GetTypeName() then
+		    cnt = cnt + 1
+			sworkCreateUserInfoWindow( windowg:Self(), xoffset, yoffset + (cnt % 4) * hTemp, hTemp, width / 2, user:Self() ) 
+		end
+		
+		if cnt > 4 then
+			xoffset = width / 2 + 10
+			yoffset = 10
+		end
+		
+		if cnt > 8 then 
+			return 0 
+		end
+	end
+end
+
+function sworkCreateEmployersWindow( ptr )
 	local windowg = CLuaWindow( guienv:AddWindow( "", 0, 0, 800, 600, -1, guienv:GetRootGUIElement() ) )
 	
 	local button = CLuaButton( guienv:AddButton( 10, 10, 200, 100, windowg:Self(), -1, "Программисты" ) )
@@ -24,16 +52,8 @@ local function sworkCreateUsers( ptr )
 	
 	button:SetObject( guienv:AddButton( 610, 10, 800, 100, windowg:Self(), -1, "Тестировщики" ) )
 	button:SetAction( "sworkChangerUserType" )
-
-	local maxuser = config:GetUserCount()
-	local cnt = 0
-	for i=0, maxuser-1 do
-		local user = CLuaUser( config:GetUser( i ) )
-		if mode == user:GetTypeName() then
-		    cnt = cnt + 1
-			sworkCreateUserInfoWindow( windowg:Self(), cnt % 2 * 50, cnt / 2 * 50 + 100, 300, 200, user:Self() ) 
-		end
-	end
+	
+	ShowAvaibleEmployers()
 end
 
 local function sworkChangerUserType( ptr )

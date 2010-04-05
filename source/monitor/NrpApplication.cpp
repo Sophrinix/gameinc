@@ -26,6 +26,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 
 	options_[ BANK ] = new PNrpBank( NULL );
 	options_[ TECHNUMBER ] = new int( 0 );
+	options_[ EMPLOYERNUMBER ] = new int( 0 );
 }
 
 CNrpApplication::~CNrpApplication(void)
@@ -153,7 +154,7 @@ CNrpTechnology* CNrpApplication::CreateTechnology( int typeTech )
 
 CNrpTechnology* CNrpApplication::GetTechnology( int index ) const
 {
-	return index < technologies_.size() ?  technologies_[ index ] : NULL;
+	return index < (int)technologies_.size() ?  technologies_[ index ] : NULL;
 }
 
 void CNrpApplication::AddTechnology( CNrpTechnology* ptrTech )

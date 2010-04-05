@@ -51,6 +51,7 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetFocusedElement ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SetDragObject ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetDragObject ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddComponentListBox ),
 	{0,0}
 };
 
@@ -627,6 +628,23 @@ int CLuaGuiEnvironment::GetDragObject( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN elm = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->getDragObject();
 	lua_pushlightuserdata( L, (void*)elm );
+
+	return 1;
+}
+
+int CLuaGuiEnvironment::AddComponentListBox( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 7, 7, "Function CLuaSceneManager:AddComponentList need 7 parameter");
+
+	core::recti rectangle = ReadRect_( L, 2 );
+	s32 iid = lua_tointeger( L, 6 );
+	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( L, 7 );	
+
+	gui::IGUIElement* elm = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN
+		elm = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addComponentListBox( rectangle, parent, iid );
 
 	return 1;
 }

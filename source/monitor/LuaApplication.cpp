@@ -33,6 +33,7 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddPublicTechnology ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetEmployerNumber ),
 	{0,0}
 };
 
@@ -255,6 +256,12 @@ int CLuaApplication::AddPublicTechnology( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	object_->AddTechnology( tech );
 
+	return 1;
+}
+
+int CLuaApplication::GetEmployerNumber( lua_State *L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetEmployerNumber", EMPLOYERNUMBER, 0 ) );
 	return 1;
 }
 }//namespace nrp

@@ -135,6 +135,36 @@ function AddObjectsToOfficeScene()
 
 end
 
+function AddObjectsToUniverScene()
+	local x = 1
+	local y = 1
+	local delta = 800
+	
+	local stuffNode = CLuaSceneNode( sceneManager:AddCubeSceneNode( "stuffNode" ) )
+	stuffNode:SetScale( 30, 40, 30 )
+	stuffNode:SetVisible( false )
+	stuffNode:SetPosition( x * delta, 800, y *delta )
+	stuffNode:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	stuffNode:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( stuffNode:Self() )
+	stuffNode:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( stuffNode:Self(), "stuff" )
+	univerSceneObjects[ 0 ] = stuffNode:Self()	
+	x = x + 1
+	
+	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitUniverNode" ) )
+	exitN:SetScale( 30, 40, 30 )
+	exitN:SetVisible( false )
+	exitN:SetPosition( x * delta, 800, y *delta )
+	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	exitN:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	exitN:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	univerSceneObjects[ 1 ] = exitN:Self()	
+	x = x + 1
+end
+
 function AddObjectsToBankScene()
 	
 	local x = 1

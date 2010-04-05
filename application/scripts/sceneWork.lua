@@ -19,6 +19,7 @@ local app = CLuaApplication( NrpGetApplication() )
 
 citySceneObjects = { } 
 bankSceneObjects = { }
+univerSceneObjects = { }
 officeSceneObjects = { }
 
 --создание рабочей сцены 
@@ -55,10 +56,14 @@ sceneManager:DrawProgress( 95 )
 AddObjectsToCityScene()
 AddObjectsToBankScene()
 AddObjectsToOfficeScene()
+AddObjectsToUniverScene()
 sceneManager:DrawProgress( 100 )
 
 AddStartPlayerDef()
 AddStartCompanyTechnology()
+AddStartVideoContentTechnology()
+AddStartSoundContentTechnology()
+AddStartScenarioContentTechnology()
 DebugFunctionCall( AddStartPublicTechnology )
 
 sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )

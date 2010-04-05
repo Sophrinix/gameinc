@@ -8,6 +8,7 @@ namespace nrp
 
 OPTION_NAME BANK( "bank" );
 OPTION_NAME TECHNUMBER( "techNumber" );
+OPTION_NAME EMPLOYERNUMBER( "employerNumber" );
 
 class CNrpCompany;
 class IUser;

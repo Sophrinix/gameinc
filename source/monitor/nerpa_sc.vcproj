@@ -545,6 +545,10 @@
 					Name="Elements"
 					>
 					<File
+						RelativePath=".\CListItem.h"
+						>
+					</File>
+					<File
 						RelativePath=".\NrpBrowserWindow.cpp"
 						>
 					</File>
@@ -566,6 +570,14 @@
 					</File>
 					<File
 						RelativePath=".\NrpCircleScrollBar.h"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpComponentListbox.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpComponentListbox.h"
 						>
 					</File>
 					<File
@@ -598,6 +610,14 @@
 					</File>
 					<File
 						RelativePath=".\NrpScrollBar.h"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpUserInfoWindow.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpUserInfoWindow.h"
 						>
 					</File>
 					<File
@@ -861,10 +881,6 @@
 					RelativePath=".\nrpChartTitle.h"
 					>
 				</File>
-			</Filter>
-			<Filter
-				Name="Chart3D"
-				>
 			</Filter>
 		</Filter>
 		<Filter

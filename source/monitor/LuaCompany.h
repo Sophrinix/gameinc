@@ -24,6 +24,7 @@ public:
 	int AddGameEngine( lua_State* L );
 	int GetTechNumber( lua_State* L );
 	int GetTech( lua_State* L );
+	int CreateGameProject( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaCompany"; }
 };

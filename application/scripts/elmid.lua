@@ -96,6 +96,11 @@ WINDOW_GAME_WIZZARD = "_WindowCreateGameProject_"
 WNDGMWIZ_NAME_EDIT = "_WindowGameWizzardNameEdit_"
 
 --[[
+Окно набора персонала
+--]]
+WINDOW_STUFFUP_NAME = "_SystemWindowStuff_"
+
+--[[
 Функция подключения скрипта с проверкой ошибок
 --]]
 

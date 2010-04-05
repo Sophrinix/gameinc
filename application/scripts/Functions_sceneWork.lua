@@ -9,6 +9,7 @@ IncludeScript("swork_wndChartsManage")
 IncludeScript("swork_TargetCameraFunctions") 
 IncludeScript("swork_wndReport")
 IncludeScript("swork_wndLoanAction")
+IncludeScript("swork_wndUniverStuffUp")
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
@@ -48,6 +49,13 @@ function sworkSelectObjectOnCityScene( ptr )
 		return 0		
 	end
 	
+	if node:GetName() == "univerNode" then
+		SetVisibleObjects( citySceneObjects, false )
+		SetVisibleObjects( univerSceneObjects, true )
+		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnUniverScene" )
+		return 0
+	end
+	
 end 
 
 function sworkMainLoop( ptr )
@@ -79,6 +87,26 @@ function sworkSelectObjectOnOfficeScene( ptr )
 	end
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-OFFICE:Не могу найти узел для работы "..nodeName )
+end
+
+function sworkSelectObjectOnUniverScene( ptr )
+	
+	local node = CLuaSceneNode( ptr )
+	local nodeName = node:GetName()
+
+	if nodeName == "stuffNode" then
+		sworkCreateEmployersWindow()
+		return 0
+	end
+
+	if nodeName == "exitUniverNode" then
+		SetVisibleObjects( univerSceneObjects, false )
+		SetVisibleObjects( citySceneObjects, true )
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnUniverScene" )
+		return 0
+	end
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-BANK:Не могу найти узел для работы "..nodeName )
 end
 
 function sworkSelectObjectOnBankScene( ptr )

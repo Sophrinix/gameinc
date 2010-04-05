@@ -5,6 +5,7 @@
 namespace nrp
 {
 	class CNrpGameProject;
+	class CNrpTechnology;
 }
 
 namespace nrp
@@ -24,7 +25,9 @@ public:
 	int IsMyGameEngine( lua_State* L );
 	int GetGameEngine( lua_State* L );
 	int GetCodeVolume( lua_State* L );
+	int GetCodeQuality( lua_State* L );
 	int GetScenario( lua_State* L );
+	int SetScenario( lua_State* L );
 	int GetLicense( lua_State* L );
 	int GetPlatformsNumber( lua_State* L );
 	int GetLanguagesNumber( lua_State* L );
@@ -45,9 +48,31 @@ public:
 	int SetVideoQuality( lua_State* L );
 	int GetVideoTech( lua_State* L );
 	int SetVideoTech( lua_State* L );
-	int GetVideotechNumber( lua_State* L );
+	int GetVideoTechNumber( lua_State* L );
+	int GetSoundTech( lua_State* L );
+	int SetSoundTech( lua_State* L );
+	int GetSoundTechNumber( lua_State* L );
+	int GetSoundQuality( lua_State* L );
+	int SetSoundQuality( lua_State* L );
+	int IsLangAvaible( lua_State* L );
+	int ToggleLanguage( lua_State* L );
+	int IsPlatformAvaible( lua_State* L );
+	int TogglePlatform( lua_State* L );
 																
 	static const char* StaticGetLuaName() { return "CLuaGameProject"; }
+private:
+	int SetNamedTech_( lua_State* L, std::string funcName, const std::string paramName );
+	
+	template< class T > int SetNumericalTech_( lua_State* L,
+											   std::string funcName, 
+											   void (T::*Method)( CNrpTechnology* tehc, int index) );
+
+	template< class T > int GetNumericalTech_( lua_State* L,
+											   std::string funcName, 
+											   CNrpTechnology* (T::*Method)( int index) );
+
+	int IsParamAvaible_( lua_State* L, std::string funcName, std::string prefix );
+	int ToggleParam_( lua_State* L, std::string funcName, std::string prefix );
 };
 
 }//namespace nrp

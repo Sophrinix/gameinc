@@ -44,7 +44,7 @@ function AddStartPublicTechnology()
 	
 	local videoTech = CLuaTech( app:CreateTechnology( PT_VIDEOTECH ) )
 	videoTech:SetTechType( VDT_TEXT_OUTPUT )
-	videoTech:SetName( "Вывод графики в виде текста" )
+	videoTech:SetName( "Вывод графики\n в виде текста" )
 	videoTech:SetBaseCode( 0.4 )
 	videoTech:SetAddingEngineCode( 0.2 )
 	videoTech:SetEngineTechRequire( VDT_TEXT_OUTPUT, 10 )
@@ -102,5 +102,41 @@ function AddStartPublicTechnology()
 
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология SCRLVL_SIMPLE")
 	app:AddPublicTechnology( phTech:Self() )
+	
+end
 
+function AddStartScenarioContentTechnology( ptr )
+	local vScn = CLuaTech( app:CreateTechnology( PT_SCENARIOQUALITY ) )
+
+	vScn:SetTechType( SCNQ_SELFWRITE )
+	vScn:SetName( "Написать самому" )
+	vScn:SetBaseCode( 0.2 )			--depended from engine code volume
+	vScn:SetQuality( 10 )
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VSQ_SELFWRITE")
+	app:AddPublicTechnology( vScn:Self() )
+end
+
+function AddStartSoundContentTechnology( ptr )
+	local vSn = CLuaTech( app:CreateTechnology( PT_SOUNDQUALITY ) )
+
+	vSn:SetTechType( VSQ_SELFCOMPOSE )
+	vSn:SetName( "Писать ноты" )
+	vSn:SetBaseCode( 1 )			--depended from engine code volume
+	vSn:SetEmployerSkillRequire( SKL_SOUND, 10 )
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VSQ_SELFCOMPOSE")
+	app:AddPublicTechnology( vSn:Self() )
+end
+
+function AddStartVideoContentTechnology( ptr )
+	local vCn = CLuaTech( app:CreateTechnology( PT_VIDEOQUALITY ) )
+
+	vCn:SetTechType( VDQ_SELFRENDER )
+	vCn:SetName( "Рисовать самим" )
+	vCn:SetBaseCode( 1 )			--depended from engine code volume
+	vCn:SetEmployerSkillRequire( SKL_DRAWING, 10 )
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VDQ_SELFRENDER")
+	app:AddPublicTechnology( vCn:Self() )
 end

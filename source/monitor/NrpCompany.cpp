@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "NrpCompany.h"
 #include "IUser.h"
+#include "NrpGameProject.h"
 
 namespace nrp
 {
@@ -20,7 +21,7 @@ CNrpCompany::~CNrpCompany(void)
 
 CNrpGameEngine* CNrpCompany::GetGameEngine( int index )
 {
-	return engines_.at( index );
+	return index < (int)engines_.size() ? engines_[ index ] : NULL;
 }
 
 void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
@@ -34,7 +35,7 @@ void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 
 CNrpTechnology* CNrpCompany::GetTech( int index )
 {
-	size_t tSize = technologies_.size();
+	int tSize = (int)technologies_.size();
 	if( index >= tSize )
 		return NULL;
 
@@ -42,6 +43,17 @@ CNrpTechnology* CNrpCompany::GetTech( int index )
 	for( int k=0; k < index; index++ ) tech++;
 
 	return (*tech).second;
+}
+
+CNrpGameProject* CNrpCompany::AddGameProject( CNrpGameProject* ptrProject )
+{
+	if( projects_.find( ptrProject->GetOption<std::string>( NAME ) ) == projects_.end() )
+	{
+		projects_[ ptrProject->GetOption<std::string>( NAME ) ] = ptrProject;
+		return ptrProject;
+	}
+
+	return NULL;
 }
 
 }//namespace nrp
