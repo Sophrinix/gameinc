@@ -31,7 +31,8 @@ public:
 	int GetTechNumber( lua_State* L );
 	int GetTech( lua_State* L );
 	int AddPublicTechnology( lua_State* L );
-	int GetEmployerNumber( lua_State *L );
+	int GetUserNumber( lua_State* L );
+	int GetUser( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:

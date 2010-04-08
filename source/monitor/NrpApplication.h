@@ -8,7 +8,7 @@ namespace nrp
 
 OPTION_NAME BANK( "bank" );
 OPTION_NAME TECHNUMBER( "techNumber" );
-OPTION_NAME EMPLOYERNUMBER( "employerNumber" );
+OPTION_NAME USERNUMBER( "userNumber" );
 
 class CNrpCompany;
 class IUser;
@@ -27,6 +27,7 @@ public:
 
 	int AddCompany( CNrpCompany* company );
 	int AddUser( bool player, IUser* user );
+	IUser* GetUser( int index );
 
 	nrp::INrpProject* CreateGameProject( std::string name );
 	nrp::CNrpGameEngine* CreateGameEngine( std::string name );
@@ -47,8 +48,7 @@ private:
 	~CNrpApplication(void);
 
 	COMPANY_LIST companies_;
-	USER_LIST employers_;
-	USER_LIST ceo_;
+	USER_LIST users_;
 	TECH_LIST technologies_;
 
 	SPEED speed_;

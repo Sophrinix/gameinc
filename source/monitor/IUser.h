@@ -13,17 +13,26 @@ OPTION_NAME MOOD( "mood" );/*< Настроение. При низком настроении может уволиться
 OPTION_NAME POPULARITY( "popularity" );/*< изветность разработчика */
 OPTION_NAME SALARY( "salary" );/*< зарплата разработчика*/
 OPTION_NAME STABILITY("stability");/*< скорость падения усталости */
+OPTION_NAME CHARACTER( "character" ); /*< характер персонажа */
+
+class IUserAction;
 
 class IUser : public INrpConfig
 {
 public:
 	IUser(const char* className, const char* systemName );
+	void SetSkill( int typen, int valuel ); 
+	int GetExperience( int skillType );
 	~IUser(void);
 private:         			
 	void Load_( char* file_name ) {}
-	std::map< std::string, int > genrePreferences_; /*< предпочтения в жанре */
-	std::map< std::string, int > genreExperience_;  /*< опыт написания игр*/
-	std::map< std::string, int > knowledges_;		/*< уровень знания технологий */
+	typedef std::map< std::string, int > NAMEVALUE_LIST;
+	typedef std::map< int, int > KNOWLEDGE_LIST;
+
+	NAMEVALUE_LIST genrePreferences_; /*< предпочтения в жанре */
+	NAMEVALUE_LIST genreExperience_;  /*< опыт написания игр*/
+	KNOWLEDGE_LIST knowledges_;		/*< уровень знания технологий */
+	std::map< std::string, IUserAction* > peopleFeels_; /*< Отношения с окружающими людьми */
 };
 
 typedef IUser* PUser;

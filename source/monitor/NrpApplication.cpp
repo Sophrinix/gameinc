@@ -26,7 +26,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 
 	options_[ BANK ] = new PNrpBank( NULL );
 	options_[ TECHNUMBER ] = new int( 0 );
-	options_[ EMPLOYERNUMBER ] = new int( 0 );
+	options_[ USERNUMBER ] = new int( 0 );
 }
 
 CNrpApplication::~CNrpApplication(void)
@@ -62,7 +62,8 @@ int CNrpApplication::AddCompany( CNrpCompany* company )
 int CNrpApplication::AddUser( bool player, IUser* user )
 {
 	if( user )
-		( player ? ceo_ : employers_ ).push_back( user );
+		users_.push_back( user );
+	SetOption<int>( USERNUMBER, users_.size() );
 	return 1;
 }
 
@@ -161,6 +162,11 @@ void CNrpApplication::AddTechnology( CNrpTechnology* ptrTech )
 {
 	technologies_.push_back( ptrTech );
 	SetOption<int>( TECHNUMBER, technologies_.size() );
+}
+
+IUser* CNrpApplication::GetUser( int index )
+{
+	return index < (int)users_.size() ? users_[ index ] : NULL;
 }
 
 CNrpApplication& nrp::CNrpApplication::Instance()

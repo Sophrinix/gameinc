@@ -33,7 +33,8 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddPublicTechnology ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetEmployerNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUser ),
 	{0,0}
 };
 
@@ -84,13 +85,11 @@ int CLuaApplication::CreateUser( lua_State *L )
 			user = new CNrpAiUser( name );
 			object_->AddUser( true, user );
 		}
-		else if( strcmp( userType, "coder") == 0 )
+		else 
 		{
-			user = new IUser( "CLuaCoder", "" );
+			user = new IUser( userType, "" );
 			object_->AddUser( false, user );
 		}
-
-		
 	}
 	lua_pushlightuserdata( L, (void*)user );
 
@@ -259,9 +258,22 @@ int CLuaApplication::AddPublicTechnology( lua_State* L )
 	return 1;
 }
 
-int CLuaApplication::GetEmployerNumber( lua_State *L )
+int CLuaApplication::GetUserNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetEmployerNumber", EMPLOYERNUMBER, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, "GetUserNumber", USERNUMBER, 0 ) );
+	return 1;
+}
+
+int CLuaApplication::GetUser( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need int parameter" );
+
+	int userNumber = lua_tointeger( L, 2 );
+	IUser* user = NULL;
+	IF_OBJECT_NOT_NULL_THEN	user = object_->GetUser( userNumber );
+
+	lua_pushlightuserdata( L, user );
 	return 1;
 }
 }//namespace nrp

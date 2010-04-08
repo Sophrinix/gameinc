@@ -36,7 +36,6 @@ protected:
 
 		return rectangle;
 	}
-
 	
 public:
 	

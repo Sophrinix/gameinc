@@ -64,6 +64,7 @@ AddStartCompanyTechnology()
 AddStartVideoContentTechnology()
 AddStartSoundContentTechnology()
 AddStartScenarioContentTechnology()
+AddStartEmployer()
 DebugFunctionCall( AddStartPublicTechnology )
 
 sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
