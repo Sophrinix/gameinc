@@ -20,29 +20,33 @@ function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 	windowg:SetText( user:GetName() )
 	windowg:SetDraggable( false )
 
-	guienv:AddLabel( "Опыт", 5, 30, 5 + 40, 30 + 20, -1, windowg:Self() )
+	guienv:AddLabel( "Опыт", 5, 30, width, 30 + 20, -1, windowg:Self() )
 	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 50, 30, width - 5, 30 + 20, -1 ) )
 	prg:SetPosition( user:GetExperience( SKILL_MIDDLE ) )						   
-	prg:SetImage( "media/starprogressbar.png" )
-	prg:SetFillImage( "media/starprogressbarf.png" )
+	prg:SetImage( "media/starprogressbarB.png" )
+	prg:SetFillImage( "media/starprogressbar.png" )
 	
---[[	guienv:AddLabel( "Качество", 5, 55, 5 + 40, 55 + 20, -1, windowg:Self() )
-	guienv:AddProgressBar( "media/starprogressbar.png", "media/starprogressbarf.png", 
-						   50, 55, width - 5, 55 + 20, user:GetParam("codeQuality") ) 	
+	guienv:AddLabel( "Качество", 5, 50, width, 50 + 20, -1, windowg:Self() )
+	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 55, width - 5, 55 + 20, -1 ) )
+	prg:SetPosition( user:GetParam("codeQuality") ) 	
+	prg:SetImage( "media/starprogressbarB.png" )
+	prg:SetFillImage( "media/starprogressbar.png" )
 
-    guienv:AddLabel( "Скорость", 5, 80, 5 + 40, 80 + 20, -1, windowg:Self() )
-	guienv:AddProgressBar( "media/starprogressbar.png", "media/starprogressbarf.png", 
-						   50, 80, width - 5, 80 + 20, user:GetParam("codeSpeed") ) 
+    guienv:AddLabel( "Скорость", 5, 70, width, 70 + 20, -1, windowg:Self() )
+	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 80, width - 5, 80 + 20, -1 ) )
+	prg:SetPosition( user:GetParam("codeSpeed") ) 
+	prg:SetImage( "media/starprogressbarB.png" )
+	prg:SetFillImage( "media/starprogressbar.png" )
 
-    guienv:AddLabel( "Устойчивость", 5, 105, 5 + 40, 105 + 20, -1, windowg:Self() )
-	guienv:AddProgressBar( "media/starprogressbar.png", "media/starprogressbarf.png", 
-						   50, 105, width - 5, 105 + 20, user:GetParam("stability") ) 
-						   
-    guienv:AddLabel( "Зарплата: "..user:GetParam( "salary" ).."$", 5, 130, 5 + 40, 130 + 20, -1, windowg:Self() )
+    guienv:AddLabel( "Устойчивость", 5, 90, width, 90 + 20, -1, windowg:Self() )
+	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 105, width - 5, 105 + 20, -1 ) )
+	prg:SetPosition( user:GetParam("stability") ) 
+	prg:SetImage( "media/starprogressbarB.png" )
+	prg:SetFillImage( "media/starprogressbar.png" )
+					   
+    guienv:AddLabel( "Зарплата: "..user:GetParam( "wantmoney" ).."$", 5, 110, width, 110 + 20, -1, windowg:Self() )
 	
-	local button = CLuaButton( guienv:AddButton( width / 2 - 15, height - 35, width / 2 + 15, height - 5, windowg:Self(), -1, "Нанять") )
-	button:SetAction( "sworkUpEmployer" )
---]]					   
+	windowg:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkUpEmployer" )				   
 end
 
 local function ShowAvaibleEmployers( ptr )

@@ -12,6 +12,7 @@ OPTION_NAME STAMINA( "stamina" );/*< Усталость. При значении ниже 90% умножается
 OPTION_NAME MOOD( "mood" );/*< Настроение. При низком настроении может уволиться */
 OPTION_NAME POPULARITY( "popularity" );/*< изветность разработчика */
 OPTION_NAME SALARY( "salary" );/*< зарплата разработчика*/
+OPTION_NAME WANTMONEY( "wantmoney" ); /*! Зарплата, которой будет доволен юзер */
 OPTION_NAME STABILITY("stability");/*< скорость падения усталости */
 OPTION_NAME CHARACTER( "character" ); /*< характер персонажа */
 
@@ -26,6 +27,7 @@ public:
 	~IUser(void);
 private:         			
 	void Load_( char* file_name ) {}
+	void CalculateWantSalary_();
 	typedef std::map< std::string, int > NAMEVALUE_LIST;
 	typedef std::map< int, int > KNOWLEDGE_LIST;
 

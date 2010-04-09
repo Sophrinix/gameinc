@@ -80,20 +80,11 @@ void CNrpProgressBar::draw()
 
 	if (Texture)
 	{
-		if (ScaleImage)
-		{
-			const video::SColor Colors[] = {Color,Color,Color,Color};
+		const video::SColor Colors[] = {Color,Color,Color,Color};
 
-			driver->draw2DImage(Texture, AbsoluteRect,
+		driver->draw2DImage(Texture, AbsoluteRect,
 				core::rect<s32>(core::position2d<s32>(0,0), core::dimension2di(Texture->getOriginalSize())),
 				&AbsoluteClippingRect, Colors, UseAlphaChannel);
-		}
-		else
-		{
-			driver->draw2DImage(Texture, AbsoluteRect.UpperLeftCorner,
-				core::rect<s32>(core::position2d<s32>(0,0), core::dimension2di(Texture->getOriginalSize())),
-				&AbsoluteClippingRect, Color, UseAlphaChannel);
-		}
 	}
 	else
 	{
@@ -102,35 +93,17 @@ void CNrpProgressBar::draw()
 
 	if (fillTexture_)
 	{
+		const video::SColor Colors[] = {Color,Color,Color,Color};
 
-		if (ScaleImage)
-		{
-			const video::SColor Colors[] = {Color,Color,Color,Color};
+		core::recti dr = AbsoluteRect;
+		dr.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + AbsoluteRect.getWidth() * position_ / 100.f;
 
-			core::recti fillRect;
-			fillRect.UpperLeftCorner = AbsoluteRect.UpperLeftCorner;
-			fillRect.LowerRightCorner = AbsoluteRect.UpperLeftCorner + 
-										core::position2di( 
-															AbsoluteRect.getWidth() * position_ / 100.f, 
-															AbsoluteRect.getHeight() 
-														 ); 
+		core::recti rt = core::recti(core::position2di(0,0), 
+									 core::dimension2di( fillTexture_->getOriginalSize().Width * position_ / 100.f, 
+														 fillTexture_->getOriginalSize().Height ) );
 
-			driver->draw2DImage(fillTexture_, AbsoluteRect,
-								core::recti(core::position2d<s32>(0,0), 
-											core::dimension2di(	
-											                    fillTexture_->getOriginalSize().Width * position_ / 100.f, 
-																fillTexture_->getOriginalSize().Height
-															  )
-										   ),
-								&AbsoluteClippingRect, Colors, UseAlphaChannel
-							   );
-		}
-		else
-		{
-			driver->draw2DImage(fillTexture_, AbsoluteRect.UpperLeftCorner,
-								core::rect<s32>(core::position2d<s32>(0,0), core::dimension2di( AbsoluteRect.getWidth() * position_ / 100.f, AbsoluteRect.getHeight() )),
-								&AbsoluteClippingRect, Color, UseAlphaChannel);
-		}
+		driver->draw2DImage(fillTexture_, dr, rt,
+							&AbsoluteClippingRect, Colors, UseAlphaChannel  );
 	}
 	else
 	{
@@ -139,6 +112,13 @@ void CNrpProgressBar::draw()
 		fillRect.LowerRightCorner = AbsoluteRect.UpperLeftCorner + core::position2di( AbsoluteRect.getWidth() * position_ / 100.f, AbsoluteRect.getHeight() ); 
 
 		skin->draw2DRectangle(this, video::SColor( Color.getAlpha(), 0xff, 0, 0 ), fillRect, &AbsoluteClippingRect );
+	}
+
+	IGUIFont* font = Environment->getBuiltInFont();
+	if( font )
+	{
+		core::recti cr = AbsoluteClippingRect;
+		font->draw( Text, AbsoluteRect, video::SColor( 0xff0000ff ), true, true, &cr );
 	}
 
 	IGUIElement::draw();

@@ -23,9 +23,9 @@ public:
 	virtual void setFillImage( video::ITexture* image );
 	virtual void setPosition( u32 pos );
 	virtual int	 getPosition() const;
-	virtual void setPostfixText( const wchar_t* text );
-	virtual void setPrefixText( const wchar_t* text );
-	virtual void setTextVisible( bool visible );
+	//virtual void setPostfixText( const wchar_t* text );
+	//virtual void setPrefixText( const wchar_t* text );
+	//virtual void setTextVisible( bool visible );
 
 	//! sets the color of the image
 	virtual void setColor(video::SColor color);

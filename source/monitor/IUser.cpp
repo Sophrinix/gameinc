@@ -19,6 +19,7 @@ IUser::IUser(const char* className, const char* systemName ) : INrpConfig( class
 	options_[ STABILITY ] = new int( 0 );
 	options_[ BALANCE ] = new int( 0 );
 	options_[ CHARACTER ] = new int( 0 );
+	options_[ WANTMONEY ] = new int( 0 );
 }
 
 IUser::~IUser(void)
@@ -28,6 +29,23 @@ IUser::~IUser(void)
 void IUser::SetSkill( int typen, int valuel )
 {
 	knowledges_[ typen ] = valuel;
+
+	CalculateWantSalary_();
+}
+
+
+void IUser::CalculateWantSalary_()
+{
+	KNOWLEDGE_LIST::iterator pIter = knowledges_.begin();
+	int sum = 0;
+	int cash = 500;
+	for( ; pIter != knowledges_.end(); ++pIter)
+	{
+		 sum += pIter->second * cash / 100;
+		 cash *= (cash > 100 ? 0.9 : 1);
+	}
+
+	SetOption<int>( WANTMONEY, sum );
 }
 
 int IUser::GetExperience( int skillType )

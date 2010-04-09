@@ -88,6 +88,7 @@ int CLuaApplication::CreateUser( lua_State *L )
 		else 
 		{
 			user = new IUser( userType, "" );
+			user->SetOption<std::string>( NAME, name );
 			object_->AddUser( false, user );
 		}
 	}
