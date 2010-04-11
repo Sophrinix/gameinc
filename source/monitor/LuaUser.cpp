@@ -17,8 +17,8 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaUser, SetSkill ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, SetCharacter ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTypeName ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetExperience ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetParam ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, SetParam ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, IsTypeAs ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetName ),
 	{0,0}
@@ -60,20 +60,6 @@ int CLuaUser::GetTypeName( lua_State* L )
 
 	lua_pushstring( L, name.c_str() );
 	return 1;	
-}
-
-int CLuaUser::GetExperience( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetExperience need SKILL_TYPE parameter" );
-
-	int skillType = lua_tointeger( L, 2 );
-	int result = 0;
-
-	IF_OBJECT_NOT_NULL_THEN result = object_->GetExperience( skillType );
-
-	lua_pushinteger( L, result );
-	return 1;
 }
 
 int CLuaUser::GetParam( lua_State* L )
@@ -118,5 +104,18 @@ int CLuaUser::GetName( lua_State* L )
 
 	lua_pushstring( L, name.c_str() );
 	return 1;	
+}
+
+int CLuaUser::SetParam( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaUser:SetParam need string, int parameter" );
+
+	const char* name = lua_tostring( L, 2 );
+	assert( name != NULL );
+	int valuel = lua_tointeger( L, 3 );
+
+	IF_OBJECT_NOT_NULL_THEN object_->SetSkill( name, valuel );
+	return 1;		
 }
 }//namespace nrp

@@ -145,14 +145,17 @@ function AddStartEmployer( ptr )
 	local coder = CLuaUser( app:CreateUser( "coder", "Villi Salo" ) )
 	coder:SetSkill( SKL_CODING, 20 )
 	coder:SetCharacter( 50 ) --neutral character
+	coder:SetParam( "codeQuality", 34 )
 	
 	coder:SetObject( app:CreateUser( "coder", "Villi Nokia" ) )
 	coder:SetSkill( SKL_CODING, 15 )
 	coder:SetCharacter( 60 ) --положительный характер
+	coder:SetParam( "codeQuality", 45  )
 	
 	local designer = CLuaUser( app:CreateUser( "designer", "Villi Desire" ) )
 	designer:SetSkill( SKL_DRAWING, 20 )
 	designer:SetCharacter( 50 )
+	designer:SetParam( "codeQuality", 40 )
 	
 	local composer = CLuaUser( app:CreateUser( "composer", "Villi Compose" ) )
 	composer:SetSkill( SKL_SOUND, 20 )

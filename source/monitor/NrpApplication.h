@@ -27,6 +27,7 @@ public:
 
 	int AddCompany( CNrpCompany* company );
 	int AddUser( bool player, IUser* user );
+	int RemoveUser( IUser* user );
 	IUser* GetUser( int index );
 
 	nrp::INrpProject* CreateGameProject( std::string name );

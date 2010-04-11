@@ -169,6 +169,19 @@ IUser* CNrpApplication::GetUser( int index )
 	return index < (int)users_.size() ? users_[ index ] : NULL;
 }
 
+int CNrpApplication::RemoveUser( IUser* user )
+{
+	USER_LIST::iterator pIter = users_.begin();
+	for( ; pIter != users_.end(); ++pIter )
+		if( (*pIter) == user )
+		{
+			users_.erase( pIter );
+			return 0;
+		}
+
+	return 1;
+}
+
 CNrpApplication& nrp::CNrpApplication::Instance()
 {
 	if( !globalApplication )

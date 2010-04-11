@@ -11,6 +11,7 @@ OPTION_NAME BASE_CODE( "baseCode" );
 OPTION_NAME ENGINE_CODE( "engineCode" );
 OPTION_NAME LEVEL( "level" );
 OPTION_NAME PARENT( "parent" );
+OPTION_NAME COMPONENTLIDER( "componentLider" );
 
 class CNrpTechnology : public INrpProject
 {

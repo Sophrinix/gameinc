@@ -31,6 +31,7 @@ public:
 	CNrpGameEngine* GetGameEngine( int index );
 	CNrpTechnology* GetTech( int index );
 	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
+	void AddUser( IUser* user );
 
 private:
 	void Load_( char* file_name ) {}

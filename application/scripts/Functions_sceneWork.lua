@@ -78,6 +78,11 @@ function sworkSelectObjectOnOfficeScene( ptr )
 		sworkCreateWindowWizardProject()
 		return 0
 	end
+	
+	if nodeName == "showCompanyEmployers" then
+		sworkCreateWindowEmployersManage()
+		return 0	
+	end
 
 	if nodeName == "exitOfficeNode" then
 		SetVisibleObjects( officeSceneObjects, false )

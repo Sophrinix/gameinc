@@ -31,6 +31,7 @@ class CNrpGameProject : public INrpProject
 {
 public:
 	CNrpGameProject( std::string name );
+	CNrpGameProject( CNrpGameProject* nProject );
 	~CNrpGameProject(void);
 
 	void SetGameEngine( CNrpGameEngine* gameEng );
@@ -59,7 +60,7 @@ public:
 private:
 
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
-
+	CNrpGameProject( CNrpGameProject& ptr );
 	TECH_LIST technologies_;
 	TECH_LIST genres_;
 	TECH_LIST videoTechnologies_;

@@ -19,8 +19,8 @@ public:
 	int SetSkill( lua_State* L );
 	int SetCharacter( lua_State* L );
 	int GetTypeName( lua_State* L );
-	int GetExperience( lua_State* L );
 	int GetParam( lua_State* L );
+	int SetParam( lua_State* L );
 	int GetName( lua_State* L );
 	int IsTypeAs( lua_State* L );
 

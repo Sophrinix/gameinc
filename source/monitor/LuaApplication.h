@@ -33,6 +33,8 @@ public:
 	int AddPublicTechnology( lua_State* L );
 	int GetUserNumber( lua_State* L );
 	int GetUser( lua_State* L );
+	int GetUserByName( lua_State* L );
+	int RemoveUser( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:

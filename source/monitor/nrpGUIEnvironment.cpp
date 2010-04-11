@@ -252,6 +252,32 @@ irr::gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* caption,
 	return native_gui_->addMessageBox( caption, text, modal, flags, parent, id, image );
 }
 
+gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 flags, core::array< const char* >& funcNames )
+{
+	core::dimension2du scrsize = getVideoDriver()->getScreenSize();
+	core::recti rectangle( scrsize.Width / 2 - 200, scrsize.Height / 2 - 100, scrsize.Width / 2 + 200, scrsize.Height / 2 + 100 );
+	IGUIWindow* wnd = new CNrpWindow( this, getRootGUIElement(), NULL, -1, rectangle );
+	rectangle = wnd->getRelativePosition();
+	addStaticText( text, core::recti( 20, 20, rectangle.getWidth() - 20, 40 ), false, false, wnd, -1, false );
+
+	core::recti btnRect( rectangle.getWidth() / 2 - 60, rectangle.getHeight() - 40, rectangle.getWidth() / 2 + 50,  rectangle.getHeight() - 20 );
+	if( flags & gui::EMBF_YES )
+	{
+		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"Yes", 0 );
+		btn->setOnClickAction( funcNames[ 0 ] );
+	}
+
+	btnRect += core::position2di( 70, 0 );
+	if( flags & gui::EMBF_NO )
+	{
+		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"No", 0 );
+		btn->setOnClickAction( funcNames[ 1 ] );
+	}
+
+	return wnd;
+}
+
+
 irr::gui::IGUICheckBox* CNrpGUIEnvironment::addCheckBox( bool checked, 
 														const irr::core::rect< irr::s32 >& rectangle, 
 														irr::gui::IGUIElement* parent /*= 0*/, 

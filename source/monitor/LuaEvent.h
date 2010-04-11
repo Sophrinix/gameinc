@@ -21,6 +21,7 @@ public:
 	int GetTime( lua_State* L );
 	int GetChar( lua_State* L );
 	int IsKeyDown( lua_State* L );
+	int GetGuiCaller( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaEvent"; }
 };

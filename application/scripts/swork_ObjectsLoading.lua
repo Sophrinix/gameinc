@@ -122,6 +122,18 @@ function AddObjectsToOfficeScene()
 	officeSceneObjects[ 0 ] = newProj:Self()	
 	x = x + 1
 	
+	local showEmployers = CLuaSceneNode( sceneManager:AddCubeSceneNode( "showCompanyEmployers" ) )
+	showEmployers:SetScale( 30, 40, 30 )
+	showEmployers:SetVisible( false )
+	showEmployers:SetPosition( x * delta, 800, y *delta )
+	showEmployers:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	showEmployers:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showEmployers:Self() )
+	showEmployers:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( showEmployers:Self(), "showCompanyEmployers" )
+	officeSceneObjects[ 1 ] = showEmployers:Self()	
+	x = x + 1
+	
 	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitOfficeNode" ) )
 	exitN:SetScale( 30, 40, 30 )
 	exitN:SetVisible( false )
@@ -131,7 +143,7 @@ function AddObjectsToOfficeScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	officeSceneObjects[ 1 ] = exitN:Self()	
+	officeSceneObjects[ 2 ] = exitN:Self()	
 
 end
 

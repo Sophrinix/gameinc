@@ -20,6 +20,7 @@ IUser::IUser(const char* className, const char* systemName ) : INrpConfig( class
 	options_[ BALANCE ] = new int( 0 );
 	options_[ CHARACTER ] = new int( 0 );
 	options_[ WANTMONEY ] = new int( 0 );
+	options_[ CONTRACTMONEY ] = new int( 0 );
 }
 
 IUser::~IUser(void)
@@ -33,6 +34,12 @@ void IUser::SetSkill( int typen, int valuel )
 	CalculateWantSalary_();
 }
 
+void IUser::SetSkill( std::string name, int valuel )
+{
+	SetOption<int>( name, valuel );
+
+	CalculateWantSalary_();
+}
 
 void IUser::CalculateWantSalary_()
 {
@@ -45,27 +52,23 @@ void IUser::CalculateWantSalary_()
 		 cash *= (cash > 100 ? 0.9 : 1);
 	}
 
+	sum += GetOption<int>( CODE_QUALITY ) * 10;
+
 	SetOption<int>( WANTMONEY, sum );
+
+	CalculateKnowledgeLevel_();
 }
 
-int IUser::GetExperience( int skillType )
+void IUser::CalculateKnowledgeLevel_()
 {
 	int sum = 0;
-	switch( skillType )
+	KNOWLEDGE_LIST::iterator pIter = knowledges_.begin();
+	for( ; pIter != knowledges_.end(); ++pIter)
 	{
-	case SKILL_MIDDLE:
-		{
-			KNOWLEDGE_LIST::iterator pIter = knowledges_.begin();
-			for( ; pIter != knowledges_.end(); ++pIter)
-			{
 				sum += pIter->second;
 				sum /= 2;
-			}
-		}
-	break;
-		 
 	}
-
-	return sum;
+	
+	SetOption<int>( KNOWLEDGE_LEVEL, sum );
 }
 }//namespace nrp

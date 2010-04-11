@@ -4,6 +4,7 @@
 #include "NrpScenario.h"
 #include "NrpLicense.h"
 #include "NrpTechnology.h"
+#include "IUser.h"
 
 namespace nrp
 {
@@ -24,9 +25,9 @@ CNrpGameProject::CNrpGameProject( std::string name ) : INrpProject( "CNrpGamePro
 	options_[ SCRIPTENGINE ] = new PNrpTechnology( NULL );
 	options_[ MINIGAMEENGINE ] = new PNrpTechnology( NULL );
 	options_[ PHYSICSENGINE ] = new PNrpTechnology( NULL );
-	options_[ GRAPHICQUALITY ] = new int( 0 );
+	options_[ GRAPHICQUALITY ] = new PNrpTechnology( NULL );
 	options_[ VIDEOTECHNUMBER ] = new int( 0 );
-	options_[ SOUNDQUALITY ] = new int( 0 );
+	options_[ SOUNDQUALITY ] = new PNrpTechnology( NULL );
 	options_[ SOUNDTECHNUMBER ] = new int( 0 );
 	options_[ LANGNUMBER ] = new int( 0 );
 	options_[ PLATFORMNUMBER ] = new int( 0 );
@@ -35,6 +36,76 @@ CNrpGameProject::CNrpGameProject( std::string name ) : INrpProject( "CNrpGamePro
 	options_[ ADVTECHNUMBER ] = new int( 0 );
 	options_[ ENGINE_CODEVOLUME ] = new int( 0 );
 	options_[ QUALITY ] = new int( 0 );
+}
+
+CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CNrpGameProject", nProject->GetOption<std::string>( NAME ) )
+{
+	SetOption<PNrpGameEngine>( GAME_ENGINE, GetOption<PNrpGameEngine>( GAME_ENGINE ) );
+	SetOption<int>( GENRE_MODULE_NUMBER, nProject->GetOption<int>( GENRE_MODULE_NUMBER ) );
+	SetOption<PNrpGameProject>( PREV_GAME, nProject->GetOption<PNrpGameProject>( PREV_GAME ) );
+	SetOption<int>( BASE_CODEVOLUME, nProject->GetOption<int>( BASE_CODEVOLUME ) );
+	SetOption<int>( TECHTYPE, nProject->GetOption<int>( TECHTYPE ) );
+	SetOption<PNrpScenario>( SCENARIO, nProject->GetOption<PNrpScenario>( SCENARIO ) );
+	SetOption<PNrpLicense>( GLICENSE, nProject->GetOption<PNrpLicense>( GLICENSE ) );
+	SetOption<PNrpTechnology>( SCRIPTENGINE, new CNrpTechnology( *nProject->GetOption<PNrpTechnology>( SCRIPTENGINE ) ) );
+	SetOption<PNrpTechnology>( MINIGAMEENGINE, new CNrpTechnology( *nProject->GetOption<PNrpTechnology>( MINIGAMEENGINE ) ) );
+	SetOption<PNrpTechnology>( PHYSICSENGINE, new CNrpTechnology( *nProject->GetOption<PNrpTechnology>( PHYSICSENGINE ) ) );
+	SetOption<PNrpTechnology>( GRAPHICQUALITY, new CNrpTechnology( *nProject->GetOption<PNrpTechnology>( GRAPHICQUALITY ) ) );
+	SetOption<int>( VIDEOTECHNUMBER, nProject->GetOption<int>( VIDEOTECHNUMBER ) );
+	SetOption<PNrpTechnology>( SOUNDQUALITY, new CNrpTechnology( *nProject->GetOption<PNrpTechnology>( SOUNDQUALITY ) ) );
+	SetOption<int>( SOUNDTECHNUMBER, nProject->GetOption<int>( SOUNDTECHNUMBER ) );
+	SetOption<int>( LANGNUMBER, nProject->GetOption<int>( LANGNUMBER ) );
+	SetOption<int>( PLATFORMNUMBER, nProject->GetOption<int>( PLATFORMNUMBER ) );
+	SetOption<int>( BASEQUALITY, nProject->GetOption<int>( BASEQUALITY ) );
+	SetOption<bool>( PROJECTREADY, false );
+	SetOption<int>( ADVTECHNUMBER, nProject->GetOption<int>( ADVTECHNUMBER ) );
+	SetOption<int>( ENGINE_CODEVOLUME, nProject->GetOption<int>( ENGINE_CODEVOLUME) );
+	SetOption<int>( QUALITY, 0 );
+
+	TECH_LIST::iterator pIter = nProject->technologies_.begin();
+	technologies_.clear();
+	for( ; pIter != nProject->technologies_.end(); ++pIter )
+	{
+		CNrpTechnology* nTech = new CNrpTechnology( *(*pIter) );
+		nTech->SetOption<PNrpGameProject>( PARENT, this );
+		nTech->SetOption<PUser>( COMPONENTLIDER, NULL ); 
+		technologies_.push_back( nTech );
+	}
+
+	pIter = nProject->genres_.begin();
+	genres_.clear();
+	for( ; pIter != nProject->genres_.end(); ++pIter )
+	{
+		CNrpTechnology* nTech = new CNrpTechnology( *(*pIter) );
+		nTech->SetOption<PNrpGameProject>( PARENT, this );
+		nTech->SetOption<PUser>( COMPONENTLIDER, NULL ); 
+		genres_.push_back( nTech );
+	}
+
+	pIter = nProject->videoTechnologies_.begin();
+	videoTechnologies_.clear();
+	for( ; pIter != nProject->videoTechnologies_.end(); ++pIter )
+	{
+		CNrpTechnology* nTech = new CNrpTechnology( *(*pIter) );
+		nTech->SetOption<PNrpGameProject>( PARENT, this );
+		nTech->SetOption<PUser>( COMPONENTLIDER, NULL ); 
+		videoTechnologies_.push_back( nTech );
+	}
+
+	pIter = nProject->soundTechnologies_.begin();
+	soundTechnologies_.clear();
+	for( ; pIter != nProject->soundTechnologies_.end(); ++pIter )
+	{
+		CNrpTechnology* nTech = new CNrpTechnology( *(*pIter) );
+		nTech->SetOption<PNrpGameProject>( PARENT, this );
+		nTech->SetOption<PUser>( COMPONENTLIDER, NULL ); 
+		soundTechnologies_.push_back( nTech );
+	}
+}
+
+CNrpGameProject::CNrpGameProject( CNrpGameProject& ptr ) : INrpProject( "CNrpGameProject", ptr.GetOption<std::string>( NAME ) )
+{
+
 }
 
 CNrpGameProject::~CNrpGameProject(void)
@@ -91,9 +162,9 @@ void CNrpGameProject::FindPlaformsAndLanguages_()
 void CNrpGameProject::CalculateCodeVolume()
 {
 	FindPlaformsAndLanguages_();
-	int baseCode = GetOption<int>( BASE_CODEVOLUME );
+	float baseCode = (float)GetOption<int>( BASE_CODEVOLUME );
 
-	int summ = 0;
+	float summ = 0;
 	float engCoeff = 1;
 	int quality = 0;
 
@@ -118,7 +189,7 @@ void CNrpGameProject::CalculateCodeVolume()
 		}
 
 	baseCode *= engCoeff;
-	SetOption<int>( ENGINE_CODEVOLUME, baseCode );
+	SetOption<int>( ENGINE_CODEVOLUME, (int)baseCode );
 
 	techIter = rt.begin();
 	for( ; techIter != rt.end(); ++techIter)
@@ -136,7 +207,7 @@ void CNrpGameProject::CalculateCodeVolume()
 	projectReady &= ( GetOption<int>( LANGNUMBER ) > 0 && GetOption<int>( PLATFORMNUMBER ) > 0 );
 	projectReady &= ( GetGenre( 0 ) != NULL );
 	
-	SetOption<int>( CODEVOLUME, summ );
+	SetOption<int>( CODEVOLUME, (int)summ );
 	SetOption<int>( QUALITY, quality ); 
 	SetOption<bool>( PROJECTREADY, projectReady );
 }

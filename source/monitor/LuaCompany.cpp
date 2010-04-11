@@ -22,6 +22,7 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateGameProject ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser ),
 	{0,0}
 };
 
@@ -105,16 +106,28 @@ int CLuaCompany::GetTech( lua_State* L )
 int CLuaCompany::CreateGameProject( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetTech need int parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetTech need CNrpGameProject* parameter" );
 
 	CNrpGameProject* ptrData = (CNrpGameProject*)lua_touserdata( L, 2 );
 	assert( ptrData != NULL );
 
 	CNrpGameProject* result = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN	result = object_->AddGameProject( new CNrpGameProject( *ptrData ) );
+	IF_OBJECT_NOT_NULL_THEN	result = object_->AddGameProject( new CNrpGameProject( ptrData ) );
 
 	lua_pushlightuserdata( L, result );
 	return 1;	
+}
+
+int CLuaCompany::AddUser( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:AddUser need IUser* parameter" );
+
+	IUser* ptrData = (IUser*)lua_touserdata( L, 2 );
+	assert( ptrData != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->AddUser( ptrData );
+	return 1;		
 }
 }//namespace nrp

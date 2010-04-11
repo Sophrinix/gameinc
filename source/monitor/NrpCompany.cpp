@@ -56,4 +56,8 @@ CNrpGameProject* CNrpCompany::AddGameProject( CNrpGameProject* ptrProject )
 	return NULL;
 }
 
+void CNrpCompany::AddUser( IUser* user )
+{
+	employers_[ user->GetOption<std::string>( NAME ) ] = user;
+}
 }//namespace nrp

@@ -68,6 +68,7 @@ public:
 									s32 id/* =-1 */, 
 									const wchar_t* text/* =0 */);
 
+	gui::IGUIWindow* addMessageBox(const wchar_t* text, s32 flags, core::array< const char* >& funcNames );
 	gui::IGUIWindow* addMessageBox(const wchar_t* caption, const wchar_t* text=0,
 										bool modal = true, 
 										s32 flags = gui::EMBF_OK, 

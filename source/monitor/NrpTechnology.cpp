@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "NrpTechnology.h"
+#include "IUser.h"
 
 namespace nrp
 {
@@ -14,6 +15,7 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnol
 	options_[ LEVEL ] = new int( 0 );
 	options_[ PARENT ] = new LPVOID( NULL );
 	options_[ QUALITY ] = new int( 100 );
+	options_[ COMPONENTLIDER ] = new PUser( NULL );
 }
 
 CNrpTechnology::~CNrpTechnology(void)

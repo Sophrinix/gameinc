@@ -13,16 +13,19 @@ local modeUserView = "coder"
 local width = 800
 local height = 600
 
+local userToUp = nil
+
 function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
-	
 	local user = CLuaUser( userPtr )
 	local windowg = CLuaWindow( guienv:AddWindow( "", x, y, x + width, y + height, -1, parentWnd ) )
+	local button = CLuaButton( windowg:GetCloseButton() )
+	button:SetVisible( false )
 	windowg:SetText( user:GetName() )
 	windowg:SetDraggable( false )
 
 	guienv:AddLabel( "Опыт", 5, 30, width, 30 + 20, -1, windowg:Self() )
 	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 50, 30, width - 5, 30 + 20, -1 ) )
-	prg:SetPosition( user:GetExperience( SKILL_MIDDLE ) )						   
+	prg:SetPosition( user:GetParam( "knowledgeLevel" ) )						   
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 	
@@ -44,9 +47,30 @@ function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 					   
-    guienv:AddLabel( "Зарплата: "..user:GetParam( "wantmoney" ).."$", 5, 110, width, 110 + 20, -1, windowg:Self() )
+    guienv:AddLabel( "Зарплата: "..user:GetParam( "wantMoney" ).."$", 5, 110, width, 110 + 20, -1, windowg:Self() )
 	
 	windowg:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkUpEmployer" )				   
+end
+
+function sworkUpEmployer( ptr )
+	local event = CLuaEvent( ptr )
+	local windowg = CLuaWindow( event:GetGuiCaller() )
+	local name = windowg:GetText() 
+	
+	local userToUp = applic:GetUserByName( name )
+	if userToUp:GetParam( "contractMoney" ) > 0 then 
+	    local money = userToUp:GetParam( "contractMoney" ) * userToUp:GetParam( "wantMoney" )
+		guienv:MessageBox( "Деньги за контракт $" .. money, true, true, "sworkEmployContractUser", "" )
+		return 0
+	end
+	
+	sworkEmployContractUser()
+end
+
+function sworkEmployContractUser()
+	local company = CLuaCompany( applic:GetPlayerCompany() )
+	company:AddUser( user:Self() )
+	applic:RemoveUser( user:Self() )
 end
 
 local function ShowAvaibleEmployers( ptr )
@@ -81,7 +105,7 @@ local function ShowAvaibleEmployers( ptr )
 end
 
 function sworkCreateEmployersWindow( ptr )
-	local windowg = CLuaWindow( guienv:AddWindow( "", 0, 0, 800, 600, -1, guienv:GetRootGUIElement() ) )
+	local windowg = CLuaWindow( guienv:AddWindow( "", 0, 0, 800, 600, WINDOW_EMPLOYER_SELECT, guienv:GetRootGUIElement() ) )
 	
 	local button = CLuaButton( guienv:AddButton( 10, 10, 200, 100, windowg:Self(), -1, "Программисты" ) )
 	button:SetAction( "sworkChangerUserType" )
@@ -98,9 +122,10 @@ function sworkCreateEmployersWindow( ptr )
 	ShowAvaibleEmployers( windowg:Self() )
 end
 
-local function sworkChangerUserType( ptr )
-
+function sworkChangerUserType( ptr )
 	local button = CLuaButton( ptr )
 	modeUserView = mode[ button:GetText() ] 
-	
+	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYER_SELECT ) )
+	windowg:Remove()
+	sworkCreateEmployersWindow()
 end

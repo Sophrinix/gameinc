@@ -18,6 +18,7 @@ Luna< CLuaEvent >::RegType CLuaEvent::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetChar ),
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, IsKeyDown ),
+	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetGuiCaller ),
 	{0,0}
 };
 
@@ -87,5 +88,18 @@ int CLuaEvent::IsKeyDown( lua_State* L )
 	lua_pushboolean( L, isDown );
 
 	return 1;	
+}
+
+int CLuaEvent::GetGuiCaller( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaEvent:GetGuiCaller not need any parameter");
+
+	gui::IGUIElement* caller = NULL;
+	IF_OBJECT_NOT_NULL_THEN	caller = object_->GUIEvent.Caller;
+
+	lua_pushlightuserdata( L, caller );
+
+	return 1;
 }
 }//namespace nrp

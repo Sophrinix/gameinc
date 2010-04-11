@@ -52,6 +52,7 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SetDragObject ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetDragObject ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddComponentListBox ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, MessageBox ),
 	{0,0}
 };
 
@@ -647,5 +648,27 @@ int CLuaGuiEnvironment::AddComponentListBox( lua_State* L )
 		elm = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addComponentListBox( rectangle, parent, iid );
 
 	return 1;
+}
+
+int CLuaGuiEnvironment::MessageBox( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	core::array< const char* > funcs; 
+	luaL_argcheck(L, argc == 6, 6, "Function CLuaSceneManager:MessageBox need 6 parameter");
+
+	const char* text = lua_tostring( L, 2 );
+	assert( text != NULL );
+	bool btnYesVisible = lua_toboolean( L, 3 )>0;
+	bool btnNoVisible = lua_toboolean( L, 4 )>0;
+
+	funcs.push_back( lua_tostring( L, 5 ) );
+	funcs.push_back( lua_tostring( L, 6 ) );
+
+	int flags = (btnYesVisible ? gui::EMBF_YES : 0) | (btnNoVisible ? gui::EMBF_NO : 0 );
+
+	IF_OBJECT_NOT_NULL_THEN
+		dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addMessageBox( StrToWide( text ).c_str(), flags, funcs );
+
+	return 1;	
 }
 }//namespace nrp

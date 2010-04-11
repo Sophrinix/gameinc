@@ -35,6 +35,8 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddPublicTechnology ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUser ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserByName ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveUser ),
 	{0,0}
 };
 
@@ -276,5 +278,41 @@ int CLuaApplication::GetUser( lua_State* L )
 
 	lua_pushlightuserdata( L, user );
 	return 1;
+}
+
+int CLuaApplication::GetUserByName( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUserByName need string parameter" );
+
+	const char* userName = lua_tostring( L, 2 );
+	assert( userName != NULL );
+	IUser* user = NULL;
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int userNum = object_->GetOption<int>( USERNUMBER );
+		for( int k = 0; k < userNum; k++ )
+		{
+			IUser* ptrUser = object_->GetUser( k );
+			if( ptrUser->GetOption<std::string>( NAME ) == std::string( userName ) )
+			{
+				user = ptrUser;
+				break;
+			}
+		}
+	}
+
+	lua_pushlightuserdata( L, user );
+	return 1;	
+}
+
+int CLuaApplication::RemoveUser( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:RemoveUser need IUser* parameter" );
+
+	IUser* user = (IUser*)lua_touserdata( L, 2 );
+	IF_OBJECT_NOT_NULL_THEN	object_->RemoveUser( user );
+	return 1;	
 }
 }//namespace nrp
