@@ -48,14 +48,14 @@ bool CNrpGUIEnvironment::CreateSkin_()
 
 void CNrpGUIEnvironment::LoadFonts_()
 {
-	int min_font = nrp::CNrpHUDConfig::Instance().GetOption<int>( nrp::MIN_FONT_SIZE );
-	size_t max_font = nrp::CNrpHUDConfig::Instance().GetOption<int>( nrp::MAX_FONT_SIZE );
+	int min_font = nrp::CNrpHUDConfig::Instance().GetValue<int>( nrp::MIN_FONT_SIZE );
+	size_t max_font = nrp::CNrpHUDConfig::Instance().GetValue<int>( nrp::MAX_FONT_SIZE );
 	for( size_t cnt=min_font; 
 		 cnt < max_font;
 		 cnt++ )
 	{
 		std::string option = "font_" + nrp::IntToStr( (int)cnt );
-		std::string filename = nrp::CNrpHUDConfig::Instance().GetOption<std::string>( option );
+		std::string filename = nrp::CNrpHUDConfig::Instance().GetValue<std::string>( option );
 	
 		IGUIFont* font = native_gui_->getFont( filename.c_str() );
 		if ( font )																	//если шрифт подключен	
@@ -66,7 +66,7 @@ void CNrpGUIEnvironment::LoadFonts_()
 	}
 	
 	{
-		std::string filename = nrp::CNrpHUDConfig::Instance().GetOption<std::string>( nrp::FONT_TOOLTIP );
+		std::string filename = nrp::CNrpHUDConfig::Instance().GetValue<std::string>( nrp::FONT_TOOLTIP );
 		IGUIFont* font = native_gui_->getFont( filename.c_str() );
 	
 		if( !font )
@@ -76,7 +76,7 @@ void CNrpGUIEnvironment::LoadFonts_()
 	}
 
 	{
-		std::string filename = nrp::CNrpHUDConfig::Instance().GetOption<std::string>( nrp::FONT_SIMPLE );
+		std::string filename = nrp::CNrpHUDConfig::Instance().GetValue<std::string>( nrp::FONT_SIMPLE );
 		IGUIFont* font = native_gui_->getFont( filename.c_str() );
 
 		if( !font )

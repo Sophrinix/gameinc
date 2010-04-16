@@ -250,7 +250,7 @@ int CLuaSceneManager::SetWorldSize( lua_State *vm )
 	wsize.Width = (f32)lua_tointeger(vm, 2);	
 	wsize.Height = (f32)lua_tointeger(vm, 3);	
 
-	CNrpWorldConfig::Instance().SetOption<core::dimension2df>( WORLD_REAL_SIZE, wsize );
+	CNrpWorldConfig::Instance().SetValue<core::dimension2df>( WORLD_REAL_SIZE, wsize );
 
 	return 1;
 }
@@ -270,19 +270,19 @@ int CLuaSceneManager::LinkTerrain( lua_State *vm )
 void CLuaSceneManager::RecalculateWorldParams_( scene::ITerrainSceneNode* newTerrain )
 {
 	CNrpWorldConfig& conf = CNrpWorldConfig::Instance();
-	core::vector3df minpos = conf.GetOption<core::vector3df>( WORLD_MINEDGE );
+	core::vector3df minpos = conf.GetValue<core::vector3df>( WORLD_MINEDGE );
 	minpos.X = min( minpos.X, newTerrain->getBoundingBox().MinEdge.X );
 	minpos.Z = min( minpos.Z, newTerrain->getBoundingBox().MinEdge.Z );
-	conf.SetOption<core::vector3df>( WORLD_MINEDGE, minpos );
+	conf.SetValue<core::vector3df>( WORLD_MINEDGE, minpos );
 
-	core::vector3df maxpos = conf.GetOption<core::vector3df>( WORLD_MAXEDGE );
+	core::vector3df maxpos = conf.GetValue<core::vector3df>( WORLD_MAXEDGE );
 	maxpos.X = max( maxpos.X, newTerrain->getBoundingBox().MaxEdge.X );
 	maxpos.Z = max( maxpos.Z, newTerrain->getBoundingBox().MaxEdge.Z );
-	conf.SetOption<core::vector3df>( WORLD_MAXEDGE, maxpos );
+	conf.SetValue<core::vector3df>( WORLD_MAXEDGE, maxpos );
 
-	core::dimension2df wsize = conf.GetOption<core::dimension2df>( WORLD_REAL_SIZE );
+	core::dimension2df wsize = conf.GetValue<core::dimension2df>( WORLD_REAL_SIZE );
 	float koeff = (maxpos.X - minpos.X) / wsize.Width;
-	conf.SetOption<float>( WORLD_WIDTH_COEFF, koeff );
+	conf.SetValue<float>( WORLD_WIDTH_COEFF, koeff );
 }
 
 int CLuaSceneManager::AddCubeSceneNode( lua_State* vm )

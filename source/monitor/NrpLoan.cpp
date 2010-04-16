@@ -7,17 +7,17 @@ namespace nrp
 	
 CNrpLoan::CNrpLoan( int id ) : INrpConfig( "CNrpLoan", "" )
 {
-	options_[ COMPANY ] = new PNrpCompany( NULL );
-	options_[ YEARPERCENT ] = new float( 0 );
-	options_[ STARTDATE ] = new SYSTEMTIME();
-	options_[ ENDDATE ] = new SYSTEMTIME();
-	options_[ MONEY ] = new int( 0 );
-	options_[ STARTMONEY ] = new int( 0 );
-	options_[ MONEYPAY ] = new int( 0 );
-	options_[ CLOSESHTRAF ] = new int( 0 );
-	options_[ TYPE ] = new TYPE_LOAN( TL_FREEMONEY );
-	options_[ ID ] = new int( id );
-	options_[ MONTHLEFT ] = new int( 0 );
+	CreateValue<PNrpCompany>( COMPANY, NULL );
+	CreateValue<float>( YEARPERCENT, 0 );
+	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
+	CreateValue<int>( MONEY, 0 );
+	CreateValue<int>( STARTMONEY, 0 );
+	CreateValue<int>( MONEYPAY, 0 );
+	CreateValue<int>( CLOSESHTRAF, 0 );
+	CreateValue<TYPE_LOAN>( TYPE, TL_FREEMONEY );
+	CreateValue<int>( ID, id );
+	CreateValue<int>( MONTHLEFT, 0 );
 }
 
 CNrpLoan::~CNrpLoan(void)

@@ -154,7 +154,7 @@ int CLuaGameProject::IsMyGameEngine( lua_State* L )
 	CNrpGameEngine* ge = (CNrpGameEngine*)lua_touserdata( L, 2 );
 	bool isIncl = false;
 
-	IF_OBJECT_NOT_NULL_THEN isIncl = (object_->GetOption<PNrpGameEngine>( GAME_ENGINE ) == ge);
+	IF_OBJECT_NOT_NULL_THEN isIncl = (object_->GetValue<PNrpGameEngine>( GAME_ENGINE ) == ge);
 	lua_pushboolean( L, isIncl );
 
 	return 1;		
@@ -180,7 +180,7 @@ int CLuaGameProject::SetNamedTech_( lua_State* L, std::string funcName, const st
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		object_->SetOption<PNrpTechnology>( paramName, tech );
+		object_->SetValue<PNrpTechnology>( paramName, tech );
 		object_->CalculateCodeVolume();
 	}
 
@@ -250,7 +250,7 @@ int CLuaGameProject::ToggleParam_( lua_State* L, std::string funcName, std::stri
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		object_->ToggleOption<bool>( prefix + str, true );
+		object_->ToggleValue<bool>( prefix + str, true );
 		object_->CalculateCodeVolume();
 	}
 	return 1;	
@@ -267,7 +267,7 @@ int CLuaGameProject::IsParamAvaible_( lua_State* L, std::string funcName, std::s
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		try	{ isAvaible = object_->GetOption<bool>( prefix + str );	}
+		try	{ isAvaible = object_->GetValue<bool>( prefix + str );	}
 		catch(...) { }
 	}
 	lua_pushboolean( L, isAvaible );

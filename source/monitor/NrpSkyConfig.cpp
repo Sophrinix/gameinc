@@ -23,7 +23,7 @@ CNrpSkyConfig& CNrpSkyConfig::Instance()
 
 void CNrpSkyConfig::Load_( char* file_name )
 {
-	options_[ CONFIG_FILE ] = (LPVOID)(new std::string( file_name ) );								//запоминаем путь к файлу настроек
-	options_[ SKY_TEXTURE ] = Read_<std::string>( SECTION_NAME, SKY_TEXTURE, "" );
+	CreateValue<std::string>( CONFIG_FILE, file_name );								//запоминаем путь к файлу настроек
+	CreateValue<std::string>( SKY_TEXTURE, Read_<std::string>( SECTION_NAME, SKY_TEXTURE, "" ) );
 }
 }//namespace nrp

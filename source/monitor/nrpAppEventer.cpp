@@ -37,7 +37,7 @@ bool CNrpAppEventer::OnEvent( const SEvent& event )
 				return true;
 			}
 
-			if( event.KeyInput.Char == nrp::CNrpConsoleConfig::Instance().GetOption<int>( CONSOLE_INIT_KEY ) )							//перхват вызова консоли
+			if( event.KeyInput.Char == nrp::CNrpConsoleConfig::Instance().GetValue<int>( CONSOLE_INIT_KEY ) )							//перхват вызова консоли
 			{
 				if( !event.KeyInput.Control && event.KeyInput.PressedDown && ptrCon )
 					ptrCon->ToggleVisible();

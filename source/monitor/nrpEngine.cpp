@@ -108,11 +108,11 @@ bool CNrpEngine::InitVideo()
 	INrpConfig& config = CNrpVideoConfig::Instance();
 
 	device_ = createDevice( video::EDT_OPENGL,
-							config.GetOption< core::dimension2du >( SCREEN_SIZE ), 
+							config.GetValue< core::dimension2du >( SCREEN_SIZE ), 
 							32, 
-							config.GetOption<bool>( FULLSCREEN ), 
-							config.GetOption<bool>( USE_SHADOWS ), 
-							config.GetOption<bool>( VSYNC ), 
+							config.GetValue<bool>( FULLSCREEN ), 
+							config.GetValue<bool>( USE_SHADOWS ), 
+							config.GetValue<bool>( VSYNC ), 
 							0 );
 
 	nrpVersion verInfo;
@@ -233,6 +233,10 @@ void CNrpEngine::SetStatus( RUNNING_STATUS new_status, void* data )
 		next_scene_ = (char*)data;
 		run_state_ = LOAD_SCENE;
 	break;	  
+
+	case CLOSE:
+		run_state_ = CLOSE;
+	break;
 	}
 }
 

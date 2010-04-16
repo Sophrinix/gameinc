@@ -56,6 +56,8 @@ namespace nrp
 
 	//перевод широкой строки в число
 	int WideToInt(const wchar_t* ws);
+	bool IsNumber( const char* s );
+
 }; //namespace nrp
 
 

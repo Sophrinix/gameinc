@@ -31,11 +31,11 @@ CNrpCameraConfig& CNrpCameraConfig::Instance()
 
 void CNrpCameraConfig::Load_( char* file_name )
 {
-	options_[ CONFIG_FILE ] = (LPVOID)new std::string( file_name );								//запоминаем путь к файлу настроек
-	options_[ CAMERA_ROTATE_SPEED ] = Read_<float>( SECTION_NAME, CAMERA_ROTATE_SPEED, 0 );
-	options_[ CAMERA_ZOOM_SPEED ] = Read_<float>( SECTION_NAME, CAMERA_ZOOM_SPEED, 0 );
-	options_[ CAMERA_TRANSLATION_SPEED ] = Read_<float>( SECTION_NAME, CAMERA_TRANSLATION_SPEED, 0 );
-	options_[ CAMERA_FARVALUE ] = Read_<float>( SECTION_NAME, CAMERA_FARVALUE, 0 ); 
+	CreateValue<std::string>( CONFIG_FILE, file_name );								//запоминаем путь к файлу настроек
+	CreateValue<float>( CAMERA_ROTATE_SPEED, Read_<float>( SECTION_NAME, CAMERA_ROTATE_SPEED, 0 ) );
+	CreateValue<float>( CAMERA_ZOOM_SPEED, Read_<float>( SECTION_NAME, CAMERA_ZOOM_SPEED, 0 ) );
+	CreateValue<float>( CAMERA_TRANSLATION_SPEED, Read_<float>( SECTION_NAME, CAMERA_TRANSLATION_SPEED, 0 ) );
+	CreateValue<float>( CAMERA_FARVALUE, Read_<float>( SECTION_NAME, CAMERA_FARVALUE, 0 ) ); 
 }
 
 }//namespace nrp

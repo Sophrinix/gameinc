@@ -112,6 +112,12 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 		switch(event.EventType)
 		{
 		case EET_GUI_EVENT:
+			if( event.GUIEvent.EventType == EGET_LISTBOX_CHANGED )
+			{
+				DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, (void*)(event.GUIEvent.Caller) );
+				return true;
+			}
+
 			if (event.GUIEvent.EventType == EGET_ELEMENT_FOCUS_LOST)
 			{
 				Dragging = false;
@@ -150,7 +156,8 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 							}
 						}
 					}
-					break;
+		break;
+
 		case EET_MOUSE_INPUT_EVENT:
 			switch(event.MouseInput.Event)
 			{

@@ -34,16 +34,16 @@ CNrpHUDConfig& CNrpHUDConfig::Instance()
 
 void CNrpHUDConfig::Load_( char* file_name )
 {
-	options_[ CONFIG_FILE ] = (LPVOID)new std::string( file_name );								//запоминаем путь к файлу настроек
-	options_[ MIN_FONT_SIZE ] = Read_<int>( SECTION_NAME, MIN_FONT_SIZE, 8 );
-	options_[ MAX_FONT_SIZE ] = Read_<int>( SECTION_NAME, MAX_FONT_SIZE, 8 );
+	CreateValue<std::string>( CONFIG_FILE, file_name );								//запоминаем путь к файлу настроек
+	CreateValue<int>( MIN_FONT_SIZE, Read_<int>( SECTION_NAME, MIN_FONT_SIZE, 8 ) );
+	CreateValue<int>( MAX_FONT_SIZE, Read_<int>( SECTION_NAME, MAX_FONT_SIZE, 8 ) );
 
-	for( int cnt=GetOption<int>(MIN_FONT_SIZE);
-		 cnt < GetOption<int>(MAX_FONT_SIZE);
+	for( int cnt=GetValue<int>(MIN_FONT_SIZE);
+		 cnt < GetValue<int>(MAX_FONT_SIZE);
 		 cnt++)
 	{
 		std::string fname = "font_" + nrp::IntToStr(cnt);
-		options_[ fname ] = Read_< std::string >( SECTION_NAME, fname, "" );
+		CreateValue<std::string>( fname, Read_< std::string >( SECTION_NAME, fname, "" ) );
 	}
 }
 //////////////////////////////////////////////////////////////////////////

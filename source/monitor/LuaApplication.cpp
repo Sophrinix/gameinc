@@ -37,6 +37,10 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserByName ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveUser ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCurrentProfile ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCurrentProfileCompany ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateProfile ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, ResetData ),
 	{0,0}
 };
 
@@ -90,7 +94,7 @@ int CLuaApplication::CreateUser( lua_State *L )
 		else 
 		{
 			user = new IUser( userType, "" );
-			user->SetOption<std::string>( NAME, name );
+			user->SetValue<std::string>( NAME, name );
 			object_->AddUser( false, user );
 		}
 	}
@@ -290,11 +294,11 @@ int CLuaApplication::GetUserByName( lua_State* L )
 	IUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		int userNum = object_->GetOption<int>( USERNUMBER );
+		int userNum = object_->GetValue<int>( USERNUMBER );
 		for( int k = 0; k < userNum; k++ )
 		{
 			IUser* ptrUser = object_->GetUser( k );
-			if( ptrUser->GetOption<std::string>( NAME ) == std::string( userName ) )
+			if( ptrUser->GetValue<std::string>( NAME ) == std::string( userName ) )
 			{
 				user = ptrUser;
 				break;
@@ -314,5 +318,40 @@ int CLuaApplication::RemoveUser( lua_State* L )
 	IUser* user = (IUser*)lua_touserdata( L, 2 );
 	IF_OBJECT_NOT_NULL_THEN	object_->RemoveUser( user );
 	return 1;	
+}
+
+int CLuaApplication::GetCurrentProfile( lua_State* L )
+{
+	lua_pushstring( L, GetParam_<std::string>( L, "GetCurrentProfile", PROFILENAME, "" ).c_str() );
+	return 1;
+}
+
+int CLuaApplication::GetCurrentProfileCompany( lua_State* L )
+{
+	lua_pushstring( L, GetParam_<std::string>( L, "GetCurrentProfileCompany", PROFILECOMPANY, "" ).c_str() );
+	return 1;
+}
+
+int CLuaApplication::CreateProfile( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:CreateProfile need string,string parameters" );
+
+	const char* userName = lua_tostring( L, 2 );
+	assert( userName != NULL );
+	const char* companyName = lua_tostring( L, 3 );
+	assert( companyName != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->CreateProfile( userName, companyName );
+	return 1;	
+}
+
+int CLuaApplication::ResetData( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaCompany:ResetData not need any parameter" );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->ResetData();
+	return 1;
 }
 }//namespace nrp

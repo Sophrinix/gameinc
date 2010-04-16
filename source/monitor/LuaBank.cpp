@@ -59,7 +59,7 @@ int CLuaBank::GetLoanID( lua_State* L )
 	{
 		CNrpLoan* loan = object_->GetLoan( pos );
 		if( loan )
-			id = loan->GetOption<int>( ID  );
+			id = loan->GetValue<int>( ID  );
 	}
 
 	lua_pushinteger( L, id );
@@ -78,7 +78,7 @@ int CLuaBank::GetLoanCompanyName( lua_State* L )
 	{
 		CNrpLoan* loan = object_->FindLoadByID( id );
 		if( loan )
-			name = loan->GetOption<PNrpCompany>( COMPANY )->GetOption<std::string>( NAME );
+			name = loan->GetValue<PNrpCompany>( COMPANY )->GetValue<std::string>( NAME );
 	}
 
 	lua_pushstring( L, name.c_str() );
@@ -97,7 +97,7 @@ template< class T > T CLuaBank::GetLoanParam_( lua_State* L, std::string funcNam
 	{
 		CNrpLoan* loan = object_->FindLoadByID( id );
 		if( loan )
-			paramd = loan->GetOption<T>( name );
+			paramd = loan->GetValue<T>( name );
 	}
 
 	return paramd;

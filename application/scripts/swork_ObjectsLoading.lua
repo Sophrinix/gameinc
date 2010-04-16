@@ -122,7 +122,7 @@ function AddObjectsToOfficeScene()
 	officeSceneObjects[ 0 ] = newProj:Self()	
 	x = x + 1
 	
-	local showEmployers = CLuaSceneNode( sceneManager:AddCubeSceneNode( "showCompanyEmployers" ) )
+	local showEmployers = CLuaSceneNode( sceneManager:AddCubeSceneNode( "employerManageNode" ) )
 	showEmployers:SetScale( 30, 40, 30 )
 	showEmployers:SetVisible( false )
 	showEmployers:SetPosition( x * delta, 800, y *delta )
@@ -130,7 +130,7 @@ function AddObjectsToOfficeScene()
 	showEmployers:SetMaterialFlag( EMF_LIGHTING, false )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showEmployers:Self() )
 	showEmployers:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( showEmployers:Self(), "showCompanyEmployers" )
+	sceneManager:SetMarkText( showEmployers:Self(), "employerManageNode" )
 	officeSceneObjects[ 1 ] = showEmployers:Self()	
 	x = x + 1
 	

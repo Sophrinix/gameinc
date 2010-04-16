@@ -1,3 +1,7 @@
+require("elmid")
+IncludeScript("logdefs")
+IncludeScript( "NerpaActionType" )
+
 NrpLoadPlugins( "Plugins/" )
 
 --загрузка сцены авторизации пользователя
@@ -9,4 +13,4 @@ NrpAddScene( "sceneWork", "scripts/sceneWork.lua" )
 --устнановка начальной сцены
 NrpSetNextScene( "sceneLogin" )
 
-test_OutputDebugString()
+--test_OutputDebugString()

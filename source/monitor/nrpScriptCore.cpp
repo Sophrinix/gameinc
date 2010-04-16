@@ -290,6 +290,26 @@ int LoadPlugins( lua_State* vm )
 	return 1;
 }
 
+int ApplicationClose( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 0, 0, "Function ApplicationClose not need any parameter");
+
+	CNrpEngine::Instance().SetStatus( CNrpEngine::CLOSE, NULL );
+
+	return 1;
+}
+
+int ApplicationSave( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 0, 0, "Function ApplicationClose not need any parameter");
+
+	CNrpApplication::Instance().SaveProfile();
+
+	return 1;
+}
+
 int GetApplication( lua_State* vm )
 {
 	int argc = lua_gettop(vm);

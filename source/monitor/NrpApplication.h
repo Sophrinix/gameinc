@@ -7,8 +7,8 @@ namespace nrp
 {
 
 OPTION_NAME BANK( "bank" );
-OPTION_NAME TECHNUMBER( "techNumber" );
-OPTION_NAME USERNUMBER( "userNumber" );
+OPTION_NAME PROFILENAME( "profileName" );
+OPTION_NAME PROFILECOMPANY( "profileCompany" );
 
 class CNrpCompany;
 class IUser;
@@ -18,37 +18,46 @@ class CNrpTechnology;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
-	typedef std::vector< CNrpCompany* > COMPANY_LIST;
+	typedef std::vector< CNrpCompany* > COMPANIES_LIST;
 	typedef std::vector< IUser* > USER_LIST;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
 public:
 	typedef enum { SPD_MINUTE=0, SPD_HOUR, SPD_DAY, SPD_MONTH, SPD_COUNT } SPEED;
 	static CNrpApplication& Instance();
 
+	void ResetData();
+
+	void SaveProfile();
+	void LoadProfile( std::string profileName );
+	void CreateProfile( std::string profileName, std::string companyName );
+
+	COMPANIES_LIST& GetCompanies();
+	CNrpCompany* GetCompany( std::string companyName ) const;
 	int AddCompany( CNrpCompany* company );
+	CNrpCompany* GetPlayerCompany();
+
 	int AddUser( bool player, IUser* user );
 	int RemoveUser( IUser* user );
 	IUser* GetUser( int index );
 
 	nrp::INrpProject* CreateGameProject( std::string name );
-	nrp::CNrpGameEngine* CreateGameEngine( std::string name );
-	nrp::CNrpTechnology* CreateTechnology( int typeTech );
-	bool UpdateTime();
 
+	nrp::CNrpGameEngine* CreateGameEngine( std::string name );
+
+
+	
+	bool UpdateTime();
 	SYSTEMTIME& GetDateTime() { return time_; }
-	COMPANY_LIST& GetCompanies();
-	CNrpCompany* GetCompany( std::string companyName ) const;
 
 	int GetTechsNumber() const { return technologies_.size(); }
 	CNrpTechnology* GetTechnology( int index ) const;
 	void AddTechnology( CNrpTechnology* ptrTech );
-
-	CNrpCompany* GetPlayerCompany();
+	nrp::CNrpTechnology* CreateTechnology( int typeTech );
 private:
 	CNrpApplication(void);
 	~CNrpApplication(void);
 
-	COMPANY_LIST companies_;
+	COMPANIES_LIST companies_;
 	USER_LIST users_;
 	TECH_LIST technologies_;
 

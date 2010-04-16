@@ -7,15 +7,15 @@ namespace nrp
 
 CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnology", "" )
 {
-	options_[ NAME ] = new std::string( "" );
-	options_[ TECHGROUP ] = new int ( typen );
-	options_[ TECHTYPE ] = new int( 0 );
-	options_[ BASE_CODE ] = new int( 0 );
-	options_[ ENGINE_CODE ] = new int( 0 );
-	options_[ LEVEL ] = new int( 0 );
-	options_[ PARENT ] = new LPVOID( NULL );
-	options_[ QUALITY ] = new int( 100 );
-	options_[ COMPONENTLIDER ] = new PUser( NULL );
+	CreateValue<std::string>( NAME, "" );
+	CreateValue<int>( TECHGROUP, typen );
+	CreateValue<int>( TECHTYPE, 0 );
+	CreateValue<int>( BASE_CODE, 0 );
+	CreateValue<int>( ENGINE_CODE, 0 );
+	CreateValue<int>( LEVEL, 0 );
+	CreateValue<LPVOID>( PARENT, NULL );
+	CreateValue<int>( QUALITY, 100 );
+	CreateValue<PUser>( COMPONENTLIDER, NULL );
 }
 
 CNrpTechnology::~CNrpTechnology(void)
@@ -46,5 +46,15 @@ int CNrpTechnology::GetEployerSkillRequire( int skil_require )
 		return 0;
 
 	return skillRequires_[ skil_require ];
+}
+
+void CNrpTechnology::Save( std::string saveFolder )
+{
+
+}
+
+void CNrpTechnology::Load( std::string fileName )
+{
+
 }
 }//namespace nrp

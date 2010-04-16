@@ -6,12 +6,12 @@ namespace nrp
 
 CNrpGameEngine::CNrpGameEngine( std::string name ) : INrpProject( "CNrpGameEngine", "" )
 {
-	SetOption<std::string>( NAME, name );
-	options_[ AVGENRE_COUNT ] = new int( 0 );
-	options_[ TIME_ACTUAL ] = new int( 0 );
-	options_[ GENRE_MODULE_NUMBER ] = new int( 0 );
-	options_[ CODEVOLUME ] = new int( 0 );
-	options_[ QUALITY ] = new int( 0 );
+	SetValue<std::string>( NAME, name );
+	CreateValue<int>( AVGENRE_COUNT, 0 );
+	CreateValue<int>( TIME_ACTUAL, 0 );
+	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
+	CreateValue<int>( CODEVOLUME, 0 );
+	CreateValue<int>( QUALITY, 0 );
 }
 
 CNrpGameEngine::~CNrpGameEngine(void)
@@ -24,7 +24,7 @@ void CNrpGameEngine::AddGenre( GENRE_TYPE typen )
 	if( avgenres_.find( typen ) == avgenres_.end() )
 		avgenres_[ typen ] = 1;
 	int avsize = avgenres_.size();
-	SetOption<int>( AVGENRE_COUNT, avsize );
+	SetValue<int>( AVGENRE_COUNT, avsize );
 }
 
 bool CNrpGameEngine::IsGenreAvailble( GENRE_TYPE typen )
@@ -41,4 +41,8 @@ nrp::GENRE_TYPE CNrpGameEngine::GetGenreType( int index )
 	return pIter != avgenres_.end() ? pIter->first : GT_UNKNOWN;
 }
 
+void CNrpGameEngine::Save( std::string saveFolder )
+{
+
+}
 }//namespace nrp

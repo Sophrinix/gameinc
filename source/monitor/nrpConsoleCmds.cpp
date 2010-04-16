@@ -209,15 +209,15 @@ bool irr::core::IC_Command_SCRIPT::invoke( const array< stringw >& args, CComman
 			if( args[ 2 ] == L"true" || args[ 2 ] == L"false" )
 			{
 				bool val = (args[ 2 ] == L"true");
-				nrp::CNrpScript::Instance().SetOption<bool>( optionName, val );
+				nrp::CNrpScript::Instance().SetValue<bool>( optionName, val );
 			}
 		}
 		else if( args[ 0 ] == L"-show" )
 		{
 			nrp::CNrpScript& sc = nrp::CNrpScript::Instance();
-			std::string text = SHOW_CALL_FUNCTION_NAME + std::string( sc.GetOption<bool>( SHOW_CALL_FUNCTION_NAME ) ? "=true" : "=false" );
+			std::string text = SHOW_CALL_FUNCTION_NAME + std::string( sc.GetValue<bool>( SHOW_CALL_FUNCTION_NAME ) ? "=true" : "=false" );
 			pOutput->AppendMessage( StrToWide( text ).c_str() );
-			text = LOAD_FUNCTIONS_FILENAME + "=" + sc.GetOption<std::string>( LOAD_FUNCTIONS_FILENAME );
+			text = LOAD_FUNCTIONS_FILENAME + "=" + sc.GetValue<std::string>( LOAD_FUNCTIONS_FILENAME );
 			pOutput->AppendMessage( StrToWide( text ).c_str() );
 		}
 	}

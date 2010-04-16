@@ -26,10 +26,13 @@ public:
 	IUser(const char* className, const char* systemName );
 	void SetSkill( int typen, int valuel ); 
 	void SetSkill( std::string name, int valuel );
+	int GetSkill( int typen );
 	void AddTechWork( CNrpTechnology* techWork );
 	CNrpTechnology* GetTechWork( int index );
 	void RemoveTechWork( CNrpTechnology* techWork );
 	~IUser(void);
+	void Save( std::string folderPath );
+	void Load( std::string fileName );
 
 private:         			
 	void Load_( char* file_name ) {}
@@ -39,11 +42,12 @@ private:
 	typedef std::map< std::string, int > NAMEVALUE_MAP;
 	typedef std::map< int, int > KNOWLEDGE_LIST;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
+	typedef std::vector< IUserAction* > USERACTION_LIST;
 
 	NAMEVALUE_MAP genrePreferences_; /*< предпочтения в жанре */
 	NAMEVALUE_MAP genreExperience_;  /*< опыт написания игр*/
 	KNOWLEDGE_LIST knowledges_;		/*< уровень знания технологий */
-	std::map< std::string, IUserAction* > peopleFeels_; /*< Отношения с окружающими людьми */
+	USERACTION_LIST peopleFeels_; /*< Отношения с окружающими людьми */
 	TECH_LIST techWorks_;
 };
 

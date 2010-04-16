@@ -23,6 +23,6 @@ CNrpHtmlEngineConfig& CNrpHtmlEngineConfig::Instance()
 
 void CNrpHtmlEngineConfig::Load_( char* file_name )
 {
-	options_[ CONFIG_FILE ] = (LPVOID)(new std::string( file_name ) );								//запоминаем путь к файлу настроек
+	CreateValue<std::string>( CONFIG_FILE, file_name );								//запоминаем путь к файлу настроек
 }
 }//namespace nrp

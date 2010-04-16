@@ -35,6 +35,10 @@ public:
 	int GetUser( lua_State* L );
 	int GetUserByName( lua_State* L );
 	int RemoveUser( lua_State* L );
+	int GetCurrentProfile( lua_State* L );
+	int GetCurrentProfileCompany( lua_State* L);
+	int CreateProfile( lua_State* L );
+	int ResetData( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:

@@ -145,7 +145,7 @@ function AddMenuWindow()
 	
 	x = x + imgWidth; btnCnt = btnCnt + 1
 	mainMenuButtons[ btnCnt ] = AddButton( window:Self(), ID_QUIT, x, imgTop, 
-										   "ApplicationClose", "media/top_menu/off" )
+										   "sworkApplicationClose", "media/top_menu/off" )
 										   
 	--покажем кнопки главного меню	
 	AddAdminingFunctionButton( window )

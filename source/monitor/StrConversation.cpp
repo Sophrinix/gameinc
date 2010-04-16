@@ -137,6 +137,18 @@ int StrToInt( const char* s )
 	return sti >> result ? result : 0;
 }
 
+bool IsNumber( const char* s )
+{
+	int pos = 0;
+	while( s[ pos ] != 0 )
+	{
+		if( !isdigit( s[ pos ] ) ) return false;
+		pos++;
+	}
+
+	return true;
+}
+
 irr::core::vector3df StrToVector3df( const char* s )
 {
 	irr::core::vector3df result( 0, 0, 0 );

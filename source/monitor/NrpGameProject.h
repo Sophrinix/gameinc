@@ -46,17 +46,7 @@ public:
 	void CalculateCodeVolume();
 	void SetSoundTech( CNrpTechnology* ptrTech, int index );
 	CNrpTechnology* GetSoundTech( int index );
-
-	template< class T > T ToggleOption( std::string name, T defValue )
-	{
-		PropertyArray::iterator pIter = options_.find( name );
-		if( pIter == options_.end() )
-			options_[ name ] = new T( defValue );
-		else
-			SetOption<T>( name, !GetOption<T>( name ) );
-
-		return GetOption<T>( name );
-	}
+	void Save( std::string folderSave );
 private:
 
 	typedef std::vector< CNrpTechnology* > TECH_LIST;

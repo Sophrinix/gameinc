@@ -24,12 +24,11 @@ CNrpWorldConfig& CNrpWorldConfig::Instance()
 
 void CNrpWorldConfig::Load_( char* file_name )
 {
-	options_[ CONFIG_FILE ] = new std::string( file_name );								//запоминаем путь к файлу настроек
-	options_[ WORLD_REAL_SIZE ] = Read_< core::dimension2df >( SECTION_NAME, WORLD_REAL_SIZE, core::dimension2df( 0, 0 ) );
-	options_[ WORLD_MINEDGE ] = Read_< core::vector3df >( SECTION_NAME, WORLD_MINEDGE, core::vector3df( 99999, 99999, 99999 ) );
-	options_[ WORLD_MAXEDGE ] = Read_< core::vector3df >( SECTION_NAME, WORLD_MAXEDGE, core::vector3df( -99999, -99999, -99999 ) );
-	options_[ WORLD_WIDTH_COEFF ] = new float(1);
-
+	CreateValue<std::string>( CONFIG_FILE, file_name );								//запоминаем путь к файлу настроек
+	CreateValue<core::dimension2df>(WORLD_REAL_SIZE, Read_< core::dimension2df >( SECTION_NAME, WORLD_REAL_SIZE, core::dimension2df( 0, 0 ) ) );
+	CreateValue<core::vector3df>( WORLD_MINEDGE, Read_< core::vector3df >( SECTION_NAME, WORLD_MINEDGE, core::vector3df( 99999, 99999, 99999 ) ) );
+	CreateValue<core::vector3df>( WORLD_MAXEDGE, Read_< core::vector3df >( SECTION_NAME, WORLD_MAXEDGE, core::vector3df( -99999, -99999, -99999 ) ) );
+	CreateValue<float>( WORLD_WIDTH_COEFF, 1.f );
 }
 
 }//namespace nrp

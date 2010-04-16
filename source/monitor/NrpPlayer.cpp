@@ -6,7 +6,7 @@ namespace nrp
 
 CNrpPlayer::CNrpPlayer( std::string name ) : IUser( "RealPlayer", name.c_str() )
 {
-	SetOption<std::string>( NAME, name );
+	SetValue<std::string>( NAME, name );
 }
 
 CNrpPlayer::~CNrpPlayer(void)

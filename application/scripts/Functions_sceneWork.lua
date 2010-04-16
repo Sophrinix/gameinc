@@ -1,7 +1,3 @@
-pcall( require, "elmid" )
-pcall( require, "logdefs")
-pcall( require, "NerpaActionType")
-
 --безопасная загрузка  скриптов
 
 IncludeScript("swork_wndCharts")
@@ -79,7 +75,7 @@ function sworkSelectObjectOnOfficeScene( ptr )
 		return 0
 	end
 	
-	if nodeName == "showCompanyEmployers" then
+	if nodeName == "employerManageNode" then
 		sworkCreateWindowEmployersManage()
 		return 0	
 	end
@@ -170,6 +166,11 @@ function CameraScaleTrackBarVisibleToggle( ptr )
 		scrb:SetVisible( not scrb:GetVisible() )
 	end
 
+end
+
+function sworkApplicationClose( ptr )
+	NrpApplicationSave()
+	NrpApplicationClose()
 end
 
 sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )

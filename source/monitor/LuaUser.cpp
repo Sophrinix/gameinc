@@ -15,12 +15,14 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_ILUAOBJECT_HEADER( CLuaUser ),
 	/*  */
 	LUNA_AUTONAME_FUNCTION( CLuaUser, SetSkill ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetSkill ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, SetCharacter ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTypeName ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetParam ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, SetParam ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, IsTypeAs ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetName ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, Save ),
 	{0,0}
 };
 
@@ -45,7 +47,7 @@ int CLuaUser::SetCharacter( lua_State* L )
 
 	int valuel = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetOption<int>( CHARACTER, valuel );
+	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( CHARACTER, valuel );
 	return 1;	
 }
 
@@ -71,7 +73,7 @@ int CLuaUser::GetParam( lua_State* L )
 	int valuel = 0;
 	assert( name != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetOption<int>( name );
+	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValue<int>( name );
 
 	lua_pushinteger( L, valuel );
 	return 1;	
@@ -100,7 +102,7 @@ int CLuaUser::GetName( lua_State* L )
 
 	std::string name = "";
 
-	IF_OBJECT_NOT_NULL_THEN name = object_->GetOption<std::string>( NAME );
+	IF_OBJECT_NOT_NULL_THEN name = object_->GetValue<std::string>( NAME );
 
 	lua_pushstring( L, name.c_str() );
 	return 1;	
@@ -117,5 +119,32 @@ int CLuaUser::SetParam( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN object_->SetSkill( name, valuel );
 	return 1;		
+}
+
+int CLuaUser::GetSkill( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetSkill need skillname parameter" );
+
+	int skilltype = lua_tointeger(L, 2 );
+	int valuel = 0;
+
+	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetSkill( skilltype );
+
+	lua_pushinteger( L, valuel );
+	return 1;
+}
+
+int CLuaUser::Save( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetName need string parameter" );
+
+	const char* fileName = lua_tostring( L, 2 );
+	assert( fileName != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN object_->Load( fileName );
+
+	return 1;	
 }
 }//namespace nrp

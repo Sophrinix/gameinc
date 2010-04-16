@@ -23,7 +23,7 @@ protected:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, ("Function " + ClassName() + ":" + funcName + " not need parameter").c_str() );
 
-		IF_OBJECT_NOT_NULL_THEN	defValue = object_->GetOption<T>( paramName );
+		IF_OBJECT_NOT_NULL_THEN	defValue = object_->GetValue<T>( paramName );
 		return defValue;
 	}
 

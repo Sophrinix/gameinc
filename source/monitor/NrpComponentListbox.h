@@ -13,9 +13,9 @@ class CNrpComponentListbox : public irr::gui::IGUIListBox
 public:
 	//! constructor
 	CNrpComponentListbox(  gui::IGUIEnvironment* env, 
-					irr::gui::IGUIElement* parent, 
-					irr::s32 id, 
-					irr::core::rect<irr::s32> rectangle	);
+						   irr::gui::IGUIElement* parent, 
+						   irr::s32 id, 
+						   irr::core::rect<irr::s32> rectangle	);
 
 	//! destructor
 	virtual ~CNrpComponentListbox();

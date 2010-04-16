@@ -25,6 +25,9 @@ public:
 	int GetEngineTechRequire( int tech_type );
 	int GetEployerSkillRequire( int skil_require );
 
+	void Save( std::string saveFolder );
+	void Load( std::string fileName );
+
 private:
 	void Load_( char* file_name ) {}
 

@@ -9,7 +9,6 @@ namespace nrp
 
 OPTION_NAME CEO("ceo");
 OPTION_NAME ENGINES_NUMBER( "engineNumber" );
-OPTION_NAME TECHS_NUMBER( "techsNumber" );
 
 class INrpProject;
 class CNrpGame;
@@ -22,7 +21,10 @@ class CNrpCompany : public INrpConfig
 {
 public:
 	typedef std::vector< CNrpGameEngine* > ENGINE_LIST;
+	typedef std::vector< IUser* > USER_LIST;
 	typedef std::map< std::string, CNrpTechnology* > TECH_MAP;
+	typedef std::map< std::string, INrpProject* > PROJECT_MAP;
+	typedef std::map< std::string, CNrpGame* > GAME_MAP;
 
 	CNrpCompany(const char* name);
 	~CNrpCompany(void);
@@ -32,17 +34,20 @@ public:
 	CNrpTechnology* GetTech( int index );
 	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
 	void AddUser( IUser* user );
+	IUser* GetUser( int index );
+
+	void Save( std::string saveFolder );
+	void Load( std::string loadFolder );
 
 private:
 	void Load_( char* file_name ) {}
 	
-	std::map< std::string, INrpProject* > projects_; 
+	PROJECT_MAP projects_; 
 	ENGINE_LIST engines_;
 	TECH_MAP technologies_;
-	std::map< std::string, CNrpGame* > games_;
-	std::map< std::string, IUser* > employers_;
+	GAME_MAP games_;
+	USER_LIST employers_;
 }; 
 
 typedef CNrpCompany* PNrpCompany;
-
 }//namespace nrp

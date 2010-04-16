@@ -66,6 +66,10 @@ extern "C"
 
 	int GetApplication( lua_State* vm );
 
+	int ApplicationClose( lua_State* vm );
+
+	int ApplicationSave( lua_State* vm );
+
 	// типа справка
 	int Help(lua_State *vm);
 };

@@ -138,7 +138,6 @@ public:
 		return 1;
 	}
 
-
 	int GetSize( lua_State *L )
 	{
 		int argc = lua_gettop(L);

@@ -41,7 +41,7 @@ int CLuaGameEngine::SetGenreModuleNumber( lua_State* L )
 
 	int genreNumber = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN  object_->SetOption<int>( GENRE_MODULE_NUMBER, genreNumber );
+	IF_OBJECT_NOT_NULL_THEN  object_->SetValue<int>( GENRE_MODULE_NUMBER, genreNumber );
 
 	return 1;
 }
@@ -59,7 +59,7 @@ int CLuaGameEngine::SetCodeVolume( lua_State *L )
 
 	int volCode = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN  object_->SetOption<int>( CODEVOLUME, volCode );
+	IF_OBJECT_NOT_NULL_THEN  object_->SetValue<int>( CODEVOLUME, volCode );
 
 	return 1;
 }

@@ -997,6 +997,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaListBox.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaListBox.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaMiniMap.cpp"
 						>
 					</File>
@@ -1392,6 +1400,14 @@
 			</File>
 			<File
 				RelativePath=".\INrpProject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpGame.h"
 				>
 			</File>
 			<File

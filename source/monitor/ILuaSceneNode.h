@@ -111,7 +111,7 @@ public:
 	int SetName( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ( "Function " + ClassName() + "::SetName need string parameter" ).c_str() );
+		luaL_argcheck(L, argc == 2, 2, ( "Function " + ClassName() + ":SetName need string parameter" ).c_str() );
 
 		const char* name = lua_tostring( L, 2 );						
 		assert( name != NULL );

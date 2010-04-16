@@ -23,6 +23,8 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateGameProject ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUserNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUser ),
 	{0,0}
 };
 
@@ -36,7 +38,7 @@ int CLuaCompany::SetCEO( lua_State* L )
 
 	IUser* user = (IUser*)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetOption<PUser>( nrp::CEO, user );
+	IF_OBJECT_NOT_NULL_THEN object_->SetValue<PUser>( nrp::CEO, user );
 
 	return 1;
 }
@@ -86,7 +88,7 @@ int CLuaCompany::AddGameEngine( lua_State* L )
 
 int CLuaCompany::GetTechNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetTechNumber", TECHS_NUMBER, 0 ));
+	lua_pushinteger( L, GetParam_<int>( L, "GetTechNumber", TECHNUMBER, 0 ));
 	return 1;
 }
 
@@ -129,5 +131,24 @@ int CLuaCompany::AddUser( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	object_->AddUser( ptrData );
 	return 1;		
+}
+
+int CLuaCompany::GetUserNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetUserNumber", USERNUMBER, 0 ) ); 
+	return 1;
+}
+
+int CLuaCompany::GetUser( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need int parameter" );
+
+	int index = lua_tointeger( L, 2 );
+	IUser* user = NULL;
+	IF_OBJECT_NOT_NULL_THEN	user = object_->GetUser( index );
+
+	lua_pushlightuserdata( L, user );
+	return 1;
 }
 }//namespace nrp

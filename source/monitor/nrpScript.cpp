@@ -33,6 +33,7 @@
 #include "LuaGameEngine.h"
 #include "LuaGameProject.h"
 #include "LuaTechnology.h"
+#include "LuaListBox.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
 
@@ -110,6 +111,10 @@ CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 
 		lua_register( vm_, "NrpLoadPlugins", LoadPlugins );
 
+		lua_register( vm_, "NrpApplicationClose", ApplicationClose );
+
+		lua_register( vm_, "NrpApplicationSave", ApplicationSave );
+
 		RegisterLuaClasses_();
 	}
 	catch (...)
@@ -154,6 +159,7 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaGameEngine >::Register( vm_ );
 	Luna< CLuaGameProject >::Register( vm_ );
 	Luna< CLuaTechnology >::Register( vm_ );
+	Luna< CLuaListBox >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()
@@ -175,13 +181,13 @@ CNrpScript::~CNrpScript()
 
 void CNrpScript::Reload()
 {
-	LoadFile( GetOption<std::string>( LOAD_FUNCTIONS_FILENAME ).c_str() );
+	LoadFile( GetValue<std::string>( LOAD_FUNCTIONS_FILENAME ).c_str() );
 }
 
 void CNrpScript::LoadFile( const char* fileName )
 {
 	std::string fn( fileName );
-	SetOption<std::string>( LOAD_FUNCTIONS_FILENAME, fn );
+	SetValue<std::string>( LOAD_FUNCTIONS_FILENAME, fn );
 	if (luaL_loadfile(vm_, fileName ) != 0)
 	{
 		// Вытаскиваем сообщение об ошибке
@@ -243,7 +249,7 @@ void CNrpScript::CallFunction( const char* funcName, void* userData )
 	lua_getfield( vm_, LUA_GLOBALSINDEX, funcName );
 	lua_pushlightuserdata( vm_, userData );
 
-	if( GetOption<bool>( SHOW_CALL_FUNCTION_NAME ) )
+	if( GetValue<bool>( SHOW_CALL_FUNCTION_NAME ) )
 	{
 #ifdef _DEBUG
 		char text[MAX_PATH];
@@ -270,7 +276,7 @@ void CNrpScript::CallFunction( const char* funcName, void* userData )
 
 void CNrpScript::Load_( char* file_name )
 {
-	options_[ LOAD_FUNCTIONS_FILENAME ] = new std::string("");
-	options_[ SHOW_CALL_FUNCTION_NAME ] = new bool(true);
+	CreateValue<std::string>( LOAD_FUNCTIONS_FILENAME, "" );
+	CreateValue<bool>( SHOW_CALL_FUNCTION_NAME, true );
 }
 }//namespace nrp

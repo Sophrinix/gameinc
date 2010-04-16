@@ -12,7 +12,7 @@ namespace nrp
 CNrpBank::CNrpBank(void) : INrpConfig( "CNrpBank", "systemBank" )
 {
 	loanId_ = 0;
-	options_[ LOANNUMBER ] = new int( 0 );
+	CreateValue<int>( LOANNUMBER, 0 );
 }
 
 CNrpBank::~CNrpBank(void)
@@ -28,14 +28,14 @@ size_t CNrpBank::GetMaxCompanyLoan( std::string companyName )
 
 	for( ; pIter != loans_.end(); ++pIter )
 	{
-		if( (*pIter)->GetOption<PNrpCompany>( COMPANY )->GetOption<std::string>( NAME ) == companyName )
-			dolg += (*pIter)->GetOption<int>( MONEY ); 
+		if( (*pIter)->GetValue<PNrpCompany>( COMPANY )->GetValue<std::string>( NAME ) == companyName )
+			dolg += (*pIter)->GetValue<int>( MONEY ); 
 	}
 
 	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( companyName );
 
 	if( cmp )
-		result = (int)(cmp->GetOption<int>( BALANCE ) - dolg * 1.5);
+		result = (int)(cmp->GetValue<int>( BALANCE ) - dolg * 1.5);
 
 	return result > 10000 ? result * 2 : 0;
 }
@@ -53,7 +53,7 @@ CNrpLoan* CNrpBank::FindLoadByID( size_t id )
 	LOAN_LIST::iterator pIter = loans_.begin();
 
 	for( ; pIter != loans_.end(); ++pIter )
-		if( (*pIter)->GetOption<int>( ID ) == id )
+		if( (*pIter)->GetValue<int>( ID ) == id )
 			return (*pIter);
 
 	return NULL;
@@ -66,21 +66,21 @@ void CNrpBank::CreateLoan( std::string name, int money, int percent, int month )
 	endtime = time;
 	endtime.wYear = time.wYear + month / 12;
 	endtime.wMonth = ( time.wMonth + month ) % 12;
-	loan->SetOption<int>( YEARPERCENT, percent );
-	loan->SetOption<int>( STARTMONEY, money );
-	loan->SetOption<int>( MONEY, money );
-	loan->SetOption<SYSTEMTIME>( STARTDATE, time );
-	loan->SetOption<int>( MONTHLEFT, month );
-	loan->SetOption<SYSTEMTIME>( ENDDATE, endtime );
+	loan->SetValue<int>( YEARPERCENT, percent );
+	loan->SetValue<int>( STARTMONEY, money );
+	loan->SetValue<int>( MONEY, money );
+	loan->SetValue<SYSTEMTIME>( STARTDATE, time );
+	loan->SetValue<int>( MONTHLEFT, month );
+	loan->SetValue<SYSTEMTIME>( ENDDATE, endtime );
 	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( name );
-	loan->SetOption<PNrpCompany>( COMPANY, cmp );
+	loan->SetValue<PNrpCompany>( COMPANY, cmp );
 
 	loans_.push_back( loan );
 
-	int bnm = cmp->GetOption<int>( BALANCE ) + money;
-	cmp->SetOption<int>( BALANCE, bnm );
+	int bnm = cmp->GetValue<int>( BALANCE ) + money;
+	cmp->SetValue<int>( BALANCE, bnm );
 
 	int lNum = loans_.size();
-	SetOption<int>( LOANNUMBER, lNum ); 
+	SetValue<int>( LOANNUMBER, lNum ); 
 }
 }//namespace nrp

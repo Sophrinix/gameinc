@@ -1,6 +1,4 @@
 -- Проверка работы логов
-require("logdefs")
-require("elmid")
 IncludeScript("swork_terrainConfig")
 IncludeScript("swork_MainMenu")
 IncludeScript("swork_wndCompanyInfo")
@@ -8,7 +6,7 @@ IncludeScript("swork_StoreWindow")
 IncludeScript("swork_camera")
 IncludeScript("swork_ObjectsLoading")
 IncludeScript("swork_wndProjectWizard")
-IncludeScript("swork_startDefinition")
+IncludeScript("swork_wndEmployersManage")
 
 Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 -- Проверка вспомогательных функций
@@ -58,13 +56,5 @@ AddObjectsToBankScene()
 AddObjectsToOfficeScene()
 AddObjectsToUniverScene()
 sceneManager:DrawProgress( 100 )
-
-AddStartPlayerDef()
-AddStartCompanyTechnology()
-AddStartVideoContentTechnology()
-AddStartSoundContentTechnology()
-AddStartScenarioContentTechnology()
-AddStartEmployer()
-DebugFunctionCall( AddStartPublicTechnology )
 
 sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )

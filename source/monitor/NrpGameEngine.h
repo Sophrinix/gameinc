@@ -17,6 +17,7 @@ public:
 	int GetGenreCount() { return avgenres_.size(); }
 	GENRE_TYPE GetGenreType( int index );
 	bool IsGenreAvailble( GENRE_TYPE typen );
+	void Save( std::string saveFolder );
 
 	~CNrpGameEngine(void);
 private:

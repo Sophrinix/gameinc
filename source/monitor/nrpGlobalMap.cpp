@@ -43,8 +43,8 @@ void CNrpGloablMap::RecalculateImagePosition_()
 		gui::IGUIImage* img = pIter->second;
 
 		core::recti imRect;
-		core::vector3df maxpos = nrp::CNrpWorldConfig::Instance().GetOption<core::vector3df>( nrp::WORLD_MAXEDGE );
-		core::vector3df minpos = nrp::CNrpWorldConfig::Instance().GetOption<core::vector3df>( nrp::WORLD_MAXEDGE );
+		core::vector3df maxpos = nrp::CNrpWorldConfig::Instance().GetValue<core::vector3df>( nrp::WORLD_MAXEDGE );
+		core::vector3df minpos = nrp::CNrpWorldConfig::Instance().GetValue<core::vector3df>( nrp::WORLD_MAXEDGE );
 
 		imRect.UpperLeftCorner.X = (s32)(box.MinEdge.X / ( maxpos.X - minpos.X ) * AbsoluteRect.getWidth());
 		imRect.LowerRightCorner.X = (s32)(box.MaxEdge.X / ( maxpos.X - minpos.X ) * AbsoluteRect.getWidth());

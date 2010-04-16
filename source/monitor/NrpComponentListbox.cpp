@@ -556,8 +556,8 @@ void CNrpComponentListbox::draw()
 						textRect.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 						textRect.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
-						int percent = pObject->GetOption<int>( READYWORKPERCENT );
-						std::wstring name = StrToWide( pObject->GetOption<std::string>( NAME ) );
+						int percent = pObject->GetValue<int>( READYWORKPERCENT );
+						std::wstring name = StrToWide( pObject->GetValue<std::string>( NAME ) );
 						
 						swprintf( tmpstr, 127, L"%s  (Ready:%d)", name.c_str(), percent );
 						Font->draw( tmpstr, textRect, itbncolor, true, true, &clientClip );

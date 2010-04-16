@@ -17,7 +17,7 @@
 		luaL_argcheck( L, argc == 2, 2, ("Function CLuaTechnology:" + funcName + "need int parameter").c_str() );\
 		READTYPE valuel = (READTYPE)lua_tofunc( L, 2 );\
 		assertcode;\
-		IF_OBJECT_NOT_NULL_THEN	object_->SetOption<OPTIONTYPE>( paramName, OPTIONTYPE(valuel) );\
+		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<OPTIONTYPE>( paramName, OPTIONTYPE(valuel) );\
 		return 1;\
 	}
 
@@ -64,7 +64,7 @@ int CLuaTechnology::GetOptionAsInt( lua_State* L )
 	assert( opName != NULL );
 
 	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetOption<int>( opName );
+	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( opName );
 	lua_pushinteger( L, result );
 	return 1;	
 }

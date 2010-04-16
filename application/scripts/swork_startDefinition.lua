@@ -1,8 +1,14 @@
 local app = CLuaApplication( NrpGetApplication() )
-local company = CLuaCompany( app:CreateCompany( "DaleTeam" ) )
-local user = CLuaUser( app:CreateUser( "player", "Dalerank" ) )
+local company = CLuaCompany( app:CreateCompany( app:GetCurrentProfileCompany() ) )
+local user = CLuaUser( app:CreateUser( "player", app:GetCurrentProfile() ) )
 
-function AddStartCompanyTechnology()
+function sloginResetDataForNewGame()
+	app:ResetData()
+	company:SetObject( app:CreateCompany( app:GetCurrentProfileCompany() ) )
+	user:SetObject( app:CreateUser( "player", app:GetCurrentProfile() ) )
+end
+
+function sloginAddStartCompanyTechnology()
 	local ge = CLuaGameEngine( app:CreateGameEngine( "simpleEngine" ) )
 	ge:AddGenre( GT_SKILL )
 	ge:SetGenreModuleNumber( 2 )
@@ -12,13 +18,13 @@ function AddStartCompanyTechnology()
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создан движок simpleEngine")
 end
 
-function AddStartPlayerDef()
+function sloginAddStartPlayerDef()
 
 	company:SetCEO( user:Self() )
 	
 end
 
-function AddStartPublicTechnology()
+function sloginAddStartPublicTechnology()
 
 	local tech = CLuaTech( app:CreateTechnology( PT_GENRE ) )
 	tech:SetTechType( GT_SKILL )
@@ -44,7 +50,7 @@ function AddStartPublicTechnology()
 	
 	local videoTech = CLuaTech( app:CreateTechnology( PT_VIDEOTECH ) )
 	videoTech:SetTechType( VDT_TEXT_OUTPUT )
-	videoTech:SetName( "Вывод графики\n в виде текста" )
+	videoTech:SetName( "Вывод графики в виде текста" )
 	videoTech:SetBaseCode( 0.4 )
 	videoTech:SetAddingEngineCode( 0.2 )
 	videoTech:SetEngineTechRequire( VDT_TEXT_OUTPUT, 10 )
@@ -105,7 +111,7 @@ function AddStartPublicTechnology()
 	
 end
 
-function AddStartScenarioContentTechnology( ptr )
+function sloginAddStartScenarioContentTechnology( ptr )
 	local vScn = CLuaTech( app:CreateTechnology( PT_SCENARIOQUALITY ) )
 
 	vScn:SetTechType( SCNQ_SELFWRITE )
@@ -117,7 +123,7 @@ function AddStartScenarioContentTechnology( ptr )
 	app:AddPublicTechnology( vScn:Self() )
 end
 
-function AddStartSoundContentTechnology( ptr )
+function sloginAddStartSoundContentTechnology( ptr )
 	local vSn = CLuaTech( app:CreateTechnology( PT_SOUNDQUALITY ) )
 
 	vSn:SetTechType( VSQ_SELFCOMPOSE )
@@ -129,7 +135,7 @@ function AddStartSoundContentTechnology( ptr )
 	app:AddPublicTechnology( vSn:Self() )
 end
 
-function AddStartVideoContentTechnology( ptr )
+function sloginAddStartVideoContentTechnology( ptr )
 	local vCn = CLuaTech( app:CreateTechnology( PT_VIDEOQUALITY ) )
 
 	vCn:SetTechType( VDQ_SELFRENDER )
@@ -141,7 +147,7 @@ function AddStartVideoContentTechnology( ptr )
 	app:AddPublicTechnology( vCn:Self() )
 end
 
-function AddStartEmployer( ptr )
+function sloginAddStartEmployer( ptr )
 	local coder = CLuaUser( app:CreateUser( "coder", "Villi Salo" ) )
 	coder:SetSkill( SKL_CODING, 20 )
 	coder:SetCharacter( 50 ) --neutral character
