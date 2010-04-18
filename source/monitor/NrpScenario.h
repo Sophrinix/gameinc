@@ -7,7 +7,7 @@ namespace nrp
 class CNrpScenario : public INrpProject
 {
 public:
-	CNrpScenario(void);
+	CNrpScenario( std::string name );
 	~CNrpScenario(void);
 };
 

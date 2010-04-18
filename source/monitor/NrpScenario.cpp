@@ -4,8 +4,9 @@
 namespace nrp
 {
 
-CNrpScenario::CNrpScenario(void) : INrpProject( "CNrpScenario", "" )
+CNrpScenario::CNrpScenario( std::string name ) : INrpProject( "CNrpScenario", "" )
 {
+	CreateValue<std::string>( NAME, name );
 }
 
 CNrpScenario::~CNrpScenario(void)

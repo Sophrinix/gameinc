@@ -70,6 +70,10 @@ void CNrpEngine::Run() //создание нерпы
 		if( currentScene_ )
 			currentScene_->OnLeave();
 
+		GetVideoDriver()->removeAllTextures();
+		GetSceneManager()->clear();
+		GetGuiEnvironment()->clear();
+		delete guienv_;
 		device_->drop();
 
 		status_ = CREATE_OK;

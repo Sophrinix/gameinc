@@ -4,7 +4,6 @@
 namespace nrp
 {
 
-OPTION_NAME COMPANY( "company" );
 OPTION_NAME YEARPERCENT( "percentInYear");
 OPTION_NAME STARTDATE( "startDate" );
 OPTION_NAME ENDDATE( "endDate" );

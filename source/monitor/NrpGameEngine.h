@@ -18,6 +18,7 @@ public:
 	GENRE_TYPE GetGenreType( int index );
 	bool IsGenreAvailble( GENRE_TYPE typen );
 	void Save( std::string saveFolder );
+	void Load( std::string loadFolder );
 
 	~CNrpGameEngine(void);
 private:

@@ -9,6 +9,7 @@ namespace nrp
 OPTION_NAME BANK( "bank" );
 OPTION_NAME PROFILENAME( "profileName" );
 OPTION_NAME PROFILECOMPANY( "profileCompany" );
+OPTION_NAME FULLPATH( "fullPath" );
 
 class CNrpCompany;
 class IUser;
@@ -28,7 +29,7 @@ public:
 	void ResetData();
 
 	void SaveProfile();
-	void LoadProfile( std::string profileName );
+	void LoadProfile( std::string profileName, std::string companyName );
 	void CreateProfile( std::string profileName, std::string companyName );
 
 	COMPANIES_LIST& GetCompanies();
@@ -39,6 +40,7 @@ public:
 	int AddUser( bool player, IUser* user );
 	int RemoveUser( IUser* user );
 	IUser* GetUser( int index );
+	IUser* GetUser( std::string name );
 
 	nrp::INrpProject* CreateGameProject( std::string name );
 

@@ -238,4 +238,11 @@ void Logger::TreatLogEntry(const Log& log)
 	// тоже смысла нет (проверка флага ok_)
 }
 
+void Logger::Stop()
+{
+	if (!GlobalLogSubSystem)
+		 GlobalLogSubSystem->stop_ = true;	
+	Sleep( 1000 );
+	TerminateThread( GlobalLogSubSystem->hThread_, 0 );
+}
 }//namespace nrp

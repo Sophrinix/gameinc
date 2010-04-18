@@ -143,7 +143,7 @@ int CLuaUser::Save( lua_State* L )
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->Load( fileName );
+	IF_OBJECT_NOT_NULL_THEN object_->Save( fileName );
 
 	return 1;	
 }

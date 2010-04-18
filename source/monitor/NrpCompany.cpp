@@ -5,6 +5,10 @@
 #include "NrpGameEngine.h"
 #include "NrpTechnology.h"
 #include "NrpGame.h"
+#include "NrpApplication.h"
+
+#include <io.h>
+#include <errno.h>
 
 namespace nrp
 {
@@ -17,6 +21,8 @@ CNrpCompany::CNrpCompany( const char* name ) : INrpConfig( "CNrpCompany", name)
 	CreateValue<int>( ENGINES_NUMBER, 0 );
 	CreateValue<int>( TECHNUMBER, 0 );
 	CreateValue<int>( USERNUMBER, 0 );
+	CreateValue<int>( PROJECTNUMBER, 0 );
+	CreateValue<int>( GAMENUMBER, 0 );
 }
 
 CNrpCompany::~CNrpCompany(void)
@@ -57,6 +63,7 @@ CNrpGameProject* CNrpCompany::AddGameProject( CNrpGameProject* ptrProject )
 		return ptrProject;
 	}
 
+	SetValue<int>( PROJECTNUMBER, projects_.size() );
 	return NULL;
 }
 
@@ -74,9 +81,21 @@ IUser* CNrpCompany::GetUser( int index )
 
 void CNrpCompany::Save( std::string saveFolder )
 {
+	//если нет родительской директории
+	if( _access( saveFolder.c_str(), 0 ) == -1 )			
+		CreateDirectory( saveFolder.c_str(), NULL );
+
 	std::string localFolder = saveFolder + GetValue<std::string>( NAME ) + "/";
+
+	//если нет директории в которую надо сохранять данные
+	if( _access( localFolder.c_str(), 0 ) == -1 )
+		CreateDirectory( localFolder.c_str(), NULL );
+
 	std::string saveFile = localFolder + "company.ini";
-	INrpConfig::Save( "properties", saveFile );
+	DeleteFile( saveFile.c_str() );
+	INrpConfig::Save( PROPERTIES, saveFile );
+
+	IniFile::Write( PROPERTIES, "ceo", GetValue<PUser>( CEO )->GetValue<std::string>( NAME ), saveFile );
 
 	PROJECT_MAP::iterator pIter = projects_.begin();
 	for( int i=0; pIter != projects_.end(); ++pIter, ++i )
@@ -113,12 +132,70 @@ void CNrpCompany::Save( std::string saveFolder )
 	for( int i=0; uIter != employers_.end(); ++uIter, ++i )
 	{
 		(*uIter)->Save( localFolder + "users/" );
-		IniFile::Write( "users", "user_" + IntToStr(i), (*uIter)->GetValue<std::string>( NAME ), saveFile );
+		IniFile::Write( "users", "user_" + IntToStr(i), (*uIter)->ClassName() + ":" + (*uIter)->GetValue<std::string>( NAME ), saveFile );
 	}
 }
 
 void CNrpCompany::Load( std::string loadFolder )
 {
+	std::string loadFile = loadFolder + "/" + "company.ini";
+	INrpConfig::Load( PROPERTIES, loadFile );
 
+	std::string ceoName = IniFile::Read( PROPERTIES, "ceo", std::string(""), loadFile );
+	SetValue<PUser>( CEO, CNrpApplication::Instance().GetUser( ceoName ) );
+
+	for( int i=0; i < GetValue<int>( PROJECTNUMBER ); ++i )
+	{
+		std::string prjName = IniFile::Read( "projects", "project_" + IntToStr(i), std::string(""), loadFile );
+		CNrpGameProject* prj = new CNrpGameProject( "" );
+		prj->Load( loadFolder + "projects/" + prjName );
+		projects_[ prjName ] = prj;
+	}
+
+	for( int i=0; i < GetValue<int>( ENGINES_NUMBER ); ++i )
+	{
+		std::string engineName = IniFile::Read( "engines", "engine_" + IntToStr(i), std::string(""), loadFile );
+		CNrpGameEngine* ge = new CNrpGameEngine( "" );
+		ge->Load( loadFolder + "engines/" );
+		engines_.push_back( ge );
+	}
+
+	for( int i=0; i < GetValue<int>( TECHNUMBER ); ++i )
+	{
+		std::string techName = IniFile::Read( "techs", "tech_" + IntToStr(i), std::string(""), loadFile );
+		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
+		tech->Load( loadFolder + "techs/" + techName + ".ini" );
+		technologies_[ techName ] = tech;
+	}
+
+	for( int i=0; i < GetValue<int>( GAMENUMBER ); ++i )
+	{
+		std::string gameName = IniFile::Read( "games", "game_" + IntToStr(i), std::string(""), loadFile );
+		CNrpGame* game = new CNrpGame(0);
+		game->Load( loadFolder + "games/" );
+		games_[ gameName ] = game;
+	}
+
+	for( int i=0; i < GetValue<int>( USERNUMBER ); ++i )
+	{
+		std::string name = IniFile::Read( "users", "user_" + IntToStr(i), std::string(""), loadFile );
+		std::string className = name.substr( 0, name.find( ':' ) );
+		name = name.substr( name.find(':') + 1, 0xff );
+		IUser* user = new IUser( className.c_str(), "" );
+		user->Load( loadFolder + "users/" + name + ".ini" );
+		employers_.push_back( user );
+	}
+}
+
+CNrpGame* CNrpCompany::GetGame( std::string gameName )
+{
+	GAME_MAP::iterator gIter = games_.begin();
+	for( int i=0; gIter != games_.end(); ++gIter, ++i )
+	{
+		if( gIter->second->GetValue<std::string>( NAME ) == gameName )
+			return gIter->second;
+	}
+
+	return NULL;
 }
 }//namespace nrp

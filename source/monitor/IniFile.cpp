@@ -176,6 +176,21 @@ bool IniFile::Read( const std::string& section,
 
 	return def_value;
 }
+
+SYSTEMTIME IniFile::Read( const std::string& section, 
+							const std::string& key, 
+							const SYSTEMTIME& def_value, 
+							const std::string& fileName )
+{
+	SYSTEMTIME result( def_value );
+
+	std::string str_pars = Read( section, key, std::string( "y=0 m=0 d=0 h=0 m=0 s=0" ), fileName );
+	sscanf_s( str_pars.c_str(), "m=%04d m=%02d d=%02d h=%02d m=%02d s=%02d", 
+								&result.wYear, &result.wMonth, &result.wDay,
+								&result.wHour, &result.wMinute, &result.wSecond );
+
+	return result;	
+}
 //////////////////////////////////////////////////////////////////////////
 
 void IniFile::Write( const std::string& section, 
@@ -188,6 +203,28 @@ void IniFile::Write( const std::string& section,
 	sprintf_s( str, "%.3f, %.3f, %.3f", amount.X, amount.Y, amount.Z );
 
 	Write( section, key, str, file_name );
+}
+
+void IniFile::Write( const std::string& section, 
+						   const std::string& key, 
+						   const SYSTEMTIME& amount, 
+						   const std::string& fileName )
+{
+	char str[ MAX_PATH ];
+
+	sprintf_s( str, "y=%04d m=%02d y=%02f h=%02d m=%02d s=%02d", 
+					amount.wYear, amount.wMonth, amount.wDay,
+					amount.wHour, amount.wMinute, amount.wSecond );
+
+	Write( section, key, str, fileName );
+}
+
+void IniFile::Write( const std::string& section, const std::string& key, const float& valuel, const std::string& file_name )
+{
+	std::ostringstream rectStrStream;
+	rectStrStream << valuel;
+
+	IniFile::Write(section, key, rectStrStream.str(), file_name);
 }
 //////////////////////////////////////////////////////////////////////////
 

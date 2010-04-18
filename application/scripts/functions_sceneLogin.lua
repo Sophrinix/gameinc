@@ -35,7 +35,7 @@ function sloginCloseWindowCreateNewProfile( ptr )
 	windowg:Remove()
 end
 
-function slogin_CreateNewGame()
+function slogin_CreateNewGame( ptr )
 
 	local scrW, scrH = driver:GetScreenSize()
 	local windowg = CLuaWindow( guienv:AddWindow(  "", scrW / 2 - width, scrH / 2 - height, scrW / 2 + width, scrH / 2 + height, -1, guienv:GetRootGUIElement() ) )
@@ -63,4 +63,9 @@ function slogin_CreateNewGame()
 											    windowg:Self(), -1, "Отмена" ) )
 	btnCancel:SetAction( "sloginCloseWindowCreateNewProfile" )
 	
+end
+
+function slogin_ContinueLastGame( ptr )
+	applic:LoadProfile(  applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
+	NrpSetNextScene( "sceneWork" )
 end

@@ -4,8 +4,9 @@
 namespace nrp
 {
 
-CNrpLicense::CNrpLicense(void) : INrpProject( "CNrpLicense", "" )
+CNrpLicense::CNrpLicense(std::string name) : INrpProject( "CNrpLicense", "" )
 {
+	CreateValue<std::string>( NAME, name );
 }
 
 CNrpLicense::~CNrpLicense(void)

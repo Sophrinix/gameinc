@@ -29,6 +29,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	CNrpEngine& v_engine = CNrpEngine::Instance();
 	CNrpApplication& application = CNrpApplication::Instance();
 	application.SetValue<PNrpBank>( BANK, &CNrpBank::Instance() );
+	application.SetValue<std::string>( FULLPATH, "" );
 	CNrpPluginEngine& p_engine = CNrpPluginEngine::Instance();
 
 	CNrpVideoConfig& videoConfig = CNrpVideoConfig::Instance();
@@ -54,6 +55,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	HTMLEngine& htmlEngine = HTMLEngine::Instance();
 	v_engine.InitConsole();
 	v_engine.Run();
+
+	Logger::Stop();
 
 	//GPrintUndeletedSystemObject();
 }

@@ -9,6 +9,8 @@ namespace nrp
 
 OPTION_NAME CEO("ceo");
 OPTION_NAME ENGINES_NUMBER( "engineNumber" );
+OPTION_NAME PROJECTNUMBER( "projectNumber" );
+OPTION_NAME GAMENUMBER( "gameNumber" );
 
 class INrpProject;
 class CNrpGame;
@@ -35,6 +37,7 @@ public:
 	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );
+	CNrpGame* GetGame( std::string gameName );
 
 	void Save( std::string saveFolder );
 	void Load( std::string loadFolder );

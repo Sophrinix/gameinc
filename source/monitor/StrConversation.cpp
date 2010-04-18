@@ -149,6 +149,32 @@ bool IsNumber( const char* s )
 	return true;
 }
 
+bool IsFloatNumber( const char* s )
+{
+	int pointNum = 0;
+	int pos = 0;
+	while( s[ pos ] != 0 )
+		if( isdigit( s[ pos ] ) && pointNum < 2 )
+		{
+			if( s[ pos ] == '.' )
+				pointNum++;
+
+			pos++;
+		}
+		else
+			return false;
+
+
+	return true;	
+}
+
+float StrToFloat( const char* s )
+{
+	float result( 0 );
+	sscanf_s( s, "%f", &result );
+	return result;
+}
+
 irr::core::vector3df StrToVector3df( const char* s )
 {
 	irr::core::vector3df result( 0, 0, 0 );

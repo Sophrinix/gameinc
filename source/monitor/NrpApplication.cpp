@@ -7,6 +7,9 @@
 #include "NrpTechnology.h"
 #include "NrpBank.h"
 
+#include <io.h>
+#include <errno.h>
+
 static nrp::CNrpApplication* globalApplication = NULL;
 					 //янв фев мрт апр май июн июл авг снт окт ноя дек	
 int monthLen[ 12 ] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -28,11 +31,11 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( TECHNUMBER, 0 );
 	CreateValue<int>( USERNUMBER, 0 );
 	CreateValue<int>( COMPANIESNUMBER, 0 );
+	CreateValue<std::string>( FULLPATH, "" );
 	std::string profileName = IniFile::Read( "options", "currentProfile", std::string( "dalerank" ), "config/system.ini" );
 	std::string profileCompany = IniFile::Read( "options", "currentCompany", std::string( "daleteam"), "config/system.ini" );
 	CreateValue<std::string>( PROFILENAME, profileName );
 	CreateValue<std::string>( PROFILECOMPANY, profileCompany );
-	LoadProfile( profileName );
 }
 
 CNrpApplication::~CNrpApplication(void)
@@ -177,6 +180,16 @@ IUser* CNrpApplication::GetUser( int index )
 	return index < (int)users_.size() ? users_[ index ] : NULL;
 }
 
+IUser* CNrpApplication::GetUser( std::string name )
+{
+	USER_LIST::iterator pIter = users_.begin();
+	for( ; pIter != users_.end(); ++pIter )
+		if( (*pIter)->GetValue<std::string>( NAME ) == name )
+			return (*pIter);
+
+	return NULL;	
+}
+
 int CNrpApplication::RemoveUser( IUser* user )
 {
 	USER_LIST::iterator pIter = users_.begin();
@@ -193,8 +206,10 @@ int CNrpApplication::RemoveUser( IUser* user )
 void CNrpApplication::SaveProfile()
 {
 	std::string saveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "/";
-	std::string profileIni = saveFolder + "profile.ini";
+	if( _access( saveFolder.c_str(), 0 ) == -1 )
+		CreateDirectory( saveFolder.c_str(), NULL );
 
+	std::string profileIni = saveFolder + "profile.ini";
 	DeleteFile( profileIni.c_str() );
 
 	std::string config = "config/system.ini";
@@ -208,16 +223,15 @@ void CNrpApplication::SaveProfile()
 		(*cIter)->Save( saveFolderCompanies );
 		IniFile::Write( "companies", "company_" + IntToStr(i), (*cIter)->GetValue<std::string>( NAME ), profileIni );
 	}
-	IniFile::Write( "options", "companyNumber", companies_.size(), profileIni );
 
 	std::string saveFolderUsers = saveFolder + "freeUsers/";
 	USER_LIST::iterator uIter = users_.begin();
 	for( int i=0; uIter != users_.end(); ++uIter, ++i )
 	{
 		(*uIter)->Save( saveFolderUsers );
-		IniFile::Write( "users", "user_" + IntToStr(i), (*uIter)->GetValue<std::string>( NAME ), profileIni );
+		std::string text = (*uIter)->ClassName() + ":" + (*uIter)->GetValue<std::string>( NAME );
+		IniFile::Write( "users", "user_" + IntToStr(i), text, profileIni );
 	}
-	IniFile::Write( "options", "userNumber", users_.size(), profileIni );
 
 	std::string saveFolderTech = saveFolder + "freeTech/";
 	TECH_LIST::iterator tIter = technologies_.begin();
@@ -226,23 +240,13 @@ void CNrpApplication::SaveProfile()
 		(*tIter)->Save( saveFolderTech );
 		IniFile::Write( "technologies", "technology_" + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), profileIni );
 	}
-	IniFile::Write( "options", "techNumber", technologies_.size(), profileIni );
 }
 
-void CNrpApplication::LoadProfile( std::string profileName )
+void CNrpApplication::LoadProfile( std::string profileName, std::string companyName )
 {
 	std::string saveFolder = "save/" + profileName + "/";
 	std::string profileIni = saveFolder + "profile.ini";
 	INrpConfig::Load( "options", profileIni );
-
-	std::string saveFolderCompanies = saveFolder + "companies/";
-	for( int i=0; i < GetValue<int>( COMPANIESNUMBER ); ++i )
-	{
-		std::string name = IniFile::Read( "companies", "company_" + IntToStr(i), std::string(""), profileIni );
-		CNrpCompany* cmp = new CNrpCompany( name.c_str() );
-		cmp->Load( saveFolderCompanies + name + "/" );
-		companies_.push_back( cmp );
-	}
 
 	std::string saveFolderUsers = saveFolder + "freeUsers/";
 	for( int i=0; i < GetValue<int>( USERNUMBER ); ++i )
@@ -262,6 +266,15 @@ void CNrpApplication::LoadProfile( std::string profileName )
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
 		tech->Load( saveFolder + name + ".ini" );
 		technologies_.push_back( tech );
+	}
+
+	std::string saveFolderCompanies = saveFolder + "companies/";
+	for( int i=0; i < GetValue<int>( COMPANIESNUMBER ); ++i )
+	{
+		std::string name = IniFile::Read( "companies", "company_" + IntToStr(i), std::string(""), profileIni );
+		CNrpCompany* cmp = new CNrpCompany( name.c_str() );
+		cmp->Load( saveFolderCompanies + name + "/" );
+		companies_.push_back( cmp );
 	}
 }
 

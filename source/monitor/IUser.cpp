@@ -2,6 +2,9 @@
 #include "IUser.h"
 #include "INrpProject.h"
 
+#include <io.h>
+#include <errno.h>
+
 namespace nrp
 {
 
@@ -79,7 +82,11 @@ int IUser::GetSkill( int typen )
 
 void IUser::Save( std::string folderPath )
 {
+	if( _access( folderPath.c_str(), 0 ) == -1 )
+		CreateDirectory( folderPath.c_str(), NULL );
+
 	std::string fileName = folderPath + GetValue<std::string>( NAME ) + ".ini";
+	DeleteFile( fileName.c_str() );
 
 	NAMEVALUE_MAP::iterator gnrIter = genrePreferences_.begin();
 	for( ; gnrIter != genrePreferences_.end(); ++gnrIter )
@@ -101,12 +108,12 @@ void IUser::Save( std::string folderPath )
 	//for( ; tlIter != techWorks_.end(); ++tlIter )
 	//	IniFile::Write( "knowledges", tlIter->first, tlIter->second, fileName );
 
-	INrpConfig::Save( "properties", fileName );
+	INrpConfig::Save( PROPERTIES, fileName );
 }
 
 void IUser::Load( std::string fileName )
 {
-	INrpConfig::Load( "properties", fileName );
+	INrpConfig::Load( PROPERTIES, fileName );
 
 /*	NAMEVALUE_MAP::iterator gnrIter = genrePreferences_.begin();
 	for( ; gnrIter != genrePreferences_.end(); ++gnrIter )
@@ -133,10 +140,10 @@ void IUser::Load( std::string fileName )
 	{
 		INrpProperty* prop = paIter->second;
 		if( prop->GetValueType() == typeid( int ).name() )
-			IniFile::Write( "properties", paIter->first, ((CNrpProperty<int>*)prop)->GetValue(), fileName );
+			IniFile::Write( PROPERTIES, paIter->first, ((CNrpProperty<int>*)prop)->GetValue(), fileName );
 
 		if( prop->GetValueType() == typeid( std::string ).name() )
-			IniFile::Write( "properties", paIter->first, ((CNrpProperty<std::string>*)prop)->GetValue(), fileName );
+			IniFile::Write( PROPERTIES, paIter->first, ((CNrpProperty<std::string>*)prop)->GetValue(), fileName );
 	}*/
 }
 }//namespace nrp

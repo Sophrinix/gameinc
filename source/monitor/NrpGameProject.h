@@ -47,6 +47,7 @@ public:
 	void SetSoundTech( CNrpTechnology* ptrTech, int index );
 	CNrpTechnology* GetSoundTech( int index );
 	void Save( std::string folderSave );
+	void Load( std::string loadFolder );
 private:
 
 	typedef std::vector< CNrpTechnology* > TECH_LIST;

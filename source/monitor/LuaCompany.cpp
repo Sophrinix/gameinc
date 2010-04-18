@@ -38,7 +38,10 @@ int CLuaCompany::SetCEO( lua_State* L )
 
 	IUser* user = (IUser*)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetValue<PUser>( nrp::CEO, user );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		object_->SetValue<PUser>( nrp::CEO, user );
+	}
 
 	return 1;
 }

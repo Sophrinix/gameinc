@@ -139,6 +139,8 @@ public:
 	// —лужебна€ функци€, котора€ разберетс€, что надо делать с экземп€ром класса Log
 	// (в базу записать, на экране отобразить)
 	void EnqueueLogEntry(const Log& log);
+
+	static void Stop(); 
 private:
 	Logger();
 	~Logger();

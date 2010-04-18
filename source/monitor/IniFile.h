@@ -31,6 +31,12 @@ public:
 					   const int& value,								
 					   const std::string& file_name);						
 
+	static void Write( const std::string& section,						
+						const std::string& key,							
+						const float& valuel,								
+						const std::string& file_name);						
+
+
 	//! Читает из конфигурационного файла целочисленное значение
 	/*!
 		\param section	название секции, где расположен параметр
@@ -180,6 +186,15 @@ public:
 
 	/*****************************************************************************/
    
+	static void Write( const std::string& section, 
+			  		   const std::string& key, 
+					   const SYSTEMTIME& amount,
+					   const std::string& fileName );
+
+	static SYSTEMTIME Read( const std::string& section, 
+							  const std::string& key, 
+							  const SYSTEMTIME& def_value,
+							  const std::string& fileName );
 };
 
 } //end namespace nrp

@@ -29,7 +29,7 @@ btnNewGame:SetAction( "slogin_CreateNewGame" )
 
 local btnContinueGame = CLuaButton( guienv:AddButton( scrWidth / 2 - 200, scrHeight - 120, scrWidth / 2 - 50, scrHeight - 80, 
 											 guienv:GetRootGUIElement(), -1, "Продолжить") )
-btnContinueGame:SetAction( "slogin_CreateContinueGame" )
+btnContinueGame:SetAction( "slogin_ContinueLastGame" )
 
 local btnOptionsGame = CLuaButton( guienv:AddButton( scrWidth / 2 + 50, scrHeight - 120, scrWidth / 2 + 200, scrHeight - 80, 
 											 guienv:GetRootGUIElement(), -1, "Настройки") )

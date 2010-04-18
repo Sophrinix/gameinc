@@ -39,6 +39,8 @@ OPTION_NAME READYWORKPERCENT( "readyWorkPercent" );
 OPTION_NAME TECHNUMBER( "techNumber" );
 OPTION_NAME USERNUMBER( "userNumber" );
 OPTION_NAME COMPANIESNUMBER( "companiesNumber" );
+OPTION_NAME COMPANY( "company" );
+OPTION_NAME PROPERTIES( "properties" );
 
 #define CHECK_VALCLASS_TYPE( valclass, bclass )\
 	if( typeid( valclass ) != typeid( bclass ) ) {\
@@ -211,9 +213,18 @@ public:
 			INrpProperty* prop = paIter->second;
 			if( prop->GetValueType() == typeid( int ).name() )
 				IniFile::Write( scetionName, paIter->first, ((CNrpProperty<int>*)prop)->GetValue(), fileName );
-
+			else
 			if( prop->GetValueType() == typeid( std::string ).name() )
 				IniFile::Write( scetionName, paIter->first, ((CNrpProperty<std::string>*)prop)->GetValue(), fileName );
+			else
+			if( prop->GetValueType() == typeid( bool ).name() )
+				IniFile::Write( scetionName, paIter->first, std::string(((CNrpProperty<bool>*)prop)->GetValue() ? "true" : "false"), fileName );
+			else
+			if( prop->GetValueType() == typeid( SYSTEMTIME ).name() )
+				IniFile::Write( scetionName, paIter->first, ((CNrpProperty<SYSTEMTIME>*)prop)->GetValue(), fileName );
+			else 
+			if( prop->GetValueType() == typeid( float ).name() )
+				IniFile::Write( scetionName, paIter->first, ((CNrpProperty<float>*)prop)->GetValue(), fileName );
 		}
 	}
 
@@ -231,8 +242,16 @@ public:
 			valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
 			if( IsNumber( valuel.c_str() ) )
 				CreateValue<int>( name, StrToInt( valuel.c_str() ) );
+			else
+			if( IsFloatNumber( valuel.c_str() ) )
+				CreateValue<float>( name, StrToFloat( valuel.c_str() ) ); 
 			else 
-				CreateValue<std::string>( name, valuel );
+			{
+				if( valuel == "true" || valuel == "false" )
+					CreateValue<bool>( name, valuel == "true" );
+				else
+					CreateValue<std::string>( name, valuel );
+			}
 			memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
 			readLine = buffer;
 		}

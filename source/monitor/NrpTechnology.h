@@ -31,8 +31,9 @@ public:
 private:
 	void Load_( char* file_name ) {}
 
-	std::map< int, int > techRequires_;
-	std::map< int, int > skillRequires_;
+	typedef std::map< int, int > REQUIRE_MAP;
+	REQUIRE_MAP techRequires_;
+	REQUIRE_MAP skillRequires_;
 }; 
 
 typedef CNrpTechnology* PNrpTechnology;

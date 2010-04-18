@@ -41,6 +41,7 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCurrentProfileCompany ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateProfile ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, ResetData ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadProfile ),
 	{0,0}
 };
 
@@ -353,5 +354,20 @@ int CLuaApplication::ResetData( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	object_->ResetData();
 	return 1;
+}
+
+int CLuaApplication::LoadProfile( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:LoadProfile need string,string parameter" );
+
+	const char* name = lua_tostring( L, 2 );
+	assert( name != NULL );
+	const char* company = lua_tostring( L, 3 );
+	assert( company != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->LoadProfile( name, company );
+
+	return 1;	
 }
 }//namespace nrp

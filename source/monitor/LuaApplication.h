@@ -39,6 +39,7 @@ public:
 	int GetCurrentProfileCompany( lua_State* L);
 	int CreateProfile( lua_State* L );
 	int ResetData( lua_State* L );
+	int LoadProfile( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:

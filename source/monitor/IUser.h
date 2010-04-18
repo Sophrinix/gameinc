@@ -16,6 +16,7 @@ OPTION_NAME WANTMONEY( "wantMoney" ); /*! Зарплата, которой будет доволен юзер *
 OPTION_NAME STABILITY("stability");/*< скорость падения усталости */
 OPTION_NAME CHARACTER( "character" ); /*< характер персонажа */
 OPTION_NAME CONTRACTMONEY( "contractMoney" ); /*! стартовая сумма при подписании контракта*/
+OPTION_NAME MAXSUPPORTUSER( "maxSupportUser" ); /*! количество людей, которым может управлять чел*/
 
 class IUserAction;
 class CNrpTechnology;

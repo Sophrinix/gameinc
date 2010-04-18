@@ -7,7 +7,7 @@ namespace nrp
 class CNrpLicense : public INrpProject
 {
 public:
-	CNrpLicense(void);
+	CNrpLicense(std::string name);
 	~CNrpLicense(void);
 };
 
