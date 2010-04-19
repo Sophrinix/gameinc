@@ -197,9 +197,11 @@ public:
 		if( pIter == options_.end() )
 		{
 #ifdef _DEBUG
-			OutputDebugString( "write: bad config param" );
+			std::string text = "write: bad config param " + ClassName() + ":" + name;
+			OutputDebugString( text.c_str() );
+
+			throw text.c_str();
 #endif
-			throw "write: bad config param";
 		}
 		else 
 			((CNrpProperty<B>*)pIter->second)->SetValue( valuel );

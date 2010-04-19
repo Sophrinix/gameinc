@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "IUser.h"
 #include "INrpProject.h"
+#include "NrpCompany.h"
 
 #include <io.h>
 #include <errno.h>
@@ -24,6 +25,7 @@ IUser::IUser(const char* className, const char* systemName ) : INrpConfig( class
 	CreateValue<int>( CHARACTER, 0 );
 	CreateValue<int>( WANTMONEY, 0 );
 	CreateValue<int>( CONTRACTMONEY, 0 );
+	CreateValue<PNrpCompany>( COMPANY, NULL );
 }
 
 IUser::~IUser(void)

@@ -82,12 +82,12 @@ int CLuaApplication::CreateUser( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( strcmp( userType, "player" ) == 0 )
+		if( strcmp( userType, "RealPlayer" ) == 0 )
 		{
 			user = new CNrpPlayer( name );
 			object_->AddUser( true, user );
 		}
-		else if( strcmp( userType, "aiplayer" ) == 0 )
+		else if( strcmp( userType, "AIPlayer" ) == 0 )
 		{
 			user = new CNrpAiUser( name );
 			object_->AddUser( true, user );

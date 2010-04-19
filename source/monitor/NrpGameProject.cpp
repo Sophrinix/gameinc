@@ -42,7 +42,7 @@ CNrpGameProject::CNrpGameProject( std::string name ) : INrpProject( "CNrpGamePro
 	CreateValue<int>( ADVTECHNUMBER, 0 );
 	CreateValue<int>( ENGINE_CODEVOLUME, 0 );
 	CreateValue<int>( QUALITY, 0 );
-	CreateValue<std::string>( COMPANY, "" );
+	CreateValue<PNrpCompany>( COMPANY, NULL );
 }
 
 CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CNrpGameProject", nProject->GetValue<std::string>( NAME ) )
@@ -411,6 +411,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 		std::string name = IniFile::Read( "technology", "tech_" + IntToStr(i), std::string(""), fileName );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
 		tech->Load( loadFolder + "techs/" + name + ".ini" );
+		tech->SetValue<LPVOID>( PARENT, this );
 		technologies_.push_back( tech );
 	}
 
@@ -419,6 +420,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 		std::string name = IniFile::Read( "genres", "genre_" + IntToStr(i), std::string(""), fileName );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
 		tech->Load( loadFolder + "genres/" + name + ".ini" );
+		tech->SetValue<LPVOID>( PARENT, this );
 		genres_.push_back( tech );		
 	}
 
@@ -427,6 +429,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 		std::string name = IniFile::Read( "videoTech", "videoTech_" + IntToStr(i), std::string(""), fileName );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
 		tech->Load( loadFolder + "videoTech/" + name + ".ini" );
+		tech->SetValue<LPVOID>( PARENT, this );
 		videoTechnologies_.push_back( tech );
 	}
 
@@ -435,6 +438,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 		std::string name = IniFile::Read( "soundTech", "soundTech_" + IntToStr(i), std::string(""), fileName );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
 		tech->Load( loadFolder + "soundTech/" + name + ".ini" );
+		tech->SetValue<LPVOID>( PARENT, this );
 		soundTechnologies_.push_back( tech );
 	}
 
@@ -460,26 +464,31 @@ void CNrpGameProject::Load( std::string loadFolder )
 	name = IniFile::Read( PROPERTIES, "scriptEngine", "", fileName );
 	PNrpTechnology tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
 	tech->Load( loadFolder + SCRIPTENGINE + ".ini" );
+	tech->SetValue<LPVOID>( PARENT, this );
 	SetValue<PNrpTechnology>( SCRIPTENGINE, tech );
 
 	name = IniFile::Read( PROPERTIES, "miniGameEngine", "", fileName );
 	tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
 	tech->Load( loadFolder + MINIGAMEENGINE + ".ini" );
+	tech->SetValue<LPVOID>( PARENT, this );
 	SetValue<PNrpTechnology>( MINIGAMEENGINE, tech );
 
 	name = IniFile::Read( PROPERTIES, "physicEngine", "", fileName );
 	tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
 	tech->Load( loadFolder + PHYSICSENGINE + ".ini" );
+	tech->SetValue<LPVOID>( PARENT, this ); 
 	SetValue<PNrpTechnology>( PHYSICSENGINE, tech );
 
 	name = IniFile::Read( PROPERTIES, "graphicQuality", "", fileName );
 	tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
 	tech->Load( loadFolder + GRAPHICQUALITY + ".ini" );
+	tech->SetValue<LPVOID>( PARENT, this );
 	SetValue<PNrpTechnology>( GRAPHICQUALITY, tech );
 
 	name = IniFile::Read( PROPERTIES, "soundQuality", "", fileName );	
 	tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
 	tech->Load( loadFolder + SOUNDQUALITY + ".ini" );
+	tech->SetValue<LPVOID>( PARENT, this );
 	SetValue<PNrpTechnology>( SOUNDQUALITY, tech );
 }
 }//namespace nrp

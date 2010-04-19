@@ -46,8 +46,6 @@ public:
 
 	nrp::CNrpGameEngine* CreateGameEngine( std::string name );
 
-
-	
 	bool UpdateTime();
 	SYSTEMTIME& GetDateTime() { return time_; }
 

@@ -35,8 +35,10 @@ public:
 	CNrpGameEngine* GetGameEngine( int index );
 	CNrpTechnology* GetTech( int index );
 	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
+	CNrpGameProject* GetGameProject( std::string name );
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );
+	IUser* GetUser( std::string name );
 	CNrpGame* GetGame( std::string gameName );
 
 	void Save( std::string saveFolder );

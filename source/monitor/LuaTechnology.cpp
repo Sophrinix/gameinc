@@ -53,7 +53,7 @@ SETTER_FUNCTION( SetBaseCode, float, lua_tonumber, NO_ASSERT, float, BASE_CODE )
 SETTER_FUNCTION( SetName, const char*, lua_tostring, assert( valuel != NULL ), std::string, NAME )
 SETTER_FUNCTION( SetTechType, int, lua_tointeger, NO_ASSERT, int, TECHTYPE )
 SETTER_FUNCTION( SetAddingEngineCode, float, lua_tonumber, NO_ASSERT, float, ENGINE_CODE )
-SETTER_FUNCTION( SetQuality, float, lua_tonumber, NO_ASSERT, float, QUALITY )
+SETTER_FUNCTION( SetQuality, int, lua_tonumber, NO_ASSERT, int, QUALITY )
 
 int CLuaTechnology::GetOptionAsInt( lua_State* L )
 {

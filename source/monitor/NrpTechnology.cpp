@@ -2,6 +2,8 @@
 #include "NrpTechnology.h"
 #include "NrpGameProject.h"
 #include "IUser.h"
+#include "NrpCompany.h"
+#include "NrpApplication.h"
 
 #include <io.h>
 #include <errno.h>
@@ -20,6 +22,7 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnol
 	CreateValue<LPVOID>( PARENT, NULL );
 	CreateValue<int>( QUALITY, 100 );
 	CreateValue<PUser>( COMPONENTLIDER, NULL );
+	CreateValue<PNrpCompany>( COMPANY, NULL );
 }
 
 CNrpTechnology::~CNrpTechnology(void)
@@ -70,7 +73,7 @@ void CNrpTechnology::Save( std::string saveFolder )
 	
 	REQUIRE_MAP::iterator tIter = techRequires_.begin();
 	for( ; tIter != techRequires_.end(); ++tIter )
-		IniFile::Write( "rechRequire", IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
+		IniFile::Write( "techRequire", IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
 
 	REQUIRE_MAP::iterator sIter = skillRequires_.begin();
 	for( ; sIter != skillRequires_.end(); ++sIter )
@@ -80,6 +83,31 @@ void CNrpTechnology::Save( std::string saveFolder )
 
 void CNrpTechnology::Load( std::string fileName )
 {
+	INrpProject::Load( PROPERTIES, fileName );
 
+	std::string companyName = IniFile::Read( PROPERTIES, COMPANY, std::string(""), fileName );
+	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( companyName );
+		
+	std::string name = IniFile::Read( PROPERTIES, "componentLider", std::string(""), fileName );
+	SetValue<PUser>( COMPONENTLIDER, name != "" ? cmp->GetUser( name ) : NULL );
+
+	ReadValueList_( "techRequire", techRequires_, fileName );
+	ReadValueList_( "skillRequire", skillRequires_, fileName );
+}
+
+void CNrpTechnology::ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt, std::string fileName )
+{
+	char buffer[ 32000 ];
+	memset( buffer, 0, 32000 );
+	GetPrivateProfileSection( sectionName.c_str(), buffer, 32000, fileName.c_str() );
+
+	std::string readLine = buffer;
+	while( readLine != "" )
+	{
+		std::string name, valuel;
+		name = readLine.substr( 0, readLine.find( '=' ) );
+		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
+		mapt[ StrToInt( name.c_str() ) ] = StrToInt( valuel.c_str() );
+	}
 }
 }//namespace nrp

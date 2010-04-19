@@ -1,11 +1,11 @@
 local app = CLuaApplication( NrpGetApplication() )
-local company = CLuaCompany( app:CreateCompany( app:GetCurrentProfileCompany() ) )
-local user = CLuaUser( app:CreateUser( "player", app:GetCurrentProfile() ) )
+local company = CLuaCompany( nil )
+local user = CLuaUser( nil )
 
 function sloginResetDataForNewGame()
 	app:ResetData()
 	company:SetObject( app:CreateCompany( app:GetCurrentProfileCompany() ) )
-	user:SetObject( app:CreateUser( "player", app:GetCurrentProfile() ) )
+	user:SetObject( app:CreateUser( "RealPlayer", app:GetCurrentProfile() ) )
 end
 
 function sloginAddStartCompanyTechnology()

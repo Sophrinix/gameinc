@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "NrpGameEngine.h"
+#include "NrpCompany.h"
 
 #include <io.h>
 #include <errno.h>
@@ -15,6 +16,7 @@ CNrpGameEngine::CNrpGameEngine( std::string name ) : INrpProject( "CNrpGameEngin
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
 	CreateValue<int>( CODEVOLUME, 0 );
 	CreateValue<int>( QUALITY, 0 );
+	CreateValue<PNrpCompany>( COMPANY, NULL );
 }
 
 CNrpGameEngine::~CNrpGameEngine(void)
@@ -49,6 +51,9 @@ void CNrpGameEngine::Save( std::string saveFolder )
 		CreateDirectory( saveFolder.c_str(), NULL );
 
 	std::string localFolder = saveFolder + GetValue<std::string>( NAME ) + "/";
+
+	if( _access( localFolder.c_str(), 0 ) == -1 )
+		CreateDirectory( localFolder.c_str(), NULL );
 	std::string saveFile = localFolder + "engine.ini";
 
 	DeleteFile( saveFile.c_str() );
@@ -75,6 +80,8 @@ void CNrpGameEngine::Load( std::string loadFolder )
 		name = readLine.substr( 0, readLine.find( '=' ) );
 		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
 		avgenres_[ GENRE_TYPE( StrToInt( name.c_str() ) ) ] = StrToInt( valuel.c_str() );
+		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
+		readLine = buffer;
 	}
 }
 }//namespace nrp

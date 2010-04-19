@@ -3,7 +3,7 @@ local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 local applic = CLuaApplication( NrpGetApplication() )
 local mode = { }
 mode[ "Программисты" ] = "coder"
-mode[ "Дизайнеы" ] = "designer"
+mode[ "Дизайнеры" ] = "designer"
 mode[ "Композиторы" ] = "composer"
 mode[ "Тестировщики" ] = "tester"
 --"coder" "designer" "composer" "tester"
@@ -82,9 +82,12 @@ local function ShowAvaibleEmployers( ptr )
 	local yoffset = 0
 	
 	local cnt = 0
+	Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleEmployers:appusers" .. maxuser )
 	
 	for i=1, maxuser do
 		local user = CLuaUser( applic:GetUser( i-1 ) )
+	
+		Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleEmployers:user=" .. user:GetName() .. " type=" .. user:GetTypeName() )
 		if modeUserView == user:GetTypeName() then
 		    cnt = cnt + 1
 			if cnt < 4 then

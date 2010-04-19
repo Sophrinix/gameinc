@@ -29,9 +29,11 @@ public:
 	void Load( std::string fileName );
 
 private:
-	void Load_( char* file_name ) {}
-
 	typedef std::map< int, int > REQUIRE_MAP;
+
+	void Load_( char* file_name ) {}
+	void ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt, std::string fileName );
+	
 	REQUIRE_MAP techRequires_;
 	REQUIRE_MAP skillRequires_;
 }; 

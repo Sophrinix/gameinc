@@ -9,6 +9,7 @@
 
 #include <io.h>
 #include <errno.h>
+#include <assert.h>
 
 namespace nrp
 {
@@ -41,6 +42,7 @@ void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 
 	int k = engines_.size();
 	SetValue<int>( ENGINES_NUMBER, k );
+	ptrEng->SetValue<PNrpCompany>( COMPANY, this );
 }
 
 CNrpTechnology* CNrpCompany::GetTech( int index )
@@ -64,6 +66,7 @@ CNrpGameProject* CNrpCompany::AddGameProject( CNrpGameProject* ptrProject )
 	}
 
 	SetValue<int>( PROJECTNUMBER, projects_.size() );
+	ptrProject->SetValue<PNrpCompany>( COMPANY, this );
 	return NULL;
 }
 
@@ -79,6 +82,15 @@ IUser* CNrpCompany::GetUser( int index )
 	return index < (int)employers_.size() ? employers_[ index ] : NULL;
 }
 
+IUser* CNrpCompany::GetUser( std::string name )
+{
+	USER_LIST::iterator uIter = employers_.begin();
+	for( ; uIter != employers_.end(); ++uIter )
+		if( (*uIter)->GetValue<std::string>( NAME ) == name )
+			return *uIter;
+
+	return NULL;
+}
 void CNrpCompany::Save( std::string saveFolder )
 {
 	//если нет родительской директории
@@ -142,13 +154,17 @@ void CNrpCompany::Load( std::string loadFolder )
 	INrpConfig::Load( PROPERTIES, loadFile );
 
 	std::string ceoName = IniFile::Read( PROPERTIES, "ceo", std::string(""), loadFile );
-	SetValue<PUser>( CEO, CNrpApplication::Instance().GetUser( ceoName ) );
+	PUser usert = CNrpApplication::Instance().GetUser( ceoName );
+	assert( usert != NULL );
+	SetValue<PUser>( CEO, usert );
+	usert->SetValue<PNrpCompany>( COMPANY, this );
 
 	for( int i=0; i < GetValue<int>( PROJECTNUMBER ); ++i )
 	{
 		std::string prjName = IniFile::Read( "projects", "project_" + IntToStr(i), std::string(""), loadFile );
 		CNrpGameProject* prj = new CNrpGameProject( "" );
 		prj->Load( loadFolder + "projects/" + prjName );
+		prj->SetValue<PNrpCompany>( COMPANY, this );
 		projects_[ prjName ] = prj;
 	}
 
@@ -156,7 +172,8 @@ void CNrpCompany::Load( std::string loadFolder )
 	{
 		std::string engineName = IniFile::Read( "engines", "engine_" + IntToStr(i), std::string(""), loadFile );
 		CNrpGameEngine* ge = new CNrpGameEngine( "" );
-		ge->Load( loadFolder + "engines/" );
+		ge->Load( loadFolder + "engines/" + engineName + "/" );
+		ge->SetValue<PNrpCompany>( COMPANY, this );
 		engines_.push_back( ge );
 	}
 
@@ -165,14 +182,16 @@ void CNrpCompany::Load( std::string loadFolder )
 		std::string techName = IniFile::Read( "techs", "tech_" + IntToStr(i), std::string(""), loadFile );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
 		tech->Load( loadFolder + "techs/" + techName + ".ini" );
+		tech->SetValue<PNrpCompany>( COMPANY, this );
 		technologies_[ techName ] = tech;
 	}
 
 	for( int i=0; i < GetValue<int>( GAMENUMBER ); ++i )
 	{
 		std::string gameName = IniFile::Read( "games", "game_" + IntToStr(i), std::string(""), loadFile );
-		CNrpGame* game = new CNrpGame(0);
+		CNrpGame* game = new CNrpGame( gameName );
 		game->Load( loadFolder + "games/" );
+		game->SetValue<PNrpCompany>( COMPANY, this );
 		games_[ gameName ] = game;
 	}
 
@@ -181,21 +200,22 @@ void CNrpCompany::Load( std::string loadFolder )
 		std::string name = IniFile::Read( "users", "user_" + IntToStr(i), std::string(""), loadFile );
 		std::string className = name.substr( 0, name.find( ':' ) );
 		name = name.substr( name.find(':') + 1, 0xff );
-		IUser* user = new IUser( className.c_str(), "" );
+		IUser* user = new IUser( className.c_str(), name.c_str() );
 		user->Load( loadFolder + "users/" + name + ".ini" );
+		user->SetValue<PNrpCompany>( COMPANY, this );
 		employers_.push_back( user );
 	}
 }
 
 CNrpGame* CNrpCompany::GetGame( std::string gameName )
 {
-	GAME_MAP::iterator gIter = games_.begin();
-	for( int i=0; gIter != games_.end(); ++gIter, ++i )
-	{
-		if( gIter->second->GetValue<std::string>( NAME ) == gameName )
-			return gIter->second;
-	}
+	GAME_MAP::iterator gIter = games_.find( gameName );
+	return gIter != games_.end() ? gIter->second : NULL;
+}
 
-	return NULL;
+CNrpGameProject* CNrpCompany::GetGameProject( std::string name )
+{
+	PROJECT_MAP::iterator pIter = projects_.find( name );
+	return pIter != projects_.end() ? dynamic_cast< CNrpGameProject* >( pIter->second ) : NULL;
 }
 }//namespace nrp
