@@ -38,6 +38,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	std::string profileCompany = IniFile::Read( "options", "currentCompany", std::string( "daleteam"), "config/system.ini" );
 	CreateValue<std::string>( PROFILENAME, profileName );
 	CreateValue<std::string>( PROFILECOMPANY, profileCompany );
+	CreateValue<SYSTEMTIME>( CURRENTTIME, time_ );
 }
 
 CNrpApplication::~CNrpApplication(void)
@@ -130,6 +131,7 @@ bool CNrpApplication::UpdateTime()
 			}
 		}
 
+		SetValue<SYSTEMTIME>( CURRENTTIME, time_ );
 		return true;
 	}
 

@@ -108,6 +108,12 @@ WINDOW_EMPLOYERS_MANAGE_NAME = "_SystemWindowManageEmployers_"
 WINDOW_EMPLOYERS_MANAGE_ID = 11100
 
 --[[
+Окно управления проектами
+--]]
+WINDOW_PRJMANAGE_NAME = "_SystemWindowManageProject_"
+WINDOW_PRJMANAGE_ID	= 11200
+
+--[[
 Функция подключения скрипта с проверкой ошибок
 --]]
 

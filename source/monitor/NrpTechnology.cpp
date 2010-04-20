@@ -22,7 +22,9 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnol
 	CreateValue<LPVOID>( PARENT, NULL );
 	CreateValue<int>( QUALITY, 100 );
 	CreateValue<PUser>( COMPONENTLIDER, NULL );
+	CreateValue<std::string>( LASTWORKER, "" );
 	CreateValue<PNrpCompany>( COMPANY, NULL );
+	CreateValue<int>( ERRORNUMBER, 0 );
 }
 
 CNrpTechnology::~CNrpTechnology(void)

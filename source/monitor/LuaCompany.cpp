@@ -25,6 +25,9 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUserNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUser ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProject ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectByName ),
 	{0,0}
 };
 
@@ -153,5 +156,37 @@ int CLuaCompany::GetUser( lua_State* L )
 
 	lua_pushlightuserdata( L, user );
 	return 1;
+}
+
+int CLuaCompany::GetProjectNumber( lua_State *L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetProjectNumber", PROJECTNUMBER, 0 ) ); 
+	return 1;
+}
+
+int CLuaCompany::GetProject( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need int parameter" );
+
+	int index = lua_tointeger( L, 2 );
+	INrpProject* prj = NULL;
+	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetProject( index );
+
+	lua_pushlightuserdata( L, prj );
+	return 1;	
+}
+
+int CLuaCompany::GetProjectByName( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need int parameter" );
+
+	std::string name = lua_tostring( L, 2 );
+	INrpProject* prj = NULL;
+	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetProject( name );
+
+	lua_pushlightuserdata( L, prj );
+	return 1;	
 }
 }//namespace nrp

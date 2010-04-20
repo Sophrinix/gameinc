@@ -12,6 +12,8 @@ OPTION_NAME ENGINE_CODE( "engineCode" );
 OPTION_NAME LEVEL( "level" );
 OPTION_NAME PARENT( "parent" );
 OPTION_NAME COMPONENTLIDER( "componentLider" );
+OPTION_NAME LASTWORKER( "lastWorker" );
+OPTION_NAME ERRORNUMBER( "moduleErrorNumber");
 
 class CNrpTechnology : public INrpProject
 {

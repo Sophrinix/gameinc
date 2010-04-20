@@ -159,6 +159,17 @@ void CNrpCompany::Load( std::string loadFolder )
 	SetValue<PUser>( CEO, usert );
 	usert->SetValue<PNrpCompany>( COMPANY, this );
 
+	for( int i=0; i < GetValue<int>( USERNUMBER ); ++i )
+	{
+		std::string name = IniFile::Read( "users", "user_" + IntToStr(i), std::string(""), loadFile );
+		std::string className = name.substr( 0, name.find( ':' ) );
+		name = name.substr( name.find(':') + 1, 0xff );
+		IUser* user = new IUser( className.c_str(), name.c_str() );
+		user->Load( loadFolder + "users/" + name + ".ini" );
+		user->SetValue<PNrpCompany>( COMPANY, this );
+		employers_.push_back( user );
+	}
+
 	for( int i=0; i < GetValue<int>( PROJECTNUMBER ); ++i )
 	{
 		std::string prjName = IniFile::Read( "projects", "project_" + IntToStr(i), std::string(""), loadFile );
@@ -194,17 +205,6 @@ void CNrpCompany::Load( std::string loadFolder )
 		game->SetValue<PNrpCompany>( COMPANY, this );
 		games_[ gameName ] = game;
 	}
-
-	for( int i=0; i < GetValue<int>( USERNUMBER ); ++i )
-	{
-		std::string name = IniFile::Read( "users", "user_" + IntToStr(i), std::string(""), loadFile );
-		std::string className = name.substr( 0, name.find( ':' ) );
-		name = name.substr( name.find(':') + 1, 0xff );
-		IUser* user = new IUser( className.c_str(), name.c_str() );
-		user->Load( loadFolder + "users/" + name + ".ini" );
-		user->SetValue<PNrpCompany>( COMPANY, this );
-		employers_.push_back( user );
-	}
 }
 
 CNrpGame* CNrpCompany::GetGame( std::string gameName )
@@ -213,9 +213,17 @@ CNrpGame* CNrpCompany::GetGame( std::string gameName )
 	return gIter != games_.end() ? gIter->second : NULL;
 }
 
-CNrpGameProject* CNrpCompany::GetGameProject( std::string name )
+INrpProject* CNrpCompany::GetProject( std::string name )
 {
 	PROJECT_MAP::iterator pIter = projects_.find( name );
-	return pIter != projects_.end() ? dynamic_cast< CNrpGameProject* >( pIter->second ) : NULL;
+	return pIter != projects_.end() ? pIter->second : NULL;
+}
+
+INrpProject* CNrpCompany::GetProject( int index )
+{
+	PROJECT_MAP::iterator pIter = projects_.begin();
+	for( int i=0; pIter != projects_.end(), i < index; i++ ) ++pIter;
+		 
+	return pIter->second;
 }
 }//namespace nrp

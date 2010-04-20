@@ -10,6 +10,7 @@ OPTION_NAME BANK( "bank" );
 OPTION_NAME PROFILENAME( "profileName" );
 OPTION_NAME PROFILECOMPANY( "profileCompany" );
 OPTION_NAME FULLPATH( "fullPath" );
+OPTION_NAME CURRENTTIME( "currentTime" );
 
 class CNrpCompany;
 class IUser;
