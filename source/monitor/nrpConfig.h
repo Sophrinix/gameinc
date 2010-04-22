@@ -42,10 +42,10 @@ OPTION_NAME COMPANIESNUMBER( "companiesNumber" );
 OPTION_NAME COMPANY( "company" );
 OPTION_NAME PROPERTIES( "properties" );
 
-#define CHECK_VALCLASS_TYPE( valclass, bclass )\
-	if( typeid( valclass ) != typeid( bclass ) ) {\
+#define CHECK_VALCLASS_TYPE( bclass )\
+	if( valueType_ != typeid( bclass ).name() ) {\
 		std::string warn( "warning: request type " );\
-		warn +=	std::string( typeid( bclass ).name()) + " but native typename is " + std::string( typeid( valclass ).name() ) + "\n";\
+		warn +=	std::string( typeid( bclass ).name()) + " but native typename is " +valueType_ + "\n";\
 		OutputDebugString( warn.c_str() );\
 	}
 
@@ -90,7 +90,7 @@ public:
 	template<class B> B& GetValue()
 	{
 #ifdef _DEBUG		
-		CHECK_VALCLASS_TYPE( ValClass, B )
+		CHECK_VALCLASS_TYPE( B )
 #endif
 		return *(B*)ptrValue_;
 	}
@@ -98,7 +98,7 @@ public:
 	template<class B> void SetValue( B valuel )
 	{
 #ifdef _DEBUG		
-		CHECK_VALCLASS_TYPE( ValClass, B )
+		CHECK_VALCLASS_TYPE( B )
 #endif
 		*(B*)ptrValue_ = valuel ;
 	}
