@@ -60,14 +60,11 @@ CNrpTechnology* CNrpCompany::GetTech( int index )
 CNrpGameProject* CNrpCompany::AddGameProject( CNrpGameProject* ptrProject )
 {
 	if( projects_.find( ptrProject->GetValue<std::string>( NAME ) ) == projects_.end() )
-	{
 		projects_[ ptrProject->GetValue<std::string>( NAME ) ] = ptrProject;
-		return ptrProject;
-	}
 
 	SetValue<int>( PROJECTNUMBER, projects_.size() );
 	ptrProject->SetValue<PNrpCompany>( COMPANY, this );
-	return NULL;
+	return ptrProject;
 }
 
 void CNrpCompany::AddUser( IUser* user )

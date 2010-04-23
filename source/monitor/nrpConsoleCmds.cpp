@@ -201,7 +201,8 @@ bool irr::core::IC_Command_SCRIPT::invoke( const array< stringw >& args, CComman
 	{
 		if( args[ 0 ] == L"-reload" )
 		{
-			nrp::CNrpScript::Instance().Reload();
+			nrp::CNrpScript::Instance().DoString( ("package.loaded[ \" " + nrp::WideToStr( args[ 1 ].c_str() ) + " \" ] == false").c_str() );
+			nrp::CNrpScript::Instance().DoString( ("IncludeScript( \" " + nrp::WideToStr( args[ 1 ].c_str() ) + " \" )").c_str() );
 		}
 		else if( args[ 0 ] == L"-so" )
 		{ 

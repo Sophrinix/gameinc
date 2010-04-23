@@ -25,13 +25,11 @@ local ID_PROJECTQUALITY = 9011
 local ID_COMPONENTLIST = 9012
 
 local function ShowParams()
-	
 	local label = CLuaLabel( guienv:GetElementByID( ID_CODEVOLUME ) )
 	local prg = CLuaProgressBar( guienv:GetElementByID( ID_PROJECTQUALITY ) )
 	
 	label:SetText( "Код:" .. project:GetCodeVolume() )
 	prg:SetPosition( project:GetCodeQuality() )
-	
 end
 
 local function ShowAvaibleEngines( tab )
@@ -69,6 +67,7 @@ local function ShowAvaibleGenreModules( tab )
 	for i=1, maxCompanyTech do arGenres[ i ] = conmpany:GetGenre( i-1 )	end
 	for i=1, maxPublicTech do arGenres[ maxCompanyTech + i ] = applic:GetTech( i-1 ) end
 
+	Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleGenreModules:#arGenres " .. #arGenres )
 	for i=1, #arGenres do
 		local tech = CLuaTech( arGenres[ i ] )
 		
@@ -298,13 +297,20 @@ end
 
 function sworkCreateProjectGameToCompany( ptr )
 	local company = CLuaCompany( applic:GetPlayerCompany() )
-	local prj = CLuaGameProject( company:CreateGameProject( project:Self() ) )
+	local edit = CLuaEdit( guienv:GetElemenetByName( WNDGMWIZ_NAME_EDIT ) )
+	project:SetName( edit:GetText() )
 	
-	if prj:Empty() > 0 then
-		local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Игровой проект", 10, 50, 10 + 50, 50 + 50, -1, guienv:GetRootGUIElement() ) )
+	local prj = CLuaGameProject( company:GetProject( project:GetName() ) )
+	
+	if prj:Empty() == 1 then
+		prj:SetObject( company:CreateGameProject( project:Self() ) )
+	
+		local linkModule = CLuaLinkBox( guienv:AddLinkBox( project:GetName(), 10, 50, 10 + 50, 50 + 50, -1, guienv:GetRootGUIElement() ) )
 		linkModule:SetData( prj:Self() )
 		linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
 		linkModule:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
+	else
+		guienv:ShowMessage( "Уже есть проект игры с таким именем" )
 	end
 end
 

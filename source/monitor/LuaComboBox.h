@@ -34,9 +34,11 @@ public:
 	
 	int SetImage( lua_State *L );							//привязка к текстуре в обычном состоянии
 	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при 
+	int Clear( lua_State* L );
 																//нажатии на эту кнопку
 	int AddItem( lua_State *L );
 	int GetSelected( lua_State *L );
+	int GetSelectedObject( lua_State *L );
 	int SetSelected( lua_State *L );
 
 	static const char* StaticGetLuaName() { return "CLuaComboBox"; }

@@ -27,8 +27,9 @@ public:
 	int GetTechType( lua_State* L );
 	int GetOptionAsInt( lua_State* L );
 	int GetTechGroup( lua_State* L );
-																//нажатии на эту кнопку
-	static const char* StaticGetLuaName() { return "CLuaTech"; }
+	int HaveLider( lua_State* L );
+
+	static const char* StaticGetLuaName() { return "CLuaTech"; }	
 };
 
 }//namespace nrp

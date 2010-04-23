@@ -24,6 +24,9 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnol
 	CreateValue<PUser>( COMPONENTLIDER, NULL );
 	CreateValue<std::string>( LASTWORKER, "" );
 	CreateValue<PNrpCompany>( COMPANY, NULL );
+	CreateValue<int>( CODEVOLUME, 0 );
+	CreateValue<int>( CODEPASSED, 0 );
+	CreateValue<float>( READYWORKPERCENT, 0 );
 	CreateValue<int>( ERRORNUMBER, 0 );
 }
 
@@ -110,6 +113,9 @@ void CNrpTechnology::ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt,
 		name = readLine.substr( 0, readLine.find( '=' ) );
 		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
 		mapt[ StrToInt( name.c_str() ) ] = StrToInt( valuel.c_str() );
+		
+		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
+		readLine = buffer;
 	}
 }
 }//namespace nrp

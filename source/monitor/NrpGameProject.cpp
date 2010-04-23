@@ -17,56 +17,46 @@ namespace nrp
 
 CNrpGameProject::CNrpGameProject( std::string name ) : INrpProject( "CNrpGameProject", name )
 {
-	PROJECT_TYPE typed = PT_GAME;
-	SetValue<PROJECT_TYPE>( TYPE, typed );
-	SetValue<std::string>( NAME, name );
-	CreateValue<PNrpGameEngine>( GAME_ENGINE, NULL );
-	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
-	CreateValue<PNrpGame>( PREV_GAME, NULL );
-	CreateValue<int>( CODEVOLUME, 0 );
-	CreateValue<int>( BASE_CODEVOLUME, 0 );
-	CreateValue<int>( TECHTYPE, 0 );
-	CreateValue<PNrpScenario>( SCENARIO, NULL );
-	CreateValue<PNrpLicense>( GLICENSE, NULL ); 
-	CreateValue<PNrpTechnology>( SCRIPTENGINE, NULL );
-	CreateValue<PNrpTechnology>( MINIGAMEENGINE, NULL );
-	CreateValue<PNrpTechnology>( PHYSICSENGINE, NULL );
-	CreateValue<PNrpTechnology>( GRAPHICQUALITY, NULL );
-	CreateValue<int>( VIDEOTECHNUMBER, 0 );
-	CreateValue<PNrpTechnology>( SOUNDQUALITY, NULL );
-	CreateValue<int>( SOUNDTECHNUMBER, 0 );
-	CreateValue<int>( LANGNUMBER, 0 );
-	CreateValue<int>( PLATFORMNUMBER, 0 );
-	CreateValue<int>( BASEQUALITY, 0 );
-	CreateValue<bool>( PROJECTREADY, false );
-	CreateValue<int>( ADVTECHNUMBER, 0 );
-	CreateValue<int>( ENGINE_CODEVOLUME, 0 );
-	CreateValue<int>( QUALITY, 0 );
-	CreateValue<PNrpCompany>( COMPANY, NULL );
+	InitializeOption_( name );
 }
 
 CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CNrpGameProject", nProject->GetValue<std::string>( NAME ) )
 {
+	InitializeOption_( nProject->GetValue<std::string>( NAME ) );
+	std::vector< PNrpTechnology > techs;
+
 	SetValue<PNrpGameEngine>( GAME_ENGINE, GetValue<PNrpGameEngine>( GAME_ENGINE ) );
 	SetValue<int>( GENRE_MODULE_NUMBER, nProject->GetValue<int>( GENRE_MODULE_NUMBER ) );
 	SetValue<PNrpGameProject>( PREV_GAME, nProject->GetValue<PNrpGameProject>( PREV_GAME ) );
+	SetValue<int>( ENGINE_CODEVOLUME, nProject->GetValue<int>( ENGINE_CODEVOLUME) );
 	SetValue<int>( BASE_CODEVOLUME, nProject->GetValue<int>( BASE_CODEVOLUME ) );
 	SetValue<int>( TECHTYPE, nProject->GetValue<int>( TECHTYPE ) );
 	SetValue<PNrpScenario>( SCENARIO, nProject->GetValue<PNrpScenario>( SCENARIO ) );
 	SetValue<PNrpLicense>( GLICENSE, nProject->GetValue<PNrpLicense>( GLICENSE ) );
+
+	int engineCodeVolume = GetValue<int>( ENGINE_CODEVOLUME );	
 	SetValue<PNrpTechnology>( SCRIPTENGINE, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( SCRIPTENGINE ) ) );
+	techs.push_back( GetValue<PNrpTechnology>( SCRIPTENGINE ) );
+
 	SetValue<PNrpTechnology>( MINIGAMEENGINE, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( MINIGAMEENGINE ) ) );
+	techs.push_back( GetValue<PNrpTechnology>( MINIGAMEENGINE ) );
+
 	SetValue<PNrpTechnology>( PHYSICSENGINE, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( PHYSICSENGINE ) ) );
+	techs.push_back( GetValue<PNrpTechnology>( PHYSICSENGINE ) );
+
 	SetValue<PNrpTechnology>( GRAPHICQUALITY, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( GRAPHICQUALITY ) ) );
-	SetValue<int>( VIDEOTECHNUMBER, nProject->GetValue<int>( VIDEOTECHNUMBER ) );
+	techs.push_back( GetValue<PNrpTechnology>( GRAPHICQUALITY ) );
+
 	SetValue<PNrpTechnology>( SOUNDQUALITY, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( SOUNDQUALITY ) ) );
+	techs.push_back( GetValue<PNrpTechnology>( SOUNDQUALITY ) );
+
+	SetValue<int>( VIDEOTECHNUMBER, nProject->GetValue<int>( VIDEOTECHNUMBER ) );
 	SetValue<int>( SOUNDTECHNUMBER, nProject->GetValue<int>( SOUNDTECHNUMBER ) );
 	SetValue<int>( LANGNUMBER, nProject->GetValue<int>( LANGNUMBER ) );
 	SetValue<int>( PLATFORMNUMBER, nProject->GetValue<int>( PLATFORMNUMBER ) );
 	SetValue<int>( BASEQUALITY, nProject->GetValue<int>( BASEQUALITY ) );
 	SetValue<bool>( PROJECTREADY, false );
 	SetValue<int>( ADVTECHNUMBER, nProject->GetValue<int>( ADVTECHNUMBER ) );
-	SetValue<int>( ENGINE_CODEVOLUME, nProject->GetValue<int>( ENGINE_CODEVOLUME) );
 	SetValue<int>( QUALITY, 0 );
 
 	TECH_LIST::iterator pIter = nProject->technologies_.begin();
@@ -77,12 +67,20 @@ CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CN
 		nTech->SetValue<PNrpGameProject>( PARENT, this );
 		nTech->SetValue<PUser>( COMPONENTLIDER, NULL ); 
 		technologies_.push_back( nTech );
+		nTech->SetValue( CODEVOLUME, engineCodeVolume * nTech->GetValue<float>( BASE_CODE ));
 	}
+
+	TECH_LIST::iterator tIter = techs.begin();
+	for( ; tIter != techs.end(); ++tIter)
+		(*tIter)->SetValue<int>( CODEVOLUME, engineCodeVolume * (*tIter)->GetValue<float>( BASE_CODE ) );
 
 	pIter = nProject->genres_.begin();
 	genres_.clear();
 	for( ; pIter != nProject->genres_.end(); ++pIter )
 	{
+		if( *pIter == NULL )
+			continue;
+
 		CNrpTechnology* nTech = new CNrpTechnology( *(*pIter) );
 		nTech->SetValue<PNrpGameProject>( PARENT, this );
 		nTech->SetValue<PUser>( COMPONENTLIDER, NULL ); 
@@ -97,6 +95,7 @@ CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CN
 		nTech->SetValue<PNrpGameProject>( PARENT, this );
 		nTech->SetValue<PUser>( COMPONENTLIDER, NULL ); 
 		videoTechnologies_.push_back( nTech );
+		nTech->SetValue( CODEVOLUME, engineCodeVolume * nTech->GetValue<float>( BASE_CODE ));
 	}
 
 	pIter = nProject->soundTechnologies_.begin();
@@ -107,6 +106,7 @@ CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CN
 		nTech->SetValue<PNrpGameProject>( PARENT, this );
 		nTech->SetValue<PUser>( COMPONENTLIDER, NULL ); 
 		soundTechnologies_.push_back( nTech );
+		nTech->SetValue( CODEVOLUME, engineCodeVolume * nTech->GetValue<float>( BASE_CODE ));
 	}
 }
 
@@ -490,5 +490,34 @@ void CNrpGameProject::Load( std::string loadFolder )
 	tech->Load( loadFolder + SOUNDQUALITY + ".ini" );
 	tech->SetValue<LPVOID>( PARENT, this );
 	SetValue<PNrpTechnology>( SOUNDQUALITY, tech );
+}
+
+void CNrpGameProject::InitializeOption_( std::string name )
+{
+	SetValue<PROJECT_TYPE>( TECHTYPE, PT_GAME );
+	SetValue<std::string>( NAME, name );
+	CreateValue<PNrpGameEngine>( GAME_ENGINE, NULL );
+	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
+	CreateValue<PNrpGame>( PREV_GAME, NULL );
+	CreateValue<int>( CODEVOLUME, 0 );
+	CreateValue<int>( BASE_CODEVOLUME, 0 );
+	CreateValue<int>( TECHTYPE, 0 );
+	CreateValue<PNrpScenario>( SCENARIO, NULL );
+	CreateValue<PNrpLicense>( GLICENSE, NULL ); 
+	CreateValue<PNrpTechnology>( SCRIPTENGINE, NULL );
+	CreateValue<PNrpTechnology>( MINIGAMEENGINE, NULL );
+	CreateValue<PNrpTechnology>( PHYSICSENGINE, NULL );
+	CreateValue<PNrpTechnology>( GRAPHICQUALITY, NULL );
+	CreateValue<int>( VIDEOTECHNUMBER, 0 );
+	CreateValue<PNrpTechnology>( SOUNDQUALITY, NULL );
+	CreateValue<int>( SOUNDTECHNUMBER, 0 );
+	CreateValue<int>( LANGNUMBER, 0 );
+	CreateValue<int>( PLATFORMNUMBER, 0 );
+	CreateValue<int>( BASEQUALITY, 0 );
+	CreateValue<bool>( PROJECTREADY, false );
+	CreateValue<int>( ADVTECHNUMBER, 0 );
+	CreateValue<int>( ENGINE_CODEVOLUME, 0 );
+	CreateValue<int>( QUALITY, 0 );
+	CreateValue<PNrpCompany>( COMPANY, NULL );
 }
 }//namespace nrp

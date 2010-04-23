@@ -15,7 +15,7 @@ CNrpLoan::CNrpLoan( int id ) : INrpConfig( "CNrpLoan", "" )
 	CreateValue<int>( STARTMONEY, 0 );
 	CreateValue<int>( MONEYPAY, 0 );
 	CreateValue<int>( CLOSESHTRAF, 0 );
-	CreateValue<TYPE_LOAN>( TYPE, TL_FREEMONEY );
+	CreateValue<TYPE_LOAN>( TECHTYPE, TL_FREEMONEY );
 	CreateValue<int>( ID, id );
 	CreateValue<int>( MONTHLEFT, 0 );
 }

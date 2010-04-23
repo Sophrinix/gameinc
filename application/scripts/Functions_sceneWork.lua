@@ -6,6 +6,7 @@ IncludeScript("swork_TargetCameraFunctions")
 IncludeScript("swork_wndReport")
 IncludeScript("swork_wndLoanAction")
 IncludeScript("swork_wndUniverStuffUp")
+IncludeScript("swork_wndProjectManager")
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
@@ -59,14 +60,11 @@ function sworkMainLoop( ptr )
 end
 
 function ToggleConsoleVisible( ptr )
-
 	local console = CLuaConsole( guienv:GetElementByName( "SystemConsole" ) )
 	console:ToggleVisible()
-
 end
 
 function sworkSelectObjectOnOfficeScene( ptr )
-	
 	local node = CLuaSceneNode( ptr )
 	local nodeName = node:GetName()
 
@@ -78,6 +76,11 @@ function sworkSelectObjectOnOfficeScene( ptr )
 	if nodeName == "employerManageNode" then
 		sworkCreateWindowEmployersManage()
 		return 0	
+	end
+	
+	if nodeName == "projectManagerNode" then
+		sworkCreateWindowProjectManager()
+		return 0
 	end
 
 	if nodeName == "exitOfficeNode" then

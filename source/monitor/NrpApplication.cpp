@@ -278,7 +278,7 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 	{
 		std::string name = IniFile::Read( "technologies", "technology_" + IntToStr(i), std::string(""), profileIni );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
-		tech->Load( saveFolder + name + ".ini" );
+		tech->Load( saveFolderTech + name + ".ini" );
 		technologies_.push_back( tech );
 	}
 

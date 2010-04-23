@@ -50,6 +50,7 @@ public:
 	void Load( std::string loadFolder );
 private:
 
+	void InitializeOption_( std::string name );
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
 	CNrpGameProject( CNrpGameProject& ptr );
 	TECH_LIST technologies_;

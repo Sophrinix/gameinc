@@ -142,7 +142,7 @@ bool IsNumber( const char* s )
 	int pos = 0;
 	while( s[ pos ] != 0 )
 	{
-		if( !isdigit( s[ pos ] ) ) return false;
+		if( s[ pos ] < '0' || s[ pos ] > '9' ) return false;
 		pos++;
 	}
 
@@ -154,7 +154,7 @@ bool IsFloatNumber( const char* s )
 	int pointNum = 0;
 	int pos = 0;
 	while( s[ pos ] != 0 )
-		if( isdigit( s[ pos ] ) && pointNum < 2 )
+		if( (( s[ pos ] >= '0' && s[ pos ] <= '9' ) || s[ pos ] == '.' ) && pointNum < 2 )
 		{
 			if( s[ pos ] == '.' )
 				pointNum++;

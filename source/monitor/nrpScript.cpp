@@ -179,11 +179,6 @@ CNrpScript::~CNrpScript()
 
 }
 
-void CNrpScript::Reload()
-{
-	LoadFile( GetValue<std::string>( LOAD_FUNCTIONS_FILENAME ).c_str() );
-}
-
 void CNrpScript::LoadFile( const char* fileName )
 {
 	std::string fn( fileName );

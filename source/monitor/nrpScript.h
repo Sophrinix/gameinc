@@ -32,7 +32,6 @@ public:
 	void DoString( const char* s );
 	void LoadFile( const char* fileName );
 	void CallFunction( const char* funcName, void* userData=NULL );
-	void Reload();
 	
 private:
 	lua_State* vm_;

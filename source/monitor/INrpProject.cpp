@@ -8,7 +8,7 @@ INrpProject::INrpProject( std::string className, std::string systemName ) : INrp
 {
 	CreateValue<std::string>( NAME, "defaultName" );
 	CreateValue<int>( BALANCE, 0 );
-	CreateValue<PROJECT_TYPE>( TYPE, PT_UNKNOWN );
+	CreateValue<PROJECT_TYPE>( TECHTYPE, PT_UNKNOWN );
 }
 
 INrpProject::~INrpProject(void)

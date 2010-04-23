@@ -556,7 +556,7 @@ void CNrpComponentListbox::draw()
 						textRect.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 						textRect.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
-						int percent = pObject->GetValue<int>( READYWORKPERCENT );
+						int percent = pObject->GetValue<float>( READYWORKPERCENT ) * 100;
 						std::wstring name = StrToWide( pObject->GetValue<std::string>( NAME ) );
 						
 						swprintf( tmpstr, 127, L"%s  (Ready:%d)", name.c_str(), percent );

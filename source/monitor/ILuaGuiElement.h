@@ -143,11 +143,11 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":GetSize not need any parameter" ).c_str() );
 
-		IF_OBJECT_NOT_NULL_THEN
-		{
-			lua_pushinteger( L, object_->getAbsolutePosition().getWidth() );
-			lua_pushinteger( L, object_->getAbsolutePosition().getHeight() );
-		}
+		core::recti rectangle; 
+		IF_OBJECT_NOT_NULL_THEN	rectangle = object_->getAbsolutePosition();
+
+		lua_pushinteger( L, rectangle.getWidth() );
+		lua_pushinteger( L, rectangle.getHeight() );
 
 		return 2;
 	}

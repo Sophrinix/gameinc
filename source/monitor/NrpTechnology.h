@@ -6,7 +6,6 @@ namespace nrp
 {
 
 OPTION_NAME TECHGROUP( "techGroup" );
-OPTION_NAME TECHTYPE( "techType" );
 OPTION_NAME BASE_CODE( "baseCode" );
 OPTION_NAME ENGINE_CODE( "engineCode" );
 OPTION_NAME LEVEL( "level" );
@@ -14,6 +13,8 @@ OPTION_NAME PARENT( "parent" );
 OPTION_NAME COMPONENTLIDER( "componentLider" );
 OPTION_NAME LASTWORKER( "lastWorker" );
 OPTION_NAME ERRORNUMBER( "moduleErrorNumber");
+OPTION_NAME HAVELIDER( "haveLider" );
+OPTION_NAME CODEPASSED( "codePassed" );
 
 class CNrpTechnology : public INrpProject
 {

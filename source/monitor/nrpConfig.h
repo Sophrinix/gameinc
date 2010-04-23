@@ -33,14 +33,15 @@ ELEMENT_ALIGN ALIGN_CENTER( "center" );
 
 OPTION_NAME BALANCE("balance");
 OPTION_NAME NAME("name");
-OPTION_NAME TYPE( "type" );
 OPTION_NAME QUALITY( "quality" );
+OPTION_NAME TECHTYPE( "techType" );
 OPTION_NAME READYWORKPERCENT( "readyWorkPercent" );
 OPTION_NAME TECHNUMBER( "techNumber" );
 OPTION_NAME USERNUMBER( "userNumber" );
 OPTION_NAME COMPANIESNUMBER( "companiesNumber" );
 OPTION_NAME COMPANY( "company" );
 OPTION_NAME PROPERTIES( "properties" );
+OPTION_NAME CODEVOLUME( "volumeCode" );
 
 #define CHECK_VALCLASS_TYPE( bclass )\
 	if( valueType_ != typeid( bclass ).name() ) {\
@@ -69,43 +70,31 @@ public:
 	CNrpProperty( ValClass pValue )
 	{
 		valueType_ = typeid( ValClass ).name();
-		ptrValue_ = new ValClass( pValue );
+		ptrValue_ = pValue;
 	}
 
 	virtual ~CNrpProperty() 
 	{ 
-		delete ptrValue_; 
 	}
 
 	std::string GetValueType() { return valueType_; }
 
 	ValClass& ToggleValue()
 	{
-		*ptrValue_ = !(*ptrValue_);
-		return *ptrValue_;
+		ptrValue_ = !ptrValue_;
+		return ptrValue_;
 	}
 
-	ValClass& GetValue() { return *ptrValue_; }
+	ValClass& GetValue() { return ptrValue_; }
 
-	template<class B> B& GetValue()
+	void SetValue( ValClass valuel )
 	{
-#ifdef _DEBUG		
-		CHECK_VALCLASS_TYPE( B )
-#endif
-		return *(B*)ptrValue_;
-	}
-
-	template<class B> void SetValue( B valuel )
-	{
-#ifdef _DEBUG		
-		CHECK_VALCLASS_TYPE( B )
-#endif
-		*(B*)ptrValue_ = valuel ;
+		ptrValue_ = valuel ;
 	}
 
 private:
 	std::string valueType_;
-	ValClass* ptrValue_;
+	ValClass ptrValue_;
 
 	CNrpProperty() {};
 	CNrpProperty( CNrpProperty& ) {};
@@ -138,9 +127,9 @@ public:
 
 	PropertyArray& GetProperties() { return options_; }
 
-	void EraseValue( std::string name ) const
+	void EraseValue( std::string name )
 	{
-		PropertyArray::const_iterator pIter = options_.find( name );
+		PropertyArray::iterator pIter = options_.find( name );
 
 		if( pIter == options_.end() )
 		{
@@ -151,7 +140,10 @@ public:
 			throw "error"; 
 		}
 		else 
+		{
 			delete pIter->second;
+			options_.erase( pIter );
+		}
 	}
 
 	template< class B > void CreateValue( std::string name, B valuel )
@@ -170,7 +162,7 @@ public:
 		else
 			((CNrpProperty<B>*)pIter->second)->ToggleValue();
 
-		return ((CNrpProperty<B>*)pIter->second)->GetValue<B>();
+		return ((CNrpProperty<B>*)pIter->second)->GetValue();
 	}
 
 	//! получение свойства объекта
@@ -187,7 +179,7 @@ public:
 			throw "error"; 
 		}
 		else 
-			return ((CNrpProperty<B>*)pIter->second)->GetValue<B>();
+			return ((CNrpProperty<B>*)pIter->second)->GetValue();
 	}
 
 	template< class B > void SetValue( std::string name, B valuel ) 
@@ -239,6 +231,7 @@ public:
 		std::string readLine = buffer;
 		while( readLine != "" )
 		{
+			OutputDebugString( readLine.c_str() );
 			std::string name, valuel;
 			name = readLine.substr( 0, readLine.find( '=' ) );
 			valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );

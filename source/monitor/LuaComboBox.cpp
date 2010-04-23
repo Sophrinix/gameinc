@@ -20,7 +20,9 @@ Luna< CLuaComboBox >::RegType CLuaComboBox::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetAction ),
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, AddItem ),
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelected ),
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelectedObject ),
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetSelected ),
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, Clear ),
 	{0,0}
 };
 
@@ -101,6 +103,34 @@ int CLuaComboBox::SetSelected( lua_State *L )
 	int selected = lua_tointeger( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->setSelected( selected );			
+
+	return 1;
+}
+
+int CLuaComboBox::Clear( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaComboBox::GetSelected not need any parameter");
+
+	IF_OBJECT_NOT_NULL_THEN object_->clear();
+
+	return 1;
+}
+
+int CLuaComboBox::GetSelectedObject( lua_State *L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaComboBox::GetSelected not need any parameter");
+
+	void* ptrData =NULL;
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int selected = object_->getSelected();
+		if( selected >= 0 )
+			ptrData = (void*)object_->getItemData( selected );
+	}
+	lua_pushlightuserdata( L, ptrData );
 
 	return 1;
 }

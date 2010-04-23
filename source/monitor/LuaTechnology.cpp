@@ -4,6 +4,7 @@
 
 #include "LuaTechnology.h"
 #include "NrpTechnology.h"
+#include "IUser.h"
 
 #define NO_POSTFIX
 #define NO_ASSERT
@@ -39,6 +40,7 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTechGroup ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetOptionAsInt ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetQuality ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveLider ),
 	{0,0}
 };
 
@@ -92,6 +94,17 @@ int CLuaTechnology::SetEmployerSkillRequire( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	object_->SetEmployerSkillRequire( typen, valuel );
 
+	return 1;	
+}
+
+int CLuaTechnology::HaveLider( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::HaveLider not need parameter");
+
+	bool haveUser = false; 
+	IF_OBJECT_NOT_NULL_THEN	haveUser = object_->GetValue<PUser>( COMPONENTLIDER ) != NULL;
+	lua_pushboolean( L, haveUser );
 	return 1;	
 }
 

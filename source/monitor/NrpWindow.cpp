@@ -114,7 +114,13 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 		case EET_GUI_EVENT:
 			if( event.GUIEvent.EventType == EGET_LISTBOX_CHANGED )
 			{
-				DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, (void*)(event.GUIEvent.Caller) );
+				DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, (void*)event.GUIEvent.Caller );
+				return true;
+			}
+
+			if( event.GUIEvent.EventType == EGET_COMBO_BOX_CHANGED )
+			{
+				DoLuaFunctionsByType( GUIELEMENT_CMBXITEM_SELECTED, (void*)event.GUIEvent.Caller );
 				return true;
 			}
 
