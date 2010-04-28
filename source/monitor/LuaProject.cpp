@@ -2,6 +2,8 @@
 #include <irrlicht.h>
 
 #include "LuaProject.h"
+#include "INrpProject.h"
+#include <assert.h>
 
 namespace nrp
 {

@@ -10,6 +10,7 @@ mode[ "Тестировщики" ] = "tester"
 
 local currentEmployer = CLuaUser( nil )
 local currentProject = CLuaProject( nil )
+local currentComponent = CLuaTech( nil )
 
 local modeUserView = "coder"
 
@@ -40,20 +41,22 @@ function sworkCreateWindowProjectManager( ptr )
 		
 		if ptrProject:GetTechType() == PT_GAME then
 			cmbxPrj:AddItem( "Игра:" .. ptrProject:GetName(), ptrProject:Self() )	
-		else 
-			if ptrProject:GetTechType() == PT_GAMEENGINE then
+		end
+		
+		if ptrProject:GetTechType() == PT_GAMEENGINE then
 				cmbxPrj:AddItem( "Движок:" .. ptrProject:GetName(), ptrProject:Self() )	
-			end
-		end		
+		end
 	end
 
 	local lbxProjectComponents = CLuaListBox( guienv:AddComponentListBox( 10, 50, 300, 590, WINDOW_PRJMANAGE_COMPONENTS, windowg:Self() ) )
 	
+	local btnCmpAction = CLuaButton( guienv:AddButton( width / 2 + 10, 10, width - 10, 40, windowg:Self(), -1, "Назначить" ) )
+	btnCmpAction:SetAction( "sworkWindowManagerProjectToggleComponentLider" )
+	
 	guienv:AddComboBox( "", 310, 110, 790, 130, WNDPRJMNG_CMBX_USERS, windowg:Self() )
 	local button = CLuaButton( guienv:AddButton( 310, 50, 420, 100, windowg:Self(), -1, "Программисты" ) )
 	button:SetAction( "sworkWindowManageProjectsChangerUserType" )
-	sworkWindowManageProjectsChangerUserType( button:Self() )
-	
+	sworkWindowManageProjectsChangerUserType( button:Self() )	
 	button:SetObject( guienv:AddButton( 430, 50, 540, 100, windowg:Self(), -1, "Дизайнеры" ) )
 	button:SetAction( "sworkWindowManageProjectsChangerUserType" )
 
@@ -66,13 +69,36 @@ function sworkCreateWindowProjectManager( ptr )
 	windowg:AddLuaFunction( GUIELEMENT_CMBXITEM_SELECTED, "sworkWindowProjectManagerComboBoxItemSelected" )
 end
 
+function sworkWindowManagerProjectToggleComponentLider( ptr )
+	if currentComponent:HaveLider() then
+		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
+		currentComponent:SetLider( nil )
+		if currentComponent:GetEmployerPosibility() < 40 then
+			guienv:ShowMessage( currentEmployer:GetName() .. " имеет недостаточные навыки, чтобы быстро выполнить эту работу" )
+		end
+	else
+		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
+		currentComponent:SetLider( currentEmployer:Self() )	
+		
+		if currentComponent:GetWorkPercentDone() > 70 then
+			guienv:ShowMessage( "Компонент почти завершен. Передача его другому человеку приведет к потере части функионала" )
+		end
+	end
+end
+
+function sworkWindowManagerProjectComponentSelect( ptr )
+	local cmbx = CLuaListBox( ptr )
+	currentComponent:SetObject( cmbx:GetSelectedObject() )
+end
+
 local function ShowWindowUserInfo( userPtr )
-	local user = CLuaUser( userPtr )
+	currentEmployer:SetObject( userPtr )
 	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_PRJMANAGE_USERINFO ) )
 	local widdddd, hhhhhhh = windowg:GetSize()
 	
 	if windowg:Empty() == 1 then
 		windowg:SetObject( guienv:AddWindow( "", 310, 140, 790, 590, WINDOW_PRJMANAGE_USERINFO, guienv:GetElementByID(WINDOW_PRJMANAGE_ID) ) )
+		windowg:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkWindowManagerProjectComponentSelect" )
 	else
 		local elm = CLuaElement( windowg:Self() )
 		elm:RemoveChilds()
@@ -84,25 +110,25 @@ local function ShowWindowUserInfo( userPtr )
 
 	guienv:AddLabel( "Опыт", 5, 30, widdddd, 30 + 20, -1, windowg:Self() )
 	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 50, 30, widdddd - 5, 30 + 20, -1 ) )
-	prg:SetPosition( user:GetParam( "knowledgeLevel" ) )						   
+	prg:SetPosition( currentEmployer:GetParam( "knowledgeLevel" ) )						   
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 	
 	guienv:AddLabel( "Качество", 5, 50, widdddd, 50 + 20, -1, windowg:Self() )
 	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 55, widdddd - 5, 55 + 20, -1 ) )
-	prg:SetPosition( user:GetParam("codeQuality") ) 	
+	prg:SetPosition( currentEmployer:GetParam("codeQuality") ) 	
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 
     guienv:AddLabel( "Скорость", 5, 70, widdddd, 70 + 20, -1, windowg:Self() )
 	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 80, widdddd - 5, 80 + 20, -1 ) )
-	prg:SetPosition( user:GetParam("codeSpeed") ) 
+	prg:SetPosition( currentEmployer:GetParam("codeSpeed") ) 
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 
     guienv:AddLabel( "Устойчивость", 5, 90, widdddd, 90 + 20, -1, windowg:Self() )
 	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 105, widdddd - 5, 105 + 20, -1 ) )
-	prg:SetPosition( user:GetParam("stability") ) 
+	prg:SetPosition( currentEmployer:GetParam("stability") ) 
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 					   
@@ -161,5 +187,6 @@ function sworkWindowManageProjectsChangerUserType( ptr )
 	local button = CLuaButton( ptr )
 	modeUserView = mode[ button:GetText() ] 
 	currentEmployer:SetObject( nil )
+	currentComponent:SetObject( nil )
 	ShowAvaibleCompanyUsers()
 end

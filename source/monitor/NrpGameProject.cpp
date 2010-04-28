@@ -35,20 +35,20 @@ CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CN
 	SetValue<PNrpLicense>( GLICENSE, nProject->GetValue<PNrpLicense>( GLICENSE ) );
 
 	int engineCodeVolume = GetValue<int>( ENGINE_CODEVOLUME );	
-	SetValue<PNrpTechnology>( SCRIPTENGINE, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( SCRIPTENGINE ) ) );
-	techs.push_back( GetValue<PNrpTechnology>( SCRIPTENGINE ) );
+	if( nProject->GetValue<PNrpTechnology>( SCRIPTENGINE ) )
+		SetValue<PNrpTechnology>( SCRIPTENGINE, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( SCRIPTENGINE ) ) );
 
-	SetValue<PNrpTechnology>( MINIGAMEENGINE, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( MINIGAMEENGINE ) ) );
-	techs.push_back( GetValue<PNrpTechnology>( MINIGAMEENGINE ) );
+	if( nProject->GetValue<PNrpTechnology>( MINIGAMEENGINE ) )
+		SetValue<PNrpTechnology>( MINIGAMEENGINE, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( MINIGAMEENGINE ) ) );
 
-	SetValue<PNrpTechnology>( PHYSICSENGINE, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( PHYSICSENGINE ) ) );
-	techs.push_back( GetValue<PNrpTechnology>( PHYSICSENGINE ) );
+	if( nProject->GetValue<PNrpTechnology>( PHYSICSENGINE ) )
+		SetValue<PNrpTechnology>( PHYSICSENGINE, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( PHYSICSENGINE ) ) );
 
-	SetValue<PNrpTechnology>( GRAPHICQUALITY, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( GRAPHICQUALITY ) ) );
-	techs.push_back( GetValue<PNrpTechnology>( GRAPHICQUALITY ) );
+	if( nProject->GetValue<PNrpTechnology>( GRAPHICQUALITY ) )
+		SetValue<PNrpTechnology>( GRAPHICQUALITY, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( GRAPHICQUALITY ) ) );
 
-	SetValue<PNrpTechnology>( SOUNDQUALITY, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( SOUNDQUALITY ) ) );
-	techs.push_back( GetValue<PNrpTechnology>( SOUNDQUALITY ) );
+	if( nProject->GetValue<PNrpTechnology>( SOUNDQUALITY ) )
+		SetValue<PNrpTechnology>( SOUNDQUALITY, new CNrpTechnology( *nProject->GetValue<PNrpTechnology>( SOUNDQUALITY ) ) );
 
 	SetValue<int>( VIDEOTECHNUMBER, nProject->GetValue<int>( VIDEOTECHNUMBER ) );
 	SetValue<int>( SOUNDTECHNUMBER, nProject->GetValue<int>( SOUNDTECHNUMBER ) );
@@ -67,12 +67,7 @@ CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CN
 		nTech->SetValue<PNrpGameProject>( PARENT, this );
 		nTech->SetValue<PUser>( COMPONENTLIDER, NULL ); 
 		technologies_.push_back( nTech );
-		nTech->SetValue( CODEVOLUME, engineCodeVolume * nTech->GetValue<float>( BASE_CODE ));
 	}
-
-	TECH_LIST::iterator tIter = techs.begin();
-	for( ; tIter != techs.end(); ++tIter)
-		(*tIter)->SetValue<int>( CODEVOLUME, engineCodeVolume * (*tIter)->GetValue<float>( BASE_CODE ) );
 
 	pIter = nProject->genres_.begin();
 	genres_.clear();
@@ -95,7 +90,6 @@ CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CN
 		nTech->SetValue<PNrpGameProject>( PARENT, this );
 		nTech->SetValue<PUser>( COMPONENTLIDER, NULL ); 
 		videoTechnologies_.push_back( nTech );
-		nTech->SetValue( CODEVOLUME, engineCodeVolume * nTech->GetValue<float>( BASE_CODE ));
 	}
 
 	pIter = nProject->soundTechnologies_.begin();
@@ -106,8 +100,10 @@ CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CN
 		nTech->SetValue<PNrpGameProject>( PARENT, this );
 		nTech->SetValue<PUser>( COMPONENTLIDER, NULL ); 
 		soundTechnologies_.push_back( nTech );
-		nTech->SetValue( CODEVOLUME, engineCodeVolume * nTech->GetValue<float>( BASE_CODE ));
 	}
+
+	SetValue( PROJECTSTATUS, "develop" );
+	CalculateCodeVolume();
 }
 
 CNrpGameProject::CNrpGameProject( CNrpGameProject& ptr ) : INrpProject( "CNrpGameProject", ptr.GetValue<std::string>( NAME ) )
@@ -169,6 +165,7 @@ void CNrpGameProject::FindPlaformsAndLanguages_()
 void CNrpGameProject::CalculateCodeVolume()
 {
 	FindPlaformsAndLanguages_();
+	bool setCodeVolume = GetValue<std::string>( PROJECTSTATUS ) == "develop";
 	float baseCode = (float)GetValue<int>( BASE_CODEVOLUME );
 
 	float summ = 0;
@@ -179,6 +176,7 @@ void CNrpGameProject::CalculateCodeVolume()
 	rt.insert( rt.end(), technologies_.begin(), technologies_.end() );
 	rt.insert( rt.end(), videoTechnologies_.begin(), videoTechnologies_.end() );
 	rt.insert( rt.end(), soundTechnologies_.begin(), soundTechnologies_.end() );
+	rt.insert( rt.end(), genres_.begin(), genres_.end() );
 	rt.push_back( GetValue<PNrpTechnology>( SCRIPTENGINE ) );
 	rt.push_back( GetValue<PNrpTechnology>( MINIGAMEENGINE ) );
 	rt.push_back( GetValue<PNrpTechnology>( PHYSICSENGINE ) );
@@ -200,7 +198,12 @@ void CNrpGameProject::CalculateCodeVolume()
 
 	techIter = rt.begin();
 	for( ; techIter != rt.end(); ++techIter)
-		if( (*techIter) != NULL ) summ += (int)((*techIter)->GetValue<float>( BASE_CODE ) * baseCode );
+		if( (*techIter) != NULL ) 
+		{
+			int codeVol = (*techIter)->GetValue<float>( BASE_CODE ) * baseCode;
+			(*techIter)->SetValue<int>( CODEVOLUME, codeVol );
+			summ += codeVol;
+		}
 
 	summ += baseCode;
 	for( int cnt=0; cnt < GetValue<int>( LANGNUMBER ); cnt++ )
@@ -312,6 +315,9 @@ void CNrpGameProject::SetSoundTech( CNrpTechnology* ptrTech, int index )
 
 void CNrpGameProject::Save( std::string folderSave )
 {
+	if( _access( folderSave.c_str(), 0 ) == 1 )
+		CreateDirectory( folderSave.c_str(), NULL );
+
 	std::string localFolder = folderSave + GetValue<std::string>( NAME ) + "/";
 
 	if( _access( localFolder.c_str(), 0 ) == -1 )
@@ -519,5 +525,6 @@ void CNrpGameProject::InitializeOption_( std::string name )
 	CreateValue<int>( ENGINE_CODEVOLUME, 0 );
 	CreateValue<int>( QUALITY, 0 );
 	CreateValue<PNrpCompany>( COMPANY, NULL );
+	CreateValue<std::string>( PROJECTSTATUS, "unknown" );
 }
 }//namespace nrp

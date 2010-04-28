@@ -1,22 +1,30 @@
+--Подключаем скрипт создания стартовых условий новой игры
 IncludeScript("swork_startDefinition")
 
+--переменные для работы
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 local driver = CLuaDriver( NrpGetVideoDriver() )
 local applic = CLuaApplication( NrpGetApplication() )
 
+--локальные имена элементов гуи
 local EDIT_NEWPROFILE_NAME = "_WindowNewGameEditProfile_"
 local EDIT_NEWCOMPANY_NAME = "_WindowNewGameEditCompany_"
 
+--размеры окна
 local width = 200
 local height = 100
 
+--создание новой игры
 function sloginCreateNewProfileAndStartGame( ptr )
-
 	local editName = CLuaEdit( guienv:GetElementByName( EDIT_NEWPROFILE_NAME ) )
 	local editCompany = CLuaEdit( guienv:GetElementByName( EDIT_NEWCOMPANY_NAME ) )
+	--создаем новый профиль
 	applic:CreateProfile( editName:GetText(), editCompany:GetText() )
 	
+	--убираем данные из памяти
 	sloginResetDataForNewGame()
+	
+	--формируем стартовые условия
 	sloginAddStartPlayerDef()
 	sloginAddStartCompanyTechnology()
 	sloginAddStartVideoContentTechnology()
@@ -24,9 +32,9 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	sloginAddStartScenarioContentTechnology()
 	sloginAddStartEmployer()
 	DebugFunctionCall( sloginAddStartPublicTechnology )
-
+	
+	--переходим на следующую сцену
 	NrpSetNextScene( "sceneWork" )
-
 end
 
 function sloginCloseWindowCreateNewProfile( ptr )

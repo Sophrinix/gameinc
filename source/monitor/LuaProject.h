@@ -15,7 +15,8 @@ class CLuaProject : public ILuaProject<nrp::INrpProject>
 public:
 	static Luna<CLuaProject>::RegType methods[];				//методы обертки
 
-	CLuaProject(lua_State *L);		
+	CLuaProject(lua_State *L);	
+	int SetName( lua_State* vm );
 																//нажатии на эту кнопку
 	static const char* StaticGetLuaName() { return "CLuaProject"; }
 };

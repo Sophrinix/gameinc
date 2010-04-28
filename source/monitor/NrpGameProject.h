@@ -23,6 +23,7 @@ OPTION_NAME BASE_CODEVOLUME( "baseCodeVolume" );
 OPTION_NAME PROJECTREADY( "projectReady" );
 OPTION_NAME ADVTECHNUMBER( "advTechNumber" );
 OPTION_NAME ENGINE_CODEVOLUME( "engineCodeVolume" );
+OPTION_NAME PROJECTSTATUS( "projectStatus" );
 
 class CNrpGameEngine;
 class CNrpTechnology;

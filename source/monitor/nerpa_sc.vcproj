@@ -1199,6 +1199,10 @@
 			Name="Scripts"
 			>
 			<File
+				RelativePath="..\..\application\scripts\create_terrain.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\elmid.lua"
 				>
 			</File>
@@ -1255,7 +1259,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\swork_ObjectsLoading.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\swork_sonars.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_startDefinition.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_StoreWindow.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_TargetCameraFunctions.lua"
 				>
 			</File>
 			<File
@@ -1263,7 +1283,47 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\swork_wndCharts.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndChartsManage.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndCompanyInfo.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndCreateGameProject.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndEmployersManage.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\swork_wndKeyMap.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndLoanAction.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndProjectManager.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndProjectWizard.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndReport.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndUniverStuffUp.lua"
 				>
 			</File>
 		</Filter>

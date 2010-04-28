@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>llmozlib2</ProjectName>
+    <ProjectGuid>{23504F1F-3A7E-4E11-8D8F-4C4B8BF89000}</ProjectGuid>
+    <RootNamespace>llmozlib2</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>libraries\i686-win32\include\mozilla\include\content;libraries\i686-win32\include\mozilla\include\docshell;libraries\i686-win32\include\mozilla\include\dom;libraries\i686-win32\include\mozilla\include\gfx;libraries\i686-win32\include\mozilla\include\js;libraries\i686-win32\include\mozilla\include\layout;libraries\i686-win32\include\mozilla\include\locale;libraries\i686-win32\include\mozilla\include\necko;libraries\i686-win32\include\mozilla\include\nkcache;libraries\i686-win32\include\mozilla\include\pref;libraries\i686-win32\include\mozilla\include\profdirserviceprovider;libraries\i686-win32\include\mozilla\include\string;libraries\i686-win32\include\mozilla\include\uriloader;libraries\i686-win32\include\mozilla\include\view;libraries\i686-win32\include\mozilla\include\webbrwsr;libraries\i686-win32\include\mozilla\include\widget;libraries\i686-win32\include\mozilla\include\xpcom;libraries\i686-win32\include\mozilla\include\xulapp;libraries\i686-win32\include\mozilla\sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;XP_WIN;XP_WIN32;MOZILLA_INTERNAL_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>nspr4.lib;plc4.lib;profdirserviceprovider_s.lib;xpcom.lib;xul.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>../monitor/lib/llmozlib2d.lib</OutputFile>
+      <AdditionalLibraryDirectories>libraries\i686-win32\lib_debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;msvcprt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>libraries\i686-win32\include\mozilla\include\content;libraries\i686-win32\include\mozilla\include\docshell;libraries\i686-win32\include\mozilla\include\dom;libraries\i686-win32\include\mozilla\include\gfx;libraries\i686-win32\include\mozilla\include\js;libraries\i686-win32\include\mozilla\include\layout;libraries\i686-win32\include\mozilla\include\locale;libraries\i686-win32\include\mozilla\include\necko;libraries\i686-win32\include\mozilla\include\nkcache;libraries\i686-win32\include\mozilla\include\pref;libraries\i686-win32\include\mozilla\include\profdirserviceprovider;libraries\i686-win32\include\mozilla\include\string;libraries\i686-win32\include\mozilla\include\uriloader;libraries\i686-win32\include\mozilla\include\view;libraries\i686-win32\include\mozilla\include\webbrwsr;libraries\i686-win32\include\mozilla\include\widget;libraries\i686-win32\include\mozilla\include\xpcom;libraries\i686-win32\include\mozilla\include\xulapp;libraries\i686-win32\include\mozilla\sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;XP_WIN;XP_WIN32;MOZILLA_INTERNAL_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>nspr4.lib;plc4.lib;profdirserviceprovider_s.lib;xpcom.lib;xul.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>../monitor/lib/llmozlib2.lib</OutputFile>
+      <AdditionalLibraryDirectories>libraries\i686-win32\lib_release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="llembeddedbrowser.cpp" />
+    <ClCompile Include="llembeddedbrowserwindow.cpp" />
+    <ClCompile Include="llmozlib2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="llembeddedbrowser.h" />
+    <ClInclude Include="llembeddedbrowserwindow.h" />
+    <ClInclude Include="llmozlib2.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

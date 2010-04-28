@@ -297,10 +297,10 @@ end
 
 function sworkCreateProjectGameToCompany( ptr )
 	local company = CLuaCompany( applic:GetPlayerCompany() )
-	local edit = CLuaEdit( guienv:GetElemenetByName( WNDGMWIZ_NAME_EDIT ) )
+	local edit = CLuaEdit( guienv:GetElementByName( WNDGMWIZ_NAME_EDIT ) )
 	project:SetName( edit:GetText() )
 	
-	local prj = CLuaGameProject( company:GetProject( project:GetName() ) )
+	local prj = CLuaGameProject( company:GetProjectByName( project:GetName() ) )
 	
 	if prj:Empty() == 1 then
 		prj:SetObject( company:CreateGameProject( project:Self() ) )

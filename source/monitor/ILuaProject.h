@@ -1,5 +1,6 @@
 #pragma once
 #include "ILuaObject.h"
+#include <assert.h>
 
 namespace nrp
 {
