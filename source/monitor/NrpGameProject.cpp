@@ -315,7 +315,7 @@ void CNrpGameProject::SetSoundTech( CNrpTechnology* ptrTech, int index )
 
 void CNrpGameProject::Save( std::string folderSave )
 {
-	if( _access( folderSave.c_str(), 0 ) == 1 )
+	if( _access( folderSave.c_str(), 0 ) == -1 )
 		CreateDirectory( folderSave.c_str(), NULL );
 
 	std::string localFolder = folderSave + GetValue<std::string>( NAME ) + "/";
@@ -325,6 +325,9 @@ void CNrpGameProject::Save( std::string folderSave )
 
 	std::string fileName = localFolder + "project.ini";
 	INrpProject::Save( PROPERTIES, fileName );
+
+	if( GetValue<PNrpCompany>( COMPANY ) )
+		IniFile::Write( PROPERTIES, COMPANY, GetValue<PNrpCompany>( COMPANY )->GetValue<std::string>( NAME ), fileName );
 
 	TECH_LIST::iterator tIter = technologies_.begin();
 	for( int i=0; tIter != technologies_.end(); ++tIter, ++i )
@@ -344,7 +347,7 @@ void CNrpGameProject::Save( std::string folderSave )
 	for( int i=0; vIter != videoTechnologies_.end(); ++vIter, ++i )
 	{
 		(*vIter)->Save( localFolder + "videoTech/" );
-		IniFile::Write( "videoTech", "videoTech_" + IntToStr(i), (*gIter)->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( "videoTech", "videoTech_" + IntToStr(i), (*vIter)->GetValue<std::string>( NAME ), fileName );
 	}
 
 	TECH_LIST::iterator sIter = soundTechnologies_.begin();
@@ -379,40 +382,42 @@ void CNrpGameProject::Save( std::string folderSave )
 	if( GetValue<PNrpTechnology>( SCRIPTENGINE ) )
 	{
 		IniFile::Write( PROPERTIES, "scripEngine", GetValue<PNrpTechnology>( SCRIPTENGINE )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpTechnology>( SCRIPTENGINE )->Save( localFolder + SCRIPTENGINE + ".ini" );
+		GetValue<PNrpTechnology>( SCRIPTENGINE )->Save( localFolder );
 	}
 
 	if( GetValue<PNrpTechnology>( MINIGAMEENGINE ) )
 	{
 		IniFile::Write( PROPERTIES, "miniGameEngine", GetValue<PNrpTechnology>( MINIGAMEENGINE )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpTechnology>( MINIGAMEENGINE )->Save( localFolder + MINIGAMEENGINE + ".ini");
+		GetValue<PNrpTechnology>( MINIGAMEENGINE )->Save( localFolder );
 	}
 
 	if( GetValue<PNrpTechnology>( PHYSICSENGINE ) )
 	{
 		IniFile::Write( PROPERTIES, "physicEngine", GetValue<PNrpTechnology>( PHYSICSENGINE )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpTechnology>( PHYSICSENGINE )->Save( localFolder + PHYSICSENGINE + ".ini" );
+		GetValue<PNrpTechnology>( PHYSICSENGINE )->Save( localFolder );
 	}
 
 	if( GetValue<PNrpTechnology>( GRAPHICQUALITY ) )
 	{
 		IniFile::Write( PROPERTIES, "graphicQuality", GetValue<PNrpTechnology>( GRAPHICQUALITY )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpTechnology>( PHYSICSENGINE )->Save( localFolder + GRAPHICQUALITY + ".ini" );
+		GetValue<PNrpTechnology>( PHYSICSENGINE )->Save( localFolder );
 	}
 
 	if( GetValue<PNrpTechnology>( SOUNDQUALITY ) )
 	{
 		IniFile::Write( PROPERTIES, "soundQuality", GetValue<PNrpTechnology>( SOUNDQUALITY )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpTechnology>( SOUNDQUALITY )->Save( localFolder + SOUNDQUALITY + ".ini" );
+		GetValue<PNrpTechnology>( SOUNDQUALITY )->Save( localFolder );
 	}
 }
 
 void CNrpGameProject::Load( std::string loadFolder )
 {
+	if( loadFolder[ loadFolder.length() - 1 ] != '/' )
+		loadFolder += "/";
 	std::string fileName = loadFolder + "project.ini";
 	INrpProject::Load( PROPERTIES, fileName );
 
-	for( int i=0; i < GetValue<int>( TECHNUMBER ); ++i )
+	for( int i=0; i < GetValue<int>( ADVTECHNUMBER ); ++i )
 	{
 		std::string name = IniFile::Read( "technology", "tech_" + IntToStr(i), std::string(""), fileName );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
@@ -424,10 +429,13 @@ void CNrpGameProject::Load( std::string loadFolder )
 	for( int i=0; i < GetValue<int>( GENRE_MODULE_NUMBER ); ++i )
 	{
 		std::string name = IniFile::Read( "genres", "genre_" + IntToStr(i), std::string(""), fileName );
-		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
-		tech->Load( loadFolder + "genres/" + name + ".ini" );
-		tech->SetValue<LPVOID>( PARENT, this );
-		genres_.push_back( tech );		
+		if( !name.empty() )
+		{
+			CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE( 0 ) );
+			tech->Load( loadFolder + "genres/" + name + ".ini" );
+			tech->SetValue<LPVOID>( PARENT, this );
+			genres_.push_back( tech );		
+		}
 	}
 
 	for( int i=0; i < GetValue<int>( VIDEOTECHNUMBER ); ++i )
@@ -452,10 +460,6 @@ void CNrpGameProject::Load( std::string loadFolder )
 	PNrpGameEngine engine = new CNrpGameEngine( name );
 	engine->Load( loadFolder + "engine/" );
 	SetValue<PNrpGameEngine>( GAME_ENGINE, engine );
-
-	name = IniFile::Read( PROPERTIES, "prevGame", "", fileName );
-	PNrpCompany company = CNrpApplication::Instance().GetCompany( GetValue<std::string>( COMPANY ) );
-	SetValue<PNrpGame>( PREV_GAME, company->GetGame( name ) );
 
 	name = IniFile::Read( PROPERTIES, "scenario", "", fileName );
 	PNrpScenario scenario = new CNrpScenario( name );
@@ -507,7 +511,6 @@ void CNrpGameProject::InitializeOption_( std::string name )
 	CreateValue<PNrpGame>( PREV_GAME, NULL );
 	CreateValue<int>( CODEVOLUME, 0 );
 	CreateValue<int>( BASE_CODEVOLUME, 0 );
-	CreateValue<int>( TECHTYPE, 0 );
 	CreateValue<PNrpScenario>( SCENARIO, NULL );
 	CreateValue<PNrpLicense>( GLICENSE, NULL ); 
 	CreateValue<PNrpTechnology>( SCRIPTENGINE, NULL );
@@ -524,7 +527,7 @@ void CNrpGameProject::InitializeOption_( std::string name )
 	CreateValue<int>( ADVTECHNUMBER, 0 );
 	CreateValue<int>( ENGINE_CODEVOLUME, 0 );
 	CreateValue<int>( QUALITY, 0 );
-	CreateValue<PNrpCompany>( COMPANY, NULL );
+	CreateValue<std::string>( COMPANY, "" );
 	CreateValue<std::string>( PROJECTSTATUS, "unknown" );
 }
 }//namespace nrp

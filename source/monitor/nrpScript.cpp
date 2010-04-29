@@ -34,6 +34,7 @@
 #include "LuaGameProject.h"
 #include "LuaTechnology.h"
 #include "LuaListBox.h"
+#include "LuaComponentListBox.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
 
@@ -160,6 +161,7 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaGameProject >::Register( vm_ );
 	Luna< CLuaTechnology >::Register( vm_ );
 	Luna< CLuaListBox >::Register( vm_ );
+	Luna< CLuaComponentListBox >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()

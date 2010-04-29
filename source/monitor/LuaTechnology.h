@@ -24,7 +24,6 @@ public:
 	int SetEngineTechRequire( lua_State* L );
 	int SetEmployerSkillRequire( lua_State* L );
 	int SetQuality( lua_State* L );
-	int GetTechType( lua_State* L );
 	int GetOptionAsInt( lua_State* L );
 	int GetTechGroup( lua_State* L );
 	int HaveLider( lua_State* L );

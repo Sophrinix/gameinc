@@ -269,8 +269,8 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 		else
 			usert = new IUser( className.c_str(), "" );
 
-		usert->Load( saveFolderUsers + name + ".ini" );
 		users_.push_back( usert );
+		usert->Load( saveFolderUsers + name + ".ini" );
 	}
 
 	std::string saveFolderTech = saveFolder + "freeTech/";
@@ -278,8 +278,8 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 	{
 		std::string name = IniFile::Read( "technologies", "technology_" + IntToStr(i), std::string(""), profileIni );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
-		tech->Load( saveFolderTech + name + ".ini" );
 		technologies_.push_back( tech );
+		tech->Load( saveFolderTech + name + ".ini" );
 	}
 
 	std::string saveFolderCompanies = saveFolder + "companies/";
@@ -287,8 +287,8 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 	{
 		std::string name = IniFile::Read( "companies", "company_" + IntToStr(i), std::string(""), profileIni );
 		CNrpCompany* cmp = new CNrpCompany( name.c_str() );
-		cmp->Load( saveFolderCompanies + name + "/" );
 		companies_.push_back( cmp );
+		cmp->Load( saveFolderCompanies + name + "/" );
 	}
 }
 

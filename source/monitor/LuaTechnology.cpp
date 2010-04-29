@@ -27,7 +27,7 @@ namespace nrp
 
 Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы методы
 {
-	LUNA_ILUAOBJECT_HEADER( CLuaTechnology ),
+	LUNA_ILUAPROJECT_HEADER( CLuaTechnology ),
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetTechType ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetBaseCode ),
@@ -36,7 +36,6 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetAddingEngineCode ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEngineTechRequire ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEmployerSkillRequire ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTechType ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTechGroup ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetOptionAsInt ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetQuality ),
@@ -47,7 +46,6 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 CLuaTechnology::CLuaTechnology(lua_State *L) : ILuaProject( L, "CLuaTech" )							//конструктор
 {}
 
-GETTER_FUNCTION( GetTechType, lua_pushinteger, int, TECHTYPE, 0, NO_POSTFIX )
 GETTER_FUNCTION( GetName, lua_pushstring, std::string, NAME, "", .c_str() )
 GETTER_FUNCTION( GetTechGroup, lua_pushinteger, int, TECHGROUP, 0, NO_POSTFIX  )
 

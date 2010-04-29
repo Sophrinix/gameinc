@@ -101,6 +101,7 @@ private:
 };
 
 class INrpConfig : public INrpObject
+
 {
 protected:
 	//! чтение свойства из конфигурационного файла
@@ -148,7 +149,10 @@ public:
 
 	template< class B > void CreateValue( std::string name, B valuel )
 	{
-		options_[ name ] = new CNrpProperty<B>( valuel );
+		if( options_.find( name ) == options_.end() )
+			options_[ name ] = new CNrpProperty<B>( valuel );
+		else
+			SetValue<B>( name, valuel );
 	}
 
 	template< class B > B ToggleValue( std::string name, B defValue )
@@ -205,7 +209,7 @@ public:
 		for( ; paIter != options_.end(); ++paIter)
 		{
 			INrpProperty* prop = paIter->second;
-			if( prop->GetValueType() == typeid( int ).name() )
+			if( prop->GetValueType() == typeid( int ).name() || prop->GetValueType().find( "enum" ) == 0 )
 				IniFile::Write( scetionName, paIter->first, ((CNrpProperty<int>*)prop)->GetValue(), fileName );
 			else
 			if( prop->GetValueType() == typeid( std::string ).name() )
@@ -231,7 +235,10 @@ public:
 		std::string readLine = buffer;
 		while( readLine != "" )
 		{
+#ifdef _DEBUG
 			OutputDebugString( readLine.c_str() );
+			OutputDebugString( "\n" );
+#endif
 			std::string name, valuel;
 			name = readLine.substr( 0, readLine.find( '=' ) );
 			valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );

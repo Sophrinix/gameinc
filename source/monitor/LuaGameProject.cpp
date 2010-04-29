@@ -74,7 +74,6 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, ToggleLanguage ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetScenario ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetName ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetName ),
 	{0,0}
 };
 
@@ -306,18 +305,5 @@ int CLuaGameProject::SetName( lua_State* vm )
 
 	return 1;
 }
-
-int CLuaGameProject::GetName( lua_State* vm )
-{
-	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 1, 1, ("Function " + ClassName() + ":GetName not need parameter").c_str() );
-
-	std::string resultt("");
-	IF_OBJECT_NOT_NULL_THEN	resultt = object_->GetValue<std::string>( NAME );
-
-	lua_pushstring( vm, resultt.c_str() );
-	return 1;
-}
-
 
 }//namespace nrp

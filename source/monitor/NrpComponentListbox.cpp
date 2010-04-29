@@ -23,7 +23,7 @@ CNrpComponentListbox::CNrpComponentListbox( gui::IGUIEnvironment* env, IGUIEleme
 								 ScrollBar(0), 
 								 Selecting(false), 
 								 DrawBack(true),
-								 MoveOverSelect(true), 
+								 MoveOverSelect(false), 
 								 selectTime(0), 
 								 AutoScroll(true),
 								 KeyBuffer(), 
@@ -545,22 +545,26 @@ void CNrpComponentListbox::draw()
 					video::SColor itbncolor = hasItemOverrideColor( i, EGUI_LBC_TEXT_HIGHLIGHT ) 
 																	? getItemOverrideColor( i, itbn ) 
 																	: getItemDefaultColor( itbn );
-					if( Items[ i ].obj == NULL )
+					if( pObject == NULL )
 					{
 						Font->draw( Items[i].text.c_str(), textRect, itbncolor, false, true, &clientClip);
 					}
 					else
 					{			
 						wchar_t tmpstr[ 128 ];
+						video::IVideoDriver* driver = Environment->getVideoDriver();
 
 						textRect.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 						textRect.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
-						int percent = pObject->GetValue<float>( READYWORKPERCENT ) * 100;
+						float percent = pObject->GetValue<float>( READYWORKPERCENT );
 						std::wstring name = StrToWide( pObject->GetValue<std::string>( NAME ) );
 						
-						swprintf( tmpstr, 127, L"%s  (Ready:%d)", name.c_str(), percent );
-						Font->draw( tmpstr, textRect, itbncolor, true, true, &clientClip );
+						swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), percent * 100 );
+						core::recti progressRect = textRect;
+						progressRect.LowerRightCorner.X = progressRect.UpperLeftCorner.X + textRect.getWidth() * percent;
+						driver->draw2DRectangle( progressRect, 0xff00ff00, 0xff00ff00, 0xff0000ff, 0xff0000ff, &clientClip );
+						Font->draw( tmpstr, textRect, itbncolor, false, true, &clientClip );
 					}
 					textRect.UpperLeftCorner.X -= ItemsIconWidth+3;
 				}

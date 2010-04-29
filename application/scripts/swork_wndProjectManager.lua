@@ -35,7 +35,7 @@ function sworkCreateWindowProjectManager( ptr )
 	
 	local cmbxPrj = CLuaComboBox( guienv:AddComboBox( "", 10, 20, width / 2 - 10, 40, WNDPRJMNG_CMBX_SELECT_PRJ, windowg:Self() ) )
 	local cmpProjectNumber = company:GetProjectNumber()
-	
+	LogScript( "Company Project number="..cmpProjectNumber )
 	for i=1, cmpProjectNumber do
 		local ptrProject = CLuaProject( company:GetProject( i-1 ) )
 		
@@ -137,12 +137,14 @@ end
 
 local function ShowUnworkedGameProjectComponent( ptrProject )
 	local gp = CLuaGameProject( ptrProject )
-	local lbx = CLuaListBox( guienv:GetElementByID( WINDOW_PRJMANAGE_COMPONENTS ) )
-	local tech = CLuaTechnology( nil )
+	local lbx = CLuaComponentListBox( guienv:GetElementByID( WINDOW_PRJMANAGE_COMPONENTS ) )
+	local tech = CLuaTech( nil )
 	
 	for i=1, gp:GetGenreModuleNumber() do
-	    tech:SetObject( gp:GetGenre( i ) )
-		if not tech:HaveLider() then lbx:AddItem( tech:GetName(), tech:Self() )	end
+	    tech:SetObject( gp:GetGenre( i-1 ) )
+		if tech:Empty() == 1 or not tech:HaveLider() then 
+		  lbx:AddItem( tech:GetName(), tech:Self() )	
+		end
 	end
 end
 

@@ -933,6 +933,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaComponentListBox.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaComponentListBox.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaConsole.cpp"
 						>
 					</File>
