@@ -35,6 +35,17 @@ CNrpGameEngine* CNrpCompany::GetGameEngine( int index )
 	return index < (int)engines_.size() ? engines_[ index ] : NULL;
 }
 
+CNrpGameEngine* CNrpCompany::GetGameEngine( std::string name )
+{
+	ENGINE_LIST::iterator eIter = engines_.begin();
+
+	for( ; eIter != engines_.end(); ++eIter )
+		if( (*eIter)->GetValue<std::string>( NAME ) == name )
+			return *eIter;
+
+	return NULL;
+}
+
 void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 {
 	if( ptrEng != NULL )
@@ -42,7 +53,7 @@ void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 
 	int k = engines_.size();
 	SetValue<int>( ENGINES_NUMBER, k );
-	ptrEng->SetValue<PNrpCompany>( COMPANY, this );
+	ptrEng->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
 }
 
 CNrpTechnology* CNrpCompany::GetTech( int index )
@@ -63,7 +74,7 @@ CNrpGameProject* CNrpCompany::AddGameProject( CNrpGameProject* ptrProject )
 		projects_[ ptrProject->GetValue<std::string>( NAME ) ] = ptrProject;
 
 	SetValue<int>( PROJECTNUMBER, projects_.size() );
-	ptrProject->SetValue<PNrpCompany>( COMPANY, this );
+	ptrProject->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
 	return ptrProject;
 }
 
@@ -154,7 +165,7 @@ void CNrpCompany::Load( std::string loadFolder )
 	PUser usert = CNrpApplication::Instance().GetUser( ceoName );
 	assert( usert != NULL );
 	SetValue<PUser>( CEO, usert );
-	usert->SetValue<PNrpCompany>( COMPANY, this );
+	usert->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
 
 	for( int i=0; i < GetValue<int>( USERNUMBER ); ++i )
 	{
@@ -163,17 +174,8 @@ void CNrpCompany::Load( std::string loadFolder )
 		name = name.substr( name.find(':') + 1, 0xff );
 		IUser* user = new IUser( className.c_str(), name.c_str() );
 		user->Load( loadFolder + "users/" + name + ".ini" );
-		user->SetValue<PNrpCompany>( COMPANY, this );
+		user->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
 		employers_.push_back( user );
-	}
-
-	for( int i=0; i < GetValue<int>( PROJECTNUMBER ); ++i )
-	{
-		std::string prjName = IniFile::Read( "projects", "project_" + IntToStr(i), std::string(""), loadFile );
-		CNrpGameProject* prj = new CNrpGameProject( "" );
-		prj->Load( loadFolder + "projects/" + prjName );
-		prj->SetValue<PNrpCompany>( COMPANY, this );
-		projects_[ prjName ] = prj;
 	}
 
 	for( int i=0; i < GetValue<int>( ENGINES_NUMBER ); ++i )
@@ -181,7 +183,7 @@ void CNrpCompany::Load( std::string loadFolder )
 		std::string engineName = IniFile::Read( "engines", "engine_" + IntToStr(i), std::string(""), loadFile );
 		CNrpGameEngine* ge = new CNrpGameEngine( "" );
 		ge->Load( loadFolder + "engines/" + engineName + "/" );
-		ge->SetValue<PNrpCompany>( COMPANY, this );
+		ge->SetValue<std::string>( COMPANY, GetValue<std::string>( NAME ) );
 		engines_.push_back( ge );
 	}
 
@@ -190,7 +192,7 @@ void CNrpCompany::Load( std::string loadFolder )
 		std::string techName = IniFile::Read( "techs", "tech_" + IntToStr(i), std::string(""), loadFile );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
 		tech->Load( loadFolder + "techs/" + techName + ".ini" );
-		tech->SetValue<PNrpCompany>( COMPANY, this );
+		tech->SetValue<std::string>( COMPANY, GetValue<std::string>( NAME ) );
 		technologies_[ techName ] = tech;
 	}
 
@@ -199,8 +201,17 @@ void CNrpCompany::Load( std::string loadFolder )
 		std::string gameName = IniFile::Read( "games", "game_" + IntToStr(i), std::string(""), loadFile );
 		CNrpGame* game = new CNrpGame( gameName );
 		game->Load( loadFolder + "games/" );
-		game->SetValue<PNrpCompany>( COMPANY, this );
+		game->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
 		games_[ gameName ] = game;
+	}
+
+	for( int i=0; i < GetValue<int>( PROJECTNUMBER ); ++i )
+	{
+		std::string prjName = IniFile::Read( "projects", "project_" + IntToStr(i), std::string(""), loadFile );
+		CNrpGameProject* prj = new CNrpGameProject( "" );
+		prj->Load( loadFolder + "projects/" + prjName );
+		prj->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
+		projects_[ prjName ] = prj;
 	}
 }
 

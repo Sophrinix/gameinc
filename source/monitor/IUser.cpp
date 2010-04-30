@@ -25,7 +25,7 @@ IUser::IUser(const char* className, const char* systemName ) : INrpConfig( class
 	CreateValue<int>( CHARACTER, 0 );
 	CreateValue<int>( WANTMONEY, 0 );
 	CreateValue<int>( CONTRACTMONEY, 0 );
-	CreateValue<PNrpCompany>( COMPANY, NULL );
+	CreateValue<std::string>( COMPANY, "" );
 }
 
 IUser::~IUser(void)
@@ -48,7 +48,7 @@ void IUser::SetSkill( std::string name, int valuel )
 
 void IUser::CalculateWantSalary_()
 {
-	KNOWLEDGE_LIST::iterator pIter = knowledges_.begin();
+	KNOWLEDGE_MAP::iterator pIter = knowledges_.begin();
 	float sum = 0;
 	float cash = 500;
 	for( ; pIter != knowledges_.end(); ++pIter)
@@ -67,7 +67,7 @@ void IUser::CalculateWantSalary_()
 void IUser::CalculateKnowledgeLevel_()
 {
 	int sum = 0;
-	KNOWLEDGE_LIST::iterator pIter = knowledges_.begin();
+	KNOWLEDGE_MAP::iterator pIter = knowledges_.begin();
 	for( ; pIter != knowledges_.end(); ++pIter)
 	{
 				sum += pIter->second;
@@ -79,7 +79,7 @@ void IUser::CalculateKnowledgeLevel_()
 
 int IUser::GetSkill( int typen )
 {
-	return knowledges_[ typen ];
+	return knowledges_.find( typen ) != knowledges_.end() ? knowledges_[ typen ] : 0;
 }
 
 void IUser::Save( std::string folderPath )
@@ -98,7 +98,7 @@ void IUser::Save( std::string folderPath )
 	for( ; gnrExp != genreExperience_.end(); ++gnrExp )
 		IniFile::Write( "genreExperience", gnrExp->first, gnrExp->second, fileName );
 
-	KNOWLEDGE_LIST::iterator knIter = knowledges_.begin();
+	KNOWLEDGE_MAP::iterator knIter = knowledges_.begin();
 	for( ; knIter != knowledges_.end(); ++knIter )
 		IniFile::Write( "knowledges", IntToStr( knIter->first ), knIter->second, fileName );
 

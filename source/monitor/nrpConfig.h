@@ -42,6 +42,7 @@ OPTION_NAME COMPANIESNUMBER( "companiesNumber" );
 OPTION_NAME COMPANY( "company" );
 OPTION_NAME PROPERTIES( "properties" );
 OPTION_NAME CODEVOLUME( "volumeCode" );
+OPTION_NAME COMPONENTLIDER( "componentLider" );
 
 #define CHECK_VALCLASS_TYPE( bclass )\
 	if( valueType_ != typeid( bclass ).name() ) {\
@@ -210,19 +211,19 @@ public:
 		{
 			INrpProperty* prop = paIter->second;
 			if( prop->GetValueType() == typeid( int ).name() || prop->GetValueType().find( "enum" ) == 0 )
-				IniFile::Write( scetionName, paIter->first, ((CNrpProperty<int>*)prop)->GetValue(), fileName );
+				IniFile::Write( scetionName, paIter->first + ":int", ((CNrpProperty<int>*)prop)->GetValue(), fileName );
 			else
 			if( prop->GetValueType() == typeid( std::string ).name() )
-				IniFile::Write( scetionName, paIter->first, ((CNrpProperty<std::string>*)prop)->GetValue(), fileName );
+				IniFile::Write( scetionName, paIter->first + ":string", ((CNrpProperty<std::string>*)prop)->GetValue(), fileName );
 			else
 			if( prop->GetValueType() == typeid( bool ).name() )
-				IniFile::Write( scetionName, paIter->first, std::string(((CNrpProperty<bool>*)prop)->GetValue() ? "true" : "false"), fileName );
+				IniFile::Write( scetionName, paIter->first + ":bool", std::string(((CNrpProperty<bool>*)prop)->GetValue() ? "true" : "false"), fileName );
 			else
 			if( prop->GetValueType() == typeid( SYSTEMTIME ).name() )
-				IniFile::Write( scetionName, paIter->first, ((CNrpProperty<SYSTEMTIME>*)prop)->GetValue(), fileName );
+				IniFile::Write( scetionName, paIter->first + ":time", ((CNrpProperty<SYSTEMTIME>*)prop)->GetValue(), fileName );
 			else 
 			if( prop->GetValueType() == typeid( float ).name() )
-				IniFile::Write( scetionName, paIter->first, ((CNrpProperty<float>*)prop)->GetValue(), fileName );
+				IniFile::Write( scetionName, paIter->first + ":float", ((CNrpProperty<float>*)prop)->GetValue(), fileName );
 		}
 	}
 
@@ -239,21 +240,20 @@ public:
 			OutputDebugString( readLine.c_str() );
 			OutputDebugString( "\n" );
 #endif
-			std::string name, valuel;
+			std::string name, valuel, type;
 			name = readLine.substr( 0, readLine.find( '=' ) );
+			type = name.substr( name.find( ':' ) + 1, 0xff );
+			name = name.substr( 0, name.find( ':' ) );
 			valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
-			if( IsNumber( valuel.c_str() ) )
+			if( type == "int" )
 				CreateValue<int>( name, StrToInt( valuel.c_str() ) );
-			else
-			if( IsFloatNumber( valuel.c_str() ) )
+			else if( type == "float" )
 				CreateValue<float>( name, StrToFloat( valuel.c_str() ) ); 
-			else 
-			{
-				if( valuel == "true" || valuel == "false" )
-					CreateValue<bool>( name, valuel == "true" );
-				else
-					CreateValue<std::string>( name, valuel );
-			}
+			else if( type == "bool" )
+				CreateValue<bool>( name, valuel == "true" );
+			else if( type == "string" )
+				CreateValue<std::string>( name, valuel );
+
 			memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
 			readLine = buffer;
 		}

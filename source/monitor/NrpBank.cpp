@@ -28,7 +28,7 @@ size_t CNrpBank::GetMaxCompanyLoan( std::string companyName )
 
 	for( ; pIter != loans_.end(); ++pIter )
 	{
-		if( (*pIter)->GetValue<PNrpCompany>( COMPANY )->GetValue<std::string>( NAME ) == companyName )
+		if( (*pIter)->GetValue<std::string>( COMPANY ) == companyName )
 			dolg += (*pIter)->GetValue<int>( MONEY ); 
 	}
 
@@ -73,7 +73,7 @@ void CNrpBank::CreateLoan( std::string name, int money, int percent, int month )
 	loan->SetValue<int>( MONTHLEFT, month );
 	loan->SetValue<SYSTEMTIME>( ENDDATE, endtime );
 	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( name );
-	loan->SetValue<PNrpCompany>( COMPANY, cmp );
+	loan->SetValue<std::string>( COMPANY, cmp->GetValue<std::string>( NAME ) );
 
 	loans_.push_back( loan );
 

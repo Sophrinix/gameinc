@@ -16,7 +16,8 @@ CNrpGameEngine::CNrpGameEngine( std::string name ) : INrpProject( "CNrpGameEngin
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
 	CreateValue<int>( CODEVOLUME, 0 );
 	CreateValue<int>( QUALITY, 0 );
-	CreateValue<PNrpCompany>( COMPANY, NULL );
+	CreateValue<int>( SKILL_CODING, 0 );
+	CreateValue<std::string>( COMPANY, "" );
 }
 
 CNrpGameEngine::~CNrpGameEngine(void)

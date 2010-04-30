@@ -17,7 +17,6 @@ public:
 	static Luna<CLuaGameProject>::RegType methods[];				//методы обертки
 
 	CLuaGameProject(lua_State *L);		
-	int SetName( lua_State* vm );
 	int SetGameEngine( lua_State* L);
 	int GetGenre( lua_State* L ); 
 	int GetGenreModuleNumber( lua_State* L );

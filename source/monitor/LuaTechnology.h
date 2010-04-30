@@ -17,8 +17,6 @@ public:
 
 	CLuaTechnology(lua_State *L);		
 	int SetTechType( lua_State* L );
-	int SetName( lua_State* L );
-	int GetName( lua_State* L );
 	int SetBaseCode( lua_State* L );
 	int SetAddingEngineCode( lua_State* L );
 	int SetEngineTechRequire( lua_State* L );
@@ -27,6 +25,7 @@ public:
 	int GetOptionAsInt( lua_State* L );
 	int GetTechGroup( lua_State* L );
 	int HaveLider( lua_State* L );
+	int GetEmployerPosibility( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaTech"; }	
 };

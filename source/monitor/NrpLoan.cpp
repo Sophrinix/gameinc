@@ -7,7 +7,7 @@ namespace nrp
 	
 CNrpLoan::CNrpLoan( int id ) : INrpConfig( "CNrpLoan", "" )
 {
-	CreateValue<PNrpCompany>( COMPANY, NULL );
+	CreateValue<std::string>( COMPANY, "" );
 	CreateValue<float>( YEARPERCENT, 0 );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );

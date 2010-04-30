@@ -33,6 +33,7 @@ public:
 
 	void AddGameEngine( CNrpGameEngine* ptrEng );
 	CNrpGameEngine* GetGameEngine( int index );
+	CNrpGameEngine* GetGameEngine( std::string name );
 	CNrpTechnology* GetTech( int index );
 	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
 	INrpProject* GetProject( std::string name );

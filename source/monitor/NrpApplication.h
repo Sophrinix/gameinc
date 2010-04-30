@@ -42,10 +42,12 @@ public:
 	int RemoveUser( IUser* user );
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
+	IUser* GetUser( std::string company, std::string name );
 
 	nrp::INrpProject* CreateGameProject( std::string name );
 
 	nrp::CNrpGameEngine* CreateGameEngine( std::string name );
+	CNrpGameEngine* GetGameEngine( std::string name );
 
 	bool UpdateTime();
 	SYSTEMTIME& GetDateTime() { return time_; }

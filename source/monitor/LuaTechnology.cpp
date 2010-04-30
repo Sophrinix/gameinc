@@ -31,8 +31,6 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetTechType ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetBaseCode ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetName ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetAddingEngineCode ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEngineTechRequire ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEmployerSkillRequire ),
@@ -40,17 +38,16 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetOptionAsInt ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetQuality ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveLider ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetEmployerPosibility ),
 	{0,0}
 };
 
 CLuaTechnology::CLuaTechnology(lua_State *L) : ILuaProject( L, "CLuaTech" )							//конструктор
 {}
 
-GETTER_FUNCTION( GetName, lua_pushstring, std::string, NAME, "", .c_str() )
 GETTER_FUNCTION( GetTechGroup, lua_pushinteger, int, TECHGROUP, 0, NO_POSTFIX  )
 
 SETTER_FUNCTION( SetBaseCode, float, lua_tonumber, NO_ASSERT, float, BASE_CODE )
-SETTER_FUNCTION( SetName, const char*, lua_tostring, assert( valuel != NULL ), std::string, NAME )
 SETTER_FUNCTION( SetTechType, int, lua_tointeger, NO_ASSERT, int, TECHTYPE )
 SETTER_FUNCTION( SetAddingEngineCode, float, lua_tonumber, NO_ASSERT, float, ENGINE_CODE )
 SETTER_FUNCTION( SetQuality, int, lua_tonumber, NO_ASSERT, int, QUALITY )
@@ -101,9 +98,19 @@ int CLuaTechnology::HaveLider( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::HaveLider not need parameter");
 
 	bool haveUser = false; 
-	IF_OBJECT_NOT_NULL_THEN	haveUser = object_->GetValue<PUser>( COMPONENTLIDER ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN	haveUser = !object_->GetValue<std::string>( COMPONENTLIDER ).empty();
 	lua_pushboolean( L, haveUser );
 	return 1;	
 }
 
+int CLuaTechnology::GetEmployerPosibility( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::GetEmployerPosibility not need parameter");
+
+	float posilbleValue = 0; 
+	IF_OBJECT_NOT_NULL_THEN	posilbleValue = object_->GetEmployerPosibility();
+	lua_pushnumber( L, posilbleValue );
+	return 1;	
+}
 }//namespace nrp

@@ -11,6 +11,7 @@ mode[ "Тестировщики" ] = "tester"
 local currentEmployer = CLuaUser( nil )
 local currentProject = CLuaProject( nil )
 local currentComponent = CLuaTech( nil )
+local localBtnChangeLider = CLuaButton( nil )
 
 local modeUserView = "coder"
 
@@ -50,8 +51,9 @@ function sworkCreateWindowProjectManager( ptr )
 
 	local lbxProjectComponents = CLuaListBox( guienv:AddComponentListBox( 10, 50, 300, 590, WINDOW_PRJMANAGE_COMPONENTS, windowg:Self() ) )
 	
-	local btnCmpAction = CLuaButton( guienv:AddButton( width / 2 + 10, 10, width - 10, 40, windowg:Self(), -1, "Назначить" ) )
-	btnCmpAction:SetAction( "sworkWindowManagerProjectToggleComponentLider" )
+	localBtnChangeLider:SetObject( guienv:AddButton( width / 2 + 10, 10, width - 10, 40, windowg:Self(), -1, "Назначить" ) )
+	localBtnChangeLider:SetAction( "sworkWindowManagerProjectToggleComponentLider" )
+	localBtnChangeLider:SetEnabled( false )
 	
 	guienv:AddComboBox( "", 310, 110, 790, 130, WNDPRJMNG_CMBX_USERS, windowg:Self() )
 	local button = CLuaButton( guienv:AddButton( 310, 50, 420, 100, windowg:Self(), -1, "Программисты" ) )
@@ -67,21 +69,44 @@ function sworkCreateWindowProjectManager( ptr )
 	button:SetAction( "sworkWindowManageProjectsChangerUserType" )
 	
 	windowg:AddLuaFunction( GUIELEMENT_CMBXITEM_SELECTED, "sworkWindowProjectManagerComboBoxItemSelected" )
+	windowg:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkWindowProjectManagerListBoxItemSelected" )
+end
+
+local function checkUserForComponent()
+	if currentEmployer:Empty() == 0 then
+		localBtnChangeLider:SetEnabled(true) 
+		if currentComponent:Empty() == 0 then
+			if currentComponent:HaveLider() then
+				localBtnChangeLider:SetText( "Нет лидера" )
+			else
+				localBtnChangeLider:SetText( "Назначить лидера" )
+			end
+		end
+	else
+		localBtnChangeLider:SetEnabled(false) 
+	end
+end
+
+function sworkWindowProjectManagerListBoxItemSelected( ptr )
+	local listbox = CLuaComponentListBox( ptr )
+	currentComponent:SetObject( listbox:GetSelectedObject() )
+	
+	checkUserForComponent()
 end
 
 function sworkWindowManagerProjectToggleComponentLider( ptr )
 	if currentComponent:HaveLider() then
-		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
-		currentComponent:SetLider( nil )
-		if currentComponent:GetEmployerPosibility() < 40 then
-			guienv:ShowMessage( currentEmployer:GetName() .. " имеет недостаточные навыки, чтобы быстро выполнить эту работу" )
-		end
-	else
 		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
-		currentComponent:SetLider( currentEmployer:Self() )	
+		currentComponent:SetLider( nil )	
 		
 		if currentComponent:GetWorkPercentDone() > 70 then
 			guienv:ShowMessage( "Компонент почти завершен. Передача его другому человеку приведет к потере части функионала" )
+		end
+	else
+		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
+		currentComponent:SetLider( currentEmployer:Self() )
+		if currentComponent:GetEmployerPosibility() < 0.4 then
+			guienv:ShowMessage( currentEmployer:GetName() .. " имеет недостаточные навыки, чтобы быстро выполнить эту работу" )
 		end
 	end
 end
@@ -89,6 +114,8 @@ end
 function sworkWindowManagerProjectComponentSelect( ptr )
 	local cmbx = CLuaListBox( ptr )
 	currentComponent:SetObject( cmbx:GetSelectedObject() )
+	
+	checkUserForComponent()
 end
 
 local function ShowWindowUserInfo( userPtr )
@@ -138,11 +165,59 @@ end
 local function ShowUnworkedGameProjectComponent( ptrProject )
 	local gp = CLuaGameProject( ptrProject )
 	local lbx = CLuaComponentListBox( guienv:GetElementByID( WINDOW_PRJMANAGE_COMPONENTS ) )
+	lbx:Clear()
 	local tech = CLuaTech( nil )
 	
 	for i=1, gp:GetGenreModuleNumber() do
+		LogScript( tech:GetName() )
 	    tech:SetObject( gp:GetGenre( i-1 ) )
-		if tech:Empty() == 1 or not tech:HaveLider() then 
+		if tech:Empty() == 0 and not tech:HaveLider() then 
+		  lbx:AddItem( tech:GetName(), tech:Self() )	
+		end
+	end
+	
+	tech:SetObject( gp:GetScriptEngine() )
+	if tech:Empty() == 0 and not tech:HaveLider() then
+		lbx:AddItem( tech:GetName(), tech:Self() )
+	end
+	
+	tech:SetObject( gp:GetMiniGameEngine() )
+	if tech:Empty() == 0 and not tech:HaveLider() then
+		lbx:AddItem( tech:GetName(), tech:Self() )
+	end
+	
+	tech:SetObject( gp:GetPhysicEngine() )
+	if tech:Empty() == 0 and not tech:HaveLider() then
+		lbx:AddItem( tech:GetName(), tech:Self() )
+	end
+	
+	tech:SetObject( gp:GetVideoQuality() )
+	if tech:Empty() == 0 and not tech:HaveLider() then
+		lbx:AddItem( tech:GetName(), tech:Self() )
+	end
+	
+	tech:SetObject( gp:GetSoundQuality() )
+	if tech:Empty() == 0 and not tech:HaveLider() then
+		lbx:AddItem( tech:GetName(), tech:Self() )
+	end
+	
+	for i=1, gp:GetVideoTechNumber() do 
+		tech:SetObject( gp:GetVideoTech( i-1 ) )
+		if tech:Empty() == 0 and not tech:HaveLider() then 
+		  lbx:AddItem( tech:GetName(), tech:Self() )	
+		end
+	end
+	
+	for i=1, gp:GetAdvTechNumber() do
+	    tech:SetObject( gp:GetAdvTech( i-1 ) )
+		if tech:Empty() == 0 and not tech:HaveLider() then 
+		  lbx:AddItem( tech:GetName(), tech:Self() )	
+		end
+	end
+	
+	for i=1, gp:GetSoundTechNumber() do
+		tech:SetObject( gp:GetSoundTech( i-1 ) )
+		if tech:Empty() == 0 and not tech:HaveLider() then 
 		  lbx:AddItem( tech:GetName(), tech:Self() )	
 		end
 	end

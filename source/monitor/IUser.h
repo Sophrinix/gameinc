@@ -41,13 +41,13 @@ private:
 	void CalculateKnowledgeLevel_();
 
 	typedef std::map< std::string, int > NAMEVALUE_MAP;
-	typedef std::map< int, int > KNOWLEDGE_LIST;
+	typedef std::map< int, int > KNOWLEDGE_MAP;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
 	typedef std::vector< IUserAction* > USERACTION_LIST;
 
 	NAMEVALUE_MAP genrePreferences_; /*< предпочтения в жанре */
 	NAMEVALUE_MAP genreExperience_;  /*< опыт написания игр*/
-	KNOWLEDGE_LIST knowledges_;		/*< уровень знания технологий */
+	KNOWLEDGE_MAP knowledges_;		/*< уровень знания технологий */
 	USERACTION_LIST peopleFeels_; /*< Отношения с окружающими людьми */
 	TECH_LIST techWorks_;
 };

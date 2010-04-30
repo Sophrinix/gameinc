@@ -21,9 +21,9 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnol
 	CreateValue<int>( LEVEL, 0 );
 	CreateValue<LPVOID>( PARENT, NULL );
 	CreateValue<int>( QUALITY, 100 );
-	CreateValue<PUser>( COMPONENTLIDER, NULL );
+	CreateValue<std::string>( COMPONENTLIDER, "" );
 	CreateValue<std::string>( LASTWORKER, "" );
-	CreateValue<PNrpCompany>( COMPANY, NULL );
+	CreateValue<std::string>( COMPANY, "" );
 	CreateValue<int>( CODEVOLUME, 0 );
 	CreateValue<int>( CODEPASSED, 0 );
 	CreateValue<float>( READYWORKPERCENT, 0 );
@@ -73,9 +73,6 @@ void CNrpTechnology::Save( std::string saveFolder )
 	if( GetValue<LPVOID>( PARENT ) )
 		IniFile::Write( PROPERTIES, "parent", GetValue<PNrpGameProject>( PARENT )->GetValue<std::string>(NAME), fileName );
 	
-	if( GetValue<PUser>( COMPONENTLIDER ) )
-		IniFile::Write( PROPERTIES, "componentLider", GetValue<PUser>( COMPONENTLIDER )->GetValue<std::string>( NAME ), fileName );
-	
 	REQUIRE_MAP::iterator tIter = techRequires_.begin();
 	for( ; tIter != techRequires_.end(); ++tIter )
 		IniFile::Write( "techRequire", IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
@@ -83,18 +80,11 @@ void CNrpTechnology::Save( std::string saveFolder )
 	REQUIRE_MAP::iterator sIter = skillRequires_.begin();
 	for( ; sIter != skillRequires_.end(); ++sIter )
 		IniFile::Write( "skillRequire", IntToStr( sIter->first ), IntToStr( sIter->second ), fileName );
-
 }
 
 void CNrpTechnology::Load( std::string fileName )
 {
 	INrpProject::Load( PROPERTIES, fileName );
-
-	std::string companyName = IniFile::Read( PROPERTIES, COMPANY, std::string(""), fileName );
-	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( companyName );
-		
-	std::string name = IniFile::Read( PROPERTIES, "componentLider", std::string(""), fileName );
-	SetValue<PUser>( COMPONENTLIDER, name != "" ? cmp->GetUser( name ) : NULL );
 
 	ReadValueList_( "techRequire", techRequires_, fileName );
 	ReadValueList_( "skillRequire", skillRequires_, fileName );
@@ -117,5 +107,31 @@ void CNrpTechnology::ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt,
 		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
 		readLine = buffer;
 	}
+}
+
+float CNrpTechnology::GetEmployerPosibility()
+{
+	IUser* ptrUser = CNrpApplication::Instance().GetUser( GetValue<std::string>( COMPANY ), GetValue<std::string>( COMPONENTLIDER ) );
+	if( !ptrUser )
+		return 0;
+	
+	int minSkill = 40;
+	int minSkillName = 0;
+	float posibility = 0;
+	REQUIRE_MAP::iterator sIter = skillRequires_.begin();
+	for( ; sIter != skillRequires_.end(); ++sIter )
+	{
+		int skillValue = ptrUser->GetSkill( sIter->first );
+		if( skillValue < minSkill )
+		{
+			minSkill = skillValue;
+			minSkillName = sIter->first;
+		}
+
+		posibility += ( skillValue > 100 ? 100 : skillValue ) / 100.f;
+		posibility /= 2.f;
+	}
+
+	return posibility;
 }
 }//namespace nrp

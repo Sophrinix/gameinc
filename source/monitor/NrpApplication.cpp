@@ -194,6 +194,12 @@ IUser* CNrpApplication::GetUser( std::string name )
 	return NULL;	
 }
 
+IUser* CNrpApplication::GetUser( std::string company, std::string name )
+{
+	PNrpCompany ptrCmp = GetCompany( company );
+	return ptrCmp != NULL ? ptrCmp->GetUser( name ) : NULL;
+}
+
 int CNrpApplication::RemoveUser( IUser* user )
 {
 	USER_LIST::iterator pIter = users_.begin();
@@ -314,6 +320,21 @@ void CNrpApplication::ResetData()
 	for( ; tIter != technologies_.end(); ++tIter )
 		delete *tIter;	
 	technologies_.clear();
+}
+
+CNrpGameEngine* CNrpApplication::GetGameEngine( std::string name )
+{
+	CNrpGameEngine* resultt= NULL;
+	COMPANIES_LIST::const_iterator pIter = companies_.begin();
+
+	for( ; pIter != companies_.end(); ++pIter)
+	{
+		resultt = (*pIter)->GetGameEngine( name );
+		if( resultt )
+			return resultt;
+	}
+
+	return NULL;
 }
 
 CNrpApplication& nrp::CNrpApplication::Instance()
