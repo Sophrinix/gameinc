@@ -134,4 +134,12 @@ float CNrpTechnology::GetEmployerPosibility()
 
 	return posibility;
 }
+
+void CNrpTechnology::SetLider( IUser* ptrUser )
+{
+	if( !GetValue<std::string>( COMPONENTLIDER ).empty() )
+		SetValue<std::string>( LASTWORKER, GetValue<std::string>( COMPONENTLIDER ) );
+
+	SetValue<std::string>( COMPONENTLIDER, ptrUser->GetValue<std::string>( NAME ) );
+}
 }//namespace nrp

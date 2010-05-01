@@ -24,6 +24,10 @@ public:
 	int SetParam( lua_State* L );
 	int GetName( lua_State* L );
 	int IsTypeAs( lua_State* L );
+	int AddTechWork( lua_State* L );
+	int GetTechWorkNumber( lua_State* L);
+	int RemoveTechWork( lua_State* L );
+	int GetTechWork( lua_State* L );
 	int Save( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaUser"; }

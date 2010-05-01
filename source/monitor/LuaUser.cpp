@@ -4,6 +4,7 @@
 #include "LuaUser.h"
 #include "StrConversation.h"
 #include "IUser.h"
+#include "NrpTechnology.h"
 
 using namespace irr;
 
@@ -23,6 +24,10 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaUser, IsTypeAs ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, Save ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, AddTechWork ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTechWorkNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, RemoveTechWork ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTechWork ),
 	{0,0}
 };
 
@@ -145,6 +150,59 @@ int CLuaUser::Save( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN object_->Save( fileName );
 
+	return 1;	
+}
+
+int CLuaUser::AddTechWork( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:AddTechWork need CNrpTechnology* parameter" );
+
+	PNrpTechnology tech = (PNrpTechnology)lua_touserdata( L, 2 );
+	assert( tech != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN object_->AddTechWork( tech );
+
+	return 1;		
+}
+
+int CLuaUser::GetTechWorkNumber( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetName not need parameter" );
+
+	int valuel = 0;
+
+	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValue<int>( TECHNUMBER );
+
+	lua_pushinteger( L, valuel );
+	return 1;		
+}
+
+int CLuaUser::RemoveTechWork( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:AddTechWork need CNrpTechnology* parameter" );
+
+	PNrpTechnology tech = (PNrpTechnology)lua_touserdata( L, 2 );
+	assert( tech != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN object_->RemoveTechWork( tech );
+
+	return 1;		
+}
+
+int CLuaUser::GetTechWork( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetSkill need index of techWork parameter" );
+
+	int index = lua_tointeger(L, 2 );
+	PNrpTechnology tech = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN tech = object_->GetTechWork( index );
+
+	lua_pushlightuserdata( L, tech );
 	return 1;	
 }
 }//namespace nrp

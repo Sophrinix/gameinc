@@ -23,7 +23,7 @@ local WNDPRJMNG_CMBX_USERS = WINDOW_PRJMANAGE_ID + 3
 local WINDOW_PRJMANAGE_USERINFO = WINDOW_PRJMANAGE_ID + 4
 local WINDOW_PRJMANAGE_COMPONENTS = WINDOW_PRJMANAGE_ID + 5
 
-function sworkCreateWindowProjectManager( ptr )
+function sworkCreateWindowProjectManager( ptr )	
 	local company = CLuaCompany( applic:GetPlayerCompany() )
 	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYERS_MANAGE_ID ) )
 	
@@ -75,6 +75,7 @@ end
 local function checkUserForComponent()
 	if currentEmployer:Empty() == 0 then
 		localBtnChangeLider:SetEnabled(true) 
+
 		if currentComponent:Empty() == 0 then
 			if currentComponent:HaveLider() then
 				localBtnChangeLider:SetText( "Нет лидера" )
@@ -94,30 +95,6 @@ function sworkWindowProjectManagerListBoxItemSelected( ptr )
 	checkUserForComponent()
 end
 
-function sworkWindowManagerProjectToggleComponentLider( ptr )
-	if currentComponent:HaveLider() then
-		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
-		currentComponent:SetLider( nil )	
-		
-		if currentComponent:GetWorkPercentDone() > 70 then
-			guienv:ShowMessage( "Компонент почти завершен. Передача его другому человеку приведет к потере части функионала" )
-		end
-	else
-		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
-		currentComponent:SetLider( currentEmployer:Self() )
-		if currentComponent:GetEmployerPosibility() < 0.4 then
-			guienv:ShowMessage( currentEmployer:GetName() .. " имеет недостаточные навыки, чтобы быстро выполнить эту работу" )
-		end
-	end
-end
-
-function sworkWindowManagerProjectComponentSelect( ptr )
-	local cmbx = CLuaListBox( ptr )
-	currentComponent:SetObject( cmbx:GetSelectedObject() )
-	
-	checkUserForComponent()
-end
-
 local function ShowWindowUserInfo( userPtr )
 	currentEmployer:SetObject( userPtr )
 	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_PRJMANAGE_USERINFO ) )
@@ -129,6 +106,11 @@ local function ShowWindowUserInfo( userPtr )
 	else
 		local elm = CLuaElement( windowg:Self() )
 		elm:RemoveChilds()
+	end
+	
+	if currentEmployer:Empty() == 1 then
+	    windowg:SetVisible( false )
+		return 0
 	end
 	
 	local button = CLuaButton( windowg:GetCloseButton() )
@@ -159,7 +141,29 @@ local function ShowWindowUserInfo( userPtr )
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 					   
-	local lbx = CLuaListBox( guienv:AddComponentListBox( 10, 135, widdddd - 10, hhhhhhh - 10, -1, windowg:Self() ) )
+	local lbx = CLuaComponentListBox( guienv:AddComponentListBox( 10, 135, widdddd - 10, hhhhhhh - 10, -1, windowg:Self() ) )
+	
+	for i=1, currentEmployer:GetTechWorkNumber() do
+		lbx:AddItem( "", currentEmployer:GetTechWork( i-1 ) )
+	end
+end
+
+function sworkWindowManagerProjectToggleComponentLider( ptr )
+	if not currentComponent:HaveLider() then
+		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
+		currentEmployer:AddTechWork( currentComponent:Self() )	
+		if currentComponent:GetEmployerPosibility() < 0.4 then
+			guienv:MessageBox( currentEmployer:GetName() .. " имеет недостаточные навыки,\n чтобы быстро выполнить эту работу", true, false, "", "" )
+		end
+	else
+		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
+		currentEmployer:RemoveTechWork( currentComponent:Self() )
+		if currentComponent:GetWorkPercentDone() > 70 then
+			guienv:MessageBox( "Компонент почти завершен.\n Его передача приведет к потере части функионала", true, false, "", "" )
+		end
+	end
+	
+	ShowWindowUserInfo( currentEmployer:Self() )
 end
 
 local function ShowUnworkedGameProjectComponent( ptrProject )
@@ -177,6 +181,21 @@ local function ShowUnworkedGameProjectComponent( ptrProject )
 	end
 	
 	tech:SetObject( gp:GetScriptEngine() )
+	if tech:Empty() == 0 and not tech:HaveLider() then
+		lbx:AddItem( tech:GetName(), tech:Self() )
+	end
+	
+	tech:SetObject( gp:GetEngineExtend() )
+	if tech:Empty() == 0 and not tech:HaveLider() then
+		lbx:AddItem( tech:GetName(), tech:Self() )
+	end
+
+	tech:SetObject( gp:GetLocalization() )
+	if tech:Empty() == 0 and not tech:HaveLider() then
+		lbx:AddItem( tech:GetName(), tech:Self() )
+	end
+	
+	tech:SetObject( gp:GetCrossPlatformCode() )
 	if tech:Empty() == 0 and not tech:HaveLider() then
 		lbx:AddItem( tech:GetName(), tech:Self() )
 	end

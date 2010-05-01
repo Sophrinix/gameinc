@@ -215,19 +215,19 @@ void CNrpGameProject::CalculateCodeVolume()
 	for( ; techIter != rt.end(); ++techIter)
 		if( (*techIter) != NULL ) 
 		{
-			int codeVol = (*techIter)->GetValue<float>( BASE_CODE ) * baseCode;
+			float codeVol = (*techIter)->GetValue<float>( BASE_CODE ) * baseCode;
 			if( setCodeVolume )
-				(*techIter)->SetValue<int>( CODEVOLUME, codeVol );
+				(*techIter)->SetValue<int>( CODEVOLUME, (int)codeVol );
 			summ += codeVol;
 		}
 
 	summ += baseCode;
-	int langSupCode = summ * GetValue<int>( LANGNUMBER ) * 0.05f;
-	SetValue<int>( LANGUAGESUPPORTCODE, langSupCode );
+	float langSupCode = summ * GetValue<int>( LANGNUMBER ) * 0.05f;
+	SetValue<int>( LANGUAGESUPPORTCODE, (int)langSupCode );
 	summ += langSupCode;
 
-	int platformSupCode = summ *  GetValue<int>( PLATFORMNUMBER ) * 0.1f;
-	SetValue<int>( PLATFORMSUPPORTCODE, platformSupCode );
+	float platformSupCode = summ *  GetValue<int>( PLATFORMNUMBER ) * 0.1f;
+	SetValue<int>( PLATFORMSUPPORTCODE, (int)platformSupCode );
 	summ += platformSupCode;
 	
 	bool projectReady = GetValue<PNrpGameEngine>( GAME_ENGINE ) != NULL;
@@ -347,28 +347,28 @@ void CNrpGameProject::Save( std::string folderSave )
 	TECH_LIST::iterator tIter = technologies_.begin();
 	for( int i=0; tIter != technologies_.end(); ++tIter, ++i )
 	{
-		(*tIter)->Save( localFolder + "techs/" );
+		(*tIter)->Save( localFolder + ADVTECH + "/" );
 		IniFile::Write( ADVTECH, ADVTECH + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), fileName );
 	}
 
 	TECH_LIST::iterator gIter = genres_.begin();
 	for( int i=0; gIter != genres_.end(); ++gIter, ++i )
 	{
-		(*gIter)->Save( localFolder + "genres/" );
+		(*gIter)->Save( localFolder + GENRETECH  + "/" );
 		IniFile::Write( GENRETECH, GENRETECH + IntToStr(i), (*gIter)->GetValue<std::string>( NAME ), fileName );
 	}
 
 	TECH_LIST::iterator vIter = videoTechnologies_.begin();
 	for( int i=0; vIter != videoTechnologies_.end(); ++vIter, ++i )
 	{
-		(*vIter)->Save( localFolder + "videoTech/" );
+		(*vIter)->Save( localFolder + VIDEOTECH + "/" );
 		IniFile::Write( VIDEOTECH, VIDEOTECH + IntToStr(i), (*vIter)->GetValue<std::string>( NAME ), fileName );
 	}
 
 	TECH_LIST::iterator sIter = soundTechnologies_.begin();
 	for( int i=0; sIter != soundTechnologies_.end(); ++sIter, ++i )
 	{
-		(*sIter)->Save( localFolder + "soundTech/" );
+		(*sIter)->Save( localFolder + SOUNDTECH + "/" );
 		IniFile::Write( SOUNDTECH, SOUNDTECH + IntToStr(i), (*sIter)->GetValue<std::string>( NAME ), fileName );
 	}
 
@@ -432,7 +432,7 @@ void CNrpGameProject::Save( std::string folderSave )
 	if( GetValue<PNrpTechnology>( GRAPHICQUALITY ) )
 	{
 		IniFile::Write( PROPERTIES, GRAPHICQUALITY, GetValue<PNrpTechnology>( GRAPHICQUALITY )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpTechnology>( PHYSICSENGINE )->Save( localFolder );
+		GetValue<PNrpTechnology>( GRAPHICQUALITY )->Save( localFolder );
 	}
 
 	if( GetValue<PNrpTechnology>( SOUNDQUALITY ) )

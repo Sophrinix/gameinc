@@ -73,6 +73,9 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, TogglePlatform ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, ToggleLanguage ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetScenario ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetEngineExtend ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLocalization ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCrossPlatformCode ),
 	{0,0}
 };
 
@@ -101,6 +104,10 @@ GETTER_FUNCTION(IsProjectReady,		lua_pushboolean,		bool,			PROJECTREADY,		false 
 
 GETTER_FUNCTION(GetScriptEngine,	lua_pushlightuserdata,	PNrpTechnology, SCRIPTENGINE,		NULL )
 SETTER_FUNCTION(SetScriptEngine,	SCRIPTENGINE )
+
+GETTER_FUNCTION(GetEngineExtend, lua_pushlightuserdata, PNrpTechnology, ENGINEEXTENDED, NULL )
+GETTER_FUNCTION(GetLocalization, lua_pushlightuserdata, PNrpTechnology, LOCALIZATION, NULL )
+GETTER_FUNCTION(GetCrossPlatformCode, lua_pushlightuserdata, PNrpTechnology, CROSSPLATFORMCODE, NULL )
 
 GETTER_FUNCTION(GetMiniGameEngine,	lua_pushlightuserdata,	PNrpTechnology, MINIGAMEENGINE,		NULL )
 SETTER_FUNCTION(SetMiniGameEngine,  MINIGAMEENGINE )

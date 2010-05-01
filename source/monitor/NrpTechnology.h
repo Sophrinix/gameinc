@@ -5,6 +5,8 @@
 namespace nrp
 {
 
+class IUser;
+
 OPTION_NAME TECHGROUP( "techGroup" );
 OPTION_NAME BASE_CODE( "baseCode" );
 OPTION_NAME ENGINE_CODE( "engineCode" );
@@ -28,6 +30,8 @@ public:
 	int GetEployerSkillRequire( int skil_require );
 
 	float GetEmployerPosibility();
+
+	void SetLider( IUser* ptrUser );
 
 	void Save( std::string saveFolder );
 	void Load( std::string fileName );

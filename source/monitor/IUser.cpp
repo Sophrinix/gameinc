@@ -2,9 +2,11 @@
 #include "IUser.h"
 #include "INrpProject.h"
 #include "NrpCompany.h"
+#include "NrpTechnology.h"
 
 #include <io.h>
 #include <errno.h>
+#include <assert.h>
 
 namespace nrp
 {
@@ -26,6 +28,7 @@ IUser::IUser(const char* className, const char* systemName ) : INrpConfig( class
 	CreateValue<int>( WANTMONEY, 0 );
 	CreateValue<int>( CONTRACTMONEY, 0 );
 	CreateValue<std::string>( COMPANY, "" );
+	CreateValue<int>( TECHNUMBER, 0 );
 }
 
 IUser::~IUser(void)
@@ -147,5 +150,36 @@ void IUser::Load( std::string fileName )
 		if( prop->GetValueType() == typeid( std::string ).name() )
 			IniFile::Write( PROPERTIES, paIter->first, ((CNrpProperty<std::string>*)prop)->GetValue(), fileName );
 	}*/
+}
+
+void IUser::AddTechWork( CNrpTechnology* techWork )
+{
+	assert( techWork != NULL );
+	techWorks_.push_back( techWork );
+	techWork->SetLider( this );
+	SetValue<int>( TECHNUMBER, techWorks_.size() );
+}
+
+void IUser::RemoveTechWork( CNrpTechnology* techWork )
+{
+	assert( techWork != NULL );
+
+	TECH_LIST::iterator tIter = techWorks_.begin();
+	for( ; tIter != techWorks_.end(); ++tIter )
+		if( (*tIter) == techWork )
+		{
+			techWork->SetLider( NULL );
+			techWorks_.erase( tIter );
+			SetValue<int>( TECHNUMBER, techWorks_.size() );
+			return;
+		}
+	std::string text = "Не могу найти компонент для удаления " + techWork->GetValue<std::string>( NAME );
+	OutputDebugString( text.c_str() );
+}
+
+CNrpTechnology* IUser::GetTechWork( int index )
+{
+	assert( index < techWorks_.size() );
+	return index < techWorks_.size() ? techWorks_[ index ] : NULL;
 }
 }//namespace nrp

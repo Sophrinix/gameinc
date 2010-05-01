@@ -58,6 +58,9 @@ public:
 	int ToggleLanguage( lua_State* L );
 	int IsPlatformAvaible( lua_State* L );
 	int TogglePlatform( lua_State* L );
+	int GetEngineExtend( lua_State* L );
+	int GetLocalization( lua_State* L );
+	int GetCrossPlatformCode( lua_State* L );
 																
 	static const char* StaticGetLuaName() { return "CLuaGameProject"; }
 private:
