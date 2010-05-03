@@ -39,7 +39,7 @@ OPTION_NAME READYWORKPERCENT( "readyWorkPercent" );
 OPTION_NAME TECHNUMBER( "techNumber" );
 OPTION_NAME USERNUMBER( "userNumber" );
 OPTION_NAME COMPANIESNUMBER( "companiesNumber" );
-OPTION_NAME COMPANY( "company" );
+OPTION_NAME COMPANYNAME( "company" );
 OPTION_NAME PROPERTIES( "properties" );
 OPTION_NAME CODEVOLUME( "volumeCode" );
 OPTION_NAME COMPONENTLIDER( "componentLider" );
@@ -207,7 +207,7 @@ public:
 	virtual void Save( std::string scetionName, std::string fileName )
 	{
 		PropertyArray::iterator paIter = options_.begin();
-		for( ; paIter != options_.end(); ++paIter)
+		for( ; paIter != options_.end(); paIter++)
 		{
 			INrpProperty* prop = paIter->second;
 			if( prop->GetValueType() == typeid( int ).name() || prop->GetValueType().find( "enum" ) == 0 )

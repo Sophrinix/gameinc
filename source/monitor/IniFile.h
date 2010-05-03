@@ -2,10 +2,12 @@
 #include <string>
 #include <vector3d.h>
 #include <rect.h>
+#include <map>
 
 namespace nrp
 {
 
+typedef std::map< int, int > REQUIRE_MAP;
 /*!
 	\class   IniFile
 	\author  Dalerank
@@ -195,6 +197,10 @@ public:
 							  const std::string& key, 
 							  const SYSTEMTIME& def_value,
 							  const std::string& fileName );
+
+	static void ReadValueList_( std::string sectionName, 
+								 REQUIRE_MAP& mapt, 
+								 std::string fileName );
 };
 
 } //end namespace nrp

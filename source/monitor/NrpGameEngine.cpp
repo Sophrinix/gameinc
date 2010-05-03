@@ -17,7 +17,7 @@ CNrpGameEngine::CNrpGameEngine( std::string name ) : INrpProject( "CNrpGameEngin
 	CreateValue<int>( CODEVOLUME, 0 );
 	CreateValue<int>( QUALITY, 0 );
 	CreateValue<int>( SKILL_CODING, 0 );
-	CreateValue<std::string>( COMPANY, "" );
+	CreateValue<std::string>( COMPANYNAME, "" );
 }
 
 CNrpGameEngine::~CNrpGameEngine(void)
@@ -61,7 +61,7 @@ void CNrpGameEngine::Save( std::string saveFolder )
 	INrpProject::Save( PROPERTIES, saveFile );
 
 	GENRE_MAP::iterator pIter = avgenres_.begin();
-	for( int i=0; pIter != avgenres_.end(); ++pIter, ++i )
+	for( int i=0; pIter != avgenres_.end(); pIter++, i++ )
 		IniFile::Write( "avaibleGenre", IntToStr( pIter->first ), IntToStr( pIter->second ), saveFile );
 }
 

@@ -32,7 +32,7 @@ int CLuaElement::RemoveChilds( lua_State* L )
 		core::list< gui::IGUIElement* > childs = object_->getChildren();
 
 		core::list< gui::IGUIElement* >::Iterator pIter = childs.begin();
-		for( ; pIter != childs.end(); ++pIter ) 
+		for( ; pIter != childs.end(); pIter++ ) 
 			 guienv->addToDeletionQueue( *pIter );
 	}
 

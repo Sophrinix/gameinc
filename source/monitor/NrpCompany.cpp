@@ -39,7 +39,7 @@ CNrpGameEngine* CNrpCompany::GetGameEngine( std::string name )
 {
 	ENGINE_LIST::iterator eIter = engines_.begin();
 
-	for( ; eIter != engines_.end(); ++eIter )
+	for( ; eIter != engines_.end(); eIter++ )
 		if( (*eIter)->GetValue<std::string>( NAME ) == name )
 			return *eIter;
 
@@ -53,7 +53,7 @@ void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 
 	int k = engines_.size();
 	SetValue<int>( ENGINES_NUMBER, k );
-	ptrEng->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
+	ptrEng->SetValue<std::string>( COMPANYNAME, this->GetValue<std::string>( NAME ) );
 }
 
 CNrpTechnology* CNrpCompany::GetTech( int index )
@@ -74,7 +74,7 @@ CNrpGameProject* CNrpCompany::AddGameProject( CNrpGameProject* ptrProject )
 		projects_[ ptrProject->GetValue<std::string>( NAME ) ] = ptrProject;
 
 	SetValue<int>( PROJECTNUMBER, projects_.size() );
-	ptrProject->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
+	ptrProject->SetValue<std::string>( COMPANYNAME, this->GetValue<std::string>( NAME ) );
 	return ptrProject;
 }
 
@@ -93,7 +93,7 @@ IUser* CNrpCompany::GetUser( int index )
 IUser* CNrpCompany::GetUser( std::string name )
 {
 	USER_LIST::iterator uIter = employers_.begin();
-	for( ; uIter != employers_.end(); ++uIter )
+	for( ; uIter != employers_.end(); uIter++ )
 		if( (*uIter)->GetValue<std::string>( NAME ) == name )
 			return *uIter;
 
@@ -118,7 +118,7 @@ void CNrpCompany::Save( std::string saveFolder )
 	IniFile::Write( PROPERTIES, "ceo", GetValue<PUser>( CEO )->GetValue<std::string>( NAME ), saveFile );
 
 	PROJECT_MAP::iterator pIter = projects_.begin();
-	for( int i=0; pIter != projects_.end(); ++pIter, ++i )
+	for( int i=0; pIter != projects_.end(); pIter++, i++ )
 	{
 		CNrpGameProject* prj = (CNrpGameProject*)pIter->second;
 		prj->Save( localFolder + "projects/" );
@@ -126,14 +126,14 @@ void CNrpCompany::Save( std::string saveFolder )
 	}
 
 	ENGINE_LIST::iterator eIter = engines_.begin();
-	for( int i=0; eIter != engines_.end(); ++eIter, ++i )
+	for( int i=0; eIter != engines_.end(); eIter++, i++ )
 	{
 		(*eIter)->Save( localFolder + "engines/" );
 		IniFile::Write( "engines", "engine_" + IntToStr(i), (*eIter)->GetValue<std::string>( NAME ), saveFile );
 	}
 
 	TECH_MAP::iterator tIter = technologies_.begin();
-	for( int i=0; tIter != technologies_.end(); ++tIter, ++i )
+	for( int i=0; tIter != technologies_.end(); tIter++, i++ )
 	{
 		CNrpTechnology* tech = (CNrpTechnology*)tIter->second;
 		tech->Save( localFolder + "techs/" );
@@ -141,7 +141,7 @@ void CNrpCompany::Save( std::string saveFolder )
 	}
 
 	GAME_MAP::iterator gIter = games_.begin();
-	for( int i=0; gIter != games_.end(); ++gIter, ++i )
+	for( int i=0; gIter != games_.end(); gIter++, i++ )
 	{
 		CNrpGame* game = (CNrpGame*)gIter->second;
 		game->Save( localFolder + "games/" );
@@ -149,7 +149,7 @@ void CNrpCompany::Save( std::string saveFolder )
 	}
 
 	USER_LIST::iterator uIter = employers_.begin();
-	for( int i=0; uIter != employers_.end(); ++uIter, ++i )
+	for( int i=0; uIter != employers_.end(); uIter++, i++ )
 	{
 		(*uIter)->Save( localFolder + "users/" );
 		IniFile::Write( "users", "user_" + IntToStr(i), (*uIter)->ClassName() + ":" + (*uIter)->GetValue<std::string>( NAME ), saveFile );
@@ -165,52 +165,49 @@ void CNrpCompany::Load( std::string loadFolder )
 	PUser usert = CNrpApplication::Instance().GetUser( ceoName );
 	assert( usert != NULL );
 	SetValue<PUser>( CEO, usert );
-	usert->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
+	usert->SetValue<std::string>( COMPANYNAME, this->GetValue<std::string>( NAME ) );
 
-	for( int i=0; i < GetValue<int>( USERNUMBER ); ++i )
+	for( int i=0; i < GetValue<int>( USERNUMBER ); i++ )
 	{
 		std::string name = IniFile::Read( "users", "user_" + IntToStr(i), std::string(""), loadFile );
 		std::string className = name.substr( 0, name.find( ':' ) );
 		name = name.substr( name.find(':') + 1, 0xff );
-		IUser* user = new IUser( className.c_str(), name.c_str() );
+		IUser* user = new IUser( className.c_str(), name.c_str(), this );
 		user->Load( loadFolder + "users/" + name + ".ini" );
-		user->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
 		employers_.push_back( user );
 	}
 
-	for( int i=0; i < GetValue<int>( ENGINES_NUMBER ); ++i )
+	for( int i=0; i < GetValue<int>( ENGINES_NUMBER ); i++ )
 	{
 		std::string engineName = IniFile::Read( "engines", "engine_" + IntToStr(i), std::string(""), loadFile );
 		CNrpGameEngine* ge = new CNrpGameEngine( "" );
 		ge->Load( loadFolder + "engines/" + engineName + "/" );
-		ge->SetValue<std::string>( COMPANY, GetValue<std::string>( NAME ) );
+		ge->SetValue<std::string>( COMPANYNAME, GetValue<std::string>( NAME ) );
 		engines_.push_back( ge );
 	}
 
-	for( int i=0; i < GetValue<int>( TECHNUMBER ); ++i )
+	for( int i=0; i < GetValue<int>( TECHNUMBER ); i++ )
 	{
 		std::string techName = IniFile::Read( "techs", "tech_" + IntToStr(i), std::string(""), loadFile );
-		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
+		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0), this );
 		tech->Load( loadFolder + "techs/" + techName + ".ini" );
-		tech->SetValue<std::string>( COMPANY, GetValue<std::string>( NAME ) );
 		technologies_[ techName ] = tech;
 	}
 
-	for( int i=0; i < GetValue<int>( GAMENUMBER ); ++i )
+	for( int i=0; i < GetValue<int>( GAMENUMBER ); i++ )
 	{
 		std::string gameName = IniFile::Read( "games", "game_" + IntToStr(i), std::string(""), loadFile );
 		CNrpGame* game = new CNrpGame( gameName );
 		game->Load( loadFolder + "games/" );
-		game->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
+		game->SetValue<std::string>( COMPANYNAME, this->GetValue<std::string>( NAME ) );
 		games_[ gameName ] = game;
 	}
 
-	for( int i=0; i < GetValue<int>( PROJECTNUMBER ); ++i )
+	for( int i=0; i < GetValue<int>( PROJECTNUMBER ); i++ )
 	{
 		std::string prjName = IniFile::Read( "projects", "project_" + IntToStr(i), std::string(""), loadFile );
-		CNrpGameProject* prj = new CNrpGameProject( "" );
+		CNrpGameProject* prj = new CNrpGameProject( "", this );
 		prj->Load( loadFolder + "projects/" + prjName );
-		prj->SetValue<std::string>( COMPANY, this->GetValue<std::string>( NAME ) );
 		projects_[ prjName ] = prj;
 	}
 }
@@ -230,8 +227,17 @@ INrpProject* CNrpCompany::GetProject( std::string name )
 INrpProject* CNrpCompany::GetProject( int index )
 {
 	PROJECT_MAP::iterator pIter = projects_.begin();
-	for( int i=0; pIter != projects_.end(), i < index; i++ ) ++pIter;
+	for( int i=0; pIter != projects_.end(), i < index; i++ ) pIter++;
 		 
 	return pIter->second;
 }
+
+void CNrpCompany::Update()
+{
+	for( size_t cnt=0; cnt < employers_.size(); cnt++ )
+	{
+		employers_[ cnt ]->Update( CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ) );
+	}
+}
+
 }//namespace nrp

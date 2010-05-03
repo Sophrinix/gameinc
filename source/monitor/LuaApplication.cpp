@@ -84,17 +84,17 @@ int CLuaApplication::CreateUser( lua_State *L )
 	{
 		if( strcmp( userType, "RealPlayer" ) == 0 )
 		{
-			user = new CNrpPlayer( name );
+			user = new CNrpPlayer( name, NULL );
 			object_->AddUser( true, user );
 		}
 		else if( strcmp( userType, "AIPlayer" ) == 0 )
 		{
-			user = new CNrpAiUser( name );
+			user = new CNrpAiUser( name, NULL );
 			object_->AddUser( true, user );
 		}
 		else 
 		{
-			user = new IUser( userType, "" );
+			user = new IUser( userType, name, NULL );
 			user->SetValue<std::string>( NAME, name );
 			object_->AddUser( false, user );
 		}

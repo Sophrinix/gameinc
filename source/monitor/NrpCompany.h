@@ -7,6 +7,8 @@
 namespace nrp
 {
 
+typedef enum { ET_DAY_END=0, ET_COUNT } EVENT_TYPE;
+
 OPTION_NAME CEO("ceo");
 OPTION_NAME ENGINES_NUMBER( "engineNumber" );
 OPTION_NAME PROJECTNUMBER( "projectNumber" );
@@ -42,6 +44,7 @@ public:
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
 	CNrpGame* GetGame( std::string gameName );
+	void Update();
 
 	void Save( std::string saveFolder );
 	void Load( std::string loadFolder );

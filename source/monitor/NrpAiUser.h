@@ -7,7 +7,7 @@ namespace nrp
 class CNrpAiUser : public IUser
 {
 public:
-	CNrpAiUser( std::string name );
+	CNrpAiUser( std::string name, CNrpCompany* ptrCmp );
 	~CNrpAiUser(void);	
 };
 

@@ -658,7 +658,7 @@ void CNrpGUIEnvironment::RemoveAnimators( IGUIElement* elm )
 	core::list<gui::IGUIElement*> childs = elm->getChildren();
 	core::list<gui::IGUIElement*>::Iterator it = childs.begin();
 
-	for (; it != childs.end(); ++it)
+	for (; it != childs.end(); it++)
 		if( strcmp( (*it)->getTypeName(), "GuiAnimator" ) == 0 )
 			addToDeletionQueue( (*it) );
 }

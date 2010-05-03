@@ -78,7 +78,7 @@ int CLuaBank::GetLoanCompanyName( lua_State* L )
 	{
 		CNrpLoan* loan = object_->FindLoadByID( id );
 		if( loan )
-			name = loan->GetValue<std::string>( COMPANY );
+			name = loan->GetValue<std::string>( COMPANYNAME );
 	}
 
 	lua_pushstring( L, name.c_str() );

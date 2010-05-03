@@ -61,6 +61,7 @@ public:
 	irr::gui::IGUIEnvironment* GetGuiEnvironment();
 	irr::gui::CNrpConsole* GetConsole() { return console_; }
 	irr::IrrlichtDevice* GetDevice();
+	HWND GetWindowHandle() { return windowHandle_; }
 	void AddScene( const std::string& name, const std::string& fileName )
 	{
 		scenes_[ name ] = fileName;
@@ -82,6 +83,7 @@ private:
 	RUNNING_STATUS status_;
 
 	bool engine_started_, terminated_;
+	HWND windowHandle_;
 	RUNNING_STATUS run_state_;
 	std::string next_scene_;
 	irr::gui::IGUIEnvironment* guienv_;

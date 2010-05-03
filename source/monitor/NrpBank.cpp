@@ -26,9 +26,9 @@ size_t CNrpBank::GetMaxCompanyLoan( std::string companyName )
 	size_t dolg = 0;
 	size_t result = 0;
 
-	for( ; pIter != loans_.end(); ++pIter )
+	for( ; pIter != loans_.end(); pIter++ )
 	{
-		if( (*pIter)->GetValue<std::string>( COMPANY ) == companyName )
+		if( (*pIter)->GetValue<std::string>( COMPANYNAME ) == companyName )
 			dolg += (*pIter)->GetValue<int>( MONEY ); 
 	}
 
@@ -52,7 +52,7 @@ CNrpLoan* CNrpBank::FindLoadByID( size_t id )
 {
 	LOAN_LIST::iterator pIter = loans_.begin();
 
-	for( ; pIter != loans_.end(); ++pIter )
+	for( ; pIter != loans_.end(); pIter++ )
 		if( (*pIter)->GetValue<int>( ID ) == id )
 			return (*pIter);
 
@@ -61,7 +61,7 @@ CNrpLoan* CNrpBank::FindLoadByID( size_t id )
 
 void CNrpBank::CreateLoan( std::string name, int money, int percent, int month )
 {
-	CNrpLoan* loan = new CNrpLoan( ++loanId_ );
+	CNrpLoan* loan = new CNrpLoan( loanId_++ );
 	SYSTEMTIME endtime, time = CNrpApplication::Instance().GetDateTime();
 	endtime = time;
 	endtime.wYear = time.wYear + month / 12;
@@ -73,7 +73,7 @@ void CNrpBank::CreateLoan( std::string name, int money, int percent, int month )
 	loan->SetValue<int>( MONTHLEFT, month );
 	loan->SetValue<SYSTEMTIME>( ENDDATE, endtime );
 	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( name );
-	loan->SetValue<std::string>( COMPANY, cmp->GetValue<std::string>( NAME ) );
+	loan->SetValue<std::string>( COMPANYNAME, cmp->GetValue<std::string>( NAME ) );
 
 	loans_.push_back( loan );
 

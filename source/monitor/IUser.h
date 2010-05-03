@@ -17,20 +17,28 @@ OPTION_NAME STABILITY("stability");/*< скорость падени€ усталости */
 OPTION_NAME CHARACTER( "character" ); /*< характер персонажа */
 OPTION_NAME CONTRACTMONEY( "contractMoney" ); /*! стартова€ сумма при подписании контракта*/
 OPTION_NAME MAXSUPPORTUSER( "maxSupportUser" ); /*! количество людей, которым может управл€ть чел*/
-
+OPTION_NAME INVENTIONABILITY( "inventionAbility" ); /*! способность к изобретени€м*/
+OPTION_NAME USERSTATE( "userState" ); /*! —осто€ние пользовател€ "работа", "отдых" */
+OPTION_NAME ROOMSTATE( "roomState" ); /*!  омната, в которой находитс€ человек */
+OPTION_NAME PARENTCOMPANY( "parentCompany" );
+ 
 class IUserAction;
 class CNrpTechnology;
+class CNrpCompany;
 
 class IUser : public INrpConfig
 {
 public:
-	IUser(const char* className, const char* systemName );
+	IUser(const char* className, const char* systemName, CNrpCompany* ptrCmp );
 	void SetSkill( int typen, int valuel ); 
 	void SetSkill( std::string name, int valuel );
 	int GetSkill( int typen );
+	int GetGenreExperience( int typen );
+	int GetGenrePreferences( int typen );
 	void AddTechWork( CNrpTechnology* techWork );
 	CNrpTechnology* GetTechWork( int index );
 	void RemoveTechWork( CNrpTechnology* techWork );
+	void Update( const SYSTEMTIME& time );
 	~IUser(void);
 	void Save( std::string folderPath );
 	void Load( std::string fileName );
@@ -40,13 +48,12 @@ private:
 	void CalculateWantSalary_();
 	void CalculateKnowledgeLevel_();
 
-	typedef std::map< std::string, int > NAMEVALUE_MAP;
 	typedef std::map< int, int > KNOWLEDGE_MAP;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
 	typedef std::vector< IUserAction* > USERACTION_LIST;
 
-	NAMEVALUE_MAP genrePreferences_; /*< предпочтени€ в жанре */
-	NAMEVALUE_MAP genreExperience_;  /*< опыт написани€ игр*/
+	KNOWLEDGE_MAP genrePreferences_; /*< предпочтени€ в жанре, растут рандомно со временем */
+	KNOWLEDGE_MAP genreExperience_;  /*< опыт написани€ игр, растет по мере выполнени€ компонентов */
 	KNOWLEDGE_MAP knowledges_;		/*< уровень знани€ технологий */
 	USERACTION_LIST peopleFeels_; /*< ќтношени€ с окружающими людьми */
 	TECH_LIST techWorks_;

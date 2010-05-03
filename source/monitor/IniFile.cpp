@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <sstream>
 #include "IniFile.h"
+#include "StrConversation.h"
 
 namespace nrp
 {
@@ -226,6 +227,24 @@ void IniFile::Write( const std::string& section, const std::string& key, const f
 
 	IniFile::Write(section, key, rectStrStream.str(), file_name);
 }
-//////////////////////////////////////////////////////////////////////////
+
+void IniFile::ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt, std::string fileName )
+{
+	char buffer[ 32000 ];
+	memset( buffer, 0, 32000 );
+	GetPrivateProfileSection( sectionName.c_str(), buffer, 32000, fileName.c_str() );
+
+	std::string readLine = buffer;
+	while( readLine != "" )
+	{
+		std::string name, valuel;
+		name = readLine.substr( 0, readLine.find( '=' ) );
+		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
+		mapt[ StrToInt( name.c_str() ) ] = StrToInt( valuel.c_str() );
+
+		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
+		readLine = buffer;
+	}
+}
 
 } //namespace nrp

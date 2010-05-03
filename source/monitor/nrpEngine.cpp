@@ -121,12 +121,12 @@ bool CNrpEngine::InitVideo()
 
 	nrpVersion verInfo;
 
-	std::wstring newCaption = L"Nerpa2 " + verInfo.ProductVersion();
+	std::wstring newCaption = L"GameInc " + verInfo.ProductVersion();
 	device_->setWindowCaption( newCaption.c_str() );
 	device_->getVideoDriver()->setTextureCreationFlag( video::ETCF_ALWAYS_32_BIT, true );
 
-	HWND dwInvokerHandle = FindWindow( NULL, nrp::WideToStr( newCaption ).c_str() );							//заменяем обработчик событий
-	OldWindowProc = (WNDPROC)SetWindowLong( dwInvokerHandle, GWL_WNDPROC, (long)NewWindowProc);
+	windowHandle_ = FindWindow( NULL, nrp::WideToStr( newCaption ).c_str() );							//заменяем обработчик событий
+	OldWindowProc = (WNDPROC)SetWindowLong( windowHandle_, GWL_WNDPROC, (long)NewWindowProc);
 
 	guienv_ = new gui::CNrpGUIEnvironment( device_->getGUIEnvironment() );
 

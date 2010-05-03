@@ -560,7 +560,7 @@ void CNrpComponentListbox::draw()
 						float percent = pObject->GetValue<float>( READYWORKPERCENT );
 						std::wstring name = StrToWide( pObject->GetValue<std::string>( NAME ) );
 						
-						swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), percent * 100 );
+						swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), (int)(percent * 100) );
 						core::recti progressRect = textRect;
 						progressRect.LowerRightCorner.X = progressRect.UpperLeftCorner.X + textRect.getWidth() * percent;
 						driver->draw2DRectangle( progressRect, 0xff00ff00, 0xff00ff00, 0xff0000ff, 0xff0000ff, &clientClip );

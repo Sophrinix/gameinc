@@ -6,6 +6,7 @@ namespace nrp
 {
 
 class IUser;
+class CNrpCompany;
 
 OPTION_NAME TECHGROUP( "techGroup" );
 OPTION_NAME BASE_CODE( "baseCode" );
@@ -20,7 +21,8 @@ OPTION_NAME CODEPASSED( "codePassed" );
 class CNrpTechnology : public INrpProject
 {
 public:
-	CNrpTechnology( PROJECT_TYPE typen );
+	CNrpTechnology( PROJECT_TYPE typen, CNrpCompany* ptrCmp );
+	CNrpTechnology( CNrpTechnology* pTech, CNrpCompany* ptrCmp );
 	~CNrpTechnology(void);
 
 	void SetEngineTechRequire( int tech_type, int valuel );
@@ -32,15 +34,14 @@ public:
 	float GetEmployerPosibility();
 
 	void SetLider( IUser* ptrUser );
+	void Update( IUser* ptrUser );
 
 	void Save( std::string saveFolder );
 	void Load( std::string fileName );
 
 private:
-	typedef std::map< int, int > REQUIRE_MAP;
-
 	void Load_( char* file_name ) {}
-	void ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt, std::string fileName );
+	void InitializeOptions_();
 	
 	REQUIRE_MAP techRequires_;
 	REQUIRE_MAP skillRequires_;

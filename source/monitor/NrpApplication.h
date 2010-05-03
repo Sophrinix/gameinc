@@ -68,7 +68,8 @@ private:
 	SYSTEMTIME time_;
 	int lastTimeUpdate_;
 
-	virtual void Load_( char* fileName ) {}
+	void Load_( char* fileName ) {}
+	void UpdateGameState_();
 };
 
 }//namespace nrp

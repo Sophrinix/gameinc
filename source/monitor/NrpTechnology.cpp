@@ -7,14 +7,26 @@
 
 #include <io.h>
 #include <errno.h>
+#include <assert.h>
 
 namespace nrp
 {
 
-CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnology", "" )
+CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen, CNrpCompany* ptrCmp ) : INrpProject( "CNrpTechnology", "" )
+{
+	InitializeOptions_();
+	if( ptrCmp != NULL )
+	{
+		SetValue<std::string>( COMPANYNAME, ptrCmp->GetValue<std::string>( NAME ) );
+		SetValue<PNrpCompany>( PARENTCOMPANY, ptrCmp );
+	}
+	SetValue<int>( TECHGROUP, typen );
+}
+
+void CNrpTechnology::InitializeOptions_()
 {
 	CreateValue<std::string>( NAME, "" );
-	CreateValue<int>( TECHGROUP, typen );
+	CreateValue<int>( TECHGROUP, 0 );
 	CreateValue<int>( TECHTYPE, 0 );
 	CreateValue<float>( BASE_CODE, 0 );
 	CreateValue<float>( ENGINE_CODE, 0 );
@@ -23,11 +35,39 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnol
 	CreateValue<int>( QUALITY, 100 );
 	CreateValue<std::string>( COMPONENTLIDER, "" );
 	CreateValue<std::string>( LASTWORKER, "" );
-	CreateValue<std::string>( COMPANY, "" );
+	CreateValue<std::string>( COMPANYNAME, "" );
+	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
 	CreateValue<int>( CODEVOLUME, 0 );
 	CreateValue<int>( CODEPASSED, 0 );
 	CreateValue<float>( READYWORKPERCENT, 0 );
 	CreateValue<int>( ERRORNUMBER, 0 );
+}
+
+CNrpTechnology::CNrpTechnology( CNrpTechnology* pTech, CNrpCompany* ptrCmp ) 
+				: INrpProject( "CNrpTechnology", pTech->GetValue<std::string>( NAME ) )
+{
+	InitializeOptions_();
+
+	SetValue<std::string>( NAME, pTech->GetValue<std::string>( NAME ) );
+	SetValue<int>( TECHGROUP, pTech->GetValue<int>( TECHGROUP ) );
+	SetValue<int>( TECHTYPE, pTech->GetValue<int>( TECHTYPE ) );
+	SetValue<float>( BASE_CODE, pTech->GetValue<float>( BASE_CODE ) );
+	SetValue<float>( ENGINE_CODE, pTech->GetValue<float>( ENGINE_CODE ) );
+	SetValue<int>( LEVEL, pTech->GetValue<int>( LEVEL ) );
+	SetValue<LPVOID>( PARENT, pTech->GetValue<LPVOID>( PARENT ) );
+	SetValue<int>( QUALITY, pTech->GetValue<int>( QUALITY ) );
+	SetValue<std::string>( COMPONENTLIDER, pTech->GetValue<std::string>( COMPONENTLIDER ) );
+	SetValue<std::string>( LASTWORKER, pTech->GetValue<std::string>( LASTWORKER ) );
+	SetValue<int>( CODEVOLUME, pTech->GetValue<int>( CODEVOLUME ) );
+	SetValue<int>( CODEPASSED, pTech->GetValue<int>( CODEPASSED ) );
+	SetValue<float>( READYWORKPERCENT, pTech->GetValue<float>( READYWORKPERCENT ) );
+	SetValue<int>( ERRORNUMBER, pTech->GetValue<int>( ERRORNUMBER ) );
+	assert( ptrCmp != NULL );
+	if( ptrCmp != NULL )
+	{
+		SetValue<std::string>( COMPANYNAME, pTech->GetValue<std::string>( COMPANYNAME ) );
+		SetValue<PNrpCompany>( PARENTCOMPANY, ptrCmp );
+	}
 }
 
 CNrpTechnology::~CNrpTechnology(void)
@@ -74,11 +114,11 @@ void CNrpTechnology::Save( std::string saveFolder )
 		IniFile::Write( PROPERTIES, "parent", GetValue<PNrpGameProject>( PARENT )->GetValue<std::string>(NAME), fileName );
 	
 	REQUIRE_MAP::iterator tIter = techRequires_.begin();
-	for( ; tIter != techRequires_.end(); ++tIter )
+	for( ; tIter != techRequires_.end(); tIter++ )
 		IniFile::Write( "techRequire", IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
 
 	REQUIRE_MAP::iterator sIter = skillRequires_.begin();
-	for( ; sIter != skillRequires_.end(); ++sIter )
+	for( ; sIter != skillRequires_.end(); sIter++ )
 		IniFile::Write( "skillRequire", IntToStr( sIter->first ), IntToStr( sIter->second ), fileName );
 }
 
@@ -86,32 +126,22 @@ void CNrpTechnology::Load( std::string fileName )
 {
 	INrpProject::Load( PROPERTIES, fileName );
 
-	ReadValueList_( "techRequire", techRequires_, fileName );
-	ReadValueList_( "skillRequire", skillRequires_, fileName );
-}
+	IniFile::ReadValueList_( "techRequire", techRequires_, fileName );
+	IniFile::ReadValueList_( "skillRequire", skillRequires_, fileName );
 
-void CNrpTechnology::ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt, std::string fileName )
-{
-	char buffer[ 32000 ];
-	memset( buffer, 0, 32000 );
-	GetPrivateProfileSection( sectionName.c_str(), buffer, 32000, fileName.c_str() );
-
-	std::string readLine = buffer;
-	while( readLine != "" )
+	std::string liderName = GetValue<std::string>( COMPONENTLIDER );
+	PNrpCompany ptrCompany = GetValue<PNrpCompany>( PARENTCOMPANY );
+	if( !liderName.empty() )
 	{
-		std::string name, valuel;
-		name = readLine.substr( 0, readLine.find( '=' ) );
-		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
-		mapt[ StrToInt( name.c_str() ) ] = StrToInt( valuel.c_str() );
-		
-		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
-		readLine = buffer;
+		PUser ptrUser = ptrCompany->GetUser( liderName );
+		if( ptrUser )
+			ptrUser->AddTechWork( this );
 	}
 }
 
 float CNrpTechnology::GetEmployerPosibility()
 {
-	IUser* ptrUser = CNrpApplication::Instance().GetUser( GetValue<std::string>( COMPANY ), GetValue<std::string>( COMPONENTLIDER ) );
+	IUser* ptrUser = CNrpApplication::Instance().GetUser( GetValue<std::string>( COMPANYNAME ), GetValue<std::string>( COMPONENTLIDER ) );
 	if( !ptrUser )
 		return 0;
 	
@@ -119,7 +149,7 @@ float CNrpTechnology::GetEmployerPosibility()
 	int minSkillName = 0;
 	float posibility = 0;
 	REQUIRE_MAP::iterator sIter = skillRequires_.begin();
-	for( ; sIter != skillRequires_.end(); ++sIter )
+	for( ; sIter != skillRequires_.end(); sIter++ )
 	{
 		int skillValue = ptrUser->GetSkill( sIter->first );
 		if( skillValue < minSkill )
@@ -137,9 +167,45 @@ float CNrpTechnology::GetEmployerPosibility()
 
 void CNrpTechnology::SetLider( IUser* ptrUser )
 {
-	if( !GetValue<std::string>( COMPONENTLIDER ).empty() )
-		SetValue<std::string>( LASTWORKER, GetValue<std::string>( COMPONENTLIDER ) );
+	std::string currentLider = GetValue<std::string>( COMPONENTLIDER );
+	std::string lastLider = GetValue<std::string>( LASTWORKER );
+	std::string newUser = ptrUser != NULL ? ptrUser->GetValue<std::string>( NAME ) : "";
 
-	SetValue<std::string>( COMPONENTLIDER, ptrUser->GetValue<std::string>( NAME ) );
+	//есть текущий исполнитель
+	if( ptrUser == NULL && !currentLider.empty() )
+	{
+		SetValue<std::string>( LASTWORKER, GetValue<std::string>( COMPONENTLIDER ) );
+		SetValue<std::string>( COMPONENTLIDER, "" );
+		return;
+	}
+
+	if( currentLider != newUser )
+	{
+		SetValue<std::string>( LASTWORKER, currentLider );
+		SetValue<int>( CODEPASSED,(int)(GetValue<int>( CODEPASSED ) * 0.75f) );
+		SetValue<std::string>( COMPONENTLIDER, newUser );
+	}
+}
+
+void CNrpTechnology::Update( IUser* ptrUser )
+{
+	if( GetValue<int>( CODEPASSED ) < GetValue<int>( CODEVOLUME) )
+	{
+		int codingSkill = ptrUser->GetSkill( SKL_CODING );
+		float genreSkill = ptrUser->GetGenreExperience( GetValue<int>( TECHTYPE ) ) / 100.f;
+	
+		if( genreSkill < 0.1f )
+			genreSkill = 0.1f;
+		float genrePref = ptrUser->GetGenrePreferences( GetValue<int>( TECHTYPE ) ) / 100.f;
+		if( genrePref < 0.1f )
+			genrePref = 0.1f;
+
+		int codePassed = GetValue<int>( CODEPASSED ) + (int)(codingSkill * (genrePref + genreSkill));
+		if( codePassed >= GetValue<int>( CODEVOLUME ) )
+			codePassed = GetValue<int>( CODEVOLUME);
+
+		SetValue<int>( CODEPASSED, codePassed );
+		SetValue<float>( READYWORKPERCENT, codePassed / (float)GetValue<int>( CODEVOLUME ) );
+	}
 }
 }//namespace nrp

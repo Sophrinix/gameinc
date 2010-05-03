@@ -8,6 +8,8 @@
 #include "NrpBank.h"
 #include "NrpAiUser.h"
 #include "NrpPlayer.h"
+#include "OpFileSystem.h"
+#include "nrpEngine.h"
 
 #include <io.h>
 #include <errno.h>
@@ -35,7 +37,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( COMPANIESNUMBER, 0 );
 	CreateValue<std::string>( FULLPATH, "" );
 	std::string profileName = IniFile::Read( "options", "currentProfile", std::string( "dalerank" ), "config/system.ini" );
-	std::string profileCompany = IniFile::Read( "options", "currentCompany", std::string( "daleteam"), "config/system.ini" );
+	std::string profileCompany = IniFile::Read( "options", "currentCompany", std::string( "daleteam" ), "config/system.ini" );
 	CreateValue<std::string>( PROFILENAME, profileName );
 	CreateValue<std::string>( PROFILECOMPANY, profileCompany );
 	CreateValue<SYSTEMTIME>( CURRENTTIME, time_ );
@@ -49,7 +51,7 @@ CNrpCompany* CNrpApplication::GetCompany( std::string companyName ) const
 {
 	COMPANIES_LIST::const_iterator pIter = companies_.begin();
 
-	for( ; pIter != companies_.end(); ++pIter)
+	for( ; pIter != companies_.end(); pIter++)
 		if( (*pIter)->GetValue<std::string>( NAME ) == companyName )
 			return (*pIter);
 
@@ -94,6 +96,7 @@ bool CNrpApplication::UpdateTime()
 			{
 				 time_.wMinute = 0;
 				 spd = SPD_HOUR;
+				 UpdateGameState_();
 			}
 		}
 
@@ -142,7 +145,7 @@ CNrpCompany* CNrpApplication::GetPlayerCompany()
 {
 	COMPANIES_LIST::iterator pIter = companies_.begin();
 
-	for( ; pIter != companies_.end(); ++pIter )
+	for( ; pIter != companies_.end(); pIter++ )
 	{	
 		PUser user = (*pIter)->GetValue<PUser>( CEO );
 		
@@ -155,7 +158,7 @@ CNrpCompany* CNrpApplication::GetPlayerCompany()
 
 INrpProject* CNrpApplication::CreateGameProject( std::string name )
 {
-	return new CNrpGameProject( name );
+	return new CNrpGameProject( name, NULL );
 }
 
 nrp::CNrpGameEngine* CNrpApplication::CreateGameEngine( std::string name )
@@ -165,7 +168,7 @@ nrp::CNrpGameEngine* CNrpApplication::CreateGameEngine( std::string name )
 
 CNrpTechnology* CNrpApplication::CreateTechnology( int typeTech )
 {
-	return new CNrpTechnology( PROJECT_TYPE( typeTech ) );
+	return new CNrpTechnology( PROJECT_TYPE( typeTech ), NULL );
 }
 
 CNrpTechnology* CNrpApplication::GetTechnology( int index ) const
@@ -187,7 +190,7 @@ IUser* CNrpApplication::GetUser( int index )
 IUser* CNrpApplication::GetUser( std::string name )
 {
 	USER_LIST::iterator pIter = users_.begin();
-	for( ; pIter != users_.end(); ++pIter )
+	for( ; pIter != users_.end(); pIter++ )
 		if( (*pIter)->GetValue<std::string>( NAME ) == name )
 			return (*pIter);
 
@@ -203,7 +206,7 @@ IUser* CNrpApplication::GetUser( std::string company, std::string name )
 int CNrpApplication::RemoveUser( IUser* user )
 {
 	USER_LIST::iterator pIter = users_.begin();
-	for( ; pIter != users_.end(); ++pIter )
+	for( ; pIter != users_.end(); pIter++ )
 		if( (*pIter) == user )
 		{
 			users_.erase( pIter );
@@ -216,7 +219,9 @@ int CNrpApplication::RemoveUser( IUser* user )
 
 void CNrpApplication::SaveProfile()
 {
-	std::string saveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "/";
+	std::string realFolderName =  "save/" + GetValue<std::string>( PROFILENAME ) + "/";
+	std::string saveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "Tmp/";
+	std::string prevSaveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "Old/";
 	if( _access( saveFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( saveFolder.c_str(), NULL );
 
@@ -230,7 +235,7 @@ void CNrpApplication::SaveProfile()
 	
 	std::string saveFolderCompanies = saveFolder + "companies/";
 	COMPANIES_LIST::iterator cIter = companies_.begin();
-	for( int i=0; cIter != companies_.end(); ++cIter, ++i )
+	for( int i=0; cIter != companies_.end(); cIter++, i++ )
 	{
 		(*cIter)->Save( saveFolderCompanies );
 		IniFile::Write( "companies", "company_" + IntToStr(i), (*cIter)->GetValue<std::string>( NAME ), profileIni );
@@ -238,7 +243,7 @@ void CNrpApplication::SaveProfile()
 
 	std::string saveFolderUsers = saveFolder + "freeUsers/";
 	USER_LIST::iterator uIter = users_.begin();
-	for( int i=0; uIter != users_.end(); ++uIter, ++i )
+	for( int i=0; uIter != users_.end(); uIter++, i++ )
 	{
 		(*uIter)->Save( saveFolderUsers );
 		std::string text = (*uIter)->ClassName() + ":" + (*uIter)->GetValue<std::string>( NAME );
@@ -247,11 +252,15 @@ void CNrpApplication::SaveProfile()
 
 	std::string saveFolderTech = saveFolder + "freeTech/";
 	TECH_LIST::iterator tIter = technologies_.begin();
-	for( int i=0; tIter != technologies_.end(); ++tIter, ++i )
+	for( int i=0; tIter != technologies_.end(); tIter++, i++ )
 	{
 		(*tIter)->Save( saveFolderTech );
 		IniFile::Write( "technologies", "technology_" + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), profileIni );
 	}
+
+	OpFileSystem::RemoveDirectory( CNrpEngine::Instance().GetWindowHandle(), prevSaveFolder.c_str() );
+	MoveFile( prevSaveFolder.c_str(), realFolderName.c_str() );
+	MoveFile( saveFolder.c_str(), realFolderName.c_str() );
 }
 
 void CNrpApplication::LoadProfile( std::string profileName, std::string companyName )
@@ -268,12 +277,12 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 		name = name.substr( name.find(':') + 1, 0xff );
 		IUser* usert = NULL;
 		if( className == "RealPlayer" ) 
-			usert = new CNrpPlayer( name );
+			usert = new CNrpPlayer( name, NULL );
 		else
 		if( className == "AIPlayer" )
-			usert = new CNrpAiUser( name );
+			usert = new CNrpAiUser( name, NULL );
 		else
-			usert = new IUser( className.c_str(), "" );
+			usert = new IUser( className.c_str(), "", NULL );
 
 		users_.push_back( usert );
 		usert->Load( saveFolderUsers + name + ".ini" );
@@ -283,7 +292,7 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 	for( int i=0; i < GetValue<int>( TECHNUMBER ); i++ )
 	{
 		std::string name = IniFile::Read( "technologies", "technology_" + IntToStr(i), std::string(""), profileIni );
-		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
+		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0), NULL );
 		technologies_.push_back( tech );
 		tech->Load( saveFolderTech + name + ".ini" );
 	}
@@ -307,17 +316,17 @@ void CNrpApplication::CreateProfile( std::string profileName, std::string compan
 void CNrpApplication::ResetData()
 {
 	COMPANIES_LIST::iterator cIter = companies_.begin();
-	for( ; cIter != companies_.end(); ++cIter )
+	for( ; cIter != companies_.end(); cIter++ )
 		delete *cIter;
 	companies_.clear();
 
 	USER_LIST::iterator uIter = users_.begin();
-	for( ; uIter != users_.end(); ++uIter )
+	for( ; uIter != users_.end(); uIter++ )
 		delete *uIter;
 	users_.clear();
 
 	TECH_LIST::iterator tIter = technologies_.begin();
-	for( ; tIter != technologies_.end(); ++tIter )
+	for( ; tIter != technologies_.end(); tIter++ )
 		delete *tIter;	
 	technologies_.clear();
 }
@@ -327,7 +336,7 @@ CNrpGameEngine* CNrpApplication::GetGameEngine( std::string name )
 	CNrpGameEngine* resultt= NULL;
 	COMPANIES_LIST::const_iterator pIter = companies_.begin();
 
-	for( ; pIter != companies_.end(); ++pIter)
+	for( ; pIter != companies_.end(); pIter++)
 	{
 		resultt = (*pIter)->GetGameEngine( name );
 		if( resultt )
@@ -335,6 +344,15 @@ CNrpGameEngine* CNrpApplication::GetGameEngine( std::string name )
 	}
 
 	return NULL;
+}
+
+void CNrpApplication::UpdateGameState_()
+{
+	COMPANIES_LIST::iterator cIter = companies_.begin();
+	for( ; cIter != companies_.end(); cIter++)
+	{
+		 (*cIter)->Update();
+	}
 }
 
 CNrpApplication& nrp::CNrpApplication::Instance()

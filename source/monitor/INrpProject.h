@@ -10,7 +10,9 @@ const std::string PRJTYPE_NAME[] = { "unknown", "gameengine", "game",
 
 const std::string GENRE_NAME[] = { "unknown", "skill", "scrolling" };
 
-typedef enum { SKL_UNKNOWN=2000, SKL_VIDEO_TECH, SKL_CODING, SKL_SOUND, SKL_TESTING, SKL_DRAWING,
+typedef enum { SKL_UNKNOWN=2000, SKL_VIDEO_TECH, 
+				SKL_CODING, 
+				SKL_SOUND, SKL_TESTING, SKL_DRAWING,
 				SKILL_MIDDLE = 2099, SKL_COUNT } SKILL_TYPE;
 typedef enum { GT_UNKNOWN=300, GT_SKILL, GT_SCROLLING, GT_COUNT  } GENRE_TYPE;
 

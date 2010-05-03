@@ -10,7 +10,7 @@ namespace nrp
 	
 CNrpGame::CNrpGame( std::string name ) : INrpConfig( "CNrpGame", "" )
 {
-	CreateValue<std::string>( COMPANY, "" );
+	CreateValue<std::string>( COMPANYNAME, "" );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
 	CreateValue<int>( MONEYONDEVELOP, 0 );

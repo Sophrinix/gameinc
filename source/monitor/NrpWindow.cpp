@@ -390,7 +390,7 @@ core::recti CNrpWindow::getClientRect() const
 void CNrpWindow::setAlphaBlend( u32 new_alpha )
 {
 	core::list<IGUIElement*>::Iterator it = Children.begin();
-	for (; it != Children.end(); ++it)
+	for (; it != Children.end(); it++)
 		(*it)->setAlphaBlend( new_alpha );
 
 	IGUIWindow::setAlphaBlend( new_alpha );

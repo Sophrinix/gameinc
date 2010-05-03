@@ -91,7 +91,6 @@ end
 function sworkWindowProjectManagerListBoxItemSelected( ptr )
 	local listbox = CLuaComponentListBox( ptr )
 	currentComponent:SetObject( listbox:GetSelectedObject() )
-	
 	checkUserForComponent()
 end
 
@@ -102,7 +101,7 @@ local function ShowWindowUserInfo( userPtr )
 	
 	if windowg:Empty() == 1 then
 		windowg:SetObject( guienv:AddWindow( "", 310, 140, 790, 590, WINDOW_PRJMANAGE_USERINFO, guienv:GetElementByID(WINDOW_PRJMANAGE_ID) ) )
-		windowg:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkWindowManagerProjectComponentSelect" )
+		windowg:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkWindowProjectManagerListBoxItemSelected" )
 	else
 		local elm = CLuaElement( windowg:Self() )
 		elm:RemoveChilds()
@@ -146,24 +145,6 @@ local function ShowWindowUserInfo( userPtr )
 	for i=1, currentEmployer:GetTechWorkNumber() do
 		lbx:AddItem( "", currentEmployer:GetTechWork( i-1 ) )
 	end
-end
-
-function sworkWindowManagerProjectToggleComponentLider( ptr )
-	if not currentComponent:HaveLider() then
-		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
-		currentEmployer:AddTechWork( currentComponent:Self() )	
-		if currentComponent:GetEmployerPosibility() < 0.4 then
-			guienv:MessageBox( currentEmployer:GetName() .. " имеет недостаточные навыки,\n чтобы быстро выполнить эту работу", true, false, "", "" )
-		end
-	else
-		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
-		currentEmployer:RemoveTechWork( currentComponent:Self() )
-		if currentComponent:GetWorkPercentDone() > 70 then
-			guienv:MessageBox( "Компонент почти завершен.\n Его передача приведет к потере части функионала", true, false, "", "" )
-		end
-	end
-	
-	ShowWindowUserInfo( currentEmployer:Self() )
 end
 
 local function ShowUnworkedGameProjectComponent( ptrProject )
@@ -240,6 +221,25 @@ local function ShowUnworkedGameProjectComponent( ptrProject )
 		  lbx:AddItem( tech:GetName(), tech:Self() )	
 		end
 	end
+end
+
+function sworkWindowManagerProjectToggleComponentLider( ptr )
+	if not currentComponent:HaveLider() then
+		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
+		currentEmployer:AddTechWork( currentComponent:Self() )	
+		if currentComponent:GetEmployerPosibility() < 0.4 then
+			guienv:MessageBox( currentEmployer:GetName() .. " имеет недостаточные навыки.", true, false, "", "" )
+		end
+	else
+		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
+		currentEmployer:RemoveTechWork( currentComponent:Self() )
+		if currentComponent:GetWorkPercentDone() > 70 then
+			guienv:MessageBox( "Компонент почти завершен.\n Его передача приведет к потере части функионала", true, false, "", "" )
+		end
+	end
+	
+	ShowUnworkedGameProjectComponent( currentProject:Self() )
+	ShowWindowUserInfo( currentEmployer:Self() )
 end
 
 function sworkWindowProjectManagerComboBoxItemSelected( ptr )

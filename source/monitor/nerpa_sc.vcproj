@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="irrlichtd.lib Version.lib libmysql.lib luad.lib Ws2_32.lib llmozlib2d.lib"
+				AdditionalDependencies="irrlichtd.lib Version.lib libmysql.lib luad.lib Ws2_32.lib llmozlib2d.lib shell32.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="lib"
 				GenerateManifest="true"
@@ -358,6 +358,14 @@
 			</File>
 			<File
 				RelativePath=".\nrpConfig.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpFileSystem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpFileSystem.h"
 				>
 			</File>
 			<File

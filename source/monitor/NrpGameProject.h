@@ -5,6 +5,8 @@
 namespace nrp
 {
 
+class CNrpCompany;
+
 OPTION_NAME VIDEOTECH( "videoTech" );
 OPTION_NAME GENRETECH( "genreTech" );
 OPTION_NAME ADVTECH( "advtech" );
@@ -40,7 +42,7 @@ class CNrpTechnology;
 class CNrpGameProject : public INrpProject
 {
 public:
-	CNrpGameProject( std::string name );
+	CNrpGameProject( std::string name, CNrpCompany* ptrCompany );
 	CNrpGameProject( CNrpGameProject* nProject );
 	~CNrpGameProject(void);
 

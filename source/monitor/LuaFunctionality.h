@@ -51,7 +51,7 @@ public:
 	{
 		FunctionArray::iterator pIter = luaFunctions_.begin();
 
-		for(; pIter != luaFunctions_.end(); ++pIter )				//пробежимся по списку подключенных функций
+		for(; pIter != luaFunctions_.end(); pIter++ )				//пробежимся по списку подключенных функций
 		{
 			if( (*pIter)->actionType == actionType &&		//чтобы не было функций с одинаковым типом и именем	
 				(*pIter)->funcName == funcName )

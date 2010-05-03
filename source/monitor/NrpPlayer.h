@@ -9,7 +9,7 @@ class CNrpCompany;
 class CNrpPlayer : public IUser
 {
 public:
-	CNrpPlayer( std::string name );
+	CNrpPlayer( std::string name, CNrpCompany* ptrCmp );
 	~CNrpPlayer(void);
 private:
 	CNrpCompany* company_;
