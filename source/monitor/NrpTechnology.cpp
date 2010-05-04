@@ -191,7 +191,11 @@ void CNrpTechnology::Update( IUser* ptrUser )
 {
 	if( GetValue<int>( CODEPASSED ) < GetValue<int>( CODEVOLUME) )
 	{
-		int codingSkill = ptrUser->GetSkill( SKL_CODING );
+		int reqSkill = 0;
+		REQUIRE_MAP::iterator sIter = skillRequires_.begin();
+		for( ; sIter != skillRequires_.end(); sIter++ )
+			reqSkill += ptrUser->GetSkill( sIter->first );
+
 		float genreSkill = ptrUser->GetGenreExperience( GetValue<int>( TECHTYPE ) ) / 100.f;
 	
 		if( genreSkill < 0.1f )
@@ -200,7 +204,7 @@ void CNrpTechnology::Update( IUser* ptrUser )
 		if( genrePref < 0.1f )
 			genrePref = 0.1f;
 
-		int codePassed = GetValue<int>( CODEPASSED ) + (int)(codingSkill * (genrePref + genreSkill));
+		int codePassed = GetValue<int>( CODEPASSED ) + (int)(reqSkill * (genrePref + genreSkill));
 		if( codePassed >= GetValue<int>( CODEVOLUME ) )
 			codePassed = GetValue<int>( CODEVOLUME);
 

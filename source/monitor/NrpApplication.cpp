@@ -10,6 +10,7 @@
 #include "NrpPlayer.h"
 #include "OpFileSystem.h"
 #include "nrpEngine.h"
+#include "PeopleName.h"
 
 #include <io.h>
 #include <errno.h>
@@ -199,8 +200,23 @@ IUser* CNrpApplication::GetUser( std::string name )
 
 IUser* CNrpApplication::GetUser( std::string company, std::string name )
 {
-	PNrpCompany ptrCmp = GetCompany( company );
-	return ptrCmp != NULL ? ptrCmp->GetUser( name ) : NULL;
+	if( company.empty() )
+	{
+		COMPANIES_LIST::const_iterator pIter = companies_.begin();
+		for( ; pIter != companies_.end(); pIter++)
+		{
+			IUser* ptrUser = (*pIter)->GetUser(name);
+			if( ptrUser != NULL )
+				return ptrUser;
+		}
+
+		return NULL;
+	}
+	else
+	{
+		PNrpCompany ptrCmp = GetCompany( company );
+		return ptrCmp != NULL ? ptrCmp->GetUser( name ) : NULL;
+	}
 }
 
 int CNrpApplication::RemoveUser( IUser* user )
@@ -355,12 +371,75 @@ void CNrpApplication::UpdateGameState_()
 	}
 }
 
+void CNrpApplication::UpdateUsers()
+{
+	USER_LIST::iterator pIter = users_.begin();
+
+	USER_LIST coders, designer, composer, tester;
+	std::map< std::string, USER_LIST* > group;
+	group[ "coder" ] = &coders;
+	group[ "designer" ] = &designer;
+	group[ "composer" ] = &composer;
+	group[ "tester" ] = &tester;
+	
+	for( ; pIter != users_.end(); pIter++ )
+		group[ (*pIter)->GetType() ]->push_back( *pIter );
+
+	std::map< std::string, USER_LIST* >::iterator gIter = group.begin();
+	for( ; gIter != group.end(); gIter++ )
+	{
+		USER_LIST& tmpList = *(gIter->second);
+		if( tmpList.size() > 8 )
+		{
+			for( size_t cnt=8; cnt < tmpList.size(); cnt++ )
+				delete tmpList[ cnt ];
+		???	tmpList.erase( tmpList.begin() + 8, tmpList.end() );
+		}
+		else 
+		{
+			for( size_t cnt=tmpList.size(); cnt < 8; cnt++ )
+				users_.push_back( CreateRandomUser_( gIter->first ) );
+		}
+	}
+}
+
 CNrpApplication& nrp::CNrpApplication::Instance()
 {
 	if( !globalApplication )
 		globalApplication = new CNrpApplication();
 
 	return *globalApplication;
+}
+
+IUser* CNrpApplication::CreateRandomUser_( std::string userType )
+{
+	size_t randomParams = rand() % GT_COUNT;//сколько параметров будем создавать
+	size_t maxParamValue = rand() % 100;//максимальное значение параметров
+
+	std::string userName;
+	size_t nameCount = sizeof( GlobalPeopleName );
+	size_t surnameCount = sizeof( GlobalPeopleSurname );
+
+	IUser* ptrUser = NULL;
+	do 
+	{
+		userName = GlobalPeopleName[ rand() % nameCount ] + " " + GlobalPeopleSurname[ rand() % surnameCount ];
+		ptrUser = GetUser( "", userName );
+	} while ( ptrUser != NULL );
+	ptrUser = new IUser( userType.c_str(), userName.c_str(), NULL );
+
+	if( userType == "coder" )
+	{
+		ptrUser->SetSkill( SKL_CODING, maxParamValue );
+	}
+
+	for( size_t cnt=0; cnt < randomParams; cnt++ )
+	{
+		ptrUser->SetGenreExperience( rand() % GT_COUNT, rand() % maxParamValue );
+		ptrUser->SetGenrePreferences( rand() % GT_COUNT, rand() % maxParamValue );
+	} 
+
+	return ptrUser;
 }
 
 }//namespace nrp

@@ -14,7 +14,38 @@ typedef enum { SKL_UNKNOWN=2000, SKL_VIDEO_TECH,
 				SKL_CODING, 
 				SKL_SOUND, SKL_TESTING, SKL_DRAWING,
 				SKILL_MIDDLE = 2099, SKL_COUNT } SKILL_TYPE;
-typedef enum { GT_UNKNOWN=300, GT_SKILL, GT_SCROLLING, GT_COUNT  } GENRE_TYPE;
+
+typedef enum { GT_UNKNOWN=300, 
+			   GT_SKILL,			//развитие навыков
+			   GT_SCROLLING,		//скролл-игры
+			   GT_EDUCATION,		//обучающие игры(деские)
+			   GT_TEST,				//проверка знаний
+			   GT_CONTACT,			//виртуальное общение(возможно сетевая)
+			   GT_HERO,				//развитие персонажа
+			   GT_TOURE,			//исследование мира
+			   GT_PAZZLE,			//головоломка
+			   GT_QUEST, 
+			   GT_PLATFORMER,		//
+			   GT_STEALTH,
+			   GT_SHOOTER,			//
+			   GT_ACROBATIC,		//
+			   GT_ARCADE,			//
+			   GT_SPORT,			//
+			   GT_SIMULATOR,		//
+			   GT_FIGHTING,			//
+			   GT_RACING,			//
+			   GT_LIFESIM,			//
+			   GT_CITYBUILD,		//
+			   GT_MANAGER,			//
+			   GT_ECONOMIC,			//
+			   GT_SLASHER,			//
+			   GT_ACTION,			//
+			   GT_CONTROL,			//
+			   GT_TACTIC,			//
+			   GT_LOGIC,			//
+			   GT_WARGAME,			//
+			   GT_CARDGAME,			//
+			   GT_COUNT  } GENRE_TYPE;
 
 typedef enum { SCRLVL_UNKNOWN=600, SCRLVL_SIMPLE, SCRLVL_COUNT } SCRIPT_LEVEL;
 typedef enum { VDT_UNKNOWN=700, VDT_TEXT_OUTPUT, VDT_COUNT } VIDEO_TECH_TYPE;

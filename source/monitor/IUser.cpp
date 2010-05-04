@@ -243,4 +243,14 @@ int IUser::GetGenrePreferences( int typen )
 	KNOWLEDGE_MAP::iterator kIter = genrePreferences_.find( typen );
 	return kIter != genrePreferences_.end() ? kIter->second : 0;
 }
+
+void IUser::SetGenreExperience( int typen, int valuel )
+{
+	genreExperience_[ typen ] = valuel;
+}
+
+void IUser::SetGenrePreferences( int typen, int valuel )
+{
+	genrePreferences_[ typen ] = valuel;
+}
 }//namespace nrp

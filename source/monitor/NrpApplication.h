@@ -40,6 +40,7 @@ public:
 
 	int AddUser( bool player, IUser* user );
 	int RemoveUser( IUser* user );
+	void UpdateUsers();
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
 	IUser* GetUser( std::string company, std::string name );
@@ -70,6 +71,7 @@ private:
 
 	void Load_( char* fileName ) {}
 	void UpdateGameState_();
+	IUser* CreateRandomUser_( std::string userType );
 };
 
 }//namespace nrp

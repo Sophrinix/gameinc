@@ -21,7 +21,7 @@ function sworkAppDayChange( ptr )
 end
 
 function sworkAppMonthChange( ptr )
-
+	app:UpdateUsers()
 end
 
 function sworkAppYearChange( ptr )

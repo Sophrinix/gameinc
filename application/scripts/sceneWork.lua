@@ -57,4 +57,6 @@ AddObjectsToOfficeScene()
 AddObjectsToUniverScene()
 sceneManager:DrawProgress( 100 )
 
+app:UpdateUsers()
+
 sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )

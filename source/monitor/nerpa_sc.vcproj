@@ -369,6 +369,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PeopleName.h"
+				>
+			</File>
+			<File
 				RelativePath=".\StrConversation.cpp"
 				>
 			</File>

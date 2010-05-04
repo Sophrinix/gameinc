@@ -40,6 +40,7 @@ public:
 	int CreateProfile( lua_State* L );
 	int ResetData( lua_State* L );
 	int LoadProfile( lua_State* L );
+	int UpdateUsers( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:
