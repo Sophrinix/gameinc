@@ -235,9 +235,20 @@ INrpProject* CNrpCompany::GetProject( int index )
 void CNrpCompany::Update()
 {
 	for( size_t cnt=0; cnt < employers_.size(); cnt++ )
-	{
 		employers_[ cnt ]->Update( CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ) );
-	}
 }
 
+void CNrpCompany::PaySalaries()
+{
+	int balance = GetValue<int>( BALANCE );
+	for( size_t cnt=0; cnt < employers_.size(); cnt++ )
+	{
+		int salary = employers_[ cnt ]->GetValue<int>( SALARY );	
+		int userBalance = employers_[ cnt ]->GetValue<int>( BALANCE );
+		balance -= salary;
+
+		employers_[ cnt ]->SetValue<int>( userBalance + salary );
+	}
+	SetValue<int>( BALANCE, balance );
+}
 }//namespace nrp

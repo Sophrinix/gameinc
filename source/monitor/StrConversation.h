@@ -59,6 +59,7 @@ namespace nrp
 	bool IsNumber( const char* s );
 	bool IsFloatNumber( const char* s );
 	float StrToFloat( const char* s );
+	SYSTEMTIME StrToTime( const char* s );
 
 }; //namespace nrp
 

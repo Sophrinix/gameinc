@@ -184,4 +184,13 @@ irr::core::vector3df StrToVector3df( const char* s )
 	return result;
 }
 
+SYSTEMTIME StrToTime( const char* s )
+{
+	SYSTEMTIME time;
+
+	sscanf_s( s, "y=%04d m=%02d d=%02d h=%02d mi=%02d", 
+			  &time.wYear, &time.wMonth, &time.wDay, &time.wHour, &time.wMinute );
+
+	return time;	
+}
 } //namespace nrp

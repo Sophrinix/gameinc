@@ -15,7 +15,7 @@ namespace nrp
 
 IUser::IUser(const char* className, const char* systemName, CNrpCompany* ptrCmp ) : INrpConfig( className, systemName )
 {
-	CreateValue<std::string>( NAME, "" );
+	CreateValue<std::string>( NAME, systemName );
 	CreateValue<int>( CODE_SPEED, 0 );
 	CreateValue<int>( CODE_QUALITY, 0 );
 	CreateValue<int>( KNOWLEDGE_LEVEL, 0 );

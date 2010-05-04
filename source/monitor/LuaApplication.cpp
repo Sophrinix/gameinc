@@ -43,6 +43,7 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, ResetData ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadProfile ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateUsers ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, PayUserSalary ),
 	{0,0}
 };
 
@@ -375,10 +376,25 @@ int CLuaApplication::LoadProfile( lua_State* L )
 int CLuaApplication::UpdateUsers( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:UpdateUsers not need parameter" );
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:UpdateUsers not need parameter" );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->UpdateUsers();
 
 	return 1;		
+}
+
+int CLuaApplication::PayUserSalary( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:PayUserSalary not need parameter" );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		CNrpApplication::COMPANIES_LIST& cmpList = object_->GetCompanies();
+		for( size_t cnt=0; cnt < cmpList.size(); cnt++ )
+			cmpList[ cnt ]->PaySalaries();
+	}
+
+	return 1;
 }
 }//namespace nrp

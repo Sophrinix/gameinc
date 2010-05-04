@@ -25,11 +25,12 @@ namespace nrp
 CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appication")
 {
 	speed_ = SPD_MINUTE;
-	time_.wYear = 1983;
-	time_.wMonth = 0;
-	time_.wDay = 0;
-	time_.wHour = 0;
-	time_.wMinute = 0;
+	SYSTEMTIME time;
+	time.wYear = 1983;
+	time.wMonth = 0;
+	time.wDay = 0;
+	time.wHour = 0;
+	time.wMinute = 0;
 	lastTimeUpdate_ = 0;
 
 	CreateValue<PNrpBank>( BANK, NULL );
@@ -41,7 +42,9 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	std::string profileCompany = IniFile::Read( "options", "currentCompany", std::string( "daleteam" ), "config/system.ini" );
 	CreateValue<std::string>( PROFILENAME, profileName );
 	CreateValue<std::string>( PROFILECOMPANY, profileCompany );
-	CreateValue<SYSTEMTIME>( CURRENTTIME, time_ );
+	CreateValue<SYSTEMTIME>( CURRENTTIME, time );
+
+	srand( GetTickCount() );
 }
 
 CNrpApplication::~CNrpApplication(void)
@@ -86,16 +89,17 @@ int CNrpApplication::AddUser( bool player, IUser* user )
 
 bool CNrpApplication::UpdateTime()
 {
+	SYSTEMTIME& time = GetValue<SYSTEMTIME>( CURRENTTIME );
 	if( GetTickCount() - lastTimeUpdate_ > 100 )
 	{
 		lastTimeUpdate_ = GetTickCount();
 		SPEED spd = speed_;
 		if( spd == SPD_MINUTE )
 		{
-			time_.wMinute += 10;
-			if( time_.wMinute >= 60  )
+			time.wMinute += 10;
+			if( time.wMinute >= 60  )
 			{
-				 time_.wMinute = 0;
+				 time.wMinute = 0;
 				 spd = SPD_HOUR;
 				 UpdateGameState_();
 			}
@@ -103,10 +107,10 @@ bool CNrpApplication::UpdateTime()
 
 		if( spd == SPD_HOUR )
 		{
-			time_.wHour++;
-			if( time_.wHour > 18 )
+			time.wHour++;
+			if( time.wHour > 18 )
 			{
-				time_.wHour = 9;
+				time.wHour = 9;
 				spd = SPD_DAY;
 				DoLuaFunctionsByType( APP_DAY_CHANGE, (void*)this );
 			}
@@ -114,11 +118,11 @@ bool CNrpApplication::UpdateTime()
 
 		if( spd == SPD_DAY )
 		{
-			time_.wDay++;
-			int monthL = monthLen[ time_.wMonth ] + (( time_.wMonth == 1 && (time_.wYear % 4 == 0)) ? 1 : 0 );
-			if( time_.wDay > monthL )
+			time.wDay++;
+			int monthL = monthLen[ time.wMonth ] + (( time.wMonth == 1 && (time.wYear % 4 == 0)) ? 1 : 0 );
+			if( time.wDay > monthL )
 			{
-				time_.wDay = 0;
+				time.wDay = 0;
 			    spd = SPD_MONTH;
 				DoLuaFunctionsByType( APP_MONTH_CHANGE, (void*)this );
 			}
@@ -126,16 +130,15 @@ bool CNrpApplication::UpdateTime()
 
 		if( spd == SPD_MONTH )
 		{
-			time_.wMonth++;
-			if( time_.wMonth > 11 )
+			time.wMonth++;
+			if( time.wMonth > 11 )
 			{
-				time_.wMonth = 0;
-				time_.wYear++;
+				time.wMonth = 0;
+				time.wYear++;
 				DoLuaFunctionsByType( APP_YEAR_CHANGE, (void*)this );
 			}
 		}
 
-		SetValue<SYSTEMTIME>( CURRENTTIME, time_ );
 		return true;
 	}
 
@@ -275,7 +278,7 @@ void CNrpApplication::SaveProfile()
 	}
 
 	OpFileSystem::RemoveDirectory( CNrpEngine::Instance().GetWindowHandle(), prevSaveFolder.c_str() );
-	MoveFile( prevSaveFolder.c_str(), realFolderName.c_str() );
+	MoveFile( realFolderName.c_str(), prevSaveFolder.c_str() );
 	MoveFile( saveFolder.c_str(), realFolderName.c_str() );
 }
 
@@ -375,32 +378,47 @@ void CNrpApplication::UpdateUsers()
 {
 	USER_LIST::iterator pIter = users_.begin();
 
-	USER_LIST coders, designer, composer, tester;
+	USER_LIST coders, designer, composer, tester, others;
 	std::map< std::string, USER_LIST* > group;
 	group[ "coder" ] = &coders;
 	group[ "designer" ] = &designer;
 	group[ "composer" ] = &composer;
 	group[ "tester" ] = &tester;
+	group[ "other" ] = &others;
 	
 	for( ; pIter != users_.end(); pIter++ )
-		group[ (*pIter)->GetType() ]->push_back( *pIter );
+	{
+		std::string typeName = (*pIter)->GetType();
+		if( group.find( typeName ) != group.end() )
+			group[ typeName ]->push_back( *pIter );
+		else
+			group[ "other" ]->push_back( *pIter );
+	}
+	users_.clear();
+	size_t USER_GROUP_COUNT = 6;
 
 	std::map< std::string, USER_LIST* >::iterator gIter = group.begin();
 	for( ; gIter != group.end(); gIter++ )
 	{
 		USER_LIST& tmpList = *(gIter->second);
-		if( tmpList.size() > 8 )
+		if( tmpList.size() > USER_GROUP_COUNT )
 		{
-			for( size_t cnt=8; cnt < tmpList.size(); cnt++ )
+			for( size_t cnt=USER_GROUP_COUNT; cnt < tmpList.size(); cnt++ )
 				delete tmpList[ cnt ];
-		???	tmpList.erase( tmpList.begin() + 8, tmpList.end() );
+			tmpList.erase( tmpList.begin() + USER_GROUP_COUNT, tmpList.end() );
 		}
 		else 
 		{
-			for( size_t cnt=tmpList.size(); cnt < 8; cnt++ )
-				users_.push_back( CreateRandomUser_( gIter->first ) );
+			for( size_t cnt=tmpList.size(); cnt < USER_GROUP_COUNT; cnt++ )
+				tmpList.push_back( CreateRandomUser_( gIter->first ) );
 		}
 	}
+
+	gIter = group.begin();
+	for( ; gIter != group.end(); gIter++ )
+		for(  size_t cnt=0; cnt < gIter->second->size(); cnt++ )
+			users_.push_back( gIter->second->at( cnt ) );
+	SetValue<int>( USERNUMBER, users_.size() );
 }
 
 CNrpApplication& nrp::CNrpApplication::Instance()
@@ -413,17 +431,15 @@ CNrpApplication& nrp::CNrpApplication::Instance()
 
 IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 {
-	size_t randomParams = rand() % GT_COUNT;//сколько параметров будем создавать
-	size_t maxParamValue = rand() % 100;//максимальное значение параметров
+	size_t randomParams = 1 + rand() % (GT_COUNT % 100);//сколько параметров будем создавать
+	size_t maxParamValue = 1 + rand() % 100;//максимальное значение параметров
 
 	std::string userName;
-	size_t nameCount = sizeof( GlobalPeopleName );
-	size_t surnameCount = sizeof( GlobalPeopleSurname );
 
 	IUser* ptrUser = NULL;
 	do 
 	{
-		userName = GlobalPeopleName[ rand() % nameCount ] + " " + GlobalPeopleSurname[ rand() % surnameCount ];
+		userName = GlobalPeopleName[ rand() % PEOPLE_NAME_COUNT ] + " " + GlobalPeopleSurname[ rand() % PEOPLE_SURNAME_COUNT ];
 		ptrUser = GetUser( "", userName );
 	} while ( ptrUser != NULL );
 	ptrUser = new IUser( userType.c_str(), userName.c_str(), NULL );
@@ -435,8 +451,8 @@ IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 
 	for( size_t cnt=0; cnt < randomParams; cnt++ )
 	{
-		ptrUser->SetGenreExperience( rand() % GT_COUNT, rand() % maxParamValue );
-		ptrUser->SetGenrePreferences( rand() % GT_COUNT, rand() % maxParamValue );
+		ptrUser->SetGenreExperience( rand() % (GT_COUNT%100), rand() % maxParamValue );
+		ptrUser->SetGenrePreferences( rand() % (GT_COUNT%100), rand() % maxParamValue );
 	} 
 
 	return ptrUser;

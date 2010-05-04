@@ -13,7 +13,7 @@ Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 LogVideo("Идет создание ландшафта", 0xDEADBEEF)
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-local app = CLuaApplication( NrpGetApplication() )
+local applic = CLuaApplication( NrpGetApplication() )
 
 citySceneObjects = { } 
 bankSceneObjects = { }
@@ -47,8 +47,8 @@ sceneManager:DrawProgress( 85 )
 sceneManager:AddSkyDomeSceneNode( "media/sky/panorama.jpg", 20, 12, 1, 2.0, 10000 )
 sceneManager:DrawProgress( 90 )
 
---создание двумерной карты
---AddGlobalMap()
+--создание пользователей
+applic:UpdateUsers()
 sceneManager:DrawProgress( 95 )
 
 AddObjectsToCityScene()
@@ -56,7 +56,5 @@ AddObjectsToBankScene()
 AddObjectsToOfficeScene()
 AddObjectsToUniverScene()
 sceneManager:DrawProgress( 100 )
-
-app:UpdateUsers()
 
 sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )

@@ -41,11 +41,13 @@ public:
 	int ResetData( lua_State* L );
 	int LoadProfile( lua_State* L );
 	int UpdateUsers( lua_State* L );
+	int PayUserSalary( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:
 	int lastDay_, lastMonth_, lastYear_;
 	int AddRemLuaFunction_( lua_State* L, std::string funcName, bool rem );
+	
 };
 
 }//namespace nrp

@@ -79,7 +79,7 @@ local function ShowAvaibleEmployers( ptr )
 	local hTemp = height / 4
 	
 	local xoffset = 10
-	local yoffset = 0
+	local yoffset = hTemp
 	
 	local cnt = 0
 	Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleEmployers:appusers" .. maxuser )
@@ -89,20 +89,15 @@ local function ShowAvaibleEmployers( ptr )
 	
 		Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleEmployers:user=" .. user:GetName() .. " type=" .. user:GetTypeName() )
 		if modeUserView == user:GetTypeName() then
-		    cnt = cnt + 1
-			if cnt < 4 then
+			if cnt < 3 then
 				sworkCreateUserInfoWindow( ptr, xoffset, yoffset + cnt * hTemp, width / 2,  hTemp, user:Self() ) 
 			else
-				sworkCreateUserInfoWindow( ptr, xoffset, yoffset + (cnt - 4) * hTemp, width / 2,  hTemp, user:Self() ) 
+				sworkCreateUserInfoWindow( ptr, xoffset + width / 2, yoffset + (cnt - 3) * hTemp, width / 2,  hTemp, user:Self() ) 
 			end
+		    cnt = cnt + 1
 		end
 		
-		if cnt > 4 then
-			xoffset = width / 2 + 10
-			yoffset = 10
-		end
-		
-		if cnt > 8 then 
+		if cnt > 6 then 
 			return 0 
 		end
 	end

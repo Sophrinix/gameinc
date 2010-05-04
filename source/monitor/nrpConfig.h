@@ -253,6 +253,8 @@ public:
 				CreateValue<bool>( name, valuel == "true" );
 			else if( type == "string" )
 				CreateValue<std::string>( name, valuel );
+			else if( type == "time" )
+				CreateValue<SYSTEMTIME>( name, StrToTime( valuel.c_str()) );
 
 			memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
 			readLine = buffer;

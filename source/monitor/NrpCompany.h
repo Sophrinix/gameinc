@@ -45,6 +45,7 @@ public:
 	IUser* GetUser( std::string name );
 	CNrpGame* GetGame( std::string gameName );
 	void Update();
+	void PaySalaries();
 
 	void Save( std::string saveFolder );
 	void Load( std::string loadFolder );

@@ -22,6 +22,7 @@ end
 
 function sworkAppMonthChange( ptr )
 	app:UpdateUsers()
+	app:PayUserSalary()
 end
 
 function sworkAppYearChange( ptr )

@@ -20,10 +20,10 @@ class CNrpTechnology;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
-	typedef std::vector< CNrpCompany* > COMPANIES_LIST;
 	typedef std::vector< IUser* > USER_LIST;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
 public:
+	typedef std::vector< CNrpCompany* > COMPANIES_LIST;
 	typedef enum { SPD_MINUTE=0, SPD_HOUR, SPD_DAY, SPD_MONTH, SPD_COUNT } SPEED;
 	static CNrpApplication& Instance();
 
@@ -51,7 +51,7 @@ public:
 	CNrpGameEngine* GetGameEngine( std::string name );
 
 	bool UpdateTime();
-	SYSTEMTIME& GetDateTime() { return time_; }
+	SYSTEMTIME& GetDateTime() { return GetValue<SYSTEMTIME>( CURRENTTIME ); }
 
 	int GetTechsNumber() const { return technologies_.size(); }
 	CNrpTechnology* GetTechnology( int index ) const;
@@ -66,7 +66,6 @@ private:
 	TECH_LIST technologies_;
 
 	SPEED speed_;
-	SYSTEMTIME time_;
 	int lastTimeUpdate_;
 
 	void Load_( char* fileName ) {}

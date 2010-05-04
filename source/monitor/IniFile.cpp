@@ -213,9 +213,9 @@ void IniFile::Write( const std::string& section,
 {
 	char str[ MAX_PATH ];
 
-	sprintf_s( str, "y=%04d m=%02d y=%02f h=%02d m=%02d s=%02d", 
+	sprintf_s( str, "y=%04d m=%02d d=%02d h=%02d mi=%02d", 
 					amount.wYear, amount.wMonth, amount.wDay,
-					amount.wHour, amount.wMinute, amount.wSecond );
+					amount.wHour, amount.wMinute );
 
 	Write( section, key, str, fileName );
 }
