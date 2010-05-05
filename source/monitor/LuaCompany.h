@@ -31,6 +31,7 @@ public:
 	int GetProjectByName( lua_State* L );
 	int AddUser( lua_State* L );
 	int GetUser( lua_State* L );
+	int AddLuaFunction( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaCompany"; }
 };

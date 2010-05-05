@@ -185,6 +185,8 @@ void CNrpTechnology::SetLider( IUser* ptrUser )
 		SetValue<int>( CODEPASSED,(int)(GetValue<int>( CODEPASSED ) * 0.75f) );
 		SetValue<std::string>( COMPONENTLIDER, newUser );
 	}
+
+	GetValue<PNrpGameProject>( PARENT )->Update();
 }
 
 void CNrpTechnology::Update( IUser* ptrUser )

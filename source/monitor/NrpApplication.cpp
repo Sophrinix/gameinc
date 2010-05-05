@@ -434,6 +434,12 @@ IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 	size_t randomParams = 1 + rand() % (GT_COUNT % 100);//сколько параметров будем создавать
 	size_t maxParamValue = 1 + rand() % 100;//максимальное значение параметров
 
+	std::map< std::string, int > skillMap;
+	skillMap[ "coder" ] = SKL_CODING;
+	skillMap[ "designer" ] = SKL_DRAWING;
+	skillMap[ "composer" ] = SKL_SOUND;
+	skillMap[ "tester" ] = SKL_TESTING;
+
 	std::string userName;
 
 	IUser* ptrUser = NULL;
@@ -442,12 +448,9 @@ IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 		userName = GlobalPeopleName[ rand() % PEOPLE_NAME_COUNT ] + " " + GlobalPeopleSurname[ rand() % PEOPLE_SURNAME_COUNT ];
 		ptrUser = GetUser( "", userName );
 	} while ( ptrUser != NULL );
-	ptrUser = new IUser( userType.c_str(), userName.c_str(), NULL );
 
-	if( userType == "coder" )
-	{
-		ptrUser->SetSkill( SKL_CODING, maxParamValue );
-	}
+	ptrUser = new IUser( userType.c_str(), userName.c_str(), NULL );
+	ptrUser->SetSkill( skillMap[ userType ], maxParamValue );
 
 	for( size_t cnt=0; cnt < randomParams; cnt++ )
 	{

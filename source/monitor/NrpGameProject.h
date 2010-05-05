@@ -60,6 +60,7 @@ public:
 	CNrpTechnology* GetSoundTech( int index );
 	void Save( std::string folderSave );
 	void Load( std::string loadFolder );
+	void Update();
 private:
 
 	void InitializeOption_( std::string name );

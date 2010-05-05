@@ -81,7 +81,7 @@ CNrpGameProject* CNrpCompany::AddGameProject( CNrpGameProject* ptrProject )
 void CNrpCompany::AddUser( IUser* user )
 {
 	employers_.push_back( user );
-
+	user->SetValue<int>( SALARY, user->GetValue<int>( WANTMONEY ) );
 	SetValue<int>( USERNUMBER, employers_.size() );
 }
 
@@ -236,6 +236,10 @@ void CNrpCompany::Update()
 {
 	for( size_t cnt=0; cnt < employers_.size(); cnt++ )
 		employers_[ cnt ]->Update( CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ) );
+
+	for( size_t cnt=0; cnt < projects_.size(); cnt++ )
+		if( projects_[ cnt ]->GetValue<bool>( PROJECTREADY ) )
+		    DoLuaFunctionsByType( COMPANY_READY_PROJECT, projects_[ cnt ] );
 }
 
 void CNrpCompany::PaySalaries()
@@ -247,8 +251,27 @@ void CNrpCompany::PaySalaries()
 		int userBalance = employers_[ cnt ]->GetValue<int>( BALANCE );
 		balance -= salary;
 
-		employers_[ cnt ]->SetValue<int>( userBalance + salary );
+		employers_[ cnt ]->SetValue<int>( BALANCE, userBalance + salary );
 	}
 	SetValue<int>( BALANCE, balance );
+}
+
+void CNrpCompany::CreateGame( CNrpGameProject* ptrProject )
+{
+	games_[ ptrProject->GetValue<std::string>( NAME ) ] = new CNrpGame( ptrProject );
+	RemoveGameProject( ptrProject );
+	delete ptrProject;
+}
+
+void CNrpCompany::RemoveGameProject( CNrpGameProject* ptrProject )
+{
+	PROJECT_MAP::iterator pIter = projects_.begin();
+
+	for( ; pIter != projects_.end(); pIter++ ) 
+		if( *pIter == ptrProject )
+		{
+			projects_.erase( pIter );
+			break;
+		}
 }
 }//namespace nrp

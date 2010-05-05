@@ -1,5 +1,6 @@
 #pragma once
 #include "nrpConfig.h"
+#include "LuaFunctionality.h"
 #include <map>
 #include <vector>
 #include <string>
@@ -21,7 +22,7 @@ class IUser;
 class CNrpTechnology;
 class CNrpGameProject;
 
-class CNrpCompany : public INrpConfig
+class CNrpCompany : public INrpConfig, public ILuaFunctionality
 {
 public:
 	typedef std::vector< CNrpGameEngine* > ENGINE_LIST;
@@ -38,12 +39,14 @@ public:
 	CNrpGameEngine* GetGameEngine( std::string name );
 	CNrpTechnology* GetTech( int index );
 	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
+	void RemoveGameProject( CNrpGameProject* ptrProject );
 	INrpProject* GetProject( std::string name );
 	INrpProject* GetProject( int index );
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
 	CNrpGame* GetGame( std::string gameName );
+	void CreateGame( CNrpGameProject* ptrProject );
 	void Update();
 	void PaySalaries();
 

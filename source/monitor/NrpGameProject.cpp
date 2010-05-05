@@ -124,6 +124,7 @@ CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CN
 	}
 
 	SetValue<std::string>( PROJECTSTATUS, std::string("develop") );
+	SetValue<bool>( PROJECTREADY, false );
 	CalculateCodeVolume();
 }
 
@@ -591,5 +592,34 @@ void CNrpGameProject::InitializeOption_( std::string name )
 	CreateValue<PNrpTechnology>( ENGINEEXTENDED, NULL );
 	CreateValue<PNrpTechnology>( LOCALIZATION, NULL );
 	CreateValue<PNrpTechnology>( CROSSPLATFORMCODE, NULL ); 
+}
+
+void CNrpGameProject::Update()
+{
+	TECH_LIST rt = technologies_;
+	rt.push_back( GetValue<PNrpTechnology>(MINIGAMEENGINE));
+	rt.push_back( GetValue<PNrpTechnology>(SCRIPTENGINE));
+	rt.push_back( GetValue<PNrpTechnology>(PHYSICSENGINE));
+	rt.push_back( GetValue<PNrpTechnology>(GRAPHICQUALITY));
+	rt.push_back( GetValue<PNrpTechnology>(ENGINEEXTENDED));
+	rt.push_back( GetValue<PNrpTechnology>(LOCALIZATION));
+	rt.push_back( GetValue<PNrpTechnology>(CROSSPLATFORMCODE));
+
+	rt.insert(rt.end(), videoTechnologies_.begin(), videoTechnologies_.end() );
+	rt.insert(rt.end(), technologies_.begin(), technologies_.end() );
+	rt.insert(rt.end(), soundTechnologies_.begin(), soundTechnologies_.end() );
+	TECH_LIST::iterator pIter = rt.begin();
+
+	bool ready = true;
+	for( ; pIter != rt.end(); pIter++)
+		if( (*pIter)->GetValue( READYWORKPERCENT ) != 1 )
+		{
+			ready = false;		
+			break;
+		}
+
+	SetValue<bool>( PROJECTREADY, ready );
+	if( ready )
+		SetValue<std::string>( PROJECTSTATUS, "produce" );
 }
 }//namespace nrp
