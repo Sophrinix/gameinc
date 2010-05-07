@@ -17,6 +17,7 @@ class IUser;
 class INrpProject;
 class CNrpGameEngine;
 class CNrpTechnology;
+class CNrpGame;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
@@ -55,8 +56,13 @@ public:
 
 	int GetTechsNumber() const { return technologies_.size(); }
 	CNrpTechnology* GetTechnology( int index ) const;
+	CNrpTechnology* GetTechnology( const std::string& name ) const;
+	CNrpTechnology* GetTechnology( CNrpCompany* ptrCompany, const std::string& name );
+
 	void AddTechnology( CNrpTechnology* ptrTech );
+	void UpdateGameRatings( CNrpGame* ptrGame, bool firstTime=false );
 	nrp::CNrpTechnology* CreateTechnology( int typeTech );
+
 private:
 	CNrpApplication(void);
 	~CNrpApplication(void);
@@ -70,7 +76,9 @@ private:
 
 	void Load_( char* fileName ) {}
 	void UpdateGameState_();
+	void PayCompanySalaries_();
 	IUser* CreateRandomUser_( std::string userType );
+	int GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );
 };
 
 }//namespace nrp

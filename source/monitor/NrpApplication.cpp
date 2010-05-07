@@ -11,6 +11,7 @@
 #include "OpFileSystem.h"
 #include "nrpEngine.h"
 #include "PeopleName.h"
+#include "NrpGame.h"
 
 #include <io.h>
 #include <errno.h>
@@ -125,6 +126,7 @@ bool CNrpApplication::UpdateTime()
 				time.wDay = 0;
 			    spd = SPD_MONTH;
 				DoLuaFunctionsByType( APP_MONTH_CHANGE, (void*)this );
+				PayCompanySalaries_();
 			}
 		}
 
@@ -178,6 +180,14 @@ CNrpTechnology* CNrpApplication::CreateTechnology( int typeTech )
 CNrpTechnology* CNrpApplication::GetTechnology( int index ) const
 {
 	return index < (int)technologies_.size() ?  technologies_[ index ] : NULL;
+}
+
+CNrpTechnology* CNrpApplication::GetTechnology( const std::string& name ) const
+{
+	TECH_LIST::const_iterator pIter = technologies_.begin();
+	for( ; pIter != technologies_.end(); pIter++ )
+		if( (*pIter)->GetValue<std::string>( NAME ) == name )
+			return (*pIter);
 }
 
 void CNrpApplication::AddTechnology( CNrpTechnology* ptrTech )
@@ -429,6 +439,84 @@ CNrpApplication& nrp::CNrpApplication::Instance()
 	return *globalApplication;
 }
 
+CNrpTechnology* CNrpApplication::GetTechnology( CNrpCompany* ptrCompany, const std::string& name )
+{
+	CNrpTechnology* tech = GetTechnology( name );
+	if( !tech )
+		tech = ptrCompany->GetTechnology( name );
+
+	return tech;
+}
+
+template< class B > int GetQuality_( B* ptrObject )
+{
+	if( ptrObject )
+		return ptrObject->GetValue<int>( QUALITY );
+	return 0;
+}
+
+int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating )
+{
+	CNrpCompany* cmp = GetCompany( ptrGame->GetValue<std::string>( COMPANYNAME ) );
+	int rating = 0;
+	int number = 0;
+
+	switch( typeRating ) {
+	case GRT_GENERAL:
+		rating += GetQuality_( cmp->GetGameEngine( ptrGame->GetValue<std::string>( GAME_ENGINE ) ) );
+		rating += GetQuality_( GetTechnology( cmp, ptrGame->GetValue<std::string>( LOCALIZATION ) ) );
+		rating += GetQuality_( GetTechnology( cmp, ptrGame->GetValue<std::string>( CROSSPLATFORMCODE ) ) );
+		rating += GetGameRating_( ptrGame, GRT_VIDEO );
+		rating += GetGameRating_( ptrGame, GRT_SOUND );
+		rating += GetGameRating_( ptrGame, GRT_ADVFUNC );
+		rating += GetGameRating_( ptrGame, GRT_GENRE );
+	break;
+
+	case GRT_VIDEO:
+		number = ptrGame->GetValue<int>( VIDEOTECHNUMBER );
+		for( int cnt=0; cnt < number; cnt++ )
+			rating += GetQuality_( GetTechnology( cmp, ptrGame->GetVideoTech( cnt ) ) );
+	break;
+
+	case GRT_SOUND:
+		number = ptrGame->GetValue<int>( SOUNDTECHNUMBER );
+		for( int cnt=0; cnt < number; cnt++ )
+			rating += GetQuality_( GetTechnology( cmp, ptrGame->GetSoundTech( cnt ) ) );
+	break;
+
+	case GRT_ADVFUNC:
+		number = ptrGame->GetValue<int>( ADVTECHNUMBER );
+		for( int cnt=0; cnt < number; cnt++ )
+			rating += GetQuality_( GetTechnology( cmp, ptrGame->GetAdvTech( cnt ) ) );
+	break;
+
+	case GRT_GENRE:
+		number = ptrGame->GetValue<int>( GENRE_MODULE_NUMBER );
+		for( int cnt=0; cnt < number; cnt++ )
+			rating += GetQuality_( GetTechnology( cmp, ptrGame->GetGenreTech( cnt ) ) );
+	break;
+	}
+
+	return rating;
+}
+
+void CNrpApplication::UpdateGameRatings( CNrpGame* ptrGame, bool firstTime )
+{
+	if( firstTime )
+	{
+		SetValue<int>( STARTGAMERATING, GetGameRating_( ptrGame, GRT_GENERAL ) );
+		SetValue<int>( STARTGRAPHICRATING, GetGameRating_( ptrGame, GRT_VIDEO ) );
+		SetValue<int>( STARTGENRERATING, GetGameRating_( ptrGame, GRT_GENRE ) );
+		SetValue<int>( STARTSOUNDRATING, GetGameRating_( ptrGame, GRT_SOUND ) );
+		SetValue<int>( STARTADVFUNC, GetGameRating_( ptrGame, GRT_ADVFUNC ) );
+	}
+
+	SetValue<int>( CURRENTGAMERATING, GetGameRating_( ptrGame, GRT_GENERAL ) );
+	SetValue<int>( CURRENTGRAPHICRATING, GetGameRating_( ptrGame, GRT_VIDEO ) );
+	SetValue<int>( CURRENTGENRERATING, GetGameRating_( ptrGame, GRT_GENRE ) );
+	SetValue<int>( CURRENTSOUNDRATING, GetGameRating_( ptrGame, GRT_SOUND ) );
+}
+
 IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 {
 	size_t randomParams = 1 + rand() % (GT_COUNT % 100);//сколько параметров будем создавать
@@ -461,4 +549,10 @@ IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 	return ptrUser;
 }
 
+void CNrpApplication::PayCompanySalaries_()
+{
+	COMPANIES_LIST::iterator cIter = companies_.begin();
+	for( ; cIter != companies_.end(); cIter++)
+		(*cIter)->PaySalaries();
+}
 }//namespace nrp

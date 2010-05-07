@@ -124,6 +124,13 @@ public:
 
 	}
 
+	~INrpConfig()
+	{
+		PropertyArray::iterator pIter = options_.begin();
+		for( ; pIter != options_.end(); pIter++ )
+			 delete pIter->second;
+	}
+
 	//! имя класса объекта
 	CLASS_NAME GetType() { return ClassName(); }
 

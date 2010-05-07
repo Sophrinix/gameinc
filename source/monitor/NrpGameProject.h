@@ -61,6 +61,8 @@ public:
 	void Save( std::string folderSave );
 	void Load( std::string loadFolder );
 	void Update();
+	void UpdateDevelopmentMoney();
+
 private:
 
 	void InitializeOption_( std::string name );
@@ -73,6 +75,7 @@ private:
 
 	void SetTech_( CNrpTechnology* ptrTech, int index, TECH_LIST& listd, OPTION_NAME optname );
 	void FindPlaformsAndLanguages_();
+	void GetAllTech_( TECH_LIST& techList );
 };
 
 typedef CNrpGameProject* PNrpGameProject;

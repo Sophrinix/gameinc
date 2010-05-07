@@ -24,6 +24,8 @@ public:
 	int CreateGameEngine( lua_State* L );
 	int GetBank( lua_State* L );
 	int GetPlayerCompany( lua_State* L );
+	int GetCompany( lua_State* L );
+	int GetCompanyNumber( lua_State *L );
 	int RemoveLuaFunction( lua_State* L );
 	int AddLuaFunction( lua_State* L );
 	int CreateGameProject( lua_State* L );

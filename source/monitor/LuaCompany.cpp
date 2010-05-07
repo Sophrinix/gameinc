@@ -106,7 +106,7 @@ int CLuaCompany::GetTech( lua_State* L )
 
 	int index = lua_tointeger( L, 2 );
 	CNrpTechnology* tech = NULL;
-	IF_OBJECT_NOT_NULL_THEN	tech = object_->GetTech( index );
+	IF_OBJECT_NOT_NULL_THEN	tech = object_->GetTechnology( index );
 
 	lua_pushlightuserdata( L, tech );
 	return 1;

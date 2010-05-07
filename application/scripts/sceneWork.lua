@@ -57,8 +57,8 @@ AddObjectsToOfficeScene()
 AddObjectsToUniverScene()
 sceneManager:DrawProgress( 100 )
 
-for i=1, app:GetCompanyNumber() do
-	local cmp = CLuaCompany( app:GetCompany( i - 1 ) )
+for i=1, applic:GetCompanyNumber() do
+	local cmp = CLuaCompany( applic:GetCompany( i - 1 ) )
 	cmp:AddLuaFunction( COMPANY_READY_PROJECT, "sworkCompanyReadyProject" )
 end
 

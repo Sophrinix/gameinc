@@ -37,7 +37,8 @@ public:
 	void AddGameEngine( CNrpGameEngine* ptrEng );
 	CNrpGameEngine* GetGameEngine( int index );
 	CNrpGameEngine* GetGameEngine( std::string name );
-	CNrpTechnology* GetTech( int index );
+	CNrpTechnology* GetTechnology( int index );
+	CNrpTechnology* GetTechnology( std::string name );
 	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
 	void RemoveGameProject( CNrpGameProject* ptrProject );
 	INrpProject* GetProject( std::string name );
@@ -45,8 +46,12 @@ public:
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
+	void UpdateGameProjectState();
+
+	
 	CNrpGame* GetGame( std::string gameName );
-	void CreateGame( CNrpGameProject* ptrProject );
+	CNrpGame* CreateGame( CNrpGameProject* ptrProject );
+
 	void Update();
 	void PaySalaries();
 
@@ -55,7 +60,7 @@ public:
 
 private:
 	void Load_( char* file_name ) {}
-	
+
 	PROJECT_MAP projects_; 
 	ENGINE_LIST engines_;
 	TECH_MAP technologies_;

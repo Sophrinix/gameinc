@@ -194,17 +194,8 @@ void CNrpGameProject::CalculateCodeVolume()
 	float engCoeff = 1;
 	int quality = 0;
 
-	TECH_LIST rt = genres_;
-	rt.insert( rt.end(), technologies_.begin(), technologies_.end() );
-	rt.insert( rt.end(), videoTechnologies_.begin(), videoTechnologies_.end() );
-	rt.insert( rt.end(), soundTechnologies_.begin(), soundTechnologies_.end() );
-	rt.insert( rt.end(), genres_.begin(), genres_.end() );
-	rt.push_back( GetValue<PNrpTechnology>( SCRIPTENGINE ) );
-	rt.push_back( GetValue<PNrpTechnology>( MINIGAMEENGINE ) );
-	rt.push_back( GetValue<PNrpTechnology>( PHYSICSENGINE ) );
-	rt.push_back( GetValue<PNrpTechnology>( SOUNDQUALITY ) );
-	rt.push_back( GetValue<PNrpTechnology>( GRAPHICQUALITY ) );
-	rt.push_back( GetValue<PNrpTechnology>( SCENARIO ) );
+	TECH_LIST rt;
+	GetAllTech_( rt );
 
 	TECH_LIST::iterator techIter = rt.begin();
 	for( ; techIter != rt.end(); techIter++)
@@ -275,15 +266,8 @@ CNrpTechnology* CNrpGameProject::GetGenre( int index )
 
 bool CNrpGameProject::IsTechInclude( ADV_TECH_TYPE typen )
 {
-	TECH_LIST rt = technologies_;
-	rt.push_back( GetValue<PNrpTechnology>(MINIGAMEENGINE));
-	rt.push_back( GetValue<PNrpTechnology>(SCRIPTENGINE));
-	rt.push_back( GetValue<PNrpTechnology>(PHYSICSENGINE));
-	rt.push_back( GetValue<PNrpTechnology>(GRAPHICQUALITY));
-
-	rt.insert(rt.end(), videoTechnologies_.begin(), videoTechnologies_.end() );
-	rt.insert(rt.end(), technologies_.begin(), technologies_.end() );
-	rt.insert(rt.end(), soundTechnologies_.begin(), soundTechnologies_.end() );
+	TECH_LIST rt;
+	GetAllTech_( rt );
 	TECH_LIST::iterator pIter = rt.begin();
 
 	for( ; pIter != rt.end(); pIter++)
@@ -592,27 +576,34 @@ void CNrpGameProject::InitializeOption_( std::string name )
 	CreateValue<PNrpTechnology>( ENGINEEXTENDED, NULL );
 	CreateValue<PNrpTechnology>( LOCALIZATION, NULL );
 	CreateValue<PNrpTechnology>( CROSSPLATFORMCODE, NULL ); 
+	CreateValue<int>( MONEYONDEVELOP, 0 );
+}
+
+void CNrpGameProject::GetAllTech_( TECH_LIST& techList )
+{
+	techList = technologies_;
+	techList.push_back( GetValue<PNrpTechnology>(MINIGAMEENGINE));
+	techList.push_back( GetValue<PNrpTechnology>(SCRIPTENGINE));
+	techList.push_back( GetValue<PNrpTechnology>(PHYSICSENGINE));
+	techList.push_back( GetValue<PNrpTechnology>(GRAPHICQUALITY));
+	techList.push_back( GetValue<PNrpTechnology>(ENGINEEXTENDED));
+	techList.push_back( GetValue<PNrpTechnology>(LOCALIZATION));
+	techList.push_back( GetValue<PNrpTechnology>(CROSSPLATFORMCODE));
+
+	techList.insert(techList.end(), videoTechnologies_.begin(), videoTechnologies_.end() );
+	techList.insert(techList.end(), technologies_.begin(), technologies_.end() );
+	techList.insert(techList.end(), soundTechnologies_.begin(), soundTechnologies_.end() );
 }
 
 void CNrpGameProject::Update()
 {
-	TECH_LIST rt = technologies_;
-	rt.push_back( GetValue<PNrpTechnology>(MINIGAMEENGINE));
-	rt.push_back( GetValue<PNrpTechnology>(SCRIPTENGINE));
-	rt.push_back( GetValue<PNrpTechnology>(PHYSICSENGINE));
-	rt.push_back( GetValue<PNrpTechnology>(GRAPHICQUALITY));
-	rt.push_back( GetValue<PNrpTechnology>(ENGINEEXTENDED));
-	rt.push_back( GetValue<PNrpTechnology>(LOCALIZATION));
-	rt.push_back( GetValue<PNrpTechnology>(CROSSPLATFORMCODE));
-
-	rt.insert(rt.end(), videoTechnologies_.begin(), videoTechnologies_.end() );
-	rt.insert(rt.end(), technologies_.begin(), technologies_.end() );
-	rt.insert(rt.end(), soundTechnologies_.begin(), soundTechnologies_.end() );
+	TECH_LIST rt;
+	GetAllTech_( rt );
 	TECH_LIST::iterator pIter = rt.begin();
 
 	bool ready = true;
 	for( ; pIter != rt.end(); pIter++)
-		if( (*pIter)->GetValue( READYWORKPERCENT ) != 1 )
+		if( (*pIter)->GetValue<float>( READYWORKPERCENT ) != 1 )
 		{
 			ready = false;		
 			break;
@@ -621,5 +612,25 @@ void CNrpGameProject::Update()
 	SetValue<bool>( PROJECTREADY, ready );
 	if( ready )
 		SetValue<std::string>( PROJECTSTATUS, "produce" );
+}
+
+void CNrpGameProject::UpdateDevelopmentMoney()
+{
+	TECH_LIST rt;
+	GetAllTech_( rt );
+
+	int& money = GetValue<int>( MONEYONDEVELOP );
+	CNrpCompany* cmp = GetValue<PNrpCompany>( PARENTCOMPANY );
+	TECH_LIST::iterator pIter = rt.begin();
+	for( ; pIter != rt.end(); pIter++ )
+	{
+		std::string name = (*pIter)->GetValue<std::string>( COMPONENTLIDER );
+		if( !name.empty() )
+		{
+			PUser ptrUser = cmp->GetUser( name );
+			if( ptrUser )
+				money += ptrUser->GetValue<int>( SALARY );
+		}
+	}
 }
 }//namespace nrp

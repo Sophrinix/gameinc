@@ -56,7 +56,7 @@ void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 	ptrEng->SetValue<std::string>( COMPANYNAME, this->GetValue<std::string>( NAME ) );
 }
 
-CNrpTechnology* CNrpCompany::GetTech( int index )
+CNrpTechnology* CNrpCompany::GetTechnology( int index )
 {
 	int tSize = (int)technologies_.size();
 	if( index >= tSize )
@@ -66,6 +66,15 @@ CNrpTechnology* CNrpCompany::GetTech( int index )
 	for( int k=0; k < index; index++ ) tech++;
 
 	return (*tech).second;
+}
+
+CNrpTechnology* CNrpCompany::GetTechnology( std::string name )
+{
+	TECH_MAP::iterator pIter = technologies_.find( name );
+	if( pIter != technologies_.end() )
+		return pIter->second;
+
+	return NULL;
 }
 
 CNrpGameProject* CNrpCompany::AddGameProject( CNrpGameProject* ptrProject )
@@ -237,9 +246,13 @@ void CNrpCompany::Update()
 	for( size_t cnt=0; cnt < employers_.size(); cnt++ )
 		employers_[ cnt ]->Update( CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ) );
 
-	for( size_t cnt=0; cnt < projects_.size(); cnt++ )
-		if( projects_[ cnt ]->GetValue<bool>( PROJECTREADY ) )
-		    DoLuaFunctionsByType( COMPANY_READY_PROJECT, projects_[ cnt ] );
+	PROJECT_MAP::iterator pIter = projects_.begin();
+	for( ; pIter != projects_.end(); pIter++ )
+		if( pIter->second->GetValue<bool>( PROJECTREADY ) )
+		{
+			CreateGame( dynamic_cast<CNrpGameProject*>( pIter->second ) );
+			DoLuaFunctionsByType( COMPANY_READY_PROJECT, pIter->second );
+		}
 }
 
 void CNrpCompany::PaySalaries()
@@ -256,11 +269,17 @@ void CNrpCompany::PaySalaries()
 	SetValue<int>( BALANCE, balance );
 }
 
-void CNrpCompany::CreateGame( CNrpGameProject* ptrProject )
+CNrpGame* CNrpCompany::CreateGame( CNrpGameProject* ptrProject )
 {
-	games_[ ptrProject->GetValue<std::string>( NAME ) ] = new CNrpGame( ptrProject );
+	CNrpGame* ptrGame =  new CNrpGame( ptrProject, this );
+	ptrGame->SetValue<SYSTEMTIME>( STARTDATE, CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ) );
+	CNrpApplication::Instance().UpdateGameRatings( ptrGame, true );
+
+	games_[ ptrProject->GetValue<std::string>( NAME ) ] = ptrGame;
 	RemoveGameProject( ptrProject );
 	delete ptrProject;
+
+	return ptrGame;
 }
 
 void CNrpCompany::RemoveGameProject( CNrpGameProject* ptrProject )
@@ -268,10 +287,21 @@ void CNrpCompany::RemoveGameProject( CNrpGameProject* ptrProject )
 	PROJECT_MAP::iterator pIter = projects_.begin();
 
 	for( ; pIter != projects_.end(); pIter++ ) 
-		if( *pIter == ptrProject )
+		if( pIter->second == ptrProject )
 		{
 			projects_.erase( pIter );
 			break;
 		}
 }
+
+void CNrpCompany::UpdateGameProjectState()
+{
+	PROJECT_MAP::iterator pIter = projects_.begin();
+	for( ; pIter != projects_.end(); pIter++ ) 
+	{
+		if( pIter->second->GetType() == "CNrpGameProject" )
+			dynamic_cast< CNrpGameProject* >( pIter->second )->UpdateDevelopmentMoney();
+	}
+}
+
 }//namespace nrp

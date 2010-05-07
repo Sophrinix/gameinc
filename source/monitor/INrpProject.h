@@ -71,6 +71,7 @@ class INrpProject : public INrpConfig
 public:
 	INrpProject(std::string className, std::string systemName);
 	~INrpProject(void);
+
 protected:
 
 	void Load_( char* file_name ) {}
