@@ -36,12 +36,13 @@ public:
 
 	COMPANIES_LIST& GetCompanies();
 	CNrpCompany* GetCompany( std::string companyName ) const;
+	CNrpCompany* GetCompany( int index ) const;
 	int AddCompany( CNrpCompany* company );
 	CNrpCompany* GetPlayerCompany();
 
 	int AddUser( bool player, IUser* user );
 	int RemoveUser( IUser* user );
-	void UpdateUsers();
+	void CreateNewFreeUsers();
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
 	IUser* GetUser( std::string company, std::string name );
@@ -52,7 +53,6 @@ public:
 	CNrpGameEngine* GetGameEngine( std::string name );
 
 	bool UpdateTime();
-	SYSTEMTIME& GetDateTime() { return GetValue<SYSTEMTIME>( CURRENTTIME ); }
 
 	int GetTechsNumber() const { return technologies_.size(); }
 	CNrpTechnology* GetTechnology( int index ) const;
@@ -75,8 +75,9 @@ private:
 	int lastTimeUpdate_;
 
 	void Load_( char* fileName ) {}
-	void UpdateGameState_();
-	void PayCompanySalaries_();
+	void BeginNewHour_();
+	void BeginNewDay_();
+	void BeginNewMonth_();
 	IUser* CreateRandomUser_( std::string userType );
 	int GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );
 };

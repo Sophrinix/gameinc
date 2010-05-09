@@ -62,7 +62,7 @@ CNrpLoan* CNrpBank::FindLoadByID( size_t id )
 void CNrpBank::CreateLoan( std::string name, int money, int percent, int month )
 {
 	CNrpLoan* loan = new CNrpLoan( loanId_++ );
-	SYSTEMTIME endtime, time = CNrpApplication::Instance().GetDateTime();
+	SYSTEMTIME endtime, time = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
 	endtime = time;
 	endtime.wYear = time.wYear + month / 12;
 	endtime.wMonth = ( time.wMonth + month ) % 12;

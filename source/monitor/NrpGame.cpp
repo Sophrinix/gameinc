@@ -51,35 +51,57 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<std::string>( SOUNDQUALITY, "" );
 	CreateValue<int>( SOUNDTECHNUMBER, 0 );
 	CreateValue<int>( ADVTECHNUMBER, 0 );
+	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
 }
 
 CNrpGame::CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany )
 		 : INrpConfig( "CNrpGame", ptrProject->GetValue<std::string>( NAME ) )
 {
 	InitializeOptions_();
+
 	SetValue<std::string>( COMPANYNAME, ptrProject->GetValue<std::string>( COMPANYNAME ) );
 	SetValue<std::string>( NAME, ptrProject->GetValue<std::string>( NAME ) );
 	SetValue<int>( MONEYONDEVELOP, ptrProject->GetValue<int>( MONEYONDEVELOP ) );
 	SetValue<std::string>( GAME_ENGINE, ptrProject->GetValue<PNrpGameEngine>( GAME_ENGINE )->GetValue<std::string>( NAME ) );
 	SetValue<int>( LOCALIZATION, ptrProject->GetValue<PNrpTechnology>( LOCALIZATION )->GetValue<int>( QUALITY ) );
 	SetValue<int>( CROSSPLATFORMCODE, ptrProject->GetValue<PNrpTechnology>( CROSSPLATFORMCODE )->GetValue<int>( QUALITY ) );
-	SetValue<std::string>( PREV_GAME, ptrProject->GetValue<PNrpGame>( PREV_GAME )->GetValue<std::string>( NAME ) ); 
-	SetValue<std::string>( SCRIPTENGINE, ptrProject->GetValue<PNrpTechnology>( SCRIPTENGINE )->GetValue<std::string>( NAME ) );
-	SetValue<std::string>( MINIGAMEENGINE, ptrProject->GetValue<PNrpTechnology>( MINIGAMEENGINE )->GetValue<std::string>( NAME ) );
-	SetValue<std::string>( PHYSICSENGINE, ptrProject->GetValue<PNrpTechnology>( GRAPHICQUALITY )->GetValue<std::string>( NAME ) ); 
+
+	INrpConfig* component = ptrProject->GetValue<PNrpGame>( PREV_GAME );
+	if( component ) SetValue<std::string>( PREV_GAME, component->GetValue<std::string>( NAME ) ); 
+
+	component = ptrProject->GetValue<PNrpTechnology>( SCRIPTENGINE );
+	if( component )	SetValue<std::string>( SCRIPTENGINE, component->GetValue<std::string>( NAME ) );
+
+	component =  ptrProject->GetValue<PNrpTechnology>( MINIGAMEENGINE );
+	if( component ) SetValue<std::string>( MINIGAMEENGINE, component->GetValue<std::string>( NAME ) );
+
+	component =  ptrProject->GetValue<PNrpTechnology>( PHYSICSENGINE );
+	if( component )	SetValue<std::string>( PHYSICSENGINE, component->GetValue<std::string>( NAME ) ); 
+
 	SetValue<int>( VIDEOTECHNUMBER, ptrProject->GetValue<int>( VIDEOTECHNUMBER ) );
 	for( int cnt=0; cnt < GetValue<int>( VIDEOTECHNUMBER ); cnt++ )
 		videoTechs_.push_back( ptrProject->GetVideoTech( cnt )->GetValue<std::string>( NAME ) );
-	SetValue<std::string>( SOUNDQUALITY, ptrProject->GetValue<PNrpTechnology>( SOUNDQUALITY )->GetValue<std::string>( NAME ) );
+
+	component = ptrProject->GetValue<PNrpTechnology>( SOUNDQUALITY );
+	if( component ) SetValue<std::string>( SOUNDQUALITY, component->GetValue<std::string>( NAME ) );
+
 	SetValue<int>( SOUNDTECHNUMBER, ptrProject->GetValue<int>( SOUNDTECHNUMBER ) );
 	for( int cnt=0; cnt < GetValue<int>( SOUNDTECHNUMBER ); cnt++ )
 		soundTechs_.push_back( ptrProject->GetSoundTech( cnt )->GetValue<std::string>( NAME ) );
+	
 	SetValue<int>( ADVTECHNUMBER, ptrProject->GetValue<int>( ADVTECHNUMBER ) );
 	for( int cnt=0; cnt < GetValue<int>( ADVTECHNUMBER ); cnt++ )
 		advTechs_.push_back( ptrProject->GetTechnology(cnt)->GetValue<std::string>( NAME ) );
-	SetValue<int>( GENRE_MODULE_NUMBER, ptrProject->GetValue<int>( GENRE_MODULE_NUMBER ) );
-	for( int cnt=0; cnt < GetValue<int>( GENRE_MODULE_NUMBER ); cnt++ )
-		genreTechs_.push_back( ptrProject->GetGenre( cnt )->GetValue<std::string>( NAME ) );
+	
+	for( int cnt=0; cnt < ptrProject->GetValue<int>( GENRE_MODULE_NUMBER ); cnt++ )
+	{	
+		component = ptrProject->GetGenre( cnt );
+		if( component ) 
+		{
+			genreTechs_.push_back( component->GetValue<std::string>( NAME ) );
+			AddValue<int>( GENRE_MODULE_NUMBER, 1 );
+		}
+	}
 }
 
 CNrpGame::~CNrpGame(void)

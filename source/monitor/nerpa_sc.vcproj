@@ -1438,6 +1438,14 @@
 				RelativePath=".\NrpPlayer.h"
 				>
 			</File>
+			<File
+				RelativePath=".\NrpUserModificator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpUserModificator.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Bank"

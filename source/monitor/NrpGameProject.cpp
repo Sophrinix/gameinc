@@ -18,14 +18,16 @@ namespace nrp
 CNrpGameProject::CNrpGameProject( std::string name, CNrpCompany* ptrCompany ) : INrpProject( "CNrpGameProject", name )
 {
 	InitializeOption_( name );
-	SetValue<std::string>( COMPANYNAME, ptrCompany->GetValue<std::string>( NAME ) );
+	if( ptrCompany != NULL )
+		SetValue<std::string>( COMPANYNAME, ptrCompany->GetValue<std::string>( NAME ) );
+
 	SetValue<PNrpCompany>( PARENTCOMPANY, ptrCompany );
 }
 
-CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CNrpGameProject", nProject->GetValue<std::string>( NAME ) )
+CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject, CNrpCompany* ptrCompany ) : INrpProject( "CNrpGameProject", nProject->GetValue<std::string>( NAME ) )
 {
 	InitializeOption_( nProject->GetValue<std::string>( NAME ) );
-	PNrpCompany ptrCompany = nProject->GetValue<PNrpCompany>( PARENTCOMPANY );
+
 	SetValue<std::string>( COMPANYNAME, nProject->GetValue<std::string>( COMPANYNAME ) );
 	SetValue<PNrpCompany>( PARENTCOMPANY, ptrCompany );
 	std::vector< PNrpTechnology > techs;
@@ -35,20 +37,20 @@ CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject ) : INrpProject( "CN
 
 	CNrpTechnology* extEngine = new CNrpTechnology( PT_ENGINDEEXTEND, ptrCompany );
 	extEngine->SetValue<std::string>( NAME, GetValue<std::string>( NAME ) + " Расширение движка" );
-	extEngine->SetValue<int>( CODEVOLUME, nProject->GetValue<int>( ENGINE_CODEVOLUME ) );
 	extEngine->SetEmployerSkillRequire( SKL_CODING, ge->GetValue<int>( SKILL_CODING ) );
+	extEngine->SetValue<float>( BASE_CODE, 1 );
 	SetValue<PNrpTechnology>( ENGINEEXTENDED, extEngine );
 
 	CNrpTechnology* langSupport = new CNrpTechnology( PT_LANGSUPPORT, ptrCompany );
-	langSupport->SetValue<int>( CODEVOLUME, nProject->GetValue<int>( LANGUAGESUPPORTCODE ) );
 	langSupport->SetValue<std::string>( NAME, "Локализация" );
 	langSupport->SetEmployerSkillRequire( SKL_CODING, 10 );
+	langSupport->SetValue<float>( BASE_CODE, nProject->GetValue<int>( LANGNUMBER ) * 0.05f );
 	SetValue<PNrpTechnology>( LOCALIZATION, langSupport );
 
 	CNrpTechnology* cpCode = new CNrpTechnology( PT_PLATFORMSUPPORT, ptrCompany );
-	cpCode->SetValue<int>( CODEVOLUME, nProject->GetValue<int>( PLATFORMSUPPORTCODE ) );
 	cpCode->SetValue<std::string>( NAME, "Кроссплатформенный код" );
 	cpCode->SetEmployerSkillRequire( SKL_CODING, ge->GetValue<int>( SKILL_CODING ) );
+	cpCode->SetValue<float>( BASE_CODE, nProject->GetValue<int>( PLATFORMNUMBER ) * 0.1f );
 	SetValue<PNrpTechnology>( CROSSPLATFORMCODE, cpCode );
 
 	SetValue<int>( GENRE_MODULE_NUMBER, nProject->GetValue<int>( GENRE_MODULE_NUMBER ) );
@@ -586,6 +588,7 @@ void CNrpGameProject::GetAllTech_( TECH_LIST& techList )
 	techList.push_back( GetValue<PNrpTechnology>(SCRIPTENGINE));
 	techList.push_back( GetValue<PNrpTechnology>(PHYSICSENGINE));
 	techList.push_back( GetValue<PNrpTechnology>(GRAPHICQUALITY));
+	techList.push_back( GetValue<PNrpTechnology>(SOUNDQUALITY));
 	techList.push_back( GetValue<PNrpTechnology>(ENGINEEXTENDED));
 	techList.push_back( GetValue<PNrpTechnology>(LOCALIZATION));
 	techList.push_back( GetValue<PNrpTechnology>(CROSSPLATFORMCODE));
@@ -593,9 +596,10 @@ void CNrpGameProject::GetAllTech_( TECH_LIST& techList )
 	techList.insert(techList.end(), videoTechnologies_.begin(), videoTechnologies_.end() );
 	techList.insert(techList.end(), technologies_.begin(), technologies_.end() );
 	techList.insert(techList.end(), soundTechnologies_.begin(), soundTechnologies_.end() );
+	techList.insert(techList.end(), genres_.begin(), genres_.end() );
 }
 
-void CNrpGameProject::Update()
+bool CNrpGameProject::IsReady()
 {
 	TECH_LIST rt;
 	GetAllTech_( rt );
@@ -603,7 +607,7 @@ void CNrpGameProject::Update()
 
 	bool ready = true;
 	for( ; pIter != rt.end(); pIter++)
-		if( (*pIter)->GetValue<float>( READYWORKPERCENT ) != 1 )
+		if( (*pIter) && (*pIter)->GetValue<float>( READYWORKPERCENT ) != 1 )
 		{
 			ready = false;		
 			break;
@@ -612,6 +616,8 @@ void CNrpGameProject::Update()
 	SetValue<bool>( PROJECTREADY, ready );
 	if( ready )
 		SetValue<std::string>( PROJECTSTATUS, "produce" );
+
+	return ready;
 }
 
 void CNrpGameProject::UpdateDevelopmentMoney()
@@ -619,7 +625,7 @@ void CNrpGameProject::UpdateDevelopmentMoney()
 	TECH_LIST rt;
 	GetAllTech_( rt );
 
-	int& money = GetValue<int>( MONEYONDEVELOP );
+	int money = GetValue<int>( MONEYONDEVELOP );
 	CNrpCompany* cmp = GetValue<PNrpCompany>( PARENTCOMPANY );
 	TECH_LIST::iterator pIter = rt.begin();
 	for( ; pIter != rt.end(); pIter++ )
@@ -629,8 +635,10 @@ void CNrpGameProject::UpdateDevelopmentMoney()
 		{
 			PUser ptrUser = cmp->GetUser( name );
 			if( ptrUser )
-				money += ptrUser->GetValue<int>( SALARY );
+				money += ptrUser->GetValueA<int>( SALARY ) / 30.f;
 		}
 	}
+
+	SetValue<int>( MONEYONDEVELOP, money );
 }
 }//namespace nrp

@@ -19,13 +19,15 @@ public:
 	CLuaApplication(lua_State *L);		
 
 	int CreateCompany( lua_State* L);
+	int GetCompanyNumber( lua_State* L );
+	int GetCompany( lua_State* L );
+	int GetCompanyByName( lua_State* L );
+
 	int CreateUser( lua_State *L );
 	int UpdateGameTime( lua_State* L );
 	int CreateGameEngine( lua_State* L );
 	int GetBank( lua_State* L );
 	int GetPlayerCompany( lua_State* L );
-	int GetCompany( lua_State* L );
-	int GetCompanyNumber( lua_State *L );
 	int RemoveLuaFunction( lua_State* L );
 	int AddLuaFunction( lua_State* L );
 	int CreateGameProject( lua_State* L );
@@ -42,7 +44,7 @@ public:
 	int CreateProfile( lua_State* L );
 	int ResetData( lua_State* L );
 	int LoadProfile( lua_State* L );
-	int UpdateUsers( lua_State* L );
+	int CreateNewFreeUsers( lua_State* L );
 	int PayUserSalary( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }

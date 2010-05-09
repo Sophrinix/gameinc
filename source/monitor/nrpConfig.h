@@ -45,9 +45,9 @@ OPTION_NAME CODEVOLUME( "volumeCode" );
 OPTION_NAME COMPONENTLIDER( "componentLider" );
 
 #define CHECK_VALCLASS_TYPE( bclass )\
-	if( valueType_ != typeid( bclass ).name() ) {\
+	if( type_ != typeid( bclass ).name() ) {\
 		std::string warn( "warning: request type " );\
-		warn +=	std::string( typeid( bclass ).name()) + " but native typename is " +valueType_ + "\n";\
+		warn +=	std::string( typeid( bclass ).name()) + " but native typename is " +type_ + "\n";\
 		OutputDebugString( warn.c_str() );\
 	}
 
@@ -70,32 +70,34 @@ template< class ValClass > class CNrpProperty : public INrpProperty
 public:
 	CNrpProperty( ValClass pValue )
 	{
-		valueType_ = typeid( ValClass ).name();
-		ptrValue_ = pValue;
+		type_ = typeid( ValClass ).name();
+		value_ = pValue;
 	}
 
 	virtual ~CNrpProperty() 
 	{ 
 	}
 
-	std::string GetValueType() { return valueType_; }
+	std::string GetValueType() { return type_; }
 
 	ValClass& ToggleValue()
 	{
-		ptrValue_ = !ptrValue_;
-		return ptrValue_;
+		value_ = !value_;
+		return value_;
 	}
 
-	ValClass& GetValue() { return ptrValue_; }
+	ValClass& AddValue( ValClass valuel ) { value_ += valuel; return value_; }
+
+	ValClass& GetValue() { return value_; }
 
 	void SetValue( ValClass valuel )
 	{
-		ptrValue_ = valuel ;
+		value_ = valuel ;
 	}
 
 private:
-	std::string valueType_;
-	ValClass ptrValue_;
+	std::string type_;
+	ValClass value_;
 
 	CNrpProperty() {};
 	CNrpProperty( CNrpProperty& ) {};
@@ -104,7 +106,7 @@ private:
 class INrpConfig : public INrpObject
 
 {
-protected:
+protected: 
 	//! чтение свойства из конфигурационного файла
 	template< class B > B Read_( std::string section, std::string key, B def_value )
 	{
@@ -194,6 +196,22 @@ public:
 			return ((CNrpProperty<B>*)pIter->second)->GetValue();
 	}
 
+	template< class B > B& AddValue( std::string name, B valuel ) const
+	{
+		PropertyArray::const_iterator pIter = options_.find( name );
+
+		if( pIter == options_.end() )
+		{
+#ifdef _DEBUG
+			std::string errstr = "dec: bad config param " + name + " \n"; 
+			OutputDebugString( errstr.c_str() );
+#endif
+			throw "error"; 
+		}
+		else 
+			return ((CNrpProperty<B>*)pIter->second)->AddValue( valuel );
+	}
+
 	template< class B > void SetValue( std::string name, B valuel ) 
 	{ 
 		PropertyArray::iterator pIter = options_.find( name );
@@ -203,7 +221,6 @@ public:
 #ifdef _DEBUG
 			std::string text = "write: bad config param " + ClassName() + ":" + name;
 			OutputDebugString( text.c_str() );
-
 			throw text.c_str();
 #endif
 		}

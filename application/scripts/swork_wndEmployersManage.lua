@@ -3,7 +3,7 @@ local applic = CLuaApplication( NrpGetApplication() )
 
 local mode = { }
 mode[ "Программисты" ] = "coder"
-mode[ "Дизайнеы" ] = "designer"
+mode[ "Дизайнеры" ] = "designer"
 mode[ "Композиторы" ] = "composer"
 mode[ "Тестировщики" ] = "tester"
 --"coder" "designer" "composer" "tester"

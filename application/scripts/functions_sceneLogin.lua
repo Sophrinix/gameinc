@@ -30,7 +30,6 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	sloginAddStartVideoContentTechnology()
 	sloginAddStartSoundContentTechnology()
 	sloginAddStartScenarioContentTechnology()
-	sloginAddStartEmployer()
 	DebugFunctionCall( sloginAddStartPublicTechnology )
 	
 	--переходим на следующую сцену

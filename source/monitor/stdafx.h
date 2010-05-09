@@ -42,3 +42,5 @@ namespace irr
 		const int ESNT_REGION = MAKE_IRR_ID( 'r', 'e', 'g', 'n' );
 	}
 }
+
+bool operator <(SYSTEMTIME const &t1, SYSTEMTIME const &t2);

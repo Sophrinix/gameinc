@@ -122,7 +122,7 @@ int CLuaCompany::CreateGameProject( lua_State* L )
 
 	CNrpGameProject* result = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN	result = object_->AddGameProject( new CNrpGameProject( ptrData ) );
+	IF_OBJECT_NOT_NULL_THEN	result = object_->AddGameProject( new CNrpGameProject( ptrData, object_ ) );
 
 	lua_pushlightuserdata( L, result );
 	return 1;	

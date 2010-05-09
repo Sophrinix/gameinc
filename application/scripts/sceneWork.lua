@@ -48,7 +48,7 @@ sceneManager:AddSkyDomeSceneNode( "media/sky/panorama.jpg", 20, 12, 1, 2.0, 1000
 sceneManager:DrawProgress( 90 )
 
 --создание пользователей
-applic:UpdateUsers()
+applic:CreateNewFreeUsers()
 sceneManager:DrawProgress( 95 )
 
 AddObjectsToCityScene()

@@ -46,14 +46,13 @@ public:
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
-	void UpdateGameProjectState();
-
 	
 	CNrpGame* GetGame( std::string gameName );
 	CNrpGame* CreateGame( CNrpGameProject* ptrProject );
 
-	void Update();
-	void PaySalaries();
+	void BeginNewHour( const SYSTEMTIME& time );
+	void BeginNewDay( const SYSTEMTIME& time );
+	void BeginNewMonth( const SYSTEMTIME& time );
 
 	void Save( std::string saveFolder );
 	void Load( std::string loadFolder );
@@ -66,6 +65,9 @@ private:
 	TECH_MAP technologies_;
 	GAME_MAP games_;
 	USER_LIST employers_;
+
+	void PaySalaries_();
+	void UpdateGameProjectState_();
 }; 
 
 typedef CNrpCompany* PNrpCompany;

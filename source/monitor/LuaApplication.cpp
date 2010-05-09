@@ -21,6 +21,9 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_ILUAOBJECT_HEADER( CLuaApplication ),
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateCompany ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompany ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyByName ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetBank ),
@@ -42,7 +45,7 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateProfile ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, ResetData ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadProfile ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateUsers ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateNewFreeUsers ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, PayUserSalary ),
 	{0,0}
 };
@@ -121,7 +124,7 @@ int CLuaApplication::UpdateGameTime( lua_State* L )
 		wchar_t text[ 32 ] = { 0 };
 		gui::IGUIEnvironment* env = CNrpEngine::Instance().GetGuiEnvironment();
 		gui::IGUIElement* elm = env->getRootGUIElement()->getElementFromId( idDateLabel, true );
-		SYSTEMTIME& time = object_->GetDateTime();
+		SYSTEMTIME& time = object_->GetValue<SYSTEMTIME>( CURRENTTIME );
 		if( elm && needUpdate )
 		{
 			swprintf_s( text, 31, L"%4d.%02d.%02d  %02d:%02d", time.wYear, time.wMonth, time.wDay, 
@@ -301,7 +304,7 @@ int CLuaApplication::GetUserByName( lua_State* L )
 		for( int k = 0; k < userNum; k++ )
 		{
 			IUser* ptrUser = object_->GetUser( k );
-			if( ptrUser->GetValue<std::string>( NAME ) == std::string( userName ) )
+			if( ptrUser->GetValueA<std::string>( NAME ) == std::string( userName ) )
 			{
 				user = ptrUser;
 				break;
@@ -373,12 +376,12 @@ int CLuaApplication::LoadProfile( lua_State* L )
 	return 1;	
 }
 
-int CLuaApplication::UpdateUsers( lua_State* L )
+int CLuaApplication::CreateNewFreeUsers( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:UpdateUsers not need parameter" );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->UpdateUsers();
+	IF_OBJECT_NOT_NULL_THEN	object_->CreateNewFreeUsers();
 
 	return 1;		
 }
@@ -391,10 +394,51 @@ int CLuaApplication::PayUserSalary( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		CNrpApplication::COMPANIES_LIST& cmpList = object_->GetCompanies();
-		for( size_t cnt=0; cnt < cmpList.size(); cnt++ )
-			cmpList[ cnt ]->PaySalaries();
+		//for( size_t cnt=0; cnt < cmpList.size(); cnt++ )
+		//	cmpList[ cnt ]->PaySalaries_();
 	}
 
+	return 1;
+}
+
+int CLuaApplication::GetCompanyNumber( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaCompany:GetCompanyNumber need int parameter" );
+
+	int companyNumber = 0;
+	IF_OBJECT_NOT_NULL_THEN	companyNumber = object_->GetValue<int>( COMPANIESNUMBER );
+
+	lua_pushinteger( L, companyNumber );
+	return 1;
+}
+
+int CLuaApplication::GetCompany( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need int parameter" );
+
+	int cmpNumber = lua_tointeger( L, 2 );
+	CNrpCompany* ptrCompany = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN	ptrCompany = object_->GetCompany( cmpNumber );
+
+	lua_pushlightuserdata( L, ptrCompany );
+	return 1;
+}
+
+int CLuaApplication::GetCompanyByName( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need string parameter" );
+
+	const char* cmpName = lua_tostring( L, 2 );
+	assert( cmpName != NULL );
+	CNrpCompany* ptrCompany = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN	ptrCompany = object_->GetCompany( cmpName );
+
+	lua_pushlightuserdata( L, ptrCompany );
 	return 1;
 }
 }//namespace nrp

@@ -483,7 +483,7 @@ void CChartCtrl::OnLButtonUp_( core::position2di& point )
 
 CChartAxis* CChartCtrl::GetAxis( CHART_AXIS_NAME axisName ) const
 {
-	if( axisName >= axisList_.size() )
+	if( (size_t)axisName >= axisList_.size() )
 		return NULL;
 
 	return axisList_[ axisName ];

@@ -561,9 +561,9 @@ void CNrpComponentListbox::draw()
 						std::wstring name = StrToWide( pObject->GetValue<std::string>( NAME ) );
 						
 						swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), (int)(percent * 100) );
-						core::recti progressRect = textRect;
-						progressRect.LowerRightCorner.X = progressRect.UpperLeftCorner.X + textRect.getWidth() * percent;
-						driver->draw2DRectangle( progressRect, 0xff00ff00, 0xff00ff00, 0xff0000ff, 0xff0000ff, &clientClip );
+						core::recti progressRect = frameRect;
+						progressRect.LowerRightCorner.X = progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent;
+						driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clientClip );
 						Font->draw( tmpstr, textRect, itbncolor, false, true, &clientClip );
 					}
 					textRect.UpperLeftCorner.X -= ItemsIconWidth+3;

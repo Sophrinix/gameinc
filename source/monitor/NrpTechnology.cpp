@@ -68,6 +68,9 @@ CNrpTechnology::CNrpTechnology( CNrpTechnology* pTech, CNrpCompany* ptrCmp )
 		SetValue<std::string>( COMPANYNAME, pTech->GetValue<std::string>( COMPANYNAME ) );
 		SetValue<PNrpCompany>( PARENTCOMPANY, ptrCmp );
 	}
+
+	techRequires_ = pTech->techRequires_;
+	skillRequires_ = pTech->skillRequires_;
 }
 
 CNrpTechnology::~CNrpTechnology(void)
@@ -113,12 +116,10 @@ void CNrpTechnology::Save( std::string saveFolder )
 	if( GetValue<LPVOID>( PARENT ) )
 		IniFile::Write( PROPERTIES, "parent", GetValue<PNrpGameProject>( PARENT )->GetValue<std::string>(NAME), fileName );
 	
-	REQUIRE_MAP::iterator tIter = techRequires_.begin();
-	for( ; tIter != techRequires_.end(); tIter++ )
+	for( REQUIRE_MAP::iterator tIter = techRequires_.begin(); tIter != techRequires_.end(); tIter++ )
 		IniFile::Write( "techRequire", IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
 
-	REQUIRE_MAP::iterator sIter = skillRequires_.begin();
-	for( ; sIter != skillRequires_.end(); sIter++ )
+	for( REQUIRE_MAP::iterator sIter = skillRequires_.begin(); sIter != skillRequires_.end(); sIter++ )
 		IniFile::Write( "skillRequire", IntToStr( sIter->first ), IntToStr( sIter->second ), fileName );
 }
 
@@ -169,7 +170,7 @@ void CNrpTechnology::SetLider( IUser* ptrUser )
 {
 	std::string currentLider = GetValue<std::string>( COMPONENTLIDER );
 	std::string lastLider = GetValue<std::string>( LASTWORKER );
-	std::string newUser = ptrUser != NULL ? ptrUser->GetValue<std::string>( NAME ) : "";
+	std::string newUser = ptrUser != NULL ? ptrUser->GetValueA<std::string>( NAME ) : "";
 
 	//есть текущий исполнитель
 	if( ptrUser == NULL && !currentLider.empty() )
@@ -185,8 +186,6 @@ void CNrpTechnology::SetLider( IUser* ptrUser )
 		SetValue<int>( CODEPASSED,(int)(GetValue<int>( CODEPASSED ) * 0.75f) );
 		SetValue<std::string>( COMPONENTLIDER, newUser );
 	}
-
-	GetValue<PNrpGameProject>( PARENT )->Update();
 }
 
 void CNrpTechnology::Update( IUser* ptrUser )
@@ -212,6 +211,8 @@ void CNrpTechnology::Update( IUser* ptrUser )
 
 		SetValue<int>( CODEPASSED, codePassed );
 		SetValue<float>( READYWORKPERCENT, codePassed / (float)GetValue<int>( CODEVOLUME ) );
+		int quality = GetValue<int>( QUALITY );
+		SetValue<int>( QUALITY, (quality + ptrUser->GetValueA<int>( CODE_QUALITY )) / 2 );
 	}
 }
 }//namespace nrp

@@ -43,7 +43,7 @@ class CNrpGameProject : public INrpProject
 {
 public:
 	CNrpGameProject( std::string name, CNrpCompany* ptrCompany );
-	CNrpGameProject( CNrpGameProject* nProject );
+	CNrpGameProject( CNrpGameProject* nProject, CNrpCompany* ptrCompany );
 	~CNrpGameProject(void);
 
 	void SetGameEngine( CNrpGameEngine* gameEng );
@@ -60,7 +60,7 @@ public:
 	CNrpTechnology* GetSoundTech( int index );
 	void Save( std::string folderSave );
 	void Load( std::string loadFolder );
-	void Update();
+	bool IsReady();
 	void UpdateDevelopmentMoney();
 
 private:

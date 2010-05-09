@@ -68,7 +68,7 @@ protected:
 		luaL_argcheck(L, argc == 2, 2, ("Function " + ClassName() + ":SetLider need  IUser* parameter").c_str() );
 
 		nrp::IUser* ptrUser = (nrp::IUser*)lua_touserdata( L, 2 );
-		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<std::string>( COMPONENTLIDER, ptrUser->GetValue<std::string>( NAME ) );
+		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<std::string>( COMPONENTLIDER, ptrUser->GetValueA<std::string>( NAME ) );
 
 		return 1;
 	}

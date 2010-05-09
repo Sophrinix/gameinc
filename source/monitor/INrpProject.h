@@ -13,10 +13,11 @@ const std::string GENRE_NAME[] = { "unknown", "skill", "scrolling" };
 typedef enum { SKL_UNKNOWN=2000, SKL_VIDEO_TECH, 
 				SKL_CODING, 
 				SKL_SOUND, SKL_TESTING, SKL_DRAWING,
+				SKL_SOUND_TECH, SKL_PHYS_TECH,
 				SKILL_MIDDLE = 2099, SKL_COUNT } SKILL_TYPE;
 
 typedef enum { GT_UNKNOWN=300, 
-			   GT_SKILL,			//развитие навыков
+			   GT_SKILL,			//развитие навыков игрока
 			   GT_SCROLLING,		//скролл-игры
 			   GT_EDUCATION,		//обучающие игры(деские)
 			   GT_TEST,				//проверка знаний

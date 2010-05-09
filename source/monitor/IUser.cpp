@@ -30,8 +30,10 @@ IUser::IUser(const char* className, const char* systemName, CNrpCompany* ptrCmp 
 	CreateValue<int>( WANTMONEY, 0 );
 	CreateValue<int>( CONTRACTMONEY, 0 );
 	CreateValue<int>( TECHNUMBER, 0 );
+	CreateValue<std::string>( COMPANYNAME, "" );
 	CreateValue<std::string>( USERSTATE, "readyToWork" );
 	CreateValue<std::string>( ROOMSTATE, "unknown" );
+	CreateValue<int>( HANGRY, 100 );
 	if( ptrCmp != NULL )
 	{
 		CreateValue<std::string>( COMPANYNAME, ptrCmp->GetValue<std::string>( NAME ) );
@@ -42,6 +44,7 @@ IUser::IUser(const char* className, const char* systemName, CNrpCompany* ptrCmp 
 IUser::~IUser(void)
 {
 }
+
 
 void IUser::SetSkill( int typen, int valuel )
 {
@@ -189,13 +192,20 @@ CNrpTechnology* IUser::GetTechWork( int index )
 	return index < (int)techWorks_.size() ? techWorks_[ index ] : NULL;
 }
 
-void IUser::Update( const SYSTEMTIME& time )
+void IUser::BeginNewHour( const SYSTEMTIME& time )
 {
 	if( time.wHour == 9 && GetValue<std::string>( USERSTATE ) == "readyToWork" )
 	{
 		SetValue<std::string>( USERSTATE, "work" );
 		std::string text = GetValue<std::string>( NAME ) + " приступил к работе\n";
 		OutputDebugString( text.c_str() );
+	}
+
+	if(	AddValue<int>( HANGRY, -15 ) < 30 )
+	{
+		SYSTEMTIME endTime = time;
+		endTime.wHour = 23;
+		AddModificator( new CNrpUserModificator<int>( this, endTime, MOOD, true, 45 ) );
 	}
 
 	if( time.wHour == 18 )
@@ -207,26 +217,27 @@ void IUser::Update( const SYSTEMTIME& time )
 	{
 		if( techWorks_.size() > 0 )
 		{
-			float beforeUpdate = techWorks_[ 0 ]->GetValue<float>( READYWORKPERCENT );
 			techWorks_[ 0 ]->Update( this );
 
-			float afterUpdate = techWorks_[ 0 ]->GetValue<float>( READYWORKPERCENT );
 			//закончили обработку компонента
-			if( beforeUpdate != afterUpdate && afterUpdate == 1 )
+			if( techWorks_[ 0 ]->GetValue<float>( READYWORKPERCENT ) >= 1 )
 			{
 				CNrpGameProject* parent = techWorks_[ 0 ]->GetValue<PNrpGameProject>( PARENT );
-				float growExp = techWorks_[ 0 ]->GetValue<int>( CODEVOLUME ) / (float)parent->GetValue<int>( CODEVOLUME );
+				float growExp = techWorks_[ 0 ]->GetValue<int>( CODEVOLUME ) / (float)parent->GetValue<int>( BASE_CODEVOLUME );
 				int techType = techWorks_[ 0 ]->GetValue<int>( TECHTYPE );
 				
+				//опыт пользователя растет по мере выполнения компонентов
+				//а если у пользователя не было опыта в этом жанре, то он появляется
 				if( genreExperience_.find( techType ) == genreExperience_.end() )
 					genreExperience_[ techType ] = (int)growExp;
 				else
 					genreExperience_[ techType ] += (int)growExp;
 
+				//увеличивается тот параметр предпочтения, который уже есть у пользователя
 				if( genrePreferences_.find( techType ) != genrePreferences_.end() )
 					genrePreferences_[ techType ] += (int)growExp;
 
-				techWorks_[ 0 ]->SetLider( NULL );
+				RemoveTechWork( techWorks_[ 0 ] );
 			}
 		}
 	}
@@ -252,5 +263,27 @@ void IUser::SetGenreExperience( int typen, int valuel )
 void IUser::SetGenrePreferences( int typen, int valuel )
 {
 	genrePreferences_[ typen ] = valuel;
+}
+
+void IUser::RemoveOldModificators_( const SYSTEMTIME& time )
+{
+	for( size_t cnt=0; cnt < modificators_.size(); cnt++ )
+		if( modificators_[ cnt ]->GetTime() < time )
+		{
+			delete modificators_[ cnt ];
+			modificators_.erase( modificators_.begin() + cnt );
+			cnt--;
+		}
+}
+
+void IUser::BeginNewDay( const SYSTEMTIME& time )
+{
+	SetValue<int>( HANGRY, 100 );
+	RemoveOldModificators_( time );
+}
+
+void IUser::AddModificator( IModificator* ptrModificator )
+{
+	modificators_.push_back( ptrModificator );
 }
 }//namespace nrp

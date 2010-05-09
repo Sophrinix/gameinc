@@ -1,5 +1,6 @@
 #pragma once
 #include "nrpConfig.h"
+#include "NrpUserModificator.h"
 
 namespace nrp
 {
@@ -31,6 +32,7 @@ OPTION_NAME TIMEMANAGMENT( "timeManagment" ); /*!  Управление временем, от этого
 class IUserAction;
 class CNrpTechnology; 
 class CNrpCompany;
+class IModificator;
 
 class IUser : public INrpConfig
 {
@@ -49,25 +51,48 @@ public:
 	void AddTechWork( CNrpTechnology* techWork );
 	CNrpTechnology* GetTechWork( int index );
 	void RemoveTechWork( CNrpTechnology* techWork );
-	void Update( const SYSTEMTIME& time );
+
+	template< class R > R GetValueA( std::string name )
+	{
+		R paramValue = INrpConfig::GetValue<R>( name );
+		MODIFICATOR_LIST::iterator pIter = modificators_.begin();
+
+		for( ; pIter < modificators_.end(); pIter++ )
+			if( ((CNrpUserModificator<R>*)*pIter)->GetName() == name )
+				paramValue += ((CNrpUserModificator<R>*)*pIter)->GetValue();
+
+		return paramValue;
+	}
+
+	void AddModificator( IModificator* ptrModificator );
+
+	void BeginNewHour( const SYSTEMTIME& time );
+	void BeginNewDay( const SYSTEMTIME& time );
+
 	~IUser(void);
 	void Save( std::string folderPath );
 	void Load( std::string fileName );
 
 private:         			
+	template< class R > R& GetValue( std::string name ) { return INrpConfig::GetValue<R>( name ); }
+
 	void Load_( char* file_name ) {}
 	void CalculateWantSalary_();
 	void CalculateKnowledgeLevel_();
 
+	void RemoveOldModificators_( const SYSTEMTIME& time );
+
 	typedef std::map< int, int > KNOWLEDGE_MAP;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
 	typedef std::vector< IUserAction* > USERACTION_LIST;
+	typedef std::vector< IModificator* > MODIFICATOR_LIST;
 
 	KNOWLEDGE_MAP genrePreferences_; /*< предпочтения в жанре, растут рандомно со временем */
 	KNOWLEDGE_MAP genreExperience_;  /*< опыт написания игр, растет по мере выполнения компонентов */
 	KNOWLEDGE_MAP knowledges_;		/*< уровень знания технологий */
 	USERACTION_LIST peopleFeels_; /*< Отношения с окружающими людьми */
 	TECH_LIST techWorks_;
+	MODIFICATOR_LIST modificators_;
 };
 
 typedef IUser* PUser;
