@@ -4,6 +4,7 @@
 #include "NrpGameProject.h"
 #include "NrpGameEngine.h"
 #include "NrpTechnology.h"
+#include "NrpGameBox.h"
 
 #include <io.h>
 #include <errno.h>
@@ -52,6 +53,8 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<int>( SOUNDTECHNUMBER, 0 );
 	CreateValue<int>( ADVTECHNUMBER, 0 );
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
+	CreateValue<PNrpGameBox>( GAMEBOX, NULL );
+	CreateValue<int>( BOXNUMBER, 0 );
 }
 
 CNrpGame::CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany )
@@ -110,6 +113,9 @@ CNrpGame::~CNrpGame(void)
 
 void CNrpGame::Save( std::string saveFolder )
 {
+	if( _access( saveFolder.c_str(), 0 ) == -1 )
+		CreateDirectory( saveFolder.c_str(), NULL );
+
 	std::string localFolder = saveFolder + GetValue<std::string>( NAME ) + "/";
 	if( _access( localFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( localFolder.c_str(), NULL );

@@ -20,4 +20,6 @@ private:
 	ADDON_LIST addons_;
 };
 
+typedef CNrpGameBox* PNrpGameBox;
+
 }//end of namespace nrp

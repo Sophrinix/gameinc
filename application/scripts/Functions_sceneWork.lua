@@ -31,6 +31,7 @@ end
 
 function sworkPlayerCompanyReadyProject( ptr )
 	local game = CLuaGame( ptr )
+	guienv:MessageBox( "Закончена работа на проектом "..game:GetName(), false, false, "", "" )
 end
 
 function sworkSelectObjectOnCityScene( ptr )

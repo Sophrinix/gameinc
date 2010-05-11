@@ -228,6 +228,17 @@ CNrpGame* CNrpCompany::GetGame( std::string gameName )
 	return gIter != games_.end() ? gIter->second : NULL;
 }
 
+CNrpGame* CNrpCompany::GetGame( int index )
+{
+	if( index < games_.size() )
+	{
+		GAME_MAP::iterator gIter = games_.begin() + index;
+		return gIter->second;
+	}
+
+	return NULL;
+}
+
 INrpProject* CNrpCompany::GetProject( std::string name )
 {
 	PROJECT_MAP::iterator pIter = projects_.find( name );
@@ -236,10 +247,13 @@ INrpProject* CNrpCompany::GetProject( std::string name )
 
 INrpProject* CNrpCompany::GetProject( int index )
 {
-	PROJECT_MAP::iterator pIter = projects_.begin();
-	for( int i=0; pIter != projects_.end(), i < index; i++ ) pIter++;
-		 
-	return pIter->second;
+	if( index < projects_.size() )
+	{
+		PROJECT_MAP::iterator pIter = projects_.begin()+index;
+		return pIter->second;
+	}
+
+	return NULL;
 }
 
 void CNrpCompany::BeginNewHour( const SYSTEMTIME& time  )
@@ -255,8 +269,12 @@ void CNrpCompany::BeginNewDay( const SYSTEMTIME& time )
 	{
 		if( pIter->second->GetType() == "CNrpGameProject" && dynamic_cast<CNrpGameProject*>( pIter->second )->IsReady() )
 		{
-			PNrpGame game = CreateGame( dynamic_cast<CNrpGameProject*>( pIter->second ) );
+			CNrpGameProject* project = dynamic_cast<CNrpGameProject*>( pIter->second );
+			PNrpGame game = CreateGame( project );
+			RemoveGameProject( project );
+			delete project;
 			DoLuaFunctionsByType( COMPANY_READY_PROJECT, game );
+			break;
 		}
 	}
 
@@ -285,8 +303,7 @@ CNrpGame* CNrpCompany::CreateGame( CNrpGameProject* ptrProject )
 	CNrpApplication::Instance().UpdateGameRatings( ptrGame, true );
 
 	games_[ ptrProject->GetValue<std::string>( NAME ) ] = ptrGame;
-	RemoveGameProject( ptrProject );
-	delete ptrProject;
+	SetValue<int>( GAMENUMBER, games_.size() );
 
 	return ptrGame;
 }

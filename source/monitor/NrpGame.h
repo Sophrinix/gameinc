@@ -26,6 +26,7 @@ OPTION_NAME LOCALIZATIONRATING( "localizationRating" );
 OPTION_NAME CURRENTBUGRATING( "currentBugRating" );
 OPTION_NAME STARTADVFUNC( "startAdvFunc" );
 OPTION_NAME CURRENTADVFUNC( "currentAdvFunc" );
+OPTION_NAME GAMEBOX( "gameBox" );
 
 class CNrpGame : public INrpConfig
 {
@@ -48,7 +49,7 @@ private:
 	typedef std::vector< std::string > DEVELOPERS_LIST;
 	typedef std::vector< std::string > TECH_LIST;
 	DEVELOPERS_LIST developers_;
-	TECH_LIST	videoTechs_;
+		TECH_LIST	videoTechs_;
 	TECH_LIST	genreTechs_;
 	TECH_LIST	soundTechs_;
 	TECH_LIST	advTechs_;

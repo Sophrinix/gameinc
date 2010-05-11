@@ -224,18 +224,22 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 			{
 				CNrpGameProject* parent = techWorks_[ 0 ]->GetValue<PNrpGameProject>( PARENT );
 				float growExp = techWorks_[ 0 ]->GetValue<int>( CODEVOLUME ) / (float)parent->GetValue<int>( BASE_CODEVOLUME );
-				int techType = techWorks_[ 0 ]->GetValue<int>( TECHTYPE );
+				PNrpGameProject ptrProject = techWorks_[ 0 ]->GetValue<PNrpGameProject>( PARENT );
+				if( parent )
+				{
+					int techType = ptrProject->GetGenre( 0 )->GetValue<int>( TECHTYPE );
 				
-				//опыт пользователя растет по мере выполнения компонентов
-				//а если у пользователя не было опыта в этом жанре, то он появляется
-				if( genreExperience_.find( techType ) == genreExperience_.end() )
-					genreExperience_[ techType ] = (int)growExp;
-				else
-					genreExperience_[ techType ] += (int)growExp;
+					//опыт пользователя растет по мере выполнения компонентов
+					//а если у пользователя не было опыта в этом жанре, то он появляется
+					if( genreExperience_.find( techType ) == genreExperience_.end() )
+						genreExperience_[ techType ] = (int)growExp;
+					else
+						genreExperience_[ techType ] += (int)growExp;
 
-				//увеличивается тот параметр предпочтения, который уже есть у пользователя
-				if( genrePreferences_.find( techType ) != genrePreferences_.end() )
-					genrePreferences_[ techType ] += (int)growExp;
+					//увеличивается тот параметр предпочтения, который уже есть у пользователя
+					if( genrePreferences_.find( techType ) != genrePreferences_.end() )
+						genrePreferences_[ techType ] += (int)growExp;
+				}
 
 				RemoveTechWork( techWorks_[ 0 ] );
 			}

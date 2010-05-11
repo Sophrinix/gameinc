@@ -35,6 +35,8 @@ public:
 	int AddToPortfelle( lua_State* L );
 	int GetObjectsInPortfelle( lua_State* L );
 	int GetFromPortfelle( lua_State* L );
+	int GetGameNumber( lua_State* L );
+	int GetGame( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaCompany"; }
 };

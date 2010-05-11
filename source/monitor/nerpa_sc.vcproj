@@ -1149,6 +1149,22 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaGame.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaGame.h"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaGameBox.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaGameBox.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaGameEngine.cpp"
 						>
 					</File>

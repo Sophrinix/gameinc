@@ -258,11 +258,10 @@ void CNrpApplication::SaveProfile()
 {
 	std::string saveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "/";
 	std::string prevSaveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "Old/";
+
+	OpFileSystem::MoveDirectory( CNrpEngine::Instance().GetWindowHandle(), saveFolder, prevSaveFolder );
 	if( _access( saveFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( saveFolder.c_str(), NULL );
-
-	MoveFile( saveFolder.c_str(), prevSaveFolder.c_str() );
-	//OpFileSystem::RemoveDirectory( CNrpEngine::Instance().GetWindowHandle(), prevSaveFolder.c_str() );
 
 	std::string profileIni = saveFolder + "profile.ini";
 	DeleteFile( profileIni.c_str() );

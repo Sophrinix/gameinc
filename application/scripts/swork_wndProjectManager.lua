@@ -226,15 +226,19 @@ end
 function sworkWindowManagerProjectToggleComponentLider( ptr )
 	if not currentComponent:HaveLider() then
 		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
-		currentEmployer:AddTechWork( currentComponent:Self() )	
-		if currentComponent:GetEmployerPosibility() < 0.4 then
-			guienv:MessageBox( currentEmployer:GetName() .. " имеет недостаточные навыки.", true, false, "", "" )
+		if currentComponent:Empty() == 0 then
+			currentEmployer:AddTechWork( currentComponent:Self() )	
+			if currentComponent:GetEmployerPosibility() < 0.4 then
+				guienv:MessageBox( currentEmployer:GetName() .. " имеет недостаточные навыки.", true, false, "", "" )
+			end
 		end
 	else
 		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
-		currentEmployer:RemoveTechWork( currentComponent:Self() )
-		if currentComponent:GetWorkPercentDone() > 70 then
-			guienv:MessageBox( "Компонент почти завершен.\n Его передача приведет к потере части функионала", true, false, "", "" )
+		if currentComponent:Empty() == 0 then
+			currentEmployer:RemoveTechWork( currentComponent:Self() )
+			if currentComponent:GetWorkPercentDone() > 70 then
+				guienv:MessageBox( "Компонент почти завершен.\n Его передача приведет к потере части функионала", true, false, "", "" )
+			end
 		end
 	end
 	

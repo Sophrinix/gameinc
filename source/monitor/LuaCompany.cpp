@@ -4,6 +4,7 @@
 #include "NrpCompany.h"
 #include "NrpGameEngine.h"
 #include "NrpGameProject.h"
+#include "NrpGame.h"
 #include <assert.h>
 
 namespace nrp
@@ -32,6 +33,8 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddToPortfelle ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetObjectsInPortfelle ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetFromPortfelle ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGameNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGame ),
 	{0,0}
 };
 
@@ -240,5 +243,24 @@ int CLuaCompany::GetFromPortfelle( lua_State* L )
 	return 1;	
 }
 
+int CLuaCompany::GetGame( lua_State* L )
+{	
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetGame need int parameter" );
+
+	int index = lua_tointeger( L, 2 );
+	INrpConfig* prj = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetGame( index );
+
+	lua_pushlightuserdata( L, prj );
+	return 1;	
+}
+
+int CLuaCompany::GetGameNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetGameNumber", GAMENUMBER, 0 ) ); 
+	return 1;
+}
 
 }//namespace nrp

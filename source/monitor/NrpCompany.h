@@ -22,7 +22,6 @@ class CNrpGameEngine;
 class IUser;
 class CNrpTechnology;
 class CNrpGameProject;
-class CNrpGameBox;
 
 class CNrpCompany : public INrpConfig, public ILuaFunctionality
 {
@@ -32,7 +31,6 @@ public:
 	typedef std::map< std::string, CNrpTechnology* > TECH_MAP;
 	typedef std::map< std::string, INrpProject* > PROJECT_MAP;
 	typedef std::map< std::string, CNrpGame* > GAME_MAP;
-	typedef std::vector< CNrpGameBox* > GAMEBOX_LIST;
 	typedef std::vector< INrpConfig* > OBJECT_LIST;
 
 	CNrpCompany(const char* name);
@@ -55,6 +53,7 @@ public:
 	IUser* GetUser( std::string name );
 	
 	CNrpGame* GetGame( std::string gameName );
+	CNrpGame* GetGame( int index );
 	CNrpGame* CreateGame( CNrpGameProject* ptrProject );
 
 	void BeginNewHour( const SYSTEMTIME& time );
@@ -72,7 +71,6 @@ private:
 	TECH_MAP technologies_;
 	GAME_MAP games_;
 	USER_LIST employers_;
-	GAMEBOX_LIST gameboxes_;
 	OBJECT_LIST portfelle_;
 
 	void PaySalaries_();
