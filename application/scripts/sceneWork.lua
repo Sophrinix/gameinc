@@ -19,6 +19,7 @@ citySceneObjects = { }
 bankSceneObjects = { }
 univerSceneObjects = { }
 officeSceneObjects = { }
+plantSceneObjects = { }
 
 --создание рабочей сцены 
 NrpInitializeWorkScene()
@@ -36,8 +37,8 @@ sceneManager:DrawProgress( 50 )
 AddMenuWindow()
 sceneManager:DrawProgress( 70 )
 
---создание таблицы целей
-AddStoreWindow()
+--создание окна отображения содержимого портфеля
+AddPortfelleWindow()
 sceneManager:DrawProgress( 77 )
 
 --создание миникарты
@@ -55,11 +56,15 @@ AddObjectsToCityScene()
 AddObjectsToBankScene()
 AddObjectsToOfficeScene()
 AddObjectsToUniverScene()
+AddObjectsToPlantScene()
 sceneManager:DrawProgress( 100 )
 
-for i=1, applic:GetCompanyNumber() do
+local playerCompany = CLuaCompany( applic:GetPlayerCompany() )
+playerCompany:AddLuaFunction( COMPANY_READY_PROJECT, "sworkPlayerCompanyReadyProject" )
+--[[for i=1, applic:GetCompanyNumber() do
 	local cmp = CLuaCompany( applic:GetCompany( i - 1 ) )
 	cmp:AddLuaFunction( COMPANY_READY_PROJECT, "sworkCompanyReadyProject" )
 end
+--]]
 
 sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )

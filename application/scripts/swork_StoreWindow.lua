@@ -2,19 +2,34 @@ require("elmid")
 
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 local driver = CLuaDriver( NrpGetVideoDriver() )
+local applic = CLuaApplication( NrpGetApplication() )
 
-local tableHeight = 180
-local scrWidth = 0
-local scrHeight = 0 
+local wndHeight = 180
+local scrWidth, scrHeight = driver:GetScreenSize()
+local portfelleWnd = CLuaWindow( nil )
+local maxObjectNumber = 0							--число объектов, которые отображаются в окне
+local startObjectNumber = 0							--номер стартового объекта
+
+function AddPortfelleWindow()
+
+	portfelleWnd:SetObject( guienv:AddWindow( "portfelleWindow", wndHeight, scrHeight - wndHeight, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() ) )
+	portfelleWnd:SetName( NAME_PORTFELLE_WINDOW )
+	maxObjectNumber = ( scrWidth - wndHeight ) / wndHeight
 	
-scrWidth, scrHeight = driver:GetScreenSize()
+	sworkUpdateCompanyPortfelle()
+end
 
-function AddStoreWindow()
-
-	local width = 0
-	local height = 0
-	
-	local windowg = CLuaWindow( guienv:AddWindow( "storeWindow", 180, scrHeight - tableHeight, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() ) )
-	windowg:SetName( NAME_STORE_WINDOW )
-
+function sworkUpdateCompanyPortfelle()
+	local company = CLuaCompany( applic:GetPlayerCompany() )
+	for i=1, company:GetObjectsInPortfelle() do
+		if i-1 > maxObjectNumber then 
+		   return 
+		end
+		
+		local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Test"..i, 10, 50, 10 + 50, 50 + 50, -1, portfelleWnd:Self() ) )
+		linkModule:SetData( company:GetFromPortfelle( i - 1 ) )
+		--linkModule:
+		--linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+		--linkModule:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
+	end
 end

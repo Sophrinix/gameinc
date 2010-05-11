@@ -35,8 +35,8 @@ ID_PLAY_REC = ID_ADMINKA + 6
 --[[
 формуляр и список событий
 --]]
-ID_STORE_WINDOW = 10300
-NAME_STORE_WINDOW = "_SystemWindowStore_"
+ID_PORTFELLE_WINDOW = 10300
+NAME_PORTFELLE_WINDOW = "_SystemWindowPortfelle_"
 --[[
 Окно свойств объекта
 --]]
@@ -112,6 +112,12 @@ WINDOW_EMPLOYERS_MANAGE_ID = 11100
 --]]
 WINDOW_PRJMANAGE_NAME = "_SystemWindowManageProject_"
 WINDOW_PRJMANAGE_ID	= 11200
+
+--[[
+
+--]]
+WINDOW_GAMEBOXWIZ_NAME	= "_SystemWindowGameBoxManager_"
+WINDOW_GAMEBOXWIZ_ID = 11300
 
 --[[
 Функция подключения скрипта с проверкой ошибок

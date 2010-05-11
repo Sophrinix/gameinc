@@ -261,8 +261,8 @@ public:
 		while( readLine != "" )
 		{
 #ifdef _DEBUG
-			OutputDebugString( readLine.c_str() );
-			OutputDebugString( "\n" );
+			//OutputDebugString( readLine.c_str() );
+			//OutputDebugString( "\n" );
 #endif
 			std::string name, valuel, type;
 			name = readLine.substr( 0, readLine.find( '=' ) );

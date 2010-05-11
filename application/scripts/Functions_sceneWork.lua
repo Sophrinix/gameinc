@@ -7,6 +7,7 @@ IncludeScript("swork_wndReport")
 IncludeScript("swork_wndLoanAction")
 IncludeScript("swork_wndUniverStuffUp")
 IncludeScript("swork_wndProjectManager")
+IncludeScript("swork_wndGameBoxCreate")
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
@@ -26,6 +27,10 @@ end
 
 function sworkAppYearChange( ptr )
 
+end
+
+function sworkPlayerCompanyReadyProject( ptr )
+	local game = CLuaGame( ptr )
 end
 
 function sworkSelectObjectOnCityScene( ptr )
@@ -53,6 +58,13 @@ function sworkSelectObjectOnCityScene( ptr )
 		return 0
 	end
 	
+	if node:GetName() == "plantNode" then
+		SetVisibleObjects( citySceneObjects, false )
+		SetVisibleObjects( plantSceneObjects, true )
+		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnPlantScene" )
+		return 0		
+	end
+	
 end 
 
 function sworkMainLoop( ptr )
@@ -62,6 +74,25 @@ end
 function ToggleConsoleVisible( ptr )
 	local console = CLuaConsole( guienv:GetElementByName( "SystemConsole" ) )
 	console:ToggleVisible()
+end
+
+function sworkSelectObjectOnPlantScene( ptr )
+	local node = CLuaSceneNode( ptr )
+	local nodeName = node:GetName()
+
+	if nodeName == "gameBoxManagerNode" then
+		sworkCreateGameBoxManagerWindow()
+		return 0
+	end
+	
+	if nodeName == "exitPlantNode" then
+		SetVisibleObjects( plantSceneObjects, false )
+		SetVisibleObjects( citySceneObjects, true )
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
+		return 0
+	end
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-PLANT:Не могу найти узел для работы "..nodeName )
 end
 
 function sworkSelectObjectOnOfficeScene( ptr )

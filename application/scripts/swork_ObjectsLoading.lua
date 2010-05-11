@@ -100,7 +100,7 @@ function AddObjectsToCityScene()
 	plant:SetMaterialFlag( EMF_LIGHTING, false )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( plant:Self() ) 
 	plant:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( plant:Self(), "Proizvodstvo" )
+	sceneManager:SetMarkText( plant:Self(), "Производство" )
 	citySceneObjects[ 8 ] = plant:Self()
 
 end
@@ -157,6 +157,48 @@ function AddObjectsToOfficeScene()
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
 	officeSceneObjects[ 3 ] = exitN:Self()	
 
+end
+
+function AddObjectsToPlantScene()
+	local x = 1
+	local y = 1
+	local delta = 800
+	
+	local createBoxNode = CLuaSceneNode( sceneManager:AddCubeSceneNode( "gameBoxManagerNode" ) )
+	createBoxNode:SetScale( 30, 40, 30 )
+	createBoxNode:SetVisible( false )
+	createBoxNode:SetPosition( x * delta, 800, y *delta )
+	createBoxNode:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	createBoxNode:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( createBoxNode:Self() )
+	createBoxNode:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( createBoxNode:Self(), "createBoxNode" )
+	plantSceneObjects[ 0 ] = createBoxNode:Self()	
+	x = x + 1
+	
+	local plnatNode = CLuaSceneNode( sceneManager:AddCubeSceneNode( "plantCeNode" ) )
+	plnatNode:SetScale( 30, 40, 30 )
+	plnatNode:SetVisible( false )
+	plnatNode:SetPosition( x * delta, 800, y *delta )
+	plnatNode:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	plnatNode:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( plnatNode:Self() )
+	plnatNode:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( plnatNode:Self(), "plantCeNode" )
+	plantSceneObjects[ 1 ] = plnatNode:Self()	
+	x = x + 1
+	
+	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitPlantNode" ) )
+	exitN:SetScale( 30, 40, 30 )
+	exitN:SetVisible( false )
+	exitN:SetPosition( x * delta, 800, y *delta )
+	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	exitN:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	exitN:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	plantSceneObjects[ 2 ] = exitN:Self()	
+	x = x + 1
 end
 
 function AddObjectsToUniverScene()

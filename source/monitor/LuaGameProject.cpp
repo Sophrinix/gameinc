@@ -76,6 +76,7 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetEngineExtend ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLocalization ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCrossPlatformCode ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Remove ),
 	{0,0}
 };
 
@@ -278,6 +279,20 @@ int CLuaGameProject::IsParamAvaible_( lua_State* L, std::string funcName, std::s
 		catch(...) { }
 	}
 	lua_pushboolean( L, isAvaible );
+
+	return 1;	
+}
+
+int CLuaGameProject::Remove( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGameProject:Remove not need any parameter" );
+
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		delete object_;
+		object_ = NULL;
+	}
 
 	return 1;	
 }

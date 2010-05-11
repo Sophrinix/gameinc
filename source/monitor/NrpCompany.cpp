@@ -24,6 +24,7 @@ CNrpCompany::CNrpCompany( const char* name ) : INrpConfig( "CNrpCompany", name)
 	CreateValue<int>( USERNUMBER, 0 );
 	CreateValue<int>( PROJECTNUMBER, 0 );
 	CreateValue<int>( GAMENUMBER, 0 );
+	CreateValue<int>( OBJECTSINPORTFELLE, 0 );
 }
 
 CNrpCompany::~CNrpCompany(void)
@@ -310,5 +311,16 @@ void CNrpCompany::UpdateGameProjectState_()
 void CNrpCompany::BeginNewMonth( const SYSTEMTIME& time )
 {
 	PaySalaries_();
+}
+
+void CNrpCompany::AddToPortfelle( INrpConfig* ptrObject )
+{
+	portfelle_.push_back( ptrObject );
+	SetValue<int>( OBJECTSINPORTFELLE, portfelle_.size() );
+}
+
+INrpConfig* CNrpCompany::GetFromPortfelle( int index )
+{
+	return index < (int)portfelle_.size() ? portfelle_[ index ] : NULL;	
 }
 }//namespace nrp

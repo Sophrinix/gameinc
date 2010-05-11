@@ -14,6 +14,7 @@ OPTION_NAME CEO("ceo");
 OPTION_NAME ENGINES_NUMBER( "engineNumber" );
 OPTION_NAME PROJECTNUMBER( "projectNumber" );
 OPTION_NAME GAMENUMBER( "gameNumber" );
+OPTION_NAME OBJECTSINPORTFELLE( "objectInPortfelle" );
 
 class INrpProject;
 class CNrpGame;
@@ -21,6 +22,7 @@ class CNrpGameEngine;
 class IUser;
 class CNrpTechnology;
 class CNrpGameProject;
+class CNrpGameBox;
 
 class CNrpCompany : public INrpConfig, public ILuaFunctionality
 {
@@ -30,6 +32,8 @@ public:
 	typedef std::map< std::string, CNrpTechnology* > TECH_MAP;
 	typedef std::map< std::string, INrpProject* > PROJECT_MAP;
 	typedef std::map< std::string, CNrpGame* > GAME_MAP;
+	typedef std::vector< CNrpGameBox* > GAMEBOX_LIST;
+	typedef std::vector< INrpConfig* > OBJECT_LIST;
 
 	CNrpCompany(const char* name);
 	~CNrpCompany(void);
@@ -40,6 +44,9 @@ public:
 	CNrpTechnology* GetTechnology( int index );
 	CNrpTechnology* GetTechnology( std::string name );
 	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
+	INrpConfig* GetFromPortfelle( int index );
+	void AddToPortfelle( INrpConfig* ptrObject );
+
 	void RemoveGameProject( CNrpGameProject* ptrProject );
 	INrpProject* GetProject( std::string name );
 	INrpProject* GetProject( int index );
@@ -65,6 +72,8 @@ private:
 	TECH_MAP technologies_;
 	GAME_MAP games_;
 	USER_LIST employers_;
+	GAMEBOX_LIST gameboxes_;
+	OBJECT_LIST portfelle_;
 
 	void PaySalaries_();
 	void UpdateGameProjectState_();

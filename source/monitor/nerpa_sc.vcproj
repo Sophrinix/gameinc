@@ -1323,6 +1323,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\swork_wndGameBoxCreate.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\swork_wndKeyMap.lua"
 				>
 			</File>
@@ -1539,6 +1543,14 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\NrpGameBox.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\NrpGameBox.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

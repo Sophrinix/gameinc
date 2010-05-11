@@ -29,6 +29,9 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProject ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectByName ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddLuaFunction ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddToPortfelle ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetObjectsInPortfelle ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetFromPortfelle ),
 	{0,0}
 };
 
@@ -194,13 +197,48 @@ int CLuaCompany::GetProjectByName( lua_State* L )
 int CLuaCompany::AddLuaFunction( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:AddLuaFunction need int parameter" );
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:AddLuaFunction need int, string parameter" );
 
 	int typen = lua_tointeger( L, 2 );
-	std::string funcName = lua_tostring( L, 3 );
+	const char* funcName = lua_tostring( L, 3 );
+	assert( funcName != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->AddLuaFunction( typen, funcName );
 
 	return 1;
 }
+
+int CLuaCompany::AddToPortfelle( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:AddToPortfelle need INrpConfig* parameter" );
+
+	INrpConfig* ptrObject = (INrpConfig*)lua_touserdata( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->AddToPortfelle( ptrObject );
+
+	return 1;
+}
+
+int CLuaCompany::GetObjectsInPortfelle( lua_State *L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetObjectsInPortfelle", OBJECTSINPORTFELLE, 0 ) ); 
+	return 1;
+}
+
+int CLuaCompany::GetFromPortfelle( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetFromPortfelle need int parameter" );
+
+	int index = lua_tointeger( L, 2 );
+	INrpConfig* prj = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetFromPortfelle( index );
+
+	lua_pushlightuserdata( L, prj );
+	return 1;	
+}
+
+
 }//namespace nrp

@@ -304,13 +304,10 @@ function sworkCreateProjectGameToCompany( ptr )
 	
 	if prj:Empty() == 1 then
 		prj:SetObject( company:CreateGameProject( project:Self() ) )
-	
-		local linkModule = CLuaLinkBox( guienv:AddLinkBox( project:GetName(), 10, 50, 10 + 50, 50 + 50, -1, guienv:GetRootGUIElement() ) )
-		linkModule:SetData( prj:Self() )
-		linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
-		linkModule:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
+		company:AddToPortfelle( prj:Self() )
+		sworkUpdateCompanyPortfelle()
 	else
-		guienv:ShowMessage( "Уже есть проект игры с таким именем" )
+		guienv:ShowMessage( "Уже есть проект с таким именем" )
 	end
 end
 
@@ -617,6 +614,11 @@ function sworkGameProjectWizzardSetPlatform( ptr )
 	ShowParams()
 end
 
+function sworkWindowCreateGameProjectClose( ptr )
+	LogScript("Удаление временного объекта")
+	project:Remove()
+end
+
 function sworkCreateGameProject( ptr )
 	local windowg = CLuaWindow( guienv:GetElementByName( WINDOW_PROJECTWIZ_NAME ) )
 	windowg:Remove()
@@ -624,7 +626,10 @@ function sworkCreateGameProject( ptr )
 	local applic = CLuaApplication( NrpGetApplication() )
 	project:SetObject( applic:CreateGameProject( "defaultGame" ) )
 	windowg:SetObject( guienv:AddWindow( "GameWizzard", 0, 0, width, height, -1, guienv:GetRootGUIElement() ) )
-	windowg:SetName( WINDOW_GAME_WIZZARD )
+	windowg:SetName( WINDOW_PROJECTWIZ_NAME )
+	
+	local btn = CLuaButton( windowg:GetCloseButton() )
+	btn:SetAction( "sworkWindowCreateGameProjectClose" )
 	
 	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 10, 20, 10 + 140, 20 + 20, ID_PROJECTQUALITY ) )
 	local volCodeLabel = CLuaLabel( guienv:AddLabel( "Код", width / 2, 20, width, 20 + 20, ID_CODEVOLUME, windowg:Self() ) )

@@ -32,6 +32,9 @@ public:
 	int AddUser( lua_State* L );
 	int GetUser( lua_State* L );
 	int AddLuaFunction( lua_State* L );
+	int AddToPortfelle( lua_State* L );
+	int GetObjectsInPortfelle( lua_State* L );
+	int GetFromPortfelle( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaCompany"; }
 };
