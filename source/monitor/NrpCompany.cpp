@@ -228,11 +228,12 @@ CNrpGame* CNrpCompany::GetGame( std::string gameName )
 	return gIter != games_.end() ? gIter->second : NULL;
 }
 
-CNrpGame* CNrpCompany::GetGame( int index )
+CNrpGame* CNrpCompany::GetGame( size_t index )
 {
 	if( index < games_.size() )
 	{
-		GAME_MAP::iterator gIter = games_.begin() + index;
+		GAME_MAP::iterator gIter = games_.begin();
+		for( size_t k=0; k != index; k++ ) gIter++;
 		return gIter->second;
 	}
 
@@ -245,11 +246,12 @@ INrpProject* CNrpCompany::GetProject( std::string name )
 	return pIter != projects_.end() ? pIter->second : NULL;
 }
 
-INrpProject* CNrpCompany::GetProject( int index )
+INrpProject* CNrpCompany::GetProject( size_t index )
 {
 	if( index < projects_.size() )
 	{
-		PROJECT_MAP::iterator pIter = projects_.begin()+index;
+		PROJECT_MAP::iterator pIter = projects_.begin();
+		for( size_t k=0; k != index; k++ ) pIter++;
 		return pIter->second;
 	}
 

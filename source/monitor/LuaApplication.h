@@ -46,6 +46,9 @@ public:
 	int LoadProfile( lua_State* L );
 	int CreateNewFreeUsers( lua_State* L );
 	int PayUserSalary( lua_State* L );
+	int GetGameBoxAddonNumber( lua_State* L );
+	int GetGameBoxAddon( lua_State* L );
+	int AddGameBoxAddon( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:

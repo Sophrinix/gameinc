@@ -1,0 +1,10 @@
+[options]
+name:string=intellivision
+ram:float=0.09
+cpu:float=0.01
+startTime:time=y=1982 m=00 d=00 h=00 mi=00
+endTime:time=y=1990 m=00 d=00 h=00 mi=00
+rwidth:int=196
+rheight:int=169
+video:string=черно-белая и цветная
+sound:string=

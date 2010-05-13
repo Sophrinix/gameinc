@@ -47,6 +47,8 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadProfile ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateNewFreeUsers ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, PayUserSalary ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddonNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddon ),
 	{0,0}
 };
 
@@ -440,5 +442,43 @@ int CLuaApplication::GetCompanyByName( lua_State* L )
 
 	lua_pushlightuserdata( L, ptrCompany );
 	return 1;
+}
+
+int CLuaApplication::GetGameBoxAddonNumber( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaCompany:GetGameBoxAddonNumber not need any parameter" );
+
+	int addonNumber = 0;
+	IF_OBJECT_NOT_NULL_THEN	addonNumber = object_->GetBoxAddonsNumber();
+
+	lua_pushinteger( L, addonNumber );
+	return 1;
+}
+
+int CLuaApplication::GetGameBoxAddon( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetGameBoxAddon need integer parameter" );
+
+	int addonNumber = lua_tointeger( L, 2 );
+	CNrpTechnology* tech = NULL;
+	IF_OBJECT_NOT_NULL_THEN	tech = object_->GetBoxAddon( addonNumber );
+
+	lua_pushlightuserdata( L, tech );
+	return 1;	
+}
+
+int CLuaApplication::AddGameBoxAddon( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetGameBoxAddon need integer parameter" );
+
+	CNrpTechnology* tech = lua_touserdata( L, 2 );
+	assert( tech != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN	tech = object_->AddBoxAddon( tech );
+
+	return 1;	
 }
 }//namespace nrp

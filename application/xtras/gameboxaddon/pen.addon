@@ -1,0 +1,6 @@
+[options]
+name:string=Ручка
+saleadd:float=0.2
+starttime:time=y=1980 m=00 d=00 h=0 mi=0
+size:int=0
+

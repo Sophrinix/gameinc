@@ -1,0 +1,5 @@
+[options]
+name:string=Майка
+saleadd:float=0.15
+starttime:time=y=1980 m=00 d=00 h=0 mi=0
+size:int=2

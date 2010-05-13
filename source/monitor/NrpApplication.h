@@ -63,6 +63,10 @@ public:
 	void UpdateGameRatings( CNrpGame* ptrGame, bool firstTime=false );
 	nrp::CNrpTechnology* CreateTechnology( int typeTech );
 
+	int GetBoxAddonsNumber() { return boxAddons_.size(); }
+	CNrpTechnology* GetBoxAddon( size_t index ) { return index < boxAddons_.size() ? boxAddons_[ index ] : NULL; }
+	void AddBoxAddon( CNrpTechnology* tech );
+
 private:
 	CNrpApplication(void);
 	~CNrpApplication(void);
@@ -70,6 +74,7 @@ private:
 	COMPANIES_LIST companies_;
 	USER_LIST users_;
 	TECH_LIST technologies_;
+	TECH_LIST boxAddons_;
 
 	SPEED speed_;
 	int lastTimeUpdate_;

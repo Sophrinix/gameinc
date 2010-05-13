@@ -1,0 +1,10 @@
+[options]
+name:string=commodore
+ram:float=0.64
+cpu:float=0.01
+startTime:time=y=1982 m=00 d=00 h=00 mi=00
+endTime:time=y=1994 m=00 d=00 h=00 mi=00
+rwidth:int=320
+rheight:int=200
+video:string=черно-белая и цветная
+sound:string=

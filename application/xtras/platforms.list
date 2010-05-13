@@ -1,0 +1,9 @@
+[options]
+platformNumber=7
+platform_0=xtras/platforms/commodore.platform
+platform_1=xtras/platforms/apple2.platform
+platform_2=xtras/platforms/arcadia.platform
+platform_3=xtras/platforms/colecoVision.platform
+platform_4=xtras/platforms/intellivision.platform
+platform_5=xtras/platforms/sega100.platform
+platform_6=xtras/platforms/vectrex.platform

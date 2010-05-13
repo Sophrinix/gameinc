@@ -47,13 +47,13 @@ public:
 
 	void RemoveGameProject( CNrpGameProject* ptrProject );
 	INrpProject* GetProject( std::string name );
-	INrpProject* GetProject( int index );
+	INrpProject* GetProject( size_t index );
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
 	
 	CNrpGame* GetGame( std::string gameName );
-	CNrpGame* GetGame( int index );
+	CNrpGame* GetGame( size_t index );
 	CNrpGame* CreateGame( CNrpGameProject* ptrProject );
 
 	void BeginNewHour( const SYSTEMTIME& time );

@@ -589,4 +589,9 @@ void CNrpApplication::BeginNewHour_()
 	for( ; cIter != companies_.end(); cIter++)
 		(*cIter)->BeginNewHour( GetValue<SYSTEMTIME>( CURRENTTIME ));
 }
+
+void CNrpApplication::AddBoxAddon( CNrpTechnology* tech )
+{
+	boxAddons_.push_back( tech );
+}
 }//namespace nrp
