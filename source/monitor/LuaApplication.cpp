@@ -49,6 +49,10 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, PayUserSalary ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddonNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddon ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameBoxAddon ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, ValidTime ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, IsGameBoxAddonLoaded ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameBoxAddon ),
 	{0,0}
 };
 
@@ -469,16 +473,69 @@ int CLuaApplication::GetGameBoxAddon( lua_State* L )
 	return 1;	
 }
 
+int CLuaApplication::LoadGameBoxAddon( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:LoadGameBoxAddon need string parameter" );
+
+	const char* techIniFile = lua_tostring( L, 2 );
+	assert( techIniFile != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		CNrpTechnology* tech = object_->CreateTechnology( 0 );
+		tech->Load( techIniFile );
+		object_->AddBoxAddon( tech );
+	}
+
+	return 1;	
+}
+
 int CLuaApplication::AddGameBoxAddon( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetGameBoxAddon need integer parameter" );
 
-	CNrpTechnology* tech = lua_touserdata( L, 2 );
+	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
 	assert( tech != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN	tech = object_->AddBoxAddon( tech );
+	IF_OBJECT_NOT_NULL_THEN	object_->AddBoxAddon( tech );
 
 	return 1;	
 }
+
+int CLuaApplication::ValidTime( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::ValidTime need CNrpTechnology parameter");
+
+	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
+	bool validTime = false; 
+	IF_OBJECT_NOT_NULL_THEN
+	if( tech != NULL )
+	{
+		SYSTEMTIME starttime = tech->GetValue<SYSTEMTIME>( STARTDATE );
+		SYSTEMTIME endtime = tech->GetValue<SYSTEMTIME>( ENDDATE );
+		SYSTEMTIME currentTime = object_->GetValue<SYSTEMTIME>( CURRENTTIME );
+		validTime = (starttime < currentTime) && (currentTime < endtime);
+	}
+	lua_pushboolean( L, validTime );
+	return 1;	
+}
+
+int CLuaApplication::IsGameBoxAddonLoaded( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::GameBoxLoaded need CNrpTechnology parameter");
+
+	const char* techName = lua_tostring( L, 2 );
+	assert( techName != NULL );
+
+	bool loaded = false; 
+	IF_OBJECT_NOT_NULL_THEN loaded = object_->GetBoxAddon( techName ) != NULL;
+
+	lua_pushboolean( L, loaded );
+	return 1;			
+}
+
 }//namespace nrp

@@ -41,6 +41,8 @@ void CNrpTechnology::InitializeOptions_()
 	CreateValue<int>( CODEPASSED, 0 );
 	CreateValue<float>( READYWORKPERCENT, 0 );
 	CreateValue<int>( ERRORNUMBER, 0 );
+	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
 }
 
 CNrpTechnology::CNrpTechnology( CNrpTechnology* pTech, CNrpCompany* ptrCmp ) 

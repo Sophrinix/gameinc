@@ -1,5 +1,5 @@
-[options]
+[properties]
 name:string=Открытка
-saleadd:float=0.15
-starttime:time=y=1980 m=00 d=00 h=0 mi=0
-size:int=1
+quality:int=15
+startdate:time=y=1980 m=00 d=00 h=0 mi=0
+level:int=1

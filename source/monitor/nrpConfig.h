@@ -13,6 +13,8 @@
 #include <map>
 #include <string>
 #include <typeinfo.h>
+#include <stdio.h>
+#include <algorithm>
 
 #include "IniFile.h"
 #include "INrpObject.h"
@@ -43,6 +45,9 @@ OPTION_NAME COMPANYNAME( "company" );
 OPTION_NAME PROPERTIES( "properties" );
 OPTION_NAME CODEVOLUME( "volumeCode" );
 OPTION_NAME COMPONENTLIDER( "componentLider" );
+OPTION_NAME STARTDATE( "startDate" );
+OPTION_NAME ENDDATE( "endDate" );
+
 
 #define CHECK_VALCLASS_TYPE( bclass )\
 	if( type_ != typeid( bclass ).name() ) {\
@@ -140,6 +145,7 @@ public:
 
 	void EraseValue( std::string name )
 	{
+		std::transform( name.begin(), name.end(), name.begin(), tolower );
 		PropertyArray::iterator pIter = options_.find( name );
 
 		if( pIter == options_.end() )
@@ -159,6 +165,7 @@ public:
 
 	template< class B > void CreateValue( std::string name, B valuel )
 	{
+		std::transform( name.begin(), name.end(), name.begin(), tolower );
 		if( options_.find( name ) == options_.end() )
 			options_[ name ] = new CNrpProperty<B>( valuel );
 		else
@@ -167,6 +174,7 @@ public:
 
 	template< class B > B ToggleValue( std::string name, B defValue )
 	{
+		std::transform( name.begin(), name.end(), name.begin(), tolower );
 		PropertyArray::iterator pIter = options_.find( name );
 		if( pIter == options_.end() )
 		{
@@ -182,6 +190,7 @@ public:
 	//! получение свойства объекта
 	template< class B > B& GetValue( std::string name ) const
 	{
+		std::transform( name.begin(), name.end(), name.begin(), tolower );
 		PropertyArray::const_iterator pIter = options_.find( name );
 		
 		if( pIter == options_.end() )
@@ -198,8 +207,8 @@ public:
 
 	template< class B > B& AddValue( std::string name, B valuel ) const
 	{
+		std::transform( name.begin(), name.end(), name.begin(), tolower );
 		PropertyArray::const_iterator pIter = options_.find( name );
-
 		if( pIter == options_.end() )
 		{
 #ifdef _DEBUG
@@ -214,8 +223,8 @@ public:
 
 	template< class B > void SetValue( std::string name, B valuel ) 
 	{ 
+		std::transform( name.begin(), name.end(), name.begin(), tolower );
 		PropertyArray::iterator pIter = options_.find( name );
-
 		if( pIter == options_.end() )
 		{
 #ifdef _DEBUG

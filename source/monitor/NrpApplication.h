@@ -65,6 +65,7 @@ public:
 
 	int GetBoxAddonsNumber() { return boxAddons_.size(); }
 	CNrpTechnology* GetBoxAddon( size_t index ) { return index < boxAddons_.size() ? boxAddons_[ index ] : NULL; }
+	CNrpTechnology* GetBoxAddon( std::string name );
 	void AddBoxAddon( CNrpTechnology* tech );
 
 private:

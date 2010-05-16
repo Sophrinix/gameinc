@@ -3,17 +3,22 @@ local applic = CLuaApplication( NrpGetApplication() )
 local fileIniPlatforms = "xtras/platforms.list"
 local fileIniAddons	= "xtras/gameboxaddons.list"
 
-function sworkUpdateGamePlatforms( ptr )
-	local platform = CLuaPlatform( applic:CreatePlatform( "none" ) )
+function ApplicationUpdateGamePlatforms( ptr )
 	
-	local plNumber = IniReadInteger( "platformNumber", fileIniPlatforms )
+	local iniFile = CLuaIniFile( nil, fileIniPlatforms )
+	
+	local plNumber = iniFile:ReadInteger( "options", "platformNumber", 0 )
     local plIniFile = ""
 	for i=1, plNumber do
-		plIniFile = IniReadString( "platform_"..(i-1), fileIniPlatforms ) 
+		local platform = CLuaPlatform( applic:CreatePlatform( "none" ) )
+		
+		plIniFile = iniFile:ReadString( "platform_"..(i-1), fileIniPlatforms, "" ) 
 		platform:Load( plIniFile ) 
-		if platform:ValidTime() then
-			if not platform:AlsoLoaded() then
-				applic:AddPlatform( applic:CreatePlatform( plIniFile ) )
+		if applic:ValidTime( platform:Self() ) then
+			if not applic:PlatformLoaded( platform:Self() ) then
+				local pl2 = CLuaPlatform( applic:CreatePlatform( "none" ) )
+				pl2:Load( plIniFile )
+				applic:AddPlatform( pl2:Self() )
 			end
 		else
 			if platform:AlsoLoaded() then
@@ -25,29 +30,31 @@ function sworkUpdateGamePlatforms( ptr )
 	end
 end
 
-function sworkUpdateGamePlatforms( ptr )
-	local tech = CLuaTech( applic:CreateTechnology( 0 ) )
+function ApplicationUpdateGameBoxAddons( ptr )
+	local iniFile = CLuaIniFile( nil, fileIniAddons )
 
-	local plNumber = IniReadInteger( "addonNumber", fileIniAddons )
+	local plNumber = iniFile:ReadInteger( "options", "addonNumber", 0 )
     local plIniFile = ""
 	
+	LogScript( "Open config file "..fileIniAddons.." with addonNumber="..plNumber )
 	for i=1, plNumber do
-		plIniFile = IniReadString( "addon_"..(i-1), fileIniAddons ) 
+		local tech = CLuaTech( applic:CreateTechnology( 0 ) )
+
+		plIniFile = iniFile:ReadString( "options", "addon_"..(i-1), "" ) 
 		tech:Load( plIniFile ) 
-		if tech:ValidTime() then
-			if not tech:AlsoLoaded() then
-				local tech2 = applic:CreateTechnology( 0 )
-				tech2:Load(plIniFile)
-				applic:AddGameBoxAddon( tech )
+
+		if applic:ValidTime( tech:Self() ) then
+			if not applic:IsGameBoxAddonLoaded( tech:GetName() ) then
+				applic:LoadGameBoxAddon( plIniFile )
+				LogScript( "Load addon "..tech:GetName().." from "..plIniFile )
 			end
 		else
-			if tech:AlsoLoaded() then
-				applic:RemovePlatform( tech:GetName() )
+			if applic:IsGameBoxAddonLoaded( tech:GetName() ) then
+				applic:RemoveGameBoxAddon( tech:GetName() )
+				LogScript( "Remove addon "..tech:GetName() )
 			end
 		end
 		
 		tech:Remove()
 	end
 end
-
-

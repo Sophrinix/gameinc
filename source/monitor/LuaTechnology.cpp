@@ -39,6 +39,9 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetQuality ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveLider ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetEmployerPosibility ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Load ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Remove ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetLevel ),
 	{0,0}
 };
 
@@ -113,4 +116,43 @@ int CLuaTechnology::GetEmployerPosibility( lua_State* L )
 	lua_pushnumber( L, posilbleValue );
 	return 1;	
 }
+
+int CLuaTechnology::Remove( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::GetEmployerPosibility not need parameter");
+
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		delete object_;
+		object_ = NULL;
+	}
+
+	return 1;	
+}
+
+int CLuaTechnology::Load( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::Load not need parameter");
+
+	const char* iniFile = lua_tostring( L, 2 );
+	assert( iniFile != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->Load( iniFile );
+	return 1;	
+}
+
+int CLuaTechnology::GetLevel( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::GetLevel not need parameter");
+
+	int result = 0;
+	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( LEVEL );
+
+	lua_pushinteger( L, result );
+	return 1;		
+}
+
 }//namespace nrp

@@ -4,6 +4,10 @@ local wndGBM = CLuaWindow( nil )
 local company = CLuaCompany( nil )
 local currentGame = CLuaGame( nil )
 local currentAddon = CLuaTech( nil )
+local maxAddonNumber = 0
+local wndBoxPreview = CLuaWindow( nil )
+local linkBoxImage = CLuaLinkBox( nil )
+local currentBoxLevel = 0
 
 local width = 800
 local height = 600
@@ -36,15 +40,43 @@ function sworkGameBoxManagerClose( ptr )
 	wndGBM:Remove()
 end
 
-function sworkGameBoxManagerSelectMiniBox( ptr )
+local function localCreateWindowForBoxAddons( maxElm )
+	maxAddonNumber = maxElm
+	wndBoxPreview:SetObject( guienv:AddWindow( "PreviewBox", 0, 20, width * 0.7, height-20, -1, wndGBM:Self() ) )
+	wndBoxPreview:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkGameBoxManagerWindowViewerLeftMouseButtonUp" )
+	
+	local w, h = wndBoxPreview:GetSize()
+	linkBoxImage:SetObject( guienv:AddLuaLinkBox( currentGame:GetName(), 
+												  w / 2 - 100, 20, 
+												  w / 2 + 100, 20 + h * 0.75, 
+												  -1, wndBoxPreview:Self() ) )
+	
+	local addonsNumber = currentGame:GetGameBoxAddonsNumber()
+	for i=1, addonsNumber do
+		local tech = CLuaTech( currentGame:GetGameBoxAddons( i-1 ) )
+		local lb = CLuaLinkBox( guienv:AddLuaLinkBox( tech:GetName(), 
+													  20 + ( h * 0.75 ) * i, 20 + h * 0.75,
+													  20 + ( h * 0.75 ) * ( i + 1 ), h - 20,
+													  -1, wndBoxPreview:Self() ) )
+	    lb:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkGameBoxManagerWindowAddonRigthMouseButtonUp" )
+	end
+end
+
+local function localCreateBoxViewerAndAddons()
+	local elm = CLuaElement( wndGBM:Self() )
+	elm:RemoveChilds()
+	
 	local itemCount = 0
 	local linet = 0
 	local columnt = 0
 	local addonNumber = applic:GetGameBoxAddonNumber() 
 	guienv:MessageBox( "Всего дополнений "..addonNumber, false, false, "", "" )
+	
+	localCreateWindowForBoxAddons( currentBoxLevel * 3 )
+	
 	for i=1, addonNumber do
 		local boxAddon = CLuaTech( applic:GetGameBoxAddon( i-1 ) )
-		if boxAddon:GetIntParam("size") == 0 then
+		if boxAddon:GetLevel() < currentBoxLevel and not currentGame:IsMyBoxAddon( boxAddon:GetName() ) then
 			linet = itemCount / 3
 			columnt = itemCount % 3
 			itemCount = itemCount + 1
@@ -57,7 +89,34 @@ function sworkGameBoxManagerSelectMiniBox( ptr )
 			linkt:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkGameBoxManagerLinkLeftMouseButtonUp" )
 		end
 	end
+	
+	local btn = CLuaBurron( guienv:AddButton( width - 200, height - 50, width -10, height - 10, wndGBM:Self(), -1, "Выход" ) )	
+	btn:SetAction( "sworkGameBoxManagerClose" )	
 end
+
+--удаление дополнения к коробке
+function sworkGameBoxManagerWindowAddonRigthMouseButtonUp( ptr )
+	local link = CLuaLinkBox( ptr ) 
+	local tech = CLuaTech( link:GetData() )
+	currentGame:RemoveBoxAddon( tech:GetName() )
+	link:Remove()	
+	
+	localCreateBoxViewerAndAddons()
+end
+
+--добавление нового элемента к коробке
+function sworkGameBoxManagerWindowViewerLeftMouseButtonUp( ptr )
+	currentGame:AddBoxAddon( currentAddon:Self() )
+	
+	guienv:SetDragObject( nil )
+	
+	localCreateBoxViewerAndAddons()	
+end
+
+function sworkGameBoxManagerSelectMiniBox( ptr )
+	currentBoxLevel = 1
+	localCreateBoxViewerAndAddons()
+end	
 
 function sworkGameBoxManagerSetGame( ptr )
 	local btn = CLuaButton( ptr )

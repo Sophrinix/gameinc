@@ -1209,6 +1209,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="application"
+					>
+					<File
+						RelativePath=".\LuaIniFile.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaIniFile.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="core"
@@ -1316,6 +1328,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\swork_terrainConfig.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_UpdateFunctions.lua"
 				>
 			</File>
 			<File

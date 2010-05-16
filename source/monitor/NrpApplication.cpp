@@ -594,4 +594,14 @@ void CNrpApplication::AddBoxAddon( CNrpTechnology* tech )
 {
 	boxAddons_.push_back( tech );
 }
+
+CNrpTechnology* CNrpApplication::GetBoxAddon( std::string name )
+{
+	TECH_LIST::iterator tIter = boxAddons_.begin();
+	for( ; tIter != boxAddons_.end(); tIter++)
+		if( (*tIter)->GetValue<std::string>( NAME ) == name )
+		return *tIter;
+
+	return NULL;	
+}
 }//namespace nrp

@@ -7,8 +7,6 @@ namespace nrp
 class CNrpGameProject;
 class CNrpCompany;
 
-OPTION_NAME STARTDATE( "startDate" );
-OPTION_NAME ENDDATE( "endDate" );
 OPTION_NAME MONEYONDEVELOP( "moneyDevelop" );
 OPTION_NAME CASH( "cash" );
 OPTION_NAME COPYSELL( "copySell" );

@@ -5,8 +5,6 @@ namespace nrp
 {
 
 OPTION_NAME YEARPERCENT( "percentInYear");
-OPTION_NAME STARTDATE( "startDate" );
-OPTION_NAME ENDDATE( "endDate" );
 OPTION_NAME MONEY( "money" );
 OPTION_NAME STARTMONEY( "startMoney" );
 OPTION_NAME MONEYPAY( "moneyPay" );

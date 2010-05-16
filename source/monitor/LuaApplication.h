@@ -47,14 +47,17 @@ public:
 	int CreateNewFreeUsers( lua_State* L );
 	int PayUserSalary( lua_State* L );
 	int GetGameBoxAddonNumber( lua_State* L );
+	int GameBoxLoaded( lua_State* L );
 	int GetGameBoxAddon( lua_State* L );
 	int AddGameBoxAddon( lua_State* L );
+	int ValidTime( lua_State* L );
+	int IsGameBoxAddonLoaded( lua_State* L );
+	int LoadGameBoxAddon( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:
 	int lastDay_, lastMonth_, lastYear_;
 	int AddRemLuaFunction_( lua_State* L, std::string funcName, bool rem );
-	
 };
 
 }//namespace nrp
