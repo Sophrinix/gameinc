@@ -46,18 +46,18 @@ local function localCreateWindowForBoxAddons( maxElm )
 	wndBoxPreview:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkGameBoxManagerWindowViewerLeftMouseButtonUp" )
 	
 	local w, h = wndBoxPreview:GetSize()
-	linkBoxImage:SetObject( guienv:AddLuaLinkBox( currentGame:GetName(), 
-												  w / 2 - 100, 20, 
-												  w / 2 + 100, 20 + h * 0.75, 
+	linkBoxImage:SetObject( guienv:AddLinkBox( currentGame:GetName(), 
+												  w / 2 - h * 0.37, 20, 
+												  w / 2 + h * 0.37, 20 + h * 0.75, 
 												  -1, wndBoxPreview:Self() ) )
 	
 	local addonsNumber = currentGame:GetGameBoxAddonsNumber()
 	for i=1, addonsNumber do
 		local tech = CLuaTech( currentGame:GetGameBoxAddons( i-1 ) )
-		local lb = CLuaLinkBox( guienv:AddLuaLinkBox( tech:GetName(), 
-													  20 + ( h * 0.75 ) * i, 20 + h * 0.75,
-													  20 + ( h * 0.75 ) * ( i + 1 ), h - 20,
-													  -1, wndBoxPreview:Self() ) )
+		local lb = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), 
+													20 + ( h * 0.75 ) * i, 20 + h * 0.75,
+													20 + ( h * 0.75 ) * ( i + 1 ), h - 20,
+													-1, wndBoxPreview:Self() ) )
 	    lb:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkGameBoxManagerWindowAddonRigthMouseButtonUp" )
 	end
 end

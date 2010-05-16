@@ -4,6 +4,8 @@
 #include "LuaGame.h"
 #include "NrpGame.h"
 #include "NrpGameBox.h"
+#include "NrpTechnology.h"
+#include "NrpGameBox.h"
 
 using namespace irr;
 
@@ -87,11 +89,11 @@ int CLuaGame::AddBoxAddon( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:AddBoxAddon need CNrpTechnology parameter" );
 
-	PNrpTechnology tech = (PNrpTechnology)lua_tostring( L, 2 );
+	PNrpTechnology tech = (PNrpTechnology)lua_touserdata( L, 2 );
 	assert( tech != NULL );
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox* box = object_->GetValue<PNrpGameBox>( GAMEBOX );
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GAMEBOX );
 		assert( box != NULL );
 		if( box != NULL )
 			box->AddBoxAddon( tech );
