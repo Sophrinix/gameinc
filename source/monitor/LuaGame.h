@@ -18,6 +18,11 @@ public:
 	int IsMyBoxAddon( lua_State* L );
 	int RemoveBoxAddon( lua_State* L );
 	int AddBoxAddon( lua_State* L );
+	int GetBoxAddonsNumber( lua_State* L );
+	int GetBoxAddon( lua_State* L );
+	int CreateBox( lua_State* L );
+	int RemoveBox( lua_State* L );
+	int GetBoxLevel( lua_State* L );
 															//нажатии на эту кнопку
 	static const char* StaticGetLuaName() { return "CLuaGame"; }
 };

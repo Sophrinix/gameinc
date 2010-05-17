@@ -1535,6 +1535,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NrpGameBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpGameBox.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NrpGameEngine.cpp"
 				>
 			</File>
@@ -1575,14 +1583,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\NrpGameBox.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\NrpGameBox.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

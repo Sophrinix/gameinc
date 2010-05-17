@@ -1,7 +1,7 @@
 [options]
 name:string=apple2
-ram:float=0.48
-cpu:float=0.01
+ram:float=0.048
+cpu:float=0.001
 startTime:time=y=1982 m=00 d=00 h=00 mi=00
 endTime:time=y=1994 m=00 d=00 h=00 mi=00
 rwidth:int=280

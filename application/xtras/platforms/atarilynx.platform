@@ -1,0 +1,10 @@
+[options]
+name:string=Atari Lynx
+ram:float=0.156
+cpu:float=0.005
+startTime:time=y=1989 m=00 d=00 h=00 mi=00
+endTime:time=y=1991 m=00 d=00 h=00 mi=00
+rwidth:int=240
+rheight:int=140
+video:string=черно-белая и цветная
+sound:string=
