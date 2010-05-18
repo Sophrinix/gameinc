@@ -1351,6 +1351,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\swork_wndDiskPlant.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\swork_wndEmployersManage.lua"
 				>
 			</File>

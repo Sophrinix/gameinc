@@ -114,10 +114,17 @@ WINDOW_PRJMANAGE_NAME = "_SystemWindowManageProject_"
 WINDOW_PRJMANAGE_ID	= 11200
 
 --[[
-
+Окно управления обложкой диска
 --]]
 WINDOW_GAMEBOXWIZ_NAME	= "_SystemWindowGameBoxManager_"
 WINDOW_GAMEBOXWIZ_ID = 11300
+
+--[[
+Окно управления производством дисков
+--]]
+WINDOW_DISKPRODUCEPLANT_NAME = "_SystemWindowDiskProducePlant_"
+WINDOW_DISKPRODUCEPLANT_ID = 11400
+WNDDPP_CMBX_PRODUCE_TYPE = 11401
 
 --[[
 Функция подключения скрипта с проверкой ошибок

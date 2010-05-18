@@ -12,7 +12,7 @@
 namespace nrp
 {
 	
-CNrpGame::CNrpGame( std::string name ) : INrpConfig( "CNrpGame", name )
+CNrpGame::CNrpGame( std::string name ) : INrpConfig( CLASS_NRPGAME, name )
 {
 	InitializeOptions_();
 	SetValue<std::string>( NAME, name );
@@ -134,6 +134,14 @@ void CNrpGame::Load( std::string loadFolder )
 
 	SetValue<SYSTEMTIME>( STARTDATE, IniFile::Read( PROPERTIES, STARTDATE, SYSTEMTIME(), loadFile ) );
 	SetValue<SYSTEMTIME>( ENDDATE, IniFile::Read( PROPERTIES, ENDDATE, SYSTEMTIME(), loadFile ) );
+
+	std::string boxIni = loadFolder + "box.ini";
+	if( _access( boxIni.c_str(), 0 ) == 0 )
+	{
+		PNrpGameBox box = new CNrpGameBox( this );
+		box->Load( PROPERTIES, boxIni );
+		SetValue<PNrpGameBox>( GAMEBOX, box );
+	}
 }
 
 }//namespace nrp

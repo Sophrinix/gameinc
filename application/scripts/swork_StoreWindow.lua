@@ -26,8 +26,9 @@ function sworkUpdateCompanyPortfelle()
 		   return 
 		end
 		
-		local linkModule = CLuaLinkBox( guienv:AddLinkBox( "Test"..i, 10, 50, 10 + 50, 50 + 50, -1, portfelleWnd:Self() ) )
-		linkModule:SetData( company:GetFromPortfelle( i - 1 ) )
+		local config = CLuaProject( company:GetFromPortfelle( i - 1 ) )
+		local linkModule = CLuaLinkBox( guienv:AddLinkBox( config:GetName(), 10, 50, 10 + 50, 50 + 50, -1, portfelleWnd:Self() ) )
+		linkModule:SetData( config:Self() )
 		--linkModule:
 		--linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
 		--linkModule:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )

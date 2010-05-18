@@ -1,5 +1,6 @@
 --Подключаем скрипт создания стартовых условий новой игры
 IncludeScript("swork_startDefinition")
+IncludeScript("swork_UpdateFunctions")
 
 --переменные для работы
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
@@ -73,6 +74,7 @@ function slogin_CreateNewGame( ptr )
 end
 
 function slogin_ContinueLastGame( ptr )
-	applic:LoadProfile(  applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
+	ApplicationUpdateGameBoxAddons()
+	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
 	NrpSetNextScene( "sceneWork" )
 end

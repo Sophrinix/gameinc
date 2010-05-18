@@ -16,7 +16,7 @@ public:
 	bool IsMyBoxAddon( std::string name );
 	void RemoveMyBoxAddon( std::string name );
 	void AddBoxAddon( CNrpTechnology* tech );
-	CNrpTechnology* GetAddon( int index );
+	CNrpTechnology* GetAddon( size_t index );
 
 	~CNrpGameBox(void);
 	void Save( std::string scetionName, std::string fileName );

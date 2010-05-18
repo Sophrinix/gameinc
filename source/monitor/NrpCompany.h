@@ -8,6 +8,8 @@
 namespace nrp
 {
 
+OPTION_NAME CLASS_NRPCOMPANY( "CNrpCompany" );
+
 typedef enum { ET_DAY_END=0, ET_COUNT } EVENT_TYPE;
 
 OPTION_NAME CEO("ceo");

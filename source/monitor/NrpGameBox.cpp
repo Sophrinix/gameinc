@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include <io.h>
 #include "NrpGameBox.h"
 #include "NrpGame.h"
 #include "NrpTechnology.h"
@@ -51,7 +52,7 @@ void CNrpGameBox::AddBoxAddon( CNrpTechnology* tech )
 	SetValue<int>( NUMBERADDON, addons_.size() );
 }
 
-CNrpTechnology* CNrpGameBox::GetAddon( int index )
+CNrpTechnology* CNrpGameBox::GetAddon( size_t index )
 {
 	return index < addons_.size() ? addons_[ index ] : NULL;
 }

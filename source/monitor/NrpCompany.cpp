@@ -14,7 +14,7 @@
 namespace nrp
 {
 
-CNrpCompany::CNrpCompany( const char* name ) : INrpConfig( "CNrpCompany", name)
+CNrpCompany::CNrpCompany( const char* name ) : INrpConfig( CLASS_NRPCOMPANY, name)
 {
 	CreateValue<int>( BALANCE, 100000 );
 	CreateValue<std::string>( NAME, name );
@@ -109,6 +109,7 @@ IUser* CNrpCompany::GetUser( std::string name )
 
 	return NULL;
 }
+
 void CNrpCompany::Save( std::string saveFolder )
 {
 	//если нет родительской директории
@@ -164,6 +165,16 @@ void CNrpCompany::Save( std::string saveFolder )
 		(*uIter)->Save( localFolder + "users/" );
 		IniFile::Write( "users", "user_" + IntToStr(i), (*uIter)->ClassName() + ":" + (*uIter)->GetValueA<std::string>( NAME ), saveFile );
 	}
+
+	OBJECT_LIST::iterator oIter = portfelle_.begin();
+	for( int i=0; oIter != portfelle_.end(); oIter++, i++ )
+	{
+		std::string typeName = "error";
+		if( (*oIter)->ClassName() == CLASS_NRPGAME )
+			typeName = "game";
+
+		IniFile::Write( "portfelle", "portfelle_" + IntToStr( i ) + ":" + typeName, (*oIter)->GetValue<std::string>( NAME ), saveFile );
+	}
 }
 
 void CNrpCompany::Load( std::string loadFolder )
@@ -208,7 +219,7 @@ void CNrpCompany::Load( std::string loadFolder )
 	{
 		std::string gameName = IniFile::Read( "games", "game_" + IntToStr(i), std::string(""), loadFile );
 		CNrpGame* game = new CNrpGame( gameName );
-		game->Load( loadFolder + "games/" );
+		game->Load( loadFolder + "games/" + gameName + "/" );
 		game->SetValue<std::string>( COMPANYNAME, this->GetValue<std::string>( NAME ) );
 		games_[ gameName ] = game;
 	}
@@ -219,6 +230,15 @@ void CNrpCompany::Load( std::string loadFolder )
 		CNrpGameProject* prj = new CNrpGameProject( "", this );
 		prj->Load( loadFolder + "projects/" + prjName );
 		projects_[ prjName ] = prj;
+	}
+
+	for( int i=0; i < GetValue<int>( OBJECTSINPORTFELLE ); i++ )
+	{
+		std::string prjName = IniFile::Read( "portfelle", "portfelle_" + IntToStr(i), std::string(""), loadFile );
+		std::string typeName = prjName.substr( 0, prjName.find(':') );
+		prjName = prjName.substr( prjName.find( ':' )+1, 0xff );
+		if( typeName == "game" )
+			AddToPortfelle( GetGame( prjName ) );
 	}
 }
 
@@ -315,6 +335,7 @@ void CNrpCompany::RemoveGameProject( CNrpGameProject* ptrProject )
 	PROJECT_MAP::iterator pIter = projects_.find( ptrProject->GetValue<std::string>( NAME ) );
 	if( pIter != projects_.end() ) 
 		projects_.erase( pIter );
+	SetValue<int>( PROJECTNUMBER, projects_.size() );
 }
 
 void CNrpCompany::UpdateGameProjectState_()

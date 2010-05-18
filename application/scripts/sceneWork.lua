@@ -7,7 +7,6 @@ IncludeScript("swork_camera")
 IncludeScript("swork_ObjectsLoading")
 IncludeScript("swork_wndProjectWizard")
 IncludeScript("swork_wndEmployersManage")
-IncludeScript("swork_UpdateFunctions")
 
 Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 -- Проверка вспомогательных функций
@@ -51,7 +50,6 @@ sceneManager:DrawProgress( 90 )
 
 --создание пользователей
 applic:CreateNewFreeUsers()
-ApplicationUpdateGameBoxAddons()
 sceneManager:DrawProgress( 95 )
 
 AddObjectsToCityScene()

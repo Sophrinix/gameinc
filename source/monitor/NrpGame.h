@@ -3,6 +3,7 @@
 
 namespace nrp
 {
+OPTION_NAME CLASS_NRPGAME( "CNrpGame" );
 
 class CNrpGameProject;
 class CNrpCompany;

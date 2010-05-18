@@ -148,7 +148,6 @@ function sworkGameBoxManagerSetGame( ptr )
 end
 
 function sworkCreateGameBoxManagerWindow( ptr )
-
 	company:SetObject( applic:GetPlayerCompany() )
 	wndGBM:SetObject( guienv:GetElementByName( WINDOW_GAMEBOXWIZ_NAME ) )
 	wndGBM:Remove()
