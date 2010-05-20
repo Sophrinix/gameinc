@@ -74,7 +74,9 @@ function slogin_CreateNewGame( ptr )
 end
 
 function slogin_ContinueLastGame( ptr )
+	applic:LoadGameTimeFromProfile( applic:GetCurrentProfile() )
 	ApplicationUpdateGameBoxAddons()
+	ApplicationUpdateDiskMachines()
 	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
 	NrpSetNextScene( "sceneWork" )
 end

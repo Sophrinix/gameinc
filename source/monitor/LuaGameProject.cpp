@@ -8,6 +8,7 @@
 #include "NrpScenario.h"
 #include "NrpLicense.h"
 #include "NrpTechnology.h"
+#include "NrpApplication.h"
 
 #define BEGIN_AUTONAME_FUNCTION(name) int CLuaGameProject::name( lua_State* L )\
 									  {  std::string functionAutoName = #name;
@@ -76,6 +77,7 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetEngineExtend ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLocalization ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCrossPlatformCode ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Remove ),
 	{0,0}
 };
@@ -139,6 +141,20 @@ SETTER_NUMERICAL_FUNCTION( SetVideoTech, SetVideoTech )
 
 GETTER_NUMERICAL_FUNCTION( GetSoundTech, GetSoundTech )
 SETTER_NUMERICAL_FUNCTION( SetSoundTech, SetSoundTech )
+
+int CLuaGameProject::Create( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:Create need string parameter" );
+
+	const char* name = lua_tostring( L, 2 );
+	assert( name != NULL );
+
+	object_ = static_cast<PNrpGameProject>( CNrpApplication::Instance().CreateGameProject( name ) );
+	lua_pushlightuserdata( L, object_ );
+
+	return 1;
+}
 
 int CLuaGameProject::IsGenreIncluded( lua_State* L )
 {

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "LuaGameEngine.h"
 #include "NrpGameEngine.h"
+#include "NrpApplication.h"
 
 using namespace irr;
 
@@ -16,11 +17,26 @@ Luna< CLuaGameEngine >::RegType CLuaGameEngine::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetGenreModuleNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetCodeVolume ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetName ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Create ),
 	{0,0}
 };
 
 CLuaGameEngine::CLuaGameEngine(lua_State *L) : ILuaProject(L, "CLuaGameEngine")	//конструктор
 {}
+
+int CLuaGameEngine::Create( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameEngine:Create need string parameter" );
+
+	const char* name = lua_tostring( L, 2 );
+	assert( name != NULL );
+
+	object_ = CNrpApplication::Instance().CreateGameEngine( name );
+	lua_pushlightuserdata(L, object_ );
+
+	return 1;
+}
 
 int CLuaGameEngine::AddGenre( lua_State* L )
 {

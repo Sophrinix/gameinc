@@ -4,6 +4,9 @@
 #include "LuaUser.h"
 #include "StrConversation.h"
 #include "IUser.h"
+#include "NrpPlayer.h"
+#include "NrpApplication.h"
+#include "NrpAiUser.h"
 #include "NrpTechnology.h"
 
 using namespace irr;
@@ -28,10 +31,43 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTechWorkNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, RemoveTechWork ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTechWork ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, Create ),
 	{0,0}
 };
 
 CLuaUser::CLuaUser(lua_State *L) : ILuaObject(L, "CLuaUser") {}
+
+int CLuaUser::Create( lua_State *L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaUser:Create need 2 parameter" );
+
+	const char* userType = lua_tostring( L, 2 );
+	assert( userType != NULL );
+
+	const char* name = lua_tostring( L, 3 );
+	assert( name != NULL );
+
+	if( strcmp( userType, "RealPlayer" ) == 0 )
+	{
+		object_ = new CNrpPlayer( name, NULL );
+		CNrpApplication::Instance().AddUser( true, object_ );
+	}
+	else if( strcmp( userType, "AIPlayer" ) == 0 )
+	{
+		object_ = new CNrpAiUser( name, NULL );
+		CNrpApplication::Instance().AddUser( true, object_ );
+	}
+	else 
+	{
+		object_ = new IUser( userType, name, NULL );
+		object_->SetValue<std::string>( NAME, name );
+		CNrpApplication::Instance().AddUser( false, object_ );
+	}
+
+	lua_pushlightuserdata( L, (void*)object_ );
+	return 1;
+}
 
 int CLuaUser::SetSkill( lua_State* L )
 {

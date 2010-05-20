@@ -29,6 +29,9 @@ public:
 	int GetEmployerPosibility( lua_State* L );
 	int Load( lua_State* L );
 	int Remove( lua_State* L );
+	int Create( lua_State* L );
+	int IsLoaded( lua_State* L );
+	int ValidTime( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaTech"; }	
 };

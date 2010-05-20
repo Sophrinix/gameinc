@@ -18,20 +18,15 @@ public:
 
 	CLuaApplication(lua_State *L);		
 
-	int CreateCompany( lua_State* L);
 	int GetCompanyNumber( lua_State* L );
 	int GetCompany( lua_State* L );
 	int GetCompanyByName( lua_State* L );
 
-	int CreateUser( lua_State *L );
 	int UpdateGameTime( lua_State* L );
-	int CreateGameEngine( lua_State* L );
 	int GetBank( lua_State* L );
 	int GetPlayerCompany( lua_State* L );
 	int RemoveLuaFunction( lua_State* L );
 	int AddLuaFunction( lua_State* L );
-	int CreateGameProject( lua_State* L );
-	int CreateTechnology( lua_State* L );
 	int GetTechNumber( lua_State* L );
 	int GetTech( lua_State* L );
 	int AddPublicTechnology( lua_State* L );
@@ -50,9 +45,8 @@ public:
 	int GameBoxLoaded( lua_State* L );
 	int GetGameBoxAddon( lua_State* L );
 	int AddGameBoxAddon( lua_State* L );
-	int ValidTime( lua_State* L );
-	int IsGameBoxAddonLoaded( lua_State* L );
 	int LoadGameBoxAddon( lua_State* L );
+	int LoadGameTimeFromProfile( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:

@@ -20,19 +20,14 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 {
 	LUNA_ILUAOBJECT_HEADER( CLuaApplication ),
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateCompany ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompany ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyByName ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetBank ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlayerCompany ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddLuaFunction ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveLuaFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateGameProject ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateGameEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateTechnology ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddPublicTechnology ),
@@ -50,70 +45,13 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddonNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddon ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameBoxAddon ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, ValidTime ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, IsGameBoxAddonLoaded ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameBoxAddon ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameTimeFromProfile ),
 	{0,0}
 };
 
 CLuaApplication::CLuaApplication(lua_State *L)	: ILuaProject(L, "CLuaApplication")	//конструктор
 {}
-
-int CLuaApplication::CreateCompany( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:CreateCompany need string parameter" );
-
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
-	CNrpCompany* cntr = NULL;
-
-	IF_OBJECT_NOT_NULL_THEN
-	{
-		cntr = new CNrpCompany( name );
-		object_->AddCompany( cntr );
-	}
-
-	lua_pushlightuserdata( L, cntr );
-	return 1;
-}
-
-int CLuaApplication::CreateUser( lua_State *L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaApplication:CreateUser need 2 parameter" );
-
-	const char* userType = lua_tostring( L, 2 );
-	assert( userType != NULL );
-
-	const char* name = lua_tostring( L, 3 );
-	assert( name != NULL );
-
-	IUser* user = NULL;
-
-	IF_OBJECT_NOT_NULL_THEN
-	{
-		if( strcmp( userType, "RealPlayer" ) == 0 )
-		{
-			user = new CNrpPlayer( name, NULL );
-			object_->AddUser( true, user );
-		}
-		else if( strcmp( userType, "AIPlayer" ) == 0 )
-		{
-			user = new CNrpAiUser( name, NULL );
-			object_->AddUser( true, user );
-		}
-		else 
-		{
-			user = new IUser( userType, name, NULL );
-			user->SetValue<std::string>( NAME, name );
-			object_->AddUser( false, user );
-		}
-	}
-	lua_pushlightuserdata( L, (void*)user );
-
-	return 1;
-}
 
 int CLuaApplication::UpdateGameTime( lua_State* L )
 {
@@ -200,50 +138,6 @@ int CLuaApplication::AddLuaFunction( lua_State* L )
 int CLuaApplication::RemoveLuaFunction( lua_State* L )
 {
 	return AddRemLuaFunction_( L, "RemoveLuaFunction", true );
-}
-
-int CLuaApplication::CreateGameProject( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:CreateGameProject need string parameter" );
-
-	const char* name = lua_tostring( L, 2 );
-	INrpProject* eng = NULL;
-	assert( name != NULL );
-
-	IF_OBJECT_NOT_NULL_THEN eng = object_->CreateGameProject( name );
-	lua_pushlightuserdata( L, eng );
-
-	return 1;
-}
-
-int CLuaApplication::CreateGameEngine( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:CreateGameEngine need string parameter" );
-
-	const char* name = lua_tostring( L, 2 );
-	CNrpGameEngine* eng = NULL;
-	assert( name != NULL );
-
-	IF_OBJECT_NOT_NULL_THEN eng = object_->CreateGameEngine( name );
-	lua_pushlightuserdata(L, eng );
-
-	return 1;
-}
-
-int CLuaApplication::CreateTechnology( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:CreateTechnology need int parameter" );
-
-	int typen = lua_tointeger( L, 2 );
-	CNrpTechnology* tech = NULL;
-
-	IF_OBJECT_NOT_NULL_THEN tech = object_->CreateTechnology( typen );
-	lua_pushlightuserdata(L, tech );
-
-	return 1;
 }
 
 int CLuaApplication::GetTechNumber( lua_State* L )
@@ -504,38 +398,21 @@ int CLuaApplication::AddGameBoxAddon( lua_State* L )
 	return 1;	
 }
 
-int CLuaApplication::ValidTime( lua_State* L )
+int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::ValidTime need CNrpTechnology parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:LoadGameTimeFromProfile need profileName parameter" );
 
-	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
-	bool validTime = false; 
+	const char* profileName = lua_tostring( L, 2 );
+	assert( profileName != NULL );
+
 	IF_OBJECT_NOT_NULL_THEN
-	if( tech != NULL )
 	{
-		SYSTEMTIME starttime = tech->GetValue<SYSTEMTIME>( STARTDATE );
-		SYSTEMTIME endtime = tech->GetValue<SYSTEMTIME>( ENDDATE );
-		SYSTEMTIME currentTime = object_->GetValue<SYSTEMTIME>( CURRENTTIME );
-		validTime = (starttime < currentTime) && (currentTime < endtime);
+		std::string pathToFile = std::string( "save/" ) + profileName + "/profile.ini";
+		
+		object_->SetValue<SYSTEMTIME>( CURRENTTIME, IniFile::Read( PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME(), pathToFile ) );
 	}
-	lua_pushboolean( L, validTime );
+
 	return 1;	
 }
-
-int CLuaApplication::IsGameBoxAddonLoaded( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::GameBoxLoaded need CNrpTechnology parameter");
-
-	const char* techName = lua_tostring( L, 2 );
-	assert( techName != NULL );
-
-	bool loaded = false; 
-	IF_OBJECT_NOT_NULL_THEN loaded = object_->GetBoxAddon( techName ) != NULL;
-
-	lua_pushboolean( L, loaded );
-	return 1;			
-}
-
-}//namespace nrp
+}//namespace nrp 

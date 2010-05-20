@@ -61,6 +61,7 @@ public:
 	int GetEngineExtend( lua_State* L );
 	int GetLocalization( lua_State* L );
 	int GetCrossPlatformCode( lua_State* L );
+	int Create( lua_State* L );
 	int Remove( lua_State* L );
 																
 	static const char* StaticGetLuaName() { return "CLuaGameProject"; }

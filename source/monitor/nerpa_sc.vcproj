@@ -1149,6 +1149,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaDiskMachine.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaDiskMachine.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaGame.cpp"
 						>
 					</File>
@@ -1170,6 +1178,14 @@
 					</File>
 					<File
 						RelativePath=".\LuaGameEngine.h"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaPlantWork.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaPlantWork.h"
 						>
 					</File>
 					<File
@@ -1531,6 +1547,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NrpDiskMachine.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpDiskMachine.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NrpGame.cpp"
 				>
 			</File>
@@ -1568,6 +1592,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpLicense.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpPlantWork.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpPlantWork.h"
 				>
 			</File>
 			<File

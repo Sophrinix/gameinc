@@ -6,7 +6,6 @@ local width = 800
 local height = 600
 
 function sworkCreateWindowWizardProject( ptr )
-	
 	local itemHeight = 30
 	local i = 1
 	local hTemp = height / 3
@@ -20,5 +19,4 @@ function sworkCreateWindowWizardProject( ptr )
 	button:SetObject( guienv:AddButton( width / 2 - 200, hTemp * i, width / 2 + 200, hTemp * i+ itemHeight, windowg:Self(), -1, "Проект игры" ) )
 	button:SetAction( "sworkCreateGameProject" )
 	i = i + 1
-	
 end

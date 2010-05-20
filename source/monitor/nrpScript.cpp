@@ -38,6 +38,8 @@
 #include "LuaGameBox.h"
 #include "LuaGame.h"
 #include "LuaIniFile.h"
+#include "LuaDiskMachine.h"
+#include "LuaPlantWork.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
 
@@ -168,6 +170,8 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaGameBox >::Register( vm_ );
 	Luna< CLuaGame >::Register( vm_ );
 	Luna< CLuaIniFile >::Register( vm_ );
+	Luna< CLuaDiskMachine >::Register( vm_ );
+	Luna< CLuaPlantWork >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()

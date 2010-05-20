@@ -186,7 +186,7 @@ SYSTEMTIME IniFile::Read( const std::string& section,
 	SYSTEMTIME result( def_value );
 
 	std::string str_pars = Read( section, key, std::string( "y=0 m=0 d=0 h=0 m=0 s=0" ), fileName );
-	sscanf_s( str_pars.c_str(), "m=%04d m=%02d d=%02d h=%02d m=%02d s=%02d", 
+	sscanf_s( str_pars.c_str(), "y=%04d m=%02d d=%02d h=%02d m=%02d s=%02d", 
 								&result.wYear, &result.wMonth, &result.wDay,
 								&result.wHour, &result.wMinute, &result.wSecond );
 

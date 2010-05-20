@@ -624,7 +624,7 @@ function sworkCreateGameProject( ptr )
 	windowg:Remove()
 	
 	local applic = CLuaApplication( NrpGetApplication() )
-	project:SetObject( applic:CreateGameProject( "defaultGame" ) )
+	project:Create( "defaultGame" )
 	windowg:SetObject( guienv:AddWindow( "GameWizzard", 0, 0, width, height, -1, guienv:GetRootGUIElement() ) )
 	windowg:SetName( WINDOW_PROJECTWIZ_NAME )
 	

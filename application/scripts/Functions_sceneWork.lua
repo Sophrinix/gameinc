@@ -8,6 +8,7 @@ IncludeScript("swork_wndLoanAction")
 IncludeScript("swork_wndUniverStuffUp")
 IncludeScript("swork_wndProjectManager")
 IncludeScript("swork_wndGameBoxCreate")
+IncludeScript("swork_wndDiskPlant")
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
@@ -84,6 +85,10 @@ function sworkSelectObjectOnPlantScene( ptr )
 	if nodeName == "gameBoxManagerNode" then
 		sworkCreateGameBoxManagerWindow()
 		return 0
+	end
+	
+	if nodeName == "plantCeNode" then
+		sworkCreateDiskProducePlantWindow()
 	end
 	
 	if nodeName == "exitPlantNode" then

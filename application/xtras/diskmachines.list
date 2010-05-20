@@ -1,0 +1,8 @@
+[options]
+diskMachineNumber=6
+diskMachine_0=xtras/diskmachines/dm1.dm
+diskMachine_1=xtras/diskmachines/dm2.dm
+diskMachine_2=xtras/diskmachines/dm3.dm
+diskMachine_3=xtras/diskmachines/dm4.dm
+diskMachine_4=xtras/diskmachines/dm5.dm
+diskMachine_5=xtras/diskmachines/dm6.dm

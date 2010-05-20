@@ -5,6 +5,7 @@
 #include "LuaTechnology.h"
 #include "NrpTechnology.h"
 #include "IUser.h"
+#include "NrpApplication.h"
 
 #define NO_POSTFIX
 #define NO_ASSERT
@@ -42,6 +43,9 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Load ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Remove ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetLevel ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Create ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, IsLoaded ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, ValidTime ),
 	{0,0}
 };
 
@@ -67,6 +71,19 @@ int CLuaTechnology::GetOptionAsInt( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( opName );
 	lua_pushinteger( L, result );
 	return 1;	
+}
+
+int CLuaTechnology::Create( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:CreateTechnology need int parameter" );
+
+	int typen = lua_tointeger( L, 2 );
+
+	object_ = CNrpApplication::Instance().CreateTechnology( typen );
+	lua_pushlightuserdata(L, object_ );
+
+	return 1;
 }
 
 int CLuaTechnology::SetEngineTechRequire( lua_State* L )
@@ -153,6 +170,36 @@ int CLuaTechnology::GetLevel( lua_State* L )
 
 	lua_pushinteger( L, result );
 	return 1;		
+}
+
+int CLuaTechnology::ValidTime( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::ValidTime not need any parameter");
+
+	bool validTime = false; 
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		SYSTEMTIME starttime = object_->GetValue<SYSTEMTIME>( STARTDATE );
+		SYSTEMTIME endtime = object_->GetValue<SYSTEMTIME>( ENDDATE );
+		SYSTEMTIME currentTime = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
+		validTime = (starttime < currentTime) && (currentTime < endtime);
+	}
+	
+	lua_pushboolean( L, validTime );
+	return 1;	
+}
+
+int CLuaTechnology::IsLoaded( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::IsLoaded not need any parameter");
+
+	bool loaded = false; 
+	IF_OBJECT_NOT_NULL_THEN loaded = CNrpApplication::Instance().GetBoxAddon( object_->GetValue<std::string>( NAME ) ) != NULL;
+
+	lua_pushboolean( L, loaded );
+	return 1;			
 }
 
 }//namespace nrp

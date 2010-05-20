@@ -5,6 +5,7 @@
 #include "NrpGameEngine.h"
 #include "NrpGameProject.h"
 #include "NrpGame.h"
+#include "NrpApplication.h"
 #include <assert.h>
 
 namespace nrp
@@ -35,11 +36,28 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetFromPortfelle ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGameNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGame ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, Create ),
 	{0,0}
 };
 
 CLuaCompany::CLuaCompany(lua_State *L)	: ILuaProject(L, "CLuaCompany")	//конструктор
 {}
+
+int CLuaCompany::Create( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:Create need string parameter" );
+
+	const char* name = lua_tostring( L, 2 );
+	assert( name != NULL );
+
+	object_ = new CNrpCompany( name );
+	CNrpApplication::Instance().AddCompany( object_ );
+
+	lua_pushlightuserdata( L, object_ );
+	return 1;
+}
+
 
 int CLuaCompany::SetCEO( lua_State* L )
 {
