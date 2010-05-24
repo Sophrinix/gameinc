@@ -16,6 +16,7 @@
 #include "NrpPluginEngine.h"
 #include "NrpApplication.h"
 #include "NrpBank.h"
+#include "nrpPlant.h"
 using namespace nrp;
 using namespace plugin;
 
@@ -38,6 +39,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	CNrpSkyConfig& skyConfig = CNrpSkyConfig::Instance();
 	CNrpConsoleConfig& consoleConfig = CNrpConsoleConfig::Instance();
 	CNrpHtmlEngineConfig& heConfig = CNrpHtmlEngineConfig::Instance();
+	CNrpPlant& plant = CNrpPlant::Instance();
 
 	CNrpScript& scriptSystem = CNrpScript::Instance();
 	scriptSystem.DoFile( "scripts/initApp.lua" );

@@ -61,7 +61,7 @@ void CNrpGameBox::Save( std::string scetionName, std::string fileName )
 {
 	ADDON_LIST_ITERATOR pIter = addons_.begin();
 	for( int k=0; pIter != addons_.end(); pIter++, k++ )
-		IniFile::Write( GAMEBOX, GAMEBOX + IntToStr( k ), (*pIter)->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( GBOX, GBOX + IntToStr( k ), (*pIter)->GetValue<std::string>( NAME ), fileName );
 
 	INrpConfig::Save( scetionName, fileName );	
 }
@@ -72,7 +72,7 @@ void CNrpGameBox::Load( std::string sectionName, std::string fileName )
 
 	for( int k=0; k < GetValue<int>( NUMBERADDON ); k++ )
 	{
-		std::string addonName = IniFile::Read( GAMEBOX, GAMEBOX + IntToStr( k ), std::string(""), fileName );
+		std::string addonName = IniFile::Read( GBOX, GBOX + IntToStr( k ), std::string(""), fileName );
 		CNrpTechnology* tech = CNrpApplication::Instance().GetBoxAddon( addonName );
 
 		if( tech )
@@ -80,10 +80,20 @@ void CNrpGameBox::Load( std::string sectionName, std::string fileName )
 	}
 }
 
+float CNrpGameBox::GetBoxAddonsPrice()
+{
+	float sum = 0;
+	ADDON_LIST_ITERATOR pIter = addons_.begin();
+	for( ; pIter != addons_.end(); pIter++ )
+		sum += (*pIter)->GetValue<float>( PRICE );
+
+	return sum;
+}
+
 nrp::CNrpGameBox::CNrpGameBox( CNrpGame* ptrGame ) : INrpConfig( "CNrpGameBox", "" )
 {
 	CreateValue<std::string>( NAME, ptrGame->GetValue<std::string>( NAME ) );
-	CreateValue<PNrpGame>( BOXGAME, ptrGame );
+	CreateValue<PNrpGame>( GAME, ptrGame );
 	CreateValue<int>( NUMBERADDON, 0 );
 	CreateValue<int>( LEVEL, 0 );
 }

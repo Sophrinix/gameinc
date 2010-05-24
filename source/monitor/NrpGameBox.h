@@ -6,7 +6,7 @@ namespace nrp
 class CNrpGame;
 class CNrpTechnology;
 
-OPTION_NAME BOXGAME( "boxGame" );
+OPTION_NAME GAME( "game" );
 OPTION_NAME NUMBERADDON( "numberAddon" );
 
 class CNrpGameBox : public INrpConfig
@@ -17,6 +17,7 @@ public:
 	void RemoveMyBoxAddon( std::string name );
 	void AddBoxAddon( CNrpTechnology* tech );
 	CNrpTechnology* GetAddon( size_t index );
+	float GetBoxAddonsPrice();
 
 	~CNrpGameBox(void);
 	void Save( std::string scetionName, std::string fileName );

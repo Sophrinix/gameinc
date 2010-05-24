@@ -25,7 +25,8 @@ OPTION_NAME LOCALIZATIONRATING( "localizationRating" );
 OPTION_NAME CURRENTBUGRATING( "currentBugRating" );
 OPTION_NAME STARTADVFUNC( "startAdvFunc" );
 OPTION_NAME CURRENTADVFUNC( "currentAdvFunc" );
-OPTION_NAME GAMEBOX( "gameBox" );
+OPTION_NAME GBOX( "box" );
+OPTION_NAME BOXNUMBER( "boxNumber" );
 
 class CNrpGame : public INrpConfig
 {

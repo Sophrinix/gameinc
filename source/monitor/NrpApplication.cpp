@@ -12,6 +12,8 @@
 #include "nrpEngine.h"
 #include "PeopleName.h"
 #include "NrpGame.h"
+#include "NrpDiskMachine.h"
+#include "NrpPlant.h"
 
 #include <io.h>
 #include <errno.h>
@@ -44,6 +46,8 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<std::string>( PROFILENAME, profileName );
 	CreateValue<std::string>( PROFILECOMPANY, profileCompany );
 	CreateValue<SYSTEMTIME>( CURRENTTIME, time );
+	CreateValue<int>( DISKMACHINENUMBER, 0 );
+	CreateValue<int>( BOXADDONNUMBER, 0 );
 
 	srand( GetTickCount() );
 }
@@ -65,7 +69,7 @@ CNrpCompany* CNrpApplication::GetCompany( std::string companyName ) const
 
 CNrpCompany* CNrpApplication::GetCompany( int index ) const
 {
-	return index < companies_.size() ? companies_[ index ] : NULL;
+	return index < (int)companies_.size() ? companies_[ index ] : NULL;
 }
 
 CNrpApplication::COMPANIES_LIST& CNrpApplication::GetCompanies()
@@ -384,7 +388,8 @@ void CNrpApplication::BeginNewDay_()
 {
 	COMPANIES_LIST::iterator cIter = companies_.begin();
 	for( ; cIter != companies_.end(); cIter++)
-		 (*cIter)->BeginNewDay( GetValue<SYSTEMTIME>( CURRENTTIME ));
+		 (*cIter)->BeginNewDay( GetValue<SYSTEMTIME>( CURRENTTIME ) );
+	CNrpPlant::Instance().BeginNewDay();
 }
 
 void CNrpApplication::CreateNewFreeUsers()
@@ -593,6 +598,7 @@ void CNrpApplication::BeginNewHour_()
 void CNrpApplication::AddBoxAddon( CNrpTechnology* tech )
 {
 	boxAddons_.push_back( tech );
+	SetValue<int>( BOXADDONNUMBER, boxAddons_.size() );
 }
 
 CNrpTechnology* CNrpApplication::GetBoxAddon( std::string name )
@@ -604,4 +610,26 @@ CNrpTechnology* CNrpApplication::GetBoxAddon( std::string name )
 
 	return NULL;	
 }
+
+CNrpDiskMachine* CNrpApplication::GetDiskMachine( std::string name )
+{
+	DISKMACHINES_LIST::iterator dIter = diskMachines_.begin();
+	for( ; dIter != diskMachines_.end(); dIter++)
+		if( (*dIter)->GetValue<std::string>( NAME ) == name )
+			return *dIter;
+
+	return NULL;		
+}
+
+CNrpDiskMachine* CNrpApplication::GetDiskMachine( size_t index )
+{
+	return index < diskMachines_.size() ? diskMachines_[ index ] : NULL;
+}
+
+void CNrpApplication::AddDiskMachine( CNrpDiskMachine* pDm )
+{
+	diskMachines_.push_back( pDm );
+	SetValue<int>( DISKMACHINENUMBER, diskMachines_.size() );
+}
+
 }//namespace nrp

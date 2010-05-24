@@ -38,7 +38,7 @@ int CLuaGame::HaveBox( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:HaveBox not need any parameter" );
 
 	bool haveBox = false;
-	IF_OBJECT_NOT_NULL_THEN	haveBox = object_->GetValue<PNrpGameBox>( GAMEBOX ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN	haveBox = object_->GetValue<PNrpGameBox>( GBOX ) != NULL;
 
 	lua_pushboolean( L, haveBox );
 	return 1;	
@@ -66,7 +66,7 @@ int CLuaGame::IsMyBoxAddon( lua_State* L )
 	bool isMyBox = false;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GAMEBOX );
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
 		if( box != NULL )
 			isMyBox = box->IsMyBoxAddon( name );
 
@@ -84,7 +84,7 @@ int CLuaGame::RemoveBoxAddon( lua_State* L )
 	assert( name != NULL );
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GAMEBOX );
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
 		if( box != NULL )
 			box->RemoveMyBoxAddon( name );
 
@@ -101,7 +101,7 @@ int CLuaGame::AddBoxAddon( lua_State* L )
 	assert( tech != NULL );
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GAMEBOX );
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
 		assert( box != NULL );
 		if( box != NULL )
 			box->AddBoxAddon( tech );
@@ -118,7 +118,7 @@ int CLuaGame::GetBoxAddonsNumber( lua_State* L )
 	int addonNumber = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GAMEBOX );
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
 		if( box != NULL)
 			addonNumber = box->GetValue<int>( NUMBERADDON );
 	}
@@ -138,7 +138,7 @@ int CLuaGame::CreateBox( lua_State* L )
 	{
 		PNrpGameBox box = new CNrpGameBox( object_ );
 		box->SetValue<int>( LEVEL, boxLevel );
-		object_->SetValue<PNrpGameBox>( GAMEBOX, box );
+		object_->SetValue<PNrpGameBox>( GBOX, box );
 	}
 	return 1;		
 }
@@ -150,8 +150,8 @@ int CLuaGame::RemoveBox( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GAMEBOX );
-		object_->SetValue<PNrpGameBox>( GAMEBOX, NULL );
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		object_->SetValue<PNrpGameBox>( GBOX, NULL );
 		delete box;
 	}
 
@@ -166,7 +166,7 @@ int CLuaGame::GetBoxLevel( lua_State* L )
 	int boxLevel = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GAMEBOX );
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
 		if( box != NULL )
 			boxLevel = box->GetValue<int>( LEVEL );
 	}
@@ -184,7 +184,7 @@ int CLuaGame::GetBoxAddon( lua_State* L )
 	CNrpTechnology* tech = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GAMEBOX );
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
 		if( box )
 			tech = box->GetAddon( index );
 	}

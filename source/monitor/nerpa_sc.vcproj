@@ -1236,6 +1236,14 @@
 						RelativePath=".\LuaIniFile.h"
 						>
 					</File>
+					<File
+						RelativePath=".\LuaPlant.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaPlant.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -1428,6 +1436,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpApplication.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpPlant.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpPlant.h"
 				>
 			</File>
 		</Filter>

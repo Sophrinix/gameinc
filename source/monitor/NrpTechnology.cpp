@@ -43,6 +43,7 @@ void CNrpTechnology::InitializeOptions_()
 	CreateValue<int>( ERRORNUMBER, 0 );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
+	CreateValue<float>( PRICE, 0 );
 }
 
 CNrpTechnology::CNrpTechnology( CNrpTechnology* pTech, CNrpCompany* ptrCmp ) 

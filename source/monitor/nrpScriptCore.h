@@ -70,6 +70,8 @@ extern "C"
 
 	int ApplicationSave( lua_State* vm );
 
+	int GetPlant( lua_State* vm );
+
 	// типа справка
 	int Help(lua_State *vm);
 };

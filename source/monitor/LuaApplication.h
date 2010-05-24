@@ -47,6 +47,11 @@ public:
 	int AddGameBoxAddon( lua_State* L );
 	int LoadGameBoxAddon( lua_State* L );
 	int LoadGameTimeFromProfile( lua_State* L );
+	int LoadDiskMachine( lua_State* L );
+	int GetDiskMachineNumber( lua_State* L );
+	int GetDiskMachine( lua_State* L );
+	int SaveBoxAddonsPrice( lua_State* L );
+	int LoadBoxAddonsPrice( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaApplication"; }
 private:

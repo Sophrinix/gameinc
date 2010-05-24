@@ -59,8 +59,9 @@ irr::core::dimension2di IniFile::Read( const std::string& section,
 {
 	irr::core::dimension2di result( def_value );
 
-	std::string str_pars = Read( section, key, std::string( "0,0" ), file_name );
-	sscanf_s( str_pars.c_str(), "%d,%d", &def_value.Width, &def_value.Height );
+	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
+	if( str_pars != "novalue" )
+		sscanf_s( str_pars.c_str(), "%d,%d", &def_value.Width, &def_value.Height );
 
 	return result;
 }
@@ -73,8 +74,9 @@ irr::core::dimension2df IniFile::Read( const std::string& section,
 {
 	irr::core::dimension2df result( def_value );
 
-	std::string str_pars = Read( section, key, std::string( "0,0" ), file_name );
-	sscanf_s( str_pars.c_str(), "%f,%f", &result.Width, &result.Height );
+	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
+	if( str_pars != "novalue" )
+		sscanf_s( str_pars.c_str(), "%f,%f", &result.Width, &result.Height );
 
 	return result;
 }
@@ -87,8 +89,9 @@ irr::core::vector3df IniFile::Read( const std::string& section,
 {
 	irr::core::vector3df result( def_value );
 
-	std::string str_pars = Read( section, key, std::string( "0,0,0" ), file_name );
-	sscanf_s( str_pars.c_str(), "%f,%f,%f", &result.X, &result.Y, &result.Z );
+	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
+	if( str_pars != "novalue" )
+		sscanf_s( str_pars.c_str(), "%f,%f,%f", &result.X, &result.Y, &result.Z );
 
 	return result;
 }
@@ -99,9 +102,10 @@ irr::core::recti IniFile::Read( const std::string& section,
 									  const irr::core::recti& def_value,
 									  const std::string& file_name )
 {
-	std::string str_pars = Read( section, key, std::string( "0,0,0,0" ), file_name );
+	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
 
 	irr::core::recti rct( def_value );
+	if( str_pars != "novalue" )
 	sscanf_s( str_pars.c_str(), "%d,%d,%d,%d", &rct.UpperLeftCorner.X, &rct.UpperLeftCorner.Y, 
 												&rct.LowerRightCorner.X, &rct.LowerRightCorner.Y  );
 
@@ -139,10 +143,11 @@ float IniFile::Read( const std::string& section,
 						   const float& def_value, 
 						   const std::string& file_name )
 {
-	std::string str_pars = Read( section, key, std::string( "0.0" ), file_name );
+	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
 
 	float result = def_value;
-	sscanf_s( str_pars.c_str(), "%f", &result );
+	if( str_pars != "novalue" )
+	    sscanf_s( str_pars.c_str(), "%f", &result );
 
 	return result;
 }
@@ -185,10 +190,12 @@ SYSTEMTIME IniFile::Read( const std::string& section,
 {
 	SYSTEMTIME result( def_value );
 
-	std::string str_pars = Read( section, key, std::string( "y=0 m=0 d=0 h=0 m=0 s=0" ), fileName );
-	sscanf_s( str_pars.c_str(), "y=%04d m=%02d d=%02d h=%02d m=%02d s=%02d", 
+	std::string str_pars = Read( section, key, std::string( "y=0 m=0 d=0 h=0 mi=0 s=0" ), fileName );
+	sscanf_s( str_pars.c_str(), "y=%04d m=%02d d=%02d h=%02d mi=%02d s=%02d", 
 								&result.wYear, &result.wMonth, &result.wDay,
 								&result.wHour, &result.wMinute, &result.wSecond );
+	result.wSecond = 0;
+	result.wMilliseconds = 0;
 
 	return result;	
 }
@@ -213,7 +220,7 @@ void IniFile::Write( const std::string& section,
 {
 	char str[ MAX_PATH ];
 
-	sprintf_s( str, "y=%04d m=%02d d=%02d h=%02d mi=%02d", 
+	sprintf_s( str, "y=%04d m=%02d d=%02d h=%02d mi=%02d s=0", 
 					amount.wYear, amount.wMonth, amount.wDay,
 					amount.wHour, amount.wMinute );
 

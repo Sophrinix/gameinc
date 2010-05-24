@@ -190,6 +190,8 @@ SYSTEMTIME StrToTime( const char* s )
 
 	sscanf_s( s, "y=%04d m=%02d d=%02d h=%02d mi=%02d", 
 			  &time.wYear, &time.wMonth, &time.wDay, &time.wHour, &time.wMinute );
+	time.wSecond = 0;
+	time.wMilliseconds = 0;
 
 	return time;	
 }

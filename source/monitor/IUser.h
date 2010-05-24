@@ -22,7 +22,6 @@ OPTION_NAME MAXSUPPORTUSER( "maxSupportUser" ); /*! количество людей, которым мо
 OPTION_NAME INVENTIONABILITY( "inventionAbility" ); /*! способность к изобретениям*/
 OPTION_NAME USERSTATE( "userState" ); /*! Состояние пользователя "работа", "отдых" */
 OPTION_NAME ROOMSTATE( "roomState" ); /*! Комната, в которой находится человек */
-OPTION_NAME PARENTCOMPANY( "parentCompany" ); /*! компания в которой работаем человек */
 OPTION_NAME MAXHOLIDAY( "maxHoliday" );	 /*! Максимальное количество дней отпуска для этого человека */
 OPTION_NAME CURRENTHOLIDAY( "currentHoliday" ); /*! Количество отгулянных дней отпуска */
 OPTION_NAME HANGRY( "hangry" ); /*! Чуство голода*/

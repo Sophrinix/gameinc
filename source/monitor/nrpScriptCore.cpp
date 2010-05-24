@@ -16,6 +16,7 @@
 #include "nrpScene.h"
 #include "NrpPluginEngine.h"
 #include "NrpApplication.h"
+#include "NrpPlant.h"
 
 using namespace irr;
 
@@ -316,6 +317,16 @@ int GetApplication( lua_State* vm )
 	luaL_argcheck(vm, argc == 0, 0, "Function GetApplication not need any parameter");
 
 	lua_pushlightuserdata( vm, (void*)&CNrpApplication::Instance() );
+
+	return 1;	
+}
+
+int GetPlant( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 0, 0, "Function GetPlant not need any parameter");
+
+	lua_pushlightuserdata( vm, (void*)&CNrpPlant::Instance() );
 
 	return 1;	
 }

@@ -12,11 +12,11 @@ OPTION_NAME TECHGROUP( "techGroup" );
 OPTION_NAME BASE_CODE( "baseCode" );
 OPTION_NAME ENGINE_CODE( "engineCode" );
 OPTION_NAME LEVEL( "level" );
-OPTION_NAME PARENT( "parent" );
 OPTION_NAME LASTWORKER( "lastWorker" );
 OPTION_NAME ERRORNUMBER( "moduleErrorNumber");
 OPTION_NAME HAVELIDER( "haveLider" );
 OPTION_NAME CODEPASSED( "codePassed" );
+OPTION_NAME PRICE( "price" );
 
 class CNrpTechnology : public INrpProject
 {

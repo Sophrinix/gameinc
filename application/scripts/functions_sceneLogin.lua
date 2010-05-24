@@ -6,6 +6,7 @@ IncludeScript("swork_UpdateFunctions")
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 local driver = CLuaDriver( NrpGetVideoDriver() )
 local applic = CLuaApplication( NrpGetApplication() )
+local plant = CLuaPlant( NrpGetPlant() )
 
 --локальные имена элементов гуи
 local EDIT_NEWPROFILE_NAME = "_WindowNewGameEditProfile_"
@@ -75,8 +76,15 @@ end
 
 function slogin_ContinueLastGame( ptr )
 	applic:LoadGameTimeFromProfile( applic:GetCurrentProfile() )
+	
 	ApplicationUpdateGameBoxAddons()
+	applic:LoadBoxAddonsPrice()
+	
 	ApplicationUpdateDiskMachines()
+	
+	plant:Load( applic:GetCurrentProfile() )
+	
 	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
+	
 	NrpSetNextScene( "sceneWork" )
 end

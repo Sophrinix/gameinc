@@ -210,6 +210,7 @@ end
 
 function sworkApplicationClose( ptr )
 	NrpApplicationSave()
+	app:SaveBoxAddonsPrice()
 	NrpApplicationClose()
 end
 

@@ -8,6 +8,7 @@
 #include "NrpBank.h"
 #include "NrpGameProject.h"
 #include "NrpTechnology.h"
+#include "NrpDiskMachine.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -47,6 +48,11 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameBoxAddon ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameBoxAddon ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameTimeFromProfile ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadDiskMachine ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetDiskMachineNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetDiskMachine ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, SaveBoxAddonsPrice ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadBoxAddonsPrice ),
 	{0,0}
 };
 
@@ -149,7 +155,7 @@ int CLuaApplication::GetTechNumber( lua_State* L )
 int CLuaApplication::GetTech( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetTech need int parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetTech need int parameter" );
 
 	int techNumber = lua_tointeger( L, 2 );
 	CNrpTechnology* tech = NULL;
@@ -162,7 +168,7 @@ int CLuaApplication::GetTech( lua_State* L )
 int CLuaApplication::AddPublicTechnology( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetTech need CNrpTechnology* parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetTech need CNrpTechnology* parameter" );
 
 	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
 
@@ -180,7 +186,7 @@ int CLuaApplication::GetUserNumber( lua_State* L )
 int CLuaApplication::GetUser( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need int parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetUser need int parameter" );
 
 	int userNumber = lua_tointeger( L, 2 );
 	IUser* user = NULL;
@@ -193,7 +199,7 @@ int CLuaApplication::GetUser( lua_State* L )
 int CLuaApplication::GetUserByName( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUserByName need string parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetUserByName need string parameter" );
 
 	const char* userName = lua_tostring( L, 2 );
 	assert( userName != NULL );
@@ -219,7 +225,7 @@ int CLuaApplication::GetUserByName( lua_State* L )
 int CLuaApplication::RemoveUser( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:RemoveUser need IUser* parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:RemoveUser need IUser* parameter" );
 
 	IUser* user = (IUser*)lua_touserdata( L, 2 );
 	IF_OBJECT_NOT_NULL_THEN	object_->RemoveUser( user );
@@ -241,7 +247,7 @@ int CLuaApplication::GetCurrentProfileCompany( lua_State* L )
 int CLuaApplication::CreateProfile( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:CreateProfile need string,string parameters" );
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaApplication:CreateProfile need string,string parameters" );
 
 	const char* userName = lua_tostring( L, 2 );
 	assert( userName != NULL );
@@ -255,7 +261,7 @@ int CLuaApplication::CreateProfile( lua_State* L )
 int CLuaApplication::ResetData( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaCompany:ResetData not need any parameter" );
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:ResetData not need any parameter" );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->ResetData();
 	return 1;
@@ -264,7 +270,7 @@ int CLuaApplication::ResetData( lua_State* L )
 int CLuaApplication::LoadProfile( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:LoadProfile need string,string parameter" );
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaApplication:LoadProfile need string,string parameter" );
 
 	const char* name = lua_tostring( L, 2 );
 	assert( name != NULL );
@@ -304,7 +310,7 @@ int CLuaApplication::PayUserSalary( lua_State* L )
 int CLuaApplication::GetCompanyNumber( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaCompany:GetCompanyNumber need int parameter" );
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetCompanyNumber need int parameter" );
 
 	int companyNumber = 0;
 	IF_OBJECT_NOT_NULL_THEN	companyNumber = object_->GetValue<int>( COMPANIESNUMBER );
@@ -316,7 +322,7 @@ int CLuaApplication::GetCompanyNumber( lua_State* L )
 int CLuaApplication::GetCompany( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need int parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetUser need int parameter" );
 
 	int cmpNumber = lua_tointeger( L, 2 );
 	CNrpCompany* ptrCompany = NULL;
@@ -330,7 +336,7 @@ int CLuaApplication::GetCompany( lua_State* L )
 int CLuaApplication::GetCompanyByName( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need string parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetUser need string parameter" );
 
 	const char* cmpName = lua_tostring( L, 2 );
 	assert( cmpName != NULL );
@@ -345,10 +351,10 @@ int CLuaApplication::GetCompanyByName( lua_State* L )
 int CLuaApplication::GetGameBoxAddonNumber( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaCompany:GetGameBoxAddonNumber not need any parameter" );
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetGameBoxAddonNumber not need any parameter" );
 
 	int addonNumber = 0;
-	IF_OBJECT_NOT_NULL_THEN	addonNumber = object_->GetBoxAddonsNumber();
+	IF_OBJECT_NOT_NULL_THEN	addonNumber = object_->GetValue<int>( BOXADDONNUMBER );
 
 	lua_pushinteger( L, addonNumber );
 	return 1;
@@ -357,7 +363,7 @@ int CLuaApplication::GetGameBoxAddonNumber( lua_State* L )
 int CLuaApplication::GetGameBoxAddon( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetGameBoxAddon need integer parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetGameBoxAddon need integer parameter" );
 
 	int addonNumber = lua_tointeger( L, 2 );
 	CNrpTechnology* tech = NULL;
@@ -370,7 +376,7 @@ int CLuaApplication::GetGameBoxAddon( lua_State* L )
 int CLuaApplication::LoadGameBoxAddon( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:LoadGameBoxAddon need string parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadGameBoxAddon need string parameter" );
 
 	const char* techIniFile = lua_tostring( L, 2 );
 	assert( techIniFile != NULL );
@@ -388,7 +394,7 @@ int CLuaApplication::LoadGameBoxAddon( lua_State* L )
 int CLuaApplication::AddGameBoxAddon( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetGameBoxAddon need integer parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetGameBoxAddon need integer parameter" );
 
 	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
 	assert( tech != NULL );
@@ -401,7 +407,7 @@ int CLuaApplication::AddGameBoxAddon( lua_State* L )
 int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:LoadGameTimeFromProfile need profileName parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadGameTimeFromProfile need profileName parameter" );
 
 	const char* profileName = lua_tostring( L, 2 );
 	assert( profileName != NULL );
@@ -414,5 +420,79 @@ int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 	}
 
 	return 1;	
+}
+
+int CLuaApplication::LoadDiskMachine( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadDiskMachine need string parameter" );
+
+	const char* dmIniFile = lua_tostring( L, 2 );
+	assert( dmIniFile != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		CNrpDiskMachine* dm = new CNrpDiskMachine();
+		dm->Load( "options", dmIniFile );
+		object_->AddDiskMachine( dm );
+	}
+
+	return 1;		
+}
+
+int CLuaApplication::GetDiskMachineNumber( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetDiskMachineNumber not need any parameter" );
+
+	int dmNumber = 0;
+	IF_OBJECT_NOT_NULL_THEN	dmNumber = object_->GetValue<int>( DISKMACHINENUMBER );
+
+	lua_pushinteger( L, dmNumber );
+	return 1;
+}
+
+int CLuaApplication::GetDiskMachine( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetDiskMachine need integer parameter" );
+
+	int dmNumber = lua_tointeger( L, 2 );
+	CNrpDiskMachine* dm = NULL;
+	IF_OBJECT_NOT_NULL_THEN	dm = object_->GetDiskMachine( dmNumber );
+
+	lua_pushlightuserdata( L, dm );
+	return 1;	
+}
+
+int CLuaApplication::LoadBoxAddonsPrice( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:LoadBoxAddonsPrice not need any parameter" );
+
+	std::string boxAddonsIni = "save/" + object_->GetValue<std::string>(PROFILENAME)+ "/boxaddons.ini";
+	for( int k=0; k < object_->GetValue<int>( BOXADDONNUMBER ); k++ )
+	{
+		CNrpTechnology* tech = object_->GetBoxAddon( k );
+		float price = IniFile::Read( "prices", tech->GetValue<std::string>( NAME ), tech->GetValue<float>( PRICE ), boxAddonsIni );
+		tech->SetValue( PRICE, price );
+	}
+
+	return 1;
+}
+
+int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:SaveBoxAddonsPrice not need any parameter" );
+
+	std::string boxAddonsIni = "save/" + object_->GetValue<std::string>(PROFILENAME)+ "/boxaddons.ini";
+	for( int k=0; k < object_->GetValue<int>( BOXADDONNUMBER ); k++ )
+	{
+		CNrpTechnology* tech = object_->GetBoxAddon( k );
+		IniFile::Write( "prices", tech->GetValue<std::string>( NAME ), tech->GetValue<float>( PRICE ), boxAddonsIni );
+	}
+
+	return 1;
 }
 }//namespace nrp 

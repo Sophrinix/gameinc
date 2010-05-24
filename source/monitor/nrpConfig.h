@@ -47,7 +47,8 @@ OPTION_NAME CODEVOLUME( "volumeCode" );
 OPTION_NAME COMPONENTLIDER( "componentLider" );
 OPTION_NAME STARTDATE( "startDate" );
 OPTION_NAME ENDDATE( "endDate" );
-
+OPTION_NAME PARENT( "parent" );
+OPTION_NAME PARENTCOMPANY( "parentCompany" ); /*! компания */
 
 #define CHECK_VALCLASS_TYPE( bclass )\
 	if( type_ != typeid( bclass ).name() ) {\
@@ -228,7 +229,7 @@ public:
 		if( pIter == options_.end() )
 		{
 #ifdef _DEBUG
-			std::string text = "write: bad config param " + ClassName() + ":" + name;
+			std::string text = "write: bad config param " + ClassName() + ":" + name + "\n";
 			OutputDebugString( text.c_str() );
 			throw text.c_str();
 #endif

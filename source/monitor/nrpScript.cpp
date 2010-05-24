@@ -40,6 +40,7 @@
 #include "LuaIniFile.h"
 #include "LuaDiskMachine.h"
 #include "LuaPlantWork.h"
+#include "LuaPlant.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
 
@@ -121,11 +122,13 @@ CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 
 		lua_register( vm_, "NrpApplicationSave", ApplicationSave );
 
+		lua_register( vm_, "NrpGetPlant", GetPlant );
+
 		RegisterLuaClasses_();
 	}
 	catch (...)
 	{
-		Log(SCRIPT, FATAL) << "Регистрация кастомных команд в NerpaScript прошла неудачно." << term;
+		Log(SCRIPT, FATAL) << "Регистрация кастомных команд в NrpScript прошла неудачно." << term;
 	}
 
 	// Добавить директорию со скриптами в путь поиска модулей для Lua
@@ -172,6 +175,7 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaIniFile >::Register( vm_ );
 	Luna< CLuaDiskMachine >::Register( vm_ );
 	Luna< CLuaPlantWork >::Register( vm_ );
+	Luna< CLuaPlant >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()

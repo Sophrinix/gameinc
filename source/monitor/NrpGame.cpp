@@ -53,7 +53,8 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<int>( SOUNDTECHNUMBER, 0 );
 	CreateValue<int>( ADVTECHNUMBER, 0 );
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
-	CreateValue<PNrpGameBox>( GAMEBOX, NULL );
+	CreateValue<PNrpGameBox>( GBOX, NULL );
+	CreateValue<int>( BOXNUMBER, 0 );
 }
 
 CNrpGame::CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany )
@@ -122,7 +123,7 @@ void CNrpGame::Save( std::string saveFolder )
 	std::string saveFile = localFolder + "game.ini";
 	INrpConfig::Save( PROPERTIES, saveFile );
 
-	PNrpGameBox box = GetValue<PNrpGameBox>( GAMEBOX );
+	PNrpGameBox box = GetValue<PNrpGameBox>( GBOX );
 	if( box )
 		box->Save( PROPERTIES, localFolder + "box.ini" );
 }
@@ -140,7 +141,7 @@ void CNrpGame::Load( std::string loadFolder )
 	{
 		PNrpGameBox box = new CNrpGameBox( this );
 		box->Load( PROPERTIES, boxIni );
-		SetValue<PNrpGameBox>( GAMEBOX, box );
+		SetValue<PNrpGameBox>( GBOX, box );
 	}
 }
 

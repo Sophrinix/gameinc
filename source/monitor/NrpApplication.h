@@ -11,6 +11,8 @@ OPTION_NAME PROFILENAME( "profileName" );
 OPTION_NAME PROFILECOMPANY( "profileCompany" );
 OPTION_NAME FULLPATH( "fullPath" );
 OPTION_NAME CURRENTTIME( "currentTime" );
+OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
+OPTION_NAME BOXADDONNUMBER( "boxAdonNumber" );
 
 class CNrpCompany;
 class IUser;
@@ -18,11 +20,13 @@ class INrpProject;
 class CNrpGameEngine;
 class CNrpTechnology;
 class CNrpGame;
+class CNrpDiskMachine;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
 	typedef std::vector< IUser* > USER_LIST;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
+	typedef std::vector< CNrpDiskMachine* > DISKMACHINES_LIST;
 public:
 	typedef std::vector< CNrpCompany* > COMPANIES_LIST;
 	typedef enum { SPD_MINUTE=0, SPD_HOUR, SPD_DAY, SPD_MONTH, SPD_COUNT } SPEED;
@@ -63,10 +67,13 @@ public:
 	void UpdateGameRatings( CNrpGame* ptrGame, bool firstTime=false );
 	nrp::CNrpTechnology* CreateTechnology( int typeTech );
 
-	int GetBoxAddonsNumber() { return boxAddons_.size(); }
 	CNrpTechnology* GetBoxAddon( size_t index ) { return index < boxAddons_.size() ? boxAddons_[ index ] : NULL; }
 	CNrpTechnology* GetBoxAddon( std::string name );
 	void AddBoxAddon( CNrpTechnology* tech );
+
+	CNrpDiskMachine* GetDiskMachine( std::string name );
+	CNrpDiskMachine* GetDiskMachine( size_t index );
+	void AddDiskMachine( CNrpDiskMachine* pDm );
 
 private:
 	CNrpApplication(void);
@@ -76,6 +83,7 @@ private:
 	USER_LIST users_;
 	TECH_LIST technologies_;
 	TECH_LIST boxAddons_;
+	DISKMACHINES_LIST diskMachines_;
 
 	SPEED speed_;
 	int lastTimeUpdate_;
