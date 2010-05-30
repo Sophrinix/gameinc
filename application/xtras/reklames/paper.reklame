@@ -1,0 +1,7 @@
+[properties]
+priceinday:int=100
+quality:float=0.001
+maxquality:float=0.1
+techtype:string=paper
+name:string=Листовки
+level:int=1

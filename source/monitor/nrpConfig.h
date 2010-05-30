@@ -49,6 +49,11 @@ OPTION_NAME STARTDATE( "startDate" );
 OPTION_NAME ENDDATE( "endDate" );
 OPTION_NAME PARENT( "parent" );
 OPTION_NAME PARENTCOMPANY( "parentCompany" ); /*! компания */
+OPTION_NAME RENTPRICE( "rentPrice" );
+OPTION_NAME NUMBERDAY( "numberDay" );
+OPTION_NAME LEVEL( "level" );
+OPTION_NAME PRICEINDAY( "priceInDay" ); 
+OPTION_NAME GAMENAME( "gameName" );
 
 #define CHECK_VALCLASS_TYPE( bclass )\
 	if( type_ != typeid( bclass ).name() ) {\

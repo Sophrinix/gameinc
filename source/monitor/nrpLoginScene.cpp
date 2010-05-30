@@ -6,6 +6,7 @@
 #include "nrpScript.h"
 #include "HTMLEngine.h"
 #include "NrpBrowserWindow.h"
+#include "Nrp2dPictureFlow.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -14,6 +15,8 @@ namespace irr
 
 namespace scene
 {
+
+gui::CNrp2DPictureFlow* pf = NULL;
 
 bool CNrpLoginScene::OnEvent( const irr::SEvent& event )
 {
@@ -50,6 +53,12 @@ bool CNrpLoginScene::OnEvent( const irr::SEvent& event )
 				*/
 			return true;
 		}
+
+		{
+			gui::IGUIElement* elm = CNrpEngine::Instance().GetGuiEnvironment()->getFocus();
+			if( elm == pf )
+				elm->OnEvent( event );
+		}
 		break;
 	}
 
@@ -60,8 +69,9 @@ bool CNrpLoginScene::OnEvent( const irr::SEvent& event )
 void CNrpLoginScene::OnUpdate()
 {
 	video::IVideoDriver* driver = CNrpEngine::Instance().GetVideoDriver(); 
+	scene::ISceneManager* smgr = CNrpEngine::Instance().GetSceneManager();
 	
-	driver->beginScene( true, true, video::SColor(150,50,50,50) );
+	driver->beginScene( true, true, 0 );
 
 	CNrpEngine::Instance().GetSceneManager()->drawAll();
 	CNrpEngine::Instance().GetGuiEnvironment()->drawAll();
@@ -79,9 +89,9 @@ void CNrpLoginScene::OnEnter()
 	core::dimension2du scr_size = driver->getScreenSize();
 	core::position2di offset( scr_size.Width / 2 - 168, 3 * scr_size.Height / 4 );
 
-	nrp::HTMLEngine::Instance().GetBrowserWindow( core::dimension2du( 512, 512 ) );
-	nrp::HTMLEngine::Instance().Navigate( "c:\\index.html" );
-	
+	//nrp::HTMLEngine::Instance().GetBrowserWindow( core::dimension2du( 512, 512 ) );
+	//nrp::HTMLEngine::Instance().Navigate( "c:\\index.html" );
+
 	// просто добавь воды
 	scene::IAnimatedMesh* mesh = smgr->addHillPlaneMesh("myHill",
 		core::dimension2d<f32>(20,20),
@@ -111,8 +121,13 @@ void CNrpLoginScene::OnEnter()
 	// добавить камеру, которая будет смотреть сверху на булькающую воду
 	camera_ = smgr->addCameraSceneNode();
 	camera_->setPosition(core::vector3df(0,150,0));
-	camera_->setRotation(core::vector3df(30,0,0));
+	camera_->setRotation(core::vector3df(0,0,0));
 	camera_->setTarget(core::vector3df(0,0,0));
+	smgr->setActiveCamera( camera_ );
+
+	pf = new gui::CNrp2DPictureFlow( env, env->getRootGUIElement(), core::recti( 0, 0, 400, 400 ), core::recti( 0, 0, 150, 150 ), -1 );
+	for( int k=0; k < 15; k++ )
+		pf->addItem( driver->getTexture( "media/devka.jpg" ), L"" );
 
 	const core::dimension2du SCREEN_SIZE = driver->getScreenSize();
 	// добавляем надпись "НЕРПА"

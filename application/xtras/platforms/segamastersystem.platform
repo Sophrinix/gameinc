@@ -10,3 +10,4 @@ video:string=черно-белая и цветная
 video:skill=8 bit
 video:skill=64 цвета
 sound:string=
+selldevice:int=13000000

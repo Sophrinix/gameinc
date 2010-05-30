@@ -8,6 +8,7 @@ class CNrpTechnology;
 
 OPTION_NAME GAME( "game" );
 OPTION_NAME NUMBERADDON( "numberAddon" );
+OPTION_NAME BOXNUMBER( "boxNumber" );
 
 class CNrpGameBox : public INrpConfig
 {

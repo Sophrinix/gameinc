@@ -17,7 +17,7 @@ CNrpMiniMap::~CNrpMiniMap(void)
 void CNrpMiniMap::draw()
 {
 	if( animNode_ )
-		SetRotate( animNode_->getRotation().X );
+		SetRotate( core::vector3df( 0, 0, animNode_->getRotation().X ) );
 
 	CNrpRotatableImage::draw();
 }

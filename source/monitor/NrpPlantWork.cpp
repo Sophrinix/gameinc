@@ -4,6 +4,7 @@
 #include "NrpGame.h"
 #include "NrpGameBox.h"
 #include "NrpCompany.h"
+#include "NrpApplication.h"
 
 namespace nrp
 {
@@ -35,6 +36,7 @@ void CNrpPlantWork::InitializeOptions_()
 	CreateValue<int>( LEFTPRODUCEDISK, 0 );
 	CreateValue<int>( PRICEINDAY, 0 );
 	CreateValue<bool>( FINISHED, false );
+	CreateValue<int>( RENTPRICE, 0 );
 }
 
 CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
@@ -80,18 +82,21 @@ void CNrpPlantWork::CalcParams_()
 		priceInDay += dm->GetValue<int>( DISKPERHOUR ) * 24 * box->GetBoxAddonsPrice();//плата за покупку аддонов для коробки
 			
 		float dskPrice = price / (float)dskNum;
+		INrpConfig::SetValue<std::string>( NAME, game->GetValue<std::string>( NAME ) );
 		INrpConfig::SetValue<int>( DISKINDAY, dm->GetValue<int>( DISKPERHOUR ) * 24 );
 		INrpConfig::SetValue<float>( DISKPRICE, dskPrice );
 		INrpConfig::SetValue<int>( FINALPRICE, price );
 		INrpConfig::SetValue<std::string>( DISKMACHINENAME, dm->GetValue<std::string>( NAME ) ); 
 		INrpConfig::SetValue<std::string>( GAMENAME, game->GetValue<std::string>( NAME ) );
 		INrpConfig::SetValue<int>( PRICEINDAY, priceInDay );
+		INrpConfig::SetValue<int>( RENTPRICE, dm->GetValue<int>( RENTPRICE ) * nM );
+		INrpConfig::SetValue<std::string>( COMPANYNAME, game->GetValue<std::string>( COMPANYNAME ) );
 	}
 }
 
 void CNrpPlantWork::Save( std::string sectionName, std::string fileName )
 {
-
+	INrpConfig::Save( sectionName, fileName );
 }
 
 void CNrpPlantWork::BeginNewDay()
@@ -99,16 +104,20 @@ void CNrpPlantWork::BeginNewDay()
 	AddValue<int>( NUMBERDAY, -1 );
 	PNrpGame game = GetValue<PNrpGame>( PARENT );
 	PNrpGameBox box = game->GetValue<PNrpGameBox>( GBOX );
-	PNrpCompany cmp = game->GetValue<PNrpCompany>( PARENTCOMPANY );
+	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( game->GetValue<std::string>( COMPANYNAME ) );
+	
+	if( cmp == NULL )
+		return;
+
 	cmp->AddValue<int>( BALANCE, -GetValue<int>( PRICEINDAY ) );
-	int k = GetValue<PNrpDiskMachine>( DISKMACHINENAME )->GetValue<int>( DISKPERHOUR ) * 24;
+	int k = GetValue<PNrpDiskMachine>( PRODUCETYPE )->GetValue<int>( DISKPERHOUR ) * 24;
 	box->AddValue<int>( BOXNUMBER, k );
-	OutputDebugString( ("Сделано " + IntToStr( k ) + " коробок с игрой " + game->GetValue<std::string>( NAME )).c_str() );
+	OutputDebugString( ("Сделано " + IntToStr( k ) + " коробок с игрой " + game->GetValue<std::string>( NAME ) + "\n" ).c_str() );
 
 	if( GetValue<int>( NUMBERDAY ) < 0 )
 	{
 		SetValue<bool>( FINISHED, true );
-		OutputDebugString( std::string( "Закончено производство коробок с игрой " + game->GetValue<std::string>( NAME )).c_str() );
+		OutputDebugString( std::string( "Закончено производство коробок с игрой " + game->GetValue<std::string>( NAME ) + "\n").c_str() );
 	}
 }
 }//end namespace nrp 

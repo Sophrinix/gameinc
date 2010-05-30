@@ -24,16 +24,16 @@ public:
 	//! set body of compass texture
 	virtual void SetTexture( video::ITexture* texture);
 
-	virtual f32 getRotate()
+	virtual core::vector3df getRotate()
 	{
-		return matrix_.getRotationDegrees().Z;
+		return matrix_.getRotationDegrees();
 	}
 
 	//! set compass heading
-	virtual void SetRotate(const f32 deg)
+	virtual void SetRotate(const core::vector3df angles )
 	{
 		matrix_.makeIdentity();
-		matrix_.setRotationDegrees(core::vector3df(0.0f, 0.0f, deg));		
+		matrix_.setRotationDegrees( angles );		
 	}
 
 protected:

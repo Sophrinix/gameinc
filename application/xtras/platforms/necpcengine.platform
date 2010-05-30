@@ -8,3 +8,4 @@ rwidth:int=256
 rheight:int=216
 video:string=черно-белая и цветная
 video:skill=512 colors
+selldevice:int=10000000

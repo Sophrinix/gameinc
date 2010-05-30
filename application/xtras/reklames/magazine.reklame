@@ -1,0 +1,7 @@
+[properties]
+priceinday:int=1000
+quality:float=0.005
+maxquality:float=0.3
+techtype:string=magazine
+name:string=Журналы
+level:int=1

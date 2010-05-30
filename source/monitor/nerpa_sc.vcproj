@@ -561,6 +561,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\Nrp2DPictureFlow.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Nrp2DPictureFlow.h"
+						>
+					</File>
+					<File
 						RelativePath=".\NrpBrowserWindow.cpp"
 						>
 					</File>
@@ -598,6 +606,14 @@
 					</File>
 					<File
 						RelativePath=".\nrpGuiLinkBox.h"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpPictureFlow.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpPictureFlow.h"
 						>
 					</File>
 					<File
@@ -1189,6 +1205,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaReklame.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaReklame.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaTechnology.cpp"
 						>
 					</File>
@@ -1403,6 +1427,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\swork_wndReklama.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\swork_wndReport.lua"
 				>
 			</File>
@@ -1444,6 +1472,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpPlant.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpReklameWork.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpReklameWork.h"
 				>
 			</File>
 		</Filter>

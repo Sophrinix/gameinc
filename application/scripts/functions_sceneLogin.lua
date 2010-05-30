@@ -74,17 +74,34 @@ function slogin_CreateNewGame( ptr )
 	
 end
 
+local function localPlantLoadBaseReklame()
+	plant:LoadBaseReklame( "xtras/reklames/magazine.reklame" )
+	plant:LoadBaseReklame( "xtras/reklames/tv.reklame" )
+	plant:LoadBaseReklame( "xtras/reklames/radio.reklame" )
+	plant:LoadBaseReklame( "xtras/reklames/paper.reklame" )
+	
+	plant:LoadReklamePrice( applic:GetCurrentProfile() )
+end
+
 function slogin_ContinueLastGame( ptr )
+	--устанавливаем текущее времся
 	applic:LoadGameTimeFromProfile( applic:GetCurrentProfile() )
 	
+	--загружаем текущие аддоны для коробки для текущего времени
 	ApplicationUpdateGameBoxAddons()
 	applic:LoadBoxAddonsPrice()
 	
+	--загружаем аппараты по производству дисков времени
 	ApplicationUpdateDiskMachines()
 	
+	--загружаем профиль
+	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
+	
+	--загружаем производство
 	plant:Load( applic:GetCurrentProfile() )
 	
-	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
+	--загружаем базовую рекламу
+	localPlantLoadBaseReklame()
 	
 	NrpSetNextScene( "sceneWork" )
 end

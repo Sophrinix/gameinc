@@ -9,3 +9,4 @@ rheight:int=240
 video:string=черно-белая и цветная
 video:skill=512 colors
 video:skill=слои для вывода графики
+selldevice:int=29000000

@@ -8,7 +8,6 @@ OPTION_NAME CLASS_DISKMACHINE( "CNrpDiskMachine" );
 
 OPTION_NAME DISKPERHOUR( "diskPerHour" );
 OPTION_NAME PRICEPERHOUR( "pricePerHour" );
-OPTION_NAME RENTPRICE( "rentPrice" );
 
 class CNrpDiskMachine : public INrpConfig
 {

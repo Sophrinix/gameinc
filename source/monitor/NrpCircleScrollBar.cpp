@@ -47,7 +47,7 @@ void CNrpCircleScrollBar::setPos( s32 pos )
 
 	startAngle_ = pos / 360.f;
 
-	rImage_->SetRotate( startAngle_ );
+	rImage_->SetRotate( core::vector3df( 0, startAngle_, 0 ) );
 }
 
 void CNrpCircleScrollBar::updateAbsolutePosition()
@@ -94,7 +94,7 @@ bool CNrpCircleScrollBar::OnEvent( const SEvent& event )
 				{
 					startAngle_ += offset;
 					aPos += offset;
-					rImage_->SetRotate( rImage_->getRotate() - offset );
+					rImage_->SetRotate( core::vector3df( 0, 0, rImage_->getRotate().Z - offset ) );
 
 					if( onChangedAction_.size() > 0 )
 						nrp::CNrpScript::Instance().CallFunction( onChangedAction_.c_str(), this );

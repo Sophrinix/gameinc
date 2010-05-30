@@ -26,7 +26,7 @@ OPTION_NAME CURRENTBUGRATING( "currentBugRating" );
 OPTION_NAME STARTADVFUNC( "startAdvFunc" );
 OPTION_NAME CURRENTADVFUNC( "currentAdvFunc" );
 OPTION_NAME GBOX( "box" );
-OPTION_NAME BOXNUMBER( "boxNumber" );
+OPTION_NAME FAMOUS( "famous" );
 
 class CNrpGame : public INrpConfig
 {

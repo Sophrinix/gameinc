@@ -8,3 +8,4 @@ rwidth:int=640
 rheight:int=480
 video:string=32768 colors
 sound:string=
+selldevice:int=6000000

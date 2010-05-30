@@ -234,11 +234,24 @@ void CNrpCompany::Load( std::string loadFolder )
 
 	for( int i=0; i < GetValue<int>( OBJECTSINPORTFELLE ); i++ )
 	{
-		std::string prjName = IniFile::Read( "portfelle", "portfelle_" + IntToStr(i), std::string(""), loadFile );
-		std::string typeName = prjName.substr( 0, prjName.find(':') );
-		prjName = prjName.substr( prjName.find( ':' )+1, 0xff );
-		if( typeName == "game" )
-			AddToPortfelle( GetGame( prjName ) );
+		char buffer[ 32000 ];
+		memset( buffer, 0, 32000 );
+		GetPrivateProfileSection( "portfelle", buffer, 32000, loadFile.c_str() );
+
+		std::string readLine = buffer;
+		while( readLine != "" )
+		{
+			std::string prjName = readLine;
+			std::string seqName = prjName.substr( 0, prjName.find(':') );
+			int posTwinPoint = prjName.find( ':' ) + 1;
+			std::string typeName = prjName.substr( posTwinPoint, prjName.find( '=' ) - posTwinPoint );
+			prjName = prjName.substr( prjName.find( '=' )+1, 0xff );
+			if( typeName == "game" )
+				AddToPortfelle( GetGame( prjName ) );
+
+			memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
+			readLine = buffer;
+		}
 	}
 }
 

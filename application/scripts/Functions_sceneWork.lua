@@ -9,11 +9,13 @@ IncludeScript("swork_wndUniverStuffUp")
 IncludeScript("swork_wndProjectManager")
 IncludeScript("swork_wndGameBoxCreate")
 IncludeScript("swork_wndDiskPlant")
+IncludeScript("swork_wndReklama")
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 local app = CLuaApplication( NrpGetApplication() )
 local company = CLuaCompany( app:GetPlayerCompany() )
+local plant = CLuaPlant( NrpGetPlant() )
 
 function sworkAppDayChange( ptr )
 	local userLabel = CLuaLabel( guienv:GetElementByID( ID_USERNAME_LABEL ) )
@@ -51,6 +53,10 @@ function sworkSelectObjectOnCityScene( ptr )
 		SetVisibleObjects( officeSceneObjects, true )
 		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
 		return 0		
+	end
+	
+	if node:GetName() == "prNode" then
+		sworkCreateWindowReklama()
 	end
 	
 	if node:GetName() == "univerNode" then
@@ -211,6 +217,7 @@ end
 function sworkApplicationClose( ptr )
 	NrpApplicationSave()
 	app:SaveBoxAddonsPrice()
+	plant:Save( app:GetCurrentProfile() )
 	NrpApplicationClose()
 end
 

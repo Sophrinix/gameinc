@@ -127,6 +127,12 @@ WINDOW_DISKPRODUCEPLANT_ID = 11400
 WNDDPP_CMBX_PRODUCE_TYPE = 11401
 
 --[[
+Окно управления рекламой
+--]]
+WINDOW_REKLAME_NAME = "_SystemWindowReklame_"
+WINDOW_REKLAME_ID = 11500
+
+--[[
 Функция подключения скрипта с проверкой ошибок
 --]]
 

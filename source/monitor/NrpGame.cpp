@@ -54,7 +54,7 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<int>( ADVTECHNUMBER, 0 );
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
 	CreateValue<PNrpGameBox>( GBOX, NULL );
-	CreateValue<int>( BOXNUMBER, 0 );
+	CreateValue<float>( FAMOUS, 0 );
 }
 
 CNrpGame::CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany )
@@ -68,6 +68,7 @@ CNrpGame::CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany )
 	SetValue<std::string>( GAME_ENGINE, ptrProject->GetValue<PNrpGameEngine>( GAME_ENGINE )->GetValue<std::string>( NAME ) );
 	SetValue<int>( LOCALIZATION, ptrProject->GetValue<PNrpTechnology>( LOCALIZATION )->GetValue<int>( QUALITY ) );
 	SetValue<int>( CROSSPLATFORMCODE, ptrProject->GetValue<PNrpTechnology>( CROSSPLATFORMCODE )->GetValue<int>( QUALITY ) );
+	SetValue<float>( FAMOUS, ptrProject->GetValue<float>( FAMOUS ) );
 
 	INrpConfig* component = ptrProject->GetValue<PNrpGame>( PREV_GAME );
 	if( component ) SetValue<std::string>( PREV_GAME, component->GetValue<std::string>( NAME ) ); 

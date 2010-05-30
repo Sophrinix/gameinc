@@ -1,0 +1,7 @@
+[properties]
+techtype:string=tv
+name:string=Телевидение
+quality:float=0.04
+level:int=1
+maxquality:float=1
+priceinday:int=50000

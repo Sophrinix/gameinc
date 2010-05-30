@@ -1,0 +1,11 @@
+[options]
+name:string=Sega Dream Cast
+ram:float=26.00
+cpu:float=0.306
+startTime:time=y=1999 m=00 d=00 h=00 mi=00
+endTime:time=y=2001 m=00 d=00 h=00 mi=00
+rwidth:int=640
+rheight:int=480
+video:string=24bit
+sound:string=3d
+selldevice:int=11000000

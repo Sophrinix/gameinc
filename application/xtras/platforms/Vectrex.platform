@@ -8,3 +8,4 @@ rwidth:int=240
 rheight:int=140
 video:string=черно-белая и цветная
 sound:string=
+selldevice:int=100000

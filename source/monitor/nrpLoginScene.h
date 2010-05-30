@@ -36,8 +36,9 @@ private:
 	irr::video::ITexture* nerpaLogoTexture_;
 	irr::video::ITexture* companyBarTexture_;	
 	// end of stuff
-
 	const int SCENE_ID;
+
+	void UpdateImages_();
 };
 
 }//namespace scene
