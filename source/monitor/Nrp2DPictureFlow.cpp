@@ -143,18 +143,18 @@ void CNrp2DPictureFlow::UpdatePositions_()
 	}
 }
 
-void CNrp2DPictureFlow::Prev()
+void CNrp2DPictureFlow::Prev( int offset )
 {
-	if( (int)activeIndex_ - 1 >= 0 )
-		activeIndex_--;
+	activeIndex_ -= offset;
+	activeIndex_ = max( activeIndex_, 0 );
 
 	UpdateImages_();
 }
 
-void CNrp2DPictureFlow::Next()
+void CNrp2DPictureFlow::Next( int offset )
 {
-	if( (int)activeIndex_ + 1 < (int)images_.size() )
-		activeIndex_++;
+	activeIndex_ += offset;
+	activeIndex_ = min( activeIndex_, images_.size()-1 );
 
 	UpdateImages_();
 }
@@ -168,29 +168,33 @@ bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
 		//uncheck for double event of keyInput
 		if (event.KeyInput.PressedDown && event.KeyInput.Key == KEY_RIGHT && (curTime - lastTimeKey_ > 20))
 		{
-			Next();
+			Next( +1 );
 			lastTimeKey_ = GetTickCount();
 			return true;
 		}
 
 		if (event.KeyInput.PressedDown && event.KeyInput.Key == KEY_LEFT && (curTime - lastTimeKey_ > 20))
 		{
-			Prev();
+			Prev( 1 );
 			lastTimeKey_ = GetTickCount();
 			return true;
 		}
 	break;
 
 	case EET_MOUSE_INPUT_EVENT:
-		if( event.MouseInput.Event == EMIE_RMOUSE_PRESSED_DOWN )
-		{
-			Prev();
-			return true;
-		}
-
 		if( event.MouseInput.Event == EMIE_LMOUSE_PRESSED_DOWN )
 		{
-			Next();
+			int side = AbsoluteRect.getWidth() / 5;
+			if( event.MouseInput.X > AbsoluteRect.getCenter().X / 2 )
+			{
+				int offset = (event.MouseInput.X-AbsoluteRect.getCenter().X / 2) / side - 1;
+				Next( offset );
+			}
+			else
+			{
+				int offset = (AbsoluteRect.getCenter().X / 2 - event.MouseInput.X) / side + 1;
+				Prev( offset );
+			}
 			return true;
 		}
 	break;

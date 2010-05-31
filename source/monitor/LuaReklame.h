@@ -23,6 +23,7 @@ public:
 	int Load( lua_State* L );
 	int GetTypeName( lua_State* L );
 	int GetNumberDay( lua_State* L );
+	int SetNumberDay( lua_State* L );
 	int Remove( lua_State* L );
 	int Create( lua_State* L );
 

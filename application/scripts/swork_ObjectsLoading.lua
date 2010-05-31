@@ -105,6 +105,75 @@ function AddObjectsToCityScene()
 
 end
 
+function AddObjectsToShopScene()
+	local x = 1
+	local y = 1
+	local delta = 800
+	--игры в продаже
+	--топ-лист месяца
+	--топ-лист за все время
+	--игровые журналы
+	local gameInSale = CLuaSceneNode( sceneManager:AddCubeSceneNode( "gameInSaleNode" ) )
+	gameInSale:SetScale( 30, 40, 30 )
+	gameInSale:SetVisible( false )
+	gameInSale:SetPosition( x * delta, 800, y *delta )
+	gameInSale:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	gameInSale:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameInSale:Self() )
+	gameInSale:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( gameInSale:Self(), "gameInSale" )
+	shopSceneObjects[ 0 ] = gameInSale:Self()	
+	x = x + 1
+	
+	local topListMonth = CLuaSceneNode( sceneManager:AddCubeSceneNode( "topListMonthNode" ) )
+	topListMonth:SetScale( 30, 40, 30 )
+	topListMonth:SetVisible( false )
+	topListMonth:SetPosition( x * delta, 800, y *delta )
+	topListMonth:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	topListMonth:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListMonth:Self() )
+	topListMonth:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( topListMonth:Self(), "topListMonth" )
+	shopSceneObjects[ 1 ] = topListMonth:Self()	
+	x = x + 1
+
+	local topListAllTime = CLuaSceneNode( sceneManager:AddCubeSceneNode( "allTimeTopListNode" ) )
+	topListAllTime:SetScale( 30, 40, 30 )
+	topListAllTime:SetVisible( false )
+	topListAllTime:SetPosition( x * delta, 800, y *delta )
+	topListAllTime:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	topListAllTime:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListAllTime:Self() )
+	topListAllTime:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( topListAllTime:Self(), "topListAllTime" )
+	shopSceneObjects[ 2 ] = topListAllTime:Self()	
+	x = x + 1
+
+	local gameJournals = CLuaSceneNode( sceneManager:AddCubeSceneNode( "gameJournalsNode" ) )
+	gameJournals:SetScale( 30, 40, 30 )
+	gameJournals:SetVisible( false )
+	gameJournals:SetPosition( x * delta, 800, y *delta )
+	gameJournals:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	gameJournals:SetMaterialFlag( EMF_LIGHTING, false )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameJournals:Self() )
+	gameJournals:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( gameJournals:Self(), "gameJournals" )
+	shopSceneObjects[ 3 ] = gameJournals:Self()	
+	x = x + 1
+	
+	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitShopNode" ) )
+	exitN:SetScale( 30, 40, 30 )
+	exitN:SetVisible( false )
+	exitN:SetPosition( x * delta, 800, y *delta )
+	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
+	exitN:SetMaterialFlag( EMF_LIGHTING, false )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	exitN:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	shopSceneObjects[ 4 ] = exitN:Self()	
+
+end
+
 function AddObjectsToOfficeScene()
 	local x = 1
 	local y = 1

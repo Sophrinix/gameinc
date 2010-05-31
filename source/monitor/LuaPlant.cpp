@@ -16,6 +16,7 @@ Luna< CLuaPlant >::RegType CLuaPlant::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddProduceWork ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadBaseReklame ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadReklamePrice ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddReklameWork ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, Save ),
 	{0,0}
 };
@@ -132,6 +133,19 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 			readLine = buffer;
 		}
 	}
+	return 1;
+}
+
+int CLuaPlant::AddReklameWork( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank::AddReklameWork need CNrpReklameWork* parameter");
+
+	CNrpReklameWork* reklameWork = (CNrpReklameWork*)lua_touserdata( L, 2 );
+	assert( reklameWork != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN object_->AddReklame( reklameWork );
+
 	return 1;
 }
 }//namespace nrp

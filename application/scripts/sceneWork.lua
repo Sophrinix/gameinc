@@ -20,6 +20,7 @@ bankSceneObjects = { }
 univerSceneObjects = { }
 officeSceneObjects = { }
 plantSceneObjects = { }
+shopSceneObjects = { }
 
 --создание рабочей сцены 
 NrpInitializeWorkScene()
@@ -57,6 +58,7 @@ AddObjectsToBankScene()
 AddObjectsToOfficeScene()
 AddObjectsToUniverScene()
 AddObjectsToPlantScene()
+AddObjectsToShopScene()
 sceneManager:DrawProgress( 100 )
 
 local playerCompany = CLuaCompany( applic:GetPlayerCompany() )

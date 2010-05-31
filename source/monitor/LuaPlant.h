@@ -18,6 +18,7 @@ public:
 	int LoadBaseReklame( lua_State* L );
 	int LoadReklamePrice( lua_State* L );
 	int SaveReklamePrice( lua_State* L );
+	int AddReklameWork( lua_State* L );
 	int Save( lua_State* L );
 	int AddProduceWork( lua_State* L );
 																//нажатии на эту кнопку

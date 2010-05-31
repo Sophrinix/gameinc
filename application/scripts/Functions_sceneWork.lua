@@ -73,6 +73,13 @@ function sworkSelectObjectOnCityScene( ptr )
 		return 0		
 	end
 	
+	if node:GetName() == "gameShopNode" then
+		SetVisibleObjects( citySceneObjects, false )
+		SetVisibleObjects( shopSceneObjects, true )
+		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnShopScene" )
+		return 0		
+	end
+	
 end 
 
 function sworkMainLoop( ptr )
@@ -82,6 +89,41 @@ end
 function ToggleConsoleVisible( ptr )
 	local console = CLuaConsole( guienv:GetElementByName( "SystemConsole" ) )
 	console:ToggleVisible()
+end
+
+function sworkSelectObjectOnShopScene( ptr )
+	local node = CLuaSceneNode( ptr )
+	local nodeName = node:GetName()
+
+	if nodeName == "gameInSale" then
+		sworkCreateGameInSaleWindow()
+		return 0
+	end
+	
+	if nodeName == "gameJournalsNode" then
+		sworkCreateGameJournals()
+		return 0
+	end
+	
+	if nodeName == "topListMonthNode" then
+		sworkCreateMonthTopListWindow() 
+		return 0
+	end
+	
+	if nodeName == "allTimeTopListNode" then
+		sworkCreateAllTimeTopListWindow() 
+		return 0
+	end
+
+	if nodeName == "exitShopNode" then
+		SetVisibleObjects( shopSceneObjects, false )
+		SetVisibleObjects( citySceneObjects, true )
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnShopScene" )
+		return 0
+	end
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-PLANT:Не могу найти узел для работы "..nodeName )
+
 end
 
 function sworkSelectObjectOnPlantScene( ptr )
@@ -95,6 +137,7 @@ function sworkSelectObjectOnPlantScene( ptr )
 	
 	if nodeName == "plantCeNode" then
 		sworkCreateDiskProducePlantWindow()
+		return 0
 	end
 	
 	if nodeName == "exitPlantNode" then

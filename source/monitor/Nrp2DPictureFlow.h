@@ -33,8 +33,8 @@ public:
 	bool OnEvent(const SEvent& event);
 
 	void draw();
-	void Next();
-	void Prev();
+	void Next( int offset );
+	void Prev( int offset );
 
 	void clear();
 	s32 getSelected() const { return activeIndex_; }

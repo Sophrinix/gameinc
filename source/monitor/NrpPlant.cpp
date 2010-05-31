@@ -97,6 +97,17 @@ void CNrpPlant::BeginNewDay()
 			 k--;
 		 }
 	}
+
+	for( int k=0; k < (int)reklameWorks_.size(); k++ )
+	{
+		reklameWorks_[ k ]->BeginNewDay();
+		if( reklameWorks_[ k ]->GetValue<bool>( FINISHED ) )
+		{
+			delete reklameWorks_[ k ];
+			works_.erase( works_.begin() + k );
+			k--;
+		}
+	}
 }
 
 CNrpReklameWork* CNrpPlant::CreateReklame( std::string type, std::string gameName )
@@ -163,7 +174,7 @@ CNrpReklameWork* CNrpPlant::GetReklame( std::string type, std::string gameName )
 
 CNrpReklameWork* CNrpPlant::GetBaseReklame( int index )
 {
-	if( index < baseReklame_.size() )
+	if( index < (int)baseReklame_.size() )
 		return baseReklame_[ index ];
 
 	return NULL;

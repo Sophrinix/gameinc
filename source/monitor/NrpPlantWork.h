@@ -14,7 +14,6 @@ OPTION_NAME DISKINDAY( "diskInDay" );
 OPTION_NAME FINALPRICE( "finalPrice" );
 OPTION_NAME DISKMACHINENAME( "diskMachineName" );
 OPTION_NAME LEFTPRODUCEDISK( "leftProduceDisk" );
-OPTION_NAME FINISHED( "finished" );
 
 class CNrpPlantWork : public INrpConfig
 {

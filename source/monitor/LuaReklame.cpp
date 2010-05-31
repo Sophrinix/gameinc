@@ -18,6 +18,7 @@ Luna< CLuaReklame >::RegType CLuaReklame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetLevel ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetTypeName ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetNumberDay ),
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetNumberDay ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, Create ),
 	{0,0}
 };
@@ -100,5 +101,17 @@ int CLuaReklame::GetTypeName( lua_State* L )
 
 	lua_pushstring( L, result.c_str() );
 	return 1;		
+}
+
+int CLuaReklame::SetNumberDay( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaReklame:SetNumberDay need int parameter" );
+
+	int valuel = lua_tointeger( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( NUMBERDAY, valuel );
+
+	return 1;
 }
 }//namespace nrp

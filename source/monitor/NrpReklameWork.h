@@ -18,6 +18,7 @@ public:
 					 std::string gameName );
 
 	void Update( CNrpReklameWork* p );
+	void BeginNewDay();
 	void Load( std::string sectionName, std::string fileName );
 	CNrpReklameWork( CNrpReklameWork& p );
 	~CNrpReklameWork(void);
