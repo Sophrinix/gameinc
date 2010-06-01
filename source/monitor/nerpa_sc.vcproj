@@ -1435,6 +1435,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\swork_wndShop.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\swork_wndUniverStuffUp.lua"
 				>
 			</File>

@@ -55,6 +55,7 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
 	CreateValue<PNrpGameBox>( GBOX, NULL );
 	CreateValue<float>( FAMOUS, 0 );
+	CreateValue<bool>( GAMEISSALING, false );
 }
 
 CNrpGame::CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany )

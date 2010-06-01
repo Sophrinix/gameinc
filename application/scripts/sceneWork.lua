@@ -7,6 +7,7 @@ IncludeScript("swork_camera")
 IncludeScript("swork_ObjectsLoading")
 IncludeScript("swork_wndProjectWizard")
 IncludeScript("swork_wndEmployersManage")
+IncludeScript("swork_wndShop")
 
 Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 -- Проверка вспомогательных функций

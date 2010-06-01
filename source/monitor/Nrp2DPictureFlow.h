@@ -13,6 +13,7 @@ class CNrp2DPictureFlow : public IGUIListBox
 	{
 	public:
 		video::ITexture* texture;
+		video::ITexture* downTexture;
 		core::recti rectangle;
 		core::rectf currentRect;
 		core::stringw name;
@@ -64,7 +65,8 @@ private:
 	void setItemHeight( s32 height ) {};
 	void swapItems(u32 index1, u32 index2) {}
 	s32 insertItem(u32 index, const wchar_t* text, s32 icon) { return 0; }
-
+	video::ITexture* GetDownTexture_( video::ITexture* pTxr );
+	void DrawPairImage_( CNrpImageDescription* pDesk );
 	s32 activeIndex_;
 	s32 lastTimeKey_;
 	core::array< CNrpImageDescription* > images_;

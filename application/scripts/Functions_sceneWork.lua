@@ -95,7 +95,7 @@ function sworkSelectObjectOnShopScene( ptr )
 	local node = CLuaSceneNode( ptr )
 	local nodeName = node:GetName()
 
-	if nodeName == "gameInSale" then
+	if nodeName == "gameInSaleNode" then
 		sworkCreateGameInSaleWindow()
 		return 0
 	end

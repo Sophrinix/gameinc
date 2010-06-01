@@ -27,6 +27,7 @@ OPTION_NAME STARTADVFUNC( "startAdvFunc" );
 OPTION_NAME CURRENTADVFUNC( "currentAdvFunc" );
 OPTION_NAME GBOX( "box" );
 OPTION_NAME FAMOUS( "famous" );
+OPTION_NAME GAMEISSALING( "gameIsSaling" );
 
 class CNrpGame : public INrpConfig
 {

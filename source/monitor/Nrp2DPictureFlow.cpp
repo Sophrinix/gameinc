@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Nrp2DPictureFlow.h"
-#include "NrpRotatableImage.h"
 
 namespace irr
 {
@@ -17,6 +16,7 @@ CNrp2DPictureFlow::CNrp2DPictureFlow( IGUIEnvironment* env,
 {
 	activeIndex_ = 0;
 	pictureRect_ = pictureRect;
+	drawBackground_ = true;
 }
 
 u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text )
@@ -24,6 +24,7 @@ u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text )
 	CNrpImageDescription* descr = new CNrpImageDescription();
 	images_.push_back( descr );
 	descr->texture = texture;
+	descr->downTexture = GetDownTexture_( texture );
 	texture->grab();
 	descr->rectangle = core::recti( 0, 0, 0, 0 );
 
@@ -35,6 +36,28 @@ u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text )
 irr::u32 CNrp2DPictureFlow::addItem( const wchar_t* text )
 {
 	return addItem( NULL, text );
+}
+video::ITexture* CNrp2DPictureFlow::GetDownTexture_( video::ITexture* pTxr )
+{
+	video::IVideoDriver* driver = Environment->getVideoDriver();
+	std::string name = core::stringc( pTxr->getName() ).c_str();
+	name += "toDown";
+	video::ITexture* resultt = driver->addTexture( pTxr->getSize(), name.c_str(), pTxr->getColorFormat() );
+
+	u32* pTxrData = (u32*)pTxr->lock();
+	u32* resultTxrData = (u32*)resultt->lock();
+	for( size_t k=0; k < pTxr->getSize().Height; k++ )
+	{
+		int offsetPtxr = k * pTxr->getSize().Width;
+		int offsetResult = ( resultt->getSize().Height - k - 1 ) * resultt->getSize().Width;
+		int pith = pTxr->getPitch();
+		memcpy( resultTxrData+offsetResult, pTxrData+offsetPtxr, pTxr->getPitch() );
+	}
+
+	pTxr->unlock();
+	resultt->unlock();
+
+	return resultt;
 }
 
 void CNrp2DPictureFlow::UpdateImages_()
@@ -71,6 +94,22 @@ void CNrp2DPictureFlow::UpdateImages_()
 	}
 }
 
+void CNrp2DPictureFlow::DrawPairImage_( CNrpImageDescription* pDesk )
+{
+	core::recti rectangle( pDesk->currentRect.UpperLeftCorner.X, pDesk->currentRect.UpperLeftCorner.Y,
+							pDesk->currentRect.LowerRightCorner.X, pDesk->currentRect.LowerRightCorner.Y );
+	Environment->getVideoDriver()->draw2DImage( pDesk->texture, rectangle, 
+											 	core::recti( core::position2di( 0, 0), pDesk->texture->getSize() ));
+
+	video::SColor colors[] = { 0xC0C0C0C0, 0, 0, 0xC0C0C0C0 };
+	Environment->getVideoDriver()->draw2DImage( pDesk->downTexture, 
+												rectangle + core::position2di( 0, rectangle.getHeight() ), 
+												core::recti( core::position2di( 0, 0), pDesk->texture->getSize() ),
+												&AbsoluteClippingRect, 
+												colors,
+												true );
+}
+
 void CNrp2DPictureFlow::draw()
 {
 	if( !IsVisible )
@@ -78,30 +117,18 @@ void CNrp2DPictureFlow::draw()
 
 	UpdatePositions_();
 
-	for( size_t pos=max( 0, activeIndex_-4 ); pos < activeIndex_; pos++ )
-	{
-		core::recti rectangle( images_[ pos ]->currentRect.UpperLeftCorner.X, images_[ pos ]->currentRect.UpperLeftCorner.Y,
-							   images_[ pos ]->currentRect.LowerRightCorner.X, images_[ pos ]->currentRect.LowerRightCorner.Y );
-		Environment->getVideoDriver()->draw2DImage( images_[ pos ]->texture, rectangle, 
-													core::recti( core::position2di( 0, 0), images_[ pos ]->texture->getSize() ));
-	}
+	if( drawBackground_ )
+		Environment->getVideoDriver()->draw2DRectangle( video::SColor( 0xff000000 ), AbsoluteRect );
 
+	for( size_t pos=max( 0, activeIndex_-4 ); pos < activeIndex_; pos++ )
+		DrawPairImage_( images_[ pos ] );
 
 	for( size_t pos=min( activeIndex_ + 4, images_.size()-1); pos > activeIndex_; pos-- )
-	{
-		core::recti rectangle( images_[ pos ]->currentRect.UpperLeftCorner.X, images_[ pos ]->currentRect.UpperLeftCorner.Y,
-							   images_[ pos ]->currentRect.LowerRightCorner.X, images_[ pos ]->currentRect.LowerRightCorner.Y );	
-		Environment->getVideoDriver()->draw2DImage( images_[ pos ]->texture, rectangle, 
-		                                            core::recti( core::position2di( 0, 0), images_[ pos ]->texture->getSize() ));
-	}
+		 DrawPairImage_( images_[ pos ] );
 
-	if( images_.size() )
-	{
-		core::recti rectangle( images_[ activeIndex_ ]->currentRect.UpperLeftCorner.X, images_[ activeIndex_ ]->currentRect.UpperLeftCorner.Y,
-			images_[ activeIndex_ ]->currentRect.LowerRightCorner.X, images_[ activeIndex_ ]->currentRect.LowerRightCorner.Y );
-		Environment->getVideoDriver()->draw2DImage( images_[ activeIndex_ ]->texture, rectangle, 
-			core::recti( core::position2di( 0, 0), images_[ activeIndex_ ]->texture->getSize() ));
-	}
+	if( activeIndex_ < images_.size() )
+		DrawPairImage_( images_[ activeIndex_ ] );
+
 	IGUIListBox::draw();
 }
 

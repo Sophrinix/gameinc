@@ -133,6 +133,12 @@ WINDOW_REKLAME_NAME = "_SystemWindowReklame_"
 WINDOW_REKLAME_ID = 11500
 
 --[[
+Окно магазина видеоигр
+--]]
+WINDOW_SHOP_NAME = "_SystemWindowShop_"
+WINDOW_SHOP_ID = 11600
+
+--[[
 Функция подключения скрипта с проверкой ошибок
 --]]
 
