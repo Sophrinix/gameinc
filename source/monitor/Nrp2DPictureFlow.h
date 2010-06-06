@@ -17,6 +17,7 @@ class CNrp2DPictureFlow : public IGUIListBox
 		core::recti rectangle;
 		core::rectf currentRect;
 		core::stringw name;
+		void* object;
 	};
 
 	CNrp2DPictureFlow();
@@ -28,7 +29,8 @@ public:
 					   core::recti pictureRect,
 					   s32 id );
 	u32 addItem( video::ITexture* texture, const wchar_t* text );
-	u32 addItem(const wchar_t* text);
+	u32 addItem( const wchar_t* text);
+	u32 addItem( video::ITexture* texture, const wchar_t* text, void* object );
 	void removeItem(u32 index);
 
 	bool OnEvent(const SEvent& event);
@@ -39,9 +41,11 @@ public:
 
 	void clear();
 	s32 getSelected() const { return activeIndex_; }
+	void* getObject( int index );
 	void setSelected(const wchar_t *item);
 	void setSelected(s32 index);
 	void setDrawBackground(bool draw) { drawBackground_ = draw; }
+	void setPictureRect( core::recti rectangle ) { pictureRect_ = rectangle; }
 
 	u32 getItemCount() const { return images_.size(); }
 	const wchar_t* getListItem(u32 id) const;

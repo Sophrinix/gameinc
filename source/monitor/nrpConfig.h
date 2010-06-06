@@ -55,7 +55,7 @@ OPTION_NAME LEVEL( "level" );
 OPTION_NAME PRICEINDAY( "priceInDay" ); 
 OPTION_NAME GAMENAME( "gameName" );
 OPTION_NAME FINISHED( "finished" );
-
+OPTION_NAME FAMOUS( "famous" );
 
 #define CHECK_VALCLASS_TYPE( bclass )\
 	if( type_ != typeid( bclass ).name() ) {\

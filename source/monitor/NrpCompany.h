@@ -46,6 +46,7 @@ public:
 	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
 	INrpConfig* GetFromPortfelle( int index );
 	void AddToPortfelle( INrpConfig* ptrObject );
+	float GetUserModificatorForGame( CNrpGame* game );
 
 	void RemoveGameProject( CNrpGameProject* ptrProject );
 	INrpProject* GetProject( std::string name );

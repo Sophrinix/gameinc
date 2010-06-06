@@ -192,6 +192,8 @@ void CNrpMainScene::OnEnter()
 {
 	 options_[ "render3d" ] = true;
 	 options_[ "renderGui" ] = true;
+
+	// scene::ISceneManager* smgr = 
 }
 //////////////////////////////////////////////////////////////////////////
 

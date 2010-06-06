@@ -53,10 +53,13 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetDiskMachine ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, SaveBoxAddonsPrice ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadBoxAddonsPrice ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetMarketGamesNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetMarketGame ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameToMarket ),
 	{0,0}
 };
 
-CLuaApplication::CLuaApplication(lua_State *L)	: ILuaProject(L, "CLuaApplication")	//конструктор
+CLuaApplication::CLuaApplication(lua_State *L)	: ILuaProject(L, CLASS_CLUAPPLICATION )	//конструктор
 {}
 
 int CLuaApplication::UpdateGameTime( lua_State* L )
@@ -494,5 +497,43 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 	}
 
 	return 1;
+}
+
+int CLuaApplication::GetMarketGamesNumber( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetMarketGamesNumber not need any parameter" );
+
+	int gameNumber = 0;
+	IF_OBJECT_NOT_NULL_THEN	gameNumber = object_->GetValue<int>( MARKETGAMENUMBER );
+
+	lua_pushinteger( L, gameNumber );
+	return 1;	
+}
+
+int CLuaApplication::GetMarketGame( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetMarketGame need integer parameter" );
+
+	int index = lua_tointeger( L, 2 );
+	CNrpGame* game = NULL;
+	IF_OBJECT_NOT_NULL_THEN	game = object_->GetMarketGame( index );
+
+	lua_pushlightuserdata( L, game );
+	return 1;		
+}
+
+int CLuaApplication::AddGameToMarket( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:AddGameToMarket need CnrpGame* parameter" );
+
+	CNrpGame* game = (CNrpGame*)lua_touserdata( L, 2 );
+	assert( game != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->AddGameToMarket( game );
+
+	return 1;	
 }
 }//namespace nrp 

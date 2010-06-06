@@ -16,6 +16,7 @@
 #include "nrpGuiLinkBox.h"
 #include "NrpGuiCursorPosAnimator.h"
 #include "NrpComponentListbox.h"
+#include "Nrp2DPictureFlow.h"
 
 #include <stdexcept>
 #include <string>
@@ -685,6 +686,14 @@ void CNrpGUIEnvironment::setDragObject( IGUIElement* elm )
 gui::IGUIListBox* CNrpGUIEnvironment::addComponentListBox( const core::recti& rectangle, gui::IGUIElement* parent, s32 id )
 {
 	return new CNrpComponentListbox( this, parent, id, rectangle );
+}
+
+gui::CNrp2DPictureFlow* CNrpGUIEnvironment::addPictureFlow( const core::recti& rectangle, 
+															const core::recti& pictureRect, 
+															s32 id, 
+															gui::IGUIElement* parent )
+{
+	return new CNrp2DPictureFlow( this, parent, rectangle, pictureRect, id );
 }
 }//namespace gui
 

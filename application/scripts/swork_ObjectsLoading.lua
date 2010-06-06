@@ -1,363 +1,185 @@
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
+local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 
-function AddObjectsToCityScene()
-    
-	local x = 1
-	local y = 1
-	local delta = 800
-	local office = CLuaSceneNode( sceneManager:AddCubeSceneNode( "officeNode" ) )
-	office:SetScale( 30, 40, 30 )
-	office:SetPosition( x * delta, 800, y *delta )
-	office:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	office:SetMaterialFlag( EMF_LIGHTING, false )
+function ApplicationLoadCityScene()
+	--guienv:FadeAction( 3000, false )
+	sceneManager:RemoveAllNodes()
+	
+	ApplicationAddCityCamera()
+	sceneManager:LoadIrrlichtScene( "scene/nrpCityScene.irr" )	
+	
+	local office = CLuaSceneNode( sceneManager:GetSceneNodeByName( "officeNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( office:Self() )
 	office:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( office:Self(), "office" )
-	citySceneObjects[ 0 ] = office:Self()				
-				
-	x = x + 1
-	local univer = CLuaSceneNode( sceneManager:AddCubeSceneNode( "univerNode" ) )
-	univer:SetScale( 40, 40, 40 )
-	univer:SetPosition( x * delta, 1000, y * delta )
-	univer:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	univer:SetMaterialFlag( EMF_LIGHTING, false )
+	LogScript( "officeNode find" )	
+	
+	local univer = CLuaSceneNode( sceneManager:GetSceneNodeByName( "univerNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( univer:Self() ) 
 	univer:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( univer:Self(), "univer" )
-	citySceneObjects[ 1 ] = univer:Self()	
+	LogScript( "univerNode find" )	
 	
-	x = x + 1; y = y + 1
-	local bank = CLuaSceneNode( sceneManager:AddCubeSceneNode( "bankNode" ) )
-	bank:SetScale( 40, 50, 40 )
-	bank:SetPosition( x * delta, 1000, y * delta )
-	bank:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	bank:SetMaterialFlag( EMF_LIGHTING, false )
+	local bank = CLuaSceneNode( sceneManager:GetSceneNodeByName( "bankNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( bank:Self() ) 
 	bank:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( bank:Self(), "Bank" )
-	citySceneObjects[ 2 ] = bank:Self()
+	LogScript( "bankNode find" )	
 	
-	x = x + 1; y = y - 1
-	local gameShop = CLuaSceneNode( sceneManager:AddCubeSceneNode( "gameShopNode" ) )
-	gameShop:SetScale( 40, 20, 40 )
-	gameShop:SetPosition( x * delta, 1000, y * delta )
-	gameShop:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	gameShop:SetMaterialFlag( EMF_LIGHTING, false )
+	local gameShop = CLuaSceneNode( sceneManager:GetSceneNodeByName( "gameShopNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameShop:Self() ) 
     gameShop:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( gameShop:Self(), "gameShop" )
-	citySceneObjects[ 3 ] = gameShop:Self()
+	LogScript( "gameShopNode find" )	
 	
-	x = x + 1; y = y + 1
-	local labor = CLuaSceneNode( sceneManager:AddCubeSceneNode( "laborNode" ) )
-	labor:SetScale( 40, 20, 40 )
-	labor:SetPosition( x * delta, 1000, y * delta )
-	labor:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	labor:SetMaterialFlag( EMF_LIGHTING, false )
+	local labor = CLuaSceneNode( sceneManager:GetSceneNodeByName( "laborNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( labor:Self() ) 
     labor:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( labor:Self(), "laboratory" )
-	citySceneObjects[ 4 ] = labor:Self()
+	LogScript( "laborNode find" )	
 	
-	x = x + 1; y = y - 1
-	local pr = CLuaSceneNode( sceneManager:AddCubeSceneNode( "prNode" ) )
-	pr:SetScale( 40, 20, 40 )
-	pr:SetPosition( x * delta, 1000, y * delta )
-	pr:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	pr:SetMaterialFlag( EMF_LIGHTING, false )
+	local pr = CLuaSceneNode( sceneManager:GetSceneNodeByName( "prNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( pr:Self() ) 
     pr:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( pr:Self(), "PR kontora" )
-	citySceneObjects[ 5 ] = pr:Self()
+	LogScript( "prNode find" )	
 	
-	x = x + 1; y = y + 1
-	local cinema = CLuaSceneNode( sceneManager:AddCubeSceneNode( "cinemaNode" ) )
-	cinema:SetScale( 40, 20, 40 )
-	cinema:SetPosition( x * delta, 1000, y * delta )
-	cinema:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	cinema:SetMaterialFlag( EMF_LIGHTING, false )
+	local cinema = CLuaSceneNode( sceneManager:GetSceneNodeByID( 1001001 ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( cinema:Self() ) 
     cinema:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( cinema:Self(), "Cinema" )
-	citySceneObjects[ 6 ] = cinema:Self()
-	
-	x = x + 1; y = y - 1
-	local pizza = CLuaSceneNode( sceneManager:AddCubeSceneNode( "pizzaNode" ) )
-	pizza:SetScale( 40, 20, 40 )
-	pizza:SetPosition( x * delta, 1000, y * delta )
-	pizza:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	pizza:SetMaterialFlag( EMF_LIGHTING, false )
+	LogScript( "cinemaNode find" )	
+		
+	local pizza = CLuaSceneNode( sceneManager:GetSceneNodeByName( "pizzaNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( pizza:Self() ) 
     pizza:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( pizza:Self(), "Sabotaje" )
-	citySceneObjects[ 7 ] = pizza:Self()
+	LogScript( "pizzaNode find" )	
 	
-	x = x + 1; y = y + 1
-	local plant = CLuaSceneNode( sceneManager:AddCubeSceneNode( "plantNode" ) )
-	plant:SetScale( 40, 20, 40 )
-	plant:SetPosition( x * delta, 1000, y * delta )
-	plant:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	plant:SetMaterialFlag( EMF_LIGHTING, false )
+	local plant = CLuaSceneNode( sceneManager:GetSceneNodeByName( "plantNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( plant:Self() ) 
 	plant:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( plant:Self(), "Производство" )
-	citySceneObjects[ 8 ] = plant:Self()
-
+	LogScript( "plantNode find" )	
+	--guienv:FadeAction( 3000, true )
 end
 
-function AddObjectsToShopScene()
-	local x = 1
-	local y = 1
-	local delta = 800
+function ApplicationLoadBankScene()
+	sceneManager:RemoveAllNodes()
+	ApplicationAddCityCamera()
+	sceneManager:LoadIrrlichtScene( "scene/nrpBankScene.irr" )
+	
+	local loan = CLuaSceneNode( sceneManager:GetSceneNodeByName( "loanNode" ) )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( loan:Self() )
+	loan:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( loan:Self(), "loan" )
+	
+	local deposit = CLuaSceneNode( sceneManager:GetSceneNodeByName( "depositNode" ) )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( deposit:Self() )
+	deposit:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( deposit:Self(), "deposit" )
+	
+	local akcii = CLuaSceneNode( sceneManager:GetSceneNodeByName( "acciiNode" ) )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( akcii:Self() )
+	akcii:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( akcii:Self(), "akcii" )
+	
+	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitBank" ) )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	exitN:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( exitN:Self(), "exit" )
+end
+
+function ApplicationLoadShopScene()
+	sceneManager:RemoveAllNodes()
+	sceneManager:LoadIrrlichtScene( "scene/nrpShopScene.irr" )
+
 	--игры в продаже
 	--топ-лист месяца
 	--топ-лист за все время
 	--игровые журналы
-	local gameInSale = CLuaSceneNode( sceneManager:AddCubeSceneNode( "gameInSaleNode" ) )
-	gameInSale:SetScale( 30, 40, 30 )
-	gameInSale:SetVisible( false )
-	gameInSale:SetPosition( x * delta, 800, y *delta )
-	gameInSale:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	gameInSale:SetMaterialFlag( EMF_LIGHTING, false )
+	local gameInSale = CLuaSceneNode( sceneManager:GetSceneNodeByName( "gameInSaleNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameInSale:Self() )
 	gameInSale:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( gameInSale:Self(), "gameInSale" )
-	shopSceneObjects[ 0 ] = gameInSale:Self()	
-	x = x + 1
 	
-	local topListMonth = CLuaSceneNode( sceneManager:AddCubeSceneNode( "topListMonthNode" ) )
-	topListMonth:SetScale( 30, 40, 30 )
-	topListMonth:SetVisible( false )
-	topListMonth:SetPosition( x * delta, 800, y *delta )
-	topListMonth:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	topListMonth:SetMaterialFlag( EMF_LIGHTING, false )
+	local topListMonth = CLuaSceneNode( sceneManager:GetSceneNodeByName( "topListMonthNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListMonth:Self() )
 	topListMonth:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( topListMonth:Self(), "topListMonth" )
-	shopSceneObjects[ 1 ] = topListMonth:Self()	
-	x = x + 1
 
-	local topListAllTime = CLuaSceneNode( sceneManager:AddCubeSceneNode( "allTimeTopListNode" ) )
-	topListAllTime:SetScale( 30, 40, 30 )
-	topListAllTime:SetVisible( false )
-	topListAllTime:SetPosition( x * delta, 800, y *delta )
-	topListAllTime:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	topListAllTime:SetMaterialFlag( EMF_LIGHTING, false )
+	local topListAllTime = CLuaSceneNode( sceneManager:GetSceneNodeByName( "allTimeTopListNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListAllTime:Self() )
 	topListAllTime:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( topListAllTime:Self(), "topListAllTime" )
-	shopSceneObjects[ 2 ] = topListAllTime:Self()	
-	x = x + 1
 
-	local gameJournals = CLuaSceneNode( sceneManager:AddCubeSceneNode( "gameJournalsNode" ) )
-	gameJournals:SetScale( 30, 40, 30 )
-	gameJournals:SetVisible( false )
-	gameJournals:SetPosition( x * delta, 800, y *delta )
-	gameJournals:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	gameJournals:SetMaterialFlag( EMF_LIGHTING, false )
+	local gameJournals = CLuaSceneNode( sceneManager:GetSceneNodeByName( "gameJournalsNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameJournals:Self() )
 	gameJournals:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( gameJournals:Self(), "gameJournals" )
-	shopSceneObjects[ 3 ] = gameJournals:Self()	
-	x = x + 1
 	
-	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitShopNode" ) )
-	exitN:SetScale( 30, 40, 30 )
-	exitN:SetVisible( false )
-	exitN:SetPosition( x * delta, 800, y *delta )
-	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	exitN:SetMaterialFlag( EMF_LIGHTING, false )
+	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitShopNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	shopSceneObjects[ 4 ] = exitN:Self()	
-
 end
 
-function AddObjectsToOfficeScene()
-	local x = 1
-	local y = 1
-	local delta = 800
+function ApplicationLoadOfficeScene()
+	sceneManager:RemoveAllNodes()
+	sceneManager:LoadIrrlichtScene( "scene/nrpOfficeScene.irr" )
 	
-	local newProj = CLuaSceneNode( sceneManager:AddCubeSceneNode( "createNewProjectNode" ) )
-	newProj:SetScale( 30, 40, 30 )
-	newProj:SetVisible( false )
-	newProj:SetPosition( x * delta, 800, y *delta )
-	newProj:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	newProj:SetMaterialFlag( EMF_LIGHTING, false )
+	local newProj = CLuaSceneNode( sceneManager:GetSceneNodeByName( "createNewProjectNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( newProj:Self() )
 	newProj:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( newProj:Self(), "createNewProject" )
-	officeSceneObjects[ 0 ] = newProj:Self()	
-	x = x + 1
 	
-	local showEmployers = CLuaSceneNode( sceneManager:AddCubeSceneNode( "employerManageNode" ) )
-	showEmployers:SetScale( 30, 40, 30 )
-	showEmployers:SetVisible( false )
-	showEmployers:SetPosition( x * delta, 800, y *delta )
-	showEmployers:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	showEmployers:SetMaterialFlag( EMF_LIGHTING, false )
+	local showEmployers = CLuaSceneNode( sceneManager:GetSceneNodeByName( "employerManageNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showEmployers:Self() )
 	showEmployers:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( showEmployers:Self(), "employerManageNode" )
-	officeSceneObjects[ 1 ] = showEmployers:Self()	
-	x = x + 1
 	
-	local showProjectManager = CLuaSceneNode( sceneManager:AddCubeSceneNode( "projectManagerNode" ) )
-	showProjectManager:SetScale( 30, 40, 30 )
-	showProjectManager:SetVisible( false )
-	showProjectManager:SetPosition( x * delta, 800, y *delta )
-	showProjectManager:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	showProjectManager:SetMaterialFlag( EMF_LIGHTING, false )
+	local showProjectManager = CLuaSceneNode( sceneManager:GetSceneNodeByName( "projectManagerNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showProjectManager:Self() )
 	showProjectManager:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( showProjectManager:Self(), "projectManagerNode" )
-	officeSceneObjects[ 2 ] = showProjectManager:Self()	
-	x = x + 1
 	
-	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitOfficeNode" ) )
-	exitN:SetScale( 30, 40, 30 )
-	exitN:SetVisible( false )
-	exitN:SetPosition( x * delta, 800, y *delta )
-	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	exitN:SetMaterialFlag( EMF_LIGHTING, false )
+	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitOfficeNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	officeSceneObjects[ 3 ] = exitN:Self()	
-
 end
 
-function AddObjectsToPlantScene()
-	local x = 1
-	local y = 1
-	local delta = 800
-	
-	local createBoxNode = CLuaSceneNode( sceneManager:AddCubeSceneNode( "gameBoxManagerNode" ) )
-	createBoxNode:SetScale( 30, 40, 30 )
-	createBoxNode:SetVisible( false )
-	createBoxNode:SetPosition( x * delta, 800, y *delta )
-	createBoxNode:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	createBoxNode:SetMaterialFlag( EMF_LIGHTING, false )
+function ApplicationLoadPlantScene()
+	sceneManager:RemoveAllNodes()
+	sceneManager:LoadIrrlichtScene( "scene/nrpPlantScene.irr" )
+
+	local createBoxNode = CLuaSceneNode( sceneManager:GetSceneNodeByName( "gameBoxManagerNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( createBoxNode:Self() )
 	createBoxNode:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( createBoxNode:Self(), "createBoxNode" )
-	plantSceneObjects[ 0 ] = createBoxNode:Self()	
-	x = x + 1
 	
-	local plnatNode = CLuaSceneNode( sceneManager:AddCubeSceneNode( "plantCeNode" ) )
-	plnatNode:SetScale( 30, 40, 30 )
-	plnatNode:SetVisible( false )
-	plnatNode:SetPosition( x * delta, 800, y *delta )
-	plnatNode:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	plnatNode:SetMaterialFlag( EMF_LIGHTING, false )
+	local plnatNode = CLuaSceneNode( sceneManager:GetSceneNodeByName( "plantCeNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( plnatNode:Self() )
 	plnatNode:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( plnatNode:Self(), "plantCeNode" )
-	plantSceneObjects[ 1 ] = plnatNode:Self()	
-	x = x + 1
 	
-	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitPlantNode" ) )
-	exitN:SetScale( 30, 40, 30 )
-	exitN:SetVisible( false )
-	exitN:SetPosition( x * delta, 800, y *delta )
-	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	exitN:SetMaterialFlag( EMF_LIGHTING, false )
+	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitPlantNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	plantSceneObjects[ 2 ] = exitN:Self()	
-	x = x + 1
 end
 
-function AddObjectsToUniverScene()
-	local x = 1
-	local y = 1
-	local delta = 800
+function ApplicationLoadUniverScene()
+	sceneManager:RemoveAllNodes()
+	sceneManager:LoadIrrlichtScene( "scene/nrpUniverScene.irr" )
 	
-	local stuffNode = CLuaSceneNode( sceneManager:AddCubeSceneNode( "stuffNode" ) )
-	stuffNode:SetScale( 30, 40, 30 )
-	stuffNode:SetVisible( false )
-	stuffNode:SetPosition( x * delta, 800, y *delta )
-	stuffNode:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	stuffNode:SetMaterialFlag( EMF_LIGHTING, false )
+	local stuffNode = CLuaSceneNode( sceneManager:GetSceneNodeByName( "stuffNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( stuffNode:Self() )
 	stuffNode:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( stuffNode:Self(), "stuff" )
-	univerSceneObjects[ 0 ] = stuffNode:Self()	
-	x = x + 1
 	
-	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitUniverNode" ) )
-	exitN:SetScale( 30, 40, 30 )
-	exitN:SetVisible( false )
-	exitN:SetPosition( x * delta, 800, y *delta )
-	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	exitN:SetMaterialFlag( EMF_LIGHTING, false )
+	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitUniverNode" ) )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	univerSceneObjects[ 1 ] = exitN:Self()	
-	x = x + 1
-end
-
-function AddObjectsToBankScene()
-	
-	local x = 1
-	local y = 1
-	local delta = 800
-	
-	local loan = CLuaSceneNode( sceneManager:AddCubeSceneNode( "loanNode" ) )
-	loan:SetScale( 30, 40, 30 )
-	loan:SetVisible( false )
-	loan:SetPosition( x * delta, 800, y *delta )
-	loan:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	loan:SetMaterialFlag( EMF_LIGHTING, false )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( loan:Self() )
-	loan:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( loan:Self(), "loan" )
-	bankSceneObjects[ 0 ] = loan:Self()	
-	x = x + 1
-	
-	local deposit = CLuaSceneNode( sceneManager:AddCubeSceneNode( "depositNode" ) )
-	deposit:SetScale( 30, 40, 30 )
-	deposit:SetVisible( false )
-	deposit:SetPosition( x * delta, 800, y *delta )
-	deposit:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	deposit:SetMaterialFlag( EMF_LIGHTING, false )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( deposit:Self() )
-	deposit:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( deposit:Self(), "deposit" )
-	bankSceneObjects[ 1 ] = deposit:Self()	
-	x = x + 1
-	
-	local akcii = CLuaSceneNode( sceneManager:AddCubeSceneNode( "akciiNode" ) )
-	akcii:SetScale( 30, 40, 30 )
-	akcii:SetVisible( false )
-	akcii:SetPosition( x * delta, 800, y *delta )
-	akcii:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	akcii:SetMaterialFlag( EMF_LIGHTING, false )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( akcii:Self() )
-	akcii:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( akcii:Self(), "akcii" )
-	bankSceneObjects[ 2 ] = akcii:Self()	
-	x = x + 1
-	
-	local exitN = CLuaSceneNode( sceneManager:AddCubeSceneNode( "exitBankNode" ) )
-	exitN:SetScale( 30, 40, 30 )
-	exitN:SetVisible( false )
-	exitN:SetPosition( x * delta, 800, y *delta )
-	exitN:SetMaterialTexture( 0, "media/t351sml.jpg" )
-	exitN:SetMaterialFlag( EMF_LIGHTING, false )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
-	exitN:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	bankSceneObjects[ 3 ] = exitN:Self()	
-	x = x + 1
-end
-
-function SetVisibleObjects( array, visible )
-	for i=0, #array do
-		local node = CLuaSceneNode( array[ i ] )
-		node:SetVisible( visible )
-	end
 end

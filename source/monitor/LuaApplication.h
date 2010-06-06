@@ -2,6 +2,8 @@
 
 #include "ILuaProject.h"
 
+const std::string CLASS_CLUAPPLICATION( "CLuaApplication" );
+
 namespace nrp
 {
 	class CNrpApplication;
@@ -52,8 +54,11 @@ public:
 	int GetDiskMachine( lua_State* L );
 	int SaveBoxAddonsPrice( lua_State* L );
 	int LoadBoxAddonsPrice( lua_State* L );
+	int GetMarketGamesNumber( lua_State* L );
+	int GetMarketGame( lua_State* L );
+	int AddGameToMarket( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaApplication"; }
+	static const char* StaticGetLuaName() { return CLASS_CLUAPPLICATION.c_str(); }
 private:
 	int lastDay_, lastMonth_, lastYear_;
 	int AddRemLuaFunction_( lua_State* L, std::string funcName, bool rem );

@@ -3,6 +3,7 @@ local applic = CLuaApplication( NrpGetApplication() )
 local fileIniPlatforms = "xtras/platforms.list"
 local fileIniAddons	= "xtras/gameboxaddons.list"
 local fileDiskMachines = "xtras/diskmachines.list"
+local fileRetailers = "xtras/retailers.list"
 
 function ApplicationUpdateGamePlatforms( ptr )
 	
@@ -88,5 +89,35 @@ function ApplicationUpdateDiskMachines( ptr )
 		end
 		
 		dm:Remove()
+	end
+end
+
+function ApplicationUpdateRetailers( ptr )
+	local iniFile = CLuaIniFile( nil, fileRetailers )
+
+	local retlNumber = iniFile:ReadInteger( "options", "retailerNumber", 0 )
+    local retlIniFile = ""
+	
+	LogScript( "Open config file "..fileRetailers.." with retailNumber="..retlNumber )
+	for i=1, retlNumber do
+		local retailer = CLuaRetailer( nil )
+		retailer:Create()
+
+		retlIniFile = iniFile:ReadString( "options", "retailer_"..(i-1), "" ) 
+		retailer:Load( retlIniFile ) 
+
+		if retailer:ValidTime() then
+			if not retailer:IsLoaded() then
+				applic:LoadRetailer( retlIniFile )
+				LogScript( "Load retailer "..retailer:GetName().." from "..retlIniFile )
+			end
+		else
+			if retailer:IsLoaded() then
+				applic:RemoveRetiler( retailer:GetName() )
+				LogScript( "Remove retailer "..retailer:GetName() )
+			end
+		end
+		
+		retailer:Remove()
 	end
 end

@@ -37,25 +37,37 @@ irr::u32 CNrp2DPictureFlow::addItem( const wchar_t* text )
 {
 	return addItem( NULL, text );
 }
+
+irr::u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text, void* object )
+{
+	u32 resultt = addItem( texture, text );
+	images_[ resultt ]->object = object;
+	return resultt;
+}
+
 video::ITexture* CNrp2DPictureFlow::GetDownTexture_( video::ITexture* pTxr )
 {
-	video::IVideoDriver* driver = Environment->getVideoDriver();
-	std::string name = core::stringc( pTxr->getName() ).c_str();
-	name += "toDown";
-	video::ITexture* resultt = driver->addTexture( pTxr->getSize(), name.c_str(), pTxr->getColorFormat() );
-
-	u32* pTxrData = (u32*)pTxr->lock();
-	u32* resultTxrData = (u32*)resultt->lock();
-	for( size_t k=0; k < pTxr->getSize().Height; k++ )
+	video::ITexture* resultt = NULL;
+	if( pTxr != NULL )
 	{
-		int offsetPtxr = k * pTxr->getSize().Width;
-		int offsetResult = ( resultt->getSize().Height - k - 1 ) * resultt->getSize().Width;
-		int pith = pTxr->getPitch();
-		memcpy( resultTxrData+offsetResult, pTxrData+offsetPtxr, pTxr->getPitch() );
-	}
+		video::IVideoDriver* driver = Environment->getVideoDriver();
+		std::string name = core::stringc( pTxr->getName() ).c_str();
+		name += "toDown";
+		resultt = driver->addTexture( pTxr->getSize(), name.c_str(), pTxr->getColorFormat() );
 
-	pTxr->unlock();
-	resultt->unlock();
+		u32* pTxrData = (u32*)pTxr->lock();
+		u32* resultTxrData = (u32*)resultt->lock();
+		for( size_t k=0; k < pTxr->getSize().Height; k++ )
+		{
+			int offsetPtxr = k * pTxr->getSize().Width;
+			int offsetResult = ( resultt->getSize().Height - k - 1 ) * resultt->getSize().Width;
+			int pith = pTxr->getPitch();
+			memcpy( resultTxrData+offsetResult, pTxrData+offsetPtxr, pTxr->getPitch() );
+		}
+
+		pTxr->unlock();
+		resultt->unlock();
+	}
 
 	return resultt;
 }
@@ -275,6 +287,11 @@ void CNrp2DPictureFlow::clear()
 
 	images_.clear();
 	activeIndex_ = 0;
+}
+
+void* CNrp2DPictureFlow::getObject( int index )
+{
+	return index < images_.size() ? images_[ index ]->object : NULL;
 }
 }//end namespace gui
 

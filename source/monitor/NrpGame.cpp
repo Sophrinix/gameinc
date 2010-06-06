@@ -147,4 +147,8 @@ void CNrpGame::Load( std::string loadFolder )
 	}
 }
 
+float CNrpGame::GetAuthorFamous()
+{
+	return 1;
+}
 }//namespace nrp

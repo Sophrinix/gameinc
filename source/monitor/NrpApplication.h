@@ -13,6 +13,7 @@ OPTION_NAME FULLPATH( "fullPath" );
 OPTION_NAME CURRENTTIME( "currentTime" );
 OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
 OPTION_NAME BOXADDONNUMBER( "boxAdonNumber" );
+OPTION_NAME MARKETGAMENUMBER( "marketGameNumber" );
 
 class CNrpCompany;
 class IUser;
@@ -21,12 +22,15 @@ class CNrpGameEngine;
 class CNrpTechnology;
 class CNrpGame;
 class CNrpDiskMachine;
+class CNrpRetailer;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
 	typedef std::vector< IUser* > USER_LIST;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
 	typedef std::vector< CNrpDiskMachine* > DISKMACHINES_LIST;
+	typedef std::vector< CNrpGame* > GAMES_LIST;
+	typedef std::vector< CNrpRetailer* > RETAILER_LIST;
 public:
 	typedef std::vector< CNrpCompany* > COMPANIES_LIST;
 	typedef enum { SPD_MINUTE=0, SPD_HOUR, SPD_DAY, SPD_MONTH, SPD_COUNT } SPEED;
@@ -71,9 +75,15 @@ public:
 	CNrpTechnology* GetBoxAddon( std::string name );
 	void AddBoxAddon( CNrpTechnology* tech );
 
+	void AddGameToMarket( CNrpGame* game );
+	CNrpGame* GetMarketGame( int index );
+
 	CNrpDiskMachine* GetDiskMachine( std::string name );
 	CNrpDiskMachine* GetDiskMachine( size_t index );
 	void AddDiskMachine( CNrpDiskMachine* pDm );
+
+	CNrpRetailer* GetRetailer( std::string name );
+	float GetGenreInterest( std::string genreName );
 
 private:
 	CNrpApplication(void);
@@ -84,6 +94,8 @@ private:
 	TECH_LIST technologies_;
 	TECH_LIST boxAddons_;
 	DISKMACHINES_LIST diskMachines_;
+	GAMES_LIST marketGames_;
+	RETAILER_LIST retailers_;
 
 	SPEED speed_;
 	int lastTimeUpdate_;
@@ -94,6 +106,9 @@ private:
 	void BeginNewMonth_();
 	IUser* CreateRandomUser_( std::string userType );
 	int GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );
+	void UpdateMarketGames_();
+	int GetFreePlatformNumberForGame_( CNrpGame* game );
+	int GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp );
 };
 
 }//namespace nrp

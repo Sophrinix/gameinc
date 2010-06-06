@@ -78,6 +78,8 @@ public:
 	int AddComponentListBox( lua_State* L );
 	int MessageBox( lua_State* L );
 	int AddListBox( lua_State* L );
+	int AddPictureFlow( lua_State* L );
+	int FadeAction( lua_State* L );
 	
 	static const char* StaticGetLuaName() { return "CLuaGuiEnvironment"; }	
 };

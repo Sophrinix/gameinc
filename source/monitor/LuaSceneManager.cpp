@@ -46,6 +46,9 @@ Luna< CLuaSceneManager >::RegType CLuaSceneManager::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetMarkText ),
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddToDeletionQueue ),
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RenderScene ),
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, LoadIrrlichtScene ),
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetSceneNodeByID ),
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RemoveAllNodes ),
 	{0,0}
 };
 
@@ -488,7 +491,7 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 
 	scene::ISceneNode* ptrNode = (scene::ISceneNode*)lua_touserdata( L, 2 );
 	const char* text = lua_tostring( L, 3 );
-	assert( text != NULL );
+	assert( text != NULL && ptrNode != NULL );
 	
 	scene::ISceneNode* textNode = GetTextSceneNode_( ptrNode );
 	IF_OBJECT_NOT_NULL_THEN
@@ -538,7 +541,7 @@ scene::ISceneNode* CLuaSceneManager::GetTextSceneNode_( scene::ISceneNode* ptrNo
 int CLuaSceneManager::AddToDeletionQueue( lua_State* vm )
 {
 	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 2, 2, "Function CLuaSceneNode::AddToDeletionQueue not need any parameter");
+	luaL_argcheck(vm, argc == 2, 2, "Function CLuaSceneNode::AddToDeletionQueue need ISceneNode* parameter");
 
 	scene::ISceneNode* ptrNode = (scene::ISceneNode*)lua_touserdata( vm, 2 );
 
@@ -557,4 +560,44 @@ int CLuaSceneManager::RenderScene( lua_State* L )
 	return 2;	
 }
 
+int CLuaSceneManager::LoadIrrlichtScene( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaSceneNode::LoadIrrlichtScene need string parameter");
+
+	const char* fileName = lua_tostring( L, 2 );
+	assert( fileName != NULL);
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		object_->loadScene( fileName );
+	}
+
+	return 1;	
+}
+
+int CLuaSceneManager::GetSceneNodeByID( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 2, 2, "Function CLuaSceneManager:GetSceneNodeByID need int parameter ");
+
+	int id = lua_tointeger( vm, 2 );
+	scene::ISceneNode* node = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN node = object_->getSceneNodeFromId( id );
+
+	lua_pushlightuserdata( vm, node );
+
+	return 1;
+}
+
+int CLuaSceneManager::RemoveAllNodes( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaSceneManager:RenderScene not need any parameter");
+
+	IF_OBJECT_NOT_NULL_THEN object_->getRootSceneNode()->removeAll();
+
+	return 2;		
+}
 }//namespace nrp

@@ -42,8 +42,7 @@ function sworkSelectObjectOnCityScene( ptr )
 	local node = CLuaSceneNode( ptr )
 	
 	if node:GetName() == "bankNode" then
-		SetVisibleObjects( citySceneObjects, false )
-		SetVisibleObjects( bankSceneObjects, true )
+		ApplicationLoadBankScene()
 		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnBankScene" )
 		return 0
 	end
@@ -209,10 +208,9 @@ function sworkSelectObjectOnBankScene( ptr )
 		return 0
 	end
 
-	if nodeName == "exitBankNode" then
-		SetVisibleObjects( bankSceneObjects, false )
-		SetVisibleObjects( citySceneObjects, true )
+	if nodeName == "exitBank" then
 		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnBankScene" )
+		ApplicationLoadCityScene()
 		return 0
 	end
 	

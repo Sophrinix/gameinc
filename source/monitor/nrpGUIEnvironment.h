@@ -21,6 +21,7 @@ namespace gui
 
 class IGUIAnimator;
 class CNrpGuiLinkBox;
+class CNrp2DPictureFlow;
 
 class CNrpGUIEnvironment : public irr::gui::IGUIEnvironment
 {
@@ -94,6 +95,10 @@ public:
 	gui::IGUIListBox* addComponentListBox( const core::recti& rectangle,
 										gui::IGUIElement* parent,
 										s32 id );
+
+	gui::CNrp2DPictureFlow* addPictureFlow( const core::recti& rectangle,
+											const core::recti& pictureRect,
+											s32 id, gui::IGUIElement* parent );
 
 	gui::IGUIEditBox* addEditBox(	const wchar_t* text, 
 									const core::recti& rectangle,

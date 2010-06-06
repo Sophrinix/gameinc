@@ -14,6 +14,8 @@
 #include "NrpGame.h"
 #include "NrpDiskMachine.h"
 #include "NrpPlant.h"
+#include "NrpGameBox.h"
+#include "NrpRetailer.h"
 
 #include <io.h>
 #include <errno.h>
@@ -48,6 +50,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<SYSTEMTIME>( CURRENTTIME, time );
 	CreateValue<int>( DISKMACHINENUMBER, 0 );
 	CreateValue<int>( BOXADDONNUMBER, 0 );
+	CreateValue<int>( MARKETGAMENUMBER, 0 );
 
 	srand( GetTickCount() );
 }
@@ -390,6 +393,102 @@ void CNrpApplication::BeginNewDay_()
 	for( ; cIter != companies_.end(); cIter++)
 		 (*cIter)->BeginNewDay( GetValue<SYSTEMTIME>( CURRENTTIME ) );
 	CNrpPlant::Instance().BeginNewDay();
+	UpdateMarketGames_();
+}
+
+float GetConsumerAbility_( float price )
+{
+	if( price > 150 ) return 10 / price;
+
+	if( price > 100 && price <= 150 ) return 20 / price;
+
+	if( price > 50 && price <= 100) return 40 / price;
+
+	if( price > 25 && price <= 50 ) return 50 / price;
+
+	if( price > 10 && price <= 25) return 25 / price;
+	else return 30 / price;
+}
+
+int CNrpApplication::GetFreePlatformNumberForGame_( CNrpGame* game )
+{
+	int yearRaznost = GetValue<SYSTEMTIME>( CURRENTTIME ).wYear - 1980;
+
+	int summ = 500000;
+	for( int k=0; k < yearRaznost; k++ )
+		 summ += summ * yearRaznost;
+
+	return summ * game->GetValue<int>( PLATFORMNUMBER );
+}
+
+int CNrpApplication::GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp )
+{
+	GAMES_LIST::iterator pIter = marketGames_.begin();
+	//получим количество платформ на которых может быть продана игра
+	int freePlatformNumber = GetFreePlatformNumberForGame_( game );
+	
+	//найдем количество игр этого жанра
+	float gamesInThisGenre = 1;
+	for( ; pIter != marketGames_.end(); pIter++ )
+	  if( (game != (*pIter)) && 
+		  ((*pIter)->GetGenreTech( 0 ) == game->GetGenreTech( 0 )) )
+		  gamesInThisGenre += (*pIter)->GetValue<int>( CURRENTGAMERATING ) / 100.f; 
+
+	freePlatformNumber -= game->GetValue<int>( COPYSELL );
+	float userModificator = 1, compannyFamous = 1;
+	if( cmp )
+	{
+		userModificator = cmp->GetUserModificatorForGame( game );
+		compannyFamous = cmp->GetValue< float>( FAMOUS ); 
+	}
+
+	float authorFamous = 1;
+	authorFamous = game->GetAuthorFamous();
+	std::string retailerName = game->GetValue<PNrpGameBox>( GBOX )->GetValue<std::string>( GAMERETAILER );
+	PNrpRetailer retailer = GetRetailer( retailerName );
+
+	float retailerFamous = 1;
+	if( retailer )
+		retailerFamous = retailer->GetValue<float>( FAMOUS );
+
+	float genreInterest = GetGenreInterest( game->GetGenreTech( 0 ) );
+
+	//столько игр может быть продано сегодня
+	freePlatformNumber /= 365;
+	//вероятность что покупатель обратит внимание на нашу игру
+	int gameMaySaledToday = (int)(freePlatformNumber / gamesInThisGenre);
+
+	//повышение продаж игры за счет рекламы игры, известности авторов и личностных модификаторов
+	gameMaySaledToday *= ( game->GetValue<int>( FAMOUS ) + userModificator + authorFamous );
+
+	//коэффициент продаж по известности ретейлера и компании
+	gameMaySaledToday *= (compannyFamous + retailerFamous)*0.5;
+
+	//коэффициент покупательской способности
+	gameMaySaledToday *= GetConsumerAbility_( game->GetValue<int>( PRICE ) );
+
+	return gameMaySaledToday;
+}
+
+void CNrpApplication::UpdateMarketGames_()
+{
+	GAMES_LIST::iterator pIter = marketGames_.begin();
+	for( ; pIter != marketGames_.end(); pIter++ )
+	{
+		PNrpCompany cmp = GetCompany( (*pIter)->GetValue<std::string>( COMPANYNAME ) );
+		int salesNumber = GetSalesNumber_( *pIter, cmp );
+		
+		int boxNumber = (*pIter)->GetValue<PNrpGameBox>( GBOX )->GetValue<int>( BOXNUMBER );
+		salesNumber = salesNumber > boxNumber ? boxNumber : salesNumber;
+		(*pIter)->GetValue<PNrpGameBox>( GBOX )->AddValue<int>( BOXNUMBER, -salesNumber);
+		int price = (*pIter)->GetValue<PNrpGameBox>( GBOX )->GetValue<int>( PRICE );
+
+		(*pIter)->AddValue<int>( CASH, price * salesNumber );
+		(*pIter)->AddValue<int>( COPYSELL, salesNumber );
+		
+		if( cmp )
+			cmp->AddValue<int>( BALANCE, price * salesNumber );
+	}
 }
 
 void CNrpApplication::CreateNewFreeUsers()
@@ -632,4 +731,30 @@ void CNrpApplication::AddDiskMachine( CNrpDiskMachine* pDm )
 	SetValue<int>( DISKMACHINENUMBER, diskMachines_.size() );
 }
 
+void CNrpApplication::AddGameToMarket( CNrpGame* game )
+{
+	GAMES_LIST::iterator pIter = marketGames_.begin();
+	for( ; pIter != marketGames_.end(); pIter++ )
+		 if( game != (*pIter) )
+			 return;
+
+	marketGames_.push_back( game );
+	game->SetValue<bool>( GAMEISSALING, true );
+	SetValue<int>( MARKETGAMENUMBER, marketGames_.size() );
+}
+
+CNrpGame* CNrpApplication::GetMarketGame( int index )
+{
+	return index < marketGames_.size() ? marketGames_[ index ] : NULL;
+}
+
+float CNrpApplication::GetGenreInterest( std::string genreName )
+{
+	return 1;
+}
+
+CNrpRetailer* CNrpApplication::GetRetailer( std::string name )
+{
+	return NULL;
+}
 }//namespace nrp

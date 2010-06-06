@@ -89,8 +89,11 @@ public:
 
 		scene::ITriangleSelector* selector = (scene::ITriangleSelector*)lua_touserdata( L, 2 );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setTriangleSelector( selector );
-		selector->drop();
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			object_->setTriangleSelector( selector );
+			selector->drop();
+		}
 
 		return 1;
 	}

@@ -54,6 +54,8 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddComponentListBox ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, MessageBox ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddListBox ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddPictureFlow ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, FadeAction ),
 	{0,0}
 };
 
@@ -692,4 +694,50 @@ int CLuaGuiEnvironment::MessageBox( lua_State* L )
 
 	return 1;	
 }
+
+int CLuaGuiEnvironment::AddPictureFlow( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 7, 7, "Function CLuaSceneManager:AddPictureFlow need 6 parameter");
+
+	core::recti rectangle = ReadRect_( L, 2 );
+	s32 iid = lua_tointeger( L, 6 );
+	u32 minside = min( rectangle.getWidth(), rectangle.getHeight() );
+	core::recti pictureRect( core::position2di( 0, 0 ), core::dimension2du( minside, minside ) );
+	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( L, 7 );	
+
+	gui::IGUIElement* elm = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN
+		elm = (gui::IGUIElement*)dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )
+									->addPictureFlow( rectangle, pictureRect, iid, parent );
+
+	lua_pushlightuserdata( L, elm );
+	return 1;	
+}
+
+int CLuaGuiEnvironment::FadeAction( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaGuiEnvironment:FadeOut need int, bool parameter" );
+
+	int time = lua_tointeger( L, 2 );
+	bool inaction = lua_toboolean( L, 3 ) > 0;
+
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		gui::IGUIInOutFader* fader = (gui::IGUIInOutFader*)object_->getRootGUIElement()->getElementFromId( 2002002 );
+		if( fader == NULL )
+			fader = object_->addInOutFader(0, object_->getRootGUIElement(), 2002002 );
+
+		//object_->getRootGUIElement()->sendToBack( fader );
+		if( inaction )
+			fader->fadeIn( time );
+		else
+			fader->fadeOut( time );
+	}
+
+	return 1;
+}
+
 }//namespace nrp

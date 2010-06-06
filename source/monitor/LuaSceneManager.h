@@ -29,6 +29,7 @@ public:
 	int AddTextSceneNode( lua_State* vm );
 	int GetRootSceneNode( lua_State* vm );
 	int GetSceneNodeByName( lua_State* vm );
+	int GetSceneNodeByID( lua_State* vm );
 	int GetCurrentWorldPosition( lua_State* vm );
 	int GetSelectedNode( lua_State* vm );
 	int SetActiveCamera( lua_State* vm );
@@ -51,6 +52,9 @@ public:
 	int GetMarkText( lua_State* L );
 
 	int RenderScene( lua_State* L );
+
+	int RemoveAllNodes( lua_State* L );
+	int LoadIrrlichtScene( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaSceneManager"; }
 private:

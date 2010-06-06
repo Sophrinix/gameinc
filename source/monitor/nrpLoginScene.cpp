@@ -142,8 +142,6 @@ void CNrpLoginScene::OnEnter()
 	fader_ = env->addInOutFader();
 	fader_->fadeIn( 5000 );
 	fader_->getParent()->sendToBack( fader_ );
-
-	//InfoLog(gfx) << all << launch << "Программа запущена" << term;*/
 }
 //////////////////////////////////////////////////////////////////////////
 

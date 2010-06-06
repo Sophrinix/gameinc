@@ -26,7 +26,6 @@ OPTION_NAME CURRENTBUGRATING( "currentBugRating" );
 OPTION_NAME STARTADVFUNC( "startAdvFunc" );
 OPTION_NAME CURRENTADVFUNC( "currentAdvFunc" );
 OPTION_NAME GBOX( "box" );
-OPTION_NAME FAMOUS( "famous" );
 OPTION_NAME GAMEISSALING( "gameIsSaling" );
 
 class CNrpGame : public INrpConfig
@@ -41,6 +40,7 @@ public:
 	std::string GetGenreTech( int index ) { return genreTechs_.at( index ); }
 	std::string GetSoundTech( int index ) { return soundTechs_.at( index ); }
 	std::string GetAdvTech( int index ) { return advTechs_.at( index ); }
+	float GetAuthorFamous();
 
 	void Save( std::string saveFolder );
 	void Load( std::string loadFolder );
@@ -50,7 +50,7 @@ private:
 	typedef std::vector< std::string > DEVELOPERS_LIST;
 	typedef std::vector< std::string > TECH_LIST;
 	DEVELOPERS_LIST developers_;
-		TECH_LIST	videoTechs_;
+	TECH_LIST	videoTechs_;
 	TECH_LIST	genreTechs_;
 	TECH_LIST	soundTechs_;
 	TECH_LIST	advTechs_;

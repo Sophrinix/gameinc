@@ -1049,6 +1049,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaPictureFlow.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaPictureFlow.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaProgressbar.cpp"
 						>
 					</File>
@@ -1348,10 +1356,6 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\swork_minimap.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_NodeWindowProperties.lua"
 				>
 			</File>
 			<File
@@ -1656,6 +1660,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpPlantWork.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpRetailer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpRetailer.h"
 				>
 			</File>
 			<File

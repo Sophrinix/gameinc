@@ -97,6 +97,8 @@ nrp::CNrpGameBox::CNrpGameBox( CNrpGame* ptrGame ) : INrpConfig( "CNrpGameBox", 
 	CreateValue<int>( NUMBERADDON, 0 );
 	CreateValue<int>( LEVEL, 0 );
 	CreateValue<int>( BOXNUMBER, 0 );
+	CreateValue<int>( PRICE, 18 );
+	CreateValue<std::string>( GAMERETAILER, "" );
 }
 
 }//end of namespace nrp

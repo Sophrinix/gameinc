@@ -15,25 +15,11 @@ LogVideo("Идет создание ландшафта", 0xDEADBEEF)
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local applic = CLuaApplication( NrpGetApplication() )
-
-citySceneObjects = { } 
-bankSceneObjects = { }
-univerSceneObjects = { }
-officeSceneObjects = { }
-plantSceneObjects = { }
-shopSceneObjects = { }
+local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 
 --создание рабочей сцены 
 NrpInitializeWorkScene()
 sceneManager:DrawProgress( 0 )
-
---добавление камеры к сцене
-AddCamera()
-sceneManager:DrawProgress( 25 )
-
---добавление ланшафта к сцене
-AddTerrain()
-sceneManager:DrawProgress( 50 )
 
 --создание главного меню
 AddMenuWindow()
@@ -43,23 +29,15 @@ sceneManager:DrawProgress( 70 )
 AddPortfelleWindow()
 sceneManager:DrawProgress( 77 )
 
---создание миникарты
-sceneManager:DrawProgress( 85 )
-
 --создание неба
-sceneManager:AddSkyDomeSceneNode( "media/sky/panorama.jpg", 20, 12, 1, 2.0, 10000 )
-sceneManager:DrawProgress( 90 )
+--sceneManager:AddSkyDomeSceneNode( "media/sky/panorama.jpg", 20, 12, 1, 2.0, 10000 )
+--sceneManager:DrawProgress( 90 )
 
 --создание пользователей
 applic:CreateNewFreeUsers()
 sceneManager:DrawProgress( 95 )
 
-AddObjectsToCityScene()
-AddObjectsToBankScene()
-AddObjectsToOfficeScene()
-AddObjectsToUniverScene()
-AddObjectsToPlantScene()
-AddObjectsToShopScene()
+ApplicationLoadCityScene()
 sceneManager:DrawProgress( 100 )
 
 local playerCompany = CLuaCompany( applic:GetPlayerCompany() )

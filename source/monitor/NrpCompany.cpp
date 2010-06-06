@@ -376,4 +376,9 @@ INrpConfig* CNrpCompany::GetFromPortfelle( int index )
 {
 	return index < (int)portfelle_.size() ? portfelle_[ index ] : NULL;	
 }
+
+float CNrpCompany::GetUserModificatorForGame( CNrpGame* game )
+{
+	return 1;
+}
 }//namespace nrp
