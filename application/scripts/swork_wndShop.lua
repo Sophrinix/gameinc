@@ -81,7 +81,7 @@ function sworkWindowShopAnonceGame( ptr )
 								              -1, windowShop:Self() ) )
 	
 	anoncePictureFlow = CLuaPictureFlow( guienv:AddPictureFlow( 10, 10, 390, 200, -1, windowAnonce:Self() ) )
-	anoncePictureFlow:SetPictureRect( 90, 90 )
+	anoncePictureFlow:SetPictureRect( 0, 0, 90, 90 )
 	
 	for i=1, company:GetGameNumber() do
 		local game = CLuaGame( company:GetGame( i-1 ) )
@@ -103,6 +103,14 @@ function sworkWindowShopStartGameSaling( ptr )
 	
 	applic:AddMarketGame( game )
 	sworkWindowShopCloseAnonceGame( ptr )	
+end
+
+function sworkCreateMonthTopListWindow( ptr )
+
+end
+
+function sworkCreateAllTimeTopListWindow( ptr )
+
 end
 
 function sworkWindowShopCloseAnonceGame( ptr )

@@ -39,6 +39,9 @@ private:
 	core::position2di oldPos_;
 	core::triangle3df selectedTriangle_;
 
+	bool mouseSceneBLeftEvent_;
+	bool twinLeftMouseClick_;
+
 	bool InitWater_();					//добавление сцены воды
 	void GetNodeAndIntersectionFromCursor_( scene::ISceneNode*& node, core::vector3df& point, bool &doubleClick );
 	void RenderScene_();
@@ -55,6 +58,7 @@ public:
 	void SetOption( const core::stringc& name, bool amount );
 
 	scene::ISceneNode* GetSelectedNode() { return selectedNode_; }
+	void SetSelectedNode( scene::ISceneNode* node ) { selectedNode_ = node; }
 	core::vector3df GetCurrentWorldPosition();
 };
 

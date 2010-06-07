@@ -23,6 +23,7 @@ public:
 	static const char* StaticGetLuaName() { return "CLuaSceneNode"; }
 private:
 	irr::scene::ISceneNode* GetTextSceneNode_();
+	bool IsChildOfCurrentScene_();
 };
 
 }//namespace nrp

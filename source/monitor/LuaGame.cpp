@@ -26,6 +26,7 @@ Luna< CLuaGame >::RegType CLuaGame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBox ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxLevel ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxAddon ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, IsSaling ),
 	{0,0}
 };
 
@@ -190,6 +191,18 @@ int CLuaGame::GetBoxAddon( lua_State* L )
 	}
 
 	lua_pushlightuserdata( L, tech );
+	return 1;		
+}
+
+int CLuaGame::IsSaling( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:IsSaling not need any parameter" );
+
+	bool isSaling = true;
+	IF_OBJECT_NOT_NULL_THEN	isSaling = object_->GetValue<bool>( GAMEISSALING );
+
+	lua_pushboolean( L, isSaling );
 	return 1;		
 }
 }//namespace nrp

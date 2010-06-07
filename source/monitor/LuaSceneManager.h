@@ -55,12 +55,12 @@ public:
 
 	int RemoveAllNodes( lua_State* L );
 	int LoadIrrlichtScene( lua_State* L );
+	int SetSelectedNode( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaSceneManager"; }
 private:
 	void RecalculateWorldParams_( irr::scene::ITerrainSceneNode* newTerrain );
 	irr::scene::ISceneNode* GetTextSceneNode_( irr::scene::ISceneNode* ptrNode );
-
 };
 
 }//namespace nrp

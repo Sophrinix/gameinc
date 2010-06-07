@@ -62,6 +62,7 @@ function ApplicationLoadCityScene()
 	sceneManager:SetMarkText( plant:Self(), "Производство" )
 	LogScript( "plantNode find" )	
 	--guienv:FadeAction( 3000, true )
+	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
 end
 
 function ApplicationLoadBankScene()
@@ -75,23 +76,28 @@ function ApplicationLoadBankScene()
 	sceneManager:SetMarkText( loan:Self(), "loan" )
 	
 	local deposit = CLuaSceneNode( sceneManager:GetSceneNodeByName( "depositNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( deposit:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( deposit:Self() )
 	deposit:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( deposit:Self(), "deposit" )
 	
 	local akcii = CLuaSceneNode( sceneManager:GetSceneNodeByName( "acciiNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( akcii:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( akcii:Self() )
 	akcii:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( akcii:Self(), "akcii" )
 	
 	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitBank" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	
+	sceneManager:SetSelectedNode( nil )
+	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnBankScene" )
 end
 
 function ApplicationLoadShopScene()
+    sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
+	ApplicationAddCityCamera()
 	sceneManager:LoadIrrlichtScene( "scene/nrpShopScene.irr" )
 
 	--игры в продаже
@@ -102,29 +108,37 @@ function ApplicationLoadShopScene()
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameInSale:Self() )
 	gameInSale:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( gameInSale:Self(), "gameInSale" )
+	LogScript( "gameInSale find" )	
 	
 	local topListMonth = CLuaSceneNode( sceneManager:GetSceneNodeByName( "topListMonthNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListMonth:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListMonth:Self() )
 	topListMonth:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( topListMonth:Self(), "topListMonth" )
+	LogScript( "topListMonth find" )	
 
 	local topListAllTime = CLuaSceneNode( sceneManager:GetSceneNodeByName( "allTimeTopListNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListAllTime:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListAllTime:Self() )
 	topListAllTime:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( topListAllTime:Self(), "topListAllTime" )
+	LogScript( "topListAllTime find" )	
 
 	local gameJournals = CLuaSceneNode( sceneManager:GetSceneNodeByName( "gameJournalsNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameJournals:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameJournals:Self() )
 	gameJournals:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( gameJournals:Self(), "gameJournals" )
+	LogScript( "gameJournals find" )	
 	
 	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitShopNode" ) )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	LogScript( "exitN find" )	
+	
+	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnShopScene" )
 end
 
 function ApplicationLoadOfficeScene()
+	sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
 	sceneManager:LoadIrrlichtScene( "scene/nrpOfficeScene.irr" )
 	
@@ -134,12 +148,12 @@ function ApplicationLoadOfficeScene()
 	sceneManager:SetMarkText( newProj:Self(), "createNewProject" )
 	
 	local showEmployers = CLuaSceneNode( sceneManager:GetSceneNodeByName( "employerManageNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showEmployers:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showEmployers:Self() )
 	showEmployers:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( showEmployers:Self(), "employerManageNode" )
 	
 	local showProjectManager = CLuaSceneNode( sceneManager:GetSceneNodeByName( "projectManagerNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showProjectManager:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showProjectManager:Self() )
 	showProjectManager:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( showProjectManager:Self(), "projectManagerNode" )
 	
@@ -147,9 +161,12 @@ function ApplicationLoadOfficeScene()
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	
+	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
 end
 
 function ApplicationLoadPlantScene()
+	sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
 	sceneManager:LoadIrrlichtScene( "scene/nrpPlantScene.irr" )
 
@@ -159,17 +176,19 @@ function ApplicationLoadPlantScene()
 	sceneManager:SetMarkText( createBoxNode:Self(), "createBoxNode" )
 	
 	local plnatNode = CLuaSceneNode( sceneManager:GetSceneNodeByName( "plantCeNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( plnatNode:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( plnatNode:Self() )
 	plnatNode:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( plnatNode:Self(), "plantCeNode" )
 	
 	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitPlantNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnPlantScene" )
 end
 
 function ApplicationLoadUniverScene()
+	sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
 	sceneManager:LoadIrrlichtScene( "scene/nrpUniverScene.irr" )
 	
@@ -179,7 +198,9 @@ function ApplicationLoadUniverScene()
 	sceneManager:SetMarkText( stuffNode:Self(), "stuff" )
 	
 	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitUniverNode" ) )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	
+	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnUniverScene" )
 end

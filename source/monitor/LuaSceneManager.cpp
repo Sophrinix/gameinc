@@ -49,6 +49,7 @@ Luna< CLuaSceneManager >::RegType CLuaSceneManager::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, LoadIrrlichtScene ),
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetSceneNodeByID ),
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RemoveAllNodes ),
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetSelectedNode ),
 	{0,0}
 };
 
@@ -591,12 +592,28 @@ int CLuaSceneManager::GetSceneNodeByID( lua_State* vm )
 	return 1;
 }
 
+int CLuaSceneManager::SetSelectedNode( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaSceneManager:SetSelectedNode need int parameter ");
+
+	int id = lua_tointeger( L, 2 );
+	scene::ISceneNode* node = NULL;
+
+	CNrpEngine::Instance().GetCurrentScene()->SetSelectedNode( node );
+
+	return 1;
+}
+
 int CLuaSceneManager::RemoveAllNodes( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaSceneManager:RenderScene not need any parameter");
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaSceneManager:RemoveAllNodes not need any parameter");
 
-	IF_OBJECT_NOT_NULL_THEN object_->getRootSceneNode()->removeAll();
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		object_->getRootSceneNode()->removeAll();
+	}
 
 	return 2;		
 }

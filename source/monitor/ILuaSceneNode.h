@@ -30,6 +30,8 @@ public:
 
 	}
 
+	virtual bool IsChildOfCurrentScene_() { return true; }
+
 	int GetTypeName( lua_State *L )
 	{
 		int argc = lua_gettop(L);
@@ -103,9 +105,11 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, ("Function " + ClassName() + ":GetName not need parameter" ).c_str() );
 
-		std::string name;
-
-		IF_OBJECT_NOT_NULL_THEN name = object_->getName();
+		std::string name = "";
+	
+		IF_OBJECT_NOT_NULL_THEN 
+			if( IsChildOfCurrentScene_() )
+				name = object_->getName();
 		lua_pushstring( L, name.c_str() );									
 
 		return 1;		

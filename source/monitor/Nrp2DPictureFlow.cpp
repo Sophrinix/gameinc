@@ -7,50 +7,13 @@ namespace irr
 namespace gui
 {
 
-CNrp2DPictureFlow::CNrp2DPictureFlow( IGUIEnvironment* env, 
-								  IGUIElement* parent, 
-								  core::recti rectangle,
-								  core::recti pictureRect,
-								  s32 id )
-: IGUIListBox( env, parent, id, rectangle )
-{
-	activeIndex_ = 0;
-	pictureRect_ = pictureRect;
-	drawBackground_ = true;
-}
-
-u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text )
-{
-	CNrpImageDescription* descr = new CNrpImageDescription();
-	images_.push_back( descr );
-	descr->texture = texture;
-	descr->downTexture = GetDownTexture_( texture );
-	texture->grab();
-	descr->rectangle = core::recti( 0, 0, 0, 0 );
-
-	UpdateImages_();
-
-	return images_.size() - 1;
-}
-
-irr::u32 CNrp2DPictureFlow::addItem( const wchar_t* text )
-{
-	return addItem( NULL, text );
-}
-
-irr::u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text, void* object )
-{
-	u32 resultt = addItem( texture, text );
-	images_[ resultt ]->object = object;
-	return resultt;
-}
-
-video::ITexture* CNrp2DPictureFlow::GetDownTexture_( video::ITexture* pTxr )
+	video::ITexture* CNrp2DPictureFlow::CNrpImageDescription::CreateDownTexture_( video::IVideoDriver* driver, 
+																			   video::ITexture* pTxr )
 {
 	video::ITexture* resultt = NULL;
+
 	if( pTxr != NULL )
 	{
-		video::IVideoDriver* driver = Environment->getVideoDriver();
 		std::string name = core::stringc( pTxr->getName() ).c_str();
 		name += "toDown";
 		resultt = driver->addTexture( pTxr->getSize(), name.c_str(), pTxr->getColorFormat() );
@@ -69,6 +32,43 @@ video::ITexture* CNrp2DPictureFlow::GetDownTexture_( video::ITexture* pTxr )
 		resultt->unlock();
 	}
 
+	return resultt;
+}
+
+CNrp2DPictureFlow::CNrp2DPictureFlow( IGUIEnvironment* env, 
+								  IGUIElement* parent, 
+								  core::recti rectangle,
+								  core::recti pictureRect,
+								  s32 id )
+: IGUIListBox( env, parent, id, rectangle )
+{
+	activeIndex_ = 0;
+	pictureRect_ = pictureRect;
+	drawBackground_ = true;
+}
+
+u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text )
+{
+	CNrpImageDescription* descr = new CNrpImageDescription();
+	images_.push_back( descr );
+	descr->SetTexture( Environment->getVideoDriver(), texture ); 
+	
+	descr->rectangle = core::recti( 0, 0, 0, 0 );
+
+	UpdateImages_();
+
+	return images_.size() - 1;
+}
+
+irr::u32 CNrp2DPictureFlow::addItem( const wchar_t* text )
+{
+	return addItem( NULL, text );
+}
+
+irr::u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text, void* object )
+{
+	u32 resultt = addItem( texture, text );
+	images_[ resultt ]->object = object;
 	return resultt;
 }
 
@@ -108,18 +108,30 @@ void CNrp2DPictureFlow::UpdateImages_()
 
 void CNrp2DPictureFlow::DrawPairImage_( CNrpImageDescription* pDesk )
 {
+	video::IVideoDriver* driver = Environment->getVideoDriver();
 	core::recti rectangle( pDesk->currentRect.UpperLeftCorner.X, pDesk->currentRect.UpperLeftCorner.Y,
 							pDesk->currentRect.LowerRightCorner.X, pDesk->currentRect.LowerRightCorner.Y );
-	Environment->getVideoDriver()->draw2DImage( pDesk->texture, rectangle, 
-											 	core::recti( core::position2di( 0, 0), pDesk->texture->getSize() ));
+
+	if( pDesk->GetTexture() )
+		driver->draw2DImage( pDesk->GetTexture(), rectangle, 
+			 			 	 core::recti( core::position2di( 0, 0), pDesk->GetTexture()->getSize() ));
+	else
+		driver->draw2DRectangle(rectangle, 
+								0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0,
+								&AbsoluteClippingRect );
 
 	video::SColor colors[] = { 0xC0C0C0C0, 0, 0, 0xC0C0C0C0 };
-	Environment->getVideoDriver()->draw2DImage( pDesk->downTexture, 
-												rectangle + core::position2di( 0, rectangle.getHeight() ), 
-												core::recti( core::position2di( 0, 0), pDesk->texture->getSize() ),
-												&AbsoluteClippingRect, 
-												colors,
-												true );
+	if( pDesk->GetDownTexture() )
+		driver->draw2DImage( pDesk->GetDownTexture(), 
+							rectangle + core::position2di( 0, rectangle.getHeight() ), 
+							core::recti( core::position2di( 0, 0), pDesk->GetDownTexture()->getSize() ),
+							&AbsoluteClippingRect, 
+							colors,	true );
+	else
+		driver->draw2DRectangle(rectangle+core::position2di( 0, rectangle.getHeight() ), 
+								colors[0], colors[3], colors[1], colors[2],
+								&AbsoluteClippingRect );
+
 }
 
 void CNrp2DPictureFlow::draw()
@@ -132,15 +144,17 @@ void CNrp2DPictureFlow::draw()
 	if( drawBackground_ )
 		Environment->getVideoDriver()->draw2DRectangle( video::SColor( 0xff000000 ), AbsoluteRect );
 
-	for( size_t pos=max( 0, activeIndex_-4 ); pos < activeIndex_; pos++ )
-		DrawPairImage_( images_[ pos ] );
+	if( images_.size() > 0 )
+	{
+		for( size_t pos=max( 0, activeIndex_-4 ); pos < activeIndex_; pos++ )
+			DrawPairImage_( images_[ pos ] );
 
-	for( size_t pos=min( activeIndex_ + 4, images_.size()-1); pos > activeIndex_; pos-- )
-		 DrawPairImage_( images_[ pos ] );
+		for( size_t pos=min( activeIndex_ + 4, images_.size()-1); pos > activeIndex_; pos-- )
+			 DrawPairImage_( images_[ pos ] );
 
-	if( activeIndex_ < images_.size() )
-		DrawPairImage_( images_[ activeIndex_ ] );
-
+		if( activeIndex_ < images_.size() )
+			DrawPairImage_( images_[ activeIndex_ ] );
+	}
 	IGUIListBox::draw();
 }
 
@@ -245,10 +259,7 @@ bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
 CNrp2DPictureFlow::~CNrp2DPictureFlow()
 {
 	for( size_t pos=0; pos < images_.size(); pos++ )
-	{
-		images_[ pos ]->texture->drop();
 		delete images_[ pos ];
-	}
 }
 
 const wchar_t* CNrp2DPictureFlow::getListItem( u32 id ) const
@@ -271,7 +282,6 @@ void CNrp2DPictureFlow::removeItem( u32 index )
 {
 	if( index < images_.size() )
 	{
-		images_[ index ]->texture->drop();
 		delete images_[ index ];
 		images_.erase( index );
 	}
@@ -280,10 +290,7 @@ void CNrp2DPictureFlow::removeItem( u32 index )
 void CNrp2DPictureFlow::clear()
 {
 	for( u32 k=0; k < images_.size(); k++ )
-	{
-		images_[ k ]->texture->drop();
 		delete images_[ k ];
-	}
 
 	images_.clear();
 	activeIndex_ = 0;

@@ -32,9 +32,11 @@ CNrpMainScene::CNrpMainScene() : INrpScene()
 	waterView_ = ONLY_WATER;
 	selectedNode_ = NULL;
 	lastTimeNodeSelect_ = 0;
+	mouseSceneBLeftEvent_ = false;
 }
-//////////////////////////////////////////////////////////////////////////
+
 scene::ISceneNode* waterNode_=NULL;
+
 
 bool CNrpMainScene::InitWater_()												//сцена воды
 {
@@ -65,9 +67,6 @@ bool CNrpMainScene::InitWater_()												//сцена воды
 
 void CNrpMainScene::RenderScene_()										//рендеринг сцены			
 {
-	if( waterNode_ == NULL )
-		InitWater_();
-
 	CNrpEngine& v_eng = CNrpEngine::Instance();
 
 	if( options_[ "render3d" ] )
@@ -76,26 +75,26 @@ void CNrpMainScene::RenderScene_()										//рендеринг сцены
 	if( options_[ "renderGui" ] )
 		v_eng.GetGuiEnvironment()->drawAll();								//рисуем интерфейс пользователя
 }
-//////////////////////////////////////////////////////////////////////////
 
 CNrpMainScene::~CNrpMainScene(void)
 {
 }
-//////////////////////////////////////////////////////////////////////////
 
+//получение объекта сцены, который выбра пользователем
 void CNrpMainScene::GetNodeAndIntersectionFromCursor_( scene::ISceneNode*& node, core::vector3df& point, bool &doubleClick )
 {
 	CNrpEngine& v_eng = CNrpEngine::Instance();
 	ISceneManager* smgr = v_eng.GetSceneManager();
 
+	//координаты курсора на экране
 	core::position2di pos = v_eng.GetDevice()->getCursorControl()->getPosition();
-
-	core::line3df line =smgr->getSceneCollisionManager()->getRayFromScreenCoordinates( pos, smgr->getActiveCamera() );		
-
+	//получаем луч для расчетов
+	core::line3df line = smgr->getSceneCollisionManager()->getRayFromScreenCoordinates( pos, smgr->getActiveCamera() );		
+	//здесь будет выбранный треугольник
 	core::triangle3df tri;
-
+	//получаем выбранный объект
 	node = smgr->getSceneCollisionManager()->getSceneNodeAndCollisionPointFromRay( line, point, tri );
-
+	//устанавливаем флаг двойного нажатия мышкой
 	doubleClick = ( selectedNode_ == node ) && ( GetTickCount() - lastTimeNodeSelect_ < 200 );
 	lastTimeNodeSelect_ = GetTickCount();
 }
@@ -104,17 +103,17 @@ bool savePoint=true;
 bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 {
 	switch( event.EventType ) 
-	{
+	{	//события от гуи
 		case EET_GUI_EVENT:
 		{
 			s32 id = event.GUIEvent.Caller->getID();		
-
+            //если было вызвано не перехваченное нажатие кнопки 
 			switch( event.GUIEvent.EventType )
 			{
 				case gui::EGET_BUTTON_CLICKED:
 				{
 					gui::CNrpButton* btn = (gui::CNrpButton*)event.GUIEvent.Caller;
-
+					//пытаемся его обработать
 					if( btn->getOnClickAction() != 0 )
 					{
 						nrp::CNrpScript::Instance().CallFunction( btn->getOnClickAction(), btn );
@@ -122,13 +121,13 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 					}
 				}
 				break;
-
+				//а может это дернули скролбар
 				case gui::EGET_SCROLL_BAR_CHANGED:
 				{
 					gui::CNrpScrollBar* scr = (gui::CNrpScrollBar*)event.GUIEvent.Caller;
-
+					//и к этому скроллбару повесили функцию луа
 					if( scr->getAction() != 0 )
-					{
+					{	//попытаемся её выполнить
 						nrp::CNrpScript::Instance().CallFunction( scr->getAction(), scr );
 						return true;
 					}
@@ -137,37 +136,39 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 			}
 		}
 		break;
-
+		//если произошло неперехваченное событие от клавы
 		case EET_KEY_INPUT_EVENT:
-		{
+		{	//отдадим его на обработку
 			DoLuaFunctionsByType( SCENE_KEY_INPUT_EVENT, (void*)&event );
 		}
 		break;
-		
+		//последними обрабатываем события мышки
 		case EET_MOUSE_INPUT_EVENT:
 		{
 			switch( event.MouseInput.Event )
 			{		 	
+				//нажатие пкм произошло вне гуи
 				case EMIE_RMOUSE_LEFT_UP:	
 					 DoLuaFunctionsByType( SCENE_RMOUSE_LEFT_UP );
 				break;
-
+				//вне гуи произошло нажатие лкм
 				case EMIE_LMOUSE_LEFT_UP:
 				{		
+					//попробуем найти объект сцены к которому попытались обратиться
 					gui::IGUIEnvironment* guienv = CNrpEngine::Instance().GetGuiEnvironment();
-					bool twinLeftMouseCkick = false;
-					if( guienv->isHovered( guienv->getRootGUIElement() ) )
+					if( guienv->isHovered( guienv->getRootGUIElement() ) ) //проверяем на пересечение если курсор не находится над гуи
 					{
 						core::vector3df pnt;
-						GetNodeAndIntersectionFromCursor_( selectedNode_, pnt, twinLeftMouseCkick);					
+						GetNodeAndIntersectionFromCursor_( selectedNode_, pnt, twinLeftMouseClick_);					
 					}
 					
-					DoLuaFunctionsByType( twinLeftMouseCkick ? SCENE_LMOUSE_DOUBLE_CLICK : SCENE_LMOUSE_LEFT_UP, selectedNode_ );
+					//вызываем событие луа
+					mouseSceneBLeftEvent_ = true;
 				}
 				break;
 
 				case EMIE_MOUSE_MOVED:
-				{
+				{	//обрабатываем событие перемещения мышки
 					DoLuaFunctionsByType( SCENE_MOUSE_MOVED );
 				}
 				break;
@@ -186,32 +187,35 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 	}
 	return false;
 }
-//////////////////////////////////////////////////////////////////////////
+
 
 void CNrpMainScene::OnEnter()
 {
 	 options_[ "render3d" ] = true;
 	 options_[ "renderGui" ] = true;
-
-	// scene::ISceneManager* smgr = 
 }
-//////////////////////////////////////////////////////////////////////////
 
+//один кадр сцены
 void CNrpMainScene::OnUpdate()
 {
 	try
 	{
 		video::IVideoDriver* driver = CNrpEngine::Instance().GetVideoDriver();
 		
+		//вызываем событие луа до начала сцены
 		DoLuaFunctionsByType( SCENE_BEFORE_BEGIN );
 		driver->beginScene( true, true, video::SColor(150,50,50,50) );
 		
 		try
 		{
+			//вызываем событие луа до рендера сцены
 			DoLuaFunctionsByType( SCENE_BEFORE_RENDER );
+			//рендерим сцену
 			RenderScene_();
+			//вызываем событие луа после рендера сцены
 			DoLuaFunctionsByType( SCENE_AFTER_RENDER );			
 
+			//отладочная вещь для просмотра выделенных объектов
 			try
 			{
 				if( selectedNode_ != NULL )
@@ -241,16 +245,21 @@ void CNrpMainScene::OnUpdate()
 		}
 			
 		driver->endScene();
-
+		//вызываем событие луа после завершения рендера сцены
 		DoLuaFunctionsByType( SCENE_AFTER_END );
-		
+	
+		if( mouseSceneBLeftEvent_ && (GetTickCount() - lastTimeNodeSelect_ > 200) )
+		{
+			DoLuaFunctionsByType( twinLeftMouseClick_ ? SCENE_LMOUSE_DOUBLE_CLICK : SCENE_LMOUSE_LEFT_UP, selectedNode_ );
+			mouseSceneBLeftEvent_ = false;
+			twinLeftMouseClick_ = false;
+		}
 	}
 	catch(...)
 	{
 		//ErrLog(gfx) << all << "Ошибка основной сцены" << term;
 	}
 }
-//////////////////////////////////////////////////////////////////////////
 
 void CNrpMainScene::OnLeave()
 {
@@ -270,7 +279,6 @@ core::vector3df CNrpMainScene::GetCurrentWorldPosition()
 	GetNodeAndIntersectionFromCursor_( ptrNode, point, t );
 	return point;
 }
-//////////////////////////////////////////////////////////////////////////
 
 } //namespace scene
 

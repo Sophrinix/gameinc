@@ -40,42 +40,40 @@ end
 function sworkSelectObjectOnCityScene( ptr )
 
 	local node = CLuaSceneNode( ptr )
+	local nodeName = node:GetName()
 	
-	if node:GetName() == "bankNode" then
+	if nodeName == "bankNode" then
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
 		ApplicationLoadBankScene()
-		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnBankScene" )
 		return 0
 	end
 	
-	if node:GetName() == "officeNode" then
-		SetVisibleObjects( citySceneObjects, false )
-		SetVisibleObjects( officeSceneObjects, true )
-		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
+	if nodeName == "officeNode" then
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
+		ApplicationLoadOfficeScene()
 		return 0		
 	end
 	
-	if node:GetName() == "prNode" then
+	if nodeName == "prNode" then
 		sworkCreateWindowReklama()
-	end
-	
-	if node:GetName() == "univerNode" then
-		SetVisibleObjects( citySceneObjects, false )
-		SetVisibleObjects( univerSceneObjects, true )
-		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnUniverScene" )
 		return 0
 	end
 	
-	if node:GetName() == "plantNode" then
-		SetVisibleObjects( citySceneObjects, false )
-		SetVisibleObjects( plantSceneObjects, true )
-		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnPlantScene" )
+	if nodeName == "univerNode" then
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
+		ApplicationLoadUniverScene()
+		return 0
+	end
+	
+	if nodeName == "plantNode" then
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
+		ApplicationLoadPlantScene()
 		return 0		
 	end
 	
-	if node:GetName() == "gameShopNode" then
-		SetVisibleObjects( citySceneObjects, false )
-		SetVisibleObjects( shopSceneObjects, true )
-		sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnShopScene" )
+	if nodeName == "gameShopNode" then
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
+		ApplicationLoadShopScene()
 		return 0		
 	end
 	
@@ -115,9 +113,8 @@ function sworkSelectObjectOnShopScene( ptr )
 	end
 
 	if nodeName == "exitShopNode" then
-		SetVisibleObjects( shopSceneObjects, false )
-		SetVisibleObjects( citySceneObjects, true )
 		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnShopScene" )
+		ApplicationLoadCityScene()
 		return 0
 	end
 	
@@ -140,9 +137,8 @@ function sworkSelectObjectOnPlantScene( ptr )
 	end
 	
 	if nodeName == "exitPlantNode" then
-		SetVisibleObjects( plantSceneObjects, false )
-		SetVisibleObjects( citySceneObjects, true )
 		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
+		ApplicationLoadCityScene()
 		return 0
 	end
 	
@@ -169,9 +165,8 @@ function sworkSelectObjectOnOfficeScene( ptr )
 	end
 
 	if nodeName == "exitOfficeNode" then
-		SetVisibleObjects( officeSceneObjects, false )
-		SetVisibleObjects( citySceneObjects, true )
 		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
+		ApplicationLoadCityScene()
 		return 0
 	end
 	
@@ -189,9 +184,8 @@ function sworkSelectObjectOnUniverScene( ptr )
 	end
 
 	if nodeName == "exitUniverNode" then
-		SetVisibleObjects( univerSceneObjects, false )
-		SetVisibleObjects( citySceneObjects, true )
 		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnUniverScene" )
+		ApplicationLoadCityScene()
 		return 0
 	end
 	

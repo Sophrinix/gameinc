@@ -12,12 +12,44 @@ class CNrp2DPictureFlow : public IGUIListBox
 	class CNrpImageDescription
 	{
 	public:
-		video::ITexture* texture;
-		video::ITexture* downTexture;
 		core::recti rectangle;
 		core::rectf currentRect;
 		core::stringw name;
 		void* object;
+
+		CNrpImageDescription()
+		{
+			texture_ = NULL;
+			downTexture_ = NULL;
+		}
+
+		~CNrpImageDescription()
+		{
+			texture_->drop();
+			downTexture_->drop();
+		}
+
+		void SetTexture( video::IVideoDriver* driver, video::ITexture* ptx )
+		{
+			if( texture_ )
+				texture_->drop();
+
+			texture_ = ptx;
+			if( texture_ )
+				texture_->grab();
+
+			if( downTexture_ )
+				downTexture_->drop();
+
+			downTexture_ = CreateDownTexture_( driver, ptx );
+		}
+
+		video::ITexture* GetTexture() { return texture_; }
+		video::ITexture* GetDownTexture() { return downTexture_; }
+	private:
+		video::ITexture* CreateDownTexture_( video::IVideoDriver* driver, video::ITexture* ptx );
+		video::ITexture* texture_;
+		video::ITexture* downTexture_;
 	};
 
 	CNrp2DPictureFlow();
