@@ -18,6 +18,7 @@
 
 #include "IniFile.h"
 #include "INrpObject.h"
+#include "NrpTranslate.h"
 
 namespace nrp
 {
@@ -56,6 +57,7 @@ OPTION_NAME PRICEINDAY( "priceInDay" );
 OPTION_NAME GAMENAME( "gameName" );
 OPTION_NAME FINISHED( "finished" );
 OPTION_NAME FAMOUS( "famous" );
+OPTION_NAME GENRETECH( "genreTech" );
 
 #define CHECK_VALCLASS_TYPE( bclass )\
 	if( type_ != typeid( bclass ).name() ) {\
@@ -84,7 +86,7 @@ public:
 	CNrpProperty( ValClass pValue )
 	{
 		type_ = typeid( ValClass ).name();
-		value_ = pValue;
+		SetValue( pValue );
 	}
 
 	virtual ~CNrpProperty() 
@@ -293,7 +295,7 @@ public:
 			else if( type == "bool" )
 				CreateValue<bool>( name, valuel == "true" );
 			else if( type == "string" )
-				CreateValue<std::string>( name, valuel );
+				CreateValue<std::string>( name, translate::GetTranslate( valuel.c_str() ) );
 			else if( type == "time" )
 				CreateValue<SYSTEMTIME>( name, StrToTime( valuel.c_str()) );
 

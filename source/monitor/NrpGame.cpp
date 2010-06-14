@@ -5,6 +5,8 @@
 #include "NrpGameEngine.h"
 #include "NrpTechnology.h"
 #include "NrpGameBox.h"
+#include "NrpGameImageList.h"
+#include "NrpApplication.h"
 
 #include <io.h>
 #include <errno.h>
@@ -56,6 +58,11 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<PNrpGameBox>( GBOX, NULL );
 	CreateValue<float>( FAMOUS, 0 );
 	CreateValue<bool>( GAMEISSALING, false );
+	CreateValue<std::string>( IMAGENAME, "" );
+	CreateValue<CNrpGameImageList*>( GAMEIMAGELIST, NULL );
+	CreateValue<std::string>( VIEWIMAGE, "" );
+	CreateValue<std::string>( GAMERETAILER, "" );
+	CreateValue<int>( PLATFORMNUMBER, 0 );
 }
 
 CNrpGame::CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany )
@@ -70,6 +77,7 @@ CNrpGame::CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany )
 	SetValue<int>( LOCALIZATION, ptrProject->GetValue<PNrpTechnology>( LOCALIZATION )->GetValue<int>( QUALITY ) );
 	SetValue<int>( CROSSPLATFORMCODE, ptrProject->GetValue<PNrpTechnology>( CROSSPLATFORMCODE )->GetValue<int>( QUALITY ) );
 	SetValue<float>( FAMOUS, ptrProject->GetValue<float>( FAMOUS ) );
+	SetValue<int>( PLATFORMNUMBER, ptrProject->GetValue<int>( PLATFORMNUMBER ) );
 
 	INrpConfig* component = ptrProject->GetValue<PNrpGame>( PREV_GAME );
 	if( component ) SetValue<std::string>( PREV_GAME, component->GetValue<std::string>( NAME ) ); 
@@ -107,6 +115,10 @@ CNrpGame::CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany )
 			AddValue<int>( GENRE_MODULE_NUMBER, 1 );
 		}
 	}
+
+	SetValue<std::string>( IMAGENAME, CNrpApplication::Instance().GetFreeInternalName( this ) );
+	CNrpGameImageList* pgList = CNrpApplication::Instance().GetGameImageList( GetValue<std::string>( IMAGENAME ) );
+	SetValue<CNrpGameImageList*>( GAMEIMAGELIST, new CNrpGameImageList( *pgList ) );
 }
 
 CNrpGame::~CNrpGame(void)
@@ -128,6 +140,10 @@ void CNrpGame::Save( std::string saveFolder )
 	PNrpGameBox box = GetValue<PNrpGameBox>( GBOX );
 	if( box )
 		box->Save( PROPERTIES, localFolder + "box.ini" );
+
+	CNrpGameImageList* pgList = GetValue<CNrpGameImageList*>( GAMEIMAGELIST );
+	if( pgList )
+		pgList->Save( localFolder+"/imageList.ini" );
 }
 
 void CNrpGame::Load( std::string loadFolder )
@@ -144,6 +160,14 @@ void CNrpGame::Load( std::string loadFolder )
 		PNrpGameBox box = new CNrpGameBox( this );
 		box->Load( PROPERTIES, boxIni );
 		SetValue<PNrpGameBox>( GBOX, box );
+	}
+
+	std::string imageListIni = loadFolder + "imageList.ini";
+	if( _access( imageListIni.c_str(), 0 ) == 0 )
+	{
+		CNrpGameImageList* pList = new CNrpGameImageList( "" );
+		pList->Load( imageListIni );
+		SetValue<CNrpGameImageList*>( GAMEIMAGELIST, pList );
 	}
 }
 

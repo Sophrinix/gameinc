@@ -27,6 +27,10 @@ OPTION_NAME STARTADVFUNC( "startAdvFunc" );
 OPTION_NAME CURRENTADVFUNC( "currentAdvFunc" );
 OPTION_NAME GBOX( "box" );
 OPTION_NAME GAMEISSALING( "gameIsSaling" );
+OPTION_NAME IMAGENAME( "imageName" );
+OPTION_NAME GAMEIMAGELIST( "gameImageList" );
+OPTION_NAME VIEWIMAGE( "viewImage" );
+OPTION_NAME GAMERETAILER( "gameRetailer" );
 
 class CNrpGame : public INrpConfig
 {
