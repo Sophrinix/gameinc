@@ -45,6 +45,7 @@ private:
 	bool InitWater_();					//добавление сцены воды
 	void GetNodeAndIntersectionFromCursor_( scene::ISceneNode*& node, core::vector3df& point, bool &doubleClick );
 	void RenderScene_();
+	bool IsObjectChildOfScene_( scene::ISceneNode* node );
 
 	std::map< core::stringc, bool > options_;
 public:

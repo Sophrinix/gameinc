@@ -85,29 +85,39 @@ void CNrpPlant::AddWork( CNrpPlantWork* work )
 	SetValue<int>( WORKNUMBER, works_.size() );
 }
 
+//начало нового дня на фабрике
 void CNrpPlant::BeginNewDay()
 {
+	//обработаем все задания по дискам на сегодня
 	for( int k=0; k < (int)works_.size(); k++ )
 	{
 		 works_[ k ]->BeginNewDay();
 		 if( works_[ k ]->GetValue<bool>( FINISHED ) )
-		 { 
+		 { //если это задание закончилось
 			 delete works_[ k ];
 			 works_.erase( works_.begin() + k );
+			 //удалим его из списка
 			 k--;
 		 }
 	}
+	//обновим значение текущих заданий
+	SetValue<int>( WORKNUMBER, works_.size() );
 
+	//обработаем зажпния по рекламе игр
 	for( int k=0; k < (int)reklameWorks_.size(); k++ )
 	{
 		reklameWorks_[ k ]->BeginNewDay();
+		//не кончился ли срок рекламирования товара
 		if( reklameWorks_[ k ]->GetValue<bool>( FINISHED ) )
 		{
 			delete reklameWorks_[ k ];
-			works_.erase( works_.begin() + k );
+			//если кончился, то надо удалить его из списка активных заданий
+			reklameWorks_.erase( reklameWorks_.begin() + k );
 			k--;
 		}
 	}
+	//и обновить число текущих рекламных кампаний
+	SetValue<int>( REKLAMENUMBER, reklameWorks_.size() );
 }
 
 CNrpReklameWork* CNrpPlant::CreateReklame( std::string type, std::string gameName )

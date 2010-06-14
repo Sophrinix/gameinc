@@ -218,7 +218,7 @@ void CNrpMainScene::OnUpdate()
 			//отладочная вещь для просмотра выделенных объектов
 			try
 			{
-				if( selectedNode_ != NULL )
+				if( selectedNode_ != NULL && IsObjectChildOfScene_( selectedNode_ ) )
 				{				
 					video::SMaterial mat;
 					mat.Thickness = 2;
@@ -233,6 +233,8 @@ void CNrpMainScene::OnUpdate()
 					mat.Thickness = 1;
 					driver->setMaterial( mat );
 				}
+				else
+					selectedNode_ = NULL;
 			}
 			catch(...)
 			{
@@ -259,6 +261,19 @@ void CNrpMainScene::OnUpdate()
 	{
 		//ErrLog(gfx) << all << "Ошибка основной сцены" << term;
 	}
+}
+
+bool CNrpMainScene::IsObjectChildOfScene_( scene::ISceneNode* node )
+{
+	const core::list< scene::ISceneNode* >& childs = CNrpEngine::Instance().GetSceneManager()->
+																			getRootSceneNode()->getChildren();
+
+	core::list< scene::ISceneNode* >::ConstIterator pIter = childs.begin();
+	for(; pIter != childs.end(); pIter++ )
+	if( *pIter == node )
+		return true;
+
+	return false;
 }
 
 void CNrpMainScene::OnLeave()
