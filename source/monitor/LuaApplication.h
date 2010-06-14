@@ -57,6 +57,9 @@ public:
 	int GetMarketGamesNumber( lua_State* L );
 	int GetMarketGame( lua_State* L );
 	int AddGameToMarket( lua_State* L );
+	int ClearImageList( lua_State* L );
+	int LoadImageList( lua_State* L );
+	int GetGameTime( lua_State* L );
 
 	static const char* StaticGetLuaName() { return CLASS_CLUAPPLICATION.c_str(); }
 private:

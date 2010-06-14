@@ -6,6 +6,7 @@
 #include "NrpGameBox.h"
 #include "NrpTechnology.h"
 #include "NrpGameBox.h"
+#include "NrpGameImageList.h"
 
 using namespace irr;
 
@@ -14,7 +15,7 @@ namespace nrp
 
 Luna< CLuaGame >::RegType CLuaGame::methods[] =			//реализуемы методы
 {
-	LUNA_ILUAOBJECT_HEADER( CLuaGame ),
+	LUNA_ILUABASEPROJECT_HEADER( CLuaGame ),
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaGame, HaveBox ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetName ),
@@ -27,33 +28,27 @@ Luna< CLuaGame >::RegType CLuaGame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxLevel ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxAddon ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, IsSaling ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImage ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImageNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshot ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshotNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, SetViewImage ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetViewImage ),
 	{0,0}
 };
 
-CLuaGame::CLuaGame(lua_State *L) : ILuaObject(L, "CLuaGame" )							//конструктор
+CLuaGame::CLuaGame(lua_State *L) : ILuaBaseProject(L, CLASS_LUAGAME )							//конструктор
 {}
 
 int CLuaGame::HaveBox( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:HaveBox not need any parameter" );
-
-	bool haveBox = false;
-	IF_OBJECT_NOT_NULL_THEN	haveBox = object_->GetValue<PNrpGameBox>( GBOX ) != NULL;
-
-	lua_pushboolean( L, haveBox );
+	lua_pushboolean( L, GetParam_<PNrpGameBox>( L, "HaveBox", GBOX, NULL ) != NULL );
 	return 1;	
 }
 
 int CLuaGame::GetName( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:HaveBox not need any parameter" );
-
-	std::string name = "error";
-	IF_OBJECT_NOT_NULL_THEN	name = object_->GetValue<std::string>( NAME );
-
-	lua_pushstring( L, name.c_str() );
+	lua_pushstring( L, GetParam_<std::string>( L, "GetName", NAME, "undeclared param" ).c_str() );
 	return 1;	
 }
 
@@ -196,13 +191,82 @@ int CLuaGame::GetBoxAddon( lua_State* L )
 
 int CLuaGame::IsSaling( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:IsSaling not need any parameter" );
-
-	bool isSaling = true;
-	IF_OBJECT_NOT_NULL_THEN	isSaling = object_->GetValue<bool>( GAMEISSALING );
-
-	lua_pushboolean( L, isSaling );
+	lua_pushboolean( L, GetParam_<bool>( L, "ISSALING", GAMEISSALING, true ) );
 	return 1;		
+}
+
+int CLuaGame::GetImagePath_( lua_State* L, std::string funcName, std::string nameParam )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, ("Function CLuaGame:" + funcName + " need index parameter").c_str() );
+
+	int index = lua_tointeger( L, 2 );
+	std::string pathTexture = "";
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		CNrpGameImageList* imageList = object_->GetValue<CNrpGameImageList*>( GAMEIMAGELIST );
+		if( imageList )
+		{
+			int maxImage = imageList->GetValue<int>( nameParam );
+			if( maxImage > 0)
+			{
+				std::vector< std::string >& pvm = (nameParam == IMAGESBOXNUMBER) 
+													? imageList->imagesBoxPath 
+													: imageList->imagesPath;
+				pathTexture = pvm[ index < 0 ? (rand() % maxImage) : index ];
+			}
+		}
+	}
+
+	lua_pushstring( L, pathTexture.c_str() );
+	return 1;		
+}
+
+int CLuaGame::GetBoxImage( lua_State* L )
+{
+	return GetImagePath_( L, "GetBoxImage", IMAGESBOXNUMBER );
+}
+
+template< class R > R CLuaGame::GetImageLisParam_( lua_State* L, std::string funcName, std::string name, R defValue )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, ("Function CLuaGame:" + funcName + " not need any parameters").c_str() );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		CNrpGameImageList* imageList = object_->GetValue<CNrpGameImageList*>( GAMEIMAGELIST );
+		if( imageList )
+			defValue = imageList->GetValue<int>( name );
+	}
+
+	return defValue;
+}
+
+int CLuaGame::GetBoxImageNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetImageLisParam_<int>( L, "GetBoxImageNumber", IMAGESBOXNUMBER, 0 ) );
+	return 1;		
+}
+
+int CLuaGame::GetScreenshotNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetImageLisParam_<int>( L, "GetScreenshotNumber", IMAGESNUMBER, 0 ) ); 
+	return 1;
+}
+
+int CLuaGame::GetScreenshot( lua_State* L )
+{
+	return GetImagePath_( L, "GetScreenShot", IMAGESNUMBER );
+}
+
+int CLuaGame::SetViewImage( lua_State* L )
+{
+	return SetParam_( L, "SetViewImage", VIEWIMAGE );
+}
+
+int CLuaGame::GetViewImage( lua_State* L )
+{
+	lua_pushstring( L, GetParam_<std::string>( L, "GetViewImage", VIEWIMAGE, "undeclared param" ).c_str() );
+	return 1;	
 }
 }//namespace nrp

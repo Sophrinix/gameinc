@@ -68,18 +68,17 @@ int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функ
 int CLuaButton::SetImage_( lua_State* L, std::string funcName, TYPE_IMAGE typeimg )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 6, 6, ("Function CLuaButton:" + funcName + " need 5 parameter").c_str() ); //начинаем со второго параметра, ибо первым идет
-	//таблица с функциями	
+	//начинаем со второго параметра, ибо первым идет таблица с функциями	
+	luaL_argcheck(L, argc == 6, 6, ("Function CLuaButton:" + funcName + " need string, rectangle parameter").c_str() ); 
 
+	core::recti rectangle;
 	const char* texturepath = lua_tostring( L, 6 );
 	assert( texturepath != NULL );
-	core::recti rectangle;
-	rectangle.UpperLeftCorner.X = lua_tointeger( L, 2 );
-	rectangle.UpperLeftCorner.Y = lua_tointeger( L, 3 );
-	rectangle.LowerRightCorner.X = lua_tointeger( L, 4 );
-	rectangle.LowerRightCorner.Y = lua_tointeger( L, 5 );
-
 	video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath );
+
+	rectangle = ReadRect_( L, 2 );
+	if( rectangle == core::recti( 0, 0, 0, 0) && ( txs != NULL ) )
+		rectangle = core::recti( 0, 0, txs->getSize().Width, txs->getSize().Height );
 
 	IF_OBJECT_NOT_NULL_THEN
 		switch( typeimg ) 

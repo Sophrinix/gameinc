@@ -9,9 +9,11 @@
 #include "NrpGameProject.h"
 #include "NrpTechnology.h"
 #include "NrpDiskMachine.h"
+#include "NrpGameImageList.h"
 
 #include <assert.h>
 #include <irrlicht.h>
+#include <io.h>
 using namespace irr;
 
 namespace nrp
@@ -56,6 +58,9 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetMarketGamesNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetMarketGame ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameToMarket ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, ClearImageList ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadImageList ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameTime ),
 	{0,0}
 };
 
@@ -535,5 +540,55 @@ int CLuaApplication::AddGameToMarket( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	object_->AddGameToMarket( game );
 
 	return 1;	
+}
+
+int CLuaApplication::ClearImageList( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:ClearImageList not need any parameter" );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->ClearImageList();
+
+	return 1;	
+}
+
+int CLuaApplication::LoadImageList( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadImageList need string parameter" );
+
+	const char* imageListName = lua_tostring( L, 2 );
+	assert( imageListName != NULL );
+	if( imageListName == NULL )
+		return 1;
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( _access( imageListName, 0 ) == 0 )
+		{
+			CNrpGameImageList* pList = new CNrpGameImageList("tmp");
+			pList->Load( std::string(imageListName) + "/item.desc" );
+			object_->AddGameImageList( pList );
+		}
+	}
+
+	return 1;		
+}
+
+int CLuaApplication::GetGameTime( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetGameTime not need any parameter" );
+
+	SYSTEMTIME time;
+	IF_OBJECT_NOT_NULL_THEN time = object_->GetValue<SYSTEMTIME>( CURRENTTIME );
+
+	lua_pushinteger( L, time.wYear );
+	lua_pushinteger( L, time.wMonth );
+	lua_pushinteger( L, time.wDay );
+	lua_pushinteger( L, time.wMonth );
+	lua_pushinteger( L, time.wMinute );
+
+	return 5;		
 }
 }//namespace nrp 
