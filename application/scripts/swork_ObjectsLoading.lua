@@ -2,6 +2,7 @@ local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 
 function ApplicationLoadCityScene()
+	sceneManager:SetSelectedNode( nil )
 	--guienv:FadeAction( 3000, false )
 	sceneManager:RemoveAllNodes()
 	
@@ -140,6 +141,7 @@ end
 function ApplicationLoadOfficeScene()
 	sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
+	ApplicationAddCityCamera()
 	sceneManager:LoadIrrlichtScene( "scene/nrpOfficeScene.irr" )
 	
 	local newProj = CLuaSceneNode( sceneManager:GetSceneNodeByName( "createNewProjectNode" ) )
@@ -168,6 +170,7 @@ end
 function ApplicationLoadPlantScene()
 	sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
+	ApplicationAddCityCamera()
 	sceneManager:LoadIrrlichtScene( "scene/nrpPlantScene.irr" )
 
 	local createBoxNode = CLuaSceneNode( sceneManager:GetSceneNodeByName( "gameBoxManagerNode" ) )
@@ -190,6 +193,7 @@ end
 function ApplicationLoadUniverScene()
 	sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
+	ApplicationAddCityCamera()
 	sceneManager:LoadIrrlichtScene( "scene/nrpUniverScene.irr" )
 	
 	local stuffNode = CLuaSceneNode( sceneManager:GetSceneNodeByName( "stuffNode" ) )

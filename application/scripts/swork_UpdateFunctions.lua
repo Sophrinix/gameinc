@@ -4,6 +4,7 @@ local fileIniPlatforms = "xtras/platforms.list"
 local fileIniAddons	= "xtras/gameboxaddons.list"
 local fileDiskMachines = "xtras/diskmachines.list"
 local fileRetailers = "xtras/retailers.list"
+local fileImages = "xtras/screenshots.list"
 
 function ApplicationUpdateGamePlatforms( ptr )
 	
@@ -119,5 +120,20 @@ function ApplicationUpdateRetailers( ptr )
 		end
 		
 		retailer:Remove()
+	end
+end
+
+function ApplicationUpdateScreenshots( ptr )
+	local iniFile = CLuaIniFile( nil, fileImages )
+
+	local year = applic:GetGameTime()
+	local descNumber = iniFile:ReadInteger( year, "DescriptionNumber", 0 )
+    local descIniFile = ""
+    applic:ClearImageList()
+	
+	LogScript( "Open config file "..fileImages.." with DescriptionNumber="..descNumber )
+	for i=1, descNumber do
+		descIniFile = iniFile:ReadString( year, "description_"..(i-1), "" ) 
+		applic:LoadImageList( descIniFile )	
 	end
 end

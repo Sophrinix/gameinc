@@ -1,11 +1,11 @@
-local app = CLuaApplication( NrpGetApplication() )
+local applic = CLuaApplication( NrpGetApplication() )
 local company = CLuaCompany( nil )
 local user = CLuaUser( nil )
 
 function sloginResetDataForNewGame()
-	app:ResetData()
-	company:Create( app:GetCurrentProfileCompany() ) 
-	user:Create( "RealPlayer", app:GetCurrentProfile() )
+	applic:ResetData()
+	company:Create( applic:GetCurrentProfileCompany() ) 
+	user:Create( "RealPlayer", applic:GetCurrentProfile() )
 end
 
 function sloginAddStartCompanyTechnology()
@@ -21,25 +21,17 @@ function sloginAddStartCompanyTechnology()
 end
 
 function sloginAddStartPlayerDef()
-
 	company:SetCEO( user:Self() )
-	
 end
 
 function sloginAddStartPublicTechnology()
 
 	local tech = CLuaTech( nil )
 	tech:Create( PT_GENRE )
-	tech:SetTechType( GT_SKILL )
-	tech:SetName( "Игра на реакцию" )
-	tech:SetBaseCode( 0.3 )			--depended from engine code volume
-	tech:SetAddingEngineCode( 0.3 )  --depended from tech code volume
-	tech:SetEngineTechRequire( GT_SKILL, 10 )
-	tech:SetEmployerSkillRequire( SKL_VIDEO_TECH, 10 )
-	tech:SetEmployerSkillRequire( SKL_CODING, 10 )
+	tech:Load( "xtras/technology/genre_skill/item.tech" )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология GT_SKILL")
-	app:AddPublicTechnology( tech:Self() )
+	applic:AddPublicTechnology( tech:Self() )
 	
 	local sndTech = CLuaTech( nil )
 	sndTech:Create( PT_SOUNDTECH )
@@ -50,7 +42,7 @@ function sloginAddStartPublicTechnology()
 	sndTech:SetEmployerSkillRequire( SKL_SOUND, 10 )
 
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология SND_SPEAKER_SOUND")
-	app:AddPublicTechnology( sndTech:Self() )
+	applic:AddPublicTechnology( sndTech:Self() )
 	
 	local videoTech = CLuaTech( nil )
 	videoTech:Create( PT_VIDEOTECH )
@@ -62,7 +54,7 @@ function sloginAddStartPublicTechnology()
 	videoTech:SetEmployerSkillRequire( SKL_VIDEO_TECH, 10 )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VIDEO_TEXT_OUTPUT")
-	app:AddPublicTechnology( videoTech:Self() )
+	applic:AddPublicTechnology( videoTech:Self() )
 	
 	local advTech = CLuaTech( nil )
 	advTech:Create( PT_ADVTECH )
@@ -73,7 +65,7 @@ function sloginAddStartPublicTechnology()
 	advTech:SetEmployerSkillRequire( SKL_CODING, 5 )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология ADV_MEMORY")
-	app:AddPublicTechnology( advTech:Self() )
+	applic:AddPublicTechnology( advTech:Self() )
 	
 	advTech:Create( PT_ADVTECH )
 	advTech:SetTechType( ADV_JOYSTIK )
@@ -83,7 +75,7 @@ function sloginAddStartPublicTechnology()
 	advTech:SetEmployerSkillRequire( SKL_CODING, 5 )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология ADV_MEMORY")
-	app:AddPublicTechnology( advTech:Self() )
+	applic:AddPublicTechnology( advTech:Self() )
 	
 	local scriptTech = CLuaTech( nil )
 	scriptTech:Create( PT_SCRIPTS )
@@ -94,7 +86,7 @@ function sloginAddStartPublicTechnology()
 	scriptTech:SetEmployerSkillRequire( SKL_CODING, 10 )
 
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология SCRLVL_SIMPLE")
-	app:AddPublicTechnology( scriptTech:Self() )
+	applic:AddPublicTechnology( scriptTech:Self() )
 	
 	local mgTech = CLuaTech( nil )
 	mgTech:Create( PT_MINIGAME )
@@ -105,7 +97,7 @@ function sloginAddStartPublicTechnology()
 	mgTech:SetEmployerSkillRequire( SKL_CODING, 10 )
 
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология MNGM_TEXTQUEST")
-	app:AddPublicTechnology( mgTech:Self() )
+	applic:AddPublicTechnology( mgTech:Self() )
 	
 	local phTech = CLuaTech( nil )
 	phTech:Create( PT_PHYSIC )
@@ -116,12 +108,12 @@ function sloginAddStartPublicTechnology()
 	phTech:SetEmployerSkillRequire( SKL_CODING, 10 )
 
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология SCRLVL_SIMPLE")
-	app:AddPublicTechnology( phTech:Self() )
+	applic:AddPublicTechnology( phTech:Self() )
 	
 end
 
 function sloginAddStartScenarioContentTechnology( ptr )
-	local vScn = CLuaTech( app:CreateTechnology( PT_SCENARIOQUALITY ) )
+	local vScn = CLuaTech( applic:CreateTechnology( PT_SCENARIOQUALITY ) )
 
 	vScn:SetTechType( SCNQ_SELFWRITE )
 	vScn:SetName( "Написать самому" )
@@ -129,11 +121,11 @@ function sloginAddStartScenarioContentTechnology( ptr )
 	vScn:SetQuality( 10 )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VSQ_SELFWRITE")
-	app:AddPublicTechnology( vScn:Self() )
+	applic:AddPublicTechnology( vScn:Self() )
 end
 
 function sloginAddStartSoundContentTechnology( ptr )
-	local vSn = CLuaTech( app:CreateTechnology( PT_SOUNDQUALITY ) )
+	local vSn = CLuaTech( applic:CreateTechnology( PT_SOUNDQUALITY ) )
 
 	vSn:SetTechType( VSQ_SELFCOMPOSE )
 	vSn:SetName( "Писать ноты" )
@@ -141,11 +133,11 @@ function sloginAddStartSoundContentTechnology( ptr )
 	vSn:SetEmployerSkillRequire( SKL_SOUND, 10 )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VSQ_SELFCOMPOSE")
-	app:AddPublicTechnology( vSn:Self() )
+	applic:AddPublicTechnology( vSn:Self() )
 end
 
 function sloginAddStartVideoContentTechnology( ptr )
-	local vCn = CLuaTech( app:CreateTechnology( PT_VIDEOQUALITY ) )
+	local vCn = CLuaTech( applic:CreateTechnology( PT_VIDEOQUALITY ) )
 
 	vCn:SetTechType( VDQ_SELFRENDER )
 	vCn:SetName( "Рисовать самим" )
@@ -153,5 +145,5 @@ function sloginAddStartVideoContentTechnology( ptr )
 	vCn:SetEmployerSkillRequire( SKL_DRAWING, 10 )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VDQ_SELFRENDER")
-	app:AddPublicTechnology( vCn:Self() )
+	applic:AddPublicTechnology( vCn:Self() )
 end
