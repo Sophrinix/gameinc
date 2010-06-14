@@ -31,5 +31,7 @@ bool CLuaSceneNode::IsChildOfCurrentScene_()
 		if( *pIter == object_ )
 			return true;
 
-	return false;}
+	return false;
+}
+
 }//namespace nrp

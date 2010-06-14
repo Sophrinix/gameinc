@@ -32,6 +32,8 @@ public:
 	int Create( lua_State* L );
 	int IsLoaded( lua_State* L );
 	int ValidTime( lua_State* L );
+	int SetTexture( lua_State* L );
+	int GetTexture( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaTech"; }	
 };

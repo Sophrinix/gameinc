@@ -9,19 +9,6 @@
 
 #define NO_POSTFIX
 #define NO_ASSERT
-#define GETTER_FUNCTION( name, lua_pushfunc, typen, paramName, defValue, postFix )\
-	int CLuaTechnology::name( lua_State* L ) { lua_pushfunc( L, GetParam_<typen>( L, #name, paramName, defValue )postFix ); return 1; }
-
-#define SETTER_FUNCTION( name, READTYPE, lua_tofunc, assertcode, OPTIONTYPE, paramName )\
-	int CLuaTechnology::name( lua_State* L )\
-	{	int argc = lua_gettop( L );\
-		std::string funcName = #name;\
-		luaL_argcheck( L, argc == 2, 2, ("Function CLuaTechnology:" + funcName + "need int parameter").c_str() );\
-		READTYPE valuel = (READTYPE)lua_tofunc( L, 2 );\
-		assertcode;\
-		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<OPTIONTYPE>( paramName, OPTIONTYPE(valuel) );\
-		return 1;\
-	}
 
 namespace nrp
 {
@@ -46,18 +33,44 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, IsLoaded ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, ValidTime ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTexture ),
 	{0,0}
 };
 
 CLuaTechnology::CLuaTechnology(lua_State *L) : ILuaProject( L, "CLuaTech" )							//конструктор
 {}
 
-GETTER_FUNCTION( GetTechGroup, lua_pushinteger, int, TECHGROUP, 0, NO_POSTFIX  )
+int CLuaTechnology::GetTechGroup( lua_State* L ) 
+{ 
+	lua_pushinteger( L, GetParam_<int>( L, "GetTechGroup", TECHGROUP, 0 ) ); 
+	return 1; 
+}
 
-SETTER_FUNCTION( SetBaseCode, float, lua_tonumber, NO_ASSERT, float, BASE_CODE )
-SETTER_FUNCTION( SetTechType, int, lua_tointeger, NO_ASSERT, int, TECHTYPE )
-SETTER_FUNCTION( SetAddingEngineCode, float, lua_tonumber, NO_ASSERT, float, ENGINE_CODE )
-SETTER_FUNCTION( SetQuality, int, lua_tonumber, NO_ASSERT, int, QUALITY )
+int CLuaTechnology::SetBaseCode( lua_State* L )
+{
+	return SetParam_<float, lua_Number>( L, "SetBaseCode", BASE_CODE, lua_tonumber );
+}
+
+int CLuaTechnology::SetTechType( lua_State* L )
+{
+	return SetParam_<int, lua_Integer>( L, "SetTechType", TECHTYPE, lua_tointeger );
+}
+
+int CLuaTechnology::SetAddingEngineCode( lua_State* L )
+{
+	return SetParam_<float, lua_Number>( L, "SetAddingEngineCode", ENGINE_CODE, lua_tonumber );
+}
+
+int CLuaTechnology::SetQuality( lua_State* L )
+{
+	return SetParam_<int, lua_Integer>( L, "SetQuality", QUALITY, lua_tointeger );
+}
+
+int CLuaTechnology::SetTexture( lua_State* L)
+{
+	return SetParam_( L, "SetTexture", TEXTURENORMAL );
+}
 
 int CLuaTechnology::GetOptionAsInt( lua_State* L )
 {
@@ -137,7 +150,7 @@ int CLuaTechnology::GetEmployerPosibility( lua_State* L )
 int CLuaTechnology::Remove( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::GetEmployerPosibility not need parameter");
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology:Remove not need parameter");
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
@@ -162,14 +175,8 @@ int CLuaTechnology::Load( lua_State* L )
 
 int CLuaTechnology::GetLevel( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::GetLevel not need parameter");
-
-	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( LEVEL );
-
-	lua_pushinteger( L, result );
-	return 1;		
+	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) );
+	return 1;
 }
 
 int CLuaTechnology::ValidTime( lua_State* L )
@@ -202,4 +209,9 @@ int CLuaTechnology::IsLoaded( lua_State* L )
 	return 1;			
 }
 
+int CLuaTechnology::GetTexture( lua_State* L )
+{
+	lua_pushstring( L, GetParam_<std::string>( L, "GetTexture", TEXTURENORMAL, "" ).c_str() );
+	return 1;
+}
 }//namespace nrp
