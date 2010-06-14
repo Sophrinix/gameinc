@@ -78,6 +78,7 @@ local function ShowAvaibleGenreModules( tab )
 			linkModule:SetData( tech:Self() )
 			linkModule:SetEnabled( not project:IsGenreIncluded( tech:GetTechType() ) )
 			linkModule:SetDraggable( true )
+			linkModule:SetTexture( tech:GetTexture() )
 			linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
 			showedTech = showedTech + 1
 		end
