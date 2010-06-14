@@ -44,6 +44,9 @@ void CNrpTechnology::InitializeOptions_()
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
 	CreateValue<float>( PRICE, 0 );
+	CreateValue<std::string>( TEXTURENORMAL, "" );
+	CreateValue<std::string>( TEXTUREHOVER, "" );
+	CreateValue<std::string>( DESCRIPTIONPATH, "" );
 }
 
 CNrpTechnology::CNrpTechnology( CNrpTechnology* pTech, CNrpCompany* ptrCmp ) 

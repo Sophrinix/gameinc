@@ -16,6 +16,9 @@ OPTION_NAME ERRORNUMBER( "moduleErrorNumber");
 OPTION_NAME HAVELIDER( "haveLider" );
 OPTION_NAME CODEPASSED( "codePassed" );
 OPTION_NAME PRICE( "price" );
+OPTION_NAME TEXTURENORMAL( "textureNormal" );
+OPTION_NAME TEXTUREHOVER( "textureHover" );
+OPTION_NAME DESCRIPTIONPATH( "descriptionPath" );
 
 class CNrpTechnology : public INrpProject
 {
