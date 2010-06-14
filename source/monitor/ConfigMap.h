@@ -25,8 +25,9 @@ using namespace irr;
 class CConfigMap
 {
 public:
-    core::stringc getConfig( const core::stringc& name );					//получение всей строки конфига 
-																			//для заданного элемента
+	/*! получение всей строки конфига для заданного элемента
+	 */ 
+    core::stringc getConfig( const core::stringc& name );					
 	/********************* 
 	 функции нигде не используются 
 	 были нужны при отладке, отвечают за выдачу строки в виде другого значения 
@@ -38,7 +39,8 @@ public:
 	bool hasConfig( const core::stringc& name );
 	/***************************************************/
 
-    void setConfig( const core::stringc& name, const core::stringc& value );	//размещение нового значения в карте конфига
+	//*! размещение нового значения в карте конфига
+    void setConfig( const core::stringc& name, const core::stringc& value );	
 
 private:
     core::map<core::stringc,core::stringc> Map;

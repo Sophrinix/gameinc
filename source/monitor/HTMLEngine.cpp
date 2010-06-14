@@ -4,6 +4,7 @@
 #include "nrpEngine.h"
 #include <cassert>
 #include <string>
+//*! создаем один экземпляр класса для работы
 static nrp::HTMLEngine* HTMLRenderer = 0;
 
 const std::string CARET_RESPONSE( "\n" );
@@ -23,16 +24,21 @@ HTMLEngine& HTMLEngine::Instance()
 
 HTMLEngine::HTMLEngine()
 {
+	//критическая секция нужна для предотвращения споров за текстуру
 	InitializeCriticalSectionAndSpinCount(&rasterCs_, 1000);
 
 	irr::video::IVideoDriver *driver = CNrpEngine::Instance().GetVideoDriver();
+	//мозлибе для работы нужно знать, где хранятся конфииг веб-движка
 	std::string profileBaseDir = std::string(__argv[0]).substr(0, std::string( __argv[0]).find_last_of("\\/"));
 	HWND w = (HWND)driver->getExposedVideoData().OpenGLWin32.HWnd;
 	llmozlib_ = LLMozLib::getInstance();
+	//стартуем веб-движок
 	bool k = llmozlib_->init(profileBaseDir, profileBaseDir, profileBaseDir, reinterpret_cast<void*>(w));	
 
 	browserWindow_ = NULL;
 	dataUpdated_ = false;
+	//время последнего обращения надо для уменьшения нагрузки на проц, 
+	//чтобы не копировать страницу пять раз впустую
 	lastTimeUpdate_ = GetTickCount();
 }
 
@@ -43,8 +49,10 @@ HTMLEngine::~HTMLEngine()
 	llmozlib_->reset();
 }
 
+//*! создание окна в котором будет отображаться срендериная текстурка
 gui::CNrpBrowserWindow& HTMLEngine::GetBrowserWindow(irr::core::dimension2du size)
 {
+    //ленивое создание окна, создаем когда будет первое обращение
 	if( browserWindow_ == NULL )
 	{
 		browserWindowId_ = llmozlib_->createBrowserWindow(size.Width, size.Height);

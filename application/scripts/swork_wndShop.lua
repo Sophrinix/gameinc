@@ -20,18 +20,23 @@ local windowAnonce = CLuaWindow( nil )
 local width = 800
 local height = 600
 
-function sworkCreateGameInSaleWindow( ptr )
-	windowShop:SetObject( guienv:AddWindow( "", 0, 0, width, height, WINDOW_SHOP_ID, guienv:GetRootGUIElement() ) )
-	
-	--добавим окно с листбоксом
-	--в листбоксе поместим список игр, которые щас в продаже
-	listboxGames:SetObject( guienv:AddListBox( 20, 20, width / 2 - 10, height - 20, -1, windowShop:Self() ) )
+local function localFillListboxGame()
+	listboxGames:Clear()
 	
 	local game = CLuaGame( nil )
 	for i=1, applic:GetMarketGamesNumber() do
 		game:SetObject( applic:GetMarketGame( i-1 ) )
 		listboxGames:AddItem( game:GetName(), game:Self() )
 	end
+end
+
+function sworkCreateGameInSaleWindow( ptr )
+	windowShop:SetObject( guienv:AddWindow( "", 0, 0, width, height, WINDOW_SHOP_ID, guienv:GetRootGUIElement() ) )
+	
+	--добавим окно с листбоксом
+	--в листбоксе поместим список игр, которые щас в продаже
+	listboxGames:SetObject( guienv:AddListBox( 20, 20, width / 2 - 10, height - 20, -1, windowShop:Self() ) ) 
+	localFillListboxGame()
 	
 	--расположим кнопку "Анонсировать игру", по которой можно поместить игру на рынок
 	buttonAnonceGame:SetObject( guienv:AddButton( width / 2, height -50, width - 20, height - 20, 
@@ -87,7 +92,7 @@ function sworkWindowShopAnonceGame( ptr )
 		local game = CLuaGame( company:GetGame( i-1 ) )
 		
 		if not game:IsSaling() then 
-			anoncePictureFlow:AddItem( nil, game:GetName(), game:Self() )
+			anoncePictureFlow:AddItem( game:GetViewImage(), game:GetName(), game:Self() )
 		end	
 	end
 	
@@ -101,7 +106,8 @@ end
 function sworkWindowShopStartGameSaling( ptr )
 	local game = anoncePictureFlow:GetSelectedObject()
 	
-	applic:AddMarketGame( game )
+	applic:AddGameToMarket( game )
+	localFillListboxGame()
 	sworkWindowShopCloseAnonceGame( ptr )	
 end
 
