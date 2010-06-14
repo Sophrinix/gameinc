@@ -16,6 +16,7 @@
 #include "NrpPlant.h"
 #include "NrpGameBox.h"
 #include "NrpRetailer.h"
+#include "NrpGameImageList.h"
 
 #include <io.h>
 #include <errno.h>
@@ -266,7 +267,7 @@ void CNrpApplication::SaveProfile()
 	std::string saveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "/";
 	std::string prevSaveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "Old/";
 
-	OpFileSystem::MoveDirectory( CNrpEngine::Instance().GetWindowHandle(), saveFolder, prevSaveFolder );
+	OpFileSystem::MoveDirectory( saveFolder, prevSaveFolder );
 	if( _access( saveFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( saveFolder.c_str(), NULL );
 
@@ -302,6 +303,24 @@ void CNrpApplication::SaveProfile()
 		(*tIter)->Save( saveFolderTech );
 		IniFile::Write( "technologies", "technology_" + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), profileIni );
 	}
+
+	std::string marketGamesIni = saveFolder + "marketGames.ini";
+	IniFile::Write( PROPERTIES, "GameNumber", (int)marketGames_.size(), marketGamesIni );
+	GAMES_LIST::iterator gameIter = marketGames_.begin();
+	for( int i=0; gameIter != marketGames_.end(); gameIter++, i++ )
+		IniFile::Write( PROPERTIES, "game_"+IntToStr( i ), (*gameIter)->GetValue<std::string>( NAME ), marketGamesIni );
+
+	std::string imageListIni = saveFolder + "imageList.ini";
+	GAMEIMAGES_MAP::iterator gameListIter = gameImages_.begin();
+	int gli = 0;
+	for( ; gameListIter != gameImages_.end(); gameListIter++ )
+		if( !gameListIter->second->GetValue<bool>( ISUSED ) )
+		{
+			IniFile::Write( "imageList", "imageList_" + IntToStr( gli ), 
+							gameListIter->second->GetValue<std::string>( NAME ), imageListIni );
+			gli++;
+		}
+	IniFile::Write( PROPERTIES, "ImageListNumber", gli, imageListIni );
 }
 
 void CNrpApplication::LoadProfile( std::string profileName, std::string companyName )
@@ -345,6 +364,43 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 		CNrpCompany* cmp = new CNrpCompany( name.c_str() );
 		companies_.push_back( cmp );
 		cmp->Load( saveFolderCompanies + name + "/" );
+	}
+
+	LoadMarketGames_( saveFolder + "marketGames.ini" );
+    LoadFreeImageLists_( saveFolder + "imageList.ini" );
+}
+
+void CNrpApplication::LoadMarketGames_( const std::string& fileName )
+{
+	size_t marketGamesNumber = IniFile::Read( PROPERTIES, "GameNumber", (int)0, fileName );
+
+	for( size_t i=0; i < marketGamesNumber; i++ )
+	{
+		std::string name = IniFile::Read( PROPERTIES,  "game_"+IntToStr( i ), std::string(""), fileName );
+		CNrpGame* game = GetGame( name );
+		if( game != NULL )
+			marketGames_.push_back( game );
+	}
+	SetValue<int>( MARKETGAMENUMBER, marketGames_.size() );
+}
+
+void CNrpApplication::LoadFreeImageLists_( const std::string& fileName )
+{
+	size_t imageListNumber = IniFile::Read( PROPERTIES, "ImageListNumber", (int)0, fileName );
+
+	if( _access( fileName.c_str(), 0 ) == 0 && imageListNumber > 0)
+	{
+		GAMEIMAGES_MAP::iterator pIter = gameImages_.begin();
+		for( ; pIter != gameImages_.end(); pIter++ )
+			 pIter->second->SetValue<bool>( ISUSED, true );
+
+		for( size_t i=0; i < imageListNumber; i++ )
+		{
+			std::string name = IniFile::Read( PROPERTIES,  "imageList_"+IntToStr( i ), std::string(""), fileName );
+			GAMEIMAGES_MAP::iterator findIter = gameImages_.find( name );
+			if( findIter != gameImages_.end() )
+				findIter->second->SetValue<bool>( ISUSED, false );
+		}
 	}
 }
 
@@ -414,7 +470,7 @@ int CNrpApplication::GetFreePlatformNumberForGame_( CNrpGame* game )
 {
 	int yearRaznost = GetValue<SYSTEMTIME>( CURRENTTIME ).wYear - 1980;
 
-	int summ = 500000;
+	int summ = 100000;
 	for( int k=0; k < yearRaznost; k++ )
 		 summ += summ * yearRaznost;
 
@@ -444,7 +500,7 @@ int CNrpApplication::GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp )
 
 	float authorFamous = 1;
 	authorFamous = game->GetAuthorFamous();
-	std::string retailerName = game->GetValue<PNrpGameBox>( GBOX )->GetValue<std::string>( GAMERETAILER );
+	std::string retailerName = game->GetValue<std::string>( GAMERETAILER );
 	PNrpRetailer retailer = GetRetailer( retailerName );
 
 	float retailerFamous = 1;
@@ -757,4 +813,58 @@ CNrpRetailer* CNrpApplication::GetRetailer( std::string name )
 {
 	return NULL;
 }
+
+//получение имени изображения с которым будет дальше связана игра
+std::string CNrpApplication::GetFreeInternalName( CNrpGame* game )
+{
+	std::vector< CNrpGameImageList* > thisYearAndGenreImgs;
+	GAMEIMAGES_MAP::iterator pIter = gameImages_.begin();
+	for( ; pIter != gameImages_.end(); pIter++ )
+		if( !pIter->second->GetValue<bool>( ISUSED ) && 
+			pIter->second->GetValue<std::string>( GENRETECH ) == game->GetGenreTech( 0 ) && 
+			pIter->second->GetValue<int>( YEAR ) == GetValue<SYSTEMTIME>( CURRENTTIME ).wYear )
+			thisYearAndGenreImgs.push_back( pIter->second );
+	
+	int randomIndex = rand() % thisYearAndGenreImgs.size();
+	thisYearAndGenreImgs[ randomIndex ]->SetValue<bool>( ISUSED, true );
+
+	return thisYearAndGenreImgs[ randomIndex ]->GetValue<std::string>( NAME );
+}
+
+CNrpGameImageList* CNrpApplication::GetGameImageList( std::string name )
+{
+	GAMEIMAGES_MAP::iterator pIter = gameImages_.begin();
+	for( ; pIter != gameImages_.end(); pIter++ )
+		if(	pIter->second->GetValue<std::string>( NAME ) == name )
+			return pIter->second;
+	return NULL;
+}
+
+void CNrpApplication::AddGameImageList( CNrpGameImageList* pGList )
+{
+	gameImages_[ pGList->GetValue<std::string>( NAME ) ] = pGList;
+}
+
+void CNrpApplication::ClearImageList()
+{
+	GAMEIMAGES_MAP::iterator pIter = gameImages_.begin();
+	for( ; pIter != gameImages_.end(); pIter++ )
+		delete pIter->second;
+
+	gameImages_.clear();
+}
+
+CNrpGame* CNrpApplication::GetGame( const std::string& name )
+{
+	COMPANIES_LIST::iterator pIter = companies_.begin();
+	for( ; pIter != companies_.end(); pIter++ )
+	{
+		CNrpGame* resultt = (*pIter)->GetGame( name );
+	    if( resultt != NULL )
+			return resultt;
+	}
+
+	return NULL;
+}
+
 }//namespace nrp
