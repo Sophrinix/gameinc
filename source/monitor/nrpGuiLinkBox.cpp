@@ -289,19 +289,19 @@ void CNrpGuiLinkBox::draw()
 	}
 	else if( border_ )
 	{		
-		if( pressed_ )
+		/*if( pressed_ )
 			Environment->getSkin()->draw3DButtonPanePressed( this, rect, &AbsoluteClippingRect );
 		else
 			Environment->getSkin()->draw3DButtonPaneStandard( this, rect, &AbsoluteClippingRect );
+		*/
+		core::recti imgRect = rect;
+		imgRect.UpperLeftCorner += core::position2di( 5, 5 );
+		imgRect.LowerRightCorner -= core::position2di( 5, 5 );
+
+		driver->draw2DRectangle( video::SColor( isHovered ? 
+								0x800000ff :
+								(data_ ? 0x8000ff00 : 0x80ff0000) ), imgRect, &AbsoluteClippingRect );
 	}
-
-	core::recti imgRect = rect;
-	imgRect.UpperLeftCorner += core::position2di( 5, 5 );
-	imgRect.LowerRightCorner -= core::position2di( 5, 5 );
-
-	driver->draw2DRectangle( video::SColor( isHovered ? 
-											0x800000ff :
-											(data_ ? 0x8000ff00 : 0x80ff0000) ), imgRect, &AbsoluteClippingRect );
 
 	if (Text.size())
 	{
@@ -371,6 +371,11 @@ void CNrpGuiLinkBox::setImage(video::ITexture* image, const core::rect<s32>& pos
 
 	//if (!PressedImage)
 	//	setPressedImage(image_, pos);
+}
+
+void CNrpGuiLinkBox::setImage( const char* imagePath )
+{
+	setImage( Environment->getVideoDriver()->getTexture( imagePath ) );
 }
 //////////////////////////////////////////////////////////////////////////
 

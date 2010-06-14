@@ -8,7 +8,6 @@ namespace nrp
 class CNrpCompany;
 
 OPTION_NAME VIDEOTECH( "videoTech" );
-OPTION_NAME GENRETECH( "genreTech" );
 OPTION_NAME ADVTECH( "advtech" );
 OPTION_NAME SOUNDTECH( "soundTech" );
 OPTION_NAME GAME_ENGINE( "gameEngine" );
@@ -65,7 +64,7 @@ public:
 
 private:
 
-	void InitializeOption_( std::string name );
+	void InitializeOptions_( std::string name );
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
 	CNrpGameProject( CNrpGameProject& ptr );
 	TECH_LIST technologies_;

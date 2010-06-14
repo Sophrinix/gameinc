@@ -17,7 +17,7 @@ namespace nrp
 
 CNrpGameProject::CNrpGameProject( std::string name, CNrpCompany* ptrCompany ) : INrpProject( "CNrpGameProject", name )
 {
-	InitializeOption_( name );
+	InitializeOptions_( name );
 	if( ptrCompany != NULL )
 		SetValue<std::string>( COMPANYNAME, ptrCompany->GetValue<std::string>( NAME ) );
 
@@ -26,7 +26,7 @@ CNrpGameProject::CNrpGameProject( std::string name, CNrpCompany* ptrCompany ) : 
 
 CNrpGameProject::CNrpGameProject( CNrpGameProject* nProject, CNrpCompany* ptrCompany ) : INrpProject( "CNrpGameProject", nProject->GetValue<std::string>( NAME ) )
 {
-	InitializeOption_( nProject->GetValue<std::string>( NAME ) );
+	InitializeOptions_( nProject->GetValue<std::string>( NAME ) );
 
 	SetValue<std::string>( COMPANYNAME, nProject->GetValue<std::string>( COMPANYNAME ) );
 	SetValue<PNrpCompany>( PARENTCOMPANY, ptrCompany );
@@ -545,7 +545,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 	SetValue<PNrpTechnology>( SOUNDQUALITY, tech );
 }
 
-void CNrpGameProject::InitializeOption_( std::string name )
+void CNrpGameProject::InitializeOptions_( std::string name )
 {
 	SetValue<PROJECT_TYPE>( TECHTYPE, PT_GAME );
 	SetValue<std::string>( NAME, name );
@@ -579,6 +579,7 @@ void CNrpGameProject::InitializeOption_( std::string name )
 	CreateValue<PNrpTechnology>( LOCALIZATION, NULL );
 	CreateValue<PNrpTechnology>( CROSSPLATFORMCODE, NULL ); 
 	CreateValue<int>( MONEYONDEVELOP, 0 );
+	CreateValue<float>( FAMOUS, 0 );
 }
 
 void CNrpGameProject::GetAllTech_( TECH_LIST& techList )
@@ -635,7 +636,7 @@ void CNrpGameProject::UpdateDevelopmentMoney()
 		{
 			PUser ptrUser = cmp->GetUser( name );
 			if( ptrUser )
-				money += ptrUser->GetValueA<int>( SALARY ) / 30.f;
+				money += (int)(ptrUser->GetValueA<int>( SALARY ) / 30.f);
 		}
 	}
 

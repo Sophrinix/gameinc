@@ -49,6 +49,7 @@ public:
 
 	//! Sets an image which should be displayed on the button when it is in normal state. 
 	virtual void setImage( video::ITexture* image );
+	virtual void setImage( const char* imagePath );
 	virtual void setImage( video::ITexture* image, const core::recti& pos);
 
 	//! Sets an image which should be displayed on the button when it is in hover state. 
