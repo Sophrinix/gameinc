@@ -17,6 +17,7 @@
 #include "NrpPluginEngine.h"
 #include "NrpApplication.h"
 #include "NrpPlant.h"
+#include "NrpTranslate.h"
 
 using namespace irr;
 
@@ -330,4 +331,32 @@ int GetPlant( lua_State* vm )
 
 	return 1;	
 }
+
+int ApplicationGetTranslate( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 1, 1, "Function LoadLanguageFile need string parameter");
+
+	const char* name = lua_tostring( vm, 1 );
+	assert( name != NULL );
+
+	const char* resultt = translate::GetTranslate( name );
+
+	lua_pushstring( vm, resultt );
+	return 1;
+}
+
+int ApplicationLoadLanguageFile( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 1, 1, "Function LoadLanguageFile need string parameter");
+
+	const char* pathToFile = lua_tostring( vm, 1 );
+	assert( pathToFile != NULL );
+
+	translate::LoadLanguageFile( pathToFile );
+
+	return 1;
+}
+
 }//namespace nrp

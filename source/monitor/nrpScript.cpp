@@ -126,6 +126,10 @@ CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 
 		lua_register( vm_, "NrpGetPlant", GetPlant );
 
+		lua_register( vm_, "NrpLoadLanguageFile", ApplicationLoadLanguageFile ),
+
+		lua_register( vm_, "NrpGetTranslate", ApplicationGetTranslate ),
+
 		RegisterLuaClasses_();
 	}
 	catch (...)
