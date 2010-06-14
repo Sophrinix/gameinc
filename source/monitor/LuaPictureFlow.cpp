@@ -22,6 +22,7 @@ Luna< CLuaPictureFlow >::RegType CLuaPictureFlow::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetSelected ),
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, Clear ),
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelectedObject ),
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelectedItem ),
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetPictureRect ),
 	{0,0}
 };
@@ -34,7 +35,11 @@ int CLuaPictureFlow::AddItem( lua_State *L )	//добавляет текст в списко отображе
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 4, 4, "Function CLuaPictureFlow::AddItem need 2 parameter");
 
-	video::ITexture* texture = (video::ITexture*)lua_touserdata( L, 2 );
+	video::ITexture* texture = NULL;
+	const char* texturePath = lua_tostring( L, 2 );
+	if( texturePath )
+		texture = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturePath );
+
 	const char* text = lua_tostring( L, 3 ); 
 	assert( text != NULL );
 	void* object = lua_touserdata( L, 4 );
@@ -108,6 +113,24 @@ int CLuaPictureFlow::SetPictureRect( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	object_->setPictureRect( rectangle );
 
+	return 1;
+}
+
+int CLuaPictureFlow::GetSelectedItem( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaPictureFlow::GetSelectedObject not need any parameter");
+
+	std::string text = "";
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int selected = object_->getSelected();
+		if( selected >= 0 )
+			text = WideToStr( object_->getListItem( selected ) );
+	}
+
+	lua_pushstring( L, text.c_str() );
 	return 1;
 }
 }//namespace nrp
