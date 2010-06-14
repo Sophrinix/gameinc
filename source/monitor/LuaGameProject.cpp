@@ -14,11 +14,6 @@
 									  {  std::string functionAutoName = #name;
 #define END_AUTONAME_FUNCTION }
 
-#define GETTER_FUNCTION( name, lua_pushfunc, typen, paramName, defValue )\
-	int CLuaGameProject::name( lua_State* L ) { lua_pushfunc( L, GetParam_<typen>( L, #name, paramName, defValue )); return 1; }
-
-#define SETTER_FUNCTION( name, paramName )\
-	int CLuaGameProject::name( lua_State* L ){ return SetNamedTech_( L, #name, paramName );	}
 
 #define GETTER_NUMERICAL_FUNCTION( name, func )\
 	int CLuaGameProject::name( lua_State* L ) { return GetNumericalTech_( L, #name, &CNrpGameProject::func ); }				
@@ -94,41 +89,82 @@ BEGIN_AUTONAME_FUNCTION(SetGameEngine)
 	return 1;	
 END_AUTONAME_FUNCTION
  
-GETTER_FUNCTION(GetPlatformsNumber, lua_pushinteger,		int,			PLATFORMNUMBER,		0 )
-GETTER_FUNCTION(GetLanguagesNumber, lua_pushinteger,		int,			LANGNUMBER,			0 )
-GETTER_FUNCTION(GetScenario,		lua_pushlightuserdata,	PNrpScenario,	SCENARIO,			NULL )
-SETTER_FUNCTION(SetScenario,		SCENARIO )
-GETTER_FUNCTION(GetLicense,			lua_pushlightuserdata,	PNrpLicense,	GLICENSE,			NULL )
-GETTER_FUNCTION(GetGenreModuleNumber, lua_pushinteger,		int,			GENRE_MODULE_NUMBER,0 )
-GETTER_FUNCTION(GetCodeQuality,     lua_pushinteger,		int,			QUALITY,			0 )
-GETTER_FUNCTION(GetCodeVolume,		lua_pushinteger,		int,			CODEVOLUME,			0 )
-GETTER_FUNCTION(GetGameEngine,		lua_pushlightuserdata,	PNrpGameEngine, GAME_ENGINE,		NULL )
-GETTER_FUNCTION(IsProjectReady,		lua_pushboolean,		bool,			PROJECTREADY,		false )
+int CLuaGameProject::GetPlatformsNumber( lua_State* L )
+{ lua_pushinteger( L, GetParam_<int>( L, "GetPlatformsNumber", PLATFORMNUMBER, 0 )); return 1; }
 
-GETTER_FUNCTION(GetScriptEngine,	lua_pushlightuserdata,	PNrpTechnology, SCRIPTENGINE,		NULL )
-SETTER_FUNCTION(SetScriptEngine,	SCRIPTENGINE )
+int CLuaGameProject::GetLanguagesNumber( lua_State* L )
+{ lua_pushinteger( L, GetParam_<int>( L, "GetLanguagesNumber", LANGNUMBER, 0 )); return 1; }
 
-GETTER_FUNCTION(GetEngineExtend, lua_pushlightuserdata, PNrpTechnology, ENGINEEXTENDED, NULL )
-GETTER_FUNCTION(GetLocalization, lua_pushlightuserdata, PNrpTechnology, LOCALIZATION, NULL )
-GETTER_FUNCTION(GetCrossPlatformCode, lua_pushlightuserdata, PNrpTechnology, CROSSPLATFORMCODE, NULL )
+int CLuaGameProject::GetScenario( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpScenario>( L, "GetScenario", SCENARIO, NULL )); return 1; }
 
-GETTER_FUNCTION(GetMiniGameEngine,	lua_pushlightuserdata,	PNrpTechnology, MINIGAMEENGINE,		NULL )
-SETTER_FUNCTION(SetMiniGameEngine,  MINIGAMEENGINE )
+int CLuaGameProject::SetScenario( lua_State* L )
+{ return SetNamedTech_( L, "SetScenario", SCENARIO ); }	
 
-GETTER_FUNCTION(GetPhysicEngine,	lua_pushlightuserdata,	PNrpTechnology, PHYSICSENGINE,		NULL ) 
-SETTER_FUNCTION(SetPhysicEngine,	PHYSICSENGINE )
+int CLuaGameProject::GetLicense( lua_State* L )
+{ 
+	lua_pushlightuserdata( L, GetParam_<PNrpLicense>( L, "GetLicense", GLICENSE, NULL ) ); 
+	return 1; 
+}
 
-GETTER_FUNCTION(GetAdvTechNumber,	lua_pushinteger,		int,			ADVTECHNUMBER,		0 ) 
-GETTER_FUNCTION(GetVideoQuality, 	lua_pushlightuserdata,  PNrpTechnology, GRAPHICQUALITY,		NULL )
+int CLuaGameProject::GetGenreModuleNumber( lua_State* L )
+{ lua_pushinteger( L, GetParam_<int>( L, "GetGenreModuleNumber", GENRE_MODULE_NUMBER, 0 )); return 1; }
 
-SETTER_FUNCTION(SetVideoQuality,	GRAPHICQUALITY )
+int CLuaGameProject::GetCodeQuality( lua_State* L )
+{ lua_pushinteger( L, GetParam_<int>( L, "GetCodeQuality", QUALITY, 0 )); return 1; }
 
-GETTER_FUNCTION(GetVideoTechNumber, lua_pushinteger,		int,			VIDEOTECHNUMBER,	0 ) 
+int CLuaGameProject::GetCodeVolume( lua_State* L )
+{ lua_pushinteger( L, GetParam_<int>( L, "GetCodeQuality", CODEVOLUME, 0 )); return 1; }
 
-GETTER_FUNCTION(GetSoundQuality,    lua_pushlightuserdata,  PNrpTechnology, SOUNDQUALITY,		NULL )
-SETTER_FUNCTION(SetSoundQuality,    SOUNDQUALITY )
+int CLuaGameProject::GetGameEngine( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpGameEngine>( L, "GetGameEngine", GAME_ENGINE, NULL )); return 1; }
 
-GETTER_FUNCTION(GetSoundTechNumber, lua_pushinteger,        int,			SOUNDTECHNUMBER,	0 )
+int CLuaGameProject::IsProjectReady( lua_State* L )
+{ lua_pushboolean( L, GetParam_<bool>( L, "GetCodeQuality", PROJECTREADY, false )); return 1; }
+
+int CLuaGameProject::GetScriptEngine( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetScriptEngine", SCRIPTENGINE, NULL )); return 1; }
+int CLuaGameProject::SetScriptEngine( lua_State* L )
+{ return SetNamedTech_( L, "SetScriptEngine", SCRIPTENGINE ); }	
+
+int CLuaGameProject::GetEngineExtend( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetEngineExtend", ENGINEEXTENDED, NULL )); return 1; }
+
+int CLuaGameProject::GetLocalization( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetLocalization", LOCALIZATION, NULL )); return 1; }
+
+int CLuaGameProject::GetCrossPlatformCode( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetCrossPlatformCode", CROSSPLATFORMCODE, NULL )); return 1; }
+
+int CLuaGameProject::GetMiniGameEngine( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetMiniGameEngine", MINIGAMEENGINE, NULL )); return 1; }
+int CLuaGameProject::SetMiniGameEngine( lua_State* L )
+{ return SetNamedTech_( L, "SetMiniGameEngine", MINIGAMEENGINE ); }
+
+int CLuaGameProject::GetPhysicEngine( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetPhysicEngine", PHYSICSENGINE, NULL )); return 1; }
+int CLuaGameProject::SetPhysicEngine( lua_State* L )
+{ return SetNamedTech_( L, "SetPhysicEngine", PHYSICSENGINE ); }
+
+int CLuaGameProject::GetAdvTechNumber( lua_State* L )
+{ lua_pushinteger( L, GetParam_<int>( L, "GetAdvTechNumber", ADVTECHNUMBER, NULL )); return 1; }
+int CLuaGameProject::GetVideoQuality( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetVideoQuality", GRAPHICQUALITY, NULL )); return 1; }
+
+int CLuaGameProject::SetVideoQuality( lua_State* L )
+{ return SetNamedTech_( L, "SetVideoQuality", GRAPHICQUALITY ); }	
+
+int CLuaGameProject::GetVideoTechNumber( lua_State* L )
+{ lua_pushinteger( L, GetParam_<int>( L, "GetVideoTechNumber", VIDEOTECHNUMBER, NULL )); return 1; }
+
+int CLuaGameProject::GetSoundQuality( lua_State* L )
+{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetVideoQuality", SOUNDQUALITY, NULL )); return 1; }
+
+int CLuaGameProject::SetSoundQuality( lua_State* L )
+{ return SetNamedTech_( L, "SetSoundQuality", SOUNDQUALITY ); }	
+
+int CLuaGameProject::GetSoundTechNumber( lua_State* L )
+{ lua_pushinteger( L, GetParam_<int>( L, "GetSoundTechNumber", SOUNDTECHNUMBER, NULL )); return 1; }
 
 GETTER_NUMERICAL_FUNCTION( GetGenre, GetGenre )
 SETTER_NUMERICAL_FUNCTION( SetGenre, SetGenre )

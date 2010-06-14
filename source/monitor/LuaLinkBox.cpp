@@ -3,6 +3,7 @@
 
 #include "LuaLinkBox.h"
 #include "nrpGuiLinkBox.h"
+#include "nrpEngine.h"
 
 using namespace irr;
 
@@ -22,6 +23,7 @@ Luna< CLuaLinkBox >::RegType CLuaLinkBox::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetData ),
 	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetData ),
 	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, HaveData ),
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetTexture ),
 	{0,0}
 };
 
@@ -148,5 +150,21 @@ int CLuaLinkBox::HaveData( lua_State* L )
 	lua_pushboolean( L, haveData );
 
 	return 1;		
+}
+
+int CLuaLinkBox::SetTexture( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetTexture need string parameter");
+
+	const char* textureName = lua_tostring( L, 2 );
+	assert( textureName != NULL );
+
+	if( textureName != NULL )
+	{
+		IF_OBJECT_NOT_NULL_THEN	object_->setImage( CNrpEngine::Instance().GetVideoDriver()->getTexture( textureName ) );
+	}
+
+	return 1;	
 }
 }//namespace nrp
