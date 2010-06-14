@@ -1,0 +1,14 @@
+[PROPERTIES]
+name:string=bushido
+genreTech:string=#TRANSLATE_GT_FIGHTING
+imagesNumber:int=3
+imagesBoxNumber:int=3
+year:int=1983
+[imagesBox]
+boxImage_0=xtras/screenshots/1983/bushido/bushido_box.png
+boxImage_1=xtras/screenshots/1983/bushido/bushido_box.png
+boxImage_2=xtras/screenshots/1983/bushido/bushido_box.png
+[images]
+image_0=xtras/screenshots/1983/bushido/bushido_02.png
+image_1=xtras/screenshots/1983/bushido/bushido_04.png
+image_2=xtras/screenshots/1983/bushido/bushido_05.png
