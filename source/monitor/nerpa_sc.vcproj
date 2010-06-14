@@ -361,6 +361,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\nrpTranslate.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpTranslate.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OpFileSystem.cpp"
 				>
 			</File>
@@ -918,6 +926,10 @@
 				Name="ClassWrapper"
 				>
 				<File
+					RelativePath=".\ILuaBaseProject.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ILuaGuiElement.h"
 					>
 				</File>
@@ -1149,14 +1161,6 @@
 					Name="game"
 					>
 					<File
-						RelativePath=".\LuaApplication.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\LuaApplication.h"
-						>
-					</File>
-					<File
 						RelativePath=".\LuaBank.cpp"
 						>
 					</File>
@@ -1261,6 +1265,14 @@
 					Name="application"
 					>
 					<File
+						RelativePath=".\LuaApplication.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaApplication.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaIniFile.cpp"
 						>
 					</File>
@@ -1347,10 +1359,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_globalmap.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_MainMenu.lua"
 				>
 			</File>
@@ -1360,10 +1368,6 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\swork_ObjectsLoading.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_sonars.lua"
 				>
 			</File>
 			<File
@@ -1472,6 +1476,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpApplication.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpGameImageList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpGameImageList.h"
 				>
 			</File>
 			<File

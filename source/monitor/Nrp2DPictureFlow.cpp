@@ -74,10 +74,10 @@ irr::u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* te
 
 void CNrp2DPictureFlow::UpdateImages_()
 {
-	core::recti tmpRect( AbsoluteRect.getCenter().X - pictureRect_.getWidth()/2, 
-						 AbsoluteRect.getCenter().Y - pictureRect_.getHeight()/2,
-						 AbsoluteRect.getCenter().X + pictureRect_.getWidth()/2, 
-						 AbsoluteRect.getCenter().Y + pictureRect_.getHeight()/2 );
+	core::recti tmpRect( RelativeRect.getCenter().X - pictureRect_.getWidth()/2, 
+						 RelativeRect.getCenter().Y - pictureRect_.getHeight()/2,
+						 RelativeRect.getCenter().X + pictureRect_.getWidth()/2, 
+						 RelativeRect.getCenter().Y + pictureRect_.getHeight()/2 );
 
 	if( activeIndex_ < (int)images_.size() )
 		images_[ activeIndex_ ]->rectangle = tmpRect;
@@ -89,8 +89,8 @@ void CNrp2DPictureFlow::UpdateImages_()
 		{
 			offsetx += lRect.getWidth() * (0.7f - (activeIndex_-k)*0.1f);
 			core::dimension2di sides( 0.7f * lRect.getWidth(), 0.7f * lRect.getHeight() ); 
-			lRect = core::recti( AbsoluteRect.getCenter().X - sides.Width/2, AbsoluteRect.getCenter().Y - sides.Height/2,
-				AbsoluteRect.getCenter().X + sides.Width/2, AbsoluteRect.getCenter().Y + sides.Height/2 );
+			lRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
+				                 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
 			images_[ k ]->rectangle = lRect - core::position2di( offsetx, 0 );
 		}
 
@@ -100,8 +100,8 @@ void CNrp2DPictureFlow::UpdateImages_()
 	{
 		offsetx += rRect.getWidth() * (0.7f - (k-activeIndex_)*0.1f);
 		core::dimension2di sides( 0.7f * rRect.getWidth(), 0.7f * rRect.getHeight() ); 
-		rRect = core::recti( AbsoluteRect.getCenter().X - sides.Width/2, AbsoluteRect.getCenter().Y - sides.Height/2,
-							 AbsoluteRect.getCenter().X + sides.Width/2, AbsoluteRect.getCenter().Y + sides.Height/2 );
+		rRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
+							 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
 		images_[ k ]->rectangle = rRect + core::position2di( offsetx, 0 );
 	}
 }
@@ -113,22 +113,23 @@ void CNrp2DPictureFlow::DrawPairImage_( CNrpImageDescription* pDesk )
 							pDesk->currentRect.LowerRightCorner.X, pDesk->currentRect.LowerRightCorner.Y );
 
 	if( pDesk->GetTexture() )
-		driver->draw2DImage( pDesk->GetTexture(), rectangle, 
-			 			 	 core::recti( core::position2di( 0, 0), pDesk->GetTexture()->getSize() ));
+		driver->draw2DImage( pDesk->GetTexture(), rectangle + AbsoluteRect.UpperLeftCorner, 
+			 			 	 core::recti( core::position2di( 0, 0), pDesk->GetTexture()->getSize() ),
+							 &AbsoluteClippingRect );
 	else
-		driver->draw2DRectangle(rectangle, 
+		driver->draw2DRectangle(rectangle + AbsoluteRect.UpperLeftCorner, 
 								0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0,
 								&AbsoluteClippingRect );
 
 	video::SColor colors[] = { 0xC0C0C0C0, 0, 0, 0xC0C0C0C0 };
 	if( pDesk->GetDownTexture() )
 		driver->draw2DImage( pDesk->GetDownTexture(), 
-							rectangle + core::position2di( 0, rectangle.getHeight() ), 
+							rectangle + core::position2di( 0, rectangle.getHeight() ) + AbsoluteRect.UpperLeftCorner, 
 							core::recti( core::position2di( 0, 0), pDesk->GetDownTexture()->getSize() ),
 							&AbsoluteClippingRect, 
 							colors,	true );
 	else
-		driver->draw2DRectangle(rectangle+core::position2di( 0, rectangle.getHeight() ), 
+		driver->draw2DRectangle(rectangle+core::position2di( 0, rectangle.getHeight() ) + AbsoluteRect.UpperLeftCorner, 
 								colors[0], colors[3], colors[1], colors[2],
 								&AbsoluteClippingRect );
 
@@ -142,7 +143,7 @@ void CNrp2DPictureFlow::draw()
 	UpdatePositions_();
 
 	if( drawBackground_ )
-		Environment->getVideoDriver()->draw2DRectangle( video::SColor( 0xff000000 ), AbsoluteRect );
+		Environment->getVideoDriver()->draw2DRectangle( video::SColor( 0xff000000 ), AbsoluteRect, &AbsoluteClippingRect );
 
 	if( images_.size() > 0 )
 	{
