@@ -2,6 +2,8 @@ require("elmid")
 IncludeScript("logdefs")
 IncludeScript( "NerpaActionType" )
 
+NrpLoadLanguageFile( "localization/russian.lng" )
+
 NrpLoadPlugins( "Plugins/" )
 
 --загрузка сцены авторизации пользователя

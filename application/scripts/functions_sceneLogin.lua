@@ -91,8 +91,11 @@ function slogin_ContinueLastGame( ptr )
 	ApplicationUpdateGameBoxAddons()
 	applic:LoadBoxAddonsPrice()
 	
-	--загружаем аппараты по производству дисков времени
+	--загружаем аппараты по производству дисков
 	ApplicationUpdateDiskMachines()
+	
+	--загружаем скриншоты для игр
+	ApplicationUpdateScreenshots()
 	
 	--загружаем профиль
 	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
