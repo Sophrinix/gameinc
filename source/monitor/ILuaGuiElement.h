@@ -238,7 +238,11 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":Remove not need any parameter" ).c_str() );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->remove();
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			object_->remove();
+			object_ = NULL;
+		}
 
 		return 1;
 	}

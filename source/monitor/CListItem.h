@@ -3,7 +3,7 @@
 #include "include/irrlicht.h"
 
 using namespace irr;
-
+//*! класс для собственного списка
 class CListItem
 {
 private:

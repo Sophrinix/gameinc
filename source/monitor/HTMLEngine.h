@@ -18,24 +18,38 @@ namespace irr
 namespace nrp
 {
 
+/*! Класс веб-движка Gecko 1.8.1
+	Описывает взаимодействие с движком и выполняемые ункции
+*/
+
 class HTMLEngine : public LLEmbeddedBrowserWindowObserver
 {
 public:
+	//*! Инициализация движка при первом вызове
 	static HTMLEngine& Instance();
+	
 	irr::gui::CNrpBrowserWindow& GetBrowserWindow(irr::core::dimension2du size);
 	void SetBrowserWindow( irr::gui::CNrpBrowserWindow* newWindow ) { browserWindow_ = newWindow; }
 	void Update();
 
+	//*! Событие, которое возникает при завершении навигации по ссылке
 	void onPageChanged( const LLEmbeddedBrowserWindowEvent& eventIn );
+	//*! Функция вызывается после начала навигации
 	void onNavigateBegin( const LLEmbeddedBrowserWindowEvent& eventIn );
+	//*! Функция вызывается после окончания навигации
 	void onNavigateComplete( const LLEmbeddedBrowserWindowEvent& eventIn );
 	void onUpdateProgress( const LLEmbeddedBrowserWindowEvent& eventIn );
 	void onStatusTextChange( const LLEmbeddedBrowserWindowEvent& eventIn );
 	void onLocationChange( const LLEmbeddedBrowserWindowEvent& eventIn );
+	//*! Функция вызывается, когда пользователь перешел по новой ссылке
 	void onClickLinkHref( const LLEmbeddedBrowserWindowEvent& eventIn );
+	//*! Функция вызывается, когда пользователь перешел по неправильносй ссылке... например http://dosomething
 	void onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventIn );
+	//*! Указание движку перейти по заданной ссылке
 	void Navigate( std::string url );
+	//*! Передача в веб-движок события ЛКМ
 	void MouseDown( size_t x, size_t y );
+	//*! Передача в веб движок события ЛКМ
 	void MouseUp(size_t x, size_t y);
 	void ScrollByLines( int lines );
 	void SetFocus();
@@ -46,6 +60,7 @@ private:
 	HTMLEngine();
 	HTMLEngine(const HTMLEngine &other);
 	~HTMLEngine();
+	//*! текстура, куда сохраняется изображение отрендериной страницы
 	irr::video::ITexture* pageTexture_;
 	int browserWindowId_;
 	size_t browserRasterSize_;
@@ -53,6 +68,7 @@ private:
 	irr::gui::CNrpBrowserWindow* browserWindow_;
 
 	bool dataUpdated_;
+	//*! библиотека мозлибы
 	LLMozLib* llmozlib_;
 
 	CRITICAL_SECTION rasterCs_;
