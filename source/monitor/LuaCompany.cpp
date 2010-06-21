@@ -6,6 +6,7 @@
 #include "NrpGameProject.h"
 #include "NrpGame.h"
 #include "NrpApplication.h"
+#include "NrpDevelopGame.h"
 #include <assert.h>
 
 namespace nrp
@@ -23,7 +24,7 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddGameEngine ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateGameProject ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateDevelopGame ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUserNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUser ),
@@ -136,7 +137,7 @@ int CLuaCompany::GetTech( lua_State* L )
 	return 1;
 }
 
-int CLuaCompany::CreateGameProject( lua_State* L )
+int CLuaCompany::CreateDevelopGame( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetTech need CNrpGameProject* parameter" );
@@ -144,9 +145,13 @@ int CLuaCompany::CreateGameProject( lua_State* L )
 	CNrpGameProject* ptrData = (CNrpGameProject*)lua_touserdata( L, 2 );
 	assert( ptrData != NULL );
 
-	CNrpGameProject* result = NULL;
+	INrpProject* result = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN	result = object_->AddGameProject( new CNrpGameProject( ptrData, object_ ) );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		result = new CNrpDevelopGame( ptrData, object_ );
+		object_->AddDevelopProject( result );
+	}
 
 	lua_pushlightuserdata( L, result );
 	return 1;	

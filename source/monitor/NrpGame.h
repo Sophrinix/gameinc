@@ -7,8 +7,8 @@ OPTION_NAME CLASS_NRPGAME( "CNrpGame" );
 
 class CNrpGameProject;
 class CNrpCompany;
+class CNrpDevelopGame;
 
-OPTION_NAME MONEYONDEVELOP( "moneyDevelop" );
 OPTION_NAME CASH( "cash" );
 OPTION_NAME COPYSELL( "copySell" );
 OPTION_NAME STARTRATING( "startRating" );
@@ -23,8 +23,8 @@ OPTION_NAME CURRENTGENRERATING( "currentGenreRating" );
 OPTION_NAME CURRENTSOUNDRATING( "currentSoundRating" );
 OPTION_NAME LOCALIZATIONRATING( "localizationRating" );
 OPTION_NAME CURRENTBUGRATING( "currentBugRating" );
-OPTION_NAME STARTADVFUNC( "startAdvFunc" );
-OPTION_NAME CURRENTADVFUNC( "currentAdvFunc" );
+OPTION_NAME STARTADVFUNCRATING( "startAdvFuncRating" );
+OPTION_NAME CURRENTADVFUNCRATING( "currentAdvFuncRating" );
 OPTION_NAME GBOX( "box" );
 OPTION_NAME GAMEISSALING( "gameIsSaling" );
 OPTION_NAME IMAGENAME( "imageName" );
@@ -38,10 +38,10 @@ public:
 	CNrpGame( std::string name );
 	~CNrpGame(void);
 
-	CNrpGame( CNrpGameProject* ptrProject, CNrpCompany* ptrCompany );
+	CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany );
 
 	std::string GetVideoTech( int index ) { return videoTechs_.at( index ); }
-	std::string GetGenreTech( int index ) { return genreTechs_.at( index ); }
+	std::string GetGenreTech( int index );
 	std::string GetSoundTech( int index ) { return soundTechs_.at( index ); }
 	std::string GetAdvTech( int index ) { return advTechs_.at( index ); }
 	float GetAuthorFamous();

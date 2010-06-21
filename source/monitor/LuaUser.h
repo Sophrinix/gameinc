@@ -24,10 +24,10 @@ public:
 	int SetParam( lua_State* L );
 	int GetName( lua_State* L );
 	int IsTypeAs( lua_State* L );
-	int AddTechWork( lua_State* L );
-	int GetTechWorkNumber( lua_State* L);
-	int RemoveTechWork( lua_State* L );
-	int GetTechWork( lua_State* L );
+	int AddWork( lua_State* L );
+	int GetWorkNumber( lua_State* L);
+	int RemoveWork( lua_State* L );
+	int GetWork( lua_State* L );
 	int Save( lua_State* L );
 	int Create( lua_State* L );
 

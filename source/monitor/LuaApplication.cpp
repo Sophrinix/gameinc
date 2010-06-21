@@ -391,7 +391,7 @@ int CLuaApplication::LoadGameBoxAddon( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpTechnology* tech = object_->CreateTechnology( 0 );
+		CNrpTechnology* tech = new CNrpTechnology( PT_GAMEBOXADDON );
 		tech->Load( techIniFile );
 		object_->AddBoxAddon( tech );
 	}
@@ -586,7 +586,7 @@ int CLuaApplication::GetGameTime( lua_State* L )
 	lua_pushinteger( L, time.wYear );
 	lua_pushinteger( L, time.wMonth );
 	lua_pushinteger( L, time.wDay );
-	lua_pushinteger( L, time.wMonth );
+	lua_pushinteger( L, time.wHour );
 	lua_pushinteger( L, time.wMinute );
 
 	return 5;		

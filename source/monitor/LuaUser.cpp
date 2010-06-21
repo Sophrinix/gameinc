@@ -27,10 +27,10 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaUser, IsTypeAs ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, Save ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, AddTechWork ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTechWorkNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, RemoveTechWork ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTechWork ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, AddWork ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWorkNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, RemoveWork ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWork ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, Create ),
 	{0,0}
 };
@@ -60,7 +60,7 @@ int CLuaUser::Create( lua_State *L )
 	}
 	else 
 	{
-		object_ = new IUser( userType, name, NULL );
+		object_ = new IUser( userType, name );
 		object_->SetValue<std::string>( NAME, name );
 		CNrpApplication::Instance().AddUser( false, object_ );
 	}
@@ -189,20 +189,20 @@ int CLuaUser::Save( lua_State* L )
 	return 1;	
 }
 
-int CLuaUser::AddTechWork( lua_State* L )
+int CLuaUser::AddWork( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:AddTechWork need CNrpTechnology* parameter" );
 
-	PNrpTechnology tech = (PNrpTechnology)lua_touserdata( L, 2 );
+	CNrpProjectModule* tech = (CNrpProjectModule*)lua_touserdata( L, 2 );
 	assert( tech != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddTechWork( tech );
+	IF_OBJECT_NOT_NULL_THEN object_->AddWork( tech );
 
 	return 1;		
 }
 
-int CLuaUser::GetTechWorkNumber( lua_State* L )
+int CLuaUser::GetWorkNumber( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetName not need parameter" );
@@ -215,30 +215,30 @@ int CLuaUser::GetTechWorkNumber( lua_State* L )
 	return 1;		
 }
 
-int CLuaUser::RemoveTechWork( lua_State* L )
+int CLuaUser::RemoveWork( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:AddTechWork need CNrpTechnology* parameter" );
 
-	PNrpTechnology tech = (PNrpTechnology)lua_touserdata( L, 2 );
-	assert( tech != NULL );
+	CNrpProjectModule* work = (CNrpProjectModule*)lua_touserdata( L, 2 );
+	assert( work != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->RemoveTechWork( tech );
+	IF_OBJECT_NOT_NULL_THEN object_->RemoveWork( work );
 
 	return 1;		
 }
 
-int CLuaUser::GetTechWork( lua_State* L )
+int CLuaUser::GetWork( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetSkill need index of techWork parameter" );
 
 	int index = lua_tointeger(L, 2 );
-	PNrpTechnology tech = NULL;
+	CNrpProjectModule* work = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN tech = object_->GetTechWork( index );
+	IF_OBJECT_NOT_NULL_THEN work = object_->GetWork( index );
 
-	lua_pushlightuserdata( L, tech );
+	lua_pushlightuserdata( L, work );
 	return 1;	
 }
 }//namespace nrp

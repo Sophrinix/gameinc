@@ -24,6 +24,7 @@ class CNrpGame;
 class CNrpDiskMachine;
 class CNrpRetailer;
 class CNrpGameImageList;
+class CNrpGameEngine;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
@@ -33,6 +34,8 @@ class CNrpApplication : public INrpConfig, public ILuaFunctionality
 	typedef std::vector< CNrpGame* > GAMES_LIST;
 	typedef std::vector< CNrpRetailer* > RETAILER_LIST;
 	typedef std::map< std::string, CNrpGameImageList* > GAMEIMAGES_MAP; 
+	typedef std::map< std::string, CNrpGameEngine* > GAMEENGINES_MAP;
+	typedef std::map< std::string, INrpProject* > PROJECTS_MAP;
 public:
 	typedef std::vector< CNrpCompany* > COMPANIES_LIST;
 	typedef enum { SPD_MINUTE=0, SPD_HOUR, SPD_DAY, SPD_MONTH, SPD_COUNT } SPEED;
@@ -55,32 +58,33 @@ public:
 	void CreateNewFreeUsers();
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
-	IUser* GetUser( std::string company, std::string name );
 
 	nrp::INrpProject* CreateGameProject( std::string name );
 
-	nrp::CNrpGameEngine* CreateGameEngine( std::string name );
+	void AddGameEngine( nrp::CNrpGameEngine* ptrEngine );
 	CNrpGameEngine* GetGameEngine( std::string name );
+	void RemoveGameEngine( nrp::CNrpGameEngine* ptrEngine );
 
 	bool UpdateTime();
 
 	CNrpGame* GetGame( const std::string& name );
+	INrpProject* GetProject( const std::string& name );
 
 	int GetTechsNumber() const { return technologies_.size(); }
 	CNrpTechnology* GetTechnology( int index ) const;
 	CNrpTechnology* GetTechnology( const std::string& name ) const;
-	CNrpTechnology* GetTechnology( CNrpCompany* ptrCompany, const std::string& name );
 
 	void AddTechnology( CNrpTechnology* ptrTech );
+	void RemoveTechnology( CNrpTechnology* ptrTech );
+
 	void UpdateGameRatings( CNrpGame* ptrGame, bool firstTime=false );
-	nrp::CNrpTechnology* CreateTechnology( int typeTech );
 
 	CNrpTechnology* GetBoxAddon( size_t index ) { return index < boxAddons_.size() ? boxAddons_[ index ] : NULL; }
 	CNrpTechnology* GetBoxAddon( std::string name );
 	void AddBoxAddon( CNrpTechnology* tech );
 
 	void AddGameToMarket( CNrpGame* game );
-	CNrpGame* GetMarketGame( int index );
+	CNrpGame* GetMarketGame( size_t index );
 
 	CNrpDiskMachine* GetDiskMachine( std::string name );
 	CNrpDiskMachine* GetDiskMachine( size_t index );
@@ -89,12 +93,11 @@ public:
 	CNrpRetailer* GetRetailer( std::string name );
 	void RemoveRetailer( std::string name );
 
-	float GetGenreInterest( std::string genreName );
-
 	std::string GetFreeInternalName( CNrpGame* game );
 	CNrpGameImageList* GetGameImageList( std::string name );
 	void AddGameImageList( CNrpGameImageList* pGList );
 	void ClearImageList();
+	float GetGameGenreInterest( CNrpGame* game );
 
 private:
 	CNrpApplication(void);
@@ -103,11 +106,14 @@ private:
 	COMPANIES_LIST companies_;
 	GAMEIMAGES_MAP gameImages_;
 	USER_LIST users_;
-	TECH_LIST technologies_;
+	TECH_LIST technologies_;					//хранит все технологии игрового мира
 	TECH_LIST boxAddons_;
 	DISKMACHINES_LIST diskMachines_;
 	GAMES_LIST marketGames_;
 	RETAILER_LIST retailers_;
+	GAMEENGINES_MAP engines_;
+	PROJECTS_MAP projects_;
+	PROJECTS_MAP devProjects_;
 
 	SPEED speed_;
 	int lastTimeUpdate_;

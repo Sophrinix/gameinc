@@ -5,6 +5,8 @@
 #include "NrpCompany.h"
 #include "NrpTechnology.h"
 #include "NrpGameProject.h"
+#include "NrpProjectModule.h"
+#include "INrpDevelopProject.h"
 
 #include <io.h>
 #include <errno.h>
@@ -13,7 +15,7 @@
 namespace nrp
 {
 
-IUser::IUser(const char* className, const char* systemName, CNrpCompany* ptrCmp ) : INrpConfig( className, systemName )
+IUser::IUser(const char* className, const char* systemName ) : INrpConfig( className, systemName )
 {
 	CreateValue<std::string>( NAME, systemName );
 	CreateValue<int>( CODE_SPEED, 0 );
@@ -30,15 +32,10 @@ IUser::IUser(const char* className, const char* systemName, CNrpCompany* ptrCmp 
 	CreateValue<int>( WANTMONEY, 0 );
 	CreateValue<int>( CONTRACTMONEY, 0 );
 	CreateValue<int>( TECHNUMBER, 0 );
-	CreateValue<std::string>( COMPANYNAME, "" );
 	CreateValue<std::string>( USERSTATE, "readyToWork" );
 	CreateValue<std::string>( ROOMSTATE, "unknown" );
 	CreateValue<int>( HANGRY, 100 );
-	if( ptrCmp != NULL )
-	{
-		CreateValue<std::string>( COMPANYNAME, ptrCmp->GetValue<std::string>( NAME ) );
-		CreateValue<PNrpCompany>( PARENTCOMPANY, ptrCmp );
-	}
+	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
 }
 
 IUser::~IUser(void)
@@ -120,9 +117,13 @@ void IUser::Save( std::string folderPath )
 	//for( ; uaIter != peopleFeels_.end(); ++uaIter )
 	//	IniFile::Write( "knowledges", uaIter->first, uaIter->second, fileName );
 
-	TECH_LIST::iterator tlIter = techWorks_.begin();
-	for( int i=0; tlIter != techWorks_.end(); tlIter++, i++ )
-		 IniFile::Write( TECHTYPE, TECHTYPE+IntToStr( i ), (*tlIter)->GetValue<std::string>(NAME), fileName );
+	WORK_LIST::iterator tlIter = works_.begin();
+	for( int i=0; tlIter != works_.end(); tlIter++, i++ )
+	{
+		std::string projectName = (*tlIter)->GetValue<INrpProject*>( PARENT )->GetValue<std::string>( NAME );
+		std::string name = (*tlIter)->GetValue<std::string>(NAME);
+		IniFile::Write( TECHTYPE, TECHTYPE+IntToStr( i ), projectName+":"+name, fileName );
+	}
 
 	INrpConfig::Save( PROPERTIES, fileName );
 }
@@ -161,35 +162,35 @@ void IUser::Load( std::string fileName )
 	}*/
 }
 
-void IUser::AddTechWork( CNrpTechnology* techWork )
+void IUser::AddWork( CNrpProjectModule* module )
 {
-	assert( techWork != NULL );
-	techWorks_.push_back( techWork );
-	techWork->SetLider( this );
-	SetValue<int>( TECHNUMBER, techWorks_.size() );
+	assert( module != NULL );
+	works_.push_back( module );
+	module->SetLider( this );
+	SetValue<int>( TECHNUMBER, works_.size() );
 }
 
-void IUser::RemoveTechWork( CNrpTechnology* techWork )
+void IUser::RemoveWork( CNrpProjectModule* techWork )
 {
 	assert( techWork != NULL );
 
-	TECH_LIST::iterator tIter = techWorks_.begin();
-	for( ; tIter != techWorks_.end(); tIter++ )
+	WORK_LIST::iterator tIter = works_.begin();
+	for( ; tIter != works_.end(); tIter++ )
 		if( (*tIter) == techWork )
 		{
 			techWork->SetLider( NULL );
-			techWorks_.erase( tIter );
-			SetValue<int>( TECHNUMBER, techWorks_.size() );
+			works_.erase( tIter );
+			SetValue<int>( TECHNUMBER, works_.size() );
 			return;
 		}
 	std::string text = "Ќе могу найти компонент дл€ удалени€ " + techWork->GetValue<std::string>( NAME );
 	OutputDebugString( text.c_str() );
 }
 
-CNrpTechnology* IUser::GetTechWork( int index )
+CNrpProjectModule* IUser::GetWork( int index )
 {
-	assert( index < (int)techWorks_.size() );
-	return index < (int)techWorks_.size() ? techWorks_[ index ] : NULL;
+	assert( index < (int)works_.size() );
+	return index < (int)works_.size() ? works_[ index ] : NULL;
 }
 
 void IUser::BeginNewHour( const SYSTEMTIME& time )
@@ -215,34 +216,13 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 
 	if( GetValue<std::string>( USERSTATE ) == "work" )
 	{
-		if( techWorks_.size() > 0 )
+		if( works_.size() > 0 )
 		{
-			techWorks_[ 0 ]->Update( this );
+			works_[ 0 ]->Update( this );
 
 			//закончили обработку компонента
-			if( techWorks_[ 0 ]->GetValue<float>( READYWORKPERCENT ) >= 1 )
-			{
-				CNrpGameProject* parent = techWorks_[ 0 ]->GetValue<PNrpGameProject>( PARENT );
-				float growExp = techWorks_[ 0 ]->GetValue<int>( CODEVOLUME ) / (float)parent->GetValue<int>( BASE_CODEVOLUME );
-				PNrpGameProject ptrProject = techWorks_[ 0 ]->GetValue<PNrpGameProject>( PARENT );
-				if( parent )
-				{
-					int techType = ptrProject->GetGenre( 0 )->GetValue<int>( TECHTYPE );
-				
-					//опыт пользовател€ растет по мере выполнени€ компонентов
-					//а если у пользовател€ не было опыта в этом жанре, то он по€вл€етс€
-					if( genreExperience_.find( techType ) == genreExperience_.end() )
-						genreExperience_[ techType ] = (int)growExp;
-					else
-						genreExperience_[ techType ] += (int)growExp;
-
-					//увеличиваетс€ тот параметр предпочтени€, который уже есть у пользовател€
-					if( genrePreferences_.find( techType ) != genrePreferences_.end() )
-						genrePreferences_[ techType ] += (int)growExp;
-				}
-
-				RemoveTechWork( techWorks_[ 0 ] );
-			}
+			if( works_[ 0 ]->GetValue<float>( READYWORKPERCENT ) >= 1 )
+				RemoveWork( works_[ 0 ] );
 		}
 	}
 }
@@ -289,5 +269,13 @@ void IUser::BeginNewDay( const SYSTEMTIME& time )
 void IUser::AddModificator( IModificator* ptrModificator )
 {
 	modificators_.push_back( ptrModificator );
+}
+
+void IUser::IncreaseExperience( int techGroup, int grow )
+{
+	if( genreExperience_.find( techGroup ) != genreExperience_.end() )
+		genreExperience_[ techGroup ] += grow;
+	else 
+		genreExperience_[ techGroup ] = grow;
 }
 }//namespace nrp

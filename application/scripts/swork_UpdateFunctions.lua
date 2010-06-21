@@ -126,14 +126,17 @@ end
 function ApplicationUpdateScreenshots( ptr )
 	local iniFile = CLuaIniFile( nil, fileImages )
 
-	local year = applic:GetGameTime()
-	local descNumber = iniFile:ReadInteger( year, "DescriptionNumber", 0 )
+	local maxYear = applic:GetGameTime()
+	
+	local descNumber = iniFile:ReadInteger( maxYear, "DescriptionNumber", 0 )
     local descIniFile = ""
     applic:ClearImageList()
 	
 	LogScript( "Open config file "..fileImages.." with DescriptionNumber="..descNumber )
-	for i=1, descNumber do
-		descIniFile = iniFile:ReadString( year, "description_"..(i-1), "" ) 
-		applic:LoadImageList( descIniFile )	
+	for year=1983, maxYear do
+		for i=1, descNumber do
+			descIniFile = iniFile:ReadString( maxYear, "description_"..(i-1), "" ) 
+			applic:LoadImageList( descIniFile )	
+		end
 	end
 end

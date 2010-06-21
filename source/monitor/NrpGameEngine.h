@@ -6,7 +6,6 @@ namespace nrp
 
 OPTION_NAME AVGENRE_COUNT( "avGenreCount" );
 OPTION_NAME TIME_ACTUAL( "timeActual" ); //актуальность движка... пересчитывается при выходе новых технологий
-OPTION_NAME GENRE_MODULE_NUMBER( "genreModuleNumber" );
 OPTION_NAME SKILL_CODING( "skillCoding" );
 
 class CNrpGameEngine : public INrpProject

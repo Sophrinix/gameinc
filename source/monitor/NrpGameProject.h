@@ -37,12 +37,15 @@ OPTION_NAME LANGUAGESUPPORTCODE( "languageSupportCode" );
 
 class CNrpGameEngine;
 class CNrpTechnology;
+class CNrpProjectModule;
+class IUser;
+
+typedef std::vector< CNrpTechnology* > TECH_LIST;
 
 class CNrpGameProject : public INrpProject
 {
 public:
 	CNrpGameProject( std::string name, CNrpCompany* ptrCompany );
-	CNrpGameProject( CNrpGameProject* nProject, CNrpCompany* ptrCompany );
 	~CNrpGameProject(void);
 
 	void SetGameEngine( CNrpGameEngine* gameEng );
@@ -54,18 +57,21 @@ public:
 	void SetVideoTech( CNrpTechnology* ptrTech, int index );
 	CNrpTechnology* GetVideoTech( int index );
 	CNrpTechnology* GetTechnology( int index );
-	void CalculateCodeVolume();
 	void SetSoundTech( CNrpTechnology* ptrTech, int index );
 	CNrpTechnology* GetSoundTech( int index );
 	void Save( std::string folderSave );
 	void Load( std::string loadFolder );
-	bool IsReady();
+
 	void UpdateDevelopmentMoney();
+	void CalculateCodeVolume();
+
+	const TECH_LIST& GetTechList() { return technologies_; }
+	const TECH_LIST& GetGenreList() { return genres_; }
+	const TECH_LIST& GetVideoTechList() { return videoTechnologies_; }
+	const TECH_LIST& GetSoundTechList() { return soundTechnologies_; }
 
 private:
-
 	void InitializeOptions_( std::string name );
-	typedef std::vector< CNrpTechnology* > TECH_LIST;
 	CNrpGameProject( CNrpGameProject& ptr );
 	TECH_LIST technologies_;
 	TECH_LIST genres_;

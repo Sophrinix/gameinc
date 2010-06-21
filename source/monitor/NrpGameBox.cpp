@@ -73,6 +73,7 @@ void CNrpGameBox::Load( std::string sectionName, std::string fileName )
 	for( int k=0; k < GetValue<int>( NUMBERADDON ); k++ )
 	{
 		std::string addonName = IniFile::Read( "addons", "addon_" + IntToStr( k ), std::string(""), fileName );
+
 		CNrpTechnology* tech = CNrpApplication::Instance().GetBoxAddon( addonName );
 
 		if( tech )

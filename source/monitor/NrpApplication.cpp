@@ -17,6 +17,7 @@
 #include "NrpGameBox.h"
 #include "NrpRetailer.h"
 #include "NrpGameImageList.h"
+#include "NrpDevelopGame.h"
 
 #include <io.h>
 #include <errno.h>
@@ -52,6 +53,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( DISKMACHINENUMBER, 0 );
 	CreateValue<int>( BOXADDONNUMBER, 0 );
 	CreateValue<int>( MARKETGAMENUMBER, 0 );
+	CreateValue<int>( ENGINES_NUMBER, 0 );
 
 	srand( GetTickCount() );
 }
@@ -181,16 +183,6 @@ INrpProject* CNrpApplication::CreateGameProject( std::string name )
 	return new CNrpGameProject( name, NULL );
 }
 
-nrp::CNrpGameEngine* CNrpApplication::CreateGameEngine( std::string name )
-{
-	return new CNrpGameEngine( name );
-}
-
-CNrpTechnology* CNrpApplication::CreateTechnology( int typeTech )
-{
-	return new CNrpTechnology( PROJECT_TYPE( typeTech ), NULL );
-}
-
 CNrpTechnology* CNrpApplication::GetTechnology( int index ) const
 {
 	return index < (int)technologies_.size() ?  technologies_[ index ] : NULL;
@@ -225,27 +217,6 @@ IUser* CNrpApplication::GetUser( std::string name )
 			return (*pIter);
 
 	return NULL;	
-}
-
-IUser* CNrpApplication::GetUser( std::string company, std::string name )
-{
-	if( company.empty() )
-	{
-		COMPANIES_LIST::const_iterator pIter = companies_.begin();
-		for( ; pIter != companies_.end(); pIter++)
-		{
-			IUser* ptrUser = (*pIter)->GetUser(name);
-			if( ptrUser != NULL )
-				return ptrUser;
-		}
-
-		return NULL;
-	}
-	else
-	{
-		PNrpCompany ptrCmp = GetCompany( company );
-		return ptrCmp != NULL ? ptrCmp->GetUser( name ) : NULL;
-	}
 }
 
 int CNrpApplication::RemoveUser( IUser* user )
@@ -287,7 +258,7 @@ void CNrpApplication::SaveProfile()
 		IniFile::Write( "companies", "company_" + IntToStr(i), (*cIter)->GetValue<std::string>( NAME ), profileIni );
 	}
 
-	std::string saveFolderUsers = saveFolder + "freeUsers/";
+	std::string saveFolderUsers = saveFolder + "users/";
 	USER_LIST::iterator uIter = users_.begin();
 	for( int i=0; uIter != users_.end(); uIter++, i++ )
 	{
@@ -296,12 +267,20 @@ void CNrpApplication::SaveProfile()
 		IniFile::Write( "users", "user_" + IntToStr(i), text, profileIni );
 	}
 
-	std::string saveFolderTech = saveFolder + "freeTech/";
+	std::string saveFolderTech = saveFolder + "techs/";
 	TECH_LIST::iterator tIter = technologies_.begin();
 	for( int i=0; tIter != technologies_.end(); tIter++, i++ )
 	{
 		(*tIter)->Save( saveFolderTech );
 		IniFile::Write( "technologies", "technology_" + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), profileIni );
+	}
+
+	std::string saveFolderEngines = saveFolder + "engines/";
+	GAMEENGINES_MAP::iterator eIter = engines_.begin();
+	for( int i=0; eIter != engines_.end(); eIter++, i++ )
+	{
+		eIter->second->Save( saveFolderEngines );
+		IniFile::Write( "engines", "engine_" + IntToStr(i), eIter->first,  profileIni );
 	}
 
 	std::string marketGamesIni = saveFolder + "marketGames.ini";
@@ -329,7 +308,7 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 	std::string profileIni = saveFolder + "profile.ini";
 	INrpConfig::Load( PROPERTIES, profileIni );
 
-	std::string saveFolderUsers = saveFolder + "freeUsers/";
+	std::string saveFolderUsers = saveFolder + "users/";
 	for( int i=0; i < GetValue<int>( USERNUMBER ); i++ )
 	{
 		std::string name = IniFile::Read( "users", "user_" + IntToStr(i), std::string(""), profileIni );
@@ -342,28 +321,54 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 		if( className == "AIPlayer" )
 			usert = new CNrpAiUser( name, NULL );
 		else
-			usert = new IUser( className.c_str(), "", NULL );
+			usert = new IUser( className.c_str(), "" );
 
 		users_.push_back( usert );
 		usert->Load( saveFolderUsers + name + ".ini" );
 	}
 
-	std::string saveFolderTech = saveFolder + "freeTech/";
+	std::string saveFolderTech = saveFolder + "Techs/";
 	for( int i=0; i < GetValue<int>( TECHNUMBER ); i++ )
 	{
 		std::string name = IniFile::Read( "technologies", "technology_" + IntToStr(i), std::string(""), profileIni );
-		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0), NULL );
+		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
 		technologies_.push_back( tech );
 		tech->Load( saveFolderTech + name + ".ini" );
 	}
 
-	std::string saveFolderCompanies = saveFolder + "companies/";
-	for( int i=0; i < GetValue<int>( COMPANIESNUMBER ); i++ )
+	std::string saveFolderEngines = saveFolder + "engines/";
+	for( int i=0; i < GetValue<int>( ENGINES_NUMBER ); i++ )
 	{
-		std::string name = IniFile::Read( "companies", "company_" + IntToStr(i), std::string(""), profileIni );
-		CNrpCompany* cmp = new CNrpCompany( name.c_str() );
-		companies_.push_back( cmp );
-		cmp->Load( saveFolderCompanies + name + "/" );
+		std::string name = IniFile::Read( "engines", "engine_" + IntToStr(i), std::string(""), profileIni );
+		CNrpGameEngine* eg = new CNrpGameEngine( "tmp" );
+		engines_[ name ] = eg;
+		eg->Load( saveFolderEngines + name );
+	}
+
+	std::string saveDevelopProjects = saveFolder + "devProjects/";
+	for( int i=0; i < GetValue<int>( DEVELOPPROJECTS_NUMBER ); i++ )
+	{
+		std::string name = IniFile::Read( "devProjects", "devPorject_" + IntToStr( i ), std::string(""), profileIni );
+		std::string type = name.substr( 0, name.find( ':' ) );
+		name = name.substr( name.find( ':' ) + 1, name.length() );
+		if( type == "devgame" )
+		{
+			CNrpDevelopGame* game = new CNrpDevelopGame( "tmp", NULL );
+			game->Load( saveDevelopProjects + name + "/" );
+			devProjects_[ name ] = game;
+		}
+		else if( type == "devengine" )
+		{
+			//
+		}
+	}
+
+	std::string saveFolderCompanies = saveFolder + "companies/";
+	for( COMPANIES_LIST::iterator cIter=companies_.begin();
+		 cIter != companies_.end(); cIter++ )
+	{
+		std::string name = (*cIter)->GetValue<std::string>( NAME );
+		(*cIter)->Load( saveFolderCompanies + name + "/" );
 	}
 
 	LoadMarketGames_( saveFolder + "marketGames.ini" );
@@ -470,7 +475,7 @@ int CNrpApplication::GetFreePlatformNumberForGame_( CNrpGame* game )
 {
 	int yearRaznost = GetValue<SYSTEMTIME>( CURRENTTIME ).wYear - 1980;
 
-	int summ = 100000;
+	int summ = 5000;
 	for( int k=0; k < yearRaznost; k++ )
 		 summ += summ * yearRaznost;
 
@@ -503,16 +508,16 @@ int CNrpApplication::GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp )
 	std::string retailerName = game->GetValue<std::string>( GAMERETAILER );
 	PNrpRetailer retailer = GetRetailer( retailerName );
 
-	float retailerFamous = 1;
+	float retailerFamous = 0.1f;
 	if( retailer )
 		retailerFamous = retailer->GetValue<float>( FAMOUS );
 
-	float genreInterest = GetGenreInterest( game->GetGenreTech( 0 ) );
+	float genreInterest = GetGameGenreInterest( game );
 
 	//столько игр может быть продано сегодня
 	freePlatformNumber /= 365;
-	//вероятность что покупатель обратит внимание на нашу игру
-	int gameMaySaledToday = (int)(freePlatformNumber / gamesInThisGenre);
+	//вероятность что покупатель обратит внимание на нашу игру после прочтения обзора в прессе
+	int gameMaySaledToday = (int)((freePlatformNumber*genreInterest) / gamesInThisGenre);
 
 	//повышение продаж игры за счет рекламы игры, известности авторов и личностных модификаторов
 	gameMaySaledToday *= ( game->GetValue<int>( FAMOUS ) + userModificator + authorFamous );
@@ -521,7 +526,7 @@ int CNrpApplication::GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp )
 	gameMaySaledToday *= (compannyFamous + retailerFamous)*0.5;
 
 	//коэффициент покупательской способности
-	gameMaySaledToday *= GetConsumerAbility_( game->GetValue<int>( PRICE ) );
+	gameMaySaledToday *= GetConsumerAbility_( game->GetValue<PNrpGameBox>( GBOX )->GetValue<int>( PRICE ) );
 
 	return gameMaySaledToday;
 }
@@ -531,7 +536,7 @@ void CNrpApplication::UpdateMarketGames_()
 	GAMES_LIST::iterator pIter = marketGames_.begin();
 	for( ; pIter != marketGames_.end(); pIter++ )
 	{
-		PNrpCompany cmp = GetCompany( (*pIter)->GetValue<std::string>( COMPANYNAME ) );
+		PNrpCompany cmp = (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY );
 		int salesNumber = GetSalesNumber_( *pIter, cmp );
 		
 		int boxNumber = (*pIter)->GetValue<PNrpGameBox>( GBOX )->GetValue<int>( BOXNUMBER );
@@ -602,15 +607,6 @@ CNrpApplication& nrp::CNrpApplication::Instance()
 	return *globalApplication;
 }
 
-CNrpTechnology* CNrpApplication::GetTechnology( CNrpCompany* ptrCompany, const std::string& name )
-{
-	CNrpTechnology* tech = GetTechnology( name );
-	if( !tech )
-		tech = ptrCompany->GetTechnology( name );
-
-	return tech;
-}
-
 template< class B > int GetQuality_( B* ptrObject )
 {
 	if( ptrObject )
@@ -620,16 +616,16 @@ template< class B > int GetQuality_( B* ptrObject )
 
 int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating )
 {
-	CNrpCompany* cmp = GetCompany( ptrGame->GetValue<std::string>( COMPANYNAME ) );
+	CNrpCompany* cmp = ptrGame->GetValue<PNrpCompany>( PARENTCOMPANY );
 	int rating = 0;
 	int number = 0;
 
 	switch( typeRating ) {
 	case GRT_GENERAL:
 		rating = GetQuality_( cmp->GetGameEngine( ptrGame->GetValue<std::string>( GAME_ENGINE ) ) );
-		rating += GetQuality_( GetTechnology( cmp, ptrGame->GetValue<std::string>( LOCALIZATION ) ) );
+		rating += GetQuality_( GetTechnology( ptrGame->GetValue<std::string>( LOCALIZATION ) ) );
 		rating /= 2;
-		rating += GetQuality_( GetTechnology( cmp, ptrGame->GetValue<std::string>( CROSSPLATFORMCODE ) ) );
+		rating += GetQuality_( GetTechnology( ptrGame->GetValue<std::string>( CROSSPLATFORMCODE ) ) );
 		rating /= 2;
 		rating += GetGameRating_( ptrGame, GRT_VIDEO );
 		rating /= 2;
@@ -645,7 +641,7 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 		number = ptrGame->GetValue<int>( VIDEOTECHNUMBER );
 		for( int cnt=0; cnt < number; cnt++ )
 		{
-			rating += GetQuality_( GetTechnology( cmp, ptrGame->GetVideoTech( cnt ) ) );
+			rating += GetQuality_( GetTechnology( ptrGame->GetVideoTech( cnt ) ) );
 			rating /= 2;
 		}
 	break;
@@ -654,7 +650,7 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 		number = ptrGame->GetValue<int>( SOUNDTECHNUMBER );
 		for( int cnt=0; cnt < number; cnt++ )
 		{
-			rating += GetQuality_( GetTechnology( cmp, ptrGame->GetSoundTech( cnt ) ) );
+			rating += GetQuality_( GetTechnology( ptrGame->GetSoundTech( cnt ) ) );
 			rating /= 2;
 		}
 	break;
@@ -663,7 +659,7 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 		number = ptrGame->GetValue<int>( ADVTECHNUMBER );
 		for( int cnt=0; cnt < number; cnt++ )
 		{
-			rating += GetQuality_( GetTechnology( cmp, ptrGame->GetAdvTech( cnt ) ) );
+			rating += GetQuality_( GetTechnology( ptrGame->GetAdvTech( cnt ) ) );
 			rating /= 2;
 		}
 	break;
@@ -672,7 +668,7 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 		number = ptrGame->GetValue<int>( GENRE_MODULE_NUMBER );
 		for( int cnt=0; cnt < number; cnt++ )
 		{
-			rating += GetQuality_( GetTechnology( cmp, ptrGame->GetGenreTech( cnt ) ) );
+			rating += GetQuality_( GetTechnology( ptrGame->GetGenreTech( cnt ) ) );
 			rating /= 2;
 		}
 	break;
@@ -689,7 +685,7 @@ void CNrpApplication::UpdateGameRatings( CNrpGame* ptrGame, bool firstTime )
 		ptrGame->SetValue<int>( STARTGRAPHICRATING, GetGameRating_( ptrGame, GRT_VIDEO ) );
 		ptrGame->SetValue<int>( STARTGENRERATING, GetGameRating_( ptrGame, GRT_GENRE ) );
 		ptrGame->SetValue<int>( STARTSOUNDRATING, GetGameRating_( ptrGame, GRT_SOUND ) );
-		ptrGame->SetValue<int>( STARTADVFUNC, GetGameRating_( ptrGame, GRT_ADVFUNC ) );
+		ptrGame->SetValue<int>( STARTADVFUNCRATING, GetGameRating_( ptrGame, GRT_ADVFUNC ) );
 	}
 
 	ptrGame->SetValue<int>( CURRENTGAMERATING, GetGameRating_( ptrGame, GRT_GENERAL ) );
@@ -715,10 +711,10 @@ IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 	do 
 	{
 		userName = GlobalPeopleName[ rand() % PEOPLE_NAME_COUNT ] + " " + GlobalPeopleSurname[ rand() % PEOPLE_SURNAME_COUNT ];
-		ptrUser = GetUser( "", userName );
+		ptrUser = GetUser( userName );
 	} while ( ptrUser != NULL );
 
-	ptrUser = new IUser( userType.c_str(), userName.c_str(), NULL );
+	ptrUser = new IUser( userType.c_str(), userName.c_str() );
 	ptrUser->SetSkill( skillMap[ userType ], maxParamValue );
 	ptrUser->SetValue<int>( CODE_QUALITY, rand() % maxParamValue );
 	ptrUser->SetValue<int>( CODE_SPEED, rand() % maxParamValue );
@@ -797,16 +793,38 @@ void CNrpApplication::AddGameToMarket( CNrpGame* game )
 	marketGames_.push_back( game );
 	game->SetValue<bool>( GAMEISSALING, true );
 	SetValue<int>( MARKETGAMENUMBER, marketGames_.size() );
+
+	//когда игра выходит на рынок, то она влияет на него
+	for( int i=0; i <  game->GetValue<int>( GENRE_MODULE_NUMBER ); i++ )
+	{
+		std::string genreName = game->GetGenreTech( i );
+		//влияние приводит к изменению интереса к жанру игры
+		CNrpTechnology* tech = GetTechnology( genreName );
+		if( tech != NULL )
+			tech->AddValue<float>( INTEREST,  -game->GetValue<int>( CURRENTGAMERATING ) / 1000.f );
+	}
 }
 
-CNrpGame* CNrpApplication::GetMarketGame( int index )
+CNrpGame* CNrpApplication::GetMarketGame( size_t index )
 {
 	return index < marketGames_.size() ? marketGames_[ index ] : NULL;
 }
 
-float CNrpApplication::GetGenreInterest( std::string genreName )
+//интерес к жанру меняется в противоположную сторону на 10% от рейтинга игры
+float CNrpApplication::GetGameGenreInterest( CNrpGame* game )
 {
-	return 1;
+	CNrpTechnology* tech = GetTechnology( game->GetGenreTech( 0 ) );
+	float summ = tech != NULL ? tech->GetValue<float>( INTEREST ) : 0.1f;
+	int gm = game->GetValue<int>( GENRE_MODULE_NUMBER );
+	for( int i=1; i < gm; i++ )
+	{
+		tech = GetTechnology( game->GetGenreTech( i ) );	
+		summ += ( tech != NULL ? (tech->GetValue<float>( INTEREST ) / i) : 0 );
+	}
+
+	//надо скомпенсировать понижение интереса к жанру, которое принесла
+	//игра при размещении на рынке
+	return (summ + game->GetValue<int>( CURRENTGAMERATING ) / 1000.f );
 }
 
 CNrpRetailer* CNrpApplication::GetRetailer( std::string name )
@@ -867,4 +885,35 @@ CNrpGame* CNrpApplication::GetGame( const std::string& name )
 	return NULL;
 }
 
+void CNrpApplication::RemoveTechnology( CNrpTechnology* ptrTech )
+{
+	TECH_LIST::iterator pIter = technologies_.begin();
+
+	for( ; pIter != technologies_.end(); pIter++ )
+		if( *pIter == ptrTech )
+		{
+			technologies_.erase( pIter );
+			return;
+		}
+
+	OutputDebugString( "unknown technology" );
+}
+
+void CNrpApplication::AddGameEngine( nrp::CNrpGameEngine* ptrEngine )
+{
+	if( engines_.find( ptrEngine->GetValue<std::string>( NAME ) ) == engines_.end() )
+	{
+		engines_[ ptrEngine->GetValue<std::string>( NAME ) ] = ptrEngine;
+		SetValue<int>( ENGINES_NUMBER, engines_.size() );
+		return;
+	}
+
+	OutputDebugString( "такой движок уже есть" );
+}
+
+INrpProject* CNrpApplication::GetProject( const std::string& name )
+{
+	PROJECTS_MAP::iterator pIter = projects_.find( name );
+	return pIter != projects_.end() ? pIter->second : NULL;
+}
 }//namespace nrp

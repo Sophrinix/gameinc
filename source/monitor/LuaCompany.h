@@ -24,7 +24,7 @@ public:
 	int AddGameEngine( lua_State* L );
 	int GetTechNumber( lua_State* L );
 	int GetTech( lua_State* L );
-	int CreateGameProject( lua_State* L );
+	int CreateDevelopGame( lua_State* L );
 	int GetProjectNumber( lua_State *L );
 	int GetUserNumber( lua_State* L );
 	int GetProject( lua_State* L );

@@ -93,7 +93,7 @@ int CLuaTechnology::Create( lua_State* L )
 
 	int typen = lua_tointeger( L, 2 );
 
-	object_ = CNrpApplication::Instance().CreateTechnology( typen );
+	object_ = new CNrpTechnology( PROJECT_TYPE(typen) );
 	lua_pushlightuserdata(L, object_ );
 
 	return 1;
@@ -139,10 +139,14 @@ int CLuaTechnology::HaveLider( lua_State* L )
 int CLuaTechnology::GetEmployerPosibility( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::GetEmployerPosibility not need parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::GetEmployerPosibility not need parameter");
 
 	float posilbleValue = 0; 
-	IF_OBJECT_NOT_NULL_THEN	posilbleValue = object_->GetEmployerPosibility();
+	PUser puser = (PUser)lua_touserdata( L, 2 );
+	assert( puser != NULL );
+	if( puser != NULL )
+		IF_OBJECT_NOT_NULL_THEN	posilbleValue = object_->GetEmployerPosibility( puser );
+
 	lua_pushnumber( L, posilbleValue );
 	return 1;	
 }

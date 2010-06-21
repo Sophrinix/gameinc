@@ -17,12 +17,14 @@ OPTION_NAME ENGINES_NUMBER( "engineNumber" );
 OPTION_NAME PROJECTNUMBER( "projectNumber" );
 OPTION_NAME GAMENUMBER( "gameNumber" );
 OPTION_NAME OBJECTSINPORTFELLE( "objectInPortfelle" );
+OPTION_NAME DEVELOPPROJECTS_NUMBER( "developProjectsNumber" );
 
 class INrpProject;
 class CNrpGame;
 class CNrpGameEngine;
 class IUser;
 class CNrpTechnology;
+class CNrpDevelopGame;
 class CNrpGameProject;
 
 class CNrpCompany : public INrpConfig, public ILuaFunctionality
@@ -35,7 +37,7 @@ public:
 	typedef std::map< std::string, CNrpGame* > GAME_MAP;
 	typedef std::vector< INrpConfig* > OBJECT_LIST;
 
-	CNrpCompany(const char* name);
+	CNrpCompany( std::string name);
 	~CNrpCompany(void);
 
 	void AddGameEngine( CNrpGameEngine* ptrEng );
@@ -43,28 +45,32 @@ public:
 	CNrpGameEngine* GetGameEngine( std::string name );
 	CNrpTechnology* GetTechnology( int index );
 	CNrpTechnology* GetTechnology( std::string name );
-	CNrpGameProject* AddGameProject( CNrpGameProject* ptrProject );
 	INrpConfig* GetFromPortfelle( int index );
 	void AddToPortfelle( INrpConfig* ptrObject );
 	float GetUserModificatorForGame( CNrpGame* game );
 
-	void RemoveGameProject( CNrpGameProject* ptrProject );
+	void AddDevelopProject( INrpProject* ptrDevProject );
+	void RemoveDevelopProject( std::string name );
+
+	void AddProject( INrpProject* ptrProject );
+	void RemoveProject( std::string name );
 	INrpProject* GetProject( std::string name );
 	INrpProject* GetProject( size_t index );
+
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
 	
 	CNrpGame* GetGame( std::string gameName );
 	CNrpGame* GetGame( size_t index );
-	CNrpGame* CreateGame( CNrpGameProject* ptrProject );
+	CNrpGame* CreateGame( CNrpDevelopGame* ptrProject );
 
 	void BeginNewHour( const SYSTEMTIME& time );
 	void BeginNewDay( const SYSTEMTIME& time );
 	void BeginNewMonth( const SYSTEMTIME& time );
 
-	void Save( std::string saveFolder );
-	void Load( std::string loadFolder );
+	void Save( const std::string& saveFolder );
+	void Load( const std::string& loadFolder );
 
 private:
 	void Load_( char* file_name ) {}
@@ -72,6 +78,7 @@ private:
 	PROJECT_MAP projects_; 
 	ENGINE_LIST engines_;
 	TECH_MAP technologies_;
+	PROJECT_MAP devProjects_;
 	GAME_MAP games_;
 	USER_LIST employers_;
 	OBJECT_LIST portfelle_;

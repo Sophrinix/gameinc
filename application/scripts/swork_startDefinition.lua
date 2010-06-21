@@ -109,11 +109,11 @@ function sloginAddStartPublicTechnology()
 
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология SCRLVL_SIMPLE")
 	applic:AddPublicTechnology( phTech:Self() )
-	
 end
 
 function sloginAddStartScenarioContentTechnology( ptr )
-	local vScn = CLuaTech( applic:CreateTechnology( PT_SCENARIOQUALITY ) )
+	local vScn = CLuaTech( nil )
+	vScn:Create( PT_SCENARIOQUALITY ) 
 
 	vScn:SetTechType( SCNQ_SELFWRITE )
 	vScn:SetName( "Написать самому" )
@@ -125,8 +125,9 @@ function sloginAddStartScenarioContentTechnology( ptr )
 end
 
 function sloginAddStartSoundContentTechnology( ptr )
-	local vSn = CLuaTech( applic:CreateTechnology( PT_SOUNDQUALITY ) )
-
+	local vSn = CLuaTech( nil )
+	vSn:Create( PT_SOUNDQUALITY )
+    
 	vSn:SetTechType( VSQ_SELFCOMPOSE )
 	vSn:SetName( "Писать ноты" )
 	vSn:SetBaseCode( 1 )			--depended from engine code volume
@@ -137,7 +138,8 @@ function sloginAddStartSoundContentTechnology( ptr )
 end
 
 function sloginAddStartVideoContentTechnology( ptr )
-	local vCn = CLuaTech( applic:CreateTechnology( PT_VIDEOQUALITY ) )
+	local vCn = CLuaTech( nil )
+	vCn:Create( PT_VIDEOQUALITY )
 
 	vCn:SetTechType( VDQ_SELFRENDER )
 	vCn:SetName( "Рисовать самим" )

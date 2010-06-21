@@ -357,6 +357,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\nrpConfig.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\nrpConfig.h"
 				>
 			</File>
@@ -1675,6 +1679,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NrpProjectModule.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpProjectModule.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NrpRetailer.cpp"
 				>
 			</File>
@@ -1699,6 +1711,22 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\INrpDevelopProject.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\INrpDevelopProject.h"
+			>
+		</File>
+		<File
+			RelativePath=".\NrpDevelopGame.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\NrpDevelopGame.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

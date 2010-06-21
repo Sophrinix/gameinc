@@ -16,9 +16,8 @@
 #include <stdio.h>
 #include <algorithm>
 
-#include "IniFile.h"
 #include "INrpObject.h"
-#include "NrpTranslate.h"
+#include "IniFile.h"
 
 namespace nrp
 {
@@ -58,6 +57,10 @@ OPTION_NAME GAMENAME( "gameName" );
 OPTION_NAME FINISHED( "finished" );
 OPTION_NAME FAMOUS( "famous" );
 OPTION_NAME GENRETECH( "genreTech" );
+OPTION_NAME GENRE_MODULE_NUMBER( "genreModuleNumber" );
+OPTION_NAME TECHGROUP( "techGroup" );
+OPTION_NAME CODEPASSED( "codePassed" );
+OPTION_NAME MONEYONDEVELOP( "moneyDevelop" );
 
 #define CHECK_VALCLASS_TYPE( bclass )\
 	if( type_ != typeid( bclass ).name() ) {\
@@ -141,11 +144,13 @@ public:
 
 	}
 
-	~INrpConfig()
+	virtual ~INrpConfig() 
 	{
 		PropertyArray::iterator pIter = options_.begin();
 		for( ; pIter != options_.end(); pIter++ )
-			 delete pIter->second;
+			delete pIter->second;
+
+		options_.clear();
 	}
 
 	//! имя класса объекта
@@ -247,62 +252,8 @@ public:
 			((CNrpProperty<B>*)pIter->second)->SetValue( valuel );
 	}
 
-	virtual void Save( std::string scetionName, std::string fileName )
-	{
-		PropertyArray::iterator paIter = options_.begin();
-		for( ; paIter != options_.end(); paIter++)
-		{
-			INrpProperty* prop = paIter->second;
-			if( prop->GetValueType() == typeid( int ).name() || prop->GetValueType().find( "enum" ) == 0 )
-				IniFile::Write( scetionName, paIter->first + ":int", ((CNrpProperty<int>*)prop)->GetValue(), fileName );
-			else
-			if( prop->GetValueType() == typeid( std::string ).name() )
-				IniFile::Write( scetionName, paIter->first + ":string", ((CNrpProperty<std::string>*)prop)->GetValue(), fileName );
-			else
-			if( prop->GetValueType() == typeid( bool ).name() )
-				IniFile::Write( scetionName, paIter->first + ":bool", std::string(((CNrpProperty<bool>*)prop)->GetValue() ? "true" : "false"), fileName );
-			else
-			if( prop->GetValueType() == typeid( SYSTEMTIME ).name() )
-				IniFile::Write( scetionName, paIter->first + ":time", ((CNrpProperty<SYSTEMTIME>*)prop)->GetValue(), fileName );
-			else 
-			if( prop->GetValueType() == typeid( float ).name() )
-				IniFile::Write( scetionName, paIter->first + ":float", ((CNrpProperty<float>*)prop)->GetValue(), fileName );
-		}
-	}
-
-	virtual void Load( std::string sectionName, std::string fileName )
-	{
-		char buffer[ 32000 ];
-		memset( buffer, 0, 32000 );
-		GetPrivateProfileSection( sectionName.c_str(), buffer, 32000, fileName.c_str() );
-
-		std::string readLine = buffer;
-		while( readLine != "" )
-		{
-#ifdef _DEBUG
-			//OutputDebugString( readLine.c_str() );
-			//OutputDebugString( "\n" );
-#endif
-			std::string name, valuel, type;
-			name = readLine.substr( 0, readLine.find( '=' ) );
-			type = name.substr( name.find( ':' ) + 1, 0xff );
-			name = name.substr( 0, name.find( ':' ) );
-			valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
-			if( type == "int" )
-				CreateValue<int>( name, StrToInt( valuel.c_str() ) );
-			else if( type == "float" )
-				CreateValue<float>( name, StrToFloat( valuel.c_str() ) ); 
-			else if( type == "bool" )
-				CreateValue<bool>( name, valuel == "true" );
-			else if( type == "string" )
-				CreateValue<std::string>( name, translate::GetTranslate( valuel.c_str() ) );
-			else if( type == "time" )
-				CreateValue<SYSTEMTIME>( name, StrToTime( valuel.c_str()) );
-
-			memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
-			readLine = buffer;
-		}
-	}
+	virtual void Save( std::string scetionName, std::string fileName );
+	virtual void Load( std::string sectionName, std::string fileName );
 
 private:
 	//! определение массива свойств

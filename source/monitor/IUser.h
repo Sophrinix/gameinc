@@ -32,24 +32,26 @@ class IUserAction;
 class CNrpTechnology; 
 class CNrpCompany;
 class IModificator;
+class CNrpProjectModule;
 
 class IUser : public INrpConfig
 {
 public:
-	IUser(const char* className, const char* systemName, CNrpCompany* ptrCmp );
+	IUser(const char* className, const char* systemName );
 	void SetSkill( int typen, int valuel ); 
 	void SetSkill( std::string name, int valuel );
 	int GetSkill( int typen );
 	
 	int GetGenreExperience( int typen );
 	void SetGenreExperience( int typen, int valuel );
+	void IncreaseExperience( int techGroup, int grow );
 
 	int GetGenrePreferences( int typen );
 	void SetGenrePreferences( int typen, int valuel );
 	
-	void AddTechWork( CNrpTechnology* techWork );
-	CNrpTechnology* GetTechWork( int index );
-	void RemoveTechWork( CNrpTechnology* techWork );
+	void AddWork( CNrpProjectModule* techWork );
+	CNrpProjectModule* GetWork( int index );
+	void RemoveWork( CNrpProjectModule* techWork );
 
 	template< class R > R GetValueA( std::string name )
 	{
@@ -82,7 +84,7 @@ private:
 	void RemoveOldModificators_( const SYSTEMTIME& time );
 
 	typedef std::map< int, int > KNOWLEDGE_MAP;
-	typedef std::vector< CNrpTechnology* > TECH_LIST;
+	typedef std::vector< CNrpProjectModule* > WORK_LIST;
 	typedef std::vector< IUserAction* > USERACTION_LIST;
 	typedef std::vector< IModificator* > MODIFICATOR_LIST;
 
@@ -90,7 +92,7 @@ private:
 	KNOWLEDGE_MAP genreExperience_;  /*< опыт написания игр, растет по мере выполнения компонентов */
 	KNOWLEDGE_MAP knowledges_;		/*< уровень знания технологий */
 	USERACTION_LIST peopleFeels_; /*< Отношения с окружающими людьми */
-	TECH_LIST techWorks_;
+	WORK_LIST works_;
 	MODIFICATOR_LIST modificators_;
 };
 

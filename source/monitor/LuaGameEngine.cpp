@@ -32,9 +32,10 @@ int CLuaGameEngine::Create( lua_State* L )
 	const char* name = lua_tostring( L, 2 );
 	assert( name != NULL );
 
-	object_ = CNrpApplication::Instance().CreateGameEngine( name );
-	lua_pushlightuserdata(L, object_ );
+	object_ = new CNrpGameEngine( name );
+	CNrpApplication::Instance().AddGameEngine( object_ );
 
+	lua_pushlightuserdata(L, object_ );
 	return 1;
 }
 
