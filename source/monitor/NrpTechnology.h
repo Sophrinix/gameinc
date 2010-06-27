@@ -35,8 +35,8 @@ public:
 
 	float GetEmployerPosibility( IUser* ptrUser );
 
-	void Save( std::string saveFolder );
-	void Load( std::string fileName );
+	virtual void Save( std::string saveFolder );
+	virtual void Load( std::string fileName );
 
 	const REQUIRE_MAP& GetTechRequires() { return techRequires_; }
 	const REQUIRE_MAP& GetSkillRequires() { return skillRequires_; }
@@ -44,6 +44,7 @@ public:
 protected:
 	void Load_( char* file_name ) {}
 	void InitializeOptions_();
+	void SaveRequires_( std::string fileName );
 
 	REQUIRE_MAP techRequires_;
 	REQUIRE_MAP skillRequires_;

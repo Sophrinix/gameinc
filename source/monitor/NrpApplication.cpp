@@ -54,6 +54,8 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( BOXADDONNUMBER, 0 );
 	CreateValue<int>( MARKETGAMENUMBER, 0 );
 	CreateValue<int>( ENGINES_NUMBER, 0 );
+	CreateValue<int>( DEVELOPPROJECTS_NUMBER, 0 );
+	CreateValue<int>( PROJECTNUMBER, 0 );
 
 	srand( GetTickCount() );
 }
@@ -178,9 +180,9 @@ CNrpCompany* CNrpApplication::GetPlayerCompany()
 	return NULL;
 }
 
-INrpProject* CNrpApplication::CreateGameProject( std::string name )
+void CNrpApplication::AddProject( INrpProject* project )
 {
-	return new CNrpGameProject( name, NULL );
+	projects_[ project->GetValue<std::string>( NAME ) ] = project;
 }
 
 CNrpTechnology* CNrpApplication::GetTechnology( int index ) const
@@ -250,36 +252,46 @@ void CNrpApplication::SaveProfile()
 	IniFile::Write( "options", "currentProfile", GetValue<std::string>( PROFILENAME ), config );
 	IniFile::Write( "options", "currentCompany", GetValue<std::string>( PROFILECOMPANY ), config );
 	
-	std::string saveFolderCompanies = saveFolder + "companies/";
 	COMPANIES_LIST::iterator cIter = companies_.begin();
 	for( int i=0; cIter != companies_.end(); cIter++, i++ )
 	{
-		(*cIter)->Save( saveFolderCompanies );
+		(*cIter)->Save( saveFolder + "companies/" );
 		IniFile::Write( "companies", "company_" + IntToStr(i), (*cIter)->GetValue<std::string>( NAME ), profileIni );
 	}
 
-	std::string saveFolderUsers = saveFolder + "users/";
+	PROJECTS_MAP::iterator dIter = devProjects_.begin();
+	for( int i=0; dIter != devProjects_.end(); dIter++, i++ )
+	{
+		dynamic_cast< INrpDevelopProject* >( dIter->second )->Save( saveFolder + "devProjects/" );
+		IniFile::Write( "devprojects", "project_" + IntToStr(i), dIter->second->ClassName() + ":" + dIter->first, profileIni );
+	}
+
+	PROJECTS_MAP::iterator ppIter = projects_.begin();
+	for( int i=0; ppIter != projects_.end(); ppIter++, i++ )
+	{
+		ppIter->second->Save( PROPERTIES, saveFolder + "Projects/" + ppIter->first + ".prj" );
+		IniFile::Write( "projects", "project_" + IntToStr(i), ppIter->second->ClassName() + ":" + ppIter->first, profileIni );
+	}
+
 	USER_LIST::iterator uIter = users_.begin();
 	for( int i=0; uIter != users_.end(); uIter++, i++ )
 	{
-		(*uIter)->Save( saveFolderUsers );
+		(*uIter)->Save( saveFolder + "users/" );
 		std::string text = (*uIter)->ClassName() + ":" + (*uIter)->GetValueA<std::string>( NAME );
 		IniFile::Write( "users", "user_" + IntToStr(i), text, profileIni );
 	}
 
-	std::string saveFolderTech = saveFolder + "techs/";
 	TECH_LIST::iterator tIter = technologies_.begin();
 	for( int i=0; tIter != technologies_.end(); tIter++, i++ )
 	{
-		(*tIter)->Save( saveFolderTech );
+		(*tIter)->Save( saveFolder + "techs/" );
 		IniFile::Write( "technologies", "technology_" + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), profileIni );
 	}
 
-	std::string saveFolderEngines = saveFolder + "engines/";
 	GAMEENGINES_MAP::iterator eIter = engines_.begin();
 	for( int i=0; eIter != engines_.end(); eIter++, i++ )
 	{
-		eIter->second->Save( saveFolderEngines );
+		eIter->second->Save( saveFolder + "engines/" );
 		IniFile::Write( "engines", "engine_" + IntToStr(i), eIter->first,  profileIni );
 	}
 
@@ -333,7 +345,7 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 		std::string name = IniFile::Read( "technologies", "technology_" + IntToStr(i), std::string(""), profileIni );
 		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
 		technologies_.push_back( tech );
-		tech->Load( saveFolderTech + name + ".ini" );
+		tech->Load( saveFolderTech + name + ".tech" );
 	}
 
 	std::string saveFolderEngines = saveFolder + "engines/";
@@ -348,10 +360,28 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 	std::string saveDevelopProjects = saveFolder + "devProjects/";
 	for( int i=0; i < GetValue<int>( DEVELOPPROJECTS_NUMBER ); i++ )
 	{
-		std::string name = IniFile::Read( "devProjects", "devPorject_" + IntToStr( i ), std::string(""), profileIni );
+		std::string name = IniFile::Read( "devProjects", "project_" + IntToStr( i ), std::string(""), profileIni );
 		std::string type = name.substr( 0, name.find( ':' ) );
 		name = name.substr( name.find( ':' ) + 1, name.length() );
-		if( type == "devgame" )
+		if( type == CLASS_DEVELOPGAME )
+		{
+			CNrpDevelopGame* game = new CNrpDevelopGame( "tmp", NULL );
+			game->Load( saveDevelopProjects + name + "/" );
+			devProjects_[ name ] = game;
+		}
+		else if( type == "devengine" )
+		{
+			//
+		}
+	}
+
+	std::string saveProjects = saveFolder + "Projects/";
+	for( int i=0; i < GetValue<int>( PROJECTNUMBER ); i++ )
+	{
+		std::string name = IniFile::Read( "Projects", "project_" + IntToStr( i ), std::string(""), profileIni );
+		std::string type = name.substr( 0, name.find( ':' ) );
+		name = name.substr( name.find( ':' ) + 1, name.length() );
+		if( type == CLASS_GAMEPROJECT )
 		{
 			CNrpDevelopGame* game = new CNrpDevelopGame( "tmp", NULL );
 			game->Load( saveDevelopProjects + name + "/" );
@@ -492,7 +522,7 @@ int CNrpApplication::GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp )
 	float gamesInThisGenre = 1;
 	for( ; pIter != marketGames_.end(); pIter++ )
 	  if( (game != (*pIter)) && 
-		  ((*pIter)->GetGenreTech( 0 ) == game->GetGenreTech( 0 )) )
+		  ((*pIter)->GetGenreName( 0 ) == game->GetGenreName( 0 )) )
 		  gamesInThisGenre += (*pIter)->GetValue<int>( CURRENTGAMERATING ) / 100.f; 
 
 	freePlatformNumber -= game->GetValue<int>( COPYSELL );
@@ -641,8 +671,8 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 		number = ptrGame->GetValue<int>( VIDEOTECHNUMBER );
 		for( int cnt=0; cnt < number; cnt++ )
 		{
-			rating += GetQuality_( GetTechnology( ptrGame->GetVideoTech( cnt ) ) );
-			rating /= 2;
+			//rating += GetQuality_( GetTechnology( ptrGame->GetVideoTech( cnt ) ) );
+			//rating /= 2;
 		}
 	break;
 
@@ -650,8 +680,8 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 		number = ptrGame->GetValue<int>( SOUNDTECHNUMBER );
 		for( int cnt=0; cnt < number; cnt++ )
 		{
-			rating += GetQuality_( GetTechnology( ptrGame->GetSoundTech( cnt ) ) );
-			rating /= 2;
+			//rating += GetQuality_( GetTechnology( ptrGame->GetSoundTech( cnt ) ) );
+			//rating /= 2;
 		}
 	break;
 
@@ -659,8 +689,8 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 		number = ptrGame->GetValue<int>( ADVTECHNUMBER );
 		for( int cnt=0; cnt < number; cnt++ )
 		{
-			rating += GetQuality_( GetTechnology( ptrGame->GetAdvTech( cnt ) ) );
-			rating /= 2;
+			//rating += GetQuality_( GetTechnology( ptrGame->GetAdvTech( cnt ) ) );
+			//rating /= 2;
 		}
 	break;
 
@@ -668,8 +698,8 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 		number = ptrGame->GetValue<int>( GENRE_MODULE_NUMBER );
 		for( int cnt=0; cnt < number; cnt++ )
 		{
-			rating += GetQuality_( GetTechnology( ptrGame->GetGenreTech( cnt ) ) );
-			rating /= 2;
+			//rating += GetQuality_( GetTechnology( ptrGame->GetGenreTech( cnt ) ) );
+			//rating /= 2;
 		}
 	break;
 	}
@@ -797,7 +827,7 @@ void CNrpApplication::AddGameToMarket( CNrpGame* game )
 	//когда игра выходит на рынок, то она влияет на него
 	for( int i=0; i <  game->GetValue<int>( GENRE_MODULE_NUMBER ); i++ )
 	{
-		std::string genreName = game->GetGenreTech( i );
+		std::string genreName = game->GetGenreName( i );
 		//влияние приводит к изменению интереса к жанру игры
 		CNrpTechnology* tech = GetTechnology( genreName );
 		if( tech != NULL )
@@ -813,12 +843,12 @@ CNrpGame* CNrpApplication::GetMarketGame( size_t index )
 //интерес к жанру меняется в противоположную сторону на 10% от рейтинга игры
 float CNrpApplication::GetGameGenreInterest( CNrpGame* game )
 {
-	CNrpTechnology* tech = GetTechnology( game->GetGenreTech( 0 ) );
+	CNrpTechnology* tech = GetTechnology( game->GetGenreName( 0 ) );
 	float summ = tech != NULL ? tech->GetValue<float>( INTEREST ) : 0.1f;
 	int gm = game->GetValue<int>( GENRE_MODULE_NUMBER );
 	for( int i=1; i < gm; i++ )
 	{
-		tech = GetTechnology( game->GetGenreTech( i ) );	
+		tech = GetTechnology( game->GetGenreName( i ) );	
 		summ += ( tech != NULL ? (tech->GetValue<float>( INTEREST ) / i) : 0 );
 	}
 
@@ -839,7 +869,7 @@ std::string CNrpApplication::GetFreeInternalName( CNrpGame* game )
 	GAMEIMAGES_MAP::iterator pIter = gameImages_.begin();
 	for( ; pIter != gameImages_.end(); pIter++ )
 		if( !pIter->second->GetValue<bool>( ISUSED ) && 
-			pIter->second->GetValue<std::string>( GENRETECH ) == game->GetGenreTech( 0 ) && 
+			pIter->second->GetValue<std::string>( GENRETECH ) == game->GetGenreName( 0 ) && 
 			pIter->second->GetValue<int>( YEAR ) == GetValue<SYSTEMTIME>( CURRENTTIME ).wYear )
 			thisYearAndGenreImgs.push_back( pIter->second );
 	
@@ -915,5 +945,11 @@ INrpProject* CNrpApplication::GetProject( const std::string& name )
 {
 	PROJECTS_MAP::iterator pIter = projects_.find( name );
 	return pIter != projects_.end() ? pIter->second : NULL;
+}
+
+void CNrpApplication::AddDevelopProject( nrp::INrpProject* project )
+{
+	devProjects_[ project->GetValue<std::string>( NAME ) ] = project;
+	SetValue<int>( DEVELOPPROJECTS_NUMBER, devProjects_.size() );
 }
 }//namespace nrp

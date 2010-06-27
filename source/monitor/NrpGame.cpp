@@ -7,6 +7,7 @@
 #include "NrpGameImageList.h"
 #include "NrpApplication.h"
 #include "NrpDevelopGame.h"
+#include "NrpProjectModule.h"
 #include "IUser.h"
 
 #include <io.h>
@@ -85,41 +86,13 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany )
 	
 	developers_ = devGame->GetDevelopers();
 
-	INrpConfig* component;
+	SetValue<int>( GENRE_MODULE_NUMBER, devGame->GetValue<int>( GENRE_MODULE_NUMBER ) );
+	for( int cnt=0; cnt < GetValue<int>( GENRE_MODULE_NUMBER ); cnt++ )
+		techs_.push_back( devGame->GetGenre( cnt )->GetValue<std::string>( NAME ) );
 
-	component = devGame->GetValue<PNrpTechnology>( SCRIPTENGINE );
-	if( component )	SetValue<std::string>( SCRIPTENGINE, component->GetValue<std::string>( NAME ) );
-
-	component =  devGame->GetValue<PNrpTechnology>( MINIGAMEENGINE );
-	if( component ) SetValue<std::string>( MINIGAMEENGINE, component->GetValue<std::string>( NAME ) );
-
-	component =  devGame->GetValue<PNrpTechnology>( PHYSICSENGINE );
-	if( component )	SetValue<std::string>( PHYSICSENGINE, component->GetValue<std::string>( NAME ) ); 
-
-	SetValue<int>( VIDEOTECHNUMBER, devGame->GetValue<int>( VIDEOTECHNUMBER ) );
-	for( int cnt=0; cnt < GetValue<int>( VIDEOTECHNUMBER ); cnt++ )
-		videoTechs_.push_back( devGame->GetVideoTech( cnt )->GetValue<std::string>( NAME ) );
-
-	component = devGame->GetValue<PNrpTechnology>( SOUNDQUALITY );
-	if( component ) SetValue<std::string>( SOUNDQUALITY, component->GetValue<std::string>( NAME ) );
-
-	SetValue<int>( SOUNDTECHNUMBER, devGame->GetValue<int>( SOUNDTECHNUMBER ) );
-	for( int cnt=0; cnt < GetValue<int>( SOUNDTECHNUMBER ); cnt++ )
-		soundTechs_.push_back( devGame->GetSoundTech( cnt )->GetValue<std::string>( NAME ) );
-	
-	SetValue<int>( ADVTECHNUMBER, devGame->GetValue<int>( ADVTECHNUMBER ) );
-	for( int cnt=0; cnt < GetValue<int>( ADVTECHNUMBER ); cnt++ )
-		advTechs_.push_back( devGame->GetTechnology(cnt)->GetValue<std::string>( NAME ) );
-	
-	for( int cnt=0; cnt < devGame->GetValue<int>( GENRE_MODULE_NUMBER ); cnt++ )
-	{	
-		component = devGame->GetGenre( cnt );
-		if( component ) 
-		{
-			genreTechs_.push_back( component->GetValue<std::string>( NAME ) );
-			AddValue<int>( GENRE_MODULE_NUMBER, 1 );
-		}
-	}
+	SetValue<int>( MODULE_NUMBER, devGame->GetValue<int>( MODULE_NUMBER ) );
+	for( int cnt=0; cnt < GetValue<int>( MODULE_NUMBER ); cnt++ )
+		 techs_.push_back( devGame->GetModule( cnt )->GetValue<std::string>( NAME ) );
 
 	SetValue<std::string>( IMAGENAME, CNrpApplication::Instance().GetFreeInternalName( this ) );
 	CNrpGameImageList* pgList = CNrpApplication::Instance().GetGameImageList( GetValue<std::string>( IMAGENAME ) );
@@ -151,28 +124,16 @@ void CNrpGame::Save( std::string saveFolder )
 		pgList->Save( localFolder+"/imageList.ini" );
 
 	int i=0;
-	for( TECH_LIST::iterator tIter = advTechs_.begin(); 
-		 tIter != advTechs_.end(); 
-		 tIter++, i++ )
-		IniFile::Write( ADVTECH, ADVTECH + IntToStr(i), *tIter, saveFile );
-
-	i=0;	
-	for( TECH_LIST::iterator gIter = genreTechs_.begin(); 
-		 gIter != genreTechs_.end(); 
+	for( STRINGS::iterator gIter = techs_.begin(); 
+		 gIter != techs_.end(); 
 		 gIter++, i++ )
-		IniFile::Write( GENRETECH, GENRETECH + IntToStr(i), *gIter, saveFile );
+		IniFile::Write( "techs", "tech" + IntToStr(i), *gIter, saveFile );
 
 	i=0;
-	for( TECH_LIST::iterator vIter = videoTechs_.begin(); 
-		 vIter != videoTechs_.end(); 
-		 vIter++, i++ )
-		IniFile::Write( VIDEOTECH, VIDEOTECH + IntToStr(i), *vIter, saveFile );
-
-	i=0;
-	for( TECH_LIST::iterator sIter = soundTechs_.begin(); 
-		 sIter != soundTechs_.end(); 
-		 sIter++, i++ )
-		IniFile::Write( SOUNDTECH, SOUNDTECH + IntToStr(i), *sIter, saveFile );
+	for( STRINGS::iterator gIter = genres_.begin(); 
+		gIter != genres_.end(); 
+		gIter++, i++ )
+		IniFile::Write( "genres", "genre" + IntToStr(i), *gIter, saveFile );
 }
 
 void CNrpGame::Load( std::string loadFolder )
@@ -183,18 +144,11 @@ void CNrpGame::Load( std::string loadFolder )
 	SetValue<SYSTEMTIME>( STARTDATE, IniFile::Read( PROPERTIES, STARTDATE, SYSTEMTIME(), loadFile ) );
 	SetValue<SYSTEMTIME>( ENDDATE, IniFile::Read( PROPERTIES, ENDDATE, SYSTEMTIME(), loadFile ) );
 
-	for( int i=0; i < GetValue<int>( ADVTECHNUMBER ); ++i )
-		advTechs_.push_back( IniFile::Read( ADVTECH, ADVTECH + IntToStr(i), std::string(""), loadFile ) );
+	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
+		techs_.push_back( IniFile::Read( "techs", "tech" + IntToStr(i), std::string(""), loadFile ) );
 
 	for( int i=0; i < GetValue<int>( GENRE_MODULE_NUMBER ); ++i )
-		genreTechs_.push_back( IniFile::Read( GENRETECH, GENRETECH + IntToStr(i), std::string(""), loadFile ) );
-
-	for( int i=0; i < GetValue<int>( VIDEOTECHNUMBER ); ++i )
-		videoTechs_.push_back( IniFile::Read( VIDEOTECH, VIDEOTECH + IntToStr(i), std::string(""), loadFile ) );
-
-	for( int i=0; i < GetValue<int>( SOUNDTECHNUMBER ); ++i )
-		soundTechs_.push_back( IniFile::Read( SOUNDTECH, SOUNDTECH + IntToStr(i), std::string(""), loadFile ) );
-
+		genres_.push_back( IniFile::Read( "genres", "genre" + IntToStr(i), std::string(""), loadFile ) );
 
 	std::string boxIni = loadFolder + "box.ini";
 	if( _access( boxIni.c_str(), 0 ) == 0 )
@@ -229,8 +183,13 @@ float CNrpGame::GetAuthorFamous()
 	return summ;
 }
 
-std::string CNrpGame::GetGenreTech( int index )
+std::string CNrpGame::GetGenreName( size_t index )
 {
-	return index < (int)genreTechs_.size() ? genreTechs_[ index ] : "";
+	return index < genres_.size() ? genres_[ index ] : "";
+}
+
+std::string CNrpGame::GetTechName( size_t index )
+{
+    return index < techs_.size() ? techs_[ index ] : "";
 }
 }//namespace nrp

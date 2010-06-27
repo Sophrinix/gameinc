@@ -1,0 +1,32 @@
+.mainmenu {
+	text-align: left;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #FFF400;
+	padding: 4px 0px 1px 7;
+	vertical-align: middle;
+	background:url(left3000.gif) no-repeat 129px;
+	
+}
+.mainmenu a {
+	color: #FFF400;
+} 
+.mainmenu a:hover {
+	color: white;
+}
+.SubMenu {
+    padding-top:5; 
+    padding-bottom:2; 
+    background:url(leftm700.gif) repeat-y 148px;
+}
+.SubMenu ul {
+     list-Style-type: none; 
+     margin:0; 
+     padding:0; 
+}
+.SubMenu li {
+     background:url(left_bul.gif) no-repeat 128px 3px;
+     margin-bottom:2px; 
+     padding-right:24px;
+}

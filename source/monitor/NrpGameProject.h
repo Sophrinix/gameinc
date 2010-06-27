@@ -6,6 +6,7 @@ namespace nrp
 {
 
 class CNrpCompany;
+const std::string CLASS_GAMEPROJECT( "CNrpGameProject" );
 
 OPTION_NAME VIDEOTECH( "videoTech" );
 OPTION_NAME ADVTECH( "advtech" );

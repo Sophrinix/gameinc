@@ -25,6 +25,7 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateDevelopGame ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProjectNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUserNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUser ),
@@ -150,6 +151,7 @@ int CLuaCompany::CreateDevelopGame( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	
 	{
 		result = new CNrpDevelopGame( ptrData, object_ );
+		CNrpApplication::Instance().AddDevelopProject( result );
 		object_->AddDevelopProject( result );
 	}
 
@@ -286,4 +288,9 @@ int CLuaCompany::GetGameNumber( lua_State* L )
 	return 1;
 }
 
+int CLuaCompany::GetDevProjectNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetDevProjectNumber", DEVELOPPROJECTS_NUMBER, 0 ) ); 
+	return 1;
+}
 }//namespace nrp

@@ -59,7 +59,8 @@ public:
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
 
-	nrp::INrpProject* CreateGameProject( std::string name );
+	void AddDevelopProject( INrpProject* project );
+	INrpProject* GetDevelopProject( const std::string name );
 
 	void AddGameEngine( nrp::CNrpGameEngine* ptrEngine );
 	CNrpGameEngine* GetGameEngine( std::string name );
@@ -68,6 +69,8 @@ public:
 	bool UpdateTime();
 
 	CNrpGame* GetGame( const std::string& name );
+
+	void AddProject( nrp::INrpProject* project );
 	INrpProject* GetProject( const std::string& name );
 
 	int GetTechsNumber() const { return technologies_.size(); }

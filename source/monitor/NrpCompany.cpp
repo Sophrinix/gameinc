@@ -6,6 +6,7 @@
 #include "NrpTechnology.h"
 #include "NrpGame.h"
 #include "NrpApplication.h"
+#include "NrpDevelopGame.h"
 
 #include <io.h>
 #include <errno.h>
@@ -127,15 +128,13 @@ void CNrpCompany::Save( const std::string& saveFolder )
 	DeleteFile( saveFile.c_str() );
 	INrpConfig::Save( PROPERTIES, saveFile );
 
-	IniFile::Write( PROPERTIES, "ceo", GetValue<PUser>( CEO )->GetValueA<std::string>( NAME ), saveFile );
-
 	PROJECT_MAP::iterator pIter = projects_.begin();
 	for( int i=0; pIter != projects_.end(); pIter++, i++ )
-	{
-		CNrpGameProject* prj = (CNrpGameProject*)pIter->second;
-		prj->Save( localFolder + "projects/" );
-		IniFile::Write( "projects", "project_" + IntToStr(i), prj->GetValue<std::string>( NAME ), saveFile );
-	}
+		IniFile::Write( "projects", "project_" + IntToStr(i), pIter->second->GetValue<std::string>( NAME ), saveFile );
+
+	PROJECT_MAP::iterator rIter = devProjects_.begin();
+	for( int i=0; rIter != devProjects_.end(); rIter++, i++ )
+		IniFile::Write( "devProjects", "project_" + IntToStr(i), rIter->second->GetValue<std::string>( NAME ), saveFile );
 
 	ENGINE_LIST::iterator eIter = engines_.begin();
 	for( int i=0; eIter != engines_.end(); eIter++, i++ )
@@ -156,11 +155,8 @@ void CNrpCompany::Save( const std::string& saveFolder )
 	OBJECT_LIST::iterator oIter = portfelle_.begin();
 	for( int i=0; oIter != portfelle_.end(); oIter++, i++ )
 	{
-		std::string typeName = "error";
-		if( (*oIter)->ClassName() == CLASS_NRPGAME )
-			typeName = "game";
-
-		IniFile::Write( "portfelle", "portfelle_" + IntToStr( i ) + ":" + typeName, (*oIter)->GetValue<std::string>( NAME ), saveFile );
+		std::string typeName = (*oIter)->ClassName();
+		IniFile::Write( "portfelle", "object_" + IntToStr( i ), typeName + ":" + (*oIter)->GetValue<std::string>( NAME ), saveFile );
 	}
 }
 
@@ -234,25 +230,17 @@ void CNrpCompany::Load( const std::string& loadFolder )
 
 	for( int i=0; i < GetValue<int>( OBJECTSINPORTFELLE ); i++ )
 	{
-		char buffer[ 32000 ];
-		memset( buffer, 0, 32000 );
-		GetPrivateProfileSection( "portfelle", buffer, 32000, loadFile.c_str() );
-
-		std::string readLine = buffer;
-		while( readLine != "" )
+		for( int k=0; k < GetValue<int>( OBJECTSINPORTFELLE ); k++ )
 		{
-			std::string prjName = readLine;
-			std::string seqName = prjName.substr( 0, prjName.find(':') );
-			int posTwinPoint = prjName.find( ':' ) + 1;
-			std::string typeName = prjName.substr( posTwinPoint, prjName.find( '=' ) - posTwinPoint );
+			std::string str = IniFile::Read( "portfelle", "object_"+IntToStr( k ), std::string(""), loadFile );
+			std::string typeName = str.substr( 0, str.find(':') );
+			std::string prjName = str.substr( str.find( ':' ) + 1, str.find( '=' ) );
 			prjName = prjName.substr( prjName.find( '=' )+1, 0xff );
-			if( typeName == "game" )
-				AddToPortfelle( GetGame( prjName ) );
-
-			memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
-			readLine = buffer;
+			if( typeName == CLASS_DEVELOPGAME )
+				AddToPortfelle( GetDevelopProject( prjName ) );
 		}
 	}
+
 }
 
 CNrpGame* CNrpCompany::GetGame( std::string gameName )
@@ -389,6 +377,27 @@ void CNrpCompany::AddDevelopProject( INrpProject* ptrDevProject )
 		devProjects_[ ptrDevProject->GetValue<std::string>( NAME ) ] = ptrDevProject;
 
 	SetValue<int>( DEVELOPPROJECTS_NUMBER, devProjects_.size() );
-	ptrDevProject->SetValue<std::string>( COMPANYNAME, this->GetValue<std::string>( NAME ) );
+	ptrDevProject->SetValue<std::string>( COMPANYNAME, GetValue<std::string>( NAME ) );
+}
+
+INrpProject* CNrpCompany::GetDevelopProject( const std::string name )
+{
+	PROJECT_MAP::iterator pIter = devProjects_.find( name );
+	if( pIter != devProjects_.end() )
+		return pIter->second;
+
+	return NULL;
+}
+
+INrpProject* CNrpCompany::GetDevelopProject( size_t index )
+{
+	if( index < projects_.size() )
+	{
+		PROJECT_MAP::iterator pIter = devProjects_.begin();
+		for( size_t k=0; k != index; k++ ) pIter++;
+		return pIter->second;
+	}
+
+	return NULL;
 }
 }//namespace nrp

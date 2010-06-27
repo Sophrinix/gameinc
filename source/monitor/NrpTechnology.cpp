@@ -76,16 +76,11 @@ void CNrpTechnology::Save( std::string saveFolder )
 	if( _access( saveFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( saveFolder.c_str(), NULL );
 
-	std::string fileName = saveFolder + GetValue<std::string>( NAME ) + ".ini";
+	std::string fileName = saveFolder + GetValue<std::string>( NAME ) + ".tech";
 
 	DeleteFile( fileName.c_str() );
 	INrpProject::Save( PROPERTIES, fileName );
-
-	for( REQUIRE_MAP::iterator tIter = techRequires_.begin(); tIter != techRequires_.end(); tIter++ )
-		IniFile::Write( "techRequire", IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
-
-	for( REQUIRE_MAP::iterator sIter = skillRequires_.begin(); sIter != skillRequires_.end(); sIter++ )
-		IniFile::Write( "skillRequire", IntToStr( sIter->first ), IntToStr( sIter->second ), fileName );
+	SaveRequires_( fileName );
 }
 
 void CNrpTechnology::Load( std::string fileName )
@@ -121,4 +116,12 @@ float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
 	return posibility;
 }
 
+void CNrpTechnology::SaveRequires_( std::string fileName )
+{
+	for( REQUIRE_MAP::iterator tIter = techRequires_.begin(); tIter != techRequires_.end(); tIter++ )
+		IniFile::Write( "techRequire", IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
+
+	for( REQUIRE_MAP::iterator sIter = skillRequires_.begin(); sIter != skillRequires_.end(); sIter++ )
+		IniFile::Write( "skillRequire", IntToStr( sIter->first ), IntToStr( sIter->second ), fileName );
+}
 }//namespace nrp

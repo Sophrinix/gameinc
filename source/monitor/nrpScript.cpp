@@ -43,6 +43,7 @@
 #include "LuaPlant.h"
 #include "LuaReklame.h"
 #include "LuaPictureFlow.h"
+#include "LuaDevelopModule.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
 
@@ -184,6 +185,7 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaPlant >::Register( vm_ );
 	Luna< CLuaReklame >::Register( vm_ );
 	Luna< CLuaPictureFlow >::Register( vm_ );
+	Luna< CLuaDevelopModule >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()

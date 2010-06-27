@@ -40,10 +40,8 @@ public:
 
 	CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany );
 
-	std::string GetVideoTech( int index ) { return videoTechs_.at( index ); }
-	std::string GetGenreTech( int index );
-	std::string GetSoundTech( int index ) { return soundTechs_.at( index ); }
-	std::string GetAdvTech( int index ) { return advTechs_.at( index ); }
+	std::string GetTechName( size_t index );
+	std::string GetGenreName( size_t index );
 	float GetAuthorFamous();
 
 	void Save( std::string saveFolder );
@@ -51,13 +49,10 @@ public:
 private:
 	void Load_( char* name ) {}
 	void InitializeOptions_();
-	typedef std::vector< std::string > DEVELOPERS_LIST;
-	typedef std::vector< std::string > TECH_LIST;
-	DEVELOPERS_LIST developers_;
-	TECH_LIST	videoTechs_;
-	TECH_LIST	genreTechs_;
-	TECH_LIST	soundTechs_;
-	TECH_LIST	advTechs_;
+	typedef std::vector< std::string > STRINGS;
+	STRINGS developers_;
+	STRINGS genres_;
+	STRINGS techs_;
 };
 
 typedef CNrpGame* PNrpGame;

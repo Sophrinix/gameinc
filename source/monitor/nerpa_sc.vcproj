@@ -1181,6 +1181,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaDevelopModule.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaDevelopModule.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaDiskMachine.cpp"
 						>
 					</File>
@@ -1615,11 +1623,27 @@
 			Name="Project"
 			>
 			<File
+				RelativePath=".\INrpDevelopProject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\INrpDevelopProject.h"
+				>
+			</File>
+			<File
 				RelativePath=".\INrpProject.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\INrpProject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpDevelopGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpDevelopGame.h"
 				>
 			</File>
 			<File
@@ -1711,22 +1735,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\INrpDevelopProject.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\INrpDevelopProject.h"
-			>
-		</File>
-		<File
-			RelativePath=".\NrpDevelopGame.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\NrpDevelopGame.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

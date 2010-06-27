@@ -120,7 +120,7 @@ int CLuaGameProject::GetGameEngine( lua_State* L )
 { lua_pushlightuserdata( L, GetParam_<PNrpGameEngine>( L, "GetGameEngine", GAME_ENGINE, NULL )); return 1; }
 
 int CLuaGameProject::IsProjectReady( lua_State* L )
-{ lua_pushboolean( L, GetParam_<bool>( L, "GetCodeQuality", PROJECTREADY, false )); return 1; }
+{ lua_pushboolean( L, GetParam_<bool>( L, "IsProjectReady", PROJECTREADY, false )); return 1; }
 
 int CLuaGameProject::GetScriptEngine( lua_State* L )
 { lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetScriptEngine", SCRIPTENGINE, NULL )); return 1; }
@@ -186,7 +186,7 @@ int CLuaGameProject::Create( lua_State* L )
 	const char* name = lua_tostring( L, 2 );
 	assert( name != NULL );
 
-	object_ = static_cast<PNrpGameProject>( CNrpApplication::Instance().CreateGameProject( name ) );
+	object_ = new CNrpGameProject( name, NULL );
 	lua_pushlightuserdata( L, object_ );
 
 	return 1;

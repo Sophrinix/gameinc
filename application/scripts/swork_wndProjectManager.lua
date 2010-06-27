@@ -10,7 +10,7 @@ mode[ "Тестировщики" ] = "tester"
 
 local currentEmployer = CLuaUser( nil )
 local currentProject = CLuaProject( nil )
-local currentComponent = CLuaTech( nil )
+local currentComponent = CLuaDevelopModule( nil )
 local localBtnChangeLider = CLuaButton( nil )
 
 local modeUserView = "coder"
@@ -35,10 +35,10 @@ function sworkCreateWindowProjectManager( ptr )
 	end
 	
 	local cmbxPrj = CLuaComboBox( guienv:AddComboBox( "", 10, 20, width / 2 - 10, 40, WNDPRJMNG_CMBX_SELECT_PRJ, windowg:Self() ) )
-	local cmpProjectNumber = company:GetProjectNumber()
-	LogScript( "Company Project number="..cmpProjectNumber )
+	local cmpProjectNumber = company:GetDevProjectNumber()
+	LogScript( "Company DevProject number="..cmpProjectNumber )
 	for i=1, cmpProjectNumber do
-		local ptrProject = CLuaProject( company:GetProject( i-1 ) )
+		local ptrProject = CLuaProject( company:GetDevProject( i-1 ) )
 		
 		if ptrProject:GetTechType() == PT_GAME then
 			cmbxPrj:AddItem( "Игра:" .. ptrProject:GetName(), ptrProject:Self() )	
@@ -151,74 +151,12 @@ local function ShowUnworkedGameProjectComponent( ptrProject )
 	local gp = CLuaGameProject( ptrProject )
 	local lbx = CLuaComponentListBox( guienv:GetElementByID( WINDOW_PRJMANAGE_COMPONENTS ) )
 	lbx:Clear()
-	local tech = CLuaTech( nil )
+	local module = CLuaDevelopModule( nil )
 	
-	for i=1, gp:GetGenreModuleNumber() do
-		LogScript( tech:GetName() )
-	    tech:SetObject( gp:GetGenre( i-1 ) )
-		if tech:Empty() == 0 and not tech:HaveLider() then 
-		  lbx:AddItem( tech:GetName(), tech:Self() )	
-		end
-	end
-	
-	tech:SetObject( gp:GetScriptEngine() )
-	if tech:Empty() == 0 and not tech:HaveLider() then
-		lbx:AddItem( tech:GetName(), tech:Self() )
-	end
-	
-	tech:SetObject( gp:GetEngineExtend() )
-	if tech:Empty() == 0 and not tech:HaveLider() then
-		lbx:AddItem( tech:GetName(), tech:Self() )
-	end
-
-	tech:SetObject( gp:GetLocalization() )
-	if tech:Empty() == 0 and not tech:HaveLider() then
-		lbx:AddItem( tech:GetName(), tech:Self() )
-	end
-	
-	tech:SetObject( gp:GetCrossPlatformCode() )
-	if tech:Empty() == 0 and not tech:HaveLider() then
-		lbx:AddItem( tech:GetName(), tech:Self() )
-	end
-	
-	tech:SetObject( gp:GetMiniGameEngine() )
-	if tech:Empty() == 0 and not tech:HaveLider() then
-		lbx:AddItem( tech:GetName(), tech:Self() )
-	end
-	
-	tech:SetObject( gp:GetPhysicEngine() )
-	if tech:Empty() == 0 and not tech:HaveLider() then
-		lbx:AddItem( tech:GetName(), tech:Self() )
-	end
-	
-	tech:SetObject( gp:GetVideoQuality() )
-	if tech:Empty() == 0 and not tech:HaveLider() then
-		lbx:AddItem( tech:GetName(), tech:Self() )
-	end
-	
-	tech:SetObject( gp:GetSoundQuality() )
-	if tech:Empty() == 0 and not tech:HaveLider() then
-		lbx:AddItem( tech:GetName(), tech:Self() )
-	end
-	
-	for i=1, gp:GetVideoTechNumber() do 
-		tech:SetObject( gp:GetVideoTech( i-1 ) )
-		if tech:Empty() == 0 and not tech:HaveLider() then 
-		  lbx:AddItem( tech:GetName(), tech:Self() )	
-		end
-	end
-	
-	for i=1, gp:GetAdvTechNumber() do
-	    tech:SetObject( gp:GetAdvTech( i-1 ) )
-		if tech:Empty() == 0 and not tech:HaveLider() then 
-		  lbx:AddItem( tech:GetName(), tech:Self() )	
-		end
-	end
-	
-	for i=1, gp:GetSoundTechNumber() do
-		tech:SetObject( gp:GetSoundTech( i-1 ) )
-		if tech:Empty() == 0 and not tech:HaveLider() then 
-		  lbx:AddItem( tech:GetName(), tech:Self() )	
+	for i=1, gp:GetModuleNumber() do
+	    module:SetObject( gp:GetModule( i-1 ) )
+		if module:Empty() == 0 and not module:HaveLider() then 
+		  lbx:AddItem( module:GetName(), module:Self() )	
 		end
 	end
 end

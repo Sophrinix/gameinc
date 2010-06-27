@@ -50,6 +50,8 @@ public:
 	float GetUserModificatorForGame( CNrpGame* game );
 
 	void AddDevelopProject( INrpProject* ptrDevProject );
+	INrpProject* GetDevelopProject( const std::string name );
+	INrpProject* GetDevelopProject( size_t index );
 	void RemoveDevelopProject( std::string name );
 
 	void AddProject( INrpProject* ptrProject );

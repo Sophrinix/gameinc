@@ -304,7 +304,7 @@ function sworkCreateProjectGameToCompany( ptr )
 	local prj = CLuaGameProject( company:GetProjectByName( project:GetName() ) )
 	
 	if prj:Empty() == 1 then
-		prj:SetObject( company:CreateGameProject( project:Self() ) )
+		prj:SetObject( company:CreateDevelopGame( project:Self() ) )
 		company:AddToPortfelle( prj:Self() )
 		sworkUpdateCompanyPortfelle()
 	else
