@@ -1,0 +1,28 @@
+[properties]
+balance:int=1200000
+basecode:float=0.3
+codepassed:int=0
+company:string=
+componentlider:string=
+descriptionpath:string=
+enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
+enginecode:float=0.3
+lastworker:string=
+level:int=0
+moduleerrornumber:int=0
+name:string=#TRANSLATE_GT_SPORT
+price:float=0
+quality:int=100
+readyworkpercent:float=0
+startdate:time=y=1990 m=00 d=00 h=00 mi=00 s=0
+techgroup:int=3
+techtype:int=315
+texturehover:string=
+texturenormal:string=xtras/technology/genre_sport/image.png
+volumecode:int=0
+nexttechnumber:int=0
+[techRequire]
+301=10
+[skillRequire]
+2001=10
+2002=10
