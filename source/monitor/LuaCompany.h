@@ -25,6 +25,7 @@ public:
 	int GetTechNumber( lua_State* L );
 	int GetTech( lua_State* L );
 	int CreateDevelopGame( lua_State* L );
+	int GetDevProjectNumber( lua_State* L );
 	int GetProjectNumber( lua_State *L );
 	int GetUserNumber( lua_State* L );
 	int GetProject( lua_State* L );
@@ -38,6 +39,7 @@ public:
 	int GetGameNumber( lua_State* L );
 	int GetGame( lua_State* L );
 	int Create( lua_State* L );
+	int GetDevProject( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaCompany"; }
 };

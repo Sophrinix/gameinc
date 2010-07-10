@@ -4,6 +4,7 @@
 namespace nrp
 {
 
+const std::string CLASS_REALPLAYER("RealPlayer");
 class CNrpCompany;
 
 class CNrpPlayer : public IUser

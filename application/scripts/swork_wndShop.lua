@@ -17,6 +17,8 @@ local btnIncreaseGamePrice = CLuaButton( nil )
 local listboxCompanyGame = CLuaListBox( nil )
 local anoncePictureFlow = CLuaPictureFlow( nil )
 local windowAnonce = CLuaWindow( nil )
+local selectedGame = CLuaGame( nil )
+local lastTimeParamsUpdate = GetTickCount()
 local width = 800
 local height = 600
 
@@ -24,14 +26,57 @@ local function localFillListboxGame()
 	listboxGames:Clear()
 	
 	local game = CLuaGame( nil )
-	for i=1, applic:GetMarketGamesNumber() do
-		game:SetObject( applic:GetMarketGame( i-1 ) )
-		listboxGames:AddItem( game:GetName(), game:Self() )
+	for i=1, applic:GetGamesNumber() do
+		game:SetObject( applic:GetGame( i-1 ) )
+		if game:IsSaling() then
+			listboxGames:AddItem( game:GetName(), game:Self() )
+		end
 	end
+end
+
+local function localUpdateCurrentGameParams()
+	labelGameName:SetText( "Название: " .. selectedGame:GetName() )
+	labelLastMonthSale:SetText( "Продаж за прошлый месяц:" .. selectedGame:GetLastMonthSales() )
+	labelCurrentMonthSale:SetText( "Продаж за этот месяц:" .. selectedGame:GetCurrentMonthSales() )
+	labelAllTimeSale:SetText( "Продаж за все время:" .. selectedGame:GetAllTimeSales() )
+	--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
+	labelGamePrice:SetText( "Цена:" .. selectedGame:GetPrice() )
+	
+	if selectedGame:GetCompany() == company:Self() then
+		btnDecreaseGamePrice:SetVisible( true )
+		btnIncreaseGamePrice:SetVisible( true )		
+	else
+		btnDecreaseGamePrice:SetVisible( false )
+		btnIncreaseGamePrice:SetVisible( false )			
+	end
+end
+
+function sworkGameInSaleWindowListboxChanged( ptr )
+    if ptr == listboxGames:Self() then
+		selectedGame:SetObject( listboxGames:GetSelectedObject() )
+		localUpdateCurrentGameParams()
+    end
+end
+
+function sworkGameInSaleUpdateGameParams( ptr )
+	
+end
+
+function sworkWindowShopDecreaseGamePrice( ptr )
+	selectedGame:SetPrice( selectedGame:GetPrice() - 1 )
+	labelGamePrice:SetText( "#TRANSLATE_TEXT_PRICE:" .. selectedGame:GetPrice() )
+end
+
+function sworkWindowShopIncreaseGamePrice( ptr )
+	selectedGame:SetPrice( selectedGame:GetPrice() + 1 )
+	labelGamePrice:SetText( "#TRANSLATE_TEXT_PRICE:" .. selectedGame:GetPrice() )
 end
 
 function sworkCreateGameInSaleWindow( ptr )
 	windowShop:SetObject( guienv:AddWindow( "", 0, 0, width, height, WINDOW_SHOP_ID, guienv:GetRootGUIElement() ) )
+	
+	windowShop:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkGameInSaleWindowListboxChanged" )
+	windowShop:AddLuaFunction( GUIELEMENT_AFTER_DRAW, "sworkGameInSaleUpdateGameParams" )
 	
 	--добавим окно с листбоксом
 	--в листбоксе поместим список игр, которые щас в продаже
@@ -50,7 +95,7 @@ function sworkCreateGameInSaleWindow( ptr )
 	--название игры
 	local hw = width / 2 + 20
 	local hh = height / 2 + 20
-	labelGameName:SetObject( guienv:AddLabel( "", hw + 20, hh + 20, width - 20, hh + 40, -1, windowShop:Self() ) )
+	labelGameName:SetObject( guienv:AddLabel( "Название: ", hw + 20, hh + 20, width - 20, hh + 40, -1, windowShop:Self() ) )
 	
 	--продаж за прошлый месяц
 	labelLastMonthSale:SetObject( guienv:AddLabel( "Продаж за прошлый месяц:", hw + 20, hh + 50, 
@@ -72,7 +117,7 @@ function sworkCreateGameInSaleWindow( ptr )
 									windowShop:Self(), -1, "-" ) )
 	btnDecreaseGamePrice:SetAction( "sworkWindowShopDecreaseGamePrice" ) 
 									
-	labelGamePrice:SetObject( guienv:AddLabel( "Цена:", hw + 40, hh + 170, 
+	labelGamePrice:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", hw + 40, hh + 170, 
 													    width - 40, hh + 190, -1, windowShop:Self() ) )	
 													 
 	btnIncreaseGamePrice:SetObject( guienv:AddButton(  width - 40, hh + 170, width - 20, hh + 190, 

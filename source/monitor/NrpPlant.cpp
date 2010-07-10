@@ -60,12 +60,6 @@ void CNrpPlant::Load( std::string scetionName, std::string saveFolder )
 		{
 			CNrpPlantWork* work = new CNrpPlantWork( "" );
 			work->Load( "options", workFile );
-
-			CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( work->GetValue<std::string>( COMPANYNAME ) );
-			CNrpGame* game = cmp->GetGame( work->GetValue<std::string>( NAME ) );
-			CNrpDiskMachine* dm = CNrpApplication::Instance().GetDiskMachine( work->GetValue<std::string>( DISKMACHINENAME ) );
-			work->SetValue<PNrpGame>( PARENT, game );
-			work->SetValue<PNrpDiskMachine>( PRODUCETYPE, dm );
 			AddWork( work );
 		}
 	}

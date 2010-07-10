@@ -1,6 +1,48 @@
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 
+function ApplicationLoadLaborScene()
+	sceneManager:SetSelectedNode( nil )
+	--guienv:FadeAction( 3000, false )
+	sceneManager:RemoveAllNodes()
+	
+	ApplicationAddCityCamera()
+	sceneManager:LoadIrrlichtScene( "scene/nrpLaborScene.irr" )	
+
+	local videoTech = CLuaSceneNode( sceneManager:GetSceneNodeByName( "graphicTechsNode" ) )
+	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( videoTech:Self() )
+	videoTech:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( videoTech:Self(), "Video Technologies" )
+	LogScript( "videoTechsNode find" )	
+	
+	local soundTech = CLuaSceneNode( sceneManager:GetSceneNodeByName( "soundTechsNode" ) )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( soundTech:Self() )
+	soundTech:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( soundTech:Self(), "Sound Technologies" )
+	LogScript( "soundTechsNode find" )	
+	
+	local genreTech = CLuaSceneNode( sceneManager:GetSceneNodeByName( "genreTechsNode" ) )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( genreTech:Self() )
+	genreTech:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( genreTech:Self(), "Genres" )
+	LogScript( "genreTechsNode find" )
+	
+	local otherTech = CLuaSceneNode( sceneManager:GetSceneNodeByName( "otherTechsNode" ) )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( otherTech:Self() )
+	otherTech:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( otherTech:Self(), "Other" )
+	LogScript( "otherTechsNode find" )
+	
+	local exitN = CLuaSceneNode( sceneManager:GetSceneNodeByName( "exitLaborNode" ) )
+	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
+	exitN:SetTriangleSelector( selector )
+	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	LogScript( "exitLaborNode find" )	
+	
+	sceneManager:SetSelectedNode( nil )
+	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnLaborScene" )
+end
+
 function ApplicationLoadCityScene()
 	sceneManager:SetSelectedNode( nil )
 	--guienv:FadeAction( 3000, false )

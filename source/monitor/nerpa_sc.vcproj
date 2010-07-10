@@ -581,6 +581,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\NrpAdvancedListBox.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpAdvancedListBox.h"
+						>
+					</File>
+					<File
 						RelativePath=".\NrpBrowserWindow.cpp"
 						>
 					</File>
@@ -650,6 +658,14 @@
 					</File>
 					<File
 						RelativePath=".\NrpScrollBar.h"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpTechMap.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpTechMap.h"
 						>
 					</File>
 					<File
@@ -1097,6 +1113,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaTechMap.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaTechMap.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaWindow.cpp"
 						>
 					</File>
@@ -1257,6 +1281,14 @@
 					Name="Project"
 					>
 					<File
+						RelativePath=".\LuaDevelopProject.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaDevelopProject.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaGameProject.cpp"
 						>
 					</File>
@@ -1375,10 +1407,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_minimap.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_ObjectsLoading.lua"
 				>
 			</File>
@@ -1432,6 +1460,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\swork_wndKeyMap.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_wndLaboratory.lua"
 				>
 			</File>
 			<File

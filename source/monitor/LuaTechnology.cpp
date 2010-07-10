@@ -26,7 +26,6 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetOptionAsInt ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetQuality ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveLider ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetEmployerPosibility ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Load ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Remove ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetLevel ),
@@ -35,6 +34,9 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, ValidTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveRequireTech ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTech ),
 	{0,0}
 };
 
@@ -136,21 +138,6 @@ int CLuaTechnology::HaveLider( lua_State* L )
 	return 1;	
 }
 
-int CLuaTechnology::GetEmployerPosibility( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::GetEmployerPosibility not need parameter");
-
-	float posilbleValue = 0; 
-	PUser puser = (PUser)lua_touserdata( L, 2 );
-	assert( puser != NULL );
-	if( puser != NULL )
-		IF_OBJECT_NOT_NULL_THEN	posilbleValue = object_->GetEmployerPosibility( puser );
-
-	lua_pushnumber( L, posilbleValue );
-	return 1;	
-}
-
 int CLuaTechnology::Remove( lua_State* L )
 {
 	int argc = lua_gettop(L);
@@ -217,5 +204,30 @@ int CLuaTechnology::GetTexture( lua_State* L )
 {
 	lua_pushstring( L, GetParam_<std::string>( L, "GetTexture", TEXTURENORMAL, "" ).c_str() );
 	return 1;
+}
+
+int CLuaTechnology::HaveRequireTech( lua_State* L )
+{
+	lua_pushboolean( L, GetParam_<PNrpTechnology>( L, "HaveRequireTech", REQUIRETECH, NULL) != NULL );
+	return 1;
+}
+
+int CLuaTechnology::GetFutureTechNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetFutureTechNumber", NEXTTECHNUMBER, 0) );
+	return 1;
+}
+
+int CLuaTechnology::GetFutureTech( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::GetFutureTech need index parameter");
+
+	int index = lua_tointeger( L, 2 );
+	CNrpTechnology* tech = NULL;
+	IF_OBJECT_NOT_NULL_THEN tech = object_->GetFutureTech( index );
+
+	lua_pushlightuserdata( L, tech );
+	return 1;	
 }
 }//namespace nrp

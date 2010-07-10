@@ -19,33 +19,33 @@ typedef enum { SKL_UNKNOWN=2000, SKL_VIDEO_TECH,
 typedef enum { GT_UNKNOWN=300, 
 			   GT_SKILL,			//развитие навыков игрока
 			   GT_SCROLLING,		//скролл-игры
-			   GT_EDUCATION,		//обучающие игры(деские)
-			   GT_TEST,				//проверка знаний
-			   GT_CONTACT,			//виртуальное общение(возможно сетевая)
-			   GT_HERO,				//развитие персонажа
-			   GT_TOURE,			//исследование мира
-			   GT_PAZZLE,			//головоломка
-			   GT_QUEST, 
-			   GT_PLATFORMER,		//
-			   GT_STEALTH,
-			   GT_SHOOTER,			//
-			   GT_ACROBATIC,		//
-			   GT_ARCADE,			//
-			   GT_SPORT,			//
-			   GT_SIMULATOR,		//
-			   GT_FIGHTING,			//
-			   GT_RACING,			//
-			   GT_LIFESIM,			//
-			   GT_CITYBUILD,		//
-			   GT_MANAGER,			//
-			   GT_ECONOMIC,			//
-			   GT_SLASHER,			//
-			   GT_ACTION,			//
-			   GT_CONTROL,			//
-			   GT_TACTIC,			//
-			   GT_LOGIC,			//
-			   GT_WARGAME,			//
-			   GT_CARDGAME,			//
+			   GT_EDUCATION,		//обучающие игры(детские)
+			   GT_TEST,				//4 проверка знаний
+			   GT_CONTACT,			//5 виртуальное общение(возможно сетевая)
+			   GT_HERO,				//6 развитие персонажа
+			   GT_TOURE,			//7 исследование мира
+			   GT_PAZZLE,			//8 головоломка
+			   GT_QUEST,			//9
+			   GT_PLATFORMER,		//10 
+			   GT_STEALTH,			//11
+			   GT_SHOOTER,			//12
+			   GT_ACROBATIC,		//13
+			   GT_ARCADE,			//14
+			   GT_SPORT,			//15
+			   GT_SIMULATOR,		//16
+			   GT_FIGHTING,			//17
+			   GT_RACING,			//18
+			   GT_LIFESIM,			//19
+			   GT_CITYBUILD,		//20
+			   GT_MANAGER,			//21
+			   GT_ECONOMIC,			//22
+			   GT_SLASHER,			//23
+			   GT_ACTION,			//24
+			   GT_CONTROL,			//25
+			   GT_TACTIC,			//26
+			   GT_LOGIC,			//27
+			   GT_WARGAME,			//28
+			   GT_CARDGAME,			//29
 			   GT_COUNT  } GENRE_TYPE;
 
 typedef enum { SCRLVL_UNKNOWN=600, SCRLVL_SIMPLE, SCRLVL_COUNT } SCRIPT_LEVEL;

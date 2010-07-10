@@ -5,7 +5,8 @@ namespace irr
 {
 	namespace gui
 	{
-		class IGUIEnvironment;
+		class CNrpGUIEnvironment;
+		class CNrpTechMap;
 	}
 }
 
@@ -15,7 +16,7 @@ namespace nrp
 /*!
 	Имена луа-функции совпадают с именами методов класса
 */
-class CLuaGuiEnvironment : public ILuaObject<irr::gui::IGUIEnvironment>
+	class CLuaGuiEnvironment : public ILuaObject<irr::gui::CNrpGUIEnvironment>
 {
 public:
 	static Luna<CLuaGuiEnvironment>::RegType methods[];
@@ -59,6 +60,7 @@ public:
 	int GetElementByName( lua_State* vm );
 	int AddRectAnimator( lua_State *vm );
 	int AddTable( lua_State *vm );
+	int AddTechMap( lua_State *vm );
 	int AddGlobalMap( lua_State* vm );
 	int AddChart( lua_State* vm );
 	int AddComboBox( lua_State* vm );

@@ -17,6 +17,7 @@
 #include "NrpGuiCursorPosAnimator.h"
 #include "NrpComponentListbox.h"
 #include "Nrp2DPictureFlow.h"
+#include "NrpTechMap.h"
 
 #include <stdexcept>
 #include <string>
@@ -694,6 +695,11 @@ gui::CNrp2DPictureFlow* CNrpGUIEnvironment::addPictureFlow( const core::recti& r
 															gui::IGUIElement* parent )
 {
 	return new CNrp2DPictureFlow( this, parent, rectangle, pictureRect, id );
+}
+
+CNrpTechMap* CNrpGUIEnvironment::AddTechMap( const core::recti& rectangle, IGUIElement* parent/*=0*/, s32 id/*=-1*/, bool drawBackground/*=false*/ )
+{
+	return new CNrpTechMap( this, parent, id, rectangle, true, drawBackground, false );
 }
 }//namespace gui
 

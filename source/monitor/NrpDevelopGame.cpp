@@ -23,18 +23,20 @@ void CNrpDevelopGame::InitializeOptions_( const std::string& name )
 
 	CreateValue<int>( USERNUMBER, 0 );
 	CreateValue<std::string>( PROJECTSTATUS, "unknown" );
-	CreateValue<bool>( PROJECTREADY, false );
 	CreateValue<CNrpCompany*>( PARENTCOMPANY, NULL );
 	CreateValue<PNrpGameEngine>( GAME_ENGINE, NULL );
-	CreateValue<int>( MODULE_NUMBER, 0 );
 	CreateValue<std::string>( PREV_GAME, "" );
 	CreateValue<int>( BASE_CODEVOLUME, 0 );
 	CreateValue<int>( BASEQUALITY, 0 );
 	CreateValue<int>( QUALITY, 0 );
 	CreateValue<int>( CODEVOLUME, 0 );
-	CreateValue<int>( TECHTYPE, 0 );
 	CreateValue<CNrpScenario*>( SCENARIO, NULL );
 	CreateValue<CNrpLicense*>( GLICENSE, NULL );
+	CreateValue<int>( MONEYONDEVELOP, 0 );
+	CreateValue<int>( PLATFORMNUMBER, 0 );
+	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
+	CreateValue<int>( LOCALIZATION, 0 );
+	CreateValue<float>( FAMOUS, 0 );
 
 	SetValue<std::string>( NAME, name );
 }
@@ -45,6 +47,9 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	InitializeOptions_( nProject->GetValue<std::string>( NAME ) );
     //компани€, котора€ делает это модуль
 	SetValue<CNrpCompany*>( PARENTCOMPANY, ptrCompany );
+	assert( nProject->GetValue<int>( PLATFORMNUMBER ) != 0 );
+	SetValue<int>( PLATFORMNUMBER, nProject->GetValue<int>( PLATFORMNUMBER ) );
+	SetValue<int>( GENRE_MODULE_NUMBER, nProject->GetValue<int>( GENRE_MODULE_NUMBER ) );
 	int bcv = nProject->GetValue<int>( ENGINE_CODEVOLUME );
 
 	PNrpGameEngine ge = nProject->GetValue<PNrpGameEngine>( GAME_ENGINE );
@@ -172,11 +177,16 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module, IUser* ptrUser 
 	SetDeveloper( ptrUser );
 	float growExp = module->GetValue<int>( CODEVOLUME ) / (float)GetValue<int>( BASE_CODEVOLUME );
 
-	int techType = GetGenre( 0 )->GetValue<int>( TECHTYPE );
+	int techType = GetGenre( 0 )->GetValue<PROJECT_TYPE>( TECHTYPE );
 
 	//опыт пользовател€ растет по мере выполнени€ компонентов
 	//а если у пользовател€ не было опыта в этом жанре, то он по€вл€етс€
 	ptrUser->IncreaseExperience( techType, (int)growExp );
+
+	if( IsReady() )
+	{
+		OutputDebugString( ("«акончен проект " + GetValue<std::string>( NAME ) + "\n").c_str() );
+	}
 }
 
 void CNrpDevelopGame::Save( std::string folderSave )
@@ -189,7 +199,7 @@ void CNrpDevelopGame::Save( std::string folderSave )
 	if( _access( localFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( localFolder.c_str(), NULL );
 
-	std::string fileName = localFolder + "item.devprj";
+	std::string fileName = localFolder + "item.devgame";
 	INrpDevelopProject::Save( fileName );
 
 	MODULE_LIST::iterator tIter = gameModules_.begin();
@@ -220,10 +230,11 @@ void CNrpDevelopGame::Save( std::string folderSave )
 
 void CNrpDevelopGame::Load( std::string loadFolder )
 {
-	if( loadFolder[ loadFolder.length() - 1 ] != '/' )
+	if( loadFolder[ loadFolder.length() - 1 ] != '/' && 
+		loadFolder[ loadFolder.length() - 1 ] != '\\' )
 		loadFolder += "/";
 
-	std::string fileName = loadFolder + "project.ini";
+	std::string fileName = loadFolder + "item.devgame";
 	CNrpCompany* ptrCompany = GetValue<PNrpCompany>( PARENTCOMPANY );
 	INrpProject::Load( PROPERTIES, fileName );
 
@@ -233,7 +244,7 @@ void CNrpDevelopGame::Load( std::string loadFolder )
 		if( !name.empty() )
 		{
 			CNrpProjectModule* tech = new CNrpProjectModule( PROJECT_TYPE( 0 ), this );
-			tech->Load( loadFolder + "modules/" + name + ".ini" );
+			tech->Load( loadFolder + "modules/" + name + ".devmod" );
 			gameModules_.push_back( tech );		
 		}
 	}
@@ -261,7 +272,7 @@ bool CNrpDevelopGame::IsReady()
 	for( MODULE_LIST::iterator pIter = gameModules_.begin(); 
 		 pIter != gameModules_.end(); 
 		 pIter++)
-		if( (*pIter) && (*pIter)->GetValue<float>( READYWORKPERCENT ) >= 1 )
+		if( (*pIter) && (*pIter)->GetValue<float>( READYWORKPERCENT ) < 1 )
 		{
 			ready = false;		
 			break;

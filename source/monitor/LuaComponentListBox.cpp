@@ -35,7 +35,7 @@ int CLuaComponentListBox::AddItem( lua_State *L )	//добавляет текст в списко ото
 
 	const char* text = lua_tostring( L, 2 );
 	assert( text != NULL );
-	void* object = lua_touserdata( L, 3 );
+	INrpConfig* object = (INrpConfig*)lua_touserdata( L, 3 );
 	
 	IF_OBJECT_NOT_NULL_THEN	object_->addItem( StrToWide( text ).c_str(), object, -1 );			
 

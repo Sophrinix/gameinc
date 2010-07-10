@@ -90,15 +90,15 @@ function slogin_ContinueLastGame( ptr )
 	--загружаем текущие аддоны для коробки для текущего времени
 	ApplicationUpdateGameBoxAddons()
 	applic:LoadBoxAddonsPrice()
-	
+
+	--загружаем профиль
+	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
+		
 	--загружаем аппараты по производству дисков
 	ApplicationUpdateDiskMachines()
 	
 	--загружаем скриншоты для игр
 	ApplicationUpdateScreenshots()
-	
-	--загружаем профиль
-	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
 	
 	--загружаем производство
 	plant:Load( applic:GetCurrentProfile() )

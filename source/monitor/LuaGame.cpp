@@ -34,6 +34,12 @@ Luna< CLuaGame >::RegType CLuaGame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshotNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, SetViewImage ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetViewImage ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetLastMonthSales ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetCurrentMonthSales ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetAllTimeSales ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetPrice ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, SetPrice ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetCompany ),
 	{0,0}
 };
 
@@ -268,5 +274,94 @@ int CLuaGame::GetViewImage( lua_State* L )
 {
 	lua_pushstring( L, GetParam_<std::string>( L, "GetViewImage", VIEWIMAGE, "undeclared param" ).c_str() );
 	return 1;	
+}
+
+int CLuaGame::GetCurrentMonthSales( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetLastMonthSales not need any parameters" );
+
+	int lastMonthSales = 0;
+	IF_OBJECT_NOT_NULL_THEN
+		if( object_->GetSalesHistory().size() > 0 )
+		{
+			CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
+			pIter--;
+			lastMonthSales = pIter->second->numberSale;	
+		}
+
+		lua_pushinteger( L, lastMonthSales );
+		return 1;
+}
+
+int CLuaGame::GetLastMonthSales( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetLastMonthSales not need any parameters" );
+
+	int lastMonthSales = 0;
+	IF_OBJECT_NOT_NULL_THEN
+		if( object_->GetSalesHistory().size() > 1 )
+		{
+			CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
+			pIter--; pIter--;
+			lastMonthSales = pIter->second->numberSale;	
+		}
+
+	lua_pushinteger( L, lastMonthSales );
+	return 1;
+}
+
+int CLuaGame::GetAllTimeSales( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetAllTimeSales", COPYSELL, 0 ) );
+	return 1;		
+}
+
+int CLuaGame::GetPrice( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetPrice not need any parameter" );
+
+	int price = 0;
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		assert( box != NULL );
+		if( box != NULL )
+			price = box->GetValue<int>( PRICE );
+	}
+
+	lua_pushinteger( L, price );
+	return 1;		
+}
+
+int CLuaGame::SetPrice( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:SetPrice need int parameter" );
+
+	int newPrice = lua_tointeger( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		assert( box != NULL );
+		if( box )
+			box->SetValue<int>( PRICE, newPrice );
+	}
+	return 1;		
+}
+
+int CLuaGame::GetCompany( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetCompany not need any parameter" );
+
+	CNrpCompany* cmp = NULL;
+	IF_OBJECT_NOT_NULL_THEN cmp = object_->GetValue<CNrpCompany*>( PARENTCOMPANY );
+
+	lua_pushlightuserdata( L, cmp );
+	return 1;		
 }
 }//namespace nrp

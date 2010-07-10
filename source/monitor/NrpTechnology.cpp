@@ -4,7 +4,6 @@
 #include "IUser.h"
 #include "NrpCompany.h"
 #include "IniFile.h"
-//#include "NrpApplication.h"
 
 #include <io.h>
 #include <errno.h>
@@ -31,6 +30,8 @@ void CNrpTechnology::InitializeOptions_()
 	CreateValue<std::string>( COMPANYNAME, "" );
 	CreateValue<int>( QUALITY, 100 );
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
+	CreateValue<std::string>( PARENT, "" );
+	CreateValue<std::string>( BASEFILE, "" );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
 	CreateValue<float>( PRICE, 0 );
@@ -38,6 +39,10 @@ void CNrpTechnology::InitializeOptions_()
 	CreateValue<std::string>( TEXTUREHOVER, "" );
 	CreateValue<std::string>( DESCRIPTIONPATH, "" );
 	CreateValue<float>( INTEREST, 1 );
+	CreateValue<TECH_STATUS>( STATUS, TS_UNKNOWN );
+
+	CreateValue<int>( NEXTTECHNUMBER, 0 );
+	CreateValue<PNrpTechnology>( REQUIRETECH, NULL );
 }
 
 
@@ -81,14 +86,53 @@ void CNrpTechnology::Save( std::string saveFolder )
 	DeleteFile( fileName.c_str() );
 	INrpProject::Save( PROPERTIES, fileName );
 	SaveRequires_( fileName );
+
+	for( size_t pos=0; pos < futureTech_.size(); pos++ )
+	{
+		std::string keyvalue = "";
+		switch( futureTech_[ pos ]->GetValue<TECH_STATUS>( STATUS ) )
+		{
+		case TS_PROJECT:
+			keyvalue = "project:" + futureTech_[ pos ]->GetValue<std::string>( BASEFILE );
+			break;
+		case TS_READY:
+			keyvalue = "ready:" + futureTech_[ pos ]->GetValue<std::string>( NAME );
+			break;
+		case TS_INDEVELOP:
+			keyvalue = "indevelop:" + futureTech_[ pos ]->GetValue<std::string>( NAME );
+			break;
+		default:
+			throw "unresolved function";
+		}
+
+		IniFile::Write( "nexttechs", "tech_" + IntToStr( pos ), keyvalue, fileName );
+	}
 }
 
 void CNrpTechnology::Load( std::string fileName )
 {
 	INrpProject::Load( PROPERTIES, fileName );
+	LoadRequries_( fileName );
 
-	IniFile::ReadValueList_( "techRequire", techRequires_, fileName );
-	IniFile::ReadValueList_( "skillRequire", skillRequires_, fileName );
+	if( GetValue<TECH_STATUS>( STATUS ) == TS_READY )
+	{
+		for( int cnt=0; cnt < GetValue<int>( NEXTTECHNUMBER ); cnt++ )
+		{
+			std::string tmpStr = IniFile::Read( "nexttechs", "tech_"+IntToStr( cnt ), std::string(""), fileName );
+			std::string type = tmpStr.substr( 0, tmpStr.find( ':' ) );
+			std::string name = tmpStr.substr( tmpStr.find( ':' )+1, MAX_PATH );
+
+			if( type == "project" )
+			{
+				CNrpTechnology* pTech = new CNrpTechnology( PT_UNKNOWN );
+				pTech->Load( name + "/item.tech" );
+				pTech->SetValue<std::string>( BASEFILE, name );
+				pTech->SetValue<std::string>( PARENT, GetValue<std::string>( NAME ) );
+				pTech->SetValue<TECH_STATUS>( STATUS, TS_PROJECT );
+				futureTech_.push_back( pTech );
+			}
+		}
+	}
 }
 
 float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
@@ -116,12 +160,28 @@ float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
 	return posibility;
 }
 
-void CNrpTechnology::SaveRequires_( std::string fileName )
+void CNrpTechnology::LoadRequries_( const std::string& fileName )
+{
+	IniFile::ReadValueList_( "techRequire", techRequires_, fileName );
+	IniFile::ReadValueList_( "skillRequire", skillRequires_, fileName );
+}
+
+void CNrpTechnology::SaveRequires_( const std::string& fileName )
 {
 	for( REQUIRE_MAP::iterator tIter = techRequires_.begin(); tIter != techRequires_.end(); tIter++ )
 		IniFile::Write( "techRequire", IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
 
 	for( REQUIRE_MAP::iterator sIter = skillRequires_.begin(); sIter != skillRequires_.end(); sIter++ )
 		IniFile::Write( "skillRequire", IntToStr( sIter->first ), IntToStr( sIter->second ), fileName );
+}
+
+CNrpTechnology* CNrpTechnology::GetFutureTech( size_t index )
+{
+	return index < futureTech_.size() ? futureTech_[ index ] : NULL;
+}
+
+void CNrpTechnology::AddFutureTech( CNrpTechnology* tech )
+{
+	futureTech_.push_back( tech );
 }
 }//namespace nrp

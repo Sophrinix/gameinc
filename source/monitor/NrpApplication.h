@@ -14,6 +14,7 @@ OPTION_NAME CURRENTTIME( "currentTime" );
 OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
 OPTION_NAME BOXADDONNUMBER( "boxAdonNumber" );
 OPTION_NAME MARKETGAMENUMBER( "marketGameNumber" );
+OPTION_NAME PLAYERCOMPANY( "playerCompany" );
 
 class CNrpCompany;
 class IUser;
@@ -51,7 +52,6 @@ public:
 	CNrpCompany* GetCompany( std::string companyName ) const;
 	CNrpCompany* GetCompany( int index ) const;
 	int AddCompany( CNrpCompany* company );
-	CNrpCompany* GetPlayerCompany();
 
 	int AddUser( bool player, IUser* user );
 	int RemoveUser( IUser* user );
@@ -60,7 +60,8 @@ public:
 	IUser* GetUser( std::string name );
 
 	void AddDevelopProject( INrpProject* project );
-	INrpProject* GetDevelopProject( const std::string name );
+	void RemoveDevelopProject( const std::string& name );
+	INrpProject* GetDevelopProject( const std::string& name ) const; 
 
 	void AddGameEngine( nrp::CNrpGameEngine* ptrEngine );
 	CNrpGameEngine* GetGameEngine( std::string name );
@@ -69,6 +70,8 @@ public:
 	bool UpdateTime();
 
 	CNrpGame* GetGame( const std::string& name );
+	CNrpGame* GetGame( size_t index );
+	void AddGame( CNrpGame* ptrGame );
 
 	void AddProject( nrp::INrpProject* project );
 	INrpProject* GetProject( const std::string& name );
@@ -87,7 +90,6 @@ public:
 	void AddBoxAddon( CNrpTechnology* tech );
 
 	void AddGameToMarket( CNrpGame* game );
-	CNrpGame* GetMarketGame( size_t index );
 
 	CNrpDiskMachine* GetDiskMachine( std::string name );
 	CNrpDiskMachine* GetDiskMachine( size_t index );
@@ -112,7 +114,7 @@ private:
 	TECH_LIST technologies_;					//хранит все технологии игрового мира
 	TECH_LIST boxAddons_;
 	DISKMACHINES_LIST diskMachines_;
-	GAMES_LIST marketGames_;
+	GAMES_LIST games_;
 	RETAILER_LIST retailers_;
 	GAMEENGINES_MAP engines_;
 	PROJECTS_MAP projects_;
@@ -130,8 +132,8 @@ private:
 	void UpdateMarketGames_();
 	int GetFreePlatformNumberForGame_( CNrpGame* game );
 	int GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp );
-	void LoadMarketGames_( const std::string& fileName );
 	void LoadFreeImageLists_( const std::string& fileName );
+	void AssociateTechnologies_();
 };
 
 }//namespace nrp

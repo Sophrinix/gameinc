@@ -61,6 +61,14 @@ CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPL
 void CNrpPlantWork::Load( std::string sectionName, std::string fileName )
 {
 	INrpConfig::Load( sectionName, fileName );
+	CNrpGame* pGame = CNrpApplication::Instance().GetGame( GetValue<std::string>( GAMENAME ) );
+	assert( pGame != NULL );
+	SetValue<PNrpGame>( PARENT, pGame );
+
+	CNrpDiskMachine* dm = CNrpApplication::Instance().GetDiskMachine( GetValue<std::string>( DISKMACHINENAME ) );
+	assert( dm != NULL );
+	SetValue<PNrpDiskMachine>( PRODUCETYPE, dm );
+
 	CalcParams_();
 }
 
@@ -90,7 +98,7 @@ void CNrpPlantWork::CalcParams_()
 		INrpConfig::SetValue<std::string>( GAMENAME, game->GetValue<std::string>( NAME ) );
 		INrpConfig::SetValue<int>( PRICEINDAY, priceInDay );
 		INrpConfig::SetValue<int>( RENTPRICE, dm->GetValue<int>( RENTPRICE ) * nM );
-		INrpConfig::SetValue<std::string>( COMPANYNAME, game->GetValue<std::string>( COMPANYNAME ) );
+		INrpConfig::SetValue<std::string>( COMPANYNAME, game->GetValue<PNrpCompany>( PARENTCOMPANY )->GetValue<std::string>( NAME ) );
 	}
 }
 
@@ -104,7 +112,7 @@ void CNrpPlantWork::BeginNewDay()
 	AddValue<int>( NUMBERDAY, -1 );
 	PNrpGame game = GetValue<PNrpGame>( PARENT );
 	PNrpGameBox box = game->GetValue<PNrpGameBox>( GBOX );
-	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( game->GetValue<std::string>( COMPANYNAME ) );
+	PNrpCompany cmp = game->GetValue<PNrpCompany>( PARENTCOMPANY );
 	
 	if( cmp == NULL )
 		return;

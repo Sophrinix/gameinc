@@ -4,6 +4,11 @@
 #include "IniFile.h"
 #include "nrpConfig.h"
 
+#define SECTION_IMAGES "images"
+#define KEY_IMAGE "image_"
+#define SECTION_BOXIMAGES "imagesBox"
+#define KEY_BOX_IMAGE "boxImage_"
+
 namespace nrp
 {
 
@@ -41,10 +46,10 @@ void CNrpGameImageList::Save( const std::string& fileIni )
 	INrpConfig::Save( PROPERTIES, fileIni );
 
 	for( size_t k=0; k < imagesPath.size(); k++ )
-		IniFile::Write( "images", "image_"+IntToStr(k), imagesPath[ k ], fileIni );
+		IniFile::Write( SECTION_IMAGES, KEY_IMAGE+IntToStr(k), imagesPath[ k ], fileIni );
 
 	for( size_t k=0; k < imagesBoxPath.size(); k++ )
-		IniFile::Write( "imagesBox", "imageBox_"+IntToStr(k), imagesBoxPath[ k ], fileIni );
+		IniFile::Write( SECTION_BOXIMAGES, KEY_BOX_IMAGE+IntToStr(k), imagesBoxPath[ k ], fileIni );
 }
 
 void CNrpGameImageList::Load( const std::string& fileName )
@@ -52,10 +57,10 @@ void CNrpGameImageList::Load( const std::string& fileName )
 	INrpConfig::Load( PROPERTIES, fileName );
 
 	for( int k=0; k < GetValue<int>( IMAGESNUMBER ); k++ )
-		imagesPath.push_back( IniFile::Read( "images", "image_"+IntToStr(k), std::string(""), fileName ) );
+		imagesPath.push_back( IniFile::Read( SECTION_IMAGES, KEY_IMAGE+IntToStr(k), std::string(""), fileName ) );
 
 	for( int k=0; k < GetValue<int>( IMAGESBOXNUMBER ); k++ )
-		imagesBoxPath.push_back( IniFile::Read( "imagesBox", "imageBox_"+IntToStr(k), std::string(""), fileName ) );
+		imagesBoxPath.push_back( IniFile::Read( SECTION_BOXIMAGES, KEY_BOX_IMAGE+IntToStr(k), std::string(""), fileName ) );
 }
 
 void CNrpGameImageList::InitializeOptions_()

@@ -22,6 +22,7 @@ namespace gui
 class IGUIAnimator;
 class CNrpGuiLinkBox;
 class CNrp2DPictureFlow;
+class CNrpTechMap;
 
 class CNrpGUIEnvironment : public irr::gui::IGUIEnvironment
 {
@@ -201,6 +202,11 @@ public:
 								IGUIElement* parent=0, 
 								s32 id=-1, 
 								bool drawBackground=false);
+
+	CNrpTechMap* AddTechMap(const core::recti& rectangle,
+			  			    IGUIElement* parent=0, 
+						    s32 id=-1, 
+						    bool drawBackground=false);
 
 	gui::IGUIScrollBar* addCicrcleScrollBar( IGUIElement* parent, 
 											 s32 id, 

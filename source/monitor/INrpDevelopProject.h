@@ -4,6 +4,9 @@
 namespace nrp
 {
 const std::string CLASS_INRPDEVELOPPROJECT( "INrpDevelopProject" );
+
+OPTION_NAME MODULE_NUMBER( "moduleNumber" );
+
 class CNrpProjectModule;
 class IUser;
 
@@ -23,7 +26,8 @@ public:
 	void SetDeveloper( IUser* user );
 	const DEVELOPERS_LIST& GetDevelopers() { return developers_; }
 	virtual void ModuleFinished( CNrpProjectModule* module, IUser* ptrUser ) = 0;
-	virtual bool IsReady() = 0;
+	virtual bool IsReady() = 0; 
+	virtual CNrpProjectModule* GetModule( size_t index ) = 0;
 	virtual void Save( std::string amount );
 protected:
 	void InitializeOptions_();

@@ -25,6 +25,9 @@ void INrpDevelopProject::Save( std::string amount )
 void INrpDevelopProject::InitializeOptions_()
 {
 	CreateValue<std::string>( COMPANYNAME, "" );
+	CreateValue<int>( MODULE_NUMBER, 0 );
+	CreateValue<bool>( PROJECTREADY, false );
+	CreateValue<int>( TECHTYPE, 0 );
 }
 
 void INrpDevelopProject::SetDeveloper( IUser* user )

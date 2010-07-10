@@ -7,6 +7,17 @@
 namespace nrp
 {
 
+void CheckClassesType( const std::string type1, const std::string type2 )
+{
+//	assert( type1 == type2 );
+	if( type1 != type2 ) 
+	{
+		std::string warn( "warning: request type " );
+		warn +=	std::string( type2 + " but native typename is " +type1+ "\n" );
+		OutputDebugString( warn.c_str() );
+	}
+}
+
 void INrpConfig::Load( std::string sectionName, std::string fileName )
 {
 	char buffer[ 32000 ];
@@ -75,6 +86,8 @@ void INrpConfig::Save( std::string scetionName, std::string fileName )
 				if( user )
 					IniFile::Write( scetionName, paIter->first + ":user", user->GetValueA<std::string>( NAME ), fileName );
 			}
+		else
+			IniFile::Write( scetionName, paIter->first + ":unknown", std::string(""), fileName );			
 	}
 }
 

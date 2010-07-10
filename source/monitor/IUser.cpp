@@ -15,7 +15,7 @@
 namespace nrp
 {
 
-IUser::IUser(const char* className, const char* systemName ) : INrpConfig( className, systemName )
+IUser::IUser(const std::string className, const std::string systemName ) : INrpConfig( className, systemName )
 {
 	CreateValue<std::string>( NAME, systemName );
 	CreateValue<int>( CODE_SPEED, 0 );
@@ -162,11 +162,14 @@ void IUser::Load( std::string fileName )
 	}*/
 }
 
-void IUser::AddWork( CNrpProjectModule* module )
+void IUser::AddWork( CNrpProjectModule* module, bool inLoad )
 {
 	assert( module != NULL );
 	works_.push_back( module );
-	module->SetLider( this );
+	
+	if( !inLoad )
+		module->SetLider( this );
+	
 	SetValue<int>( TECHNUMBER, works_.size() );
 }
 

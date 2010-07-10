@@ -32,27 +32,50 @@ OPTION_NAME GAMEIMAGELIST( "gameImageList" );
 OPTION_NAME VIEWIMAGE( "viewImage" );
 OPTION_NAME GAMERETAILER( "gameRetailer" );
 
+class CNrpHistoryStep
+{
+	CNrpHistoryStep() {}
+public:
+	int numberSale;
+	int month;
+	int cash;
+	CNrpHistoryStep( int m, int n, int c) : month(m), numberSale(n), cash(c)
+	{}
+
+	void Add( int n, int c )
+	{
+		numberSale += n;
+		cash += c;
+	}
+};
+
 class CNrpGame : public INrpConfig
 {
 public:
+	typedef std::vector< std::string > STRINGS;
+	typedef std::map< int, CNrpHistoryStep* > SALE_HISTORY_MAP;
+public:
 	CNrpGame( std::string name );
 	~CNrpGame(void);
-
 	CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany );
 
 	std::string GetTechName( size_t index );
 	std::string GetGenreName( size_t index );
 	float GetAuthorFamous();
 
+	const SALE_HISTORY_MAP& GetSalesHistory() { return history_; }
+	void GameBoxSaling( int number );
+
 	void Save( std::string saveFolder );
 	void Load( std::string loadFolder );
 private:
 	void Load_( char* name ) {}
 	void InitializeOptions_();
-	typedef std::vector< std::string > STRINGS;
+	
 	STRINGS developers_;
 	STRINGS genres_;
 	STRINGS techs_;
+	SALE_HISTORY_MAP history_;
 };
 
 typedef CNrpGame* PNrpGame;

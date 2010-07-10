@@ -359,4 +359,13 @@ int ApplicationLoadLanguageFile( lua_State* vm )
 	return 1;
 }
 
+int ApplicationGetTickCount( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 0, 0, "Function GetTickCount not need any parameter");
+
+	lua_pushinteger( vm, GetTickCount() );
+
+	return 1;	
+}
 }//namespace nrp

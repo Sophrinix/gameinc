@@ -34,6 +34,8 @@ CNrpProjectModule::CNrpProjectModule( PROJECT_TYPE type, INrpProject* pProject )
 : CNrpTechnology( type )
 {
 	InitializeOptions_();
+	SetValue<int>( TECHTYPE, type );
+	SetValue<PNrpProject>( PARENT, pProject );
 }
 
 CNrpProjectModule::~CNrpProjectModule(void)
@@ -50,7 +52,7 @@ void CNrpProjectModule::InitializeOptions_()
 	CreateValue<int>( CODEPASSED, 0 );
 	CreateValue<float>( READYWORKPERCENT, 0 );
 	CreateValue<int>( ERRORNUMBER, 0 );
-	CreateValue<INrpProject*>( PARENT, NULL );
+	CreateValue<INrpDevelopProject*>( PARENT, NULL );
 }
 
 void CNrpProjectModule::SetLider( IUser* ptrUser )
@@ -68,6 +70,9 @@ void CNrpProjectModule::SetLider( IUser* ptrUser )
 
 void CNrpProjectModule::Update( IUser* ptrUser )
 {
+	INrpDevelopProject* parent = GetValue<INrpDevelopProject*>( PARENT );
+	assert( parent != NULL );
+
 	if( GetValue<int>( CODEPASSED ) < GetValue<int>( CODEVOLUME) )
 	{
 		int reqSkill = 0;
@@ -75,11 +80,11 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 		for( ; sIter != skillRequires_.end(); sIter++ )
 			reqSkill += ptrUser->GetSkill( sIter->first );
 
-		float genreSkill = ptrUser->GetGenreExperience( GetValue<int>( TECHTYPE ) ) / 100.f;
+		float genreSkill = ptrUser->GetGenreExperience( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
 
 		if( genreSkill < 0.1f )
 			genreSkill = 0.1f;
-		float genrePref = ptrUser->GetGenrePreferences( GetValue<int>( TECHTYPE ) ) / 100.f;
+		float genrePref = ptrUser->GetGenrePreferences( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
 		if( genrePref < 0.1f )
 			genrePref = 0.1f;
 
@@ -91,13 +96,12 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 		SetValue<float>( READYWORKPERCENT, codePassed / (float)GetValue<int>( CODEVOLUME ) );
 		int quality = GetValue<int>( QUALITY );
 		SetValue<int>( QUALITY, (quality + ptrUser->GetValueA<int>( CODE_QUALITY )) / 2 );
+
+		parent->AddValue<int>( MONEYONDEVELOP, ptrUser->GetValueA<int>( SALARY ) / (20*9) );
 	}
 
 	if( GetValue<float>( READYWORKPERCENT ) >= 1 )
-	{
-		INrpDevelopProject* parent = GetValue<INrpDevelopProject*>( PARENT );
 		parent->ModuleFinished( this, ptrUser );
-	}
 }
 
 void CNrpProjectModule::Save( std::string saveFolder )
@@ -114,6 +118,15 @@ void CNrpProjectModule::Save( std::string saveFolder )
 
 void CNrpProjectModule::Load( std::string fileName )
 {
+	assert( _access( fileName.c_str(), 0 ) == 0 );
+	if( _access( fileName.c_str(), 0 ) == -1 )
+		OutputDebugString( ("указанный файл не существует" + fileName).c_str() );
+		
+	INrpProject::Load( PROPERTIES, fileName );
+	LoadRequries_( fileName );
 
+	PUser user = GetValue<PUser>( COMPONENTLIDER );
+	if( user )
+		user->AddWork( this, true );
 }
 }//end namespace nrp

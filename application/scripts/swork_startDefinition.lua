@@ -4,8 +4,8 @@ local user = CLuaUser( nil )
 
 function sloginResetDataForNewGame()
 	applic:ResetData()
-	company:Create( applic:GetCurrentProfileCompany() ) 
-	user:Create( "RealPlayer", applic:GetCurrentProfile() )
+    user:Create( "RealPlayer", applic:GetCurrentProfile() )
+	company:Create( applic:GetCurrentProfileCompany(), applic:GetCurrentProfile() ) 
 end
 
 function sloginAddStartCompanyTechnology()

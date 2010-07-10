@@ -26,7 +26,6 @@ public:
 	int GetOptionAsInt( lua_State* L );
 	int GetTechGroup( lua_State* L );
 	int HaveLider( lua_State* L );
-	int GetEmployerPosibility( lua_State* L );
 	int Load( lua_State* L );
 	int Remove( lua_State* L );
 	int Create( lua_State* L );
@@ -34,6 +33,9 @@ public:
 	int ValidTime( lua_State* L );
 	int SetTexture( lua_State* L );
 	int GetTexture( lua_State* L );
+	int HaveRequireTech( lua_State* L );
+	int GetFutureTechNumber( lua_State* L );
+	int GetFutureTech( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaTech"; }	
 };

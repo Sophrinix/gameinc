@@ -6,8 +6,6 @@ const std::string CLASS_DEVELOPGAME("CNrpDevelopGame");
 namespace nrp
 {
 
-OPTION_NAME MODULE_NUMBER( "moduleNumber" );
-
 class CNrpProjectModule;
 class CNrpGameProject;
 class CNrpCompany;

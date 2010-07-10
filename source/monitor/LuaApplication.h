@@ -54,8 +54,8 @@ public:
 	int GetDiskMachine( lua_State* L );
 	int SaveBoxAddonsPrice( lua_State* L );
 	int LoadBoxAddonsPrice( lua_State* L );
-	int GetMarketGamesNumber( lua_State* L );
-	int GetMarketGame( lua_State* L );
+	int GetGamesNumber( lua_State* L );
+	int GetGame( lua_State* L );
 	int AddGameToMarket( lua_State* L );
 	int ClearImageList( lua_State* L );
 	int LoadImageList( lua_State* L );

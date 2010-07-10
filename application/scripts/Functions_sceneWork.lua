@@ -10,6 +10,7 @@ IncludeScript("swork_wndProjectManager")
 IncludeScript("swork_wndGameBoxCreate")
 IncludeScript("swork_wndDiskPlant")
 IncludeScript("swork_wndReklama")
+IncludeScript("swork_wndLaboratory" )
 
 local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
@@ -46,6 +47,12 @@ function sworkSelectObjectOnCityScene( ptr )
 		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
 		ApplicationLoadBankScene()
 		return 0
+	end
+	
+	if nodeName == "laborNode" then
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
+		ApplicationLoadLaborScene()
+		return 0		
 	end
 	
 	if nodeName == "officeNode" then
@@ -86,6 +93,39 @@ end
 function ToggleConsoleVisible( ptr )
 	local console = CLuaConsole( guienv:GetElementByName( "SystemConsole" ) )
 	console:ToggleVisible()
+end
+
+function sworkSelectObjectOnLaborScene( ptr )
+	local node = CLuaSceneNode( ptr )
+	local nodeName = node:GetName()
+
+	if nodeName == "graphicTechsNode" then
+		sworkCreateVideoTechMapWindow()
+		return 0
+	end
+	
+	if nodeName == "soundTechsNode" then
+		sworkCreateSoundTechMapWindow()
+		return 0
+	end
+	
+	if nodeName == "genreTechsNode" then
+		sworkCreateGenreTechMapWindow()
+		return 0
+	end
+
+	if nodeName == "otherTechsNode" then
+		sworkCreateOtherTechMapWindow()
+		return 0
+	end
+
+	if nodeName == "exitLaborNode" then
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnLaborScene" )
+		ApplicationLoadCityScene()
+		return 0
+	end
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-LABOR:Не могу найти узел для работы "..nodeName )
 end
 
 function sworkSelectObjectOnShopScene( ptr )

@@ -60,7 +60,7 @@ int CLuaUser::Create( lua_State *L )
 	}
 	else 
 	{
-		object_ = new IUser( userType, name );
+		object_ = new IUser( std::string(userType), std::string(name) );
 		object_->SetValue<std::string>( NAME, name );
 		CNrpApplication::Instance().AddUser( false, object_ );
 	}
@@ -197,7 +197,7 @@ int CLuaUser::AddWork( lua_State* L )
 	CNrpProjectModule* tech = (CNrpProjectModule*)lua_touserdata( L, 2 );
 	assert( tech != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddWork( tech );
+	IF_OBJECT_NOT_NULL_THEN object_->AddWork( tech, false );
 
 	return 1;		
 }

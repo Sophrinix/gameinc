@@ -25,7 +25,7 @@ local WINDOW_PRJMANAGE_COMPONENTS = WINDOW_PRJMANAGE_ID + 5
 
 function sworkCreateWindowProjectManager( ptr )	
 	local company = CLuaCompany( applic:GetPlayerCompany() )
-	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYERS_MANAGE_ID ) )
+	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_PRJMANAGE_ID ) )
 	
 	if windowg:Empty() == 1 then
 		windowg:SetObject( guienv:AddWindow( "", 0, 0, width, height, WINDOW_PRJMANAGE_ID, guienv:GetRootGUIElement() ) )
@@ -38,7 +38,7 @@ function sworkCreateWindowProjectManager( ptr )
 	local cmpProjectNumber = company:GetDevProjectNumber()
 	LogScript( "Company DevProject number="..cmpProjectNumber )
 	for i=1, cmpProjectNumber do
-		local ptrProject = CLuaProject( company:GetDevProject( i-1 ) )
+		local ptrProject = CLuaDevelopProject( company:GetDevProject( i-1 ) )
 		
 		if ptrProject:GetTechType() == PT_GAME then
 			cmbxPrj:AddItem( "Игра:" .. ptrProject:GetName(), ptrProject:Self() )	
@@ -142,20 +142,20 @@ local function ShowWindowUserInfo( userPtr )
 					   
 	local lbx = CLuaComponentListBox( guienv:AddComponentListBox( 10, 135, widdddd - 10, hhhhhhh - 10, -1, windowg:Self() ) )
 	
-	for i=1, currentEmployer:GetTechWorkNumber() do
-		lbx:AddItem( "", currentEmployer:GetTechWork( i-1 ) )
+	for i=1, currentEmployer:GetWorkNumber() do
+		lbx:AddItem( "", currentEmployer:GetWork( i-1 ) )
 	end
 end
 
 local function ShowUnworkedGameProjectComponent( ptrProject )
-	local gp = CLuaGameProject( ptrProject )
+	local gp = CLuaDevelopProject( ptrProject )
 	local lbx = CLuaComponentListBox( guienv:GetElementByID( WINDOW_PRJMANAGE_COMPONENTS ) )
 	lbx:Clear()
 	local module = CLuaDevelopModule( nil )
 	
 	for i=1, gp:GetModuleNumber() do
 	    module:SetObject( gp:GetModule( i-1 ) )
-		if module:Empty() == 0 and not module:HaveLider() then 
+		if module:Empty() == 0 then 
 		  lbx:AddItem( module:GetName(), module:Self() )	
 		end
 	end
@@ -165,15 +165,15 @@ function sworkWindowManagerProjectToggleComponentLider( ptr )
 	if not currentComponent:HaveLider() then
 		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
 		if currentComponent:Empty() == 0 then
-			currentEmployer:AddTechWork( currentComponent:Self() )	
-			if currentComponent:GetEmployerPosibility() < 0.4 then
+			currentEmployer:AddWork( currentComponent:Self() )	
+			if currentComponent:GetEmployerPosibility( currentEmployer:Self() ) < 0.4 then
 				guienv:MessageBox( currentEmployer:GetName() .. " имеет недостаточные навыки.", true, false, "", "" )
 			end
 		end
 	else
 		Log({src=SCRIPT, dev=ODS|CON}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
 		if currentComponent:Empty() == 0 then
-			currentEmployer:RemoveTechWork( currentComponent:Self() )
+			currentEmployer:RemoveWork( currentComponent:Self() )
 			if currentComponent:GetWorkPercentDone() > 70 then
 				guienv:MessageBox( "Компонент почти завершен.\n Его передача приведет к потере части функионала", true, false, "", "" )
 			end

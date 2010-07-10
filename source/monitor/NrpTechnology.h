@@ -6,6 +6,7 @@ namespace nrp
 {
 
 typedef std::map< int, int > REQUIRE_MAP;
+typedef enum { TS_UNKNOWN=0, TS_READY, TS_INDEVELOP, TS_PROJECT } TECH_STATUS;
 
 class IUser;
 class CNrpCompany;
@@ -16,10 +17,14 @@ OPTION_NAME LASTWORKER( "lastWorker" );
 OPTION_NAME ERRORNUMBER( "moduleErrorNumber");
 OPTION_NAME HAVELIDER( "haveLider" );
 OPTION_NAME PRICE( "price" );
+OPTION_NAME BASEFILE( "baseFile" );
 OPTION_NAME TEXTURENORMAL( "textureNormal" );
 OPTION_NAME TEXTUREHOVER( "textureHover" );
 OPTION_NAME DESCRIPTIONPATH( "descriptionPath" );
 OPTION_NAME INTEREST( "interest" );
+OPTION_NAME NEXTTECHNUMBER( "nexttechnumber" );
+OPTION_NAME REQUIRETECH( "requireTech" );
+OPTION_NAME STATUS( "status" );
 
 class CNrpTechnology : public INrpProject
 {
@@ -33,6 +38,9 @@ public:
 	int GetEngineTechRequire( int tech_type );
 	int GetEployerSkillRequire( int skil_require );
 
+	CNrpTechnology* GetFutureTech( size_t index );
+	void AddFutureTech( CNrpTechnology* tech );
+
 	float GetEmployerPosibility( IUser* ptrUser );
 
 	virtual void Save( std::string saveFolder );
@@ -44,10 +52,12 @@ public:
 protected:
 	void Load_( char* file_name ) {}
 	void InitializeOptions_();
-	void SaveRequires_( std::string fileName );
+	void SaveRequires_( const std::string& fileName );
+	void LoadRequries_( const std::string& fileName );
 
 	REQUIRE_MAP techRequires_;
 	REQUIRE_MAP skillRequires_;
+	std::vector< CNrpTechnology* > futureTech_;
 }; 
 
 typedef CNrpTechnology* PNrpTechnology;

@@ -1,6 +1,7 @@
 #pragma once
 #include "ILuaBaseProject.h"
 #include "IUser.h"
+#include "INrpProject.h"
 #include <assert.h>
 
 namespace nrp
@@ -9,7 +10,6 @@ namespace nrp
 #define LUNA_ILUAPROJECT_HEADER(class)	LUNA_ILUABASEPROJECT_HEADER(class),\
 										LUNA_AUTONAME_FUNCTION(class, GetTechType ),\
 										LUNA_AUTONAME_FUNCTION(class, GetName ),\
-										LUNA_AUTONAME_FUNCTION(class, SetLider ),\
 										LUNA_AUTONAME_FUNCTION(class, SetName ),\
 										LUNA_AUTONAME_FUNCTION(class, GetWorkPercentDone )
 
@@ -27,7 +27,7 @@ protected:
 
 	int GetTechType( lua_State* L )
 	{ 
-		lua_pushinteger( L, GetParam_<int>( L, "GetTechType", TECHTYPE, 0 ) );
+		lua_pushinteger( L, GetParam_<PROJECT_TYPE>( L, "GetTechType", TECHTYPE, PROJECT_TYPE(0) ) );
 		return 1; 
 	}
 
@@ -52,17 +52,6 @@ protected:
 		assert( name != NULL );
 
 		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<std::string>( NAME, name );
-
-		return 1;
-	}
-
-	int SetLider( lua_State* L )
-	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + ClassName() + ":SetLider need  IUser* parameter").c_str() );
-
-		nrp::IUser* ptrUser = (nrp::IUser*)lua_touserdata( L, 2 );
-		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<std::string>( COMPONENTLIDER, ptrUser->GetValueA<std::string>( NAME ) );
 
 		return 1;
 	}

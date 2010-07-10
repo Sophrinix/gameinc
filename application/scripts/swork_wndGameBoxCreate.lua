@@ -72,10 +72,11 @@ end
 
 local function localCreateWindowForBoxAvaibleAddons()
 	wndAvaibleAddons:Remove()
-	wndAvaibleAddons:SetObject( guienv:AddWindow( "Avaible box addon", 
+	wndAvaibleAddons:SetObject( guienv:AddWindow( "", 
 												  width - 200, 5, width - 5, height - 50, 
 												  -1, wndGBM:Self() ) )
 	wndAvaibleAddons:SetDraggable( false )
+	wndAvaibleAddons:SetText( "Avaible box addon" )
 	
 	local itemCount = 0
 	local linet = 0

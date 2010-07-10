@@ -37,7 +37,7 @@ class CNrpProjectModule;
 class IUser : public INrpConfig
 {
 public:
-	IUser(const char* className, const char* systemName );
+	IUser(const std::string className, const std::string systemName );
 	void SetSkill( int typen, int valuel ); 
 	void SetSkill( std::string name, int valuel );
 	int GetSkill( int typen );
@@ -49,7 +49,8 @@ public:
 	int GetGenrePreferences( int typen );
 	void SetGenrePreferences( int typen, int valuel );
 	
-	void AddWork( CNrpProjectModule* techWork );
+	void AddWork( CNrpProjectModule* techWork, bool inLoad );
+
 	CNrpProjectModule* GetWork( int index );
 	void RemoveWork( CNrpProjectModule* techWork );
 
@@ -82,7 +83,6 @@ private:
 	void CalculateKnowledgeLevel_();
 
 	void RemoveOldModificators_( const SYSTEMTIME& time );
-
 	typedef std::map< int, int > KNOWLEDGE_MAP;
 	typedef std::vector< CNrpProjectModule* > WORK_LIST;
 	typedef std::vector< IUserAction* > USERACTION_LIST;

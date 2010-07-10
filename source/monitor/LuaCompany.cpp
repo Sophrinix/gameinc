@@ -26,6 +26,7 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateDevelopGame ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProjectNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProject ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUserNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUser ),
@@ -48,12 +49,22 @@ CLuaCompany::CLuaCompany(lua_State *L)	: ILuaProject(L, "CLuaCompany")	//констру
 int CLuaCompany::Create( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:Create need string parameter" );
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:Create need companyname, ceoname parameter" );
 
 	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	const char* ceo = lua_tostring( L, 3 );
+	assert( name != NULL && ceo != NULL );
 
-	object_ = new CNrpCompany( name );
+	PUser user = CNrpApplication::Instance().GetUser( ceo );
+ 
+	assert( user != NULL );
+
+	if( !user )
+	{
+		OutputDebugString( ("не удалось найти пользователя с именем" + std::string(ceo)).c_str() );
+		return 1;
+	}
+	object_ = new CNrpCompany( name, user );
 	CNrpApplication::Instance().AddCompany( object_ );
 
 	lua_pushlightuserdata( L, object_ );
@@ -168,6 +179,7 @@ int CLuaCompany::AddUser( lua_State* L )
 	assert( ptrData != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->AddUser( ptrData );
+
 	return 1;		
 }
 
@@ -263,6 +275,20 @@ int CLuaCompany::GetFromPortfelle( lua_State* L )
 	INrpConfig* prj = NULL;
 
 	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetFromPortfelle( index );
+
+	lua_pushlightuserdata( L, prj );
+	return 1;	
+}
+
+int CLuaCompany::GetDevProject( lua_State* L )
+{	
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetGame need int parameter" );
+
+	int index = lua_tointeger( L, 2 );
+	INrpProject* prj = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetDevelopProject( index );
 
 	lua_pushlightuserdata( L, prj );
 	return 1;	

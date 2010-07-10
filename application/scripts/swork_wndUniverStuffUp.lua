@@ -70,7 +70,6 @@ end
 function sworkEmployContractUser()
 	local company = CLuaCompany( applic:GetPlayerCompany() )
 	company:AddUser( userToUp:Self() )
-	applic:RemoveUser( userToUp:Self() )
 	sworkCreateEmployersWindow()
 end
 

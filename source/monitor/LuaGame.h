@@ -31,8 +31,16 @@ public:
 	int GetBoxImageNumber( lua_State* L );
 	int GetScreenshotNumber( lua_State* L );
 	int GetScreenshot( lua_State* L );
-															//нажатии на эту кнопку
+	int GetLastMonthSales( lua_State* L );
+	int GetAllTimeSales( lua_State* L );
+	int GetPrice( lua_State* L );
+	int SetPrice( lua_State* L );
+	int GetCurrentMonthSales( lua_State* L );
+	int GetCompany( lua_State* L );
+
 	static const char* StaticGetLuaName() { return CLASS_LUAGAME.c_str(); }
+
+private:
 	template< class R > R GetImageLisParam_( lua_State* L, 
 		                                     std::string funcName, 
 											 std::string name, R defValue );

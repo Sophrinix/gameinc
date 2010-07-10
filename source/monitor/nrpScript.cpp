@@ -44,6 +44,8 @@
 #include "LuaReklame.h"
 #include "LuaPictureFlow.h"
 #include "LuaDevelopModule.h"
+#include "LuaDevelopProject.h"
+#include "LuaTechMap.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
 
@@ -131,6 +133,8 @@ CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 
 		lua_register( vm_, "NrpGetTranslate", ApplicationGetTranslate ),
 
+		lua_register( vm_, "GetTickCount", ApplicationGetTickCount ),
+
 		RegisterLuaClasses_();
 	}
 	catch (...)
@@ -152,7 +156,7 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaCamera >::Register( vm_ );									//камера		
 	Luna< CLuaScrollBar >::Register( vm_ );									//скроллбар
 	Luna< CLuaSceneManager >::Register( vm_ );								//сцен менеджер
-	Luna< CLuaGuiEnvironment >::Register( vm_ );							//гуй
+	Luna< CLuaGuiEnvironment >::Register( vm_ );							//гуй-фабрика
 	Luna< CLuaTable >::Register( vm_ );										//таблица		
 	Luna< CLuaTexture >::Register( vm_ );									//текстура
 	Luna< CLuaConsole >::Register( vm_ );
@@ -186,6 +190,8 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaReklame >::Register( vm_ );
 	Luna< CLuaPictureFlow >::Register( vm_ );
 	Luna< CLuaDevelopModule >::Register( vm_ );
+	Luna< CLuaDevelopProject >::Register( vm_ );
+	Luna< CLuaTechMap >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()

@@ -37,7 +37,7 @@ public:
 	typedef std::map< std::string, CNrpGame* > GAME_MAP;
 	typedef std::vector< INrpConfig* > OBJECT_LIST;
 
-	CNrpCompany( std::string name);
+	CNrpCompany( std::string name, IUser* ceo );
 	~CNrpCompany(void);
 
 	void AddGameEngine( CNrpGameEngine* ptrEng );
@@ -46,6 +46,7 @@ public:
 	CNrpTechnology* GetTechnology( int index );
 	CNrpTechnology* GetTechnology( std::string name );
 	INrpConfig* GetFromPortfelle( int index );
+	void RemoveFromPortfelle( INrpConfig* ptrObject );
 	void AddToPortfelle( INrpConfig* ptrObject );
 	float GetUserModificatorForGame( CNrpGame* game );
 

@@ -55,8 +55,8 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetDiskMachine ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, SaveBoxAddonsPrice ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadBoxAddonsPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetMarketGamesNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetMarketGame ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGamesNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGame ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameToMarket ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, ClearImageList ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadImageList ),
@@ -110,13 +110,7 @@ int CLuaApplication::GetBank( lua_State* L )
 
 int CLuaApplication::GetPlayerCompany( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetPlayerCompany not need parameter" );
-
-	CNrpCompany* cmp = NULL;
-	IF_OBJECT_NOT_NULL_THEN  cmp = object_->GetPlayerCompany();
-
-	lua_pushlightuserdata( L, (void*)cmp );
+	lua_pushlightuserdata( L, GetParam_<PNrpCompany>( L, "GetPlayerCompany", PLAYERCOMPANY, NULL ) );
 	return 1;
 }
 
@@ -504,26 +498,20 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 	return 1;
 }
 
-int CLuaApplication::GetMarketGamesNumber( lua_State* L )
+int CLuaApplication::GetGamesNumber( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetMarketGamesNumber not need any parameter" );
-
-	int gameNumber = 0;
-	IF_OBJECT_NOT_NULL_THEN	gameNumber = object_->GetValue<int>( MARKETGAMENUMBER );
-
-	lua_pushinteger( L, gameNumber );
-	return 1;	
+	lua_pushinteger( L, GetParam_<int>( L, "GetGamesNumber", GAMENUMBER, 0 ) );
+	return 1;
 }
 
-int CLuaApplication::GetMarketGame( lua_State* L )
+int CLuaApplication::GetGame( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetMarketGame need integer parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetGame need integer parameter" );
 
 	int index = lua_tointeger( L, 2 );
 	CNrpGame* game = NULL;
-	IF_OBJECT_NOT_NULL_THEN	game = object_->GetMarketGame( index );
+	IF_OBJECT_NOT_NULL_THEN	game = object_->GetGame( index );
 
 	lua_pushlightuserdata( L, game );
 	return 1;		

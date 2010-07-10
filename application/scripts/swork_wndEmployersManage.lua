@@ -1,5 +1,6 @@
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() ) 
 local applic = CLuaApplication( NrpGetApplication() )
+local driver = CLuaDriver( NrpGetVideoDriver() )
 
 local mode = { }
 mode[ "Программисты" ] = "coder"
@@ -10,8 +11,8 @@ mode[ "Тестировщики" ] = "tester"
 
 local modeUserView = "coder"
 
-local width = 800
-local height = 600
+local width, height = driver:GetScreenSize()
+
 local WINDOW_EMPMANAGE_USER_INFO = WINDOW_EMPLOYERS_MANAGE_ID + 1
 
 local currentEmployer = CLuaUser( nil )
@@ -108,7 +109,7 @@ function sworkCreateWindowEmployersManage( ptr )
 	button:SetObject( guienv:AddButton( 610, 10, 800, 100, windowg:Self(), -1, "Тестировщики" ) )
 	button:SetAction( "sworkWindowManageEmployersChangerUserType" )
 	
-	listBoxCompanyEmployers:SetObject( guienv:AddListBox( 10, 110, 200, 590, -1, windowg:Self() ) )
+	listBoxCompanyEmployers:SetObject( guienv:AddEmployersListBox( 10, 110, width - 10, height - 10, -1, windowg:Self() ) )
 	windowg:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkCreateAdvancedUserInfoWindow" )
 	
 	ShowAvaibleEmployersToManage()
@@ -118,5 +119,6 @@ function sworkWindowManageEmployersChangerUserType( ptr )
 	local button = CLuaButton( ptr )
 	modeUserView = mode[ button:GetText() ] 
 	currentEmployer:SetObject( nil )
-	sworkCreateWindowEmployersManage()
+	
+	ShowAvaibleEmployersToManage()
 end

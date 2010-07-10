@@ -56,7 +56,7 @@ int CLuaDevelopModule::HaveLider( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::HaveLider not need parameter");
 
 	bool haveUser = false; 
-	IF_OBJECT_NOT_NULL_THEN	haveUser = !object_->GetValue<std::string>( COMPONENTLIDER ).empty();
+	IF_OBJECT_NOT_NULL_THEN	haveUser = object_->GetValue<PUser>( COMPONENTLIDER ) != NULL;
 	lua_pushboolean( L, haveUser );
 	return 1;	
 }
@@ -64,7 +64,7 @@ int CLuaDevelopModule::HaveLider( lua_State* L )
 int CLuaDevelopModule::GetEmployerPosibility( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaDevelopModule::GetEmployerPosibility not need parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaDevelopModule::GetEmployerPosibility need PUser parameter");
 
 	float posilbleValue = 0; 
 	PUser puser = (PUser)lua_touserdata( L, 2 );

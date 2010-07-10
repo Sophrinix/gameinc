@@ -15,6 +15,7 @@
 #include <typeinfo.h>
 #include <stdio.h>
 #include <algorithm>
+#include <assert.h>
 
 #include "INrpObject.h"
 #include "IniFile.h"
@@ -61,13 +62,9 @@ OPTION_NAME GENRE_MODULE_NUMBER( "genreModuleNumber" );
 OPTION_NAME TECHGROUP( "techGroup" );
 OPTION_NAME CODEPASSED( "codePassed" );
 OPTION_NAME MONEYONDEVELOP( "moneyDevelop" );
+OPTION_NAME PROJECTREADY( "projectReady" );
 
-#define CHECK_VALCLASS_TYPE( bclass )\
-	if( type_ != typeid( bclass ).name() ) {\
-		std::string warn( "warning: request type " );\
-		warn +=	std::string( typeid( bclass ).name()) + " but native typename is " +type_ + "\n";\
-		OutputDebugString( warn.c_str() );\
-	}
+void CheckClassesType( const std::string type1, const std::string type2 );
 
 class INrpProperty
 {
@@ -106,7 +103,11 @@ public:
 
 	ValClass& AddValue( ValClass valuel ) { value_ += valuel; return value_; }
 
-	ValClass& GetValue() { return value_; }
+	ValClass& GetValue() 
+	{
+		CheckClassesType( type_, typeid( ValClass ).name() );
+		return value_; 
+	}
 
 	void SetValue( ValClass valuel )
 	{

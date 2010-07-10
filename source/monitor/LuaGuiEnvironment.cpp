@@ -10,7 +10,6 @@
 #include "nrpChartCtrl.h"
 #include "nrpGuiLinkBox.h"
 
-
 using namespace irr;
 
 namespace nrp
@@ -34,6 +33,7 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddCircleScrollBar ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddRectAnimator ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTable ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTechMap ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddGlobalMap ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddChart ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddComboBox ),
@@ -69,7 +69,7 @@ int CLuaGuiEnvironment::RemoveAnimators( lua_State* L )
 
 	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->RemoveAnimators( elm );
+	IF_OBJECT_NOT_NULL_THEN object_->RemoveAnimators( elm );
 
 	return 1;    
 }
@@ -123,7 +123,7 @@ int CLuaGuiEnvironment::AddWindow( lua_State *vm )
 
 	    txs = object_->getVideoDriver()->getTexture( textureName );
 
-		window = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addWindow( txs, rectangle, 0, parentElem, id );
+		window = object_->addWindow( txs, rectangle, 0, parentElem, id );
 		window->drop();
 	}
 	 
@@ -145,8 +145,8 @@ int CLuaGuiEnvironment::AddBlenderAnimator( lua_State *vm )
 	bool removeSelf = lua_toboolean( vm, 7 ) > 0;
 	bool removeParent = lua_toboolean( vm, 8 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addBlendAnimator( parentElem, minb, maxb, stepb,
-																								   visibleOnEnd, removeSelf, removeParent );
+	IF_OBJECT_NOT_NULL_THEN object_->addBlendAnimator( parentElem, minb, maxb, stepb,
+													   visibleOnEnd, removeSelf, removeParent );
 
 	return 1;
 }
@@ -164,8 +164,8 @@ int CLuaGuiEnvironment::AddHoveredAnimator( lua_State *vm )
 	bool removeSelf = lua_toboolean( vm, 7 ) > 0;
 	bool removeParent = lua_toboolean( vm, 8 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addHoveredAnimator( parentElem, minb, maxb, stepb,
-																									 visibleOnEnd, removeSelf, removeParent );
+	IF_OBJECT_NOT_NULL_THEN object_->addHoveredAnimator( parentElem, minb, maxb, stepb,
+														 visibleOnEnd, removeSelf, removeParent );
 
 	return 1;
 }
@@ -182,10 +182,9 @@ int CLuaGuiEnvironment::AddRectAnimator( lua_State *vm )
 	maxr = ReadRect_( vm, 7 );
 	s32 step = lua_tointeger( vm, 11 );
 
-	gui::CNrpGUIEnvironment* env = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ );
 	gui::IGUIAnimator* anim = NULL; 
 	
-	IF_OBJECT_NOT_NULL_THEN anim = env->addRectAnimator( parentElem, minr, maxr, step );
+	IF_OBJECT_NOT_NULL_THEN anim = object_->addRectAnimator( parentElem, minr, maxr, step );
 	
 	lua_pushlightuserdata( vm, (void*)anim );
 
@@ -201,7 +200,7 @@ int CLuaGuiEnvironment::AddLuaAnimator( lua_State *vm )
 	const char* funcName = lua_tostring( vm, 3 );
 	assert( funcName != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addLuaAnimator( parentElem, funcName );
+	IF_OBJECT_NOT_NULL_THEN object_->addLuaAnimator( parentElem, funcName );
 
 	return 1;
 }
@@ -239,7 +238,7 @@ int CLuaGuiEnvironment::AddButton( lua_State *vm )
 
 	gui::IGUIElement* elm = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN elm = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addButton( rectangle,  parent, id, StrToWide( text ).c_str() );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addButton( rectangle,  parent, id, StrToWide( text ).c_str() );
 
 	lua_pushlightuserdata( vm, (void*)elm );
 
@@ -309,11 +308,7 @@ int CLuaGuiEnvironment::AddCircleScrollBar( lua_State *vm )
 
 	gui::IGUIScrollBar* scrb = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN
-	{
-		gui::CNrpGUIEnvironment* env = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ );
-		scrb = env->addCicrcleScrollBar( parent, id, rectangle );
-	}
+	IF_OBJECT_NOT_NULL_THEN scrb = object_->addCicrcleScrollBar( parent, id, rectangle );
 
 	lua_pushlightuserdata( vm, (void*)scrb );
 
@@ -441,10 +436,10 @@ int CLuaGuiEnvironment::AddMoveAnimator( lua_State* vm )
 
 	gui::IGUIAnimator* anim = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN anim = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addMoveAnimator( parent, pos, step, 
-																										 visibleOnStop,
-																										 removeOnStop,
-																										 removeParentOnStop );
+	IF_OBJECT_NOT_NULL_THEN anim = object_->addMoveAnimator( parent, pos, step, 
+															 visibleOnStop,
+															 removeOnStop,
+															 removeParentOnStop );
 
 	lua_pushlightuserdata( vm, (void*)anim );
 
@@ -458,7 +453,7 @@ int CLuaGuiEnvironment::AddToDeletionQueue( lua_State* vm )
 
 	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( vm, 2 );	
 
-	IF_OBJECT_NOT_NULL_THEN dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addToDeletionQueue( elm );
+	IF_OBJECT_NOT_NULL_THEN object_->addToDeletionQueue( elm );
 
 	return 1;
 }
@@ -494,7 +489,7 @@ int CLuaGuiEnvironment::AddTextTimeAnimator( lua_State *vm )
 
 	gui::IGUIAnimator* anim = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN anim = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addTextTimeAnimator( parent );
+	IF_OBJECT_NOT_NULL_THEN anim = object_->addTextTimeAnimator( parent );
 
 	lua_pushlightuserdata( vm, (void*)anim );
 
@@ -512,7 +507,7 @@ int CLuaGuiEnvironment::AddProgressBar( lua_State* vm )
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addProgressBar( parent, iid, rectangle );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addProgressBar( parent, iid, rectangle );
 
 	lua_pushlightuserdata( vm, (void*)elm );
 
@@ -571,7 +566,7 @@ int CLuaGuiEnvironment::AddLinkBox( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		elm = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addLinkBox( parent, iid, rectangle );
+		elm = object_->addLinkBox( parent, iid, rectangle );
 		if( elm )
 			elm->setText( StrToWide( name ).c_str() );
 	}
@@ -591,7 +586,7 @@ int CLuaGuiEnvironment::AddCursorPosAnimator( lua_State* vm )
 
 	gui::IGUIAnimator* anim = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN anim = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addCursorPosAnimator( parent, offset );
+	IF_OBJECT_NOT_NULL_THEN anim = object_->addCursorPosAnimator( parent, offset );
 
 	lua_pushlightuserdata( vm, (void*)anim );
 
@@ -618,7 +613,7 @@ int CLuaGuiEnvironment::SetDragObject( lua_State* L )
 
 	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->setDragObject( elm );
+	IF_OBJECT_NOT_NULL_THEN object_->setDragObject( elm );
 
 	return 1;
 }
@@ -630,7 +625,7 @@ int CLuaGuiEnvironment::GetDragObject( lua_State* L )
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->getDragObject();
+	IF_OBJECT_NOT_NULL_THEN elm = object_->getDragObject();
 	lua_pushlightuserdata( L, (void*)elm );
 
 	return 1;
@@ -647,8 +642,7 @@ int CLuaGuiEnvironment::AddComponentListBox( lua_State* L )
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN
-		elm = dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addComponentListBox( rectangle, parent, iid );
+	IF_OBJECT_NOT_NULL_THEN	elm = object_->addComponentListBox( rectangle, parent, iid );
 
 	lua_pushlightuserdata( L, elm );
 
@@ -666,8 +660,7 @@ int CLuaGuiEnvironment::AddListBox( lua_State* L )
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN
-		elm = object_->addListBox( rectangle, parent, iid );
+	IF_OBJECT_NOT_NULL_THEN	elm = object_->addListBox( rectangle, parent, iid );
 
 	lua_pushlightuserdata( L, elm );
 	return 1;
@@ -689,8 +682,7 @@ int CLuaGuiEnvironment::MessageBox( lua_State* L )
 
 	int flags = (btnYesVisible ? gui::EMBF_YES : 0) | (btnNoVisible ? gui::EMBF_NO : 0 );
 
-	IF_OBJECT_NOT_NULL_THEN
-		dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )->addMessageBox( StrToWide( text ).c_str(), flags, funcs );
+	IF_OBJECT_NOT_NULL_THEN object_->addMessageBox( StrToWide( text ).c_str(), flags, funcs );
 
 	return 1;	
 }
@@ -709,8 +701,7 @@ int CLuaGuiEnvironment::AddPictureFlow( lua_State* L )
 	gui::IGUIElement* elm = NULL;
 
 	IF_OBJECT_NOT_NULL_THEN
-		elm = (gui::IGUIElement*)dynamic_cast< gui::CNrpGUIEnvironment* >( object_ )
-									->addPictureFlow( rectangle, pictureRect, iid, parent );
+		elm = (gui::IGUIElement*)object_->addPictureFlow( rectangle, pictureRect, iid, parent );
 
 	lua_pushlightuserdata( L, elm );
 	return 1;	
@@ -740,4 +731,21 @@ int CLuaGuiEnvironment::FadeAction( lua_State* L )
 	return 1;
 }
 
+int CLuaGuiEnvironment::AddTechMap( lua_State *vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 7, 7, "Function  CLuaGuiEnvironment:AddTechMap need 7 parameter");
+
+	core::recti rectangle = ReadRect_( vm, 2 );
+
+	s32 id = lua_tointeger( vm, 6 );
+	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 7 );
+
+	gui::CNrpTechMap* techMap = NULL;
+	IF_OBJECT_NOT_NULL_THEN techMap = object_->AddTechMap( rectangle, parentElem, id, false );
+
+	lua_pushlightuserdata( vm, techMap );
+
+	return 1;
+}
 }//namespace nrp
