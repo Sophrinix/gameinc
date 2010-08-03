@@ -1,7 +1,3 @@
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() ) 
-local project = CLuaGameProject( nil )
-local applic = CLuaApplication( NrpGetApplication() )
-
 local platform = { "pc", "console", "gamebox", "mobile" }
 local lang = { "Eng", "Den", "France", "Russian", "Jap" }
 local pagesName = {  }

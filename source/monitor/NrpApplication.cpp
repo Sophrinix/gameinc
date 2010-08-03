@@ -674,20 +674,11 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 
 void CNrpApplication::UpdateGameRatings( CNrpGame* ptrGame, bool firstTime )
 {
-	if( firstTime )
-	{
-		ptrGame->SetValue<int>( STARTGAMERATING, GetGameRating_( ptrGame, GRT_GENERAL ) );
+		ptrGame->SetValue<int>( firstTime ? STARTGAMERATING : CURRENTGAMERATING, GetGameRating_( ptrGame, GRT_GENERAL ) );
 	/*	ptrGame->SetValue<int>( STARTGRAPHICRATING, GetGameRating_( ptrGame, GRT_VIDEO ) );
 		ptrGame->SetValue<int>( STARTGENRERATING, GetGameRating_( ptrGame, GRT_GENRE ) );
 		ptrGame->SetValue<int>( STARTSOUNDRATING, GetGameRating_( ptrGame, GRT_SOUND ) );
 		ptrGame->SetValue<int>( STARTADVFUNCRATING, GetGameRating_( ptrGame, GRT_ADVFUNC ) ); */
-	}
-
-	ptrGame->SetValue<int>( CURRENTGAMERATING, GetGameRating_( ptrGame, GRT_GENERAL ) );
-	/*ptrGame->SetValue<int>( CURRENTGRAPHICRATING, GetGameRating_( ptrGame, GRT_VIDEO ) );
-	ptrGame->SetValue<int>( CURRENTGENRERATING, GetGameRating_( ptrGame, GRT_GENRE ) );
-	ptrGame->SetValue<int>( CURRENTSOUNDRATING, GetGameRating_( ptrGame, GRT_SOUND ) );
-	*/
 }
 
 IUser* CNrpApplication::CreateRandomUser_( std::string userType )

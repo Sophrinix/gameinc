@@ -1,6 +1,3 @@
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-
 local WND_WIDTH = 800
 local WND_HEIGHT = 600
 local STEP = 5 

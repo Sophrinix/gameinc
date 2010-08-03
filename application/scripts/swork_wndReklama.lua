@@ -1,8 +1,4 @@
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local driver = CLuaDriver( NrpGetVideoDriver() )
-local applic = CLuaApplication( NrpGetApplication() )
 local company = CLuaCompany( nil )
-local plant = CLuaPlant( NrpGetPlant() )
 
 local width = 800
 local height = 600

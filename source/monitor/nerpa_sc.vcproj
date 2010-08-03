@@ -1399,10 +1399,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_formular.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_MainMenu.lua"
 				>
 			</File>

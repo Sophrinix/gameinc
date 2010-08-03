@@ -1,9 +1,6 @@
 require("elmid")
 require("NerpaActionType")
 
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-
 local chartWidth = 400
 local chartHeight = 300
 local STEP = 5

@@ -2,10 +2,6 @@ require("logdefs")
 require("elmid")
 require("NerpaActionType")
 
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-local driver = CLuaDriver( NrpGetVideoDriver() )
-
 local WND_WIDTH = 400
 local WND_HEIGHT = 400
 local STEP = 5

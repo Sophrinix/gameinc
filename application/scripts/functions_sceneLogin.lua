@@ -3,9 +3,6 @@ IncludeScript("swork_startDefinition")
 IncludeScript("swork_UpdateFunctions")
 
 --переменные для работы
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local driver = CLuaDriver( NrpGetVideoDriver() )
-local applic = CLuaApplication( NrpGetApplication() )
 local plant = CLuaPlant( NrpGetPlant() )
 
 --локальные имена элементов гуи

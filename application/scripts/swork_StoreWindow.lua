@@ -1,11 +1,6 @@
 require("elmid")
 
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local driver = CLuaDriver( NrpGetVideoDriver() )
-local applic = CLuaApplication( NrpGetApplication() )
-
 local wndHeight = 180
-local scrWidth, scrHeight = driver:GetScreenSize()
 local portfelleWnd = CLuaWindow( nil )
 local maxObjectNumber = 0							--число объектов, которые отображаются в окне
 local startObjectNumber = 0							--номер стартового объекта

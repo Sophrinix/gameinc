@@ -1,6 +1,3 @@
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-
 function ApplicationLoadLaborScene()
 	sceneManager:SetSelectedNode( nil )
 	--guienv:FadeAction( 3000, false )

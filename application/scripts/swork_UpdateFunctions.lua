@@ -1,5 +1,3 @@
-local applic = CLuaApplication( NrpGetApplication() )
-
 local fileIniPlatforms = "xtras/platforms.list"
 local fileIniAddons	= "xtras/gameboxaddons.list"
 local fileDiskMachines = "xtras/diskmachines.list"

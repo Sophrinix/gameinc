@@ -1,5 +1,3 @@
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-
 function ApplicationAddCityCamera()
 
 	local camera = CLuaCamera( sceneManager:AddCameraSceneNode( sceneManager:GetRootSceneNode() ) )

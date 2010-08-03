@@ -1,7 +1,3 @@
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() ) 
-local applic = CLuaApplication( NrpGetApplication() )
-local driver = CLuaDriver( NrpGetVideoDriver() )
-
 local mode = { }
 mode[ "Программисты" ] = "coder"
 mode[ "Дизайнеры" ] = "designer"

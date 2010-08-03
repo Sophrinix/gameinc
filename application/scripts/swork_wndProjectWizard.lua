@@ -1,7 +1,5 @@
 IncludeScript( "swork_wndCreateGameProject" )
 
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() ) 
-
 local width = 800
 local height = 600
 

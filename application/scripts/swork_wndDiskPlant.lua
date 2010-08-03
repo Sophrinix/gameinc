@@ -1,6 +1,3 @@
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() ) 
-local applic = CLuaApplication( NrpGetApplication() )
-local plant = CLuaPlant( NrpGetPlant() )
 local company = CLuaCompany( nil )
 local wndDPP = CLuaWindow( nil )
 local produceDiskWork = CLuaPlantWork( nil )

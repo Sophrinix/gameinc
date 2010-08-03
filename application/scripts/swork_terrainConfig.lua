@@ -1,5 +1,3 @@
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-
 local terrainHeightMap = "media/terrain-heightmap.bmp"
 local terrainName = "terrain"
 local terrainTexture = "media/terrain-texture.jpg"

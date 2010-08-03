@@ -1,6 +1,3 @@
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local applic = CLuaApplication( NrpGetApplication() )
 local mode = { }
 mode[ "Программисты" ] = "coder"
 mode[ "Дизайнеры" ] = "designer"

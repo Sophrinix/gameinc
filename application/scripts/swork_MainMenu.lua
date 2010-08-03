@@ -1,6 +1,3 @@
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local driver = CLuaDriver( NrpGetVideoDriver() )
-
 local advFuncButtons = { }
 local adminFuncButtons = { }
 local mainMenuButtons = { } 
@@ -94,11 +91,6 @@ end
 
 function AddMenuWindow()
 
-	local scrWidth = 0
-	local scrHeight = 0
-	
-	scrWidth, scrHeight = driver:GetScreenSize()
-	
 	local txs = CLuaTexture( driver:GetTexture( "./media/top_menu/top_nerpa.png") )
 	local txsWidth = 0
 	local txsHeight = 0

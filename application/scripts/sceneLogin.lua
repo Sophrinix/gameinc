@@ -1,13 +1,4 @@
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local driver = CLuaDriver( NrpGetVideoDriver() )
-local applic = CLuaApplication( NrpGetApplication() ) 
-
-local scrWidth = 0
-local scrHeight = 0 
-
 NrpInitializeLoginScene()
-
-scrWidth, scrHeight = driver:GetScreenSize()
 
 --создание названий полей ввода
 

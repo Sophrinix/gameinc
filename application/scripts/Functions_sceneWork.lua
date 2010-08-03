@@ -12,10 +12,7 @@ IncludeScript("swork_wndDiskPlant")
 IncludeScript("swork_wndReklama")
 IncludeScript("swork_wndLaboratory" )
 
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local app = CLuaApplication( NrpGetApplication() )
-local company = CLuaCompany( app:GetPlayerCompany() )
+local company = CLuaCompany( applic:GetPlayerCompany() )
 local plant = CLuaPlant( NrpGetPlant() )
 
 function sworkAppDayChange( ptr )
@@ -27,6 +24,7 @@ end
 
 function sworkAppMonthChange( ptr )
 	app:CreateNewFreeUsers()
+	app:CheckNewTechs()
 end
 
 function sworkAppYearChange( ptr )

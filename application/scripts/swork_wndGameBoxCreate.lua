@@ -1,5 +1,3 @@
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() ) 
-local applic = CLuaApplication( NrpGetApplication() )
 local wndGBM = CLuaWindow( nil )
 local company = CLuaCompany( nil )
 local currentGame = CLuaGame( nil )

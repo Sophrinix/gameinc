@@ -1,4 +1,3 @@
-local applic = CLuaApplication( NrpGetApplication() )
 local company = CLuaCompany( nil )
 local user = CLuaUser( nil )
 
