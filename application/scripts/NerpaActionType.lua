@@ -4,13 +4,10 @@
 --]]
 ST_LINE_SERIE			= 0
 
-CHNL_RFYZ				= "rfyz_src"
-CHNL_RFYZ_ASRF			= "rfyz_src_rf"
-CHNL_RFYZ_ASY			= "rfyz_src_y"
-CHNL_RFYZ_ASZ			= "rfyz_src_z"
-CHNL_IMAGE				= "image_src"
-
 MAIN_CAMERA_NAME		= "_MainCameraName_"
+
+TS_UNKNOWN = 0 --такая технология неизвестна на рынке, следовательно её можно открыть
+TS_READY = 1 --флаг наличия технологии на рынке
 
 AN_BOTTOM=0
 AN_LEFT=1
@@ -40,6 +37,7 @@ GUIELEMENT_SET_DATA		= 11006
 GUIELEMENT_RMOUSE_LEFTUP = 11007
 GUIELEMENT_LBXITEM_SELECTED = 11008
 GUIELEMENT_CMBXITEM_SELECTED = 11009
+GUIELEMENT_TABLE_SELECTED_AGAIN = 11010
 
 APP_DAY_CHANGE			= 12000
 APP_MONTH_CHANGE		= 12001

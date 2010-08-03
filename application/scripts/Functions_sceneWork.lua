@@ -23,8 +23,8 @@ function sworkAppDayChange( ptr )
 end
 
 function sworkAppMonthChange( ptr )
-	app:CreateNewFreeUsers()
-	app:CheckNewTechs()
+	applic:CreateNewFreeUsers()
+	applic:CheckNewTechs()
 end
 
 function sworkAppYearChange( ptr )
@@ -85,7 +85,7 @@ function sworkSelectObjectOnCityScene( ptr )
 end 
 
 function sworkMainLoop( ptr )
-	app:UpdateGameTime( ID_DATETIME_LABEL )	
+	applic:UpdateGameTime( ID_DATETIME_LABEL )	
 end
 
 function ToggleConsoleVisible( ptr )
@@ -289,12 +289,12 @@ end
 
 function sworkApplicationClose( ptr )
 	NrpApplicationSave()
-	app:SaveBoxAddonsPrice()
-	plant:Save( app:GetCurrentProfile() )
+	applic:SaveBoxAddonsPrice()
+	plant:Save( applic:GetCurrentProfile() )
 	NrpApplicationClose()
 end
 
 sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )
-app:AddLuaFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
-app:AddLuaFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
-app:AddLuaFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )
+applic:AddLuaFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
+applic:AddLuaFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
+applic:AddLuaFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )

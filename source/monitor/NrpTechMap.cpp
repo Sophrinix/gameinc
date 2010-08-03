@@ -844,6 +844,10 @@ void CNrpTechMap::selectNew(s32 ypos, bool onlyHover)
 		event.GUIEvent.Caller = this;
 		event.GUIEvent.EventType = (Selected != oldSelected) ? EGET_TABLE_CHANGED : EGET_TABLE_SELECTED_AGAIN;
 		Parent->OnEvent(event);
+
+		if( Selected == oldSelected )
+			DoLuaFunctionsByType( GUIELEMENT_TABLE_SELECTED_AGAIN, NULL );
+			
 	}
 }
 

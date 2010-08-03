@@ -27,6 +27,7 @@ function sloginAddStartPublicTechnology()
 
 	local tech = CLuaTech( nil )
 	tech:Create( PT_GENRE )
+	tech:SetStatus( TS_READY )
 	tech:Load( "xtras/technology/genre_skill/item.tech" )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология GT_SKILL")

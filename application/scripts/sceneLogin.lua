@@ -1,3 +1,5 @@
+IncludeScript( "globalVariableInitialize" )
+
 NrpInitializeLoginScene()
 
 --создание названий полей ввода

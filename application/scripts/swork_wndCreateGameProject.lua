@@ -1,3 +1,5 @@
+local project = CLuaGameProject( nil )
+
 local platform = { "pc", "console", "gamebox", "mobile" }
 local lang = { "Eng", "Den", "France", "Russian", "Jap" }
 local pagesName = {  }

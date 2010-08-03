@@ -1375,6 +1375,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\globalVariableInitialize.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\initApp.lua"
 				>
 			</File>

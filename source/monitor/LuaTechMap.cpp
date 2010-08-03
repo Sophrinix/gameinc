@@ -19,6 +19,7 @@ Luna< CLuaTechMap >::RegType CLuaTechMap::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetImage ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetAction ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddTechnology ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddLuaFunction ),
 	{0,0}
 };
 
@@ -61,7 +62,7 @@ int CLuaTechMap::SetAction( lua_State *L )									//устанавливает имя новой фун
 int CLuaTechMap::AddTechnology( lua_State *L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaTechMap::RemoveColumn need tech,tech parameter");
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaTechMap::AddTechnology need parent tech, child tech parameter");
 
 	CNrpTechnology* parentt =  (CNrpTechnology*)lua_touserdata( L, 2 );
 	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 3 );
@@ -71,4 +72,19 @@ int CLuaTechMap::AddTechnology( lua_State *L )
 	return 1;	
 }
 
+int CLuaTechMap::AddLuaFunction( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaTechMap::AddLuaFunction need funcName parameter");
+
+	int	funcType = lua_tointeger( L, 2 );
+	const char* funcName = lua_tostring( L, 3 );
+	assert( funcName != NULL );
+	if( funcName == NULL )
+		return 1;
+
+	IF_OBJECT_NOT_NULL_THEN object_->AddLuaFunction( funcType, funcName );
+
+	return 1;		
+}
 }//namespace nrp

@@ -18,7 +18,7 @@ startdate:time=y=1984 m=00 d=00 h=00 mi=00 s=0
 techgroup:int=3
 techtype:int=329
 texturehover:string=
-texturenormal:string=xtras/technology/genre_cradgame/image.png
+texturenormal:string=xtras/technology/genre_cardgame/image.png
 volumecode:int=0
 nexttechnumber:int=0
 [techRequire]

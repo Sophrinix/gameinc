@@ -2,6 +2,7 @@
 
 #include "IGUITable.h"
 #include "irrArray.h"
+#include "LuaFunctionality.h"
 
 namespace nrp
 {
@@ -58,7 +59,7 @@ private:
 	core::position2di cell_;
 };
 
-class CNrpTechMap : public IGUITable
+class CNrpTechMap : public IGUITable, public ILuaFunctionality
 {
 public:
 	//! constructor

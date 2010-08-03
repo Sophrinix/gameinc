@@ -13,10 +13,6 @@ Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 -- Проверка вспомогательных функций
 LogVideo("Идет создание ландшафта", 0xDEADBEEF)
 
-local sceneManager = CLuaSceneManager( NrpGetSceneManager() )
-local applic = CLuaApplication( NrpGetApplication() )
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-
 --создание рабочей сцены 
 NrpInitializeWorkScene()
 sceneManager:DrawProgress( 0 )

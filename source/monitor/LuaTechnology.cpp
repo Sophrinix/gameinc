@@ -37,6 +37,8 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveRequireTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTech ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetStatus ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetStatus ),
 	{0,0}
 };
 
@@ -229,5 +231,16 @@ int CLuaTechnology::GetFutureTech( lua_State* L )
 
 	lua_pushlightuserdata( L, tech );
 	return 1;	
+}
+
+int CLuaTechnology::SetStatus( lua_State* L )
+{
+	return SetParam_<int, lua_Integer>( L, "SetStatus", STATUS, lua_tointeger );
+}
+
+int CLuaTechnology::GetStatus( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<TECH_STATUS>( L, "GetStatus", STATUS, TS_UNKNOWN) );
+	return 1;
 }
 }//namespace nrp

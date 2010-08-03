@@ -35,6 +35,8 @@ public:
 	int GetTexture( lua_State* L );
 	int HaveRequireTech( lua_State* L );
 	int GetFutureTechNumber( lua_State* L );
+	int SetStatus( lua_State* L );
+	int GetStatus( lua_State* L );
 	int GetFutureTech( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaTech"; }	

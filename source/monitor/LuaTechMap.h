@@ -23,6 +23,7 @@ public:
 	CLuaTechMap(lua_State *L);									
 	int SetImage( lua_State *L );							//привязка к текстуре в обычном состоянии
 	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при 
+	int AddLuaFunction( lua_State* L );
 	int AddTechnology( lua_State* L );
 
 	static const char* StaticGetLuaName() { return CLASS_LUATECHMAP.c_str(); }
