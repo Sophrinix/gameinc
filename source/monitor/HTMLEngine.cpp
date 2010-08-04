@@ -126,6 +126,11 @@ void HTMLEngine::MouseDown( size_t x, size_t y )
 	llmozlib_->mouseDown(browserWindowId_, x,  y);
 }
 
+void HTMLEngine::MouseMoved( size_t x, size_t y )
+{
+	llmozlib_->mouseMove(browserWindowId_, x,  y);
+}
+
 void HTMLEngine::MouseUp(size_t x, size_t y)
 {
 	llmozlib_->mouseUp(browserWindowId_, x,  y);

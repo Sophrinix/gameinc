@@ -18,6 +18,7 @@
 #include "NrpApplication.h"
 #include "NrpPlant.h"
 #include "NrpTranslate.h"
+#include "HTMLEngine.h"
 
 using namespace irr;
 
@@ -192,6 +193,16 @@ int GetGuiEnvironment( lua_State *vm )
 	luaL_argcheck(vm, argc == 0, 0, "Function NrpGetGuiEnvironment not need any parameter");
 
 	lua_pushlightuserdata( vm, (void*)CNrpEngine::Instance().GetGuiEnvironment() );
+
+	return 1;
+}
+
+int GetBrowser( lua_State *vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 0, 0, "Function GetBrowser not need any parameter");
+
+	lua_pushlightuserdata( vm, &HTMLEngine::Instance() );
 
 	return 1;
 }

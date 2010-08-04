@@ -42,6 +42,8 @@ function sworkTechMapWindowTechSelected( ptr )
 	selectedTech:SetObject( ptr )
 	--технология уже в ходу
 	browser:Show()
+	Log({src=SCRIPT, dev=ODS|CON}, "Выбрана технология="..selectedTech:GetName().." Описание="..tech:GetDescriptionLink() )
+
 	browser:Navigate( tech:GetDescriptionLink() )
 
 	if tech:GetStatus() == TS_READY then

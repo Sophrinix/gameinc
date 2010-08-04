@@ -124,7 +124,7 @@
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="../irrlicht/include;../LLMozLib;../lua5.1/include;../mysql/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -141,9 +141,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="irrlicht.lib Version.lib libmysql.lib lua.lib Ws2_32.lib llmozlib2.lib"
+				AdditionalDependencies="irrlicht.lib Version.lib lua.lib Ws2_32.lib llmozlib2.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="lib"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -1314,6 +1316,14 @@
 					</File>
 					<File
 						RelativePath=".\LuaApplication.h"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaBrowser.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaBrowser.h"
 						>
 					</File>
 					<File

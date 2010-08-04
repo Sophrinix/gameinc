@@ -46,6 +46,7 @@
 #include "LuaDevelopModule.h"
 #include "LuaDevelopProject.h"
 #include "LuaTechMap.h"
+#include "LuaBrowser.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
 
@@ -129,6 +130,8 @@ CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 
 		lua_register( vm_, "NrpGetPlant", GetPlant );
 
+		lua_register( vm_, "NrpGetBrowser", GetBrowser );
+
 		lua_register( vm_, "NrpLoadLanguageFile", ApplicationLoadLanguageFile ),
 
 		lua_register( vm_, "NrpGetTranslate", ApplicationGetTranslate ),
@@ -192,6 +195,7 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaDevelopModule >::Register( vm_ );
 	Luna< CLuaDevelopProject >::Register( vm_ );
 	Luna< CLuaTechMap >::Register( vm_ );
+	Luna< CLuaBrowser >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()

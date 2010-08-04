@@ -54,6 +54,8 @@ public:
 	void ScrollByLines( int lines );
 	void SetFocus();
 	void KeyPress( int key );
+	void MouseMoved( size_t x, size_t y );
+
 
 private:
 

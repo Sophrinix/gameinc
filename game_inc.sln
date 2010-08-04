@@ -7,13 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "llmozlib2", "source\LLMozLi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Irrlicht", "source\irrlicht\source\Irrlicht\Irrlicht9.0.vcproj", "{E08E042A-6C45-411B-92BE-3CC31331019F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{6EC47518-702D-4C73-9BD3-F9EE233BB6E8}"
-	ProjectSection(SolutionItems) = preProject
-		source\installer\setup.nsi = source\installer\setup.nsi
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ECC21443-59E7-4732-84C0-DDC34EAEF936}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{DAD189B5-5576-4FB3-B0B5-AB5F5FAD1D12}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameDev", "source\monitor\nerpa_sc.vcproj", "{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"

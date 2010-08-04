@@ -183,7 +183,7 @@
 				OutputFile="..\..\..\..\application\monitor_release\Irrlicht.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="libci.lib"
+				IgnoreDefaultLibraryNames="libc.lib"
 				GenerateDebugInformation="false"
 				ProgramDatabaseFile="..\obj\IrrRelease\Irrlicht.pdb"
 				RandomizedBaseAddress="1"

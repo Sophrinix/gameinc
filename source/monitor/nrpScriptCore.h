@@ -72,6 +72,8 @@ extern "C"
 
 	int GetPlant( lua_State* vm );
 
+	int GetBrowser( lua_State *vm );
+
 	int ApplicationLoadLanguageFile( lua_State* vm );
 
 	int ApplicationGetTranslate( lua_State* vm );

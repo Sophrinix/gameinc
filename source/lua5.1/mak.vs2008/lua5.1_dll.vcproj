@@ -152,6 +152,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../lib"
 				GenerateManifest="false"
+				IgnoreDefaultLibraryNames=""
 				ModuleDefinitionFile="../src/lua5.1.def"
 				GenerateDebugInformation="false"
 				SubSystem="2"

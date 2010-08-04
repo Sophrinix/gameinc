@@ -54,6 +54,10 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 		case EMIE_MOUSE_WHEEL:
 			HTMLEngine::Instance().ScrollByLines( event.MouseInput.Wheel > 0 ? -1 : 1 );
 		return true;
+
+		case EMIE_MOUSE_MOVED:
+			HTMLEngine::Instance().MouseMoved( mousePos.X, mousePos.Y );
+		return true;
 		}
 	}
 	break;

@@ -846,7 +846,7 @@ void CNrpTechMap::selectNew(s32 ypos, bool onlyHover)
 		Parent->OnEvent(event);
 
 		if( Selected == oldSelected )
-			DoLuaFunctionsByType( GUIELEMENT_TABLE_SELECTED_AGAIN, NULL );
+			DoLuaFunctionsByType( GUIELEMENT_TABLE_SELECTED_AGAIN, Rows[ Selected ].Items[ ActiveTab ].ptrTech );
 			
 	}
 }
@@ -945,6 +945,13 @@ void CNrpTechMap::draw()
 				else
 				{
 					font->draw(Rows[i].Items[j].BrokenText.c_str(), textRect, IsEnabled ? Rows[i].Items[j].Color : skin->getColor(EGDC_GRAY_TEXT), false, true, &clientClip);
+				}
+
+				CNrpTechnology* ptrTech = Rows[ i ].Items[ j ].ptrTech;
+				if( ptrTech != NULL )
+				{
+					video::ITexture* txs = driver->getTexture( ptrTech->GetValue<std::string>( TEXTURENORMAL ).c_str() );
+					driver->draw2DImage( txs, textRect, core::recti( 0, 0, txs->getOriginalSize().Width, txs->getOriginalSize().Height ) );
 				}
 
 				pos += Columns[j].Width;
@@ -1312,6 +1319,10 @@ void CNrpTechMap::RelocateTable_()
 		removeColumn( 0 );
 	addRow( 0 );
 	AssignTechMapToTable_( techMap_ );
+
+	SetItemHeight( 80 );
+	for( size_t cnt=0; cnt < Columns.size(); cnt++ )
+		setColumnWidth( cnt, 160 );
 }
 
 } // end namespace gui
