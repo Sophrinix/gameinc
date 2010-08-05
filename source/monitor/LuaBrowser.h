@@ -19,6 +19,7 @@ public:
 
 	CLuaBrowser(lua_State *L);		
 	int Show( lua_State* L );
+	int Navigate( lua_State* L );
 
 
 	static const char* StaticGetLuaName() { return CLASS_LUABROWSER.c_str(); }

@@ -74,7 +74,7 @@ public:
 	virtual void AddTechnology( nrp::CNrpTechnology* parent, nrp::CNrpTechnology* child );
 
 	//! set a column width
-	virtual void setColumnWidth(u32 columnIndex, u32 width);
+	virtual void setColumnWidth(u32 width);
 
 	//! columns can be resized by drag 'n drop
 	virtual void setResizableColumns(bool resizable);
@@ -88,13 +88,6 @@ public:
 	\param state: If true, a EGET_TABLE_HEADER_CHANGED message will be sent and you can order the table data as you whish.*/
 	//! \param mode: One of the modes defined in EGUI_COLUMN_ORDERING
 	virtual void setColumnOrdering(u32 columnIndex, EGUI_COLUMN_ORDERING mode);
-
-	//! Returns which row is currently selected
-	virtual s32 getSelected() const;
-
-	//! set wich row is currently selected
-	virtual void setSelected( s32 index );
-
 
 	//! clears the table, deletes all items in the table
 	virtual void clear();
@@ -153,6 +146,13 @@ private:
 	//! Adds a column
 	//! If columnIndex is outside the current range, do push new colum at the end
 	virtual void addColumn(const wchar_t* caption, s32 columnIndex=-1);
+	virtual void setColumnWidth(u32 columnIndex, u32 width) {}
+
+	//! Returns which row is currently selected
+	virtual s32 getSelected() const;
+
+	//! set wich row is currently selected
+	virtual void setSelected( s32 index );
 
 	//! remove a column from the table
 	virtual void removeColumn(u32 columnIndex);
@@ -173,6 +173,9 @@ private:
 
 	//! Returns amount of rows in the tabcontrol
 	virtual s32 getRowCount() const;
+
+	//! Returns amount of selected technology
+	nrp::CNrpTechnology* getSelectedTech() const;
 
 	//! adds a row to the table
 	/** \param rowIndex: zero based index of rows. The row will be
@@ -223,10 +226,9 @@ private:
 	virtual void SetItemHeight( s32 height );
 
 	void breakText(const core::stringw &text, core::stringw & brokenText, u32 cellWidth);
-	void selectNew(s32 ypos, bool onlyHover=false);
+	void selectNew( core::position2di cell, bool onlyHover=false);
 	bool selectColumnHeader(s32 xpos, s32 ypos);
 	bool dragColumnStart(s32 xpos, s32 ypos);
-	bool dragColumnUpdate(s32 xpos);
 	void recalculateHeights();
 	void recalculateWidths();
 	AssignTech* FindTechInMap_( const ATECH_ARRAY& parray, nrp::CNrpTechnology* obj );
@@ -236,6 +238,7 @@ private:
 	core::array< Row > Rows;
 
 	ATECH_ARRAY techMap_;
+	bool _rMouseDown;
 	gui::IGUIFont* Font;
 	gui::IGUIScrollBar* VerticalScrollBar;
 	gui::IGUIScrollBar* HorizontalScrollBar;
@@ -247,16 +250,17 @@ private:
 	s32  ResizeStart;
 	bool ResizableColumns;
 
-	s32 ItemHeight;
+	s32 ItemHeight, _ColumnWidth;
 	s32 overItemHeight_;
 	s32 TotalItemHeight;
 	s32 TotalItemWidth;
-	s32 Selected;
+	core::position2di _selected;
 	s32 CellHeightPadding;
 	s32 CellWidthPadding;
 	s32 ActiveTab;
 	EGUI_ORDERING_MODE CurrentOrdering;
 	s32 DrawFlags;
+	s32 _startTimeMouseDown;
 };
 
 } // end namespace gui

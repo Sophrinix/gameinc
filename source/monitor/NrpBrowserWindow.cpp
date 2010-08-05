@@ -22,15 +22,16 @@ CNrpBrowserWindow::CNrpBrowserWindow( gui::IGUIEnvironment* env,
 									  core::dimension2du size ) : CNrpWindow( env, env->getRootGUIElement(), texture, id, 
 																			  core::recti( pos, size+core::dimension2du( 10, 25 ) ) )
 {
-	image_ = Environment->addImage( core::recti( 5, 20, size.Width + 5, size.Height + 20 ), this, -1, L"" );
-	image_->setScaleImage( true );
+	imageRect_ = core::recti( 5, 20, size.Width + 5, size.Height + 20 );
+	//image_->setScaleImage( true );
+	setDraggable( true );
 	drop();
 }
 
 CNrpBrowserWindow::~CNrpBrowserWindow(void)
 {
 	HTMLEngine::Instance().SetBrowserWindow( NULL );
-	image_->remove();
+	//image_->remove();
 }
 
 bool CNrpBrowserWindow::OnEvent(const SEvent& event)
@@ -39,25 +40,25 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 	{
 	case EET_MOUSE_INPUT_EVENT:
 	{
-		core::position2di mousePos = core::position2di(event.MouseInput.X, event.MouseInput.Y) - RelativeRect.UpperLeftCorner - image_->getAbsolutePosition().UpperLeftCorner;
+		core::position2di mousePos = core::position2di(event.MouseInput.X, event.MouseInput.Y) - RelativeRect.UpperLeftCorner - imageRect_.UpperLeftCorner;
 
 		switch(event.MouseInput.Event)
 		{
 		case EMIE_LMOUSE_PRESSED_DOWN:
 			HTMLEngine::Instance().MouseDown(mousePos.X, mousePos.Y);
-		return true;
+		break;
 
 		case EMIE_LMOUSE_LEFT_UP:
 			HTMLEngine::Instance().MouseUp(mousePos.X, mousePos.Y);
-		return true;
+		break;
 		
 		case EMIE_MOUSE_WHEEL:
 			HTMLEngine::Instance().ScrollByLines( event.MouseInput.Wheel > 0 ? -1 : 1 );
-		return true;
+		break;
 
 		case EMIE_MOUSE_MOVED:
 			HTMLEngine::Instance().MouseMoved( mousePos.X, mousePos.Y );
-		return true;
+		break;
 		}
 	}
 	break;
@@ -65,11 +66,14 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 	case EET_KEY_INPUT_EVENT:
 	{
 		if (event.KeyInput.PressedDown)
-		{
 			HTMLEngine::Instance().KeyPress(event.KeyInput.Key);
-			return true;
-		}
 	}
+	break;
+
+	default:
+		{
+			int k=0;
+		}
 	break;
 	}
 
@@ -78,7 +82,7 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 
 void CNrpBrowserWindow::SetTexture( video::ITexture* texture )
 {
-	image_->setImage( texture );
+	texture_ = texture;
 }
 
 void CNrpBrowserWindow::draw()
@@ -86,6 +90,12 @@ void CNrpBrowserWindow::draw()
 	HTMLEngine::Instance().Update();
 
 	CNrpWindow::draw();
+
+	if( texture_ )
+	{
+		core::recti txsResct( 0, 0, texture_->getSize().Width, texture_->getSize().Height );
+		Environment->getVideoDriver()->draw2DImage( texture_, imageRect_ + AbsoluteRect.UpperLeftCorner, txsResct );
+	}	
 }
 }//namespace gui
 

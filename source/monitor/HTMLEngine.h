@@ -28,7 +28,7 @@ public:
 	//*! Инициализация движка при первом вызове
 	static HTMLEngine& Instance();
 	
-	irr::gui::CNrpBrowserWindow& GetBrowserWindow(irr::core::dimension2du size);
+	irr::gui::CNrpBrowserWindow& GetBrowserWindow(irr::core::dimension2du size=irr::core::dimension2du( 512, 512 ) );
 	void SetBrowserWindow( irr::gui::CNrpBrowserWindow* newWindow ) { browserWindow_ = newWindow; }
 	void Update();
 

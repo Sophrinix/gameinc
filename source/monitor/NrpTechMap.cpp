@@ -22,9 +22,10 @@ CNrpTechMap::CNrpTechMap(IGUIEnvironment* environment, IGUIElement* parent,
 	VerticalScrollBar(0), HorizontalScrollBar(0),
 	Clip(clip), DrawBack(drawBack), MoveOverSelect(moveOverSelect),
 	Selecting(false), CurrentResizedColumn(-1), ResizeStart(0), ResizableColumns(true),
-	ItemHeight(0), overItemHeight_(0), TotalItemHeight(0), TotalItemWidth(0), Selected(-1),
+	ItemHeight(0), overItemHeight_(0), TotalItemHeight(0), TotalItemWidth(0), _selected( core::position2di(-1, -1) ),
 	CellHeightPadding(2), CellWidthPadding(5), ActiveTab(-1),
-	CurrentOrdering(EGOM_NONE), DrawFlags(EGTDF_ROWS | EGTDF_COLUMNS | EGTDF_ACTIVE_ROW )
+	CurrentOrdering(EGOM_NONE), DrawFlags(EGTDF_ROWS | EGTDF_COLUMNS | EGTDF_ACTIVE_ROW ),
+	_rMouseDown( false )
 {
 	#ifdef _DEBUG
 	setDebugName("CNrpTechMap");
@@ -205,21 +206,23 @@ EGUI_ORDERING_MODE CNrpTechMap::getActiveColumnOrdering() const
 }
 
 
-void CNrpTechMap::setColumnWidth(u32 columnIndex, u32 width)
+void CNrpTechMap::setColumnWidth(u32 width)
 {
-	if ( columnIndex < Columns.size() )
-	{
-		const u32 MIN_WIDTH = Font->getDimension(Columns[columnIndex].Name.c_str() ).Width + (CellWidthPadding * 2);
-		if ( width < MIN_WIDTH )
-			width = MIN_WIDTH;
-
-		Columns[columnIndex].Width = width;
-
-		for ( u32 i=0; i < Rows.size(); ++i )
+	_ColumnWidth = width;
+	for( size_t columnIndex=0; columnIndex < Columns.size(); columnIndex++ )
+		if ( columnIndex < Columns.size() )
 		{
-			breakText( Rows[i].Items[columnIndex].Text, Rows[i].Items[columnIndex].BrokenText, Columns[columnIndex].Width );
+			const u32 MIN_WIDTH = Font->getDimension(Columns[columnIndex].Name.c_str() ).Width + (CellWidthPadding * 2);
+			if ( width < MIN_WIDTH )
+				width = MIN_WIDTH;
+
+			Columns[columnIndex].Width = width;
+
+			for ( u32 i=0; i < Rows.size(); ++i )
+			{
+				breakText( Rows[i].Items[columnIndex].Text, Rows[i].Items[columnIndex].BrokenText, Columns[columnIndex].Width );
+			}
 		}
-	}
 	recalculateWidths();
 }
 
@@ -268,8 +271,8 @@ void CNrpTechMap::removeRow(u32 rowIndex)
 
 	Rows.erase( rowIndex );
 
-	if ( !(Selected < s32(Rows.size())) )
-		Selected = Rows.size() - 1;
+	if ( !(_selected.Y < s32(Rows.size())) )
+		_selected.Y = Rows.size() - 1;
 
 	recalculateHeights();
 }
@@ -343,7 +346,7 @@ void* CNrpTechMap::getCellData(u32 rowIndex, u32 columnIndex ) const
 //! clears the list
 void CNrpTechMap::clear()
 {
-    Selected = -1;
+	_selected = core::position2di( -1, -1 );
 	Rows.clear();
 	Columns.clear();
 
@@ -359,7 +362,7 @@ void CNrpTechMap::clear()
 
 void CNrpTechMap::clearRows()
 {
-    Selected = -1;
+	_selected = core::position2di( -1, -1 );
 	Rows.clear();
 
 	if (VerticalScrollBar)
@@ -373,15 +376,19 @@ void CNrpTechMap::clearRows()
 */
 s32 CNrpTechMap::getSelected() const
 {
-	return Selected;
+	return -1;
+}
+
+/*!
+*/
+CNrpTechnology* CNrpTechMap::getSelectedTech() const
+{
+	return Rows[ _selected.Y ].Items[ _selected.X ].ptrTech;
 }
 
 //! set wich row is currently selected
 void CNrpTechMap::setSelected( s32 index )
 {
-	Selected = -1;
-	if ( index >= 0 && index < (s32) Rows.size() )
-		Selected = index;
 }
 
 
@@ -563,7 +570,7 @@ bool CNrpTechMap::OnEvent(const SEvent &event)
 					return false;
 
 				core::position2d<s32> p(event.MouseInput.X, event.MouseInput.Y);
-
+				
 				switch(event.MouseInput.Event)
 				{
 				case EMIE_MOUSE_WHEEL:
@@ -571,6 +578,9 @@ bool CNrpTechMap::OnEvent(const SEvent &event)
 					return true;
 
 				case EMIE_LMOUSE_PRESSED_DOWN:
+				case EMIE_RMOUSE_PRESSED_DOWN:
+					_rMouseDown = event.MouseInput.Event == EMIE_RMOUSE_PRESSED_DOWN;
+					_startTimeMouseDown = GetTickCount();
 
 					if (Environment->hasFocus(this) &&
 						VerticalScrollBar->isVisible() &&
@@ -601,6 +611,7 @@ bool CNrpTechMap::OnEvent(const SEvent &event)
 
 					CurrentResizedColumn = -1;
 					Selecting = false;
+			
 					if (!getAbsolutePosition().isPointInside(p))
 					{
 						Environment->removeFocus(this);
@@ -622,22 +633,18 @@ bool CNrpTechMap::OnEvent(const SEvent &event)
 						return true;
 					}
 
-					selectNew(event.MouseInput.Y);
+					selectNew( core::position2di( event.MouseInput.X, event.MouseInput.Y ) );
 					return true;
+				case EMIE_RMOUSE_LEFT_UP:
+					 _rMouseDown = false;
+				return true;
 
 				case EMIE_MOUSE_MOVED:
-					if ( CurrentResizedColumn >= 0 )
-					{
-						if ( dragColumnUpdate(event.MouseInput.X) )
-						{
-							return true;
-						}
-					}
 					if (Selecting || MoveOverSelect)
 					{
 						if (getAbsolutePosition().isPointInside(p))
 						{
-							selectNew(event.MouseInput.Y);
+							selectNew( core::position2di( event.MouseInput.X, event.MouseInput.Y) );
 							return true;
 						}
 					}
@@ -675,10 +682,10 @@ void CNrpTechMap::swapRows(u32 rowIndexA, u32 rowIndexB)
 	Rows[rowIndexA] = Rows[rowIndexB];
 	Rows[rowIndexB] = swap;
 
-	if ( Selected == s32(rowIndexA) )
-		Selected = rowIndexB;
-	else if( Selected == s32(rowIndexB) )
-		Selected = rowIndexA;
+	if ( _selected.Y == s32(rowIndexA) )
+		_selected.Y = rowIndexB;
+	else if( _selected.Y == s32(rowIndexB) )
+		_selected.Y = rowIndexA;
 
 }
 
@@ -716,25 +723,6 @@ bool CNrpTechMap::dragColumnStart(s32 xpos, s32 ypos)
 
 	return false;
 }
-
-
-bool CNrpTechMap::dragColumnUpdate(s32 xpos)
-{
-	if ( !ResizableColumns || CurrentResizedColumn < 0 || CurrentResizedColumn >= s32(Columns.size()) )
-	{
-		CurrentResizedColumn = -1;
-		return false;
-	}
-
-	s32 width = s32(Columns[CurrentResizedColumn].Width) + (xpos-ResizeStart);
-	if ( width < 0 )
-		width = 0;
-	setColumnWidth(CurrentResizedColumn, u32(width));
-	ResizeStart = xpos;
-
-	return false;
-}
-
 
 bool CNrpTechMap::selectColumnHeader(s32 xpos, s32 ypos)
 {
@@ -785,10 +773,10 @@ void CNrpTechMap::orderRows(s32 columnIndex, EGUI_ORDERING_MODE mode)
 					Rows[j] = Rows[j+1];
 					Rows[j+1] = swap;
 
-					if ( Selected == j )
-						Selected = j+1;
-					else if( Selected == j+1 )
-						Selected = j;
+					if ( _selected.Y == j )
+						_selected.Y = j+1;
+					else if( _selected.Y == j+1 )
+						_selected.Y = j;
 				}
 			}
 		}
@@ -805,10 +793,10 @@ void CNrpTechMap::orderRows(s32 columnIndex, EGUI_ORDERING_MODE mode)
 					Rows[j] = Rows[j+1];
 					Rows[j+1] = swap;
 
-					if ( Selected == j )
-						Selected = j+1;
-					else if( Selected == j+1 )
-						Selected = j;
+					if ( _selected.Y == j )
+						_selected.Y = j+1;
+					else if( _selected.Y == j+1 )
+						_selected.Y = j;
 				}
 			}
 		}
@@ -816,25 +804,27 @@ void CNrpTechMap::orderRows(s32 columnIndex, EGUI_ORDERING_MODE mode)
 }
 
 
-void CNrpTechMap::selectNew(s32 ypos, bool onlyHover)
+void CNrpTechMap::selectNew( core::position2di cell, bool onlyHover)
 {
 	IGUISkin* skin = Environment->getSkin();
 	if (!skin)
 		return;
 
-	s32 oldSelected = Selected;
-
-	if ( ypos < ( AbsoluteRect.UpperLeftCorner.Y + ItemHeight ) )
+	if ( cell.Y < ( AbsoluteRect.UpperLeftCorner.Y + ItemHeight ) )
 		return;
 
+	core::position2di newSelected( -1, -1 );
 	// find new selected item.
-	if (ItemHeight!=0)
-		Selected = ((ypos - AbsoluteRect.UpperLeftCorner.Y - ItemHeight - 1) + VerticalScrollBar->getPos()) / ItemHeight;
+	if( ItemHeight!=0 && _ColumnWidth != 0)
+	{
+		newSelected.Y = ((cell.Y - AbsoluteRect.UpperLeftCorner.Y - ItemHeight - 1) + VerticalScrollBar->getPos()) / ItemHeight;
+		newSelected.X = ((cell.X - AbsoluteRect.UpperLeftCorner.Y - ItemHeight - 1) + HorizontalScrollBar->getPos()) / _ColumnWidth;
+	}
 
-	if (Selected >= (s32)Rows.size())
-		Selected = Rows.size() - 1;
-	else if (Selected<0)
-		Selected = 0;
+	if (newSelected.Y >= (s32)Rows.size())
+		newSelected.Y = Rows.size() - 1;
+	else if (newSelected.Y<0)
+		newSelected.Y = 0;
 
 	// post the news
 	if (Parent && !onlyHover)
@@ -842,12 +832,13 @@ void CNrpTechMap::selectNew(s32 ypos, bool onlyHover)
 		SEvent event;
 		event.EventType = EET_GUI_EVENT;
 		event.GUIEvent.Caller = this;
-		event.GUIEvent.EventType = (Selected != oldSelected) ? EGET_TABLE_CHANGED : EGET_TABLE_SELECTED_AGAIN;
+		event.GUIEvent.EventType = (_selected != newSelected) ? EGET_TABLE_CHANGED : EGET_TABLE_SELECTED_AGAIN;
 		Parent->OnEvent(event);
 
-		if( Selected == oldSelected )
-			DoLuaFunctionsByType( GUIELEMENT_TABLE_SELECTED_AGAIN, Rows[ Selected ].Items[ ActiveTab ].ptrTech );
-			
+		if( _selected == newSelected )
+			DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, Rows[ _selected.Y ].Items[ _selected.X ].ptrTech );			
+
+		_selected = newSelected;
 	}
 }
 
@@ -929,7 +920,7 @@ void CNrpTechMap::draw()
 			pos = rowRect.UpperLeftCorner.X;
 
 			// draw selected row background highlighted
-			if ((s32)i == Selected && DrawFlags & EGTDF_ACTIVE_ROW )
+			if ((s32)i == _selected.Y && DrawFlags & EGTDF_ACTIVE_ROW )
 				driver->draw2DRectangle(skin->getColor(EGDC_HIGH_LIGHT), rowRect, &clientClip);
 
 			for ( u32 j = 0 ; j < Columns.size() ; ++j )
@@ -937,21 +928,21 @@ void CNrpTechMap::draw()
 				textRect.UpperLeftCorner.X = pos + CellWidthPadding;
 				textRect.LowerRightCorner.X = pos + Columns[j].Width - CellWidthPadding;
 
+				CNrpTechnology* ptrTech = Rows[ i ].Items[ j ].ptrTech;
+				if( ptrTech != NULL )
+				{
+					video::ITexture* txs = driver->getTexture( ptrTech->GetValue<std::string>( TEXTURENORMAL ).c_str() );
+					driver->draw2DImage( txs, textRect, core::recti( 0, 0, txs->getOriginalSize().Width, txs->getOriginalSize().Height ) );
+				}
+
 				// draw item text
-				if ((s32)i == Selected)
+				if ((s32)i == _selected.Y )
 				{
 					font->draw(Rows[i].Items[j].BrokenText.c_str(), textRect, skin->getColor(IsEnabled ? EGDC_HIGH_LIGHT_TEXT : EGDC_GRAY_TEXT), false, true, &clientClip);
 				}
 				else
 				{
 					font->draw(Rows[i].Items[j].BrokenText.c_str(), textRect, IsEnabled ? Rows[i].Items[j].Color : skin->getColor(EGDC_GRAY_TEXT), false, true, &clientClip);
-				}
-
-				CNrpTechnology* ptrTech = Rows[ i ].Items[ j ].ptrTech;
-				if( ptrTech != NULL )
-				{
-					video::ITexture* txs = driver->getTexture( ptrTech->GetValue<std::string>( TEXTURENORMAL ).c_str() );
-					driver->draw2DImage( txs, textRect, core::recti( 0, 0, txs->getOriginalSize().Width, txs->getOriginalSize().Height ) );
 				}
 
 				pos += Columns[j].Width;
@@ -1012,6 +1003,11 @@ void CNrpTechMap::draw()
 	// fill up header background up to the right side
 	core::rect<s32> columnrect(pos, tableRect.UpperLeftCorner.Y, tableRect.LowerRightCorner.X , headerBottom);
 	skin->draw3DButtonPaneStandard(this, columnrect, &tableRect);
+
+	if( _rMouseDown && (GetTickCount() - _startTimeMouseDown > 1000) )
+	{
+		DoLuaFunctionsByType( GUIELEMENT_RMOUSE_HOLD, this );
+	}
 
 	IGUIElement::draw();
 }
@@ -1228,7 +1224,7 @@ void CNrpTechMap::deserializeAttributes(io::IAttributes* in, io::SAttributeReadW
 	ResizeStart = 0;
 	ResizableColumns = in->getAttributeAsBool("ResizableColumns");
 
-	Selected = -1;
+	_selected = core::position2di( -1, -1 );
 	CellWidthPadding = in->getAttributeAsInt("CellWidthPadding");
 	CellHeightPadding = in->getAttributeAsInt("CellHeightPadding");
 	ActiveTab = -1;
@@ -1321,8 +1317,7 @@ void CNrpTechMap::RelocateTable_()
 	AssignTechMapToTable_( techMap_ );
 
 	SetItemHeight( 80 );
-	for( size_t cnt=0; cnt < Columns.size(); cnt++ )
-		setColumnWidth( cnt, 160 );
+	setColumnWidth( 160 );
 }
 
 } // end namespace gui

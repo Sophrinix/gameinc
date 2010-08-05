@@ -89,9 +89,6 @@ void CNrpLoginScene::OnEnter()
 	core::dimension2du scr_size = driver->getScreenSize();
 	core::position2di offset( scr_size.Width / 2 - 168, 3 * scr_size.Height / 4 );
 
-	//nrp::HTMLEngine::Instance().GetBrowserWindow( core::dimension2du( 512, 512 ) );
-	//nrp::HTMLEngine::Instance().Navigate( "c:\\index.html" );
-
 	// просто добавь воды
 	scene::IAnimatedMesh* mesh = smgr->addHillPlaneMesh("myHill",
 		core::dimension2d<f32>(20,20),

@@ -30,7 +30,15 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	CNrpEngine& v_engine = CNrpEngine::Instance();
 	CNrpApplication& application = CNrpApplication::Instance();
 	application.SetValue<PNrpBank>( BANK, &CNrpBank::Instance() );
-	application.SetValue<std::string>( FULLPATH, "" );
+
+#ifdef _DEBUG
+	application.SetValue<std::string>( FULLPATH, "f:/project/Game Inc, Dev/application/" );
+#else
+	std::string mypath = _argv[ 0 ];
+	mypath = mypath.erase( mypath.rfind( '\\')+1, 0xff );
+	application.SetValue<std::string>( FULLPATH, mypath );
+#endif
+
 	CNrpPluginEngine& p_engine = CNrpPluginEngine::Instance();
 
 	CNrpVideoConfig& videoConfig = CNrpVideoConfig::Instance();

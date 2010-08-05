@@ -4,7 +4,7 @@ basecode:float=0.3
 codepassed:int=0
 company:string=
 componentlider:string=
-descriptionpath:string=
+descriptionpath:string=xtras/technology/genre_skill/desk.html
 enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
 enginecode:float=0.3
 lastworker:string=

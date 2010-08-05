@@ -26,7 +26,8 @@ public:
 private:
 	CNrpBrowserWindow(void);
 	
-	gui::IGUIImage* image_;
+	video::ITexture* texture_;
+	core::recti imageRect_;
 };
 
 }//namespace gui

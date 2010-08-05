@@ -53,7 +53,7 @@ HTMLEngine::~HTMLEngine()
 gui::CNrpBrowserWindow& HTMLEngine::GetBrowserWindow(irr::core::dimension2du size)
 {
     //ленивое создание окна, создаем когда будет первое обращение
-	if( browserWindow_ == NULL )
+	if( browserWindow_ == NULL && size.Width > 0 && size.Height > 0 )
 	{
 		browserWindowId_ = llmozlib_->createBrowserWindow(size.Width, size.Height);
 
