@@ -26,6 +26,7 @@ class IUser;
 class CNrpTechnology;
 class CNrpDevelopGame;
 class CNrpGameProject;
+class CNrpInvention;
 
 class CNrpCompany : public INrpConfig, public ILuaFunctionality
 {
@@ -36,6 +37,7 @@ public:
 	typedef std::map< std::string, INrpProject* > PROJECT_MAP;
 	typedef std::map< std::string, CNrpGame* > GAME_MAP;
 	typedef std::vector< INrpConfig* > OBJECT_LIST;
+	typedef std::vector< CNrpInvention* > INVENTION_LIST;
 
 	CNrpCompany( std::string name, IUser* ceo );
 	~CNrpCompany(void);
@@ -59,6 +61,8 @@ public:
 	void RemoveProject( std::string name );
 	INrpProject* GetProject( std::string name );
 	INrpProject* GetProject( size_t index );
+
+	void StartInvention( CNrpInvention* inv );
 
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );
@@ -85,6 +89,7 @@ private:
 	GAME_MAP games_;
 	USER_LIST employers_;
 	OBJECT_LIST portfelle_;
+	INVENTION_LIST inventions_;
 
 	void PaySalaries_();
 	void UpdateGameProjectState_();

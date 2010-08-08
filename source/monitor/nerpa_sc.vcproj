@@ -1413,6 +1413,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\swork_InventionManager.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\swork_MainMenu.lua"
 				>
 			</File>
@@ -1726,6 +1730,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpGameProject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpInvention.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpInvention.h"
 				>
 			</File>
 			<File

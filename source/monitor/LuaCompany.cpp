@@ -40,6 +40,7 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGameNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGame ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, Create ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, StartInvention ),
 	{0,0}
 };
 
@@ -318,5 +319,17 @@ int CLuaCompany::GetDevProjectNumber( lua_State* L )
 {
 	lua_pushinteger( L, GetParam_<int>( L, "GetDevProjectNumber", DEVELOPPROJECTS_NUMBER, 0 ) ); 
 	return 1;
+}
+
+int CLuaCompany::StartInvention( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:StartInvention need CNrptechnology parameter" );
+
+	CNrpTechnology* startTech = static_cast< CNrpTechnology* >( lua_touserdata( L, 2 ) );
+
+	IF_OBJECT_NOT_NULL_THEN	CNrpApplication::Instance().StartInvention( startTech, object_ );
+
+	return 1;	
 }
 }//namespace nrp

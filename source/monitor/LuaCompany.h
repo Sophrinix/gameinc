@@ -40,6 +40,7 @@ public:
 	int GetGame( lua_State* L );
 	int Create( lua_State* L );
 	int GetDevProject( lua_State* L );
+	int StartInvention( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaCompany"; }
 };

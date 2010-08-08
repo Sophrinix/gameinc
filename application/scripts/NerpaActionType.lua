@@ -8,6 +8,8 @@ MAIN_CAMERA_NAME		= "_MainCameraName_"
 
 TS_UNKNOWN = 0 --такая технология неизвестна на рынке, следовательно её можно открыть
 TS_READY = 1 --флаг наличия технологии на рынке
+TS_INDEVELOP = 2 --технология изучается
+TS_PROJECT = 3 --возможно изучение технологии
 
 AN_BOTTOM=0
 AN_LEFT=1

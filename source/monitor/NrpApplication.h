@@ -26,6 +26,7 @@ class CNrpDiskMachine;
 class CNrpRetailer;
 class CNrpGameImageList;
 class CNrpGameEngine;
+class CNrpInvention;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
@@ -34,6 +35,8 @@ class CNrpApplication : public INrpConfig, public ILuaFunctionality
 	typedef std::vector< CNrpDiskMachine* > DISKMACHINES_LIST;
 	typedef std::vector< CNrpGame* > GAMES_LIST;
 	typedef std::vector< CNrpRetailer* > RETAILER_LIST;
+	typedef std::vector< CNrpInvention* > INVENTION_LIST;
+
 	typedef std::map< std::string, CNrpGameImageList* > GAMEIMAGES_MAP; 
 	typedef std::map< std::string, CNrpGameEngine* > GAMEENGINES_MAP;
 	typedef std::map< std::string, INrpProject* > PROJECTS_MAP;
@@ -104,6 +107,9 @@ public:
 	void ClearImageList();
 	float GetGameGenreInterest( CNrpGame* game );
 
+	void StartInvention( CNrpTechnology* startTech, CNrpCompany* parentCompany );
+	void InventionFinished( CNrpInvention* ptrInvention );
+
 private:
 	CNrpApplication(void);
 	~CNrpApplication(void);
@@ -112,6 +118,7 @@ private:
 	GAMEIMAGES_MAP gameImages_;
 	USER_LIST users_;
 	TECH_LIST technologies_;					//хранит все технологии игрового мира
+	INVENTION_LIST inventions_;
 	TECH_LIST boxAddons_;
 	DISKMACHINES_LIST diskMachines_;
 	GAMES_LIST games_;

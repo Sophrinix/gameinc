@@ -18,6 +18,7 @@
 #include "NrpRetailer.h"
 #include "NrpGameImageList.h"
 #include "NrpDevelopGame.h"
+#include "NrpInvention.h"
 
 #include <io.h>
 #include <errno.h>
@@ -400,7 +401,7 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 		}
 	}
 
-	for( size_t i=0; i < GetValue<int>( GAMENUMBER ); i++ )
+	for( int i=0; i < GetValue<int>( GAMENUMBER ); i++ )
 	{
 		std::string name = IniFile::Read( "games",  "game_"+IntToStr( i ), std::string(""), profileIni );
 		PNrpGame game = new CNrpGame( name );
@@ -557,7 +558,7 @@ int CNrpApplication::GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp )
 	gameMaySaledToday *= ( game->GetValue<float>( FAMOUS ) + userModificator + authorFamous );
 
 	//коэффициент продаж по известности ретейлера и компании
-	gameMaySaledToday *= (compannyFamous + retailerFamous)*0.5;
+	gameMaySaledToday *= (compannyFamous + retailerFamous)*0.5f;
 
 	//коэффициент покупательской способности
 	gameMaySaledToday *= GetConsumerAbility_( game->GetValue<PNrpGameBox>( GBOX )->GetValue<int>( PRICE ) );
@@ -650,7 +651,7 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 
 	rating = GetQuality_( cmp->GetGameEngine( ptrGame->GetValue<std::string>( GAME_ENGINE ) ) );
 
-	for( size_t k=0; k < ptrGame->GetValue<int>( MODULE_NUMBER ); k++ )
+	for( int k=0; k < ptrGame->GetValue<int>( MODULE_NUMBER ); k++ )
 	{
 		std::string name = ptrGame->GetTechName( k );
 		rating += GetQuality_( GetTechnology( name ) );
@@ -945,5 +946,38 @@ void CNrpApplication::AddGame( CNrpGame* ptrGame )
 	assert( ptrGame != NULL );
 	games_.push_back( ptrGame );
 	SetValue<int>( GAMENUMBER, games_.size() );
+}
+
+void CNrpApplication::StartInvention( CNrpTechnology* startTech, CNrpCompany* parentCompany )
+{
+	CNrpInvention* inv = new CNrpInvention( startTech, parentCompany );
+	parentCompany->AddInvention( inv );
+	inventions_.push_back( inv );  
+}
+
+void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )
+{
+	//создать соответствующую изобретению технологию 
+	//разместить её в списке доступных
+	CNrpTechnology* tech = new CNrpTechnology( *ptrInvention );
+	AddTechnology( tech );
+
+	INVENTION_LIST::iterator pIter = inventions_.begin();
+	INVENTION_LIST::iterator delIter;
+	for( ; pIter != inventions_.end(); pIter++ )
+	{
+		std::string name = pIter->GetValue<std::string>( NAME );
+		if( name == ptrInvention->GetValue<std::string>( NAME ) )
+		{
+			PNrpCompany pCmp = pIter->GetValue<PNrpCompany>( PARENTCOMPANY );
+			if( pCmp == ptrInvention->GetValue<PNrpCompany>( PARENTCOMPANY) )
+				delIter = pIter;//найти это изобретение в своем списке и удалить его оттуда...
+			else
+				pCmp->InventionReleased( name );//уведомить все компании об изобретении технологии
+		}
+	}
+	
+	delete *delIter;
+	inventions_.erase( delIter );
 }
 }//namespace nrp

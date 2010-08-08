@@ -26,7 +26,7 @@ CLuaImage::CLuaImage(lua_State *L)	: ILuaGuiElement(L, "CLuaImage")							//конс
 int CLuaImage::SetImage( lua_State *L )								
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaImage::SetImage need string parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaImage::SetImage need ITexture* parameter");
 
 	video::ITexture* ptrTexture = (video::ITexture*)lua_touserdata( L, 2 );
 

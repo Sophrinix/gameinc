@@ -3,6 +3,7 @@ local company = CLuaCompany( applic:GetPlayerCompany() )
 local windowLabor = CLuaWindow( nil )
 local techMap = CLuaTechMap( nil )
 local selectedTech = CLuaTech( nil )
+local windowNewTech = CLuaWindow( nil )
 local width = 800
 local height = 600
 
@@ -41,15 +42,42 @@ end
 function sworkTechMapWindowTechSelected( ptr )
 	selectedTech:SetObject( ptr )
 	--технология уже в ходу
-	Log({src=SCRIPT, dev=ODS|CON}, "Выбрана технология="..selectedTech:GetName().." Описание="..selectedTech:GetDescriptionLink() )
+	Log({src=SCRIPT, dev=ODS|CON}, "Выбрана технология="..selectedTech:GetName().." Описание="..selectedTech:GetDescriptionLink().." Статус="..selectedTech:GetStatus() )
 
 	if selectedTech:GetStatus() == TS_READY then
 	    browser:Show()
 	    browser:Navigate( selectedTech:GetDescriptionLink() )
 	    --local btn = CLuaButton( guienv:AddButton( 10, 10, 10 + 140, 10 + 20, browser:GetWindow(), -1, "Закрыть" ) )
 	    --btn:SetAction( "sworkTechMapWindowClose" )
-	else--или технологию только предстоит изобрести
+	    return 
+	end--или технологию только предстоит изобрести
 		--то повторный выбор предполагает желание пользователя начать исследование...
-		sworkTechMapWindowStartInvention( selectedTech:Self() )
+	if selectedTech:GetStatus() == TS_UNKNOWN or selectedTech:GetStatus() == TS_PROJECT then
+		sworkTechMapWindowStartInvention( selectedTech )
+		return
 	end
+	
+	if selectedTech:GetStatus() == TS_INDEVELOP then
+		sworkShowInventionManager( selectedTech:GetName(), company )
+		return
+	end
+end
+
+function sworkTechMapWindowStartInvention( tech )
+	windowNewTech:SetObject( guienv:AddWindow( "", scrWidth / 2 - 100, scrHeight / 2 - 50, 
+											    scrWidth / 2 + 100, scrHeight / 2 + 50, -1, guienv:GetRootGUIElement() ) )
+	local btnOk = CLuaButton( guienv:AddButton( 10, 30, 190, 30 + 20, windowNewTech:Self(), -1, "Начать исследования" ) )
+	btnOk:SetAction( "sworkTechMapWindowAssignInventionToCompany" )
+	local btnCancel = CLuaButton( guienv:AddButton( 10, 60, 190, 60 + 20, windowNewTech:Self(), -1, "Закрыть" ) )
+	btnCancel:SetAction( "sworkTechMapWindowCloseConfirmationWindow" )
+end
+
+function sworkTechMapWindowAssignInventionToCompany( ptr )
+	company:StartInvention( selectedTech:Self() )
+	sworkShowInventionManager( selectedTech )
+	windowNewTech:Remove()
+end
+
+function sworkTechMapWindowCloseConfirmationWindow( ptr )
+	windowNewTech:Remove()
 end

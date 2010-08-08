@@ -433,4 +433,9 @@ void CNrpCompany::RemoveFromPortfelle( INrpConfig* ptrObject )
 		break;
 	}
 }
+
+void CNrpCompany::StartInvention( CNrpInvention* inv )
+{
+	inventions_.push_back( inv );
+}
 }//namespace nrp

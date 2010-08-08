@@ -818,7 +818,7 @@ void CNrpTechMap::selectNew( core::position2di cell, bool onlyHover)
 	if( ItemHeight!=0 && _ColumnWidth != 0)
 	{
 		newSelected.Y = ((cell.Y - AbsoluteRect.UpperLeftCorner.Y - ItemHeight - 1) + VerticalScrollBar->getPos()) / ItemHeight;
-		newSelected.X = ((cell.X - AbsoluteRect.UpperLeftCorner.Y - ItemHeight - 1) + HorizontalScrollBar->getPos()) / _ColumnWidth;
+		newSelected.X = ((cell.X - AbsoluteRect.UpperLeftCorner.X ) + HorizontalScrollBar->getPos()) / _ColumnWidth;
 	}
 
 	if (newSelected.Y >= (s32)Rows.size())
