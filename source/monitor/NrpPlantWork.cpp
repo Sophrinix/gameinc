@@ -87,7 +87,7 @@ void CNrpPlantWork::CalcParams_()
 		price += nM * ( dm->GetValue<int>( PRICEPERHOUR ) * 24 * nDay );
 		price += (int)(dskNum * box->GetBoxAddonsPrice());
 		int priceInDay = dm->GetValue<int>( PRICEPERHOUR ) * 24 * nM;//плата за аренду машин в сутки
-		priceInDay += dm->GetValue<int>( DISKPERHOUR ) * 24 * box->GetBoxAddonsPrice();//плата за покупку аддонов для коробки
+		priceInDay +=static_cast<int>( dm->GetValue<int>( DISKPERHOUR ) * 24 * box->GetBoxAddonsPrice() );//плата за покупку аддонов для коробки
 			
 		float dskPrice = price / (float)dskNum;
 		INrpConfig::SetValue<std::string>( NAME, game->GetValue<std::string>( NAME ) );

@@ -1,4 +1,5 @@
 IncludeScript( "globalVariableInitialize" )
+IncludeScript( "swork_Tutorial" )
 
 NrpInitializeLoginScene()
 
@@ -32,4 +33,7 @@ btnOptionsGame:SetAction( "slogin_OptionsGame" )
 local btnExitGame = CLuaButton( guienv:AddButton( scrWidth / 2 + 200, scrHeight - 120, scrWidth / 2 + 350, scrHeight - 80, 
 											 guienv:GetRootGUIElement(), -1, "Выход") )
 btnExitGame:SetAction( "slogin_ExitGame" )
+
+browser:Show()
+browser:Navigate( "media/html/intro.htm" )
 --

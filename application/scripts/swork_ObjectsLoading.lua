@@ -52,6 +52,7 @@ function ApplicationLoadCityScene()
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( office:Self() )
 	office:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( office:Self(), "office" )
+	SetHelpLinkForObject( "officeNode", "media/html/officeNode.htm" )
 	LogScript( "officeNode find" )	
 	
 	local univer = CLuaSceneNode( sceneManager:GetSceneNodeByName( "univerNode" ) )

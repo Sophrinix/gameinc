@@ -109,6 +109,8 @@ public:
 
 	void StartInvention( CNrpTechnology* startTech, CNrpCompany* parentCompany );
 	void InventionFinished( CNrpInvention* ptrInvention );
+	void InventionCanceled( CNrpInvention* ptrInvention );
+	CNrpInvention* GetInvention( std::string name, std::string companyName );
 
 private:
 	CNrpApplication(void);

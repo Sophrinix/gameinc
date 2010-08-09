@@ -58,7 +58,7 @@ function sworkTechMapWindowTechSelected( ptr )
 	end
 	
 	if selectedTech:GetStatus() == TS_INDEVELOP then
-		sworkShowInventionManager( selectedTech:GetName(), company )
+		sworkShowInventionManager( selectedTech:GetName(), company:GetName() )
 		return
 	end
 end
@@ -74,7 +74,7 @@ end
 
 function sworkTechMapWindowAssignInventionToCompany( ptr )
 	company:StartInvention( selectedTech:Self() )
-	sworkShowInventionManager( selectedTech )
+	sworkShowInventionManager( selectedTech:GetName(), company:GetName() )
 	windowNewTech:Remove()
 end
 

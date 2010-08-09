@@ -61,6 +61,7 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, ClearImageList ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadImageList ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameTime ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetInvention ),
 	{0,0}
 };
 
@@ -578,5 +579,25 @@ int CLuaApplication::GetGameTime( lua_State* L )
 	lua_pushinteger( L, time.wMinute );
 
 	return 5;		
+}
+
+int CLuaApplication::GetInvention( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaApplication:GetInvention need invention name, company name parameters" );
+
+	const char* inventionName = lua_tostring( L, 2 );
+	const char* companyName = lua_tostring( L, 3 );
+	CNrpInvention* inv = NULL;
+
+	assert( inventionName != NULL && companyName != NULL );
+	if( inventionName != NULL && companyName != NULL )
+	{
+		IF_OBJECT_NOT_NULL_THEN inv = object_->GetInvention( inventionName, companyName );
+	}
+
+	assert( inv != NULL );
+	lua_pushlightuserdata( L, inv );
+	return 1;
 }
 }//namespace nrp 

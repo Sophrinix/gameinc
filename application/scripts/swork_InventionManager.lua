@@ -7,9 +7,9 @@ local listInventionStuff = CLuaListBox( nil )
 local width = 800
 local height = 600
 
-function sworkShowInventionManager( techName, pCmp )
+function sworkShowInventionManager( techName, companyName )
 	windowIM:SetObject( guienv:AddWindow( "", 0, 0, width, height, -1, guienv:GetRootGUIElement() ) )
-	local invention = CLuaInvention( applic:GetInvention( techName, pCmp:Self() ) )
+	local invention = CLuaInvention( applic:GetInvention( techName, companyName ) )
 
 	--картинка с изображением технологии
 	local btnWidth = width / 4

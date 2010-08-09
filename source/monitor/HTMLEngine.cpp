@@ -2,12 +2,15 @@
 #include "HTMLEngine.h"
 #include "NrpBrowserWindow.h"
 #include "nrpEngine.h"
+#include "nrpScript.h"
+
 #include <cassert>
 #include <string>
 //*! создаем один экземпл€р класса дл€ работы
 static nrp::HTMLEngine* HTMLRenderer = 0;
 
 const std::string CARET_RESPONSE( "\n" );
+#define NRP_NOFOLLOW_SCHEME "nrpscript://"
 
 using namespace irr;
 
@@ -40,6 +43,7 @@ HTMLEngine::HTMLEngine()
 	//врем€ последнего обращени€ надо дл€ уменьшени€ нагрузки на проц, 
 	//чтобы не копировать страницу п€ть раз впустую
 	lastTimeUpdate_ = GetTickCount();
+	_noFollowLinkExec = false;
 }
 
 HTMLEngine::~HTMLEngine()
@@ -75,6 +79,7 @@ gui::CNrpBrowserWindow& HTMLEngine::GetBrowserWindow(irr::core::dimension2du siz
 
 		llmozlib_->focusBrowser(browserWindowId_, true);
 		browserWindow_->SetTexture( pageTexture_ );
+		llmozlib_->setNoFollowScheme( browserWindowId_, NRP_NOFOLLOW_SCHEME );
 	}
 
 	return *browserWindow_;
@@ -193,6 +198,16 @@ void HTMLEngine::onClickLinkHref( const LLEmbeddedBrowserWindowEvent& eventIn )
 void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
 	std::string a = "Event: clicked on nofollow link to " + eventIn.getStringValue() + CARET_RESPONSE;
+
+	if( _noFollowLinkExec )
+	{
+		std::string action = eventIn.getStringValue();
+		action = action.substr( strlen( NRP_NOFOLLOW_SCHEME ), action.size() );
+		CNrpScript::Instance().DoString( action.c_str() );
+		_noFollowLinkExec = false;
+	}
+	else
+		_noFollowLinkExec = true;
 	OutputDebugString( a.c_str() );
 }
 }

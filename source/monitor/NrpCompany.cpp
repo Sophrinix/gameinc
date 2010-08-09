@@ -7,6 +7,7 @@
 #include "NrpGame.h"
 #include "NrpApplication.h"
 #include "NrpDevelopGame.h"
+#include "NrpInvention.h"
 
 #include <io.h>
 #include <errno.h>
@@ -437,5 +438,30 @@ void CNrpCompany::RemoveFromPortfelle( INrpConfig* ptrObject )
 void CNrpCompany::StartInvention( CNrpInvention* inv )
 {
 	inventions_.push_back( inv );
+}
+
+void CNrpCompany::InventionReleased( CNrpInvention* inv )
+{
+	INVENTION_LIST::iterator pIter = inventions_.begin();
+	std::string name = inv->GetValue<std::string>( NAME );
+	for( ; pIter != inventions_.end(); pIter++ )
+	{
+		if( (*pIter)->GetValue<std::string>( NAME ) == name )
+		{
+			//надо что-то делать с похожей технологией... либо развивать следующий уровень,
+			//либо прекращать разработки и переводить людей на другой проект с частичным
+			//переносом опыта...
+			//в любом случае эти иследования прекращаются...
+			CNrpApplication::Instance().InventionCanceled( *pIter );
+			DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED, *pIter );
+			inventions_.erase( pIter );
+			break;
+		}			
+	}
+}
+
+void CNrpCompany::AddTechnology( CNrpTechnology* tech )
+{
+	technologies_[ tech->GetValue<std::string>( NAME ) ] = tech;
 }
 }//namespace nrp

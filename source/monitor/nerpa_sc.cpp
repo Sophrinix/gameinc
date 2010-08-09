@@ -34,7 +34,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 #ifdef _DEBUG
 	application.SetValue<std::string>( FULLPATH, "f:/project/Game Inc, Dev/application/" );
 #else
-	std::string mypath = _argv[ 0 ];
+	std::string mypath = __argv[ 0 ];
 	mypath = mypath.erase( mypath.rfind( '\\')+1, 0xff );
 	application.SetValue<std::string>( FULLPATH, mypath );
 #endif

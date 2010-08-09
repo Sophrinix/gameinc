@@ -122,10 +122,10 @@ void CNrpLoginScene::OnEnter()
 	camera_->setTarget(core::vector3df(0,0,0));
 	smgr->setActiveCamera( camera_ );
 
-	pf = new gui::CNrp2DPictureFlow( env, env->getRootGUIElement(), core::recti( 0, 0, 400, 400 ), core::recti( 0, 0, 150, 150 ), -1 );
+/*	pf = new gui::CNrp2DPictureFlow( env, env->getRootGUIElement(), core::recti( 0, 0, 400, 400 ), core::recti( 0, 0, 150, 150 ), -1 );
 	for( int k=0; k < 15; k++ )
 		pf->addItem( driver->getTexture( "media/devka.jpg" ), L"" );
-
+*/
 	const core::dimension2du SCREEN_SIZE = driver->getScreenSize();
 	// добавляем надпись "НЕРПА"
 	nerpaLogoTexture_ = driver->getTexture( "media/main.psd" );

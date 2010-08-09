@@ -112,6 +112,7 @@ int CNrpApplication::AddUser( bool player, IUser* user )
 bool CNrpApplication::UpdateTime()
 {
 	SYSTEMTIME& time = GetValue<SYSTEMTIME>( CURRENTTIME );
+	time.wDayOfWeek = time.wMilliseconds = time.wSecond = 0;
 	if( GetTickCount() - lastTimeUpdate_ > 100 )
 	{
 		lastTimeUpdate_ = GetTickCount();
@@ -561,7 +562,7 @@ int CNrpApplication::GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp )
 	gameMaySaledToday *= (compannyFamous + retailerFamous)*0.5f;
 
 	//коэффициент покупательской способности
-	gameMaySaledToday *= GetConsumerAbility_( game->GetValue<PNrpGameBox>( GBOX )->GetValue<int>( PRICE ) );
+	gameMaySaledToday *= GetConsumerAbility_( static_cast<float>( game->GetValue<PNrpGameBox>( GBOX )->GetValue<int>( PRICE ) ) );
 
 	return gameMaySaledToday;
 }
@@ -664,7 +665,7 @@ int CNrpApplication::GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRat
 	double sT, cT;
 	SystemTimeToVariantTime( &startTime, &sT );
 	SystemTimeToVariantTime( &curTime, &cT );
-	int monthInMarket = (cT - sT) / 30;
+	int monthInMarket = static_cast< int >( cT - sT ) / 30;
 	//понижаем рейтинг из-за времени на рынке
 	rating *= ( monthInMarket > 10 ? 0.1f : 1.f - log( (float)monthInMarket ) );
 
@@ -951,7 +952,7 @@ void CNrpApplication::AddGame( CNrpGame* ptrGame )
 void CNrpApplication::StartInvention( CNrpTechnology* startTech, CNrpCompany* parentCompany )
 {
 	CNrpInvention* inv = new CNrpInvention( startTech, parentCompany );
-	parentCompany->AddInvention( inv );
+	parentCompany->StartInvention( inv );
 	inventions_.push_back( inv );  
 }
 
@@ -966,18 +967,57 @@ void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )
 	INVENTION_LIST::iterator delIter;
 	for( ; pIter != inventions_.end(); pIter++ )
 	{
-		std::string name = pIter->GetValue<std::string>( NAME );
-		if( name == ptrInvention->GetValue<std::string>( NAME ) )
+		if( (*pIter)->GetValue<std::string>( NAME ) == ptrInvention->GetValue<std::string>( NAME ) )
 		{
-			PNrpCompany pCmp = pIter->GetValue<PNrpCompany>( PARENTCOMPANY );
+			PNrpCompany pCmp = (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY );
 			if( pCmp == ptrInvention->GetValue<PNrpCompany>( PARENTCOMPANY) )
+			{
 				delIter = pIter;//найти это изобретение в своем списке и удалить его оттуда...
-			else
-				pCmp->InventionReleased( name );//уведомить все компании об изобретении технологии
+				pCmp->AddTechnology( tech );
+			}
+		
+			pCmp->InventionReleased( ptrInvention );//уведомить все компании об изобретении технологии
 		}
 	}
 	
 	delete *delIter;
 	inventions_.erase( delIter );
+}
+
+void CNrpApplication::InventionCanceled( CNrpInvention* ptrInvention )
+{
+	INVENTION_LIST::iterator pIter = inventions_.begin();
+	for( ; pIter != inventions_.end(); pIter++ )
+	{
+		if( *pIter == ptrInvention )
+		{
+#ifdef _DEBUG
+			std::string text = "Удалена технология";
+			text += (*pIter)->GetValue<std::string>( NAME );
+			PNrpCompany cmp = (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY );
+			assert( cmp != NULL );
+			text += cmp ? cmp->GetValue<std::string>( NAME ) : std::string("unknown company");
+			OutputDebugString( text.c_str() );
+#endif
+			delete *pIter;
+			inventions_.erase( pIter );
+			break;
+		}
+	}
+}
+
+CNrpInvention* CNrpApplication::GetInvention( std::string name, std::string companyName )
+{
+	INVENTION_LIST::iterator pIter = inventions_.begin();
+	for( ; pIter != inventions_.end(); pIter++ )
+	{
+		assert( (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY ) != NULL );
+
+		if( (*pIter)->GetValue<std::string>( NAME ) == name &&
+			(*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY )->GetValue<std::string>( NAME ) == companyName )
+				return *pIter;
+	}
+
+	return NULL;
 }
 }//namespace nrp

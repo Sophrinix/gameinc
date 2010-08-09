@@ -18,6 +18,7 @@ Luna< CLuaBrowser >::RegType CLuaBrowser::methods[] =			//реализуемы методы
 	LUNA_ILUAOBJECT_HEADER( CLuaBrowser ),
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Show ),
+	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Hide ),
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Navigate ),
 	{0,0}
 };
@@ -30,7 +31,11 @@ int CLuaBrowser::Show( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaBrowser::Show not need any parameter");
 
-	IF_OBJECT_NOT_NULL_THEN object_->GetBrowserWindow( dimension2du( 512, 512 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		irr::gui::CNrpBrowserWindow& wnd = object_->GetBrowserWindow( dimension2du( 512, 512 ) );
+		wnd.setVisible( true );
+	}
 
 	return 1;	
 }
@@ -53,6 +58,20 @@ int CLuaBrowser::Navigate( lua_State* L )
 		if( advpath.find( ':' ) == -1 )
 			advpath = CNrpApplication::Instance().GetValue<std::string>( FULLPATH ) + advpath;
 		object_->Navigate( "file://" + advpath );
+	}
+
+	return 1;	
+}
+
+int CLuaBrowser::Hide( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaBrowser::Show not need any parameter");
+
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		irr::gui::CNrpBrowserWindow& wnd = object_->GetBrowserWindow();
+		wnd.setVisible( false );
 	}
 
 	return 1;	

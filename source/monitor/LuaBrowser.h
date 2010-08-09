@@ -19,6 +19,7 @@ public:
 
 	CLuaBrowser(lua_State *L);		
 	int Show( lua_State* L );
+	int Hide( lua_State* L );
 	int Navigate( lua_State* L );
 
 

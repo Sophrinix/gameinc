@@ -8,6 +8,7 @@ IncludeScript("swork_ObjectsLoading")
 IncludeScript("swork_wndProjectWizard")
 IncludeScript("swork_wndEmployersManage")
 IncludeScript("swork_wndShop")
+IncludeScript("swork_InventionManager") 
 
 Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 -- Проверка вспомогательных функций
@@ -43,3 +44,7 @@ playerCompany:AddLuaFunction( COMPANY_READY_PROJECT, "sworkPlayerCompanyReadyPro
 	cmp:AddLuaFunction( COMPANY_READY_PROJECT, "sworkCompanyReadyProject" )
 end
 --]]
+
+if startGameWithTutorial then
+	StartDescriptionGame()
+end

@@ -60,6 +60,7 @@ public:
 	int ClearImageList( lua_State* L );
 	int LoadImageList( lua_State* L );
 	int GetGameTime( lua_State* L );
+	int GetInvention( lua_State* L );
 
 	static const char* StaticGetLuaName() { return CLASS_CLUAPPLICATION.c_str(); }
 private:

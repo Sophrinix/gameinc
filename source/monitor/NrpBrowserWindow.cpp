@@ -87,15 +87,18 @@ void CNrpBrowserWindow::SetTexture( video::ITexture* texture )
 
 void CNrpBrowserWindow::draw()
 {
-	HTMLEngine::Instance().Update();
-
-	CNrpWindow::draw();
-
-	if( texture_ )
+	if( IsVisible )
 	{
-		core::recti txsResct( 0, 0, texture_->getSize().Width, texture_->getSize().Height );
-		Environment->getVideoDriver()->draw2DImage( texture_, imageRect_ + AbsoluteRect.UpperLeftCorner, txsResct );
-	}	
+		HTMLEngine::Instance().Update();
+
+		CNrpWindow::draw();
+
+		if( texture_ )
+		{
+			core::recti txsResct( 0, 0, texture_->getSize().Width, texture_->getSize().Height );
+			Environment->getVideoDriver()->draw2DImage( texture_, imageRect_ + AbsoluteRect.UpperLeftCorner, txsResct );
+		}	
+	}
 }
 }//namespace gui
 

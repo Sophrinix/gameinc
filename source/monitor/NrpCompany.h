@@ -47,6 +47,7 @@ public:
 	CNrpGameEngine* GetGameEngine( std::string name );
 	CNrpTechnology* GetTechnology( int index );
 	CNrpTechnology* GetTechnology( std::string name );
+	void AddTechnology( CNrpTechnology* tech );
 	INrpConfig* GetFromPortfelle( int index );
 	void RemoveFromPortfelle( INrpConfig* ptrObject );
 	void AddToPortfelle( INrpConfig* ptrObject );
@@ -63,6 +64,7 @@ public:
 	INrpProject* GetProject( size_t index );
 
 	void StartInvention( CNrpInvention* inv );
+	void InventionReleased( CNrpInvention* inv );
 
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );

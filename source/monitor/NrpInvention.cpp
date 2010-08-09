@@ -20,7 +20,7 @@ int CNrpInvention::_GetRealPrice( CNrpTechnology* tech )
 	int month = static_cast<int>( stime - curtime ) / 30; //получаем количество месяцев от реального срока появления технологии на рынке
 	float price = static_cast< float >( tech->GetValue<int>( BALANCE ) );
 	for( int k=0; k < month; k++ )//каждый лишний месяц удорожает технологию на 10% от базовой стоимости( сложный процент )
-		 price *= 0.1f;
+		 price *= 1.1f;
 
 	return static_cast<int>( price );
 }

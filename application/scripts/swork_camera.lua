@@ -2,7 +2,7 @@ function ApplicationAddCityCamera()
 
 	local camera = CLuaCamera( sceneManager:AddCameraSceneNode( sceneManager:GetRootSceneNode() ) )
 	
-	local anim = sceneManager:AddNerpaCameraAnimator( -315, -1000, 2100, 1000 )
+	local anim = sceneManager:AddNerpaCameraAnimator( -315, -1000, 1100, 1000 )
 	
 	camera:AddAnimator( anim )
 	camera:SetName( MAIN_CAMERA_NAME )
@@ -11,5 +11,4 @@ function ApplicationAddCityCamera()
 	camera:SetTarget( 0,0,0 )
 		
 	sceneManager:SetActiveCamera( camera:Self() )
-
 end
