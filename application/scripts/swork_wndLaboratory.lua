@@ -3,7 +3,9 @@ local company = CLuaCompany( applic:GetPlayerCompany() )
 local windowLabor = CLuaWindow( nil )
 local techMap = CLuaTechMap( nil )
 local selectedTech = CLuaTech( nil )
-local windowNewTech = CLuaWindow( nil )
+local btnOk = CLuaButton( nil )
+local btnCancel = CLuaButton( nil )
+
 local width = 800
 local height = 600
 
@@ -64,20 +66,26 @@ function sworkTechMapWindowTechSelected( ptr )
 end
 
 function sworkTechMapWindowStartInvention( tech )
-	windowNewTech:SetObject( guienv:AddWindow( "", scrWidth / 2 - 100, scrHeight / 2 - 50, 
-											    scrWidth / 2 + 100, scrHeight / 2 + 50, -1, guienv:GetRootGUIElement() ) )
-	local btnOk = CLuaButton( guienv:AddButton( 10, 30, 190, 30 + 20, windowNewTech:Self(), -1, "Начать исследования" ) )
+	browser:Show()
+	browser:Navigate( tech:GetDescriptionLink() )
+	
+	btnOk:SetObject( guienv:AddButton( 10, 30, 190, 30 + 20, browser:GetWindow(), -1, "Начать исследования" ) )
 	btnOk:SetAction( "sworkTechMapWindowAssignInventionToCompany" )
-	local btnCancel = CLuaButton( guienv:AddButton( 10, 60, 190, 60 + 20, windowNewTech:Self(), -1, "Закрыть" ) )
+	btnCancel:SetObject( guienv:AddButton( 200, 30, 390, 30 + 20, browser:GetWindow(), -1, "Закрыть" ) )
 	btnCancel:SetAction( "sworkTechMapWindowCloseConfirmationWindow" )
 end
 
 function sworkTechMapWindowAssignInventionToCompany( ptr )
 	company:StartInvention( selectedTech:Self() )
 	sworkShowInventionManager( selectedTech:GetName(), company:GetName() )
-	windowNewTech:Remove()
+	
+	btnOk:Remove()
+	btnCancel:Remove()
+	browser:Hide()
 end
 
 function sworkTechMapWindowCloseConfirmationWindow( ptr )
-	windowNewTech:Remove()
+	btnOk:Remove()
+	btnCancel:Remove()
+	browser:Hide()
 end

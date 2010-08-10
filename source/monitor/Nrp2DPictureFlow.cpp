@@ -153,7 +153,7 @@ void CNrp2DPictureFlow::draw()
 		for( size_t pos=min( activeIndex_ + 4, images_.size()-1); pos > activeIndex_; pos-- )
 			 DrawPairImage_( images_[ pos ] );
 
-		if( activeIndex_ < images_.size() )
+		if( activeIndex_ < static_cast< int >( images_.size() ) )
 			DrawPairImage_( images_[ activeIndex_ ] );
 	}
 	IGUIListBox::draw();

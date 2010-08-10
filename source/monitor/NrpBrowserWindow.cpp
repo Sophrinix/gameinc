@@ -22,8 +22,9 @@ CNrpBrowserWindow::CNrpBrowserWindow( gui::IGUIEnvironment* env,
 									  core::dimension2du size ) : CNrpWindow( env, env->getRootGUIElement(), texture, id, 
 																			  core::recti( pos, size+core::dimension2du( 10, 25 ) ) )
 {
-	imageRect_ = core::recti( 5, 20, size.Width + 5, size.Height + 20 );
-	//image_->setScaleImage( true );
+	image_ = Environment->addImage( core::recti( 5, 20, size.Width + 5, size.Height + 20 ), this, -1, 0 );
+	image_->setScaleImage( true );
+	
 	setDraggable( true );
 	drop();
 }
@@ -31,7 +32,7 @@ CNrpBrowserWindow::CNrpBrowserWindow( gui::IGUIEnvironment* env,
 CNrpBrowserWindow::~CNrpBrowserWindow(void)
 {
 	HTMLEngine::Instance().SetBrowserWindow( NULL );
-	//image_->remove();
+	image_->remove();
 }
 
 bool CNrpBrowserWindow::OnEvent(const SEvent& event)
@@ -40,7 +41,7 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 	{
 	case EET_MOUSE_INPUT_EVENT:
 	{
-		core::position2di mousePos = core::position2di(event.MouseInput.X, event.MouseInput.Y) - RelativeRect.UpperLeftCorner - imageRect_.UpperLeftCorner;
+		core::position2di mousePos = core::position2di(event.MouseInput.X, event.MouseInput.Y) - image_->getAbsolutePosition().UpperLeftCorner;
 
 		switch(event.MouseInput.Event)
 		{
@@ -60,6 +61,9 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 			HTMLEngine::Instance().MouseMoved( mousePos.X, mousePos.Y );
 		break;
 		}
+
+		if( image_->getRelativePosition().isPointInside( mousePos) )
+			return true;
 	}
 	break;
 	
@@ -82,7 +86,7 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 
 void CNrpBrowserWindow::SetTexture( video::ITexture* texture )
 {
-	texture_ = texture;
+	image_->setImage( texture );
 }
 
 void CNrpBrowserWindow::draw()
@@ -92,12 +96,6 @@ void CNrpBrowserWindow::draw()
 		HTMLEngine::Instance().Update();
 
 		CNrpWindow::draw();
-
-		if( texture_ )
-		{
-			core::recti txsResct( 0, 0, texture_->getSize().Width, texture_->getSize().Height );
-			Environment->getVideoDriver()->draw2DImage( texture_, imageRect_ + AbsoluteRect.UpperLeftCorner, txsResct );
-		}	
 	}
 }
 }//namespace gui

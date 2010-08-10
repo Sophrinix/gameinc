@@ -31,7 +31,12 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp ) : CNrpP
 	SetValue<TECH_STATUS>( STATUS, TS_INDEVELOP );
 	CreateValue<int>( REALPRICE, _GetRealPrice( pTech ) );
 	CreateValue<int>( PASSEDPRICE, 0 );
-	CreateValue<int>( INVESTIMENT, 0 );
+	CreateValue<int>( INVESTIMENT, 1000 );
+	CreateValue<std::string>( INVENTIONSPEED, "застой" );
+	
+	SYSTEMTIME time;
+	memset( &time, 0, sizeof(SYSTEMTIME) );
+	CreateValue<SYSTEMTIME>( PROGNOSEDATEFINISH, time );
 }
 
 CNrpInvention::~CNrpInvention(void)

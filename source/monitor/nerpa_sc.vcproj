@@ -1263,14 +1263,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\LuaTechnology.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\LuaTechnology.h"
-						>
-					</File>
-					<File
 						RelativePath=".\LuaUser.cpp"
 						>
 					</File>
@@ -1299,11 +1291,27 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaInvention.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaInvention.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaProject.cpp"
 						>
 					</File>
 					<File
 						RelativePath=".\LuaProject.h"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaTechnology.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaTechnology.h"
 						>
 					</File>
 				</Filter>

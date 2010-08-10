@@ -493,6 +493,8 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 	scene::ISceneNode* ptrNode = (scene::ISceneNode*)lua_touserdata( L, 2 );
 	const char* text = lua_tostring( L, 3 );
 	assert( text != NULL && ptrNode != NULL );
+	if( text == NULL || ptrNode == NULL )
+		return 1;
 	
 	scene::ISceneNode* textNode = GetTextSceneNode_( ptrNode );
 	IF_OBJECT_NOT_NULL_THEN

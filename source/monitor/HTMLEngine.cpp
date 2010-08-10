@@ -195,6 +195,22 @@ void HTMLEngine::onClickLinkHref( const LLEmbeddedBrowserWindowEvent& eventIn )
 	llmozlib_->navigateTo(browserWindowId_, eventIn.getStringValue());
 }
 
+std::string DecodeUrl( std::string url )
+{
+	int startpos = 0;
+	for( size_t pos=0; pos < url.size(); pos++, startpos++ )
+		if( url[ pos ] != '%' )
+			url[ startpos ] = url[ pos ];
+		else
+		{
+			url[ startpos ] = (( url[ pos+1 ] - 0x30 ) << 4) + ( url[ pos + 2 ] - 0x30 );
+			pos += 2;
+		}
+
+	url.resize( startpos );
+	return url;
+}
+
 void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
 	std::string a = "Event: clicked on nofollow link to " + eventIn.getStringValue() + CARET_RESPONSE;
@@ -202,7 +218,7 @@ void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventI
 	if( _noFollowLinkExec )
 	{
 		std::string action = eventIn.getStringValue();
-		action = action.substr( strlen( NRP_NOFOLLOW_SCHEME ), action.size() );
+		action = DecodeUrl( action.substr( strlen( NRP_NOFOLLOW_SCHEME ), action.size() ) );
 		CNrpScript::Instance().DoString( action.c_str() );
 		_noFollowLinkExec = false;
 	}

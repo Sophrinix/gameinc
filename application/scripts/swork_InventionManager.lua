@@ -3,19 +3,42 @@ local labelInvestiment = CLuaLabel( nil )
 local labelInventionSpeed = CLuaLabel( nil )
 local labelInventionPrognoseFinish = CLuaLabel( nil )
 local listInventionStuff = CLuaListBox( nil )
+local currentInvention = CLuaInvention( nil )
 
 local width = 800
 local height = 600
 
+--обновлеяет текст на метках
+local function localUpdateLabels()
+	labelInvestiment:SetText( currentInvention:GetInvestiment() )
+	labelInventionSpeed:SetText( currentInvention:GetSpeed() )
+	local day, month, year = currentInvention:GetPrognoseDateFinish()
+	labelInventionPrognoseFinish:SetText( day.."."..month.."."..year )
+end
+
+--увеличивает затраты на исследования
+function sworkInventionManagerIncreaseInvestiment( ptr )
+	currentInvention:SetInvestiment( currentInvention:GetInvestiment() * 2 )
+	localUpdateLabels()
+end
+
+--уменьшает затраты на исследования
+function sworkInventionManagerDecreaseInvestiment( ptr )
+	currentInvention:SetInvestiment( currentInvention:GetInvestiment() / 2 )
+	localUpdateLabels()
+end
+
+--отображает окно управления исследованиями
 function sworkShowInventionManager( techName, companyName )
 	windowIM:SetObject( guienv:AddWindow( "", 0, 0, width, height, -1, guienv:GetRootGUIElement() ) )
-	local invention = CLuaInvention( applic:GetInvention( techName, companyName ) )
+	currentInvention:SetObject( applic:GetInvention( techName, companyName ) )
 
 	--картинка с изображением технологии
-	local btnWidth = width / 4
-	local ypos = height / 4
+	local btnWidth = width / 3
+	local ypos = height / 3
 	local img = CLuaImage( guienv:AddImage( 10, 10, btnWidth , ypos, windowIM:Self(), -1, "" ) )
-	img:SetImage( driver:GetTexture( invention:GetTexture() ) )
+	img:SetScaleImage( true )
+	img:SetImage( driver:GetTexture( currentInvention:GetTexture() ) )
 
 	--кнопки изменения финансирования и метка с текущим финансированием в месяц
 	local btnPlus = CLuaButton( guienv:AddButton( 10, ypos, 10 + 30, ypos + 30, windowIM:Self(), -1, "+") )
@@ -24,15 +47,17 @@ function sworkShowInventionManager( techName, companyName )
 	local btnMinus = CLuaButton( guienv:AddButton( btnWidth - 30, ypos, btnWidth, ypos + 30, windowIM:Self(), -1, "-" ) )
 	btnMinus:SetAction( "sworkInventionManagerDecreaseInvestiment" )
 	
-	labelInvestiment:SetObject( guienv:AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT:", 45, ypos, 
-													    btnWidth - 45, ypos + 30, -1, windowIM:Self() ) )
+	guienv:AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT:", 45, ypos - 15, 
+													    btnWidth - 45, ypos + 15, -1, windowIM:Self() )
+	labelInvestiment:SetObject(  guienv:AddLabel(  currentInvention:GetInvestiment(), 45, ypos + 16, 
+													    btnWidth - 45, ypos + 46, -1, windowIM:Self() ))
 	
-	ypos = ypos + 35
+	ypos = ypos + 55
 	--метка с отображением скорости исследований
 	labelInventionSpeed:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED:", 10, ypos, 
 													    btnWidth, ypos + 30, -1, windowIM:Self()) )
 	
-	ypos = ypos + 35
+	ypos = ypos + 55
 	--метка с датой примерного завершения работ при текущем финансировании
 	labelInventionPrognoseFinish:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH:", 10, ypos, 
 													    btnWidth, ypos + 30, -1, windowIM:Self() ) )

@@ -20,6 +20,7 @@ Luna< CLuaBrowser >::RegType CLuaBrowser::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Show ),
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Hide ),
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Navigate ),
+	LUNA_AUTONAME_FUNCTION( CLuaBrowser, GetWindow ),
 	{0,0}
 };
 
@@ -74,6 +75,18 @@ int CLuaBrowser::Hide( lua_State* L )
 		wnd.setVisible( false );
 	}
 
+	return 1;	
+}
+
+int CLuaBrowser::GetWindow( lua_State *L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaBrowser::GetWindow not need any parameter");
+
+	irr::gui::CNrpBrowserWindow* wnd = NULL;
+	IF_OBJECT_NOT_NULL_THEN wnd = &(object_->GetBrowserWindow());
+
+	lua_pushlightuserdata( L, wnd );
 	return 1;	
 }
 }//namespace nrp

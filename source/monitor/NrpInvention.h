@@ -6,6 +6,8 @@ namespace nrp
 OPTION_NAME REALPRICE( "realprice" );
 OPTION_NAME PASSEDPRICE( "passedprice" );
 OPTION_NAME INVESTIMENT( "investiment" );
+OPTION_NAME INVENTIONSPEED( "inventionspeed" );
+OPTION_NAME PROGNOSEDATEFINISH( "prognosedatefinish" );
 
 class CNrpInvention : public CNrpProjectModule
 {
