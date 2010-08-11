@@ -27,6 +27,7 @@ OPTION_NAME CURRENTHOLIDAY( "currentHoliday" ); /*! Количество отгулянных дней о
 OPTION_NAME HANGRY( "hangry" ); /*! Чуство голода*/
 OPTION_NAME COLLECTIVINTEGRATION( "collectivintegration" ); /*! Умение работать в коллективе*/
 OPTION_NAME TIMEMANAGMENT( "timeManagment" ); /*!  Управление временем, от этого параметра зависит реальное время потраченное на разарботку */
+OPTION_NAME EXPERIENCE( "experience" );
 
 class IUserAction;
 class CNrpTechnology; 

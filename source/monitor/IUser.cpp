@@ -36,6 +36,8 @@ IUser::IUser(const std::string className, const std::string systemName ) : INrpC
 	CreateValue<std::string>( ROOMSTATE, "unknown" );
 	CreateValue<int>( HANGRY, 100 );
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
+	CreateValue<int>( EXPERIENCE, 0 );
+	CreateValue<std::string>( TEXTURENORMAL, "" );
 }
 
 IUser::~IUser(void)

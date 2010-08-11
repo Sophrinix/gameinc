@@ -22,6 +22,7 @@ Luna< CLuaComponentListBox >::RegType CLuaComponentListBox::methods[] =			//реал
 	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, SetSelected ),
 	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, Clear ),
 	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, GetSelectedObject ),
+	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, SetItemHeigth ),
 	{0,0}
 };
 
@@ -35,7 +36,7 @@ int CLuaComponentListBox::AddItem( lua_State *L )	//добавляет текст в списко ото
 
 	const char* text = lua_tostring( L, 2 );
 	assert( text != NULL );
-	INrpConfig* object = (INrpConfig*)lua_touserdata( L, 3 );
+	INrpObject* object = (INrpObject*)lua_touserdata( L, 3 );
 	
 	IF_OBJECT_NOT_NULL_THEN	object_->addItem( StrToWide( text ).c_str(), object, -1 );			
 
@@ -91,6 +92,19 @@ int CLuaComponentListBox::GetSelectedObject( lua_State* L )
 			selObject = object_->getSelectedObject();
 	}
 	lua_pushlightuserdata( L, selObject );
+
+	return 1;
+}
+
+int CLuaComponentListBox::SetItemHeigth( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaComponentListBox::SetSelected need int parameter");
+
+	int height = lua_tointeger( L, 2 );
+	assert( height > 0 && height < 200 );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->setItemHeight( height );			
 
 	return 1;
 }

@@ -30,6 +30,7 @@ public:
 	int SetInvestiment( lua_State* L );
 	int GetSpeed( lua_State* L );
 	int GetPrognoseDateFinish( lua_State* L );
+	int CheckParams( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaInvention"; }	
 };

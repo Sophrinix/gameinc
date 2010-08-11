@@ -2,6 +2,11 @@
 
 #include <irrlicht.h>
 
+namespace nrp
+{
+	class INrpObject;
+}
+
 namespace irr
 {
 
@@ -27,7 +32,7 @@ public:
 	virtual const wchar_t* getListItem(irr::u32 id) const;
 
 	//! adds an list item, returns id of item
-	virtual irr::u32 addItem(const wchar_t* text, void* ptrObject);
+	virtual irr::u32 addItem(const wchar_t* text, nrp::INrpObject* ptrObject);
 	virtual irr::u32 addItem( const wchar_t* text );
 
 	//! clears the list
@@ -60,7 +65,7 @@ public:
 	//! \param icon Sprite index of the Icon within the current sprite bank. Set it to -1 if you want no icon
 	//! \return
 	//! returns the id of the new created item
-	virtual irr::u32 addItem(const wchar_t* text, void* ptrObject, irr::s32 icon);
+	virtual irr::u32 addItem(const wchar_t* text, nrp::INrpObject* ptrObject, irr::s32 icon);
 	virtual irr::u32 addItem(const wchar_t* text, irr::s32 icon);
 
 	//! Returns the icon of an item
@@ -120,12 +125,12 @@ public:
 	virtual irr::video::SColor getItemDefaultColor(irr::gui::EGUI_LISTBOX_COLOR colorType) const;
 
 	//! set the item at the given index 
-	virtual void setItem(irr::u32 index, const wchar_t* text, void* ptrObject, irr::s32 icon);
+	virtual void setItem(irr::u32 index, const wchar_t* text, nrp::INrpObject* ptrObject, irr::s32 icon);
 	virtual void setItem(irr::u32 index, const wchar_t* text, irr::s32 icon);
 
 	//! Insert the item at the given index 
 	//! Return the index on success or -1 on failure.
-	virtual irr::s32 insertItem(irr::u32 index, const wchar_t* text, void* ptrObject, irr::s32 icon);
+	virtual irr::s32 insertItem(irr::u32 index, const wchar_t* text, nrp::INrpObject* ptrObject, irr::s32 icon);
 	virtual irr::s32 insertItem(irr::u32 index, const wchar_t* text, irr::s32 icon);
 
 	//! Swap the items at the given indices
@@ -140,7 +145,7 @@ protected:
 
 		irr::core::stringw text;
 		irr::s32 icon;
-		void* obj;
+		nrp::INrpObject* obj;
 		bool blink, confirm;
 		size_t last_time_blink;
 

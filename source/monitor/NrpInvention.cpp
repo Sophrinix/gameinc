@@ -32,11 +32,30 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp ) : CNrpP
 	CreateValue<int>( REALPRICE, _GetRealPrice( pTech ) );
 	CreateValue<int>( PASSEDPRICE, 0 );
 	CreateValue<int>( INVESTIMENT, 1000 );
-	CreateValue<std::string>( INVENTIONSPEED, "застой" );
+	CreateValue<int>( DAYLEFT, 0 );
+	CreateValue<int>( INVENTIONSPEED, 0 );
 	
 	SYSTEMTIME time;
 	memset( &time, 0, sizeof(SYSTEMTIME) );
 	CreateValue<SYSTEMTIME>( PROGNOSEDATEFINISH, time );
+	CheckParams();
+}
+
+void CNrpInvention::CheckParams()
+{
+	int needMoney = GetValue<int>( REALPRICE )-GetValue<int>( PASSEDPRICE);
+	int dayToFinish = ( needMoney / GetValue<int>( INVESTIMENT )) * 30;
+
+	double time;
+	int errCurrTime = SystemTimeToVariantTime( &CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ), &time );
+	assert( errCurrTime > 0 );
+	time += dayToFinish;
+
+	VariantTimeToSystemTime( time, &GetValue<SYSTEMTIME>( PROGNOSEDATEFINISH ) );//прогноз завершения работ
+	SetValue<int>( DAYLEFT, dayToFinish );//сколько дней осталось до завершения работ, при полном освоении финансирования
+	
+	int speed = ( GetValue<int>( INVESTIMENT ) * 3 ) / GetValue<int>( REALPRICE ) * 100;
+	SetValue<int>( INVENTIONSPEED, speed );
 }
 
 CNrpInvention::~CNrpInvention(void)

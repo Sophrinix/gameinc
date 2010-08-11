@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "NrpComponentListbox.h"
 #include "nrpConfig.h"
+#include "NrpTechnology.h"
+#include "IUser.h"
 #include <string>
 
 using namespace nrp;
@@ -96,7 +98,7 @@ void* CNrpComponentListbox::getObject( u32 id ) const
 }
 
 //! adds a list item, returns id of item
-u32 CNrpComponentListbox::addItem(const wchar_t* text, void *ptrObject )
+u32 CNrpComponentListbox::addItem(const wchar_t* text, nrp::INrpObject *ptrObject )
 {
 	return addItem(text, ptrObject, -1);
 }
@@ -506,7 +508,7 @@ void CNrpComponentListbox::draw()
 			if ( (frameRect.LowerRightCorner.Y > AbsoluteRect.UpperLeftCorner.Y) &&
 				(frameRect.UpperLeftCorner.Y + 2 < AbsoluteRect.LowerRightCorner.Y) )
 			{
-				INrpConfig* pObject = (INrpConfig*)Items[ i ].obj;
+				INrpObject* pObject = Items[ i ].obj;
 
 				u32 ucolor =  0xC0C0C0C0;
 				if (i == Selected && hl)
@@ -550,21 +552,45 @@ void CNrpComponentListbox::draw()
 						Font->draw( Items[i].text.c_str(), textRect, itbncolor, false, true, &clientClip);
 					}
 					else
-					{			
-						wchar_t tmpstr[ 128 ];
-						video::IVideoDriver* driver = Environment->getVideoDriver();
+					{	
+						if( CNrpTechnology* tech = dynamic_cast<CNrpTechnology*>( pObject ) )
+						{
+							wchar_t tmpstr[ 128 ];
+							video::IVideoDriver* driver = Environment->getVideoDriver();
 
-						textRect.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
-						textRect.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
+							textRect.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
+							textRect.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
-						float percent = pObject->GetValue<float>( READYWORKPERCENT );
-						std::wstring name = StrToWide( pObject->GetValue<std::string>( NAME ) );
-						
-						swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), (int)(percent * 100) );
-						core::recti progressRect = frameRect;
-						progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
-						driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clientClip );
-						Font->draw( tmpstr, textRect, itbncolor, false, true, &clientClip );
+							float percent = tech->GetValue<float>( READYWORKPERCENT );
+							std::wstring name = StrToWide( tech->GetValue<std::string>( NAME ) );
+							
+							swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), (int)(percent * 100) );
+							core::recti progressRect = frameRect;
+							progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
+							driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clientClip );
+							Font->draw( tmpstr, textRect, itbncolor, false, true, &clientClip );
+						}
+						else if( IUser* user = dynamic_cast<IUser*>( pObject ) )
+						{
+							wchar_t tmpstr[ 128 ];
+							video::IVideoDriver* driver = Environment->getVideoDriver();
+
+							textRect.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
+							textRect.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
+
+							int expr = user->GetValueA<int>( EXPERIENCE );
+							std::wstring name = StrToWide( user->GetValueA<std::string>( NAME ) );
+
+							swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), expr );
+							core::recti progressRect = frameRect;
+							progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
+							//driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clientClip );
+							std::string pathToImage = user->GetValueA<std::string>( TEXTURENORMAL );
+							driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
+												 core::recti( 3, 3, textRect.getHeight(), textRect.getHeight() - 6 ) + textRect.UpperLeftCorner,
+												 core::recti( 0, 0, 128, 128 ) );
+							Font->draw( tmpstr, textRect + core::position2di( textRect.getHeight() + 6, 0 ), itbncolor, false, true, &clientClip ); 
+						}
 					}
 					textRect.UpperLeftCorner.X -= ItemsIconWidth+3;
 				}
@@ -588,7 +614,7 @@ u32 CNrpComponentListbox::addItem(const wchar_t* text, s32 icon)
 	return addItem( text, NULL, icon );
 }
 //! adds an list item with an icon
-u32 CNrpComponentListbox::addItem(const wchar_t* text, void* ptrObject, s32 icon)
+u32 CNrpComponentListbox::addItem(const wchar_t* text, nrp::INrpObject* ptrObject, s32 icon)
 {
 	ListItem i;
 	i.text = text;
@@ -771,7 +797,7 @@ void CNrpComponentListbox::setItem(u32 index, const wchar_t* text, s32 icon)
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CNrpComponentListbox::setItem(u32 index, const wchar_t* text, void* ptrObject, s32 icon)
+void CNrpComponentListbox::setItem(u32 index, const wchar_t* text, nrp::INrpObject* ptrObject, s32 icon)
 {
 	if ( index >= Items.size() )
 		return;
@@ -792,7 +818,7 @@ s32 CNrpComponentListbox::insertItem(u32 index, const wchar_t* text, s32 icon)
 
 //! Insert the item at the given index
 //! Return the index on success or -1 on failure.
-s32 CNrpComponentListbox::insertItem(u32 index, const wchar_t* text, void* ptrObject, s32 icon)
+s32 CNrpComponentListbox::insertItem(u32 index, const wchar_t* text, nrp::INrpObject* ptrObject, s32 icon)
 {
 	ListItem i;
 	i.text = text;
@@ -902,8 +928,8 @@ void* CNrpComponentListbox::getSelectedObject()
 }
 
 void CNrpComponentListbox::setItemHeight( s32 height )
-{
-
+{ 
+	ItemHeight = height;
 }
 
 void CNrpComponentListbox::setDrawBackground( bool draw )

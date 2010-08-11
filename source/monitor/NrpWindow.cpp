@@ -178,7 +178,7 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 			case EMIE_RMOUSE_LEFT_UP:
 			case EMIE_LMOUSE_LEFT_UP:
 				Dragging = false;
-				DoLuaFunctionsByType( EMIE_LMOUSE_LEFT_UP ? 
+				DoLuaFunctionsByType( event.MouseInput.Event == EMIE_LMOUSE_LEFT_UP ? 
 											GUIELEMENT_LMOUSE_LEFTUP : 
 											GUIELEMENT_RMOUSE_LEFTUP , 
 									  (void*)&event );

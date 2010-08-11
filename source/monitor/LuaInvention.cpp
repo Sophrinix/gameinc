@@ -27,6 +27,7 @@ Luna< CLuaInvention >::RegType CLuaInvention::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, SetInvestiment ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetSpeed ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPrognoseDateFinish ),
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, CheckParams ),
 	{0,0}
 };
 
@@ -116,7 +117,7 @@ int CLuaInvention::GetInvestiment( lua_State* L )
 
 int CLuaInvention::GetSpeed( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetInvestiment", INVENTIONSPEED, "" ).c_str() );
+	lua_pushinteger( L, GetParam_<int>( L, "GetInvestiment", INVENTIONSPEED, 0 ) );
 	return 1;
 }
 
@@ -138,5 +139,15 @@ int CLuaInvention::GetPrognoseDateFinish( lua_State* L )
 int CLuaInvention::SetInvestiment( lua_State* L )
 {
 	return SetParam_<int, lua_Integer>( L, "SetInvestiment", INVESTIMENT, lua_tointeger );
+}
+
+int CLuaInvention::CheckParams( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:CheckParams not need parameter");
+
+	IF_OBJECT_NOT_NULL_THEN	object_->CheckParams();
+
+	return 1;
 }
 }//namespace nrp

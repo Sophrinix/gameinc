@@ -4,6 +4,8 @@ local labelInventionSpeed = CLuaLabel( nil )
 local labelInventionPrognoseFinish = CLuaLabel( nil )
 local listInventionStuff = CLuaListBox( nil )
 local currentInvention = CLuaInvention( nil )
+local windowUserSelect = CLuaWindow( nil )
+local company = CLuaCompany( applic:GetPlayerCompany() )
 
 local width = 800
 local height = 600
@@ -19,13 +21,45 @@ end
 --увеличивает затраты на исследования
 function sworkInventionManagerIncreaseInvestiment( ptr )
 	currentInvention:SetInvestiment( currentInvention:GetInvestiment() * 2 )
+	currentInvention:CheckParams()
 	localUpdateLabels()
 end
 
 --уменьшает затраты на исследования
 function sworkInventionManagerDecreaseInvestiment( ptr )
 	currentInvention:SetInvestiment( currentInvention:GetInvestiment() / 2 )
+	currentInvention:CheckParams()
 	localUpdateLabels()
+end
+
+local function localFillListInvnentionStuff()
+	for i=1, currentInvention:GetUserNumber() do
+		listInventionStuff:AddItem( "Unknown", currentInvention:GetUser( i-1 ) )
+	end
+end
+
+function sworkInventionManagerAddPeopleToInvention( ptr )
+	windowUserSelect:Remove()
+	
+	--создаем окно в центре экрана
+	windowUserSelect:SetObject( guienv:AddWindow( "", width / 2 - 300, height / 2 - 200, 
+													  width / 2 + 300, height / 2 + 200, -1, guienv:GetRootGUIElement() ) )
+													  
+	local wd, hd = windowUserSelect:GetSize()												  
+	local lbxUsers = CLuaComponentListBox( guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect:Self() ) )
+	
+	for i=1, company:GetUserNumber() do
+		local user = CLuaUser( company:GetUser( i-1 ) )
+		if not user:HaveWork() then
+			lbxUsers:AddItem( "Unknown", user:Self() )
+		end
+	end
+	
+	local btn = CLuaButton( guienv:AddButton( 10, hd - 35, wd / 2 - 10, hd - 5, windowUserSelect:Self(), -1, "Select") )
+	btn:SetAction( "sworkInventionManagerAddSelectedUserToInvention" )
+		
+	btn:SetObject( guienv:AddButton( wd / 2 + 10, hd - 35, wd - 10, hd - 5, windowUserSelect:Self(), -1, "Closse") )
+	btn:SetAction( "sworkInventionManagerCloseWindowUserAdding" )
 end
 
 --отображает окно управления исследованиями
@@ -47,23 +81,24 @@ function sworkShowInventionManager( techName, companyName )
 	local btnMinus = CLuaButton( guienv:AddButton( btnWidth - 30, ypos, btnWidth, ypos + 30, windowIM:Self(), -1, "-" ) )
 	btnMinus:SetAction( "sworkInventionManagerDecreaseInvestiment" )
 	
-	guienv:AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT:", 45, ypos - 15, 
+	guienv:AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT", 45, ypos - 15, 
 													    btnWidth - 45, ypos + 15, -1, windowIM:Self() )
 	labelInvestiment:SetObject(  guienv:AddLabel(  currentInvention:GetInvestiment(), 45, ypos + 16, 
 													    btnWidth - 45, ypos + 46, -1, windowIM:Self() ))
 	
 	ypos = ypos + 55
 	--метка с отображением скорости исследований
-	labelInventionSpeed:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED:", 10, ypos, 
+	labelInventionSpeed:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED", 10, ypos, 
 													    btnWidth, ypos + 30, -1, windowIM:Self()) )
 	
 	ypos = ypos + 55
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionPrognoseFinish:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH:", 10, ypos, 
+	labelInventionPrognoseFinish:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", 10, ypos, 
 													    btnWidth, ypos + 30, -1, windowIM:Self() ) )
 	
 	--список подключенных к проекту людей
-	listInventionStuff:SetObject( guienv:AddListBox( btnWidth + 10, 50, width, height - 45, -1, windowIM:Self()) )
+	listInventionStuff:SetObject( guienv:AddComponentListBox( btnWidth + 10, 50, width, height - 45, -1, windowIM:Self()) )
+	localFillListInvnentionStuff()
 	
 	--кнопка добавления людей к исследованию, по которой показывается список со служащими 
 	--и возможность добавления выделенного человека
@@ -72,6 +107,5 @@ function sworkShowInventionManager( techName, companyName )
 	btnAddPeople:SetAction( "sworkInventionManagerAddPeopleToInvention" )
 	
 	local btnRemPeople = CLuaButton( guienv:AddButton( btnWidth + 10, height - 40, width - 10, height - 10, windowIM:Self(), -1, "Убрать"  ) )
-	btnRemPeople:SetAction( "sworkInventionManagerRemPeopleFromInvention" )
-	
+	btnRemPeople:SetAction( "sworkInventionManagerRemPeopleFromInvention" )	
 end
