@@ -44,7 +44,8 @@ end
 function slogin_CreateNewGame( ptr )
 
 	local scrW, scrH = driver:GetScreenSize()
-	local windowg = CLuaWindow( guienv:AddWindow(  "", scrW / 2 - width, scrH / 2 - height, scrW / 2 + width, scrH / 2 + height, -1, guienv:GetRootGUIElement() ) )
+	local windowg = guienv:AddWindow(  "", scrW / 2 - width, scrH / 2 - height, 
+	                                       scrW / 2 + width, scrH / 2 + height, -1, guienv:GetRootGUIElement() )
 	local btnClose = CLuaButton( windowg:GetCloseButton() )
 	btnClose:SetVisible( false )
 

@@ -25,7 +25,7 @@ end
 
 function sworkCreateWindowLoanAction()
 	company = app:GetPlayerCompany()
-	local windowg = CLuaWindow( guienv:AddWindow( "Loan", 0, 0, 800, 600, -1, guienv:GetRootGUIElement() ) )
+	local windowg = guienv:AddWindow( "Loan", 0, 0, 800, 600, -1, guienv:GetRootGUIElement() )
 	windowg:SetName( WINDOW_LOAN_ACTION_NAME )
 	
 	local summ = bank:GetMaxCompanyLoan( company:GetName() )

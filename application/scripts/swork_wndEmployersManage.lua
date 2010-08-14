@@ -11,7 +11,7 @@ local width, height = driver:GetScreenSize()
 
 local currentEmployer = CLuaUser( nil )
 local listBoxCompanyEmployers = CLuaComponentListBox( nil )
-local winInfo = CLuaWindow( nil )
+local winInfo = nil
 local btnRemoveUser = CLuaButton( nil )
 local btnUpSalary = CLuaButton( nil )
 local btnDownSalary = CLuaButton( nil )

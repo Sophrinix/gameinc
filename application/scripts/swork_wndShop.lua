@@ -1,6 +1,6 @@
 local company = nil
 
-local windowShop = CLuaWindow( nil )
+local windowShop = nil
 local listboxGames = CLuaListBox( nil )
 local buttonAnonceGame = CLuaButton( nil )
 local imageGamePreview = CLuaImage( nil )
@@ -14,7 +14,7 @@ local labelGamePrice = CLuaLabel( nil )
 local btnIncreaseGamePrice = CLuaButton( nil )
 local listboxCompanyGame = CLuaListBox( nil )
 local anoncePictureFlow = CLuaPictureFlow( nil )
-local windowAnonce = CLuaWindow( nil )
+local windowAnonce = nil
 local selectedGame = CLuaGame( nil )
 local lastTimeParamsUpdate = GetTickCount()
 local width = 800

@@ -13,7 +13,7 @@ local userToUp = CLuaUser( nil )
 
 function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 	local user = CLuaUser( userPtr )
-	local windowg = CLuaWindow( guienv:AddWindow( "", x, y, x + width, y + height, -1, parentWnd ) )
+	local windowg = guienv:AddWindow( "", x, y, x + width, y + height, -1, parentWnd )
 	local button = CLuaButton( windowg:GetCloseButton() )
 	button:SetVisible( false )
 	windowg:SetText( user:GetName() )

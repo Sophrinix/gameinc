@@ -23,11 +23,9 @@ end
 
 function sworkWindowAdvancedCameraCreate( ptr )
 
-	local windowg = CLuaWindow( guienv:AddWindow( "", 
-	                                              -WND_WIDTH, 100, 
-												  0, 100 + WND_HEIGHT, 
-												  -1, 
-												  guienv:GetRootGUIElement() ) )
+	local windowg = guienv:AddWindow( "", -WND_WIDTH, 100, 
+										0, 100 + WND_HEIGHT, 
+										-1, guienv:GetRootGUIElement() )
 	
 	Log({src=SCRIPT, dev=ODS}, "Окна доп.камеры нет, создаем заново" )
 	

@@ -1,5 +1,5 @@
 local company = nil
-local wndDPP = CLuaWindow( nil )
+local wndDPP = nil
 local produceDiskWork = CLuaPlantWork( nil )
 local dayOfProduce = 0
 local numberMachine = 0

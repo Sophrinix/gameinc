@@ -3,7 +3,7 @@ local company = nil
 local width = 800
 local height = 600
 
-local wndReklame = CLuaWindow( nil )
+local wndReklame = nil
 local linkPaperProduction = CLuaLinkBox( nil )
 local lableDayNumberPaper = CLuaLabel( nil )
 local btnDecDayNumberPaperRklm = CLuaButton( nil )

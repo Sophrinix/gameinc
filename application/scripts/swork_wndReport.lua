@@ -20,11 +20,11 @@ end
 
 function sworkWindowReportCreate( ptr )
 
-	local windowg = CLuaWindow( guienv:AddWindow( "", 
-	                                              -WND_WIDTH, 100, 
-												  0, 100 + WND_HEIGHT, 
-												  -1, 
-												  guienv:GetRootGUIElement() ) )
+	local windowg = guienv:AddWindow( "", 
+	                                  -WND_WIDTH, 100, 
+									  0, 100 + WND_HEIGHT, 
+									  -1, 
+									  guienv:GetRootGUIElement() )
 	
 	Log({src=SCRIPT, dev=ODS}, "Окна отчетов нет, создаем заново" )
 	

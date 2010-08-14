@@ -33,11 +33,11 @@ end
 
 function sworkChartWindowManageCreate( ptr )
 
-	local windowg = CLuaWindow( guienv:AddWindow( "", 
-	                                              -chartWidth, 100, 
-												  0 + 10, 100 + chartHeight + 10, 
-												  -1, 
-												  guienv:GetRootGUIElement() ) )
+	local windowg = guienv:AddWindow( "", 
+	                                  -chartWidth, 100, 
+									  0 + 10, 100 + chartHeight + 10, 
+									  -1, 
+									  guienv:GetRootGUIElement() )
 	
 	Log({src=SCRIPT, dev=ODS}, "Окна управления графиками нет, создаем заново" )
 	

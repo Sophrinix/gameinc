@@ -9,6 +9,7 @@
 #include "nrpGlobalMap.h"
 #include "nrpChartCtrl.h"
 #include "nrpGuiLinkBox.h"
+#include "LuaWindow.h"
 
 using namespace irr;
 
@@ -127,7 +128,9 @@ int CLuaGuiEnvironment::AddWindow( lua_State *vm )
 		window->drop();
 	}
 	 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)window );
+	Luna< CLuaWindow >::constructor( vm );
 
 	return 1;
 }

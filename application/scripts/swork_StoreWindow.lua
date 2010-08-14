@@ -1,13 +1,13 @@
 require("elmid")
 
 local wndHeight = 180
-local portfelleWnd = CLuaWindow( nil )
+local portfelleWnd = nil
 local maxObjectNumber = 0							--число объектов, которые отображаются в окне
 local startObjectNumber = 0							--номер стартового объекта
 
 function AddPortfelleWindow()
 
-	portfelleWnd:SetObject( guienv:AddWindow( "portfelleWindow", wndHeight, scrHeight - wndHeight, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() ) )
+	portfelleWnd = guienv:AddWindow( "portfelleWindow", wndHeight, scrHeight - wndHeight, scrWidth, scrHeight, -1, guienv:GetRootGUIElement()  )
 	portfelleWnd:SetName( NAME_PORTFELLE_WINDOW )
 	maxObjectNumber = ( scrWidth - wndHeight ) / wndHeight
 	

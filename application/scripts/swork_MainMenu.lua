@@ -96,10 +96,10 @@ function AddMenuWindow()
 	local txsHeight = 0
 	txsWidth, txsHeight = txs:GetSize()
 						  
-	local window = CLuaWindow( guienv:AddWindow(	"./media/top_menu/top_nerpa.png",
-			 										scrWidth/2 - txsWidth/2, 0, scrWidth/2 + txsWidth/2, 50,
-													-1,
-													guienv:GetRootGUIElement() ) ) 
+	local window = guienv:AddWindow(	"./media/top_menu/top_nerpa.png",
+			 							scrWidth/2 - txsWidth/2, 0, scrWidth/2 + txsWidth/2, 50,
+										-1,
+										guienv:GetRootGUIElement() )
 												
 	window:SetDraggable( false )
 	window:SetDrawBody( false )

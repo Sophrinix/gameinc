@@ -1,9 +1,9 @@
-local wndGBM = CLuaWindow( nil )
+local wndGBM = nil
 local company = nil
 local currentGame = CLuaGame( nil )
 local currentAddon = CLuaTech( nil )
-local wndBoxPreview = CLuaWindow( nil )
-local wndAvaibleAddons = CLuaWindow( nil )
+local wndBoxPreview = nil
+local wndAvaibleAddons = nil
 local boxImagePictureFlow = CLuaPictureFlow( nil )
 
 local windowImageViewer = CLuaWindow( nil )

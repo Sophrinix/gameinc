@@ -1,10 +1,10 @@
-local windowIM = CLuaWindow( nil )
+local windowIM = nil
 local labelInvestiment = CLuaLabel( nil )
 local labelInventionSpeed = CLuaLabel( nil )
 local labelInventionPrognoseFinish = CLuaLabel( nil )
 local listInventionStuff = CLuaListBox( nil )
 local currentInvention = CLuaInvention( nil )
-local windowUserSelect = CLuaWindow( nil )
+local windowUserSelect = nil
 local company = applic:GetPlayerCompany()
 
 local width = 800

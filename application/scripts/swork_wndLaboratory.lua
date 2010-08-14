@@ -1,6 +1,6 @@
 local company = nil
 
-local windowLabor = CLuaWindow( nil )
+local windowLabor = nil
 local techMap = CLuaTechMap( nil )
 local selectedTech = CLuaTech( nil )
 local btnOk = CLuaButton( nil )
