@@ -31,7 +31,7 @@ function sworkCreateDiskProducePlantWindow( ptr )
 	wndDPP:SetObject( guienv:GetElementByName( WINDOW_DISKPRODUCEPLANT_NAME ) )
 	wndDPP:Remove()
 	
-	wndDPP:SetObject( guienv:AddWindow( "GameBoxWizzard", 0, 0, width, height, WINDOW_DISKPRODUCEPLANT_ID, guienv:GetRootGUIElement() ) )
+	wndDPP = guienv:AddWindow( "GameBoxWizzard", 0, 0, width, height, WINDOW_DISKPRODUCEPLANT_ID, guienv:GetRootGUIElement() )
 	wndDPP:SetName( WINDOW_DISKPRODUCEPLANT_NAME )
 	
 	--добавим выпадающий список типа аппаратов

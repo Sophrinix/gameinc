@@ -44,7 +44,7 @@ function sworkChartWindowManageCreate( ptr )
 	windowg:SetDraggable( true )
 	windowg:SetName( WINDOW_CHART_MANAGE_NAME )
 			
-	local closeButton = CLuaButton( windowg:GetCloseButton() )
+	local closeButton = windowg:GetCloseButton()
 	closeButton:SetVisible( false )
 	
 	closeButton:SetObject( guienv:AddButton( chartWidth + 10 - 15, 0, chartWidth + 10, 15, windowg:Self(), -1, "X") )

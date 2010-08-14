@@ -31,7 +31,7 @@ function sworkWindowReportCreate( ptr )
 	windowg:SetDraggable( true )
 	windowg:SetName( WINDOW_REPORT_NAME )
 
-	local button = CLuaButton( windowg:GetCloseButton() )
+	local button = windowg:GetCloseButton()
 	button:SetVisible( false )
 	
 	button:SetObject( guienv:AddButton( WND_WIDTH - 15, 0, WND_WIDTH, 15, windowg:Self(), -1, "X") )

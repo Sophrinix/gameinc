@@ -624,10 +624,10 @@ function sworkCreateGameProject( ptr )
 	
 	local applic = CLuaApplication( NrpGetApplication() )
 	project:Create( "defaultGame" )
-	windowg:SetObject( guienv:AddWindow( "GameWizzard", 0, 0, width, height, -1, guienv:GetRootGUIElement() ) )
+	windowg = guienv:AddWindow( "GameWizzard", 0, 0, width, height, -1, guienv:GetRootGUIElement() )
 	windowg:SetName( WINDOW_PROJECTWIZ_NAME )
 	
-	local btn = CLuaButton( windowg:GetCloseButton() )
+	local btn = windowg:GetCloseButton()
 	btn:SetAction( "sworkWindowCreateGameProjectClose" )
 	
 	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 10, 20, 10 + 140, 20 + 20, ID_PROJECTQUALITY ) )

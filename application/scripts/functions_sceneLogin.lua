@@ -42,11 +42,10 @@ function sloginCloseWindowCreateNewProfile( ptr )
 end
 
 function slogin_CreateNewGame( ptr )
-
 	local scrW, scrH = driver:GetScreenSize()
 	local windowg = guienv:AddWindow(  "", scrW / 2 - width, scrH / 2 - height, 
 	                                       scrW / 2 + width, scrH / 2 + height, -1, guienv:GetRootGUIElement() )
-	local btnClose = CLuaButton( windowg:GetCloseButton() )
+	local btnClose = windowg:GetCloseButton()
 	btnClose:SetVisible( false )
 
 	scrW, scrH = windowg:GetSize()

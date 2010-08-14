@@ -72,7 +72,7 @@ end
 
 function sworkCreateGameInSaleWindow( ptr )
 	company = applic:GetPlayerCompany()
-	windowShop:SetObject( guienv:AddWindow( "", 0, 0, width, height, WINDOW_SHOP_ID, guienv:GetRootGUIElement() ) )
+	windowShop = guienv:AddWindow( "", 0, 0, width, height, WINDOW_SHOP_ID, guienv:GetRootGUIElement() )
 	
 	windowShop:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkGameInSaleWindowListboxChanged" )
 	windowShop:AddLuaFunction( GUIELEMENT_AFTER_DRAW, "sworkGameInSaleUpdateGameParams" )
@@ -125,9 +125,9 @@ function sworkCreateGameInSaleWindow( ptr )
 end
 
 function sworkWindowShopAnonceGame( ptr )
-	windowAnonce:SetObject( guienv:AddWindow( "", width / 2 - 200, height / 2 - 120,
-						  				      width / 2 + 200, height / 2 + 120, 
-								              -1, windowShop:Self() ) )
+	windowAnonce = guienv:AddWindow( "", width / 2 - 200, height / 2 - 120,
+						  				 width / 2 + 200, height / 2 + 120, 
+								         -1, windowShop:Self() ) 
 	
 	anoncePictureFlow = CLuaPictureFlow( guienv:AddPictureFlow( 10, 10, 390, 200, -1, windowAnonce:Self() ) )
 	anoncePictureFlow:SetPictureRect( 0, 0, 90, 90 )

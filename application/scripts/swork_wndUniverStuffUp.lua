@@ -14,7 +14,8 @@ local userToUp = CLuaUser( nil )
 function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 	local user = CLuaUser( userPtr )
 	local windowg = guienv:AddWindow( "", x, y, x + width, y + height, -1, parentWnd )
-	local button = CLuaButton( windowg:GetCloseButton() )
+	local button = windowg:GetCloseButton()
+	
 	button:SetVisible( false )
 	windowg:SetText( user:GetName() )
 	windowg:SetDraggable( false )
@@ -103,13 +104,13 @@ function sworkCreateEmployersWindow( ptr )
 	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYER_SELECT_ID ) )
 	
 	if windowg:Empty() == 1 then
-		windowg:SetObject( guienv:AddWindow( "", 0, 0, 800, 600, WINDOW_EMPLOYER_SELECT_ID, guienv:GetRootGUIElement() ) )
+		windowg = guienv:AddWindow( "", 0, 0, 800, 600, WINDOW_EMPLOYER_SELECT_ID, guienv:GetRootGUIElement() )
 	else
 		local elm = CLuaElement( windowg:Self() )
 		elm:RemoveChilds()
 	end
 	
-	local btn = CLuaButton( windowg:GetCloseButton() )
+	local btn = windowg:GetCloseButton()
 	btn:SetVisible( false )
 	
 	local button = CLuaButton( guienv:AddButton( 10, 10, 200, 100, windowg:Self(), -1, "Программисты" ) )

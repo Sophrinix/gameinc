@@ -48,9 +48,10 @@ end
 
 local function localCreateWindowForBoxAddedAddons()
 	wndBoxPreview:Remove()
-	wndBoxPreview:SetObject( guienv:AddWindow( "Added addons box", 
-												5, height * 0.7, width - 200, height - 5, 
-												-1, wndGBM:Self() ) )
+	wndBoxPreview = guienv:AddWindow( "Added addons box", 
+					   				  5, height * 0.7, width - 200, height - 5, 
+									  -1, wndGBM:Self() )
+									  
 	wndBoxPreview:SetDraggable( false )
 	wndBoxPreview:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkGameBoxManagerWindowViewerLeftMouseButtonUp" )
 	
@@ -70,9 +71,8 @@ end
 
 local function localCreateWindowForBoxAvaibleAddons()
 	wndAvaibleAddons:Remove()
-	wndAvaibleAddons:SetObject( guienv:AddWindow( "", 
-												  width - 200, 5, width - 5, height - 50, 
-												  -1, wndGBM:Self() ) )
+	wndAvaibleAddons = guienv:AddWindow( "", width - 200, 5, width - 5, height - 50, 
+										 -1, wndGBM:Self() )
 	wndAvaibleAddons:SetDraggable( false )
 	wndAvaibleAddons:SetText( "Avaible box addon" )
 	
@@ -188,7 +188,7 @@ function sworkCreateGameBoxManagerWindow( ptr )
 	wndGBM:SetObject( guienv:GetElementByName( WINDOW_GAMEBOXWIZ_NAME ) )
 	wndGBM:Remove()
 	
-	wndGBM:SetObject( guienv:AddWindow( "GameBoxWizzard", 0, 0, width, height, WINDOW_GAMEBOXWIZ_ID, guienv:GetRootGUIElement() ) )
+	wndGBM = guienv:AddWindow( "GameBoxWizzard", 0, 0, width, height, WINDOW_GAMEBOXWIZ_ID, guienv:GetRootGUIElement() )
 	wndGBM:SetName( WINDOW_GAMEBOXWIZ_NAME )
 	wndGBM:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkGameBoxManagerWindowLeftMouseButtonUp" )
 	

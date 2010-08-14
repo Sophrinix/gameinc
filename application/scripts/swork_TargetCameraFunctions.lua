@@ -32,7 +32,7 @@ function sworkWindowAdvancedCameraCreate( ptr )
 	windowg:SetDraggable( true )
 	windowg:SetName( WINDOW_ADVANCED_CAMERA_NAME )
 
-	local button = CLuaButton( windowg:GetCloseButton() )
+	local button = windowg:GetCloseButton()
 	button:SetVisible( false )
 	
 	button:SetObject( guienv:AddButton( WND_WIDTH - 15, 0, WND_WIDTH, 15, windowg:Self(), -1, "X") )

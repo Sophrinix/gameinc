@@ -56,12 +56,12 @@ function sworkCreateAdvancedUserInfoWindow( ptr )
 	currentEmployer:SetObject( listBoxCompanyEmployers:GetSelectedObject() )
 	
 	local parent = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYERS_MANAGE_ID ) )
-	winInfo:SetObject( guienv:AddWindow( "", width / 2 - 300, height / 2 - 200, width / 2 + 300, height / 2 + 200, -1, parent:Self() ) )
+	winInfo = guienv:AddWindow( "", width / 2 - 300, height / 2 - 200, width / 2 + 300, height / 2 + 200, -1, parent:Self() )
 	winInfo:SetText( currentEmployer:GetName() )
 	winInfo:SetDraggable( false )
 	
 	--сделаем невидимой кнопку закрыть, чтобы закрывать окно по правой кнопке мыши
-	local btn = CLuaButton( winInfo:GetCloseButton() )
+	local btn = winInfo:GetCloseButton()
 	btn:SetVisible( false )
 	
 	parent:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkCloseAdvancedUserInfoWindow" )
@@ -76,7 +76,7 @@ function sworkCreateWindowEmployersManage( ptr )
 	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYERS_MANAGE_ID ) )
 	
 	if windowg:Empty() == 1 then
-		windowg:SetObject( guienv:AddWindow( "", 0, 0, width, height, WINDOW_EMPLOYERS_MANAGE_ID, guienv:GetRootGUIElement() ) )
+		windowg = guienv:AddWindow( "", 0, 0, width, height, WINDOW_EMPLOYERS_MANAGE_ID, guienv:GetRootGUIElement() )
 	else
 		local elm = CLuaElement( windowg:Self() )
 		elm:RemoveChilds()

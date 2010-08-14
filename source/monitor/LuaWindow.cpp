@@ -4,6 +4,7 @@
 #include "LuaWindow.h"
 #include "NrpWindow.h"
 #include "StrConversation.h"
+#include "LuaButton.h"
 
 using namespace irr;
 
@@ -29,9 +30,13 @@ int CLuaWindow::GetCloseButton( lua_State *L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaWindow::getCloseButton not need any parameter");
+	void* button = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN
-		lua_pushlightuserdata( L, (void*)object_->getCloseButton() );
+	IF_OBJECT_NOT_NULL_THEN	button = (void*)(object_->getCloseButton());
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, button );
+	Luna< CLuaButton >::constructor( L );
 
 	return 1;
 }

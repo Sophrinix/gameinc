@@ -60,7 +60,7 @@ function sworkCreateWindowReklama( ptr )
 		wndReklame:Remove()
 	end
 	
-	wndReklame:SetObject( guienv:AddWindow( "ReklameWindow", 0, 20, width, height, WINDOW_REKLAME_ID, guienv:GetRootGUIElement() ) )
+	wndReklame = guienv:AddWindow( "ReklameWindow", 0, 20, width, height, WINDOW_REKLAME_ID, guienv:GetRootGUIElement() )
 	
 	--блок рекламы на листовках
 	linkPaperProduction:SetObject( guienv:AddLinkBox( "Листовки", 

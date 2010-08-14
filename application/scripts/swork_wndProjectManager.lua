@@ -25,7 +25,7 @@ function sworkCreateWindowProjectManager( ptr )
 	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_PRJMANAGE_ID ) )
 	
 	if windowg:Empty() == 1 then
-		windowg:SetObject( guienv:AddWindow( "", 0, 0, width, height, WINDOW_PRJMANAGE_ID, guienv:GetRootGUIElement() ) )
+		windowg = guienv:AddWindow( "", 0, 0, width, height, WINDOW_PRJMANAGE_ID, guienv:GetRootGUIElement() )
 	else
 		local elm = CLuaElement( windowg:Self() )
 		elm:RemoveChilds()
@@ -97,7 +97,7 @@ local function ShowWindowUserInfo( userPtr )
 	local widdddd, hhhhhhh = windowg:GetSize()
 	
 	if windowg:Empty() == 1 then
-		windowg:SetObject( guienv:AddWindow( "", 310, 140, 790, 590, WINDOW_PRJMANAGE_USERINFO, guienv:GetElementByID(WINDOW_PRJMANAGE_ID) ) )
+		windowg = guienv:AddWindow( "", 310, 140, 790, 590, WINDOW_PRJMANAGE_USERINFO, guienv:GetElementByID(WINDOW_PRJMANAGE_ID) )
 		windowg:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkWindowProjectManagerListBoxItemSelected" )
 	else
 		local elm = CLuaElement( windowg:Self() )
@@ -109,7 +109,7 @@ local function ShowWindowUserInfo( userPtr )
 		return 0
 	end
 	
-	local button = CLuaButton( windowg:GetCloseButton() )
+	local button = windowg:GetCloseButton()
 	button:SetVisible( false )
 	windowg:SetDraggable( false )
 

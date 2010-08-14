@@ -42,8 +42,8 @@ function sworkInventionManagerAddPeopleToInvention( ptr )
 	windowUserSelect:Remove()
 	
 	--создаем окно в центре экрана
-	windowUserSelect:SetObject( guienv:AddWindow( "", width / 2 - 300, height / 2 - 200, 
-													  width / 2 + 300, height / 2 + 200, -1, guienv:GetRootGUIElement() ) )
+	windowUserSelect = guienv:AddWindow( "", width / 2 - 300, height / 2 - 200, 
+										     width / 2 + 300, height / 2 + 200, -1, guienv:GetRootGUIElement() )
 													  
 	local wd, hd = windowUserSelect:GetSize()												  
 	local lbxUsers = CLuaComponentListBox( guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect:Self() ) )
@@ -64,7 +64,7 @@ end
 
 --отображает окно управления исследованиями
 function sworkShowInventionManager( techName, companyName )
-	windowIM:SetObject( guienv:AddWindow( "", 0, 0, width, height, -1, guienv:GetRootGUIElement() ) )
+	windowIM = guienv:AddWindow( "", 0, 0, width, height, -1, guienv:GetRootGUIElement() )
 	currentInvention:SetObject( applic:GetInvention( techName, companyName ) )
 
 	--картинка с изображением технологии

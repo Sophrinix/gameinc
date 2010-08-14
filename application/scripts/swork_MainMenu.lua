@@ -105,7 +105,7 @@ function AddMenuWindow()
 	window:SetDrawBody( false )
 	guienv:AddHoveredAnimator( window:Self(), 100, 255, 4, true, false, false )
 
-	local btn = CLuaButton( window:GetCloseButton() )
+	local btn = window:GetCloseButton()
 	btn:SetVisible( false )
 	
 	local x = 65
