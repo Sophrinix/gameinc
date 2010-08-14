@@ -1,4 +1,4 @@
-local company = CLuaCompany( applic:GetPlayerCompany() )
+local company = nil
 
 local windowShop = CLuaWindow( nil )
 local listboxGames = CLuaListBox( nil )
@@ -71,6 +71,7 @@ function sworkWindowShopIncreaseGamePrice( ptr )
 end
 
 function sworkCreateGameInSaleWindow( ptr )
+	company = applic:GetPlayerCompany()
 	windowShop:SetObject( guienv:AddWindow( "", 0, 0, width, height, WINDOW_SHOP_ID, guienv:GetRootGUIElement() ) )
 	
 	windowShop:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkGameInSaleWindowListboxChanged" )

@@ -31,7 +31,7 @@ local function ShowParams()
 end
 
 local function ShowAvaibleEngines( tab )
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local maxEngine = company:GetEnginesNumber()
 	local xoffset = 0
 	local rowCount = 0	
@@ -56,7 +56,7 @@ local function ShowAvaibleEngines( tab )
 end
 
 local function ShowAvaibleGenreModules( tab )
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local maxCompanyTech = company:GetTechNumber()
 	local maxPublicTech = applic:GetTechNumber()
 	local arGenres = { }
@@ -92,7 +92,7 @@ end
 local function CreateGenrePage( tab )
 	ShowAvaibleGenreModules( tab )
 	
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local maxModuleNumber = project:GetGenreModuleNumber()
 
 	if maxModuleNumber > 0 then
@@ -123,7 +123,7 @@ local function CreateGenrePage( tab )
 end
 
 local function ShowAvaibleVideoQualityAndVideoTech( tab )
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local showedTech = 0
 	local techs = { }
 
@@ -151,7 +151,7 @@ local function ShowAvaibleVideoQualityAndVideoTech( tab )
 end
 
 local function ShowAvaibleSoundQualityAndSoundTech( tab )
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local showedTech = 0
 	local techs = { }
 
@@ -295,7 +295,7 @@ local function CreateEndPage( tab )
 end
 
 function sworkCreateProjectGameToCompany( ptr )
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local edit = CLuaEdit( guienv:GetElementByName( WNDGMWIZ_NAME_EDIT ) )
 	project:SetName( edit:GetText() )
 	
@@ -311,7 +311,7 @@ function sworkCreateProjectGameToCompany( ptr )
 end
 
 local function ShowAvaibleScriptAndMiniGames( tab )
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local maxCompanyScriptTech = company:GetTechNumber()
 	local techs = { }
 	local showeddLinks = 0
@@ -414,7 +414,7 @@ local function CreatePlatformLangPage( tab )
 end
 
 local function ShowAvaibleScenarioAndLicense( tab )
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local applic = CLuaApplication( NrpGetApplication() )
 	local maxScenarioNum = applic:GetTechNumber()
 	local showedLinks = 0

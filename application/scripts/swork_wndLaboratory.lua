@@ -1,4 +1,4 @@
-local company = CLuaCompany( applic:GetPlayerCompany() )
+local company = nil
 
 local windowLabor = CLuaWindow( nil )
 local techMap = CLuaTechMap( nil )
@@ -25,6 +25,7 @@ local function CreateTechSequence( tech )
 end
 
 function sworkCreateGenreTechMapWindow( ptr )
+	company = applic:GetPlayerCompany()
 	windowLabor:SetObject( guienv:AddWindow( "", 0, 0, width, height, WINDOW_SHOP_ID, guienv:GetRootGUIElement() ) )
 	
 	techMap:SetObject( guienv:AddTechMap( 10, 20, width - 10, height - 10, -1, windowLabor:Self() ) )

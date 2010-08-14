@@ -1,6 +1,6 @@
 local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
 local app = CLuaApplication( NrpGetApplication() )
-local company = CLuaCompany( app:GetPlayerCompany() )
+local company = nil 
 local bank = CLuaBank( app:GetBank() )
 
 function sworkShowLoans( tabler )
@@ -24,7 +24,7 @@ function sworkShowLoans( tabler )
 end
 
 function sworkCreateWindowLoanAction()
-
+	company = app:GetPlayerCompany()
 	local windowg = CLuaWindow( guienv:AddWindow( "Loan", 0, 0, 800, 600, -1, guienv:GetRootGUIElement() ) )
 	windowg:SetName( WINDOW_LOAN_ACTION_NAME )
 	

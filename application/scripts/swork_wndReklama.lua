@@ -1,4 +1,4 @@
-local company = CLuaCompany( nil )
+local company = nil
 
 local width = 800
 local height = 600
@@ -54,7 +54,7 @@ end
 
 function sworkCreateWindowReklama( ptr )
 	wndReklame:SetObject( guienv:GetElementByID( WINDOW_REKLAME_ID ) )
-	company:SetObject( applic:GetPlayerCompany() )
+	company = applic:GetPlayerCompany()
 	
 	if wndReklame:Empty() == 0 then
 		wndReklame:Remove()

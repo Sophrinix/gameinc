@@ -5,7 +5,7 @@ local labelInventionPrognoseFinish = CLuaLabel( nil )
 local listInventionStuff = CLuaListBox( nil )
 local currentInvention = CLuaInvention( nil )
 local windowUserSelect = CLuaWindow( nil )
-local company = CLuaCompany( applic:GetPlayerCompany() )
+local company = applic:GetPlayerCompany()
 
 local width = 800
 local height = 600

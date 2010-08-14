@@ -1,5 +1,5 @@
 local wndGBM = CLuaWindow( nil )
-local company = CLuaCompany( nil )
+local company = nil
 local currentGame = CLuaGame( nil )
 local currentAddon = CLuaTech( nil )
 local wndBoxPreview = CLuaWindow( nil )
@@ -184,7 +184,7 @@ function sworkGameBoxManagerSetGame( ptr )
 end
 
 function sworkCreateGameBoxManagerWindow( ptr )
-	company:SetObject( applic:GetPlayerCompany() )
+	company = applic:GetPlayerCompany()
 	wndGBM:SetObject( guienv:GetElementByName( WINDOW_GAMEBOXWIZ_NAME ) )
 	wndGBM:Remove()
 	

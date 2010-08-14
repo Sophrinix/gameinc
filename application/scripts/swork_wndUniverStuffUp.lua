@@ -65,7 +65,7 @@ function sworkUpEmployer( ptr )
 end
 
 function sworkEmployContractUser()
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	company:AddUser( userToUp:Self() )
 	sworkCreateEmployersWindow()
 end

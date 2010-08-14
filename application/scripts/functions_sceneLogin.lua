@@ -3,7 +3,7 @@ IncludeScript("swork_startDefinition")
 IncludeScript("swork_UpdateFunctions")
 
 --переменные для работы
-local plant = CLuaPlant( NrpGetPlant() )
+local plant = NrpGetPlant()
 
 --локальные имена элементов гуи
 local EDIT_NEWPROFILE_NAME = "_WindowNewGameEditProfile_"

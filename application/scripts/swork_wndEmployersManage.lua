@@ -19,7 +19,7 @@ local btnGiveWeekEnd = CLuaButton( nil )
 local btnGivePremia = CLuaButton( nil )
 
 local function ShowAvaibleEmployersToManage()
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local maxuser = company:GetUserNumber()
 	
 	listBoxCompanyEmployers:Clear()

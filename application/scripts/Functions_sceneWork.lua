@@ -12,8 +12,8 @@ IncludeScript("swork_wndDiskPlant")
 IncludeScript("swork_wndReklama")
 IncludeScript("swork_wndLaboratory" )
 
-local company = CLuaCompany( applic:GetPlayerCompany() )
-local plant = CLuaPlant( NrpGetPlant() )
+local company = applic:GetPlayerCompany()
+local plant = NrpGetPlant()
 
 function sworkAppDayChange( ptr )
 	local userLabel = CLuaLabel( guienv:GetElementByID( ID_USERNAME_LABEL ) )

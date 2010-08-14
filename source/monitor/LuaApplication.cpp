@@ -11,6 +11,8 @@
 #include "NrpDiskMachine.h"
 #include "NrpGameImageList.h"
 
+#include "LuaCompany.h"
+
 #include <assert.h>
 #include <irrlicht.h>
 #include <io.h>
@@ -111,7 +113,10 @@ int CLuaApplication::GetBank( lua_State* L )
 
 int CLuaApplication::GetPlayerCompany( lua_State* L )
 {
-	lua_pushlightuserdata( L, GetParam_<PNrpCompany>( L, "GetPlayerCompany", PLAYERCOMPANY, NULL ) );
+	PNrpCompany cmp = GetParam_<PNrpCompany>( L, "GetPlayerCompany", PLAYERCOMPANY, NULL );
+	lua_pop( L, lua_gettop( L ) );
+	lua_pushlightuserdata( L, cmp );
+	Luna< CLuaCompany >::constructor( L );
 	return 1;
 }
 

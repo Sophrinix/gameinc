@@ -15,7 +15,7 @@ function AddPortfelleWindow()
 end
 
 function sworkUpdateCompanyPortfelle()
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	for i=1, company:GetObjectsInPortfelle() do
 		if i-1 > maxObjectNumber then 
 		   return 

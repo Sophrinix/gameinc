@@ -1,4 +1,4 @@
-local company = CLuaCompany( nil )
+local company = nil
 local wndDPP = CLuaWindow( nil )
 local produceDiskWork = CLuaPlantWork( nil )
 local dayOfProduce = 0
@@ -25,7 +25,7 @@ local addons = { }
 function sworkCreateDiskProducePlantWindow( ptr )
 	numberMachine = 0
 	dayOfProduce = 0
-	company:SetObject( applic:GetPlayerCompany() )
+	company = applic:GetPlayerCompany()
 	
 	produceDiskWork:Create( company:GetName() )
 	wndDPP:SetObject( guienv:GetElementByName( WINDOW_DISKPRODUCEPLANT_NAME ) )

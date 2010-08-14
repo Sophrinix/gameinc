@@ -37,7 +37,7 @@ sceneManager:DrawProgress( 95 )
 ApplicationLoadCityScene()
 sceneManager:DrawProgress( 100 )
 
-local playerCompany = CLuaCompany( applic:GetPlayerCompany() )
+local playerCompany = applic:GetPlayerCompany()
 playerCompany:AddLuaFunction( COMPANY_READY_PROJECT, "sworkPlayerCompanyReadyProject" )
 --[[for i=1, applic:GetCompanyNumber() do
 	local cmp = CLuaCompany( applic:GetCompany( i - 1 ) )

@@ -21,7 +21,7 @@ local WINDOW_PRJMANAGE_USERINFO = WINDOW_PRJMANAGE_ID + 4
 local WINDOW_PRJMANAGE_COMPONENTS = WINDOW_PRJMANAGE_ID + 5
 
 function sworkCreateWindowProjectManager( ptr )	
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_PRJMANAGE_ID ) )
 	
 	if windowg:Empty() == 1 then
@@ -203,7 +203,7 @@ function sworkWindowProjectManagerComboBoxItemSelected( ptr )
 end
 
 local function ShowAvaibleCompanyUsers()
-	local company = CLuaCompany( applic:GetPlayerCompany() )
+	local company = applic:GetPlayerCompany()
 	local maxuser = company:GetUserNumber()
 	
 	local cmbx = CLuaComboBox( guienv:GetElementByID( WNDPRJMNG_CMBX_USERS ) )

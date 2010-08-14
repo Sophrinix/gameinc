@@ -19,6 +19,7 @@
 #include "NrpPlant.h"
 #include "NrpTranslate.h"
 #include "HTMLEngine.h"
+#include "LuaPlant.h"
 
 using namespace irr;
 
@@ -339,6 +340,7 @@ int GetPlant( lua_State* vm )
 	luaL_argcheck(vm, argc == 0, 0, "Function GetPlant not need any parameter");
 
 	lua_pushlightuserdata( vm, (void*)&CNrpPlant::Instance() );
+	Luna< CLuaPlant >::constructor( vm );
 
 	return 1;	
 }
