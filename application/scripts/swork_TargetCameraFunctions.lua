@@ -35,7 +35,7 @@ function sworkWindowAdvancedCameraCreate( ptr )
 	local button = windowg:GetCloseButton()
 	button:SetVisible( false )
 	
-	button:SetObject( guienv:AddButton( WND_WIDTH - 15, 0, WND_WIDTH, 15, windowg:Self(), -1, "X") )
+	button = guienv:AddButton( WND_WIDTH - 15, 0, WND_WIDTH, 15, windowg:Self(), -1, "X")
 	button:SetAction( "sworkWindowAdvancedCameraClose" )
 
 	local img = CLuaImage( guienv:AddImage( 5, 20, WND_WIDTH - 5, WND_HEIGHT - 5, windowg:Self(), -1, "" ) )

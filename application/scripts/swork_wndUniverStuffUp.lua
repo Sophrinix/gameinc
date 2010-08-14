@@ -46,7 +46,7 @@ function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 					   
     guienv:AddLabel( "Зарплата: "..user:GetParam( "wantMoney" ).."$", 5, 110, width, 110 + 20, -1, windowg:Self() )
 	
-	local btn = CLuaButton( guienv:AddButton( width / 2 - 50, height - 30, width / 2 + 50, height - 10, windowg:Self(), -1, "Нанять" ) )
+	local btn = guienv:AddButton( width / 2 - 50, height - 30, width / 2 + 50, height - 10, windowg:Self(), -1, "Нанять" )
 	btn:SetAction( "sworkUpEmployer" )				   
 end
 
@@ -113,16 +113,16 @@ function sworkCreateEmployersWindow( ptr )
 	local btn = windowg:GetCloseButton()
 	btn:SetVisible( false )
 	
-	local button = CLuaButton( guienv:AddButton( 10, 10, 200, 100, windowg:Self(), -1, "Программисты" ) )
+	local button = guienv:AddButton( 10, 10, 200, 100, windowg:Self(), -1, "Программисты" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
-	button:SetObject( guienv:AddButton( 210, 10, 400, 100, windowg:Self(), -1, "Дизайнеры" ) )
+	button = guienv:AddButton( 210, 10, 400, 100, windowg:Self(), -1, "Дизайнеры" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 
-	button:SetObject( guienv:AddButton( 410, 10, 600, 100, windowg:Self(), -1, "Композиторы" ) )
+	button = guienv:AddButton( 410, 10, 600, 100, windowg:Self(), -1, "Композиторы" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
-	button:SetObject( guienv:AddButton( 610, 10, 800, 100, windowg:Self(), -1, "Тестировщики" ) )
+	button = guienv:AddButton( 610, 10, 800, 100, windowg:Self(), -1, "Тестировщики" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
 	ShowAvaibleEmployers( windowg:Self() )

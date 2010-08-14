@@ -49,24 +49,21 @@ function slogin_CreateNewGame( ptr )
 	btnClose:SetVisible( false )
 
 	scrW, scrH = windowg:GetSize()
-	local editName = CLuaEdit( guienv:AddEdit(  "dalerank",
-				 						    scrW / 2 - 100, 40, scrW / 2 + 100, 60,
-											-1,
-											windowg:Self() ) )
+	local editName = guienv:AddEdit(  "dalerank",
+				 					  scrW / 2 - 100, 40, scrW / 2 + 100, 60, -1, windowg:Self() )
 	editName:SetName( EDIT_NEWPROFILE_NAME )
 	
-	local editCompany = CLuaEdit( guienv:AddEdit(  "daleteam",
-				 						    scrW / 2 - 100, 70, scrW / 2 + 100, 90,
-											-1,
-											windowg:Self() ) )
+	local editCompany = guienv:AddEdit(  "daleteam", scrW / 2 - 100, 70, scrW / 2 + 100, 90,
+										 -1, windowg:Self() )
+										 
 	editCompany:SetName( EDIT_NEWCOMPANY_NAME )
 	
-	local btnOk = CLuaButton( guienv:AddButton( scrW / 2 - 150,scrH - 30, scrW / 2 - 50, scrH - 10, 
-											    windowg:Self(), -1, "Готово" ) )
+	local btnOk = guienv:AddButton( scrW / 2 - 150,scrH - 30, scrW / 2 - 50, scrH - 10, 
+									windowg:Self(), -1, "Готово" )
 	btnOk:SetAction( "sloginCreateNewProfileAndStartGame" )
 	
-	local btnCancel = CLuaButton( guienv:AddButton( scrW / 2 + 50,scrH - 30, scrW / 2 + 150, scrH - 10, 
-											    windowg:Self(), -1, "Отмена" ) )
+	local btnCancel = guienv:AddButton( scrW / 2 + 50,scrH - 30, scrW / 2 + 150, scrH - 10, 
+										windowg:Self(), -1, "Отмена" )
 	btnCancel:SetAction( "sloginCloseWindowCreateNewProfile" )
 	
 end

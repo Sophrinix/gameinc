@@ -47,7 +47,7 @@ function sworkChartWindowManageCreate( ptr )
 	local closeButton = windowg:GetCloseButton()
 	closeButton:SetVisible( false )
 	
-	closeButton:SetObject( guienv:AddButton( chartWidth + 10 - 15, 0, chartWidth + 10, 15, windowg:Self(), -1, "X") )
+	closeButton = guienv:AddButton( chartWidth + 10 - 15, 0, chartWidth + 10, 15, windowg:Self(), -1, "X")
 	closeButton:SetAction( "sworkChartWindowManageClose" )
 	
 	local hdrw = CLuaHardware( NrpGetHardwareManager() )
@@ -85,11 +85,9 @@ function sworkChartWindowManageCreate( ptr )
 		
 		guienv:AddLabel( "Ñì.", 5, 80, 40, 100, -1, windowg:Self() )
 		
-		local editBox = CLuaEdit( guienv:AddEdit(  offset_point[ i ],
-												   45 + i * 80, 80, 125 + i * 80, 100,
-												   20300 + i,
-												   windowg:Self() ) )
-												 
+		local editBox = guienv:AddEdit(  offset_point[ i ], 45 + i * 80, 80, 125 + i * 80, 100,
+										 20300 + i, windowg:Self() )
+										 												 
 		editBox:SetText( offset_point[ i ] )
 											 
 	end

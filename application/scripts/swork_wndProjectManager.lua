@@ -48,21 +48,21 @@ function sworkCreateWindowProjectManager( ptr )
 
 	local lbxProjectComponents = CLuaListBox( guienv:AddComponentListBox( 10, 50, 300, 590, WINDOW_PRJMANAGE_COMPONENTS, windowg:Self() ) )
 	
-	localBtnChangeLider:SetObject( guienv:AddButton( width / 2 + 10, 10, width - 10, 40, windowg:Self(), -1, "Назначить" ) )
+	localBtnChangeLider = guienv:AddButton( width / 2 + 10, 10, width - 10, 40, windowg:Self(), -1, "Назначить" )
 	localBtnChangeLider:SetAction( "sworkWindowManagerProjectToggleComponentLider" )
 	localBtnChangeLider:SetEnabled( false )
 	
 	guienv:AddComboBox( "", 310, 110, 790, 130, WNDPRJMNG_CMBX_USERS, windowg:Self() )
-	local button = CLuaButton( guienv:AddButton( 310, 50, 420, 100, windowg:Self(), -1, "Программисты" ) )
+	local button = guienv:AddButton( 310, 50, 420, 100, windowg:Self(), -1, "Программисты" )
 	button:SetAction( "sworkWindowManageProjectsChangerUserType" )
 	sworkWindowManageProjectsChangerUserType( button:Self() )	
-	button:SetObject( guienv:AddButton( 430, 50, 540, 100, windowg:Self(), -1, "Дизайнеры" ) )
+	button = guienv:AddButton( 430, 50, 540, 100, windowg:Self(), -1, "Дизайнеры" )
 	button:SetAction( "sworkWindowManageProjectsChangerUserType" )
 
-	button:SetObject( guienv:AddButton( 550, 50, 660, 100, windowg:Self(), -1, "Композиторы" ) )
+	button = guienv:AddButton( 550, 50, 660, 100, windowg:Self(), -1, "Композиторы" )
 	button:SetAction( "sworkWindowManageProjectsChangerUserType" )
 	
-	button:SetObject( guienv:AddButton( 670, 50, 790, 100, windowg:Self(), -1, "Тестировщики" ) )
+	button = guienv:AddButton( 670, 50, 790, 100, windowg:Self(), -1, "Тестировщики" )
 	button:SetAction( "sworkWindowManageProjectsChangerUserType" )
 	
 	windowg:AddLuaFunction( GUIELEMENT_CMBXITEM_SELECTED, "sworkWindowProjectManagerComboBoxItemSelected" )

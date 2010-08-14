@@ -67,8 +67,8 @@ function sworkCreateWindowReklama( ptr )
 												      10, 20, 
 												      200, 210, 
 												      -1, wndReklame:Self() ) )
-	btnDecDayNumberPaperRklm:SetObject( guienv:AddButton( 10, 220, 50, 240, wndReklame:Self(), -1, "-" ) )
-	btnIncDayNumberPaperRklm:SetObject( guienv:AddButton( 160, 220, 200, 240, wndReklame:Self(), -1, "+" ) )	
+	btnDecDayNumberPaperRklm = guienv:AddButton( 10, 220, 50, 240, wndReklame:Self(), -1, "-" )
+	btnIncDayNumberPaperRklm = guienv:AddButton( 160, 220, 200, 240, wndReklame:Self(), -1, "+" ) 
 	lableDayNumberPaper:SetObject( guienv:AddLabel( "0", 60, 220, 160, 240, -1, wndReklame:Self() ) )
 
 	btnIncDayNumberPaperRklm:SetAction( "sworkWindowReklamaChangeDayNumberPaper" )
@@ -80,8 +80,8 @@ function sworkCreateWindowReklama( ptr )
 												      210, 20, 
 												      400, 210, 
 												      -1, wndReklame:Self() ) )
-	btnDecDayNumberMagazineRklm:SetObject( guienv:AddButton( 210, 220, 260, 240, wndReklame:Self(), -1, "-" ) )
-	btnIncDayNumberMagazineRklm:SetObject( guienv:AddButton( 360, 220, 400, 240, wndReklame:Self(), -1, "+" ) )	
+	btnDecDayNumberMagazineRklm = guienv:AddButton( 210, 220, 260, 240, wndReklame:Self(), -1, "-" )
+	btnIncDayNumberMagazineRklm = guienv:AddButton( 360, 220, 400, 240, wndReklame:Self(), -1, "+" )
 	lableDayNumberMagazine:SetObject( guienv:AddLabel( "0", 260, 220, 360, 240, -1, wndReklame:Self() ) )
 
 	btnIncDayNumberMagazineRklm:SetAction( "sworkWindowReklamaChangeDayNumberMagazine" )
@@ -93,9 +93,10 @@ function sworkCreateWindowReklama( ptr )
 												      410, 20, 
 												      600, 210, 
 												      -1, wndReklame:Self() ) )
-	btnDecDayNumberRadioRklm:SetObject( guienv:AddButton( 410, 220, 460, 240, wndReklame:Self(), -1, "-" ) )
+	btnDecDayNumberRadioRklm = guienv:AddButton( 410, 220, 460, 240, wndReklame:Self(), -1, "-" )
 	lableDayNumberRadio:SetObject( guienv:AddLabel( "0", 460, 220, 560, 240, -1, wndReklame:Self() ) )
-	btnIncDayNumberRadioRklm:SetObject( guienv:AddButton( 560, 220, 600, 240, wndReklame:Self(), -1, "+" ) )	
+	
+	btnIncDayNumberRadioRklm = guienv:AddButton( 560, 220, 600, 240, wndReklame:Self(), -1, "+" )
 	btnIncDayNumberRadioRklm:SetAction( "sworkWindowReklamaChangeDayNumberRadio" )
 	btnDecDayNumberRadioRklm:SetAction( "sworkWindowReklamaChangeDayNumberRadio" )
 	labelPriceRadioRklm:SetObject( guienv:AddLabel( "Стоимость", 410, 280, 600, 300, -1, wndReklame:Self() ) )		
@@ -105,9 +106,10 @@ function sworkCreateWindowReklama( ptr )
 												      610, 20, 
 												      800, 210, 
 												      -1, wndReklame:Self() ) )
-	btnDecDayNumberTeleRklm:SetObject( guienv:AddButton( 610, 220, 660, 240, wndReklame:Self(), -1, "-" ) )
+	btnDecDayNumberTeleRklm = guienv:AddButton( 610, 220, 660, 240, wndReklame:Self(), -1, "-" )
 	lableDayNumberTV:SetObject( guienv:AddLabel( "0", 660, 220, 760, 240, -1, wndReklame:Self() ) )
-	btnIncDayNumberTeleRklm:SetObject( guienv:AddButton( 760, 220, 800, 240, wndReklame:Self(), -1, "+" ) )		
+	
+	btnIncDayNumberTeleRklm = guienv:AddButton( 760, 220, 800, 240, wndReklame:Self(), -1, "+" )
 	btnIncDayNumberTeleRklm:SetAction( "sworkWindowReklamaChangeDayNumberTV" )
 	btnDecDayNumberTeleRklm:SetAction( "sworkWindowReklamaChangeDayNumberTV" )
 	labelPriceTeleRklm:SetObject( guienv:AddLabel( "Стоимость", 610, 280, 800, 300, -1, wndReklame:Self() ) )		
@@ -116,10 +118,10 @@ function sworkCreateWindowReklama( ptr )
 	localFillGamesListBox()
 	linkSelectedGame:SetObject( guienv:AddLinkBox( "Image", width / 4 - 100, 310, width / 4 + 100, height - 80, -1, wndReklame:Self() ))
 		
-	local btnApplyWork = CLuaButton( guienv:AddButton( 10, height - 70, width / 2 - 10, height - 20, wndReklame:Self(), -1, "Применить" ) )
+	local btnApplyWork = guienv:AddButton( 10, height - 70, width / 2 - 10, height - 20, wndReklame:Self(), -1, "Применить" )
 	btnApplyWork:SetAction( "sworkWindowReklamaApplyNewWork" )
 	
-	local btnExit = CLuaButton( guienv:AddButton( width / 2 + 10, height - 70, width - 10, height - 20, wndReklame:Self(), -1, "Выход" ) )
+	local btnExit = guienv:AddButton( width / 2 + 10, height - 70, width - 10, height - 20, wndReklame:Self(), -1, "Выход" )
 	btnExit:SetAction( "sworkCloseWindowReklama" )
 	--блок рекламы в интернете
 		--если на этот момент доступна реклама в инете

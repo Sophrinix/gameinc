@@ -65,23 +65,23 @@ function sworkCreateDiskProducePlantWindow( ptr )
 											   -1, wndDPP:Self() ) )
 	
 	--добавим кнопки изменения количества аппаратов для производства дисков
-	local btn = CLuaButton( guienv:AddButton( 10, 50, 60, 100, wndDPP:Self(), -1, "+" ) )
+	local btn = guienv:AddButton( 10, 50, 60, 100, wndDPP:Self(), -1, "+" )
 	btn:SetAction( "sworkWndDiskProducePlantIncMachineNumber" )
 	
 	labelNumberMachine:SetObject( guienv:AddLabel( "Количество линий сборки:",
 												   100, 50, width / 2 - 60, 100, 
 												   -1, wndDPP:Self() ) )
-	btn:SetObject( guienv:AddButton( width / 2 - 60, 50, width / 2 - 10, 100, wndDPP:Self(), -1, "-" ) )
+	btn = guienv:AddButton( width / 2 - 60, 50, width / 2 - 10, 100, wndDPP:Self(), -1, "-" )
 	btn:SetAction( "sworkWndDiskProducePlantDecMachineNumber" )
 	
 	--добавим кнопки изменения количества дней производства
-	btn:SetObject( guienv:AddButton( 10, 110, 60, 160, wndDPP:Self(), -1, "+" ) )
+	btn = guienv:AddButton( 10, 110, 60, 160, wndDPP:Self(), -1, "+" )
 	btn:SetAction( "sworkWndDiskProducePlantIncDayNumber" )
 	
 	labelNumberDay:SetObject( guienv:AddLabel( "Дней производства:", 
 											   100, 110, width / 2 - 60, 160, 
 											   -1, wndDPP:Self() ) )
-	btn:SetObject( guienv:AddButton( width / 2 - 60, 110, width / 2 - 10, 160, wndDPP:Self(), -1, "-" ) )
+	btn = guienv:AddButton( width / 2 - 60, 110, width / 2 - 10, 160, wndDPP:Self(), -1, "-" )
 	btn:SetAction( "sworkWndDiskProducePlantDecDayNumber" )
 	
 	--добавим метку количества произведенных дисков
@@ -109,12 +109,12 @@ function sworkCreateDiskProducePlantWindow( ptr )
 											   -1, wndDPP:Self() ) )
 
 											   
-	local createBtn = CLuaButton( guienv:AddButton( 10, height - 50, width / 2 - 10, height - 10, 
-													wndDPP:Self(), -1, "Запустить" ) )
+	local createBtn = guienv:AddButton( 10, height - 50, width / 2 - 10, height - 10, 
+													wndDPP:Self(), -1, "Запустить" )
 	createBtn:SetAction( "sworkWndDiskProducePlantLocate" )
 	
-	local closeBtn = CLuaButton( guienv:AddButton( width / 2 + 10, height - 50, width - 10, height - 10, 
-												   wndDPP:Self(), -1, "Выход" ) )
+	local closeBtn = guienv:AddButton( width / 2 + 10, height - 50, width - 10, height - 10, 
+												   wndDPP:Self(), -1, "Выход" )
 	closeBtn:SetAction( "sworkWndDiskProducePlantClose" )
 end
 

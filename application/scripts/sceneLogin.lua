@@ -10,28 +10,28 @@ local label = CLuaLabel( guienv:AddLabel( "Профиль:" .. applic:GetCurrentProfile
 label:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 )
 								
 --создание полей ввода				
-local btnSelectProfile = CLuaButton( guienv:AddButton( scrWidth / 2 + 150, scrHeight - 170, scrWidth / 2 + 150 + 60,  scrHeight - 150, 
-								 	 guienv:GetRootGUIElement(), -1, "Другой") )
+local btnSelectProfile = guienv:AddButton( scrWidth / 2 + 150, scrHeight - 170, scrWidth / 2 + 150 + 60,  scrHeight - 150, 
+								 	       guienv:GetRootGUIElement(), -1, "Другой")
 btnSelectProfile:SetAction( "slogin_SelectProfile" )
 
 --создание кнопки входа 
 
-local btnNewGame = CLuaButton( guienv:AddButton( scrWidth / 2 - 350, scrHeight - 120, scrWidth / 2 - 200, scrHeight - 80, 
-											 guienv:GetRootGUIElement(), -1, "Новая игра") )
+local btnNewGame = guienv:AddButton( scrWidth / 2 - 350, scrHeight - 120, scrWidth / 2 - 200, scrHeight - 80, 
+									 guienv:GetRootGUIElement(), -1, "Новая игра")
 btnNewGame:SetAction( "slogin_CreateNewGame" )
 
 
-local btnContinueGame = CLuaButton( guienv:AddButton( scrWidth / 2 - 200, scrHeight - 120, scrWidth / 2 - 50, scrHeight - 80, 
-											 guienv:GetRootGUIElement(), -1, "Продолжить") )
+local btnContinueGame = guienv:AddButton( scrWidth / 2 - 200, scrHeight - 120, scrWidth / 2 - 50, scrHeight - 80, 
+											 guienv:GetRootGUIElement(), -1, "Продолжить")
 btnContinueGame:SetAction( "slogin_ContinueLastGame" )
 
-local btnOptionsGame = CLuaButton( guienv:AddButton( scrWidth / 2 + 50, scrHeight - 120, scrWidth / 2 + 200, scrHeight - 80, 
-											 guienv:GetRootGUIElement(), -1, "Настройки") )
+local btnOptionsGame = guienv:AddButton( scrWidth / 2 + 50, scrHeight - 120, scrWidth / 2 + 200, scrHeight - 80, 
+											 guienv:GetRootGUIElement(), -1, "Настройки")
 btnOptionsGame:SetAction( "slogin_OptionsGame" )
 
 
-local btnExitGame = CLuaButton( guienv:AddButton( scrWidth / 2 + 200, scrHeight - 120, scrWidth / 2 + 350, scrHeight - 80, 
-											 guienv:GetRootGUIElement(), -1, "Выход") )
+local btnExitGame = guienv:AddButton( scrWidth / 2 + 200, scrHeight - 120, scrWidth / 2 + 350, scrHeight - 80, 
+											 guienv:GetRootGUIElement(), -1, "Выход")
 btnExitGame:SetAction( "slogin_ExitGame" )
 
 browser:Show()

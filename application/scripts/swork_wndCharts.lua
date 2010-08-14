@@ -33,10 +33,10 @@ function sworkChartWindowCreate( ptr )
 	local closeButton = windowg:GetCloseButton()
 	closeButton:SetVisible( false )
 	
-	closeButton:SetObject( guienv:AddButton( chartWidth + 10 - 15, 0, chartWidth + 10, 15, windowg:Self(), -1, "X") )
+	closeButton = guienv:AddButton( chartWidth + 10 - 15, 0, chartWidth + 10, 15, windowg:Self(), -1, "X")
 	closeButton:SetAction( "sworkChartWindowClose" )
 	
-	closeButton:SetObject( guienv:AddButton( chartWidth + 10 - 45, 0, chartWidth + 10 - 15, 15, windowg:Self(), -1, "Óïð.") )
+	closeButton = guienv:AddButton( chartWidth + 10 - 45, 0, chartWidth + 10 - 15, 15, windowg:Self(), -1, "Óïð.")
 	closeButton:SetAction( "sworkToggleChartWindowManageVisible" )
 
 	

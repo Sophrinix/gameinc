@@ -21,9 +21,9 @@ local function CreateElementsForGameSelect()
 			row = gameWithoutBox/3
 			columnt = gameWithoutBox%3
 			
-			local btn = CLuaButton( guienv:AddButton( width/3 * columnt, height/3 * row, 
-												 	  width/3 * ( columnt + 1 ), height/3 * (row+1),
-													  wndGBM:Self(), -1, game:GetName() ) )		
+			local btn = guienv:AddButton( width/3 * columnt, height/3 * row, 
+										  width/3 * ( columnt + 1 ), height/3 * (row+1),
+										  wndGBM:Self(), -1, game:GetName() )
 			btn:SetImage( 0, 0, 0, 0, game:GetScreenshot( -1 ) )				  										
 			btn:SetAction( "sworkGameBoxManagerSetGame" )			 
 			gameWithoutBox = gameWithoutBox + 1
@@ -102,10 +102,10 @@ local function localCreateBoxViewerAndAddons()
 	localCreateWindowForBoxAddedAddons()
 	localCreateWindowForBoxAvaibleAddons()
 		
-	local btn = CLuaButton( guienv:AddButton( width - 100, height - 50, width - 10, height - 10, wndGBM:Self(), -1, "Выход" ) )	
+	local btn = guienv:AddButton( width - 100, height - 50, width - 10, height - 10, wndGBM:Self(), -1, "Выход" )
 	btn:SetAction( "sworkGameBoxManagerClose" )	
 	
-	btn:SetObject( guienv:AddButton( width - 200, height - 50, width - 110, height - 10, wndGBM:Self(), -1, "Создать" ) )	
+	btn = guienv:AddButton( width - 200, height - 50, width - 110, height - 10, wndGBM:Self(), -1, "Создать" )
 	btn:SetAction( "sworkGameBoxManagerClose" )	
 end
 
@@ -158,28 +158,28 @@ function sworkGameBoxManagerSetGame( ptr )
 	local elm = CLuaElement( wndGBM:Self() )
 	elm:RemoveChilds()
 	
-	local btn = CLuaButton( guienv:AddButton( width / 4 - 50, height / 4 - 50, 
-											  width / 4 + 50, height / 4 + 50,
-											  wndGBM:Self(), -1, "маленькая" ) )	
+	local btn = guienv:AddButton( width / 4 - 50, height / 4 - 50, 
+								  width / 4 + 50, height / 4 + 50,
+								  wndGBM:Self(), -1, "маленькая" )
 	btn:SetImage( 0, 0, 0, 0, "media/textures/boxWithoutImage.png" )						  
 	btn:SetAction( "sworkGameBoxManagerSelectMiniBox" )
 	
-	btn:SetObject( guienv:AddButton(  3 * width / 4 - 75, height / 4 - 75, 
-									  3 * width / 4 + 75, height / 4 + 75, wndGBM:Self(), -1, "средняя" ) )	
+	btn = guienv:AddButton(  3 * width / 4 - 75, height / 4 - 75, 
+							  3 * width / 4 + 75, height / 4 + 75, wndGBM:Self(), -1, "средняя" )
 	btn:SetImage( 0, 0, 0, 0, "media/textures/boxWithoutImage.png" )						  
 	btn:SetAction( "sworkGameBoxManagerSelectMiddleBox" )
 	
-	btn:SetObject( guienv:AddButton( width / 4 - 120, 3 * height / 4 - 120, 
-									 width / 4 + 120, 3 * height / 4 + 120, wndGBM:Self(), -1, "большая" ) )
+	btn = guienv:AddButton( width / 4 - 120, 3 * height / 4 - 120, 
+							 width / 4 + 120, 3 * height / 4 + 120, wndGBM:Self(), -1, "большая" )
 	btn:SetImage( 0, 0, 0, 0, "media/textures/boxWithoutImage.png" )						  
 	btn:SetAction( "sworkGameBoxManagerSelectBigBox" )
 	
-	btn:SetObject( guienv:AddButton( 3 * width / 4 - 150, 3 * height / 4 - 150, 
-									 3 * width / 4 + 150, 3 * height / 4 + 150, wndGBM:Self(), -1, "мега" ) )		
+	btn = guienv:AddButton( 3 * width / 4 - 150, 3 * height / 4 - 150, 
+							 3 * width / 4 + 150, 3 * height / 4 + 150, wndGBM:Self(), -1, "мега" )
 	btn:SetImage( 0, 0, 0, 0, "media/textures/boxWithoutImage.png" )						  
 	btn:SetAction( "sworkGameBoxManagerSelectMegaBox" )
 	
-	btn:SetObject( guienv:AddButton( width - 200, 10, width -10, 50, wndGBM:Self(), -1, "Выход" ) )	
+	btn = guienv:AddButton( width - 200, 10, width -10, 50, wndGBM:Self(), -1, "Выход" )
 	btn:SetAction( "sworkGameBoxManagerClose" )	
 end
 

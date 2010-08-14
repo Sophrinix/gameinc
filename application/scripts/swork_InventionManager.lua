@@ -55,10 +55,10 @@ function sworkInventionManagerAddPeopleToInvention( ptr )
 		end
 	end
 	
-	local btn = CLuaButton( guienv:AddButton( 10, hd - 35, wd / 2 - 10, hd - 5, windowUserSelect:Self(), -1, "Select") )
+	local btn = guienv:AddButton( 10, hd - 35, wd / 2 - 10, hd - 5, windowUserSelect:Self(), -1, "Select")
 	btn:SetAction( "sworkInventionManagerAddSelectedUserToInvention" )
 		
-	btn:SetObject( guienv:AddButton( wd / 2 + 10, hd - 35, wd - 10, hd - 5, windowUserSelect:Self(), -1, "Closse") )
+	btn = guienv:AddButton( wd / 2 + 10, hd - 35, wd - 10, hd - 5, windowUserSelect:Self(), -1, "Closse")
 	btn:SetAction( "sworkInventionManagerCloseWindowUserAdding" )
 end
 
@@ -75,10 +75,10 @@ function sworkShowInventionManager( techName, companyName )
 	img:SetImage( driver:GetTexture( currentInvention:GetTexture() ) )
 
 	--кнопки изменения финансирования и метка с текущим финансированием в месяц
-	local btnPlus = CLuaButton( guienv:AddButton( 10, ypos, 10 + 30, ypos + 30, windowIM:Self(), -1, "+") )
+	local btnPlus = guienv:AddButton( 10, ypos, 10 + 30, ypos + 30, windowIM:Self(), -1, "+")
 	btnPlus:SetAction( "sworkInventionManagerIncreaseInvestiment" )
 	
-	local btnMinus = CLuaButton( guienv:AddButton( btnWidth - 30, ypos, btnWidth, ypos + 30, windowIM:Self(), -1, "-" ) )
+	local btnMinus = guienv:AddButton( btnWidth - 30, ypos, btnWidth, ypos + 30, windowIM:Self(), -1, "-" )
 	btnMinus:SetAction( "sworkInventionManagerDecreaseInvestiment" )
 	
 	guienv:AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT", 45, ypos - 15, 
@@ -103,9 +103,9 @@ function sworkShowInventionManager( techName, companyName )
 	--кнопка добавления людей к исследованию, по которой показывается список со служащими 
 	--и возможность добавления выделенного человека
 	--удаление людей из списка
-	local btnAddPeople = CLuaButton( guienv:AddButton( btnWidth + 10, 10, width - 10, 10 + 30, windowIM:Self(), -1, "Добавить" ) )
+	local btnAddPeople = guienv:AddButton( btnWidth + 10, 10, width - 10, 10 + 30, windowIM:Self(), -1, "Добавить" )
 	btnAddPeople:SetAction( "sworkInventionManagerAddPeopleToInvention" )
 	
-	local btnRemPeople = CLuaButton( guienv:AddButton( btnWidth + 10, height - 40, width - 10, height - 10, windowIM:Self(), -1, "Убрать"  ) )
+	local btnRemPeople = guienv:AddButton( btnWidth + 10, height - 40, width - 10, height - 10, windowIM:Self(), -1, "Убрать" )
 	btnRemPeople:SetAction( "sworkInventionManagerRemPeopleFromInvention" )	
 end

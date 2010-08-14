@@ -51,7 +51,7 @@ function sworkCloseAdvancedUserInfoWindow( ptr )
 end
 
 function sworkCreateAdvancedUserInfoWindow( ptr )
-	winInfo:Remove()
+	if winInfo ~= nil then winInfo:Remove() end
 
 	currentEmployer:SetObject( listBoxCompanyEmployers:GetSelectedObject() )
 	
@@ -82,16 +82,16 @@ function sworkCreateWindowEmployersManage( ptr )
 		elm:RemoveChilds()
 	end
 	
-	local button = CLuaButton( guienv:AddButton( 10, 10, 200, 100, windowg:Self(), -1, "Программисты" ) )
+	local button = guienv:AddButton( 10, 10, 200, 100, windowg:Self(), -1, "Программисты" )
 	button:SetAction( "sworkWindowManageEmployersChangerUserType" )
 	
-	button:SetObject( guienv:AddButton( 210, 10, 400, 100, windowg:Self(), -1, "Дизайнеры" ) )
+	button = guienv:AddButton( 210, 10, 400, 100, windowg:Self(), -1, "Дизайнеры" )
 	button:SetAction( "sworkWindowManageEmployersChangerUserType" )
 
-	button:SetObject( guienv:AddButton( 410, 10, 600, 100, windowg:Self(), -1, "Композиторы" ) )
+	button = guienv:AddButton( 410, 10, 600, 100, windowg:Self(), -1, "Композиторы" )
 	button:SetAction( "sworkWindowManageEmployersChangerUserType" )
 	
-	button:SetObject( guienv:AddButton( 610, 10, 800, 100, windowg:Self(), -1, "Тестировщики" ) )
+	button = guienv:AddButton( 610, 10, 800, 100, windowg:Self(), -1, "Тестировщики" )
 	button:SetAction( "sworkWindowManageEmployersChangerUserType" )
 	
 	listBoxCompanyEmployers:SetObject( guienv:AddComponentListBox( 10, 110, width - 10, height - 80, -1, windowg:Self() ) )
@@ -101,23 +101,23 @@ function sworkCreateWindowEmployersManage( ptr )
 	ShowAvaibleEmployersToManage()
 	
 	local i = 0
-	btnRemoveUser:SetObject( guienv:AddButton( 100 * i, height - 70, 100 * (i + 1), height - 10, windowg:Self(), -1, "Уволить" ) )
+	btnRemoveUser = guienv:AddButton( 100 * i, height - 70, 100 * (i + 1), height - 10, windowg:Self(), -1, "Уволить" )
 	btnRemoveUser:SetAction( "sworkRemoveUserFromCompany" )
 	
 	i = i + 1
-	btnUpSalary:SetObject( guienv:AddButton(  100 * i, height - 70,  100 * (i + 1), height - 10, windowg:Self(), -1, "З/П + 5%" ) )
+	btnUpSalary = guienv:AddButton(  100 * i, height - 70,  100 * (i + 1), height - 10, windowg:Self(), -1, "З/П + 5%" )
 	btnUpSalary:SetAction( "sworkUserUpSalary" )
 	
 	i = i +	1
-	btnDownSalary:SetObject( guienv:AddButton( 100 * i, height - 70, 100 * (i + 1), height - 10, windowg:Self(), -1, "З/П - 5%" ) )
+	btnDownSalary = guienv:AddButton( 100 * i, height - 70, 100 * (i + 1), height - 10, windowg:Self(), -1, "З/П - 5%" )
 	btnDownSalary:SetAction( "sworkUserDownSalary" )
 	
 	i = i + 1
-	btnGiveWeekEnd:SetObject( guienv:AddButton(  100 * i, height - 70,  100 * (i + 1), height - 10, windowg:Self(), -1, "Отпуск" ) )
+	btnGiveWeekEnd = guienv:AddButton(  100 * i, height - 70,  100 * (i + 1), height - 10, windowg:Self(), -1, "Отпуск" )
 	btnGiveWeekEnd:SetAction( "sworkUserGetWeekend" )
 	
 	i = i +  1
-	btnGivePremia:SetObject( guienv:AddButton(  100 * i, height - 70,  100 * (i + 1), height - 10, windowg:Self(), -1, "Премия" ) )
+	btnGivePremia = guienv:AddButton(  100 * i, height - 70,  100 * (i + 1), height - 10, windowg:Self(), -1, "Премия" )
 	btnGivePremia:SetAction( "sworkUserGetPremia" )
 end
 

@@ -10,6 +10,8 @@
 #include "nrpChartCtrl.h"
 #include "nrpGuiLinkBox.h"
 #include "LuaWindow.h"
+#include "LuaEdit.h"
+#include "LuaButton.h"
 
 using namespace irr;
 
@@ -243,7 +245,9 @@ int CLuaGuiEnvironment::AddButton( lua_State *vm )
 	
 	IF_OBJECT_NOT_NULL_THEN elm = object_->addButton( rectangle,  parent, id, StrToWide( text ).c_str() );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
+	Luna< CLuaButton >::constructor( vm );
 
 	return 1;
 }
@@ -394,7 +398,9 @@ int CLuaGuiEnvironment::AddEdit( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = object_->addEditBox( StrToWide( text ).c_str(), rectangle, true, parent, id );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
+	Luna< CLuaEdit >::constructor( vm );
 
 	return 1;
 }

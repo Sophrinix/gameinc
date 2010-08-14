@@ -8,7 +8,7 @@ local imgWidth = 32
 
 local function AddButton( window, id, x, y, action, pathToTexture )
 
-		local btn = CLuaButton( guienv:AddButton( x, y, x + imgWidth, y + imgHeight, window, id, "" ) )
+		local btn = guienv:AddButton( x, y, x + imgWidth, y + imgHeight, window, id, "" )
 		btn:SetAction( action )
 		btn:SetImage( 0, 0, 70, 70, pathToTexture..".png" )
 		btn:SetHoveredImage( 0, 0, 70, 70, pathToTexture.."_x.png" )

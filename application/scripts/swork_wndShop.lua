@@ -83,8 +83,8 @@ function sworkCreateGameInSaleWindow( ptr )
 	localFillListboxGame()
 	
 	--расположим кнопку "Анонсировать игру", по которой можно поместить игру на рынок
-	buttonAnonceGame:SetObject( guienv:AddButton( width / 2, height -50, width - 20, height - 20, 
-								windowShop:Self(), -1, "Анонсировать игру" ) )
+	buttonAnonceGame = guienv:AddButton( width / 2, height -50, width - 20, height - 20, 
+								windowShop:Self(), -1, "Анонсировать игру" )
 	buttonAnonceGame:SetAction( "sworkWindowShopAnonceGame" )
 	
 	--расположим изображение игры справа от списка
@@ -112,15 +112,15 @@ function sworkCreateGameInSaleWindow( ptr )
 	--prgRating:SetFillImage( )
 
 	--цена игры с возможностью изменять цену
-	btnDecreaseGamePrice:SetObject( guienv:AddButton( hw + 20, hh + 170, hw + 40, hh + 190, 
-									windowShop:Self(), -1, "-" ) )
+	btnDecreaseGamePrice = guienv:AddButton( hw + 20, hh + 170, hw + 40, hh + 190, 
+									windowShop:Self(), -1, "-" )
 	btnDecreaseGamePrice:SetAction( "sworkWindowShopDecreaseGamePrice" ) 
 									
 	labelGamePrice:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", hw + 40, hh + 170, 
 													    width - 40, hh + 190, -1, windowShop:Self() ) )	
 													 
-	btnIncreaseGamePrice:SetObject( guienv:AddButton(  width - 40, hh + 170, width - 20, hh + 190, 
-									windowShop:Self(), -1, "+" ) )
+	btnIncreaseGamePrice = guienv:AddButton(  width - 40, hh + 170, width - 20, hh + 190, 
+									windowShop:Self(), -1, "+" )
 	btnIncreaseGamePrice:SetAction( "sworkWindowShopIncreaseGamePrice" ) 	
 end
 
@@ -140,10 +140,10 @@ function sworkWindowShopAnonceGame( ptr )
 		end	
 	end
 	
-	local btnOk = CLuaButton( guienv:AddButton( 10, 240 - 40, 190, 240, windowAnonce:Self(), -1, "Начать продажи" ) )
+	local btnOk = guienv:AddButton( 10, 240 - 40, 190, 240, windowAnonce:Self(), -1, "Начать продажи" )
 	btnOk:SetAction( "sworkWindowShopStartGameSaling" )
 	
-	local btnCancel = CLuaButton( guienv:AddButton( 210, 240 - 40, 390, 240, windowAnonce:Self(), -1, "Выход" ) )
+	local btnCancel = guienv:AddButton( 210, 240 - 40, 390, 240, windowAnonce:Self(), -1, "Выход" )
 	btnCancel:SetAction( "sworkWindowShopCloseAnonceGame" )
 end
 

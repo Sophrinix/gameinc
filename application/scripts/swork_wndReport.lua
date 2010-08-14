@@ -34,10 +34,10 @@ function sworkWindowReportCreate( ptr )
 	local button = windowg:GetCloseButton()
 	button:SetVisible( false )
 	
-	button:SetObject( guienv:AddButton( WND_WIDTH - 15, 0, WND_WIDTH, 15, windowg:Self(), -1, "X") )
+	button = guienv:AddButton( WND_WIDTH - 15, 0, WND_WIDTH, 15, windowg:Self(), -1, "X")
 	button:SetAction( "sworkWindowReportClose" )
 	
-	button:SetObject( guienv:AddButton( 5, 20, 5 + 150, 20 + 20, windowg:Self(), -1, "Connect to DB" ) )
+	button = guienv:AddButton( 5, 20, 5 + 150, 20 + 20, windowg:Self(), -1, "Connect to DB" )
 	button:SetName( BUTTON_CONNECT )
 	button:SetAction( "sworkReportConnectToLogDb" )
 	
@@ -49,16 +49,15 @@ function sworkWindowReportCreate( ptr )
 		button:SetText( "Not connected" )
 	end
 	
-	button:SetObject( guienv:AddButton( 5, 45, 70, 45 + 65, windowg:Self(), -1, "Sel.Column" ) )
+	button = guienv:AddButton( 5, 45, 70, 45 + 65, windowg:Self(), -1, "Sel.Column" )
 	button:SetAction( "sworkReportSelectColumn" )
 	
 	local repTable = CLuaTable( guienv:AddTable( 160, 20, WND_WIDTH-5, WND_HEIGHT-30, ID_REPORT_TABLE, windowg:Self() ) )
 	repTable:SetName( TABLE_REPORT )
 	
-	local editBox = CLuaEdit( guienv:AddEdit( "", 5, WND_HEIGHT - 25, WND_WIDTH - 5, WND_HEIGHT - 5, -1, windowg:Self() ) )
+	local editBox = guienv:AddEdit( "", 5, WND_HEIGHT - 25, WND_WIDTH - 5, WND_HEIGHT - 5, -1, windowg:Self() )
 	editBox:SetName( EDIT_QUERY )
 	
-
 	--создадим аниматор, который переместит окно в новые координаты, оставит его видимым, а потом удалится сам
 	guienv:AddMoveAnimator( windowg:Self(), 0, 150, STEP, true, true, false )
 

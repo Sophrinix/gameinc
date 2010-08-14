@@ -31,16 +31,14 @@ function sworkCreateWindowLoanAction()
 	local summ = bank:GetMaxCompanyLoan( company:GetName() )
 	Log({src=SCRIPT, dev=ODS|CON}, summ )
 	
-	local edit = CLuaEdit( guienv:AddEdit(  summ,
-				 						    10, 20, 190, 40,
-											-1,
-											windowg:Self() ) )
+	local edit = guienv:AddEdit(  summ, 10, 20, 190, 40,
+								  -1, windowg:Self() )
 	edit:SetName( WNDLOANACTION_GETLOAN_EDIT )
 	
-	local button = CLuaButton( guienv:AddButton( 10, 80, 10 + 140, 80 + 20, windowg:Self(), -1, "Взять кредит" ) )
+	local button = guienv:AddButton( 10, 80, 10 + 140, 80 + 20, windowg:Self(), -1, "Взять кредит" )
 	button:SetAction( "sworkGetLoan" )
 	
-	button:SetObject( guienv:AddButton( 160, 80, 160 + 140, 80 + 20, windowg:Self(), -1, "Вернуть кредит" ) )
+	button = guienv:AddButton( 160, 80, 160 + 140, 80 + 20, windowg:Self(), -1, "Вернуть кредит" )
 	button:SetAction( "sworkReturnLoan" )
 	
 	local label = CLuaLabel( guienv:AddLabel( "Доступная сумма: "..summ, 10, 110, 10 + 280, 110 + 20, -1, windowg:Self() ) )

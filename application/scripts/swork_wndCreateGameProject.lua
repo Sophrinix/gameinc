@@ -253,10 +253,8 @@ end
 local function CreateGameNamePage( tab )
 	ShowAvaibleEngines( tab )
 
-	local edit = CLuaEdit( guienv:AddEdit(  "Название игры",
-				 						    10, 20, 10 + 180, 20 + 20,
-											-1,
-											tab ) )
+	local edit = guienv:AddEdit(  "Название игры", 10, 20, 10 + 180, 20 + 20,
+								  -1, tab )
 	edit:SetName( WNDGMWIZ_NAME_EDIT )
 
 	local ge = CLuaGameEngine( project:GetGameEngine() )
@@ -289,7 +287,7 @@ local function CreateEndPage( tab )
 	linkModule:SetObject( guienv:AddLinkBox( "Локализация", 10, 250, 10 + 50, 250 + 50, -1, tab ) )
 	if project:GetLanguagesNumber() > 0 then linkModule:SetData( linkModule:Self() ) end
 	
-	local button = CLuaButton( guienv:AddButton( 10, 10, 10 + 50, 10 + 50, tab, -1, "Завершить" ) )
+	local button = guienv:AddButton( 10, 10, 10 + 50, 10 + 50, tab, -1, "Завершить" )
 	button:SetAction( "sworkCreateProjectGameToCompany" )	
 	button:SetEnabled( project:IsProjectReady() )
 end
@@ -391,7 +389,7 @@ end
 local function CreatePlatformLangPage( tab )
 
 	for i=1, #lang do
-		local button = CLuaButton( guienv:AddButton( 10 + 100 * (i-1), 50, 10 + 100 * i, 50 + 100, tab, 9600 + i, "" ) )
+		local button = guienv:AddButton( 10 + 100 * (i-1), 50, 10 + 100 * i, 50 + 100, tab, 9600 + i, "" )
 		if project:IsLangAvaible( lang[ i ] ) then
 			button:SetText( lang[ i ] )
 		else
@@ -402,7 +400,7 @@ local function CreatePlatformLangPage( tab )
 	end
 
 	for i=1, #platform do
-		local button = CLuaButton( guienv:AddButton( 10 + 100 * (i-1), 200, 10 + 100 * i, 200 + 100, tab, 9700 + i,  "" ) )
+		local button = guienv:AddButton( 10 + 100 * (i-1), 200, 10 + 100 * i, 200 + 100, tab, 9700 + i,  "" )
 		
 		if project:IsPlatformAvaible( platform[ i ] ) then
 			button:SetText( platform[ i ] )
