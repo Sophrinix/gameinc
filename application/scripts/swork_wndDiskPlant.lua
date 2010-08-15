@@ -43,7 +43,7 @@ function sworkCreateDiskProducePlantWindow( ptr )
 	
 	cmbxGames:SetObject( guienv:AddComboBox( "", 10, height / 2, width / 2 - 10, height / 2 + 20,  -1, wndDPP:Self() ) )
 	for i=1, company:GetGameNumber() do
-		local game = CLuaGame( company:GetGame( i-1 ) )
+		local game = company:GetGame( i-1 )
 		if game:HaveBox() then 
 			cmbxGames:AddItem( game:GetName(), game:Self() )
 		end	

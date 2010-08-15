@@ -15,7 +15,7 @@ local btnIncreaseGamePrice = CLuaButton( nil )
 local listboxCompanyGame = CLuaListBox( nil )
 local anoncePictureFlow = CLuaPictureFlow( nil )
 local windowAnonce = nil
-local selectedGame = CLuaGame( nil )
+local selectedGame = nil
 local lastTimeParamsUpdate = GetTickCount()
 local width = 800
 local height = 600
@@ -23,9 +23,9 @@ local height = 600
 local function localFillListboxGame()
 	listboxGames:Clear()
 	
-	local game = CLuaGame( nil )
+	local game = nil
 	for i=1, applic:GetGamesNumber() do
-		game:SetObject( applic:GetGame( i-1 ) )
+		game = applic:GetGame( i-1 )
 		if game:IsSaling() then
 			listboxGames:AddItem( game:GetName(), game:Self() )
 		end
@@ -133,7 +133,7 @@ function sworkWindowShopAnonceGame( ptr )
 	anoncePictureFlow:SetPictureRect( 0, 0, 90, 90 )
 	
 	for i=1, company:GetGameNumber() do
-		local game = CLuaGame( company:GetGame( i-1 ) )
+		local game = company:GetGame( i-1 )
 		
 		if not game:IsSaling() then 
 			anoncePictureFlow:AddItem( game:GetViewImage(), game:GetName(), game:Self() )

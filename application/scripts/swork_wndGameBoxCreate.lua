@@ -1,6 +1,6 @@
 local wndGBM = nil
 local company = nil
-local currentGame = CLuaGame( nil )
+local currentGame = nil
 local currentAddon = CLuaTech( nil )
 local wndBoxPreview = nil
 local wndAvaibleAddons = nil
@@ -16,7 +16,7 @@ local function CreateElementsForGameSelect()
 	local columnt = 0
 	local gameWithoutBox = 0
 	for i=1, company:GetGameNumber() do
-		local game = CLuaGame( company:GetGame( i-1 ) )
+		local game = company:GetGame( i-1 )
 		if not game:HaveBox() then 
 			row = gameWithoutBox/3
 			columnt = gameWithoutBox%3
@@ -153,7 +153,7 @@ end
 
 function sworkGameBoxManagerSetGame( ptr )
 	local btn = CLuaButton( ptr )
-	currentGame:SetObject( company:GetGame( btn:GetText() ) )
+	currentGame = company:GetGame( btn:GetText() )
 	
 	local elm = CLuaElement( wndGBM:Self() )
 	elm:RemoveChilds()

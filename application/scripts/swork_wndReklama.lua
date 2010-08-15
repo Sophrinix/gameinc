@@ -29,7 +29,7 @@ local labelPriceTeleRklm = nil
 local lableDayNumberTV = nil
 
 local lbxGames = CLuaListBox( nil )
-local selectedGame = CLuaGame( nil )
+local selectedGame = nil
 local linkSelectedGame = nil
 
 local paperWork = CLuaReklame( nil )
@@ -45,9 +45,9 @@ local tvWork = CLuaReklame( nil )
 tvWork:Create( "tv", "" )
 
 local function localFillGamesListBox()
-	local game = CLuaGame( nil )
+	local game = nil
 	for i=1, company:GetGameNumber() do
-		game:SetObject( company:GetGame( i-1 ) )
+		game = company:GetGame( i-1 )
 		lbxGames:AddItem( game:GetName(), game:Self() )
 	end	
 end

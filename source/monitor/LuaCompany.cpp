@@ -305,7 +305,10 @@ int CLuaCompany::GetGame( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetGame( index );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
+	Luna< CLuaGame >::constructor( L );
+
 	return 1;	
 }
 
