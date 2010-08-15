@@ -41,7 +41,7 @@ function sworkWindowAdvancedCameraCreate( ptr )
 	local img = CLuaImage( guienv:AddImage( 5, 20, WND_WIDTH - 5, WND_HEIGHT - 5, windowg:Self(), -1, "" ) )
 	img:SetScaleImage( true )
 	img:SetUseAlphaChannel( true )
-	local texture = CLuaTexture( driver:AddRenderTargetTexture( 512, 512, TEXTURE_NAME )  )
+	local texture = driver:AddRenderTargetTexture( 512, 512, TEXTURE_NAME )
 	img:SetImage( texture:Self() )
 	texture:Drop()
 	

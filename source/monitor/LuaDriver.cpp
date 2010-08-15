@@ -3,6 +3,7 @@
 
 #include <IVideoDriver.h>
 #include <assert.h>
+#include "LuaTexture.h"
 
 using namespace irr;
 
@@ -51,7 +52,10 @@ int CLuaDriver::GetTexture( lua_State *L )
 
 	video::ITexture* txs = NULL;
 	IF_OBJECT_NOT_NULL_THEN txs = object_->getTexture( fileName );
+
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, txs );
+	Luna< CLuaTexture >::constructor( L );
 
 	return 1;
 }
@@ -102,7 +106,10 @@ int CLuaDriver::AddRenderTargetTexture( lua_State* L )
 
 	video::ITexture* txs = NULL;
 	IF_OBJECT_NOT_NULL_THEN txs = object_->addRenderTargetTexture( core::dimension2du( width, height ), fileName, video::ECF_A8R8G8B8 );
+
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, txs );
+	Luna< CLuaTexture >::constructor( L );
 
 	return 1;
 }

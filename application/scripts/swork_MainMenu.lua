@@ -91,7 +91,7 @@ end
 
 function AddMenuWindow()
 
-	local txs = CLuaTexture( driver:GetTexture( "./media/top_menu/top_nerpa.png") )
+	local txs = driver:GetTexture( "./media/top_menu/top_nerpa.png")
 	local txsWidth = 0
 	local txsHeight = 0
 	txsWidth, txsHeight = txs:GetSize()
