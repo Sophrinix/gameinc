@@ -661,7 +661,9 @@ int CLuaGuiEnvironment::AddComponentListBox( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	elm = object_->addComponentListBox( rectangle, parent, iid );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, elm );
+	Luna< CLuaComponentListBox >::constructor( L );
 
 	return 1;
 }

@@ -46,7 +46,7 @@ function sworkInventionManagerAddPeopleToInvention( ptr )
 										     width / 2 + 300, height / 2 + 200, -1, guienv:GetRootGUIElement() )
 													  
 	local wd, hd = windowUserSelect:GetSize()												  
-	local lbxUsers = CLuaComponentListBox( guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect:Self() ) )
+	local lbxUsers = guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect:Self() )
 	
 	for i=1, company:GetUserNumber() do
 		local user = CLuaUser( company:GetUser( i-1 ) )
@@ -97,7 +97,7 @@ function sworkShowInventionManager( techName, companyName )
 													    btnWidth, ypos + 30, -1, windowIM:Self() )
 	
 	--список подключенных к проекту людей
-	listInventionStuff:SetObject( guienv:AddComponentListBox( btnWidth + 10, 50, width, height - 45, -1, windowIM:Self()) )
+	listInventionStuff = guienv:AddComponentListBox( btnWidth + 10, 50, width, height - 45, -1, windowIM:Self())
 	localFillListInvnentionStuff()
 	
 	--кнопка добавления людей к исследованию, по которой показывается список со служащими 

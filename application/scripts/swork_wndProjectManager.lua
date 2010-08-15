@@ -46,7 +46,7 @@ function sworkCreateWindowProjectManager( ptr )
 		end
 	end
 
-	local lbxProjectComponents = CLuaListBox( guienv:AddComponentListBox( 10, 50, 300, 590, WINDOW_PRJMANAGE_COMPONENTS, windowg:Self() ) )
+	local lbxProjectComponents = guienv:AddComponentListBox( 10, 50, 300, 590, WINDOW_PRJMANAGE_COMPONENTS, windowg:Self() )
 	
 	localBtnChangeLider = guienv:AddButton( width / 2 + 10, 10, width - 10, 40, windowg:Self(), -1, "Назначить" )
 	localBtnChangeLider:SetAction( "sworkWindowManagerProjectToggleComponentLider" )
@@ -137,7 +137,7 @@ local function ShowWindowUserInfo( userPtr )
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 					   
-	local lbx = CLuaComponentListBox( guienv:AddComponentListBox( 10, 135, widdddd - 10, hhhhhhh - 10, -1, windowg:Self() ) )
+	local lbx = guienv:AddComponentListBox( 10, 135, widdddd - 10, hhhhhhh - 10, -1, windowg:Self() )
 	
 	for i=1, currentEmployer:GetWorkNumber() do
 		lbx:AddItem( "", currentEmployer:GetWork( i-1 ) )

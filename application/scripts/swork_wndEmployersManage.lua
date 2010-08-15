@@ -10,7 +10,7 @@ local modeUserView = "coder"
 local width, height = driver:GetScreenSize()
 
 local currentEmployer = CLuaUser( nil )
-local listBoxCompanyEmployers = CLuaComponentListBox( nil )
+local listBoxCompanyEmployers = nil
 local winInfo = nil
 local btnRemoveUser = CLuaButton( nil )
 local btnUpSalary = CLuaButton( nil )
@@ -94,7 +94,7 @@ function sworkCreateWindowEmployersManage( ptr )
 	button = guienv:AddButton( 610, 10, 800, 100, windowg:Self(), -1, "Тестировщики" )
 	button:SetAction( "sworkWindowManageEmployersChangerUserType" )
 	
-	listBoxCompanyEmployers:SetObject( guienv:AddComponentListBox( 10, 110, width - 10, height - 80, -1, windowg:Self() ) )
+	listBoxCompanyEmployers = guienv:AddComponentListBox( 10, 110, width - 10, height - 80, -1, windowg:Self() )
 	listBoxCompanyEmployers:SetItemHeigth( 128 );
 	windowg:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkCreateAdvancedUserInfoWindow" )
 	
