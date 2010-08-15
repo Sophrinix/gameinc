@@ -31,7 +31,7 @@ function sworkCreateWindowProjectManager( ptr )
 		elm:RemoveChilds()
 	end
 	
-	local cmbxPrj = CLuaComboBox( guienv:AddComboBox( "", 10, 20, width / 2 - 10, 40, WNDPRJMNG_CMBX_SELECT_PRJ, windowg:Self() ) )
+	local cmbxPrj = guienv:AddComboBox( "", 10, 20, width / 2 - 10, 40, WNDPRJMNG_CMBX_SELECT_PRJ, windowg:Self() )
 	local cmpProjectNumber = company:GetDevProjectNumber()
 	LogScript( "Company DevProject number="..cmpProjectNumber )
 	for i=1, cmpProjectNumber do

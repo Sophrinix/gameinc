@@ -55,10 +55,10 @@ function sworkChartWindowManageCreate( ptr )
 	for i=0, MAX_GRAPHIC-1 do
 	    guienv:AddLabel( "МА:К", 5, 20, 40, 40, -1, windowg:Self() )
 		
-		local cmbx = CLuaComboBox( guienv:AddComboBox( 	"",
-														45 + i * 80, 20, 95 + i * 80, 40,
-														20100 + i,
-														windowg:Self() ) )
+		local cmbx = guienv:AddComboBox( 	"",
+											45 + i * 80, 20, 95 + i * 80, 40,
+											20100 + i,
+											windowg:Self() ) 
 		cmbx:AddItem( "Нет", nil )
 		for nSonar=1, maxSonar do 
 			cmbx:AddItem( nSonar..":1", nil )
@@ -71,10 +71,10 @@ function sworkChartWindowManageCreate( ptr )
 		
 		guienv:AddLabel( "Тип", 5, 50, 40, 70, -1, windowg:Self() )
 		
-		cmbx:SetObject( guienv:AddComboBox( "",
-											45 + i * 80, 50, 125 + i * 80, 70,
-											20200 + i,
-											windowg:Self() ) )
+		cmbx = guienv:AddComboBox( "",
+									45 + i * 80, 50, 125 + i * 80, 70,
+									20200 + i,
+									windowg:Self() )
 		
 		cmbx:AddItem( "Нет", nil )
 		cmbx:AddItem( "RF", nil );

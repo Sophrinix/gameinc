@@ -44,6 +44,7 @@ HTMLEngine::HTMLEngine()
 	//чтобы не копировать страницу пять раз впустую
 	lastTimeUpdate_ = GetTickCount();
 	_noFollowLinkExec = false;
+	_firstMessage = false;
 }
 
 HTMLEngine::~HTMLEngine()
@@ -158,41 +159,76 @@ void HTMLEngine::KeyPress( int key )
 
 void HTMLEngine::onNavigateBegin( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
-	std::string a = "Event: begin navigation to " + eventIn.getEventUri() + CARET_RESPONSE;
-	OutputDebugString( a.c_str() );
+	if( _firstMessage )
+	{
+		std::string a = "Event: begin navigation to " + eventIn.getEventUri() + CARET_RESPONSE;
+		OutputDebugString( a.c_str() );
+		_firstMessage = false;
+	}
+	else
+		_firstMessage = true;
 }
 
 void HTMLEngine::onNavigateComplete( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
-	std::string a = "Event: end navigation to " + eventIn.getEventUri() + std::string( " with response status of " ) + IntToStr( eventIn.getIntValue() ) + CARET_RESPONSE;
-	OutputDebugString( a.c_str() );
+	if( _firstMessage )
+	{
+		std::string a = "Event: end navigation to " + eventIn.getEventUri() + std::string( " with response status of " ) + IntToStr( eventIn.getIntValue() ) + CARET_RESPONSE;
+		OutputDebugString( a.c_str() );
+		_firstMessage = false;
+	}
+	else
+		_firstMessage = true;
 }
 
 void HTMLEngine::onUpdateProgress( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
-	std::string a = "Event: progress value updated to " + eventIn.getIntValue() + CARET_RESPONSE;
-	OutputDebugString( a.c_str() );
+	if( _firstMessage )
+	{
+		std::string a = "Event: progress value updated to " + eventIn.getIntValue() + CARET_RESPONSE;
+		OutputDebugString( a.c_str() );
+		_firstMessage = false;
+	}
+	else
+		_firstMessage = true;
 }
 
 void HTMLEngine::onStatusTextChange( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
-	std::string a = "Event: status updated to " + eventIn.getStringValue() + CARET_RESPONSE;
-	OutputDebugString( a.c_str() );
+	if( _firstMessage )
+	{
+		std::string a = "Event: status updated to " + eventIn.getStringValue() + CARET_RESPONSE;
+		OutputDebugString( a.c_str() );
+		_firstMessage = false;
+	}
+	else
+		_firstMessage = true;
 }
 
 void HTMLEngine::onLocationChange( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
-	std::string a = "Event: location changed to " + eventIn.getEventUri() + CARET_RESPONSE;
-	OutputDebugString( a.c_str() );
+	if( _firstMessage )
+	{
+		std::string a = "Event: location changed to " + eventIn.getEventUri() + CARET_RESPONSE;
+		OutputDebugString( a.c_str() );
+		_firstMessage = false;
+	}
+	else
+		_firstMessage = true;
 }
 
 void HTMLEngine::onClickLinkHref( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
-	std::string a = "Event: clicked on link to " + eventIn.getStringValue() + CARET_RESPONSE;
-	//eventIn.mStringVal2
-	OutputDebugString( a.c_str() );
-
-	llmozlib_->navigateTo(browserWindowId_, eventIn.getStringValue());
+	if( _firstMessage )
+	{
+		std::string a = "Event: clicked on link to " + eventIn.getStringValue() + CARET_RESPONSE;
+		//eventIn.mStringVal2
+		OutputDebugString( a.c_str() );
+		llmozlib_->navigateTo(browserWindowId_, eventIn.getStringValue());
+		_firstMessage = false;
+	}
+	else
+		_firstMessage = true;
 }
 
 std::string DecodeUrl( std::string url )

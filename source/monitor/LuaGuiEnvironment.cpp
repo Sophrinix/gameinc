@@ -14,6 +14,9 @@
 #include "LuaButton.h"
 #include "LuaLabel.h"
 #include "LuaImage.h"
+#include "LuaComboBox.h"
+#include "LuaLinkBox.h"
+#include "LuaComponentListBox.h"
 
 using namespace irr;
 
@@ -378,7 +381,9 @@ int CLuaGuiEnvironment::AddComboBox( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = object_->addComboBox( rectangle, parent, id );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
+	Luna< CLuaComboBox >::constructor( vm );
 
 	return 1;
 }

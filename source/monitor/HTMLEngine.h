@@ -72,7 +72,7 @@ private:
 	bool dataUpdated_;
 	//*! библиотека мозлибы
 	LLMozLib* llmozlib_;
-	bool _noFollowLinkExec;
+	bool _noFollowLinkExec, _firstMessage;
 
 	CRITICAL_SECTION rasterCs_;
 };

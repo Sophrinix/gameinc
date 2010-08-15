@@ -13,9 +13,9 @@ local labelDiskNumber = nil
 local labelFinalPrice = nil
 local labelDiskPrice = nil
 local labelAdvPrice = nil
-local labelDiskInDay = ni
-local cmbxProduceType = CLuaComboBox( nil )
-local cmbxGames = CLuaComboBox( nil )
+local labelDiskInDay = nil
+local cmbxProduceType = nil
+local cmbxGames = nil
 
 local width = 800
 local height = 600
@@ -35,13 +35,13 @@ function sworkCreateDiskProducePlantWindow( ptr )
 	wndDPP:SetName( WINDOW_DISKPRODUCEPLANT_NAME )
 	
 	--добавим выпадающий список типа аппаратов
-	cmbxProduceType:SetObject( guienv:AddComboBox( "", 10, 20, width / 2 - 10, 40, -1, wndDPP:Self() ) )
+	cmbxProduceType = guienv:AddComboBox( "", 10, 20, width / 2 - 10, 40, -1, wndDPP:Self() )
 	for i=1, applic:GetDiskMachineNumber() do
 		local dm = CLuaDiskMachine( applic:GetDiskMachine( i-1 ) )
 		cmbxProduceType:AddItem( dm:GetName(), dm:Self() )		
 	end
 	
-	cmbxGames:SetObject( guienv:AddComboBox( "", 10, height / 2, width / 2 - 10, height / 2 + 20,  -1, wndDPP:Self() ) )
+	cmbxGames = guienv:AddComboBox( "", 10, height / 2, width / 2 - 10, height / 2 + 20,  -1, wndDPP:Self() )
 	for i=1, company:GetGameNumber() do
 		local game = company:GetGame( i-1 )
 		if game:HaveBox() then 

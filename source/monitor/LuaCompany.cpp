@@ -8,6 +8,7 @@
 #include "NrpApplication.h"
 #include "NrpDevelopGame.h"
 #include <assert.h>
+#include "LuaGame.h"
 
 namespace nrp
 {
