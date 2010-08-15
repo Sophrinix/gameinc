@@ -10,6 +10,7 @@
 #include "NrpWorldConfig.h"
 #include "nrpScene.h"
 #include "LuaCamera.h"
+#include "LuaSceneNode.h"
 
 using namespace irr;
 
@@ -326,7 +327,9 @@ int CLuaSceneManager::GetSceneNodeByName( lua_State* vm )
 	
 	IF_OBJECT_NOT_NULL_THEN node = object_->getSceneNodeFromName( name );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, node );
+	Luna< CLuaSceneNode >::constructor( vm );
 
 	return 1;
 }
@@ -593,7 +596,9 @@ int CLuaSceneManager::GetSceneNodeByID( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN node = object_->getSceneNodeFromId( id );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, node );
+	Luna< CLuaSceneNode >::constructor( vm );
 
 	return 1;
 }

@@ -13,6 +13,7 @@
 #include "LuaEdit.h"
 #include "LuaButton.h"
 #include "LuaLabel.h"
+#include "LuaImage.h"
 
 using namespace irr;
 
@@ -487,7 +488,9 @@ int CLuaGuiEnvironment::AddImage( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = object_->addImage( rectangle, parent, id, StrToWide( text ).c_str() );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
+	Luna< CLuaImage >::constructor( vm );
 
 	return 1;
 }

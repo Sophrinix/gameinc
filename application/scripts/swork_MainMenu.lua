@@ -156,10 +156,8 @@ function AdvancedFunctionFrameToggleVisible( ptr )
 end
 
 function AdminingFrameToggleVisible( ptr )
-
 	local elm = CLuaElement( adminFuncButtons[ 0 ] )
 	local visible = not elm:GetVisible()
 	SetVisibleToArray( mainMenuButtons, not visible )
 	SetVisibleToArray( adminFuncButtons, visible )
-	
 end

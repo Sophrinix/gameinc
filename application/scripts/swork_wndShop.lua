@@ -3,7 +3,7 @@ local company = nil
 local windowShop = nil
 local listboxGames = CLuaListBox( nil )
 local buttonAnonceGame = CLuaButton( nil )
-local imageGamePreview = CLuaImage( nil )
+local imageGamePreview = nil
 local labelGameName = nil
 local labelLastMonthSale = nil
 local labelCurrentMonthSale = nil
@@ -88,7 +88,7 @@ function sworkCreateGameInSaleWindow( ptr )
 	buttonAnonceGame:SetAction( "sworkWindowShopAnonceGame" )
 	
 	--расположим изображение игры справа от списка
-	imageGamePreview:SetObject( guienv:AddImage( width / 2 + 20, 20, width - 20, height / 2 - 20, windowShop:Self(), -1, "" ) ) 
+	imageGamePreview = guienv:AddImage( width / 2 + 20, 20, width - 20, height / 2 - 20, windowShop:Self(), -1, "" )
 	
 	--расположим под изображением основные параметры продаж
 	--название игры

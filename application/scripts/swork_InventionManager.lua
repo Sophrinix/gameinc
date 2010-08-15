@@ -70,9 +70,9 @@ function sworkShowInventionManager( techName, companyName )
 	--картинка с изображением технологии
 	local btnWidth = width / 3
 	local ypos = height / 3
-	local img = CLuaImage( guienv:AddImage( 10, 10, btnWidth , ypos, windowIM:Self(), -1, "" ) )
+	local img = guienv:AddImage( 10, 10, btnWidth , ypos, windowIM:Self(), -1, "" )
 	img:SetScaleImage( true )
-	img:SetImage( driver:GetTexture( currentInvention:GetTexture() ) )
+	img:SetImage( currentInvention:GetTexture() )
 
 	--кнопки изменения финансирования и метка с текущим финансированием в месяц
 	local btnPlus = guienv:AddButton( 10, ypos, 10 + 30, ypos + 30, windowIM:Self(), -1, "+")

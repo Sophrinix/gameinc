@@ -38,11 +38,11 @@ function sworkWindowAdvancedCameraCreate( ptr )
 	button = guienv:AddButton( WND_WIDTH - 15, 0, WND_WIDTH, 15, windowg:Self(), -1, "X")
 	button:SetAction( "sworkWindowAdvancedCameraClose" )
 
-	local img = CLuaImage( guienv:AddImage( 5, 20, WND_WIDTH - 5, WND_HEIGHT - 5, windowg:Self(), -1, "" ) )
+	local img = guienv:AddImage( 5, 20, WND_WIDTH - 5, WND_HEIGHT - 5, windowg:Self(), -1, "" )
 	img:SetScaleImage( true )
 	img:SetUseAlphaChannel( true )
 	local texture = driver:AddRenderTargetTexture( 512, 512, TEXTURE_NAME )
-	img:SetImage( texture:Self() )
+	img:SetImage( TEXTURE_NAME )
 	texture:Drop()
 	
 	local fixedCam =  CLuaCamera( sceneManager:AddCameraSceneNode( sceneManager:GetRootSceneNode() ) )
@@ -51,7 +51,7 @@ function sworkWindowAdvancedCameraCreate( ptr )
 	fixedCam:SetTarget( -10,10,-100 )
 	fixedCam:SetName( OBJECT_ANCHORED_CAMERA )
 	
-	sceneManager:SetActiveCamera( sceneManager:GetSceneNodeByName( MAIN_CAMERA_NAME ) )
+	--sceneManager:SetActiveCamera( sceneManager:GetSceneNodeByName( MAIN_CAMERA_NAME ) )
 		
 	--создадим аниматор, который переместит окно в новые координаты, оставит его видимым, а потом удалится сам
 	guienv:AddMoveAnimator( windowg:Self(), 0, 150, STEP, true, true, false )
@@ -68,7 +68,8 @@ function sworkWindowAdvancedCameraClose( ptr )
 	else	
 		guienv:RemoveAnimators( windowg:Self() ) 
 		guienv:AddMoveAnimator( windowg:Self(), -WND_WIDTH, 150, STEP, false, true, true )
-		sceneManager:AddToDeletionQueue( sceneManager:GetSceneNodeByName( OBJECT_ANCHORED_CAMERA ) )
+		local node = sceneManager:GetSceneNodeByName( OBJECT_ANCHORED_CAMERA )
+		sceneManager:AddToDeletionQueue( node:Self() )
 	end	
 	
 	sceneManager:RemoveSceneFunction( SCENE_BEFORE_RENDER, "sworkWindowAdvancedCameraUpdate" )
@@ -76,7 +77,8 @@ end
 
 function sworkWindowAdvancedCameraUpdate( ptr )
 	
-	local fixedCam = CLuaCamera( sceneManager:GetSceneNodeByName( OBJECT_ANCHORED_CAMERA ) )
+	local node = sceneManager:GetSceneNodeByName( OBJECT_ANCHORED_CAMERA )
+	local fixedCam = CLuaCamera( node:Self() )
 	if fixedCam:Empty() == 0 then
 
 		driver:SetRenderTarget( driver:GetTexture( TEXTURE_NAME ), true, true, 0, 0, 0, 0xff );
@@ -86,7 +88,7 @@ function sworkWindowAdvancedCameraUpdate( ptr )
 
 		driver:SetRenderTarget( nil, true, true, 0, 0, 0, 0 );
 
-		sceneManager:SetActiveCamera( sceneManager:GetSceneNodeByName( MAIN_CAMERA_NAME ) )
+		--sceneManager:SetActiveCamera( sceneManager:GetSceneNodeByName( MAIN_CAMERA_NAME ) )
 	end
 	
 end
