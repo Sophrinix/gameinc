@@ -4,33 +4,33 @@ local width = 800
 local height = 600
 
 local wndReklame = nil
-local linkPaperProduction = CLuaLinkBox( nil )
+local linkPaperProduction = nil
 local lableDayNumberPaper = nil
 local btnDecDayNumberPaperRklm = CLuaButton( nil )
 local btnIncDayNumberPaperRklm = CLuaButton( nil )
 local labelPricePaperRklm = nil
 
-local linkMagazineProduction = CLuaLinkBox( nil )
+local linkMagazineProduction = nil
 local btnDecDayNumberMagazineRklm = CLuaButton( nil )
 local btnIncDayNumberMagazineRklm = CLuaButton( nil )
 local labelPriceMagazineRklm = nil
 local lableDayNumberMagazine = nil
 
-local linkRadioProduction = CLuaLinkBox( nil )
+local linkRadioProduction = nil
 local btnDecDayNumberRadioRklm = CLuaButton( nil )
 local btnIncDayNumberRadioRklm = CLuaButton( nil )
 local labelPriceRadioRklm = nil
 local lableDayNumberRadio = nil
 
-local linkTeleProduction = CLuaLinkBox( nil )
-local btnDecDayNumberTeleRklm = CLuaButton( nil )
-local btnIncDayNumberTeleRklm = CLuaButton( nil )
+local linkTeleProduction = nil
+local btnDecDayNumberTeleRklm = nil
+local btnIncDayNumberTeleRklm = nil
 local labelPriceTeleRklm = nil
 local lableDayNumberTV = nil
 
 local lbxGames = CLuaListBox( nil )
 local selectedGame = CLuaGame( nil )
-local linkSelectedGame = CLuaLinkBox( nil )
+local linkSelectedGame = nil
 
 local paperWork = CLuaReklame( nil )
 paperWork:Create( "paper", "" )

@@ -586,7 +586,9 @@ int CLuaGuiEnvironment::AddLinkBox( lua_State* vm )
 			elm->setText( StrToWide( name ).c_str() );
 	}
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
+	Luna< CLuaLinkBox >::constructor( vm );
 
 	return 1;
 }

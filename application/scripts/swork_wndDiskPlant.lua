@@ -141,10 +141,10 @@ local function UpdateAddons( ptrGame )
 	local addonsNumber = game:GetBoxAddonsNumber()
 	for i=1, addonsNumber do
 		local addon = CLuaTech( game:GetBoxAddon( i-1 ) )
-		local link = CLuaLinkBox( guienv:AddLinkBox( addon:GetName(), 
+		local link = guienv:AddLinkBox( addon:GetName(), 
 													 20 + 70 * ( i - 1 ), 20 + height * 0.75,
 													 20 + 70 * i, 20 + height * 0.75 + 70,
-													 -1, wndDPP:Self() ) )
+													 -1, wndDPP:Self() )
 		link:SetData( game:GetBoxAddon( i-1 ) )
 		addons[ i ] = link
 	end

@@ -59,10 +59,10 @@ local function localCreateWindowForBoxAddedAddons()
 		
 	for i=1, currentGame:GetBoxAddonsNumber() do
 		local tech = CLuaTech( currentGame:GetBoxAddon( i-1 ) )
-		local lbu = CLuaLinkBox( guienv:AddLinkBox( tech:GetName(), 
+		local lbu = guienv:AddLinkBox( tech:GetName(), 
 													5 + (h-10) * ( i - 1 ), 5,
 													5 + (h-10) * i, h - 5,
-													-1, wndBoxPreview:Self() ) )
+													-1, wndBoxPreview:Self() )
 		lbu:SetData( tech:Self() )
 		lbu:SetTexture( tech:GetTexture() )
 	    lbu:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkGameBoxManagerWindowAddonRigthMouseButtonUp" )
@@ -86,10 +86,10 @@ local function localCreateWindowForBoxAvaibleAddons()
 			linet = itemCount / 3
 			columnt = itemCount % 3
 			itemCount = itemCount + 1
-			local linkt = CLuaLinkBox( guienv:AddLinkBox( boxAddon:GetName(), 
+			local linkt = guienv:AddLinkBox( boxAddon:GetName(), 
 														  (columnt) * 60 - 10, 20 + linet * 60, 
 						  								  (columnt+1) * 60 - 10, 20 + (linet+1) * 60, 
-														  -1, wndAvaibleAddons:Self() ) )
+														  -1, wndAvaibleAddons:Self() )
 			linkt:SetDraggable( true )
 			linkt:SetData( boxAddon:Self() )
 			linkt:SetTexture( boxAddon:GetTexture() )

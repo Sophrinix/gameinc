@@ -1,9 +1,10 @@
-local company = CLuaCompany( nil )
+local company = nil
 local user = CLuaUser( nil )
 
 function sloginResetDataForNewGame()
 	applic:ResetData()
     user:Create( "RealPlayer", applic:GetCurrentProfile() )
+    company = applic:GetPlayerCompany()
 	company:Create( applic:GetCurrentProfileCompany(), applic:GetCurrentProfile() ) 
 end
 
