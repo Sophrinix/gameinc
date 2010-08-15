@@ -5,28 +5,28 @@ local height = 600
 
 local wndReklame = nil
 local linkPaperProduction = CLuaLinkBox( nil )
-local lableDayNumberPaper = CLuaLabel( nil )
+local lableDayNumberPaper = nil
 local btnDecDayNumberPaperRklm = CLuaButton( nil )
 local btnIncDayNumberPaperRklm = CLuaButton( nil )
-local labelPricePaperRklm = CLuaLabel( nil )
+local labelPricePaperRklm = nil
 
 local linkMagazineProduction = CLuaLinkBox( nil )
 local btnDecDayNumberMagazineRklm = CLuaButton( nil )
 local btnIncDayNumberMagazineRklm = CLuaButton( nil )
-local labelPriceMagazineRklm = CLuaLabel( nil )
-local lableDayNumberMagazine = CLuaLabel( nil )
+local labelPriceMagazineRklm = nil
+local lableDayNumberMagazine = nil
 
 local linkRadioProduction = CLuaLinkBox( nil )
 local btnDecDayNumberRadioRklm = CLuaButton( nil )
 local btnIncDayNumberRadioRklm = CLuaButton( nil )
-local labelPriceRadioRklm = CLuaLabel( nil )
-local lableDayNumberRadio = CLuaLabel( nil )
+local labelPriceRadioRklm = nil
+local lableDayNumberRadio = nil
 
 local linkTeleProduction = CLuaLinkBox( nil )
 local btnDecDayNumberTeleRklm = CLuaButton( nil )
 local btnIncDayNumberTeleRklm = CLuaButton( nil )
-local labelPriceTeleRklm = CLuaLabel( nil )
-local lableDayNumberTV = CLuaLabel( nil )
+local labelPriceTeleRklm = nil
+local lableDayNumberTV = nil
 
 local lbxGames = CLuaListBox( nil )
 local selectedGame = CLuaGame( nil )
@@ -69,11 +69,11 @@ function sworkCreateWindowReklama( ptr )
 												      -1, wndReklame:Self() ) )
 	btnDecDayNumberPaperRklm = guienv:AddButton( 10, 220, 50, 240, wndReklame:Self(), -1, "-" )
 	btnIncDayNumberPaperRklm = guienv:AddButton( 160, 220, 200, 240, wndReklame:Self(), -1, "+" ) 
-	lableDayNumberPaper:SetObject( guienv:AddLabel( "0", 60, 220, 160, 240, -1, wndReklame:Self() ) )
+	lableDayNumberPaper = guienv:AddLabel( "0", 60, 220, 160, 240, -1, wndReklame:Self() )
 
 	btnIncDayNumberPaperRklm:SetAction( "sworkWindowReklamaChangeDayNumberPaper" )
 	btnDecDayNumberPaperRklm:SetAction( "sworkWindowReklamaChangeDayNumberPaper" )
-	labelPricePaperRklm:SetObject( guienv:AddLabel( "Стоимость", 10, 240, 200, 260, -1, wndReklame:Self() ) )		
+	labelPricePaperRklm = guienv:AddLabel( "Стоимость", 10, 240, 200, 260, -1, wndReklame:Self() )
 
 	--блок рекламы в газете
 	linkMagazineProduction:SetObject( guienv:AddLinkBox( "Газета", 
@@ -82,11 +82,11 @@ function sworkCreateWindowReklama( ptr )
 												      -1, wndReklame:Self() ) )
 	btnDecDayNumberMagazineRklm = guienv:AddButton( 210, 220, 260, 240, wndReklame:Self(), -1, "-" )
 	btnIncDayNumberMagazineRklm = guienv:AddButton( 360, 220, 400, 240, wndReklame:Self(), -1, "+" )
-	lableDayNumberMagazine:SetObject( guienv:AddLabel( "0", 260, 220, 360, 240, -1, wndReklame:Self() ) )
+	lableDayNumberMagazine = guienv:AddLabel( "0", 260, 220, 360, 240, -1, wndReklame:Self() )
 
 	btnIncDayNumberMagazineRklm:SetAction( "sworkWindowReklamaChangeDayNumberMagazine" )
 	btnDecDayNumberMagazineRklm:SetAction( "sworkWindowReklamaChangeDayNumberMagazine" )
-	labelPriceMagazineRklm:SetObject( guienv:AddLabel( "Стоимость", 210, 250, 400, 270, -1, wndReklame:Self() ) )		
+	labelPriceMagazineRklm = guienv:AddLabel( "Стоимость", 210, 250, 400, 270, -1, wndReklame:Self() )
 	
 	--блок рекламы на радио
 	linkRadioProduction:SetObject( guienv:AddLinkBox( "Радио", 
@@ -94,12 +94,12 @@ function sworkCreateWindowReklama( ptr )
 												      600, 210, 
 												      -1, wndReklame:Self() ) )
 	btnDecDayNumberRadioRklm = guienv:AddButton( 410, 220, 460, 240, wndReklame:Self(), -1, "-" )
-	lableDayNumberRadio:SetObject( guienv:AddLabel( "0", 460, 220, 560, 240, -1, wndReklame:Self() ) )
+	lableDayNumberRadio = guienv:AddLabel( "0", 460, 220, 560, 240, -1, wndReklame:Self() )
 	
 	btnIncDayNumberRadioRklm = guienv:AddButton( 560, 220, 600, 240, wndReklame:Self(), -1, "+" )
 	btnIncDayNumberRadioRklm:SetAction( "sworkWindowReklamaChangeDayNumberRadio" )
 	btnDecDayNumberRadioRklm:SetAction( "sworkWindowReklamaChangeDayNumberRadio" )
-	labelPriceRadioRklm:SetObject( guienv:AddLabel( "Стоимость", 410, 280, 600, 300, -1, wndReklame:Self() ) )		
+	labelPriceRadioRklm = guienv:AddLabel( "Стоимость", 410, 280, 600, 300, -1, wndReklame:Self() )
 
 	--блок рекламы по телевидению
 	linkTeleProduction:SetObject( guienv:AddLinkBox( "Телевидение", 
@@ -107,12 +107,12 @@ function sworkCreateWindowReklama( ptr )
 												      800, 210, 
 												      -1, wndReklame:Self() ) )
 	btnDecDayNumberTeleRklm = guienv:AddButton( 610, 220, 660, 240, wndReklame:Self(), -1, "-" )
-	lableDayNumberTV:SetObject( guienv:AddLabel( "0", 660, 220, 760, 240, -1, wndReklame:Self() ) )
+	lableDayNumberTV = guienv:AddLabel( "0", 660, 220, 760, 240, -1, wndReklame:Self() )
 	
 	btnIncDayNumberTeleRklm = guienv:AddButton( 760, 220, 800, 240, wndReklame:Self(), -1, "+" )
 	btnIncDayNumberTeleRklm:SetAction( "sworkWindowReklamaChangeDayNumberTV" )
 	btnDecDayNumberTeleRklm:SetAction( "sworkWindowReklamaChangeDayNumberTV" )
-	labelPriceTeleRklm:SetObject( guienv:AddLabel( "Стоимость", 610, 280, 800, 300, -1, wndReklame:Self() ) )		
+	labelPriceTeleRklm =  guienv:AddLabel( "Стоимость", 610, 280, 800, 300, -1, wndReklame:Self() )
 	
 	lbxGames:SetObject( guienv:AddListBox( width / 2 + 10, 310, width - 10, height - 80, -1, wndReklame:Self() ) )
 	localFillGamesListBox()

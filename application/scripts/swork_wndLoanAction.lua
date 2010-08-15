@@ -1,7 +1,5 @@
-local guienv = CLuaGuiEnvironment( NrpGetGuiEnvironment() )
-local app = CLuaApplication( NrpGetApplication() )
 local company = nil 
-local bank = CLuaBank( app:GetBank() )
+local bank = CLuaBank( applic:GetBank() )
 
 function sworkShowLoans( tabler )
 	local tbl = CLuaTable( tabler )
@@ -24,7 +22,7 @@ function sworkShowLoans( tabler )
 end
 
 function sworkCreateWindowLoanAction()
-	company = app:GetPlayerCompany()
+	company = applic:GetPlayerCompany()
 	local windowg = guienv:AddWindow( "Loan", 0, 0, 800, 600, -1, guienv:GetRootGUIElement() )
 	windowg:SetName( WINDOW_LOAN_ACTION_NAME )
 	
@@ -41,7 +39,7 @@ function sworkCreateWindowLoanAction()
 	button = guienv:AddButton( 160, 80, 160 + 140, 80 + 20, windowg:Self(), -1, "Вернуть кредит" )
 	button:SetAction( "sworkReturnLoan" )
 	
-	local label = CLuaLabel( guienv:AddLabel( "Доступная сумма: "..summ, 10, 110, 10 + 280, 110 + 20, -1, windowg:Self() ) )
+	local label = guienv:AddLabel( "Доступная сумма: "..summ, 10, 110, 10 + 280, 110 + 20, -1, windowg:Self() )
 	label:SetName( WNDLOANACTION_MAXSUM_LABEL )
 	
 	local width = 0

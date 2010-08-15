@@ -256,7 +256,7 @@ function ZoomScrollBarChanged( ptr )
 	end
 	
 	local scrollBar = CLuaScrollBar( ptr )
-	local camera = CLuaCamera( sceneManager:GetActiveCamera() )
+	local camera = sceneManager:GetActiveCamera()
 		
 	camera:SetZoom( scrollBar:GetPos() * 10 )
 	
@@ -269,7 +269,7 @@ function RotateCameraFromMiniMap( ptr )
 	end
 		
 	local miniMap = CLuaMiniMap( ptr )
-	local camera = CLuaCamera( sceneManager:GetActiveCamera() )
+	local camera = sceneManager:GetActiveCamera()
 	x, y, z = camera:GetRotate()
 	
 	camera:SetRotate( x + miniMap:GetAngleOffset(), y, z )
@@ -277,14 +277,8 @@ end
 
 function CameraScaleTrackBarVisibleToggle( ptr )
 	
-	local b = guienv:GetElementByID( ID_SCALETRACKBAR )
-	
-	if b then
-		local scrb = CLuaScrollBar( b )
-	
-		scrb:SetVisible( not scrb:GetVisible() )
-	end
-
+	local scrb = CLuaScrollBar( guienv:GetElementByID( ID_SCALETRACKBAR ) )
+	scrb:SetVisible( not scrb:GetVisible() )
 end
 
 function sworkApplicationClose( ptr )

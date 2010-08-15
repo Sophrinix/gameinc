@@ -20,6 +20,11 @@
 #include "NrpTranslate.h"
 #include "HTMLEngine.h"
 #include "LuaPlant.h"
+#include "LuaGuiEnvironment.h"
+#include "LuaApplication.h"
+#include "LuaBrowser.h"
+#include "LuaDriver.h"
+#include "LuaSceneManager.h"
 
 using namespace irr;
 
@@ -194,6 +199,7 @@ int GetGuiEnvironment( lua_State *vm )
 	luaL_argcheck(vm, argc == 0, 0, "Function NrpGetGuiEnvironment not need any parameter");
 
 	lua_pushlightuserdata( vm, (void*)CNrpEngine::Instance().GetGuiEnvironment() );
+	Luna< CLuaGuiEnvironment >::constructor( vm );
 
 	return 1;
 }
@@ -204,6 +210,7 @@ int GetBrowser( lua_State *vm )
 	luaL_argcheck(vm, argc == 0, 0, "Function GetBrowser not need any parameter");
 
 	lua_pushlightuserdata( vm, &HTMLEngine::Instance() );
+	Luna< CLuaBrowser >::constructor( vm );
 
 	return 1;
 }
@@ -214,6 +221,7 @@ int GetVideoDriver( lua_State *vm )
 	luaL_argcheck(vm, argc == 0, 0, "Function GetVideoDriver not need any parameter");
 
 	lua_pushlightuserdata( vm, (void*)CNrpEngine::Instance().GetVideoDriver() );
+	Luna< CLuaDriver >::constructor( vm );
 
 	return 1;
 }
@@ -224,6 +232,7 @@ int GetSceneManager( lua_State* vm )
 	luaL_argcheck(vm, argc == 0, 0, "Function GetSceneManager not need any parameter");
 
 	lua_pushlightuserdata( vm, (void*)CNrpEngine::Instance().GetSceneManager() );
+	Luna< CLuaSceneManager >::constructor( vm );
 
 	return 1;
 }
@@ -330,6 +339,7 @@ int GetApplication( lua_State* vm )
 	luaL_argcheck(vm, argc == 0, 0, "Function GetApplication not need any parameter");
 
 	lua_pushlightuserdata( vm, (void*)&CNrpApplication::Instance() );
+	Luna< CLuaApplication >::constructor( vm );
 
 	return 1;	
 }

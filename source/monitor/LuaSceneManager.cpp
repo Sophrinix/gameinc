@@ -9,6 +9,7 @@
 #include "nrpLoadingScreen.h"
 #include "NrpWorldConfig.h"
 #include "nrpScene.h"
+#include "LuaCamera.h"
 
 using namespace irr;
 
@@ -63,7 +64,10 @@ int CLuaSceneManager::GetActiveCamera( lua_State *vm )
 
 	void* cam = NULL;
 	IF_OBJECT_NOT_NULL_THEN cam = (void*)object_->getActiveCamera();
+
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, cam );
+	Luna< CLuaCamera >::constructor( vm );
 
 	return 1;
 }

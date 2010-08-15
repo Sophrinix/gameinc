@@ -12,6 +12,7 @@
 #include "LuaWindow.h"
 #include "LuaEdit.h"
 #include "LuaButton.h"
+#include "LuaLabel.h"
 
 using namespace irr;
 
@@ -422,7 +423,9 @@ int CLuaGuiEnvironment::AddLabel( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = object_->addStaticText( StrToWide( text ).c_str(), rectangle, false, true, parent, id, false );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
+	Luna< CLuaLabel >::constructor( vm );
 
 	return 1;
 }

@@ -413,7 +413,6 @@ end
 
 local function ShowAvaibleScenarioAndLicense( tab )
 	local company = applic:GetPlayerCompany()
-	local applic = CLuaApplication( NrpGetApplication() )
 	local maxScenarioNum = applic:GetTechNumber()
 	local showedLinks = 0
 	
@@ -620,7 +619,6 @@ function sworkCreateGameProject( ptr )
 	local windowg = CLuaWindow( guienv:GetElementByName( WINDOW_PROJECTWIZ_NAME ) )
 	windowg:Remove()
 	
-	local applic = CLuaApplication( NrpGetApplication() )
 	project:Create( "defaultGame" )
 	windowg = guienv:AddWindow( "GameWizzard", 0, 0, width, height, -1, guienv:GetRootGUIElement() )
 	windowg:SetName( WINDOW_PROJECTWIZ_NAME )
@@ -629,7 +627,7 @@ function sworkCreateGameProject( ptr )
 	btn:SetAction( "sworkWindowCreateGameProjectClose" )
 	
 	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 10, 20, 10 + 140, 20 + 20, ID_PROJECTQUALITY ) )
-	local volCodeLabel = CLuaLabel( guienv:AddLabel( "Код", width / 2, 20, width, 20 + 20, ID_CODEVOLUME, windowg:Self() ) )
+	local volCodeLabel = guienv:AddLabel( "Код", width / 2, 20, width, 20 + 20, ID_CODEVOLUME, windowg:Self() )
 	
 	local tabContol = guienv:AddTabControl( 10, 40, 790, 590, -1, windowg:Self() )
 	pages[ "name" ] = guienv:AddTab( tabContol, pagesName[ "name" ], pagesID[ "name" ] ) --name

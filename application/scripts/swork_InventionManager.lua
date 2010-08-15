@@ -1,7 +1,7 @@
 local windowIM = nil
-local labelInvestiment = CLuaLabel( nil )
-local labelInventionSpeed = CLuaLabel( nil )
-local labelInventionPrognoseFinish = CLuaLabel( nil )
+local labelInvestiment = nil
+local labelInventionSpeed = nil
+local labelInventionPrognoseFinish = nil
 local listInventionStuff = CLuaListBox( nil )
 local currentInvention = CLuaInvention( nil )
 local windowUserSelect = nil
@@ -83,18 +83,18 @@ function sworkShowInventionManager( techName, companyName )
 	
 	guienv:AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT", 45, ypos - 15, 
 													    btnWidth - 45, ypos + 15, -1, windowIM:Self() )
-	labelInvestiment:SetObject(  guienv:AddLabel(  currentInvention:GetInvestiment(), 45, ypos + 16, 
-													    btnWidth - 45, ypos + 46, -1, windowIM:Self() ))
+	labelInvestiment = guienv:AddLabel(  currentInvention:GetInvestiment(), 45, ypos + 16, 
+													    btnWidth - 45, ypos + 46, -1, windowIM:Self() )													
 	
 	ypos = ypos + 55
 	--метка с отображением скорости исследований
-	labelInventionSpeed:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED", 10, ypos, 
-													    btnWidth, ypos + 30, -1, windowIM:Self()) )
+	labelInventionSpeed = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED", 10, ypos, 
+													    btnWidth, ypos + 30, -1, windowIM:Self())
 	
 	ypos = ypos + 55
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionPrognoseFinish:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", 10, ypos, 
-													    btnWidth, ypos + 30, -1, windowIM:Self() ) )
+	labelInventionPrognoseFinish = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", 10, ypos, 
+													    btnWidth, ypos + 30, -1, windowIM:Self() )
 	
 	--список подключенных к проекту людей
 	listInventionStuff:SetObject( guienv:AddComponentListBox( btnWidth + 10, 50, width, height - 45, -1, windowIM:Self()) )

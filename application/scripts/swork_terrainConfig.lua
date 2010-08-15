@@ -32,7 +32,7 @@ function AddTerrain()
 	local selector = sceneManager:CreateTerrainTriangleSelector( terrain:Self(), 0 )
 	terrain:SetTriangleSelector( selector ) 
 								   
-	local camera = CLuaCamera( sceneManager:GetActiveCamera() )
+	local camera = sceneManager:GetActiveCamera()
 	camera:AddTerrain( terrain:Self() )
 	
 	sceneManager:LinkTerrain( terrain:Self() )

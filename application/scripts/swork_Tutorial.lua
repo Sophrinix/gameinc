@@ -5,7 +5,7 @@ function StartDescriptionGame()
 	browser:Show()
 	browser:Navigate( GetHelpLinkForObject( officeNodeName ) )
 	
-	local camera = CLuaCamera( sceneManager:GetActiveCamera() )
+	local camera = sceneManager:GetActiveCamera()
 	--camera:MoveTo( sceneManager:GetSceneNodeByName( officeNodeName ), 300 )
 end
 

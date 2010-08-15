@@ -5,8 +5,8 @@ NrpInitializeLoginScene()
 
 --создание названий полей ввода
 
-local label = CLuaLabel( guienv:AddLabel( "Профиль:" .. applic:GetCurrentProfile(), scrWidth / 2 - 150, scrHeight - 170,
-										  scrWidth / 2 - 150 + 150, scrHeight - 150, -1, nil ) )
+local label = guienv:AddLabel( "Профиль:" .. applic:GetCurrentProfile(), scrWidth / 2 - 150, scrHeight - 170,
+										  scrWidth / 2 - 150 + 150, scrHeight - 150, -1, nil )
 label:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 )
 								
 --создание полей ввода				

@@ -126,12 +126,12 @@ function AddMenuWindow()
 										    "AdvancedFunctionFrameToggleVisible", "media/top_menu/star" )
 	x = 335;  btnCnt = btnCnt + 1
 	--создание метки с часами
-	local timeLabel = CLuaLabel( guienv:AddLabel( "Время", x - 140, imgTop, x + 40, imgTop + 15, ID_DATETIME_LABEL, window:Self() ) )
+	local timeLabel = guienv:AddLabel( "Время", x - 140, imgTop, x + 40, imgTop + 15, ID_DATETIME_LABEL, window:Self() )
 	timeLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
 	mainMenuButtons[ btnCnt ] = timeLabel:Self()
 	
 	btnCnt = btnCnt + 1
-	local userLabel = CLuaLabel( guienv:AddLabel( "UserName", x - 140, imgTop + 17, x + 40, imgTop + 32, ID_USERNAME_LABEL, window:Self() ) )
+	local userLabel = guienv:AddLabel( "UserName", x - 140, imgTop + 17, x + 40, imgTop + 32, ID_USERNAME_LABEL, window:Self() )
 	userLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
 	mainMenuButtons[ btnCnt ] = userLabel:Self()
 	

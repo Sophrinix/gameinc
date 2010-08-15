@@ -4,13 +4,13 @@ local windowShop = nil
 local listboxGames = CLuaListBox( nil )
 local buttonAnonceGame = CLuaButton( nil )
 local imageGamePreview = CLuaImage( nil )
-local labelGameName = CLuaLabel( nil )
-local labelLastMonthSale = CLuaLabel( nil )
-local labelCurrentMonthSale = CLuaLabel( nil )
-local labelAllTimeSale = CLuaLabel( nil )
+local labelGameName = nil
+local labelLastMonthSale = nil
+local labelCurrentMonthSale = nil
+local labelAllTimeSale = nil
 local prgRating = CLuaProgressBar( nil )
 local btnDecreaseGamePrice = CLuaButton( nil )
-local labelGamePrice = CLuaLabel( nil )
+local labelGamePrice = nil
 local btnIncreaseGamePrice = CLuaButton( nil )
 local listboxCompanyGame = CLuaListBox( nil )
 local anoncePictureFlow = CLuaPictureFlow( nil )
@@ -94,17 +94,17 @@ function sworkCreateGameInSaleWindow( ptr )
 	--название игры
 	local hw = width / 2 + 20
 	local hh = height / 2 + 20
-	labelGameName:SetObject( guienv:AddLabel( "Название: ", hw + 20, hh + 20, width - 20, hh + 40, -1, windowShop:Self() ) )
+	labelGameName = guienv:AddLabel( "Название: ", hw + 20, hh + 20, width - 20, hh + 40, -1, windowShop:Self() )
 	
 	--продаж за прошлый месяц
-	labelLastMonthSale:SetObject( guienv:AddLabel( "Продаж за прошлый месяц:", hw + 20, hh + 50, 
-												   width - 20, hh + 70, -1, windowShop:Self() ) )
+	labelLastMonthSale = guienv:AddLabel( "Продаж за прошлый месяц:", hw + 20, hh + 50, 
+												   width - 20, hh + 70, -1, windowShop:Self() )
 	--продаж за текущий месяц
-	labelCurrentMonthSale:SetObject( guienv:AddLabel( "Продаж за этот месяц:", hw + 20, hh + 80, 
-													  width - 20, hh + 100, -1, windowShop:Self() ) )
+	labelCurrentMonthSale = guienv:AddLabel( "Продаж за этот месяц:", hw + 20, hh + 80, 
+													  width - 20, hh + 100, -1, windowShop:Self() )
 	--всего продано копий
-	labelAllTimeSale:SetObject( guienv:AddLabel( "Продаж за все время:", hw + 20, hh + 110, 
-													  width - 20, hh + 130, -1, windowShop:Self() ) )
+	labelAllTimeSale = guienv:AddLabel( "Продаж за все время:", hw + 20, hh + 110, 
+													  width - 20, hh + 130, -1, windowShop:Self() )
 	--текущий рэйтинг игры
 	prgRating:SetObject( guienv:AddProgressBar( windowShop:Self(), hw + 20, hh + 140, 
 													width - 20, hh + 160, -1 ) )
@@ -116,8 +116,8 @@ function sworkCreateGameInSaleWindow( ptr )
 									windowShop:Self(), -1, "-" )
 	btnDecreaseGamePrice:SetAction( "sworkWindowShopDecreaseGamePrice" ) 
 									
-	labelGamePrice:SetObject( guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", hw + 40, hh + 170, 
-													    width - 40, hh + 190, -1, windowShop:Self() ) )	
+	labelGamePrice = guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", hw + 40, hh + 170, 
+													    width - 40, hh + 190, -1, windowShop:Self() )
 													 
 	btnIncreaseGamePrice = guienv:AddButton(  width - 40, hh + 170, width - 20, hh + 190, 
 									windowShop:Self(), -1, "+" )
