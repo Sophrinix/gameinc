@@ -18,6 +18,7 @@
 #include "LuaLinkBox.h"
 #include "LuaComponentListBox.h"
 #include "LuaProgressBar.h"
+#include "LuaPictureFlow.h"
 
 using namespace irr;
 
@@ -730,7 +731,10 @@ int CLuaGuiEnvironment::AddPictureFlow( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 		elm = (gui::IGUIElement*)object_->addPictureFlow( rectangle, pictureRect, iid, parent );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, elm );
+	Luna< CLuaPictureFlow >::constructor( L );
+
 	return 1;	
 }
 

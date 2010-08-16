@@ -21,7 +21,7 @@ function sworkUpdateCompanyPortfelle()
 		   return 
 		end
 		
-		local config = CLuaProject( company:GetFromPortfelle( i - 1 ) )
+		local config = company:GetFromPortfelle( i - 1 )
 		local linkModule = guienv:AddLinkBox( config:GetName(), 10, 50, 10 + 50, 50 + 50, -1, portfelleWnd:Self() )
 		linkModule:SetData( config:Self() )
 		--linkModule:

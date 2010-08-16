@@ -13,7 +13,7 @@ local btnDecreaseGamePrice = CLuaButton( nil )
 local labelGamePrice = nil
 local btnIncreaseGamePrice = CLuaButton( nil )
 local listboxCompanyGame = CLuaListBox( nil )
-local anoncePictureFlow = CLuaPictureFlow( nil )
+local anoncePictureFlow = nil
 local windowAnonce = nil
 local selectedGame = nil
 local lastTimeParamsUpdate = GetTickCount()
@@ -129,7 +129,7 @@ function sworkWindowShopAnonceGame( ptr )
 						  				 width / 2 + 200, height / 2 + 120, 
 								         -1, windowShop:Self() ) 
 	
-	anoncePictureFlow = CLuaPictureFlow( guienv:AddPictureFlow( 10, 10, 390, 200, -1, windowAnonce:Self() ) )
+	anoncePictureFlow = guienv:AddPictureFlow( 10, 10, 390, 200, -1, windowAnonce:Self() )
 	anoncePictureFlow:SetPictureRect( 0, 0, 90, 90 )
 	
 	for i=1, company:GetGameNumber() do

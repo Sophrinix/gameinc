@@ -4,7 +4,7 @@ local currentGame = nil
 local currentAddon = CLuaTech( nil )
 local wndBoxPreview = nil
 local wndAvaibleAddons = nil
-local boxImagePictureFlow = CLuaPictureFlow( nil )
+local boxImagePictureFlow = nil
 
 local windowImageViewer = CLuaWindow( nil )
 
@@ -131,9 +131,9 @@ end
 local function localCreateBoxImagePictureFlow()
 	boxImagePictureFlow:Remove()
 	
-	boxImagePictureFlow = CLuaPictureFlow( guienv:AddPictureFlow(  20, 20, 
-	   									                           width - 200, height * 0.7, 
-	   									                           -1, wndGBM:Self() ) )
+	boxImagePictureFlow = guienv:AddPictureFlow(  20, 20, 
+	   									          width - 200, height * 0.7, 
+	   									          -1, wndGBM:Self() )
 	boxImagePictureFlow:SetPictureRect( 0, 0, (width - 200) / 3, (width - 200) / 3 )
 
 	for i=1, currentGame:GetBoxImageNumber() do

@@ -10,6 +10,7 @@
 #include <assert.h>
 #include "LuaGame.h"
 #include "LuaUser.h"
+#include "LuaProject.h"
 
 namespace nrp
 {
@@ -282,7 +283,10 @@ int CLuaCompany::GetFromPortfelle( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetFromPortfelle( index );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
+	Luna< CLuaProject >::constructor( L );
+
 	return 1;	
 }
 
