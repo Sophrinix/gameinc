@@ -5,7 +5,7 @@ mode[ "Композиторы" ] = "composer"
 mode[ "Тестировщики" ] = "tester"
 --"coder" "designer" "composer" "tester"
 
-local currentEmployer = CLuaUser( nil )
+local currentEmployer = nil
 local currentProject = CLuaProject( nil )
 local currentComponent = CLuaDevelopModule( nil )
 local localBtnChangeLider = CLuaButton( nil )
@@ -114,25 +114,25 @@ local function ShowWindowUserInfo( userPtr )
 	windowg:SetDraggable( false )
 
 	guienv:AddLabel( "Опыт", 5, 30, widdddd, 30 + 20, -1, windowg:Self() )
-	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 50, 30, widdddd - 5, 30 + 20, -1 ) )
+	local prg = guienv:AddProgressBar( windowg:Self(), 50, 30, widdddd - 5, 30 + 20, -1 )
 	prg:SetPosition( currentEmployer:GetParam( "knowledgeLevel" ) )						   
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 	
 	guienv:AddLabel( "Качество", 5, 50, widdddd, 50 + 20, -1, windowg:Self() )
-	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 55, widdddd - 5, 55 + 20, -1 ) )
+	prg = guienv:AddProgressBar( windowg:Self(), 50, 55, widdddd - 5, 55 + 20, -1 )
 	prg:SetPosition( currentEmployer:GetParam("codeQuality") ) 	
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 
     guienv:AddLabel( "Скорость", 5, 70, widdddd, 70 + 20, -1, windowg:Self() )
-	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 80, widdddd - 5, 80 + 20, -1 ) )
+	prg = guienv:AddProgressBar( windowg:Self(), 50, 80, widdddd - 5, 80 + 20, -1 )
 	prg:SetPosition( currentEmployer:GetParam("codeSpeed") ) 
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 
     guienv:AddLabel( "Устойчивость", 5, 90, widdddd, 90 + 20, -1, windowg:Self() )
-	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 105, widdddd - 5, 105 + 20, -1 ) )
+	prg = guienv:AddProgressBar( windowg:Self(), 50, 105, widdddd - 5, 105 + 20, -1 )
 	prg:SetPosition( currentEmployer:GetParam("stability") ) 
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
@@ -210,7 +210,7 @@ local function ShowAvaibleCompanyUsers()
 	
 	cmbx:Clear()
 	for i=1, maxuser do
-		local user = CLuaUser( company:GetUser( i-1 ) )
+		local user = company:GetUser( i-1 )
 		if modeUserView == user:GetTypeName() then
 			cmbx:AddItem( user:GetName(), user:Self() )
 		end

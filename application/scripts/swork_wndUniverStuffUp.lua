@@ -9,7 +9,7 @@ local modeUserView = "coder"
 
 local width = 800
 local height = 600
-local userToUp = CLuaUser( nil )
+local userToUp = nil
 
 function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 	local user = CLuaUser( userPtr )
@@ -21,25 +21,25 @@ function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 	windowg:SetDraggable( false )
 
 	guienv:AddLabel( "Опыт", 5, 30, width, 30 + 20, -1, windowg:Self() )
-	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 50, 30, width - 5, 30 + 20, -1 ) )
+	local prg = guienv:AddProgressBar( windowg:Self(), 50, 30, width - 5, 30 + 20, -1 )
 	prg:SetPosition( user:GetParam( "knowledgeLevel" ) )						   
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 	
 	guienv:AddLabel( "Качество", 5, 50, width, 50 + 20, -1, windowg:Self() )
-	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 55, width - 5, 55 + 20, -1 ) )
+	prg = guienv:AddProgressBar( windowg:Self(), 50, 55, width - 5, 55 + 20, -1 )
 	prg:SetPosition( user:GetParam("codeQuality") ) 	
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 
     guienv:AddLabel( "Скорость", 5, 70, width, 70 + 20, -1, windowg:Self() )
-	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 80, width - 5, 80 + 20, -1 ) )
+	prg = guienv:AddProgressBar( windowg:Self(), 50, 80, width - 5, 80 + 20, -1 )
 	prg:SetPosition( user:GetParam("codeSpeed") ) 
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
 
     guienv:AddLabel( "Устойчивость", 5, 90, width, 90 + 20, -1, windowg:Self() )
-	prg:SetObject( guienv:AddProgressBar( windowg:Self(), 50, 105, width - 5, 105 + 20, -1 ) )
+	prg = guienv:AddProgressBar( windowg:Self(), 50, 105, width - 5, 105 + 20, -1 )
 	prg:SetPosition( user:GetParam("stability") ) 
 	prg:SetImage( "media/starprogressbarB.png" )
 	prg:SetFillImage( "media/starprogressbar.png" )
@@ -55,7 +55,7 @@ function sworkUpEmployer( ptr )
 	local windowg = CLuaWindow( button:GetParent() )
 	local name = windowg:GetText() 
 	
-	userToUp:SetObject( applic:GetUserByName( name ) )
+	userToUp = applic:GetUserByName( name )
 	if userToUp:GetParam( "contractMoney" ) > 0 then 
 	    local money = userToUp:GetParam( "contractMoney" ) * userToUp:GetParam( "wantMoney" )
 		guienv:MessageBox( "Деньги за контракт $" .. money, true, true, "sworkEmployContractUser", "" )
@@ -82,7 +82,7 @@ local function ShowAvaibleEmployers( ptr )
 	Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleEmployers:appusers" .. maxuser )
 	
 	for i=1, maxuser do
-		local user = CLuaUser( applic:GetUser( i-1 ) )
+		local user = applic:GetUser( i-1 )
 	
 		Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleEmployers:user=" .. user:GetName() .. " type=" .. user:GetTypeName() )
 		if modeUserView == user:GetTypeName() then

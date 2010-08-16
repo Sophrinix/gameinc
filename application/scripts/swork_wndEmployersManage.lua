@@ -24,7 +24,7 @@ local function ShowAvaibleEmployersToManage()
 	
 	listBoxCompanyEmployers:Clear()
 	for i=1, maxuser do
-		local user = CLuaUser( company:GetUser( i-1 ) )
+		local user = company:GetUser( i-1 )
 		
 		if modeUserView == user:GetTypeName() then
 			listBoxCompanyEmployers:AddItem( user:GetName(), user:Self() )
@@ -124,7 +124,7 @@ end
 function sworkWindowManageEmployersChangerUserType( ptr )
 	local button = CLuaButton( ptr )
 	modeUserView = mode[ button:GetText() ] 
-	currentEmployer:SetObject( nil )
+	currentEmployer = nil
 	
 	ShowAvaibleEmployersToManage()
 end

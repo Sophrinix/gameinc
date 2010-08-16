@@ -9,6 +9,7 @@
 #include "NrpDevelopGame.h"
 #include <assert.h>
 #include "LuaGame.h"
+#include "LuaUser.h"
 
 namespace nrp
 {
@@ -200,7 +201,10 @@ int CLuaCompany::GetUser( lua_State* L )
 	IUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN	user = object_->GetUser( index );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
+	Luna< CLuaUser >::constructor( L );
+
 	return 1;
 }
 

@@ -626,7 +626,7 @@ function sworkCreateGameProject( ptr )
 	local btn = windowg:GetCloseButton()
 	btn:SetAction( "sworkWindowCreateGameProjectClose" )
 	
-	local prg = CLuaProgressBar( guienv:AddProgressBar( windowg:Self(), 10, 20, 10 + 140, 20 + 20, ID_PROJECTQUALITY ) )
+	local prg = guienv:AddProgressBar( windowg:Self(), 10, 20, 10 + 140, 20 + 20, ID_PROJECTQUALITY )
 	local volCodeLabel = guienv:AddLabel( "Код", width / 2, 20, width, 20 + 20, ID_CODEVOLUME, windowg:Self() )
 	
 	local tabContol = guienv:AddTabControl( 10, 40, 790, 590, -1, windowg:Self() )

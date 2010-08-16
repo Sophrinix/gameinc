@@ -17,6 +17,7 @@
 #include "LuaComboBox.h"
 #include "LuaLinkBox.h"
 #include "LuaComponentListBox.h"
+#include "LuaProgressBar.h"
 
 using namespace irr;
 
@@ -529,7 +530,9 @@ int CLuaGuiEnvironment::AddProgressBar( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = object_->addProgressBar( parent, iid, rectangle );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
+	Luna< CLuaProgressBar >::constructor( vm );
 
 	return 1;
 }

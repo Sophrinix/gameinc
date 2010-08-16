@@ -12,6 +12,7 @@
 #include "NrpGameImageList.h"
 
 #include "LuaCompany.h"
+#include "LuaUser.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -200,7 +201,9 @@ int CLuaApplication::GetUser( lua_State* L )
 	IUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN	user = object_->GetUser( userNumber );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
+	Luna< CLuaUser >::constructor( L );
 	return 1;
 }
 
@@ -226,7 +229,9 @@ int CLuaApplication::GetUserByName( lua_State* L )
 		}
 	}
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
+	Luna< CLuaUser >::constructor( L );
 	return 1;	
 }
 

@@ -106,8 +106,8 @@ function sworkCreateGameInSaleWindow( ptr )
 	labelAllTimeSale = guienv:AddLabel( "Продаж за все время:", hw + 20, hh + 110, 
 													  width - 20, hh + 130, -1, windowShop:Self() )
 	--текущий рэйтинг игры
-	prgRating:SetObject( guienv:AddProgressBar( windowShop:Self(), hw + 20, hh + 140, 
-													width - 20, hh + 160, -1 ) )
+	prgRating = guienv:AddProgressBar( windowShop:Self(), hw + 20, hh + 140, 
+													width - 20, hh + 160, -1 )
 	--prgRating:SetImage( )
 	--prgRating:SetFillImage( )
 

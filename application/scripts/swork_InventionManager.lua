@@ -34,7 +34,8 @@ end
 
 local function localFillListInvnentionStuff()
 	for i=1, currentInvention:GetUserNumber() do
-		listInventionStuff:AddItem( "Unknown", currentInvention:GetUser( i-1 ) )
+		local user = currentInvention:GetUser( i-1 )
+		listInventionStuff:AddItem( "Unknown", user:Self() )
 	end
 end
 
@@ -49,7 +50,7 @@ function sworkInventionManagerAddPeopleToInvention( ptr )
 	local lbxUsers = guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect:Self() )
 	
 	for i=1, company:GetUserNumber() do
-		local user = CLuaUser( company:GetUser( i-1 ) )
+		local user = company:GetUser( i-1 )
 		if not user:HaveWork() then
 			lbxUsers:AddItem( "Unknown", user:Self() )
 		end
