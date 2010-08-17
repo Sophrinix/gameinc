@@ -110,3 +110,8 @@ function sworkShowInventionManager( techName, companyName )
 	local btnRemPeople = guienv:AddButton( btnWidth + 10, height - 40, width - 10, height - 10, windowIM:Self(), -1, "Убрать" )
 	btnRemPeople:SetAction( "sworkInventionManagerRemPeopleFromInvention" )	
 end
+
+
+function sworkCreateWindowCompanyInventionManager()
+	
+end

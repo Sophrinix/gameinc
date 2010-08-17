@@ -18,10 +18,16 @@ public:
 
 	virtual void Update( IUser* ptrUser );
 	void CheckParams();
+	IUser* GetUser( size_t index );
+	int AddUser( IUser* user );
+	int RemoveUser( std::string userName );
 
 private:
 	CNrpInvention(void) : CNrpProjectModule( 0, NULL ) {};
 	int _GetRealPrice( CNrpTechnology* tech );
+
+	typedef std::vector< IUser* > USERS_LIST;
+	USERS_LIST _users;
 };
 
 }//end namespace nrp

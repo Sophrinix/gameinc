@@ -7,6 +7,7 @@
 #include "IUser.h"
 #include "NrpApplication.h"
 #include "NrpCompany.h"
+#include "LuaUser.h"
 
 namespace nrp
 {
@@ -28,6 +29,8 @@ Luna< CLuaInvention >::RegType CLuaInvention::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetSpeed ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPrognoseDateFinish ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, CheckParams ),
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUserNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUser ),
 	{0,0}
 };
 
@@ -149,5 +152,28 @@ int CLuaInvention::CheckParams( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	object_->CheckParams();
 
 	return 1;
+}
+
+int CLuaInvention::GetUserNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetUserNumber", USERNUMBER, 0 ) );
+	return 1;
+}
+
+int CLuaInvention::GetUser( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaInvention::Load not GetUser parameter");
+
+	int index = lua_tointeger( L, 2 );
+	IUser* user = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN	user = object_->GetUser( index );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, user );
+	Luna< CLuaUser >::constructor( L );
+
+	return 1;	
 }
 }//namespace nrp

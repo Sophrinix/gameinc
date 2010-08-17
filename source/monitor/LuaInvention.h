@@ -31,6 +31,8 @@ public:
 	int GetSpeed( lua_State* L );
 	int GetPrognoseDateFinish( lua_State* L );
 	int CheckParams( lua_State* L );
+	int GetUserNumber( lua_State* L );
+	int GetUser( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaInvention"; }	
 };

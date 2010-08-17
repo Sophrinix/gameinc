@@ -6,6 +6,7 @@ mode[ "Тестировщики" ] = "tester"
 --"coder" "designer" "composer" "tester"
 
 local modeUserView = "coder"
+local windowUpEmployer = nil
 
 local width = 800
 local height = 600
@@ -63,6 +64,7 @@ function sworkUpEmployer( ptr )
 	end
 	
 	sworkEmployContractUser()
+	windowg:Remove()
 end
 
 function sworkEmployContractUser()
@@ -101,31 +103,38 @@ local function ShowAvaibleEmployers( ptr )
 end
 
 function sworkCreateEmployersWindow( ptr )
-	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYER_SELECT_ID ) )
+	windowUpEmployer = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYER_SELECT_ID ) )
 	
-	if windowg:Empty() == 1 then
-		windowg = guienv:AddWindow( "", 0, 0, 800, 600, WINDOW_EMPLOYER_SELECT_ID, guienv:GetRootGUIElement() )
+	if windowUpEmployer:Empty() == 1 then
+		windowUpEmployer = guienv:AddWindow( "", 0, 0, scrWidth, scrHeight, WINDOW_EMPLOYER_SELECT_ID, guienv:GetRootGUIElement() )
 	else
 		local elm = CLuaElement( windowg:Self() )
 		elm:RemoveChilds()
 	end
 	
-	local btn = windowg:GetCloseButton()
+	local btn = windowUpEmployer:GetCloseButton()
 	btn:SetVisible( false )
 	
-	local button = guienv:AddButton( 10, 10, 200, 100, windowg:Self(), -1, "Программисты" )
+	local button = guienv:AddButton( 10, 10, 200, 100, windowUpEmployer:Self(), -1, "Программисты" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
-	button = guienv:AddButton( 210, 10, 400, 100, windowg:Self(), -1, "Дизайнеры" )
+	button = guienv:AddButton( 210, 10, 400, 100, windowUpEmployer:Self(), -1, "Дизайнеры" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 
-	button = guienv:AddButton( 410, 10, 600, 100, windowg:Self(), -1, "Композиторы" )
+	button = guienv:AddButton( 410, 10, 600, 100, windowUpEmployer:Self(), -1, "Композиторы" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
-	button = guienv:AddButton( 610, 10, 800, 100, windowg:Self(), -1, "Тестировщики" )
+	button = guienv:AddButton( 610, 10, 800, 100, windowUpEmployer:Self(), -1, "Тестировщики" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
-	ShowAvaibleEmployers( windowg:Self() )
+	button = guienv:AddButton( scrWidth - 60, 10, scrWidth - 10, 60, windowUpEmployer:Self(), "X" )
+	button:SetAction( "sworkWindowUpEmployerClose" )
+	
+	ShowAvaibleEmployers( windowUpEmployer:Self() )
+end
+
+function sworkWindowUpEmployerClose( ptr )
+   
 end
 
 function sworkWindowUpEmployerChangerUserType( ptr )

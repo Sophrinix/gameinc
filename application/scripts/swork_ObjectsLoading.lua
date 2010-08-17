@@ -199,12 +199,11 @@ function ApplicationLoadOfficeScene()
 	showProjectManager:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( showProjectManager:Self(), "projectManagerNode" )
 	
-	--[[local showInventionManager = CLuaSceneNode( sceneManager:GetSceneNodeByName( "inventionManagerNode" ) )
+	local showInventionManager = sceneManager:GetSceneNodeByName( "inventionManagerNode" )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showInventionManager:Self() )
 	showInventionManager:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( showInventionManager:Self(), "inventionManagerNode" )
-	--]]
-	
+		
 	local exitN = sceneManager:GetSceneNodeByName( "exitOfficeNode" )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
 	exitN:SetTriangleSelector( selector )

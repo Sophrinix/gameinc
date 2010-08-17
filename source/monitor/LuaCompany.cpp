@@ -343,6 +343,7 @@ int CLuaCompany::StartInvention( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:StartInvention need CNrptechnology parameter" );
 
 	CNrpTechnology* startTech = static_cast< CNrpTechnology* >( lua_touserdata( L, 2 ) );
+	assert( startTech != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN	CNrpApplication::Instance().StartInvention( startTech, object_ );
 

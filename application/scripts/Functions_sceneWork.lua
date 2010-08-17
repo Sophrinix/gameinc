@@ -155,7 +155,7 @@ function sworkSelectObjectOnShopScene( ptr )
 		return 0
 	end
 	
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-PLANT:Не могу найти узел для работы "..nodeName )
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-Shop:Не могу найти узел для работы "..nodeName )
 
 end
 
@@ -174,12 +174,12 @@ function sworkSelectObjectOnPlantScene( ptr )
 	end
 	
 	if nodeName == "exitPlantNode" then
-		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
+		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnPlantScene" )
 		ApplicationLoadCityScene()
 		return 0
 	end
 	
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-PLANT:Не могу найти узел для работы "..nodeName )
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-Office:Не могу найти узел для работы "..nodeName )
 end
 
 function sworkSelectObjectOnOfficeScene( ptr )
@@ -198,6 +198,11 @@ function sworkSelectObjectOnOfficeScene( ptr )
 	
 	if nodeName == "projectManagerNode" then
 		sworkCreateWindowProjectManager()
+		return 0
+	end
+	
+	if nodeName == "inventionManagerNode" then
+		sworkCreateWindowCompanyInventionManager()
 		return 0
 	end
 
@@ -226,7 +231,7 @@ function sworkSelectObjectOnUniverScene( ptr )
 		return 0
 	end
 	
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-BANK:Не могу найти узел для работы "..nodeName )
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-Univer:Не могу найти узел для работы "..nodeName )
 end
 
 function sworkSelectObjectOnBankScene( ptr )

@@ -72,6 +72,7 @@ function sworkTechMapWindowStartInvention( tech )
 	
 	btnOk = guienv:AddButton( 10, 30, 190, 30 + 20, browser:GetWindow(), -1, "Начать исследования" )
 	btnOk:SetAction( "sworkTechMapWindowAssignInventionToCompany" )
+	
 	btnCancel = guienv:AddButton( 200, 30, 390, 30 + 20, browser:GetWindow(), -1, "Закрыть" )
 	btnCancel:SetAction( "sworkTechMapWindowCloseConfirmationWindow" )
 end

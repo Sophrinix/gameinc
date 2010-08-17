@@ -34,6 +34,7 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp ) : CNrpP
 	CreateValue<int>( INVESTIMENT, 1000 );
 	CreateValue<int>( DAYLEFT, 0 );
 	CreateValue<int>( INVENTIONSPEED, 0 );
+	CreateValue<int>( USERNUMBER, 0 );
 	
 	SYSTEMTIME time;
 	memset( &time, 0, sizeof(SYSTEMTIME) );
@@ -99,5 +100,35 @@ void CNrpInvention::Update( IUser* ptrUser )
 
 	if( GetValue<float>( READYWORKPERCENT ) >= 1 )
 		CNrpApplication::Instance().InventionFinished( this );
+}
+
+IUser* CNrpInvention::GetUser( size_t index )
+{
+	assert( index < _users.size() );
+	return index < _users.size() ? _users[ index ] : NULL;
+}
+
+int CNrpInvention::AddUser( IUser* user )
+{
+	USERS_LIST::iterator pIter = _users.begin();
+	for( ; pIter != _users.end(); pIter++ )
+		if( *pIter == user )
+			return 1;
+	
+	_users.push_back( user );
+	return 0;
+}
+
+int CNrpInvention::RemoveUser( std::string userName )
+{
+	USERS_LIST::iterator pIter = _users.begin();
+	for( ; pIter != _users.end(); pIter++ )
+		if( (*pIter)->GetValueA<std::string>( NAME ) == userName )
+		{
+			_users.erase( pIter );
+			return 0;
+		}
+
+	return 1;
 }
 }//end namespace nrp
