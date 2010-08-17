@@ -6,9 +6,9 @@ mode[ "Тестировщики" ] = "tester"
 --"coder" "designer" "composer" "tester"
 
 local currentEmployer = nil
-local currentProject = CLuaProject( nil )
-local currentComponent = CLuaDevelopModule( nil )
-local localBtnChangeLider = CLuaButton( nil )
+local currentProject = nil
+local currentComponent = nil
+local localBtnChangeLider = nil
 
 local modeUserView = "coder"
 
@@ -35,7 +35,7 @@ function sworkCreateWindowProjectManager( ptr )
 	local cmpProjectNumber = company:GetDevProjectNumber()
 	LogScript( "Company DevProject number="..cmpProjectNumber )
 	for i=1, cmpProjectNumber do
-		local ptrProject = CLuaDevelopProject( company:GetDevProject( i-1 ) )
+		local ptrProject = company:GetDevProject( i-1 )
 		
 		if ptrProject:GetTechType() == PT_GAME then
 			cmbxPrj:AddItem( "Игра:" .. ptrProject:GetName(), ptrProject:Self() )	
@@ -148,10 +148,10 @@ local function ShowUnworkedGameProjectComponent( ptrProject )
 	local gp = CLuaDevelopProject( ptrProject )
 	local lbx = CLuaComponentListBox( guienv:GetElementByID( WINDOW_PRJMANAGE_COMPONENTS ) )
 	lbx:Clear()
-	local module = CLuaDevelopModule( nil )
+	local module = nil
 	
 	for i=1, gp:GetModuleNumber() do
-	    module:SetObject( gp:GetModule( i-1 ) )
+	    module = gp:GetModule( i-1 )
 		if module:Empty() == 0 then 
 		  lbx:AddItem( module:GetName(), module:Self() )	
 		end

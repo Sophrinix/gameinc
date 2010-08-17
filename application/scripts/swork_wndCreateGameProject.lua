@@ -96,7 +96,7 @@ local function CreateGenrePage( tab )
 	local maxModuleNumber = project:GetGenreModuleNumber()
 
 	if maxModuleNumber > 0 then
-		local genre = CLuaTech( project:GetGenre( 0 ) )
+		local genre = project:GetGenre( 0 )
 		local linkModule = guienv:AddLinkBox( "Жанр", 10, 50, 10 + 50, 50 + 50, 9100, tab )
 		linkModule:SetModuleType( PT_GENRE )
 		linkModule:SetData( genre:Self() )
@@ -182,7 +182,7 @@ local function CreateSoundContentPage( tab )
 
 	ShowAvaibleSoundQualityAndSoundTech( tab )
 	
-	local sq = CLuaTech( project:GetSoundQuality() )
+	local sq = project:GetSoundQuality()
 	local linkModule = guienv:AddLinkBox( "Звуковое оформление", 10, 10, 10 + 50, 10 + 50, -1, tab )
 	linkModule:SetModuleType( PT_SOUNDQUALITY )
 	linkModule:SetData( sq:Self() )
@@ -195,7 +195,7 @@ local function CreateSoundContentPage( tab )
 	local showeddLinks = 0
 	
 	for i=0, maxProjectSoundTech do
-		local tech = CLuaTech( project:GetSoundTech( i ) )
+		local tech = project:GetSoundTech( i )
 		local linkAdv = guienv:AddLinkBox( "Звук " .. i .. "/" .. maxProjectSoundTech, 
 														xoffset, 60 + showeddLinks * 50, 
 														xoffset + 50, 60 + 50 + showeddLinks * 50, 9500 + i, tab )
@@ -218,7 +218,7 @@ local function CreateVideoContentPage( tab )
 
 	ShowAvaibleVideoQualityAndVideoTech( tab )
 	
-	local vq = CLuaTech( project:GetVideoQuality() )
+	local vq = project:GetVideoQuality()
 	local linkModule = guienv:AddLinkBox( "Уровень графики", 10, 10, 10 + 50, 10 + 50, -1, tab )
 	linkModule:SetModuleType( PT_VIDEOQUALITY )
 	linkModule:SetData( vq:Self() )
@@ -231,7 +231,7 @@ local function CreateVideoContentPage( tab )
 	local showeddLinks = 0
 	
 	for i=0, maxProjectVideoTech do
-		local tech = CLuaTech( project:GetVideoTech( i ) )
+		local tech = project:GetVideoTech( i )
 		local linkAdv = guienv:AddLinkBox( "Видео " .. i .. "/" .. maxProjectVideoTech,
 														xoffset, 60 + showeddLinks * 50, 
 														xoffset + 50, 60 + 50 + showeddLinks * 50, 9400 + i, tab )
@@ -340,7 +340,7 @@ end
 local function CreateAdvContentPage( tab )
 	ShowAvaibleScriptAndMiniGames( tab )
 	
-	local se = CLuaTech(  project:GetScriptEngine() )
+	local se = project:GetScriptEngine()
 	local linkScript = guienv:AddLinkBox( "Скрипты", 10, 100, 10 + 50, 100 + 50, -1, tab )
 	linkScript:SetModuleType( PT_SCRIPTS )
 	linkScript:SetDraggable( false )
@@ -348,7 +348,7 @@ local function CreateAdvContentPage( tab )
 	if se:Empty() == 0 then linkScript:SetText( se:GetName() )	end
 	SetLuaFuncToLinkBox( linkScript, "sworkGameProjectWizzardSetScriptEngine" )
 	
-	local mg = CLuaTech( project:GetMiniGameEngine() )
+	local mg = project:GetMiniGameEngine()
 	local linkMiniGames = guienv:AddLinkBox( "Миниигры", 10, 200, 10 + 50, 200 + 50, -1, tab )
 	linkMiniGames:SetModuleType( PT_MINIGAME )
 	linkMiniGames:SetDraggable( false )
@@ -356,7 +356,7 @@ local function CreateAdvContentPage( tab )
 	if mg:Empty() == 0 then	linkMiniGames:SetText( mg:GetName() ) end
 	SetLuaFuncToLinkBox( linkMiniGames, "sworkGameProjectWizzardSetMiniGameEngine" )
 
-	local ph = CLuaTech( project:GetPhysicEngine() )
+	local ph = project:GetPhysicEngine()
 	local linkPhis = guienv:AddLinkBox( "Физика", 10, 300, 10 + 50, 300 + 50, -1, tab )
 	linkPhis:SetModuleType( PT_PHYSIC )
 	linkPhis:SetDraggable( false )
@@ -369,7 +369,7 @@ local function CreateAdvContentPage( tab )
 	local maxProjectAdvTech = project:GetAdvTechNumber()
 	
 	for i=0, maxProjectAdvTech do
-		local tech = CLuaTech( project:GetAdvTech( i ) )
+		local tech = project:GetAdvTech( i )
 		local linkAdv = guienv:AddLinkBox( tech:GetName(), xoffset, 20 + showeddLinks * 50, 
 										   xoffset + 50, 20 + 50 + showeddLinks * 50, 9200 + i, tab )
 
@@ -417,7 +417,7 @@ local function ShowAvaibleScenarioAndLicense( tab )
 	local showedLinks = 0
 	
 	for i=1, maxScenarioNum do
-		local tech = CLuaTech( applic:GetTech( i-1 ) )
+		local tech = applic:GetTech( i-1 )
 		
 		if tech:GetTechGroup() == PT_SCENARIOQUALITY then
 				local linkModule = guienv:AddLinkBox( tech:GetName(), width / 2, 10 + showedLinks * 50, 
@@ -435,7 +435,7 @@ local function ShowAvaibleScenarioAndLicense( tab )
 	local licenseNumber = 0
 	local maxLincenseNum = company:GetTechNumber()
 	for i=1, maxLincenseNum do
-		local license = CLuaTech( company:GetTech( i-1 ) )
+		local license = company:GetTech( i-1 )
 		
 		if license:GetTechGroup() == PT_LICENSE then
 				local linkModule = guienv:AddLinkBox( license:GetName(), width / 2, 10 + showedLinks * 50,
@@ -456,7 +456,7 @@ local function CreateScenarioLicensePage( tab )
 	ShowAvaibleScenarioAndLicense( tab )
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:CreateScenarioLicensePage start " )
 
-	local tech = CLuaTech( project:GetScenario() )
+	local tech = project:GetScenario()
 	local linkScenario = guienv:AddLinkBox( "Сценарий", 10, 100, 10 + 50, 100 + 50, -1, tab )
 	linkScenario:SetModuleType( PT_SCENARIOQUALITY )
 	linkScenario:SetData( tech:Self() )
@@ -465,7 +465,7 @@ local function CreateScenarioLicensePage( tab )
 	linkScenario:SetVisible( not project:HaveLicense() )
 	SetLuaFuncToLinkBox( linkScenario, "sworkGameProjectWizzardSetScenario" )
 	
-	local lic = CLuaTech( project:GetLicense() )
+	local lic = project:GetLicense()
 	local linkLicense = guienv:AddLinkBox( "Лицензия", 10, 200, 10 + 50, 200 + 50, -1, tab )
 	linkLicense:SetModuleType( PT_LICENSE )
 	linkLicense:SetData( lic:Self() )

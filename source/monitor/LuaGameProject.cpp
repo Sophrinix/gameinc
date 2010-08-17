@@ -9,14 +9,8 @@
 #include "NrpLicense.h"
 #include "NrpTechnology.h"
 #include "NrpApplication.h"
+#include "LuaTechnology.h"
 
-#define BEGIN_AUTONAME_FUNCTION(name) int CLuaGameProject::name( lua_State* L )\
-									  {  std::string functionAutoName = #name;
-#define END_AUTONAME_FUNCTION }
-
-
-#define GETTER_NUMERICAL_FUNCTION( name, func )\
-	int CLuaGameProject::name( lua_State* L ) { return GetNumericalTech_( L, #name, &CNrpGameProject::func ); }				
 
 #define SETTER_NUMERICAL_FUNCTION( name, func )\
 	int CLuaGameProject::name( lua_State* L ) { return SetNumericalTech_( L, #name, &CNrpGameProject::func ); }
@@ -80,14 +74,15 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 CLuaGameProject::CLuaGameProject(lua_State *L)	: ILuaProject(L, "CLuaGameProject")							//конструктор
 {}
 
-BEGIN_AUTONAME_FUNCTION(SetGameEngine)
+int CLuaGameProject::SetGameEngine( lua_State* L )\
+{  
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, ("Function CLuaGameProject:" + functionAutoName + "need CNrpGameEngine parameter").c_str() );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:SetGameEngine need CNrpGameEngine parameter" );
 
 	CNrpGameEngine* eng = (CNrpGameEngine*)lua_touserdata( L, 2 );
 	IF_OBJECT_NOT_NULL_THEN object_->SetGameEngine( eng );
 	return 1;	
-END_AUTONAME_FUNCTION
+}
  
 int CLuaGameProject::GetPlatformsNumber( lua_State* L )
 { lua_pushinteger( L, GetParam_<int>( L, "GetPlatformsNumber", PLATFORMNUMBER, 0 )); return 1; }
@@ -96,14 +91,18 @@ int CLuaGameProject::GetLanguagesNumber( lua_State* L )
 { lua_pushinteger( L, GetParam_<int>( L, "GetLanguagesNumber", LANGNUMBER, 0 )); return 1; }
 
 int CLuaGameProject::GetScenario( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpScenario>( L, "GetScenario", SCENARIO, NULL )); return 1; }
+{ return _TechLuaInitialize( L, "GetScenario", SCENARIO ); }
 
 int CLuaGameProject::SetScenario( lua_State* L )
 { return SetNamedTech_( L, "SetScenario", SCENARIO ); }	
 
 int CLuaGameProject::GetLicense( lua_State* L )
 { 
-	lua_pushlightuserdata( L, GetParam_<PNrpLicense>( L, "GetLicense", GLICENSE, NULL ) ); 
+	PNrpLicense lic = GetParam_<PNrpLicense>( L, "GetLicense", GLICENSE, NULL );
+	lua_pop( L, lua_gettop( L ) );
+	lua_pushlightuserdata( L, lic ); 
+	Luna< CLuaTechnology >::constructor( L );
+
 	return 1; 
 }
 
@@ -123,7 +122,8 @@ int CLuaGameProject::IsProjectReady( lua_State* L )
 { lua_pushboolean( L, GetParam_<bool>( L, "IsProjectReady", PROJECTREADY, false )); return 1; }
 
 int CLuaGameProject::GetScriptEngine( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetScriptEngine", SCRIPTENGINE, NULL )); return 1; }
+{ return _TechLuaInitialize( L, "GetScriptEngine", SCRIPTENGINE ); }
+
 int CLuaGameProject::SetScriptEngine( lua_State* L )
 { return SetNamedTech_( L, "SetScriptEngine", SCRIPTENGINE ); }	
 
@@ -137,19 +137,21 @@ int CLuaGameProject::GetCrossPlatformCode( lua_State* L )
 { lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetCrossPlatformCode", CROSSPLATFORMCODE, NULL )); return 1; }
 
 int CLuaGameProject::GetMiniGameEngine( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetMiniGameEngine", MINIGAMEENGINE, NULL )); return 1; }
+{ return _TechLuaInitialize( L, "GetMiniGameEngine", MINIGAMEENGINE ); }
+
 int CLuaGameProject::SetMiniGameEngine( lua_State* L )
 { return SetNamedTech_( L, "SetMiniGameEngine", MINIGAMEENGINE ); }
 
 int CLuaGameProject::GetPhysicEngine( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetPhysicEngine", PHYSICSENGINE, NULL )); return 1; }
+{ return _TechLuaInitialize( L, "GetPhysicEngine", PHYSICSENGINE ); }
+
 int CLuaGameProject::SetPhysicEngine( lua_State* L )
 { return SetNamedTech_( L, "SetPhysicEngine", PHYSICSENGINE ); }
 
 int CLuaGameProject::GetAdvTechNumber( lua_State* L )
 { lua_pushinteger( L, GetParam_<int>( L, "GetAdvTechNumber", ADVTECHNUMBER, NULL )); return 1; }
-int CLuaGameProject::GetVideoQuality( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetVideoQuality", GRAPHICQUALITY, NULL )); return 1; }
+
+int CLuaGameProject::GetVideoQuality( lua_State* L ) { return _TechLuaInitialize( L, "GetVideoQuality", GRAPHICQUALITY ); }
 
 int CLuaGameProject::SetVideoQuality( lua_State* L )
 { return SetNamedTech_( L, "SetVideoQuality", GRAPHICQUALITY ); }	
@@ -157,8 +159,7 @@ int CLuaGameProject::SetVideoQuality( lua_State* L )
 int CLuaGameProject::GetVideoTechNumber( lua_State* L )
 { lua_pushinteger( L, GetParam_<int>( L, "GetVideoTechNumber", VIDEOTECHNUMBER, NULL )); return 1; }
 
-int CLuaGameProject::GetSoundQuality( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetVideoQuality", SOUNDQUALITY, NULL )); return 1; }
+int CLuaGameProject::GetSoundQuality( lua_State* L ) { return _TechLuaInitialize( L, "GetVideoQuality", SOUNDQUALITY ); }
 
 int CLuaGameProject::SetSoundQuality( lua_State* L )
 { return SetNamedTech_( L, "SetSoundQuality", SOUNDQUALITY ); }	
@@ -166,16 +167,38 @@ int CLuaGameProject::SetSoundQuality( lua_State* L )
 int CLuaGameProject::GetSoundTechNumber( lua_State* L )
 { lua_pushinteger( L, GetParam_<int>( L, "GetSoundTechNumber", SOUNDTECHNUMBER, NULL )); return 1; }
 
-GETTER_NUMERICAL_FUNCTION( GetGenre, GetGenre )
+int CLuaGameProject::_TechLuaInitialize( lua_State* L, std::string funcName, std::string paramName )
+{
+	PNrpTechnology tech = GetParam_<PNrpTechnology>( L, funcName, paramName, NULL );
+	lua_pop( L, lua_gettop( L ) );
+	lua_pushlightuserdata( L, tech); 
+	Luna< CLuaTechnology >::constructor( L );
+	return 1;
+}
+
+int CLuaGameProject::GetGenre( lua_State* L )
+{
+	return GetNumericalTech_( L, "", &CNrpGameProject::GetGenre );
+}	
 SETTER_NUMERICAL_FUNCTION( SetGenre, SetGenre )
 
-GETTER_NUMERICAL_FUNCTION( GetAdvTech, GetTechnology )
+int CLuaGameProject::GetAdvTech( lua_State* L )
+{
+	return GetNumericalTech_( L, "", &CNrpGameProject::GetTechnology );
+}
+
 SETTER_NUMERICAL_FUNCTION( SetAdvTech, SetTechnology )
 
-GETTER_NUMERICAL_FUNCTION( GetVideoTech, GetVideoTech )
+int CLuaGameProject::GetVideoTech( lua_State* L )
+{
+	return GetNumericalTech_( L, "", &CNrpGameProject::GetVideoTech );
+}
 SETTER_NUMERICAL_FUNCTION( SetVideoTech, SetVideoTech )
 
-GETTER_NUMERICAL_FUNCTION( GetSoundTech, GetSoundTech )
+int CLuaGameProject::GetSoundTech( lua_State* L )
+{
+	return GetNumericalTech_( L, "", &CNrpGameProject::GetSoundTech );
+}
 SETTER_NUMERICAL_FUNCTION( SetSoundTech, SetSoundTech )
 
 int CLuaGameProject::Create( lua_State* L )
@@ -361,7 +384,10 @@ int nrp::CLuaGameProject::GetNumericalTech_( lua_State* L,
 	CNrpTechnology* tech = NULL;
 
 	IF_OBJECT_NOT_NULL_THEN tech = (object_->*Method)( idx );
+
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
+	Luna< CLuaTechnology >::constructor( L );
 
 	return 1;	
 }

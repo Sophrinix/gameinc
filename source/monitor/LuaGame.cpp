@@ -7,6 +7,7 @@
 #include "NrpTechnology.h"
 #include "NrpGameBox.h"
 #include "NrpGameImageList.h"
+#include "LuaTechnology.h"
 
 using namespace irr;
 
@@ -191,7 +192,10 @@ int CLuaGame::GetBoxAddon( lua_State* L )
 			tech = box->GetAddon( index );
 	}
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
+	Luna< CLuaTechnology >::constructor( L );
+
 	return 1;		
 }
 

@@ -58,7 +58,7 @@ local function localCreateWindowForBoxAddedAddons()
 	local w, h = wndBoxPreview:GetSize()
 		
 	for i=1, currentGame:GetBoxAddonsNumber() do
-		local tech = CLuaTech( currentGame:GetBoxAddon( i-1 ) )
+		local tech = currentGame:GetBoxAddon( i-1 )
 		local lbu = guienv:AddLinkBox( tech:GetName(), 
 													5 + (h-10) * ( i - 1 ), 5,
 													5 + (h-10) * i, h - 5,
@@ -81,7 +81,7 @@ local function localCreateWindowForBoxAvaibleAddons()
 	local columnt = 0
 	guienv:MessageBox( "Всего дополнений "..applic:GetGameBoxAddonNumber(), false, false, "", "" )
 	for i=1, applic:GetGameBoxAddonNumber() do
-		local boxAddon = CLuaTech( applic:GetGameBoxAddon( i-1 ) )
+		local boxAddon = applic:GetGameBoxAddon( i-1 )
 		if boxAddon:GetLevel() < currentGame:GetBoxLevel() and not currentGame:IsMyBoxAddon( boxAddon:GetName() ) then
 			linet = itemCount / 3
 			columnt = itemCount % 3

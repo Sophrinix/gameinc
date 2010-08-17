@@ -1513,10 +1513,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_wndReport.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_wndShop.lua"
 				>
 			</File>

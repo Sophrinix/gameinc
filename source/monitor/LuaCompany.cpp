@@ -11,6 +11,7 @@
 #include "LuaGame.h"
 #include "LuaUser.h"
 #include "LuaProject.h"
+#include "LuaDevelopProject.h"
 
 namespace nrp
 {
@@ -300,7 +301,10 @@ int CLuaCompany::GetDevProject( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetDevelopProject( index );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
+	Luna< CLuaDevelopProject >::constructor( L );
+
 	return 1;	
 }
 

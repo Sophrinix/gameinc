@@ -230,7 +230,9 @@ int CLuaTechnology::GetFutureTech( lua_State* L )
 	CNrpTechnology* tech = NULL;
 	IF_OBJECT_NOT_NULL_THEN tech = object_->GetFutureTech( index );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
+	Luna< CLuaTechnology >::constructor( L );
 	return 1;	
 }
 

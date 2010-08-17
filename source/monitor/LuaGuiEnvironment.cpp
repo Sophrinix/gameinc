@@ -19,6 +19,7 @@
 #include "LuaComponentListBox.h"
 #include "LuaProgressBar.h"
 #include "LuaPictureFlow.h"
+#include "LuaTable.h"
 
 using namespace irr;
 
@@ -97,7 +98,9 @@ int CLuaGuiEnvironment::AddTable( lua_State *vm )
 	gui::IGUITable* table = NULL;
 	IF_OBJECT_NOT_NULL_THEN table = object_->addTable( rectangle, parentElem, id, false );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)table );
+	Luna< CLuaTable >::constructor( vm );
 
 	return 1;
 }

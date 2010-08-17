@@ -3,6 +3,7 @@
 
 #include "LuaDevelopProject.h"
 #include "INrpDevelopProject.h"
+#include "LuaDevelopModule.h"
 #include <assert.h>
 
 namespace nrp
@@ -35,7 +36,9 @@ int CLuaDevelopProject::GetModule( lua_State* L )
 	int index = lua_tointeger( L, 2 );
 	IF_OBJECT_NOT_NULL_THEN prj = object_->GetModule( index );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
+	Luna< CLuaDevelopModule >::constructor( L );
 	return 1;	
 }
 }//namespace nrp

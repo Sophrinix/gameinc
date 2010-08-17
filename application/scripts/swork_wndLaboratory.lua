@@ -15,7 +15,7 @@ local function CreateTechSequence( tech )
 	end
 	
 	for i=1, tech:GetFutureTechNumber() do
-		local ftech = CLuaTech( tech:GetFutureTech( i-1 ) )
+		local ftech = tech:GetFutureTech( i-1 )
 		if ftech:Empty() == 0 then
 			Log({src=SCRIPT, dev=ODS|CON}, "Дочерняя технология="..ftech:GetName().." Родительская технология="..tech:GetName() )
 			techMap:AddTechnology( tech:Self(), ftech:Self() )
@@ -31,9 +31,9 @@ function sworkCreateGenreTechMapWindow( ptr )
 	techMap:SetObject( guienv:AddTechMap( 10, 20, width - 10, height - 10, -1, windowLabor:Self() ) )
 	techMap:AddLuaFunction( GUIELEMENT_SELECTED_AGAIN, "sworkTechMapWindowTechSelected" )
 	
-	local tech = CLuaTech( nil )
+	local tech = nil
 	for i=1, applic:GetTechNumber() do
-	    tech:SetObject( applic:GetTech( i-1 ) )
+	    tech = applic:GetTech( i-1 )
 		
 		if tech:GetTechGroup() == PT_GENRE and not tech:HaveRequireTech() then
 			techMap:AddTechnology( nil, tech:Self() )

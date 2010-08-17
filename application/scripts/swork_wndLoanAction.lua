@@ -1,5 +1,5 @@
 local company = nil 
-local bank = CLuaBank( applic:GetBank() )
+local bank = applic:GetBank()
 
 function sworkShowLoans( tabler )
 	local tbl = CLuaTable( tabler )
@@ -44,7 +44,7 @@ function sworkCreateWindowLoanAction()
 	
 	local width = 0
 	local height = 0
-	local tabler = CLuaTable( guienv:AddTable( 10, 140, 790, 600 - 50, -1, windowg:Self() ) )
+	local tabler = guienv:AddTable( 10, 140, 790, 600 - 50, -1, windowg:Self() )
 	tabler:SetName( WNDLOANACTION_TABLE )
 	width, height = tabler:GetSize()
 	

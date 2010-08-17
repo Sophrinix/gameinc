@@ -13,6 +13,8 @@
 
 #include "LuaCompany.h"
 #include "LuaUser.h"
+#include "LuaBank.h"
+#include "LuaTechnology.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -108,7 +110,10 @@ int CLuaApplication::UpdateGameTime( lua_State* L )
 
 int CLuaApplication::GetBank( lua_State* L )
 {
-	lua_pushlightuserdata( L, GetParam_<PNrpBank>(L, "GetBank", BANK, NULL ));
+	PNrpBank bank = GetParam_<PNrpBank>(L, "GetBank", BANK, NULL );
+	lua_pop( L, lua_gettop( L ) );
+	lua_pushlightuserdata( L, bank );
+	Luna< CLuaBank >::constructor( L );
 	return 1;
 }
 
@@ -170,7 +175,10 @@ int CLuaApplication::GetTech( lua_State* L )
 	CNrpTechnology* tech = NULL;
 	IF_OBJECT_NOT_NULL_THEN	tech = object_->GetTechnology( techNumber );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
+	Luna< CLuaTechnology >::constructor( L );
+
 	return 1;
 }
 
@@ -382,7 +390,9 @@ int CLuaApplication::GetGameBoxAddon( lua_State* L )
 	CNrpTechnology* tech = NULL;
 	IF_OBJECT_NOT_NULL_THEN	tech = object_->GetBoxAddon( addonNumber );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
+	Luna< CLuaTechnology >::constructor( L );
 	return 1;	
 }
 

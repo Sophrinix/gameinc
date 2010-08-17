@@ -78,6 +78,7 @@ private:
 
 	int IsParamAvaible_( lua_State* L, std::string funcName, std::string prefix );
 	int ToggleParam_( lua_State* L, std::string funcName, std::string prefix );
+	int _TechLuaInitialize( lua_State* L, std::string funcName, std::string paramName );
 };
 
 }//namespace nrp

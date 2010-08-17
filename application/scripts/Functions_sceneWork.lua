@@ -3,7 +3,6 @@
 IncludeScript("swork_wndCharts")
 IncludeScript("swork_wndChartsManage") 
 IncludeScript("swork_TargetCameraFunctions") 
-IncludeScript("swork_wndReport")
 IncludeScript("swork_wndLoanAction")
 IncludeScript("swork_wndUniverStuffUp")
 IncludeScript("swork_wndProjectManager")
