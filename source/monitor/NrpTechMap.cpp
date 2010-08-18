@@ -810,14 +810,14 @@ void CNrpTechMap::selectNew( core::position2di cell, bool onlyHover)
 	if (!skin)
 		return;
 
-	if ( cell.Y < ( AbsoluteRect.UpperLeftCorner.Y + ItemHeight ) )
+	if ( !AbsoluteRect.isPointInside( cell ) )
 		return;
 
 	core::position2di newSelected( -1, -1 );
 	// find new selected item.
 	if( ItemHeight!=0 && _ColumnWidth != 0)
 	{
-		newSelected.Y = ((cell.Y - AbsoluteRect.UpperLeftCorner.Y - ItemHeight - 1) + VerticalScrollBar->getPos()) / ItemHeight;
+		newSelected.Y = ((cell.Y - AbsoluteRect.UpperLeftCorner.Y - 1) + VerticalScrollBar->getPos()) / ItemHeight;
 		newSelected.X = ((cell.X - AbsoluteRect.UpperLeftCorner.X ) + HorizontalScrollBar->getPos()) / _ColumnWidth;
 	}
 
@@ -869,7 +869,7 @@ void CNrpTechMap::draw()
 	if ( HorizontalScrollBar && HorizontalScrollBar->isVisible() )
 		tableRect.LowerRightCorner.Y -= skin->getSize(EGDS_SCROLLBAR_SIZE);
 
-	s32 headerBottom = tableRect.UpperLeftCorner.Y + ItemHeight;
+	s32 headerBottom = tableRect.UpperLeftCorner.Y + 0;
 
 	// area of for the items (without header and without scrollbars)
 	core::rect<s32> clientClip(tableRect);
@@ -919,24 +919,57 @@ void CNrpTechMap::draw()
 			core::rect<s32> textRect(rowRect);
 			pos = rowRect.UpperLeftCorner.X;
 
-			// draw selected row background highlighted
-			if ((s32)i == _selected.Y && DrawFlags & EGTDF_ACTIVE_ROW )
-				driver->draw2DRectangle(skin->getColor(EGDC_HIGH_LIGHT), rowRect, &clientClip);
-
 			for ( u32 j = 0 ; j < Columns.size() ; ++j )
 			{
 				textRect.UpperLeftCorner.X = pos + CellWidthPadding;
 				textRect.LowerRightCorner.X = pos + Columns[j].Width - CellWidthPadding;
 
-				CNrpTechnology* ptrTech = Rows[ i ].Items[ j ].ptrTech;
+				// draw selected cell background highlighted
+				if ((s32)i == _selected.Y && j == _selected.X && DrawFlags & EGTDF_ACTIVE_ROW )
+					driver->draw2DRectangle(skin->getColor(EGDC_HIGH_LIGHT), textRect, &clientClip);
+
+				Cell& cell = Rows[ i ].Items[ j ];
+				CNrpTechnology* ptrTech = cell.ptrTech;
 				if( ptrTech != NULL )
 				{
 					video::ITexture* txs = driver->getTexture( ptrTech->GetValue<std::string>( TEXTURENORMAL ).c_str() );
-					driver->draw2DImage( txs, textRect, core::recti( 0, 0, txs->getOriginalSize().Width, txs->getOriginalSize().Height ) );
+					float scaleWidth, scaleHeight;
+					scaleWidth = textRect.getWidth() / static_cast<float>( txs->getOriginalSize().Width );
+					scaleHeight = textRect.getHeight() /  static_cast<float>( txs->getOriginalSize().Height );
+
+					//это мы нашли наименьший коэффициент для отображения
+					scaleWidth = (( scaleWidth < scaleHeight ) ? scaleWidth : scaleHeight) * 0.45f;
+					core::dimension2du hsize( static_cast< u32 >( txs->getOriginalSize().Width * scaleWidth ),
+											  static_cast< u32 >( txs->getOriginalSize().Height * scaleWidth ) );
+											
+					core::recti scaleTextRect( textRect.getCenter().X - hsize.Width, textRect.getCenter().Y - hsize.Height,
+											   textRect.getCenter().X + hsize.Width, textRect.getCenter().Y + hsize.Height	);
+					driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txs->getOriginalSize() ) );
+
+					cell.imgTechRect = scaleTextRect;
+
+					if( cell.parent )
+					{
+						core::recti pRect( cell.parent->imgTechRect );
+
+						core::position2di lPoint( pRect.LowerRightCorner.X, (pRect.LowerRightCorner.Y + pRect.UpperLeftCorner.Y) / 2 );
+						core::position2di rPoint( scaleTextRect.UpperLeftCorner.X, (scaleTextRect.LowerRightCorner.Y + scaleTextRect.UpperLeftCorner.Y) / 2 );
+
+						video::SMaterial mat, oldMat; 
+						mat.Thickness = 5; 
+						mat.AntiAliasing = true;
+						mat.EmissiveColor = irr::video::SColor(255,0,0,255); 
+						oldMat = driver->getMaterial2D();
+						driver->setMaterial(mat);
+
+						driver->draw2DLine( lPoint, rPoint, 0xff00ff00 );
+
+						driver->setMaterial( oldMat );
+					}
 				}
 
 				// draw item text
-				if ((s32)i == _selected.Y )
+				if ((s32)i == _selected.Y && j == _selected.X )
 				{
 					font->draw(Rows[i].Items[j].BrokenText.c_str(), textRect, skin->getColor(IsEnabled ? EGDC_HIGH_LIGHT_TEXT : EGDC_GRAY_TEXT), false, true, &clientClip);
 				}
@@ -955,54 +988,6 @@ void CNrpTechMap::draw()
 
 	core::rect<s32> columnSeparator(clientClip);
 	pos = scrolledTableClient.UpperLeftCorner.X;
-
-	for (u32 i = 0 ; i < Columns.size() ; ++i )
-	{
-		const wchar_t* text = Columns[i].Name.c_str();
-		u32 colWidth = Columns[i].Width;
-
-		//core::dimension2d<s32 > dim = font->getDimension(text);
-
-		core::rect<s32> columnrect(pos, tableRect.UpperLeftCorner.Y, pos + colWidth, headerBottom);
-
-		// draw column background
-		skin->draw3DButtonPaneStandard(this, columnrect, &tableRect);
-
-		// draw column seperator
-		if ( DrawFlags & EGTDF_COLUMNS )
-		{
-			columnSeparator.UpperLeftCorner.X = pos;
-			columnSeparator.LowerRightCorner.X = pos + 1;
-			driver->draw2DRectangle(skin->getColor(EGDC_3D_SHADOW), columnSeparator, &tableRect);
-		}
-
-		// draw header column text
-		columnrect.UpperLeftCorner.X += CellWidthPadding;
-		font->draw(text, columnrect, skin->getColor( IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT), false, true, &tableRect);
-
-		// draw icon for active column tab
-		if ( (s32)i == ActiveTab )
-		{
-			if ( CurrentOrdering == EGOM_ASCENDING )
-			{
-				columnrect.UpperLeftCorner.X = columnrect.LowerRightCorner.X - CellWidthPadding - ARROW_PAD / 2 + 2;
-				columnrect.UpperLeftCorner.Y += 7;
-				skin->drawIcon(this,EGDI_CURSOR_UP, columnrect.UpperLeftCorner, 0, 0, false, &tableRect);
-			}
-			else
-			{
-				columnrect.UpperLeftCorner.X = columnrect.LowerRightCorner.X - CellWidthPadding - ARROW_PAD / 2 + 2;
-				columnrect.UpperLeftCorner.Y += 7;
-				skin->drawIcon(this,EGDI_CURSOR_DOWN,columnrect.UpperLeftCorner,0,0,false,&tableRect);
-			}
-		}
-
-		pos += colWidth;
-	}
-
-	// fill up header background up to the right side
-	core::rect<s32> columnrect(pos, tableRect.UpperLeftCorner.Y, tableRect.LowerRightCorner.X , headerBottom);
-	skin->draw3DButtonPaneStandard(this, columnrect, &tableRect);
 
 	if( _rMouseDown && (GetTickCount() - _startTimeMouseDown > 1000) )
 	{
@@ -1283,17 +1268,25 @@ void CNrpTechMap::AssignTechMapToTable_( const ATECH_ARRAY& pArray )
 	for( size_t pos=0; pos < pArray.size(); pos++ )
 	{
 		AssignTech* pTech = pArray[ pos ];
-		if( pTech->GetData() )
+		if( pTech && pTech->GetData() )
 		{
 			std::string name = pTech->GetData()->GetValue<std::string>( NAME );
-			name += pTech->GetData()->GetValue<TECH_STATUS>( STATUS ) == TS_PROJECT ? "???" : "";
+			name += pTech->GetData()->GetValue<TECH_STATUS>( STATUS ) == TS_PROJECT ? " ???" : "";
 			if( pTech->GetCell().X >= getColumnCount() )
 				addColumn( L"" );
 			if( pTech->GetCell().Y >= getRowCount() )
 				addRow( getRowCount() );
 
-			setCellText( pTech->GetCell().Y, pTech->GetCell().X, StrToWide( name ).c_str() );
-			setCellData( pTech->GetCell().Y, pTech->GetCell().X, pTech->GetData() );
+			Cell* cell = &(Rows[ pTech->GetCell().Y ].Items[ pTech->GetCell().X ]);
+
+			cell->Text = StrToWide( name ).c_str();
+			cell->ptrTech = pTech->GetData();
+			cell->parent = NULL;
+			if( pTech->GetParent() )
+			{
+				AssignTech* parent = pTech->GetParent();
+				cell->parent = &( Rows[ parent->GetCell().Y ].Items[ parent->GetCell().X ] );
+			}
 
 			AssignTechMapToTable_( pTech->GetChilds() );
 		}

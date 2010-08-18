@@ -64,7 +64,7 @@ function sworkCreateAdvancedUserInfoWindow( ptr )
 	local btn = winInfo:GetCloseButton()
 	btn:SetVisible( false )
 	
-	parent:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkCloseAdvancedUserInfoWindow" )
+	winInfo:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkCloseAdvancedUserInfoWindow" )
 	
 	local wd, ht = winInfo:GetSize()
 	local listBox = CLuaListBox( guienv:AddListBox( 10, 20, wd - 10, ht - 10, -1, winInfo:Self() ) )

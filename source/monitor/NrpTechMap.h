@@ -28,6 +28,11 @@ public:
 		data_ = self;
 	}
 
+	AssignTech* GetParent() const
+	{
+		return parent_;
+	}
+
 	void AddChild( nrp::CNrpTechnology* tech )
 	{
 		techs_.push_back( new AssignTech( this, tech ) );
@@ -124,6 +129,8 @@ private:
 		Cell() : ptrTech(0) {}
 		core::stringw Text;
 		core::stringw BrokenText;
+		core::recti imgTechRect;
+		Cell* parent;
 		video::SColor Color;
 		nrp::CNrpTechnology* ptrTech;
 	};

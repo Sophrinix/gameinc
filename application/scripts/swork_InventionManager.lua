@@ -4,11 +4,12 @@ local labelInventionSpeed = nil
 local labelInventionPrognoseFinish = nil
 local listInventionStuff = CLuaListBox( nil )
 local currentInvention = CLuaInvention( nil )
+local selectedUser = nil
 local windowUserSelect = nil
 local company = applic:GetPlayerCompany()
 
-local width = 800
-local height = 600
+local width = scrWidth
+local height = scrHeight
 
 --обновлеяет текст на метках
 local function localUpdateLabels()
@@ -33,25 +34,33 @@ function sworkInventionManagerDecreaseInvestiment( ptr )
 end
 
 local function localFillListInvnentionStuff()
+	listInventionStuff:Clear()
+	
 	for i=1, currentInvention:GetUserNumber() do
 		local user = currentInvention:GetUser( i-1 )
 		listInventionStuff:AddItem( "Unknown", user:Self() )
 	end
 end
 
+function sworkInventionManagerSelectUser( ptr )
+    local lbx = CLuaComponentListBox( ptr )
+	selectedUser = CLuaUser( lbx:GetSelectedObject() )
+end
+
 function sworkInventionManagerAddPeopleToInvention( ptr )
-	windowUserSelect:Remove()
-	
+
 	--создаем окно в центре экрана
 	windowUserSelect = guienv:AddWindow( "", width / 2 - 300, height / 2 - 200, 
 										     width / 2 + 300, height / 2 + 200, -1, guienv:GetRootGUIElement() )
+	windowUserSelect:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "sworkInventionManagerSelectUser" )
 													  
 	local wd, hd = windowUserSelect:GetSize()												  
 	local lbxUsers = guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect:Self() )
-	
+	lbxUsers:SetItemHeigth( 60 )
+		
 	for i=1, company:GetUserNumber() do
 		local user = company:GetUser( i-1 )
-		if not user:HaveWork() then
+		if user:GetWorkNumber() == 0 then
 			lbxUsers:AddItem( "Unknown", user:Self() )
 		end
 	end
@@ -59,8 +68,13 @@ function sworkInventionManagerAddPeopleToInvention( ptr )
 	local btn = guienv:AddButton( 10, hd - 35, wd / 2 - 10, hd - 5, windowUserSelect:Self(), -1, "Select")
 	btn:SetAction( "sworkInventionManagerAddSelectedUserToInvention" )
 		
-	btn = guienv:AddButton( wd / 2 + 10, hd - 35, wd - 10, hd - 5, windowUserSelect:Self(), -1, "Closse")
+	btn = guienv:AddButton( wd / 2 + 10, hd - 35, wd - 10, hd - 5, windowUserSelect:Self(), -1, "Close")
 	btn:SetAction( "sworkInventionManagerCloseWindowUserAdding" )
+end
+
+function sworkInventionManagerAddSelectedUserToInvention( ptr )
+	currentInvention:AddUser( selectedUser:Self() )
+	localFillListInvnentionStuff()
 end
 
 --отображает окно управления исследованиями

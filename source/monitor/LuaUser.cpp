@@ -241,4 +241,5 @@ int CLuaUser::GetWork( lua_State* L )
 	lua_pushlightuserdata( L, work );
 	return 1;	
 }
+
 }//namespace nrp
