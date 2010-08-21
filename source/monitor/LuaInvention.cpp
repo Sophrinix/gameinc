@@ -31,6 +31,8 @@ Luna< CLuaInvention >::RegType CLuaInvention::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, CheckParams ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUserNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUser ),
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPassedMoney ),
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetDayLeft ),
 	{0,0}
 };
 
@@ -54,11 +56,11 @@ int CLuaInvention::Create( lua_State* L )
 int CLuaInvention::AddUser( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention::HaveLider not need parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaInvention::AddUser not need parameter");
 
-	bool haveUser = false; 
-	IF_OBJECT_NOT_NULL_THEN	haveUser = !object_->GetValue<std::string>( COMPONENTLIDER ).empty();
-	lua_pushboolean( L, haveUser );
+	IUser* user = (IUser*)lua_touserdata( L, 2 ); 
+	IF_OBJECT_NOT_NULL_THEN	object_->AddUser( user );
+
 	return 1;	
 }
 
@@ -175,5 +177,17 @@ int CLuaInvention::GetUser( lua_State* L )
 	Luna< CLuaUser >::constructor( L );
 
 	return 1;	
+}
+
+int CLuaInvention::GetPassedMoney( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetPassedMoney", PASSEDPRICE, 0 ) );
+	return 1;
+}
+
+int CLuaInvention::GetDayLeft( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetDayLeft", DAYLEFT, 0 ) );
+	return 1;
 }
 }//namespace nrp

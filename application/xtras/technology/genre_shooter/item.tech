@@ -11,6 +11,7 @@ lastworker:string=
 level:int=0
 moduleerrornumber:int=0
 name:string=#TRANSLATE_GT_SHOOTER
+internalname:string=genre_shooter
 price:float=0
 quality:int=100
 readyworkpercent:float=0
@@ -22,8 +23,8 @@ texturenormal:string=xtras/technology/genre_shooter/image.png
 volumecode:int=0
 nexttechnumber:int=2
 [nexttechs]
-tech_0=xtras/technology/genre_arcade
-tech_1=xtras/technology/genre_slasher
+tech_0=genre_arcade
+tech_1=genre_slasher
 [techRequire]
 301=10
 [skillRequire]

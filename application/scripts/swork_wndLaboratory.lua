@@ -15,11 +15,27 @@ local function CreateTechSequence( tech )
 	end
 	
 	for i=1, tech:GetFutureTechNumber() do
-		local ftech = tech:GetFutureTech( i-1 )
-		if ftech:Empty() == 0 then
-			Log({src=SCRIPT, dev=ODS|CON}, "ƒочерн€€ технологи€="..ftech:GetName().." –одительска€ технологи€="..tech:GetName() )
-			techMap:AddTechnology( tech:Self(), ftech:Self() )
-			CreateTechSequence( ftech )
+		local internalName = tech:GetFutureTechInternalName( i-1 )
+		Log({src=SCRIPT, dev=ODS|CON}, "ƒочерн€€ технологи€="..internalName.." –одительска€ технологи€="..tech:GetName() )
+
+		local futureTech = applic:GetTech( internalName );
+		--такой технологии нет на рынке
+		if futureTech:Empty() == 1 then
+			--может у компании ведутс€ разработки этой технологии,
+			--надо подменить добавл€емую технологию
+			local techInvention = applic:GetInvention( internalName, company:GetName() )
+			
+			--исследовани€ не ведутс€
+			if techInvention:Empty() == 1 then
+				--добавл€ем как неизвестную технологию
+				techMap:AddTechnology( tech:Self(), internalName )
+			else 
+				techMap:AddTechnology( tech:Self(), techInvention:Self() )			
+			end
+		else
+			--така€ технологи€ есть на рынке и надо построить
+			--дерево потомков
+			CreateTechSequence( futureTech )
 		end
 	end
 end
@@ -42,33 +58,40 @@ function sworkCreateGenreTechMapWindow( ptr )
 	end
 end
 
-function sworkTechMapWindowTechSelected( ptr )
-	selectedTech:SetObject( ptr )
+function sworkTechMapWindowTechSelected( ptr ) 
+    local type = techMap:GetSelectedObjectType()
+    
 	--технологи€ уже в ходу
-	Log({src=SCRIPT, dev=ODS|CON}, "¬ыбрана технологи€="..selectedTech:GetName().." ќписание="..selectedTech:GetDescriptionLink().." —татус="..selectedTech:GetStatus() )
-
-	if selectedTech:GetStatus() == TS_READY then
+	if type == TS_READY then
+	    selectedTech = CLuaTech( techMap:GetSelectedObject() )
+		Log({src=SCRIPT, dev=ODS|CON}, "¬ыбрана технологи€="..selectedTech:GetName()..
+									   " ќписание="..selectedTech:GetDescriptionLink()..
+									   " —татус="..selectedTech:GetStatus() )
+	    
 	    browser:Show()
 	    browser:Navigate( selectedTech:GetDescriptionLink() )
 	    --local btn = CLuaButton( guienv:AddButton( 10, 10, 10 + 140, 10 + 20, browser:GetWindow(), -1, "«акрыть" ) )
 	    --btn:SetAction( "sworkTechMapWindowClose" )
-	    return 
-	end--или технологию только предстоит изобрести
-		--то повторный выбор предполагает желание пользовател€ начать исследование...
-	if selectedTech:GetStatus() == TS_UNKNOWN or selectedTech:GetStatus() == TS_PROJECT then
-		sworkTechMapWindowStartInvention( selectedTech )
-		return
+	    return 0
 	end
 	
+	--или технологию только предстоит изобрести
+	--то повторный выбор предполагает желание пользовател€ начать исследование...
+	if type == TS_PROJECT then
+		sworkTechMapWindowStartInvention()
+		return 0
+	end
+	
+	--
 	if selectedTech:GetStatus() == TS_INDEVELOP then
-		sworkShowInventionManager( selectedTech:GetName(), company:GetName() )
-		return
+		sworkShowInventionManager( techMap:GetSelectedObject(), company:GetName() )
+		return 0
 	end
 end
 
-function sworkTechMapWindowStartInvention( tech )
+function sworkTechMapWindowStartInvention()
 	browser:Show()
-	browser:Navigate( tech:GetDescriptionLink() )
+	browser:Navigate( "media/html/unknownTechnology.htm" )
 	
 	btnOk = guienv:AddButton( 10, 30, 190, 30 + 20, browser:GetWindow(), -1, "Ќачать исследовани€" )
 	btnOk:SetAction( "sworkTechMapWindowAssignInventionToCompany" )
@@ -78,8 +101,10 @@ function sworkTechMapWindowStartInvention( tech )
 end
 
 function sworkTechMapWindowAssignInventionToCompany( ptr )
-	company:StartInvention( selectedTech:Self() )
-	sworkShowInventionManager( selectedTech:GetName(), company:GetName() )
+	local inventionName = techMap:GetSelectedObjectName()
+	company:StartInvention( inventionName )
+	
+	sworkShowInventionManager( inventionName, company:GetName() )
 	
 	btnOk:Remove()
 	btnCancel:Remove()

@@ -12,7 +12,7 @@
 namespace nrp
 {
 
-CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnology", "" )
+CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen, CLASS_NAME className ) : INrpProject( className, "" )
 {
 	InitializeOptions_();
 
@@ -22,6 +22,7 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen ) : INrpProject( "CNrpTechnol
 void CNrpTechnology::InitializeOptions_()
 {
 	CreateValue<std::string>( NAME, "" );
+	CreateValue<std::string>( INTERNAL_NAME, "" );
 	CreateValue<int>( TECHGROUP, 0 );
 	CreateValue<int>( TECHTYPE, 0 );
 	CreateValue<float>( BASE_CODE, 0 );
@@ -44,7 +45,6 @@ void CNrpTechnology::InitializeOptions_()
 	CreateValue<int>( NEXTTECHNUMBER, 0 );
 	CreateValue<PNrpTechnology>( REQUIRETECH, NULL );
 }
-
 
 CNrpTechnology::~CNrpTechnology(void)
 {
@@ -88,25 +88,7 @@ void CNrpTechnology::Save( std::string saveFolder )
 	SaveRequires_( fileName );
 
 	for( size_t pos=0; pos < futureTech_.size(); pos++ )
-	{
-		std::string keyvalue = "";
-		switch( futureTech_[ pos ]->GetValue<TECH_STATUS>( STATUS ) )
-		{
-		case TS_PROJECT:
-			keyvalue = "project:" + futureTech_[ pos ]->GetValue<std::string>( BASEFILE );
-			break;
-		case TS_READY:
-			keyvalue = "ready:" + futureTech_[ pos ]->GetValue<std::string>( NAME );
-			break;
-		case TS_INDEVELOP:
-			keyvalue = "indevelop:" + futureTech_[ pos ]->GetValue<std::string>( NAME );
-			break;
-		default:
-			throw "unresolved function";
-		}
-
-		IniFile::Write( "nexttechs", "tech_" + IntToStr( pos ), keyvalue, fileName );
-	}
+		IniFile::Write( SECTION_FUTURE_TECH, "tech_" + IntToStr( pos ), futureTech_[ pos ], fileName );
 }
 
 void CNrpTechnology::Load( std::string fileName )
@@ -117,21 +99,7 @@ void CNrpTechnology::Load( std::string fileName )
 	if( GetValue<TECH_STATUS>( STATUS ) == TS_READY )
 	{
 		for( int cnt=0; cnt < GetValue<int>( NEXTTECHNUMBER ); cnt++ )
-		{
-			std::string tmpStr = IniFile::Read( "nexttechs", "tech_"+IntToStr( cnt ), std::string(""), fileName );
-			std::string type = tmpStr.substr( 0, tmpStr.find( ':' ) );
-			std::string name = tmpStr.substr( tmpStr.find( ':' )+1, MAX_PATH );
-
-			if( type == "project" )
-			{
-				CNrpTechnology* pTech = new CNrpTechnology( PT_UNKNOWN );
-				pTech->Load( name + "/item.tech" );
-				pTech->SetValue<std::string>( BASEFILE, name );
-				pTech->SetValue<std::string>( PARENT, GetValue<std::string>( NAME ) );
-				pTech->SetValue<TECH_STATUS>( STATUS, TS_PROJECT );
-				futureTech_.push_back( pTech );
-			}
-		}
+			futureTech_.push_back( IniFile::Read( SECTION_FUTURE_TECH, "tech_"+IntToStr( cnt ), std::string(""), fileName ) );
 	}
 }
 
@@ -162,26 +130,26 @@ float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
 
 void CNrpTechnology::LoadRequries_( const std::string& fileName )
 {
-	IniFile::ReadValueList_( "techRequire", techRequires_, fileName );
-	IniFile::ReadValueList_( "skillRequire", skillRequires_, fileName );
+	IniFile::ReadValueList_( SECTION_REQUIRE_TECH, techRequires_, fileName );
+	IniFile::ReadValueList_( SECTION_REQUIRE_SKILL, skillRequires_, fileName );
 }
 
 void CNrpTechnology::SaveRequires_( const std::string& fileName )
 {
 	for( REQUIRE_MAP::iterator tIter = techRequires_.begin(); tIter != techRequires_.end(); tIter++ )
-		IniFile::Write( "techRequire", IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
+		IniFile::Write( SECTION_REQUIRE_TECH, IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
 
 	for( REQUIRE_MAP::iterator sIter = skillRequires_.begin(); sIter != skillRequires_.end(); sIter++ )
-		IniFile::Write( "skillRequire", IntToStr( sIter->first ), IntToStr( sIter->second ), fileName );
+		IniFile::Write( SECTION_REQUIRE_SKILL, IntToStr( sIter->first ), IntToStr( sIter->second ), fileName );
 }
 
-CNrpTechnology* CNrpTechnology::GetFutureTech( size_t index )
+const std::string CNrpTechnology::GetFutureTech( size_t index )
 {
-	return index < futureTech_.size() ? futureTech_[ index ] : NULL;
+	return index < futureTech_.size() ? futureTech_[ index ] : "";
 }
 
-void CNrpTechnology::AddFutureTech( CNrpTechnology* tech )
+void CNrpTechnology::AddFutureTech( const std::string& name )
 {
-	futureTech_.push_back( tech );
+	futureTech_.push_back( name );
 }
 }//namespace nrp

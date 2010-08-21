@@ -36,7 +36,7 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveRequireTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTech ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechInternalName ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetStatus ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetStatus ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetDescriptionLink ),
@@ -221,18 +221,19 @@ int CLuaTechnology::GetFutureTechNumber( lua_State* L )
 	return 1;
 }
 
-int CLuaTechnology::GetFutureTech( lua_State* L )
+int CLuaTechnology::GetFutureTechInternalName( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::GetFutureTech need index parameter");
 
 	int index = lua_tointeger( L, 2 );
-	CNrpTechnology* tech = NULL;
-	IF_OBJECT_NOT_NULL_THEN tech = object_->GetFutureTech( index );
+	std::string name = "";
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		name = object_->GetFutureTech( index );
+	}
 
-	lua_pop( L, argc );
-	lua_pushlightuserdata( L, tech );
-	Luna< CLuaTechnology >::constructor( L );
+	lua_pushstring( L, name.c_str() );
 	return 1;	
 }
 

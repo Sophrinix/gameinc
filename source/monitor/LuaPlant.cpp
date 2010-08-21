@@ -32,7 +32,7 @@ int CLuaPlant::Load( lua_State* L )
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->Load( "options", std::string("save/")+fileName+"/" );
+	IF_OBJECT_NOT_NULL_THEN object_->Load( SECTION_OPTIONS, std::string("save/")+fileName+"/" );
 
 	return 1;
 }
@@ -58,7 +58,7 @@ int CLuaPlant::Save( lua_State* L )
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->Save( "options", std::string("save/")+fileName+"/" );
+	IF_OBJECT_NOT_NULL_THEN object_->Save( SECTION_OPTIONS, std::string("save/")+fileName+"/" );
 
 	return 1;
 }

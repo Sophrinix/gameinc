@@ -11,6 +11,7 @@ lastworker:string=
 level:int=0
 moduleerrornumber:int=0
 name:string=#TRANSLATE_GT_ACTION
+internalName:string=genre_action
 price:float=0
 quality:int=100
 readyworkpercent:float=0

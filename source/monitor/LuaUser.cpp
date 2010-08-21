@@ -194,10 +194,10 @@ int CLuaUser::AddWork( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:AddTechWork need CNrpTechnology* parameter" );
 
-	CNrpProjectModule* tech = (CNrpProjectModule*)lua_touserdata( L, 2 );
-	assert( tech != NULL );
+	IWorkingModule* work = (IWorkingModule*)lua_touserdata( L, 2 );
+	assert( work != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddWork( tech, false );
+	IF_OBJECT_NOT_NULL_THEN object_->AddWork( work, false );
 
 	return 1;		
 }
@@ -220,7 +220,7 @@ int CLuaUser::RemoveWork( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:AddTechWork need CNrpTechnology* parameter" );
 
-	CNrpProjectModule* work = (CNrpProjectModule*)lua_touserdata( L, 2 );
+	IWorkingModule* work = (IWorkingModule*)lua_touserdata( L, 2 );
 	assert( work != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN object_->RemoveWork( work );
@@ -234,7 +234,7 @@ int CLuaUser::GetWork( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetSkill need index of techWork parameter" );
 
 	int index = lua_tointeger(L, 2 );
-	CNrpProjectModule* work = NULL;
+	IWorkingModule* work = NULL;
 
 	IF_OBJECT_NOT_NULL_THEN work = object_->GetWork( index );
 

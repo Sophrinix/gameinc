@@ -20,6 +20,9 @@ Luna< CLuaTechMap >::RegType CLuaTechMap::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetAction ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddTechnology ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddLuaFunction ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectType ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObject ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectName ),
 	{0,0}
 };
 
@@ -65,9 +68,24 @@ int CLuaTechMap::AddTechnology( lua_State *L )
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaTechMap::AddTechnology need parent tech, child tech parameter");
 
 	CNrpTechnology* parentt =  (CNrpTechnology*)lua_touserdata( L, 2 );
-	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddTechnology( parentt, tech );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( lua_isstring( L, 3 ) > 0 )
+		{
+			const char* internalName = lua_tostring( L, 3 );
+			assert( internalName != NULL );
+
+			object_->AddTechnology( parentt, internalName );
+		}
+		else if( lua_islightuserdata( L, 3 ) )
+		{
+			CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 3 );
+	     	object_->AddTechnology( parentt, tech );
+		}
+		else 
+			assert( false );
+	}
 	
 	return 1;	
 }
@@ -86,5 +104,41 @@ int CLuaTechMap::AddLuaFunction( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN object_->AddLuaFunction( funcType, funcName );
 
 	return 1;		
+}
+
+int CLuaTechMap::GetSelectedObjectType( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObjectType not need parameter");
+
+	int type = -1;
+	IF_OBJECT_NOT_NULL_THEN type = object_->GetSelectedObjectType();
+
+	lua_pushinteger( L, type );
+	return 1;
+}
+
+int CLuaTechMap::GetSelectedObject( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObject not need parameter");
+
+	CNrpTechnology* ptr = NULL;
+	IF_OBJECT_NOT_NULL_THEN ptr = object_->GetSelectedObject();
+
+	lua_pushlightuserdata( L, ptr );
+	return 1;
+}
+
+int CLuaTechMap::GetSelectedObjectName( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObjectName not need parameter");
+
+	std::string name = "";
+	IF_OBJECT_NOT_NULL_THEN name = object_->GetSelectedObjectName();
+
+	lua_pushstring( L, name.c_str() );
+	return 1;
 }
 }//namespace nrp

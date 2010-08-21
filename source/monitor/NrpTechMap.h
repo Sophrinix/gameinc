@@ -22,10 +22,12 @@ typedef core::array< AssignTech* > ATECH_ARRAY;
 class AssignTech
 {
 public:
-	AssignTech( AssignTech* parent, nrp::CNrpTechnology* self )
+
+	AssignTech( AssignTech* parent, nrp::CNrpTechnology* self, const std::string& name )
 	{
 		parent_ = parent;
 		data_ = self;
+		name_ = name;
 	}
 
 	AssignTech* GetParent() const
@@ -33,14 +35,16 @@ public:
 		return parent_;
 	}
 
-	void AddChild( nrp::CNrpTechnology* tech )
+	void AddChild( nrp::CNrpTechnology* tech, const std::string& name )
 	{
-		techs_.push_back( new AssignTech( this, tech ) );
+		techs_.push_back( new AssignTech( this, tech, name ) );
 	}
 
-	nrp::CNrpTechnology* GetData() const { return data_; }
+	nrp::CNrpTechnology* GetTechnology() const { return data_; }
 	
 	const ATECH_ARRAY& GetChilds() { return techs_; }
+
+	const std::string& GetName() { return name_; }
 
 	int RootCell( int xpos, int ypos ) 
 	{
@@ -62,6 +66,7 @@ private:
 	AssignTech* parent_;
 	nrp::CNrpTechnology* data_;
 	core::position2di cell_;
+	std::string name_;
 };
 
 class CNrpTechMap : public IGUITable, public ILuaFunctionality
@@ -77,6 +82,7 @@ public:
 
 	//! Added technology to map
 	virtual void AddTechnology( nrp::CNrpTechnology* parent, nrp::CNrpTechnology* child );
+	virtual void AddTechnology( nrp::CNrpTechnology* parent, const char* internalName );
 
 	//! set a column width
 	virtual void setColumnWidth(u32 width);
@@ -93,6 +99,7 @@ public:
 	\param state: If true, a EGET_TABLE_HEADER_CHANGED message will be sent and you can order the table data as you whish.*/
 	//! \param mode: One of the modes defined in EGUI_COLUMN_ORDERING
 	virtual void setColumnOrdering(u32 columnIndex, EGUI_COLUMN_ORDERING mode);
+	virtual int GetSelectedObjectType();
 
 	//! clears the table, deletes all items in the table
 	virtual void clear();
@@ -107,6 +114,8 @@ public:
 
 	//! Get the flags, as defined in EGUI_TABLE_DRAW_FLAGS, which influence the layout
 	virtual s32 getDrawFlags() const;
+	std::string GetSelectedObjectName();
+	nrp::CNrpTechnology* GetSelectedObject();
 
 	//! Writes attributes of the object.
 	//! Implement this to expose the attributes of your scene node animator for
@@ -126,13 +135,12 @@ private:
 
 	struct Cell
 	{
-		Cell() : ptrTech(0) {}
+		Cell() : assignTech(0) {}
 		core::stringw Text;
 		core::stringw BrokenText;
 		core::recti imgTechRect;
-		Cell* parent;
 		video::SColor Color;
-		nrp::CNrpTechnology* ptrTech;
+		AssignTech* assignTech;
 	};
 
 	struct Row

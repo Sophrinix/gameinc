@@ -33,7 +33,7 @@ class IUserAction;
 class CNrpTechnology; 
 class CNrpCompany;
 class IModificator;
-class CNrpProjectModule;
+class IWorkingModule;
 
 class IUser : public INrpConfig
 {
@@ -50,10 +50,10 @@ public:
 	int GetGenrePreferences( int typen );
 	void SetGenrePreferences( int typen, int valuel );
 	
-	void AddWork( CNrpProjectModule* techWork, bool inLoad );
+	void AddWork( IWorkingModule* techWork, bool inLoad );
 
-	CNrpProjectModule* GetWork( int index );
-	void RemoveWork( CNrpProjectModule* techWork );
+	IWorkingModule* GetWork( int index );
+	void RemoveWork( IWorkingModule* techWork );
 
 	template< class R > R GetValueA( std::string name )
 	{
@@ -85,7 +85,7 @@ private:
 
 	void RemoveOldModificators_( const SYSTEMTIME& time );
 	typedef std::map< int, int > KNOWLEDGE_MAP;
-	typedef std::vector< CNrpProjectModule* > WORK_LIST;
+	typedef std::vector< IWorkingModule* > WORK_LIST;
 	typedef std::vector< IUserAction* > USERACTION_LIST;
 	typedef std::vector< IModificator* > MODIFICATOR_LIST;
 

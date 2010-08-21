@@ -8,12 +8,8 @@
 namespace nrp
 {
 
-CNrpProjectModule::CNrpProjectModule(void) : CNrpTechnology( PROJECT_TYPE(0) )
-{
-}
-
 CNrpProjectModule::CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProject )
-: CNrpTechnology( pTech->GetValue<PROJECT_TYPE>( TECHGROUP ) )
+	: IWorkingModule( pTech->GetValue<PROJECT_TYPE>( TECHGROUP ), CLASS_PROJECTMODULE )
 {
 	InitializeOptions_();
 
@@ -32,7 +28,7 @@ CNrpProjectModule::CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProje
 }
 
 CNrpProjectModule::CNrpProjectModule( PROJECT_TYPE type, INrpProject* pProject )
-: CNrpTechnology( type )
+	: IWorkingModule( type, CLASS_PROJECTMODULE )
 {
 	InitializeOptions_();
 	SetValue<int>( TECHTYPE, type );
@@ -51,12 +47,11 @@ void CNrpProjectModule::InitializeOptions_()
 	CreateValue<IUser*>( COMPONENTLIDER, NULL );
 	CreateValue<int>( CODEVOLUME, 0 );
 	CreateValue<int>( CODEPASSED, 0 );
-	CreateValue<float>( READYWORKPERCENT, 0 );
 	CreateValue<int>( ERRORNUMBER, 0 );
 	CreateValue<INrpDevelopProject*>( PARENT, NULL );
 }
 
-void CNrpProjectModule::SetLider( IUser* ptrUser )
+int CNrpProjectModule::AddUser( IUser* ptrUser )
 {
 	IUser* currentLider = GetValue<IUser*>( COMPONENTLIDER );
 	IUser* lastLider = GetValue<IUser*>( LASTWORKER );
@@ -67,6 +62,8 @@ void CNrpProjectModule::SetLider( IUser* ptrUser )
 
 	if( lastLider && ptrUser && (lastLider != ptrUser) )
 		SetValue<int>( CODEPASSED,(int)(GetValue<int>( CODEPASSED ) * 0.75f) );
+
+	return 1;
 }
 
 void CNrpProjectModule::Update( IUser* ptrUser )
@@ -129,5 +126,10 @@ void CNrpProjectModule::Load( std::string fileName )
 	PUser user = GetValue<PUser>( COMPONENTLIDER );
 	if( user )
 		user->AddWork( this, true );
+}
+
+int CNrpProjectModule::RemoveUser( const std::string& userName )
+{
+	return 1;
 }
 }//end namespace nrp

@@ -64,7 +64,7 @@ function sworkUpEmployer( ptr )
 	end
 	
 	sworkEmployContractUser()
-	windowg:Remove()
+	guienv:AddToDeletionQueue( windowg:Self() )
 end
 
 function sworkEmployContractUser()
@@ -108,7 +108,7 @@ function sworkCreateEmployersWindow( ptr )
 	if windowUpEmployer:Empty() == 1 then
 		windowUpEmployer = guienv:AddWindow( "", 0, 0, scrWidth, scrHeight, WINDOW_EMPLOYER_SELECT_ID, guienv:GetRootGUIElement() )
 	else
-		local elm = CLuaElement( windowg:Self() )
+		local elm = CLuaElement( windowUpEmployer:Self() )
 		elm:RemoveChilds()
 	end
 	
@@ -127,7 +127,7 @@ function sworkCreateEmployersWindow( ptr )
 	button = guienv:AddButton( 610, 10, 800, 100, windowUpEmployer:Self(), -1, "Тестировщики" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
-	button = guienv:AddButton( scrWidth - 60, 10, scrWidth - 10, 60, windowUpEmployer:Self(), "X" )
+	button = guienv:AddButton( scrWidth - 60, 10, scrWidth - 10, 60, windowUpEmployer:Self(), -1, "X" )
 	button:SetAction( "sworkWindowUpEmployerClose" )
 	
 	ShowAvaibleEmployers( windowUpEmployer:Self() )

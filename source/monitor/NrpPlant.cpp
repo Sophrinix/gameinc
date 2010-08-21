@@ -40,7 +40,7 @@ void CNrpPlant::Save( std::string scetionName, std::string saveFolder )
 	{
 		std::string workFile = saveFolder + (*wIter)->GetValue<std::string>( NAME ) + ".work";
 
-		(*wIter)->Save( "options", workFile );
+		(*wIter)->Save( SECTION_OPTIONS, workFile );
 		IniFile::Write( "works", "work_" + IntToStr( k ), workFile, fileName );
 	}
 }
@@ -59,7 +59,7 @@ void CNrpPlant::Load( std::string scetionName, std::string saveFolder )
 		if( _access( workFile.c_str(), 0 ) != -1 )
 		{
 			CNrpPlantWork* work = new CNrpPlantWork( "" );
-			work->Load( "options", workFile );
+			work->Load( SECTION_OPTIONS, workFile );
 			AddWork( work );
 		}
 	}

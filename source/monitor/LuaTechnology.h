@@ -37,7 +37,7 @@ public:
 	int GetFutureTechNumber( lua_State* L );
 	int SetStatus( lua_State* L );
 	int GetStatus( lua_State* L );
-	int GetFutureTech( lua_State* L );
+	int GetFutureTechInternalName( lua_State* L );
 	int GetDescriptionLink( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaTech"; }	

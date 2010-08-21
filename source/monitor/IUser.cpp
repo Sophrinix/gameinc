@@ -7,6 +7,7 @@
 #include "NrpGameProject.h"
 #include "NrpProjectModule.h"
 #include "INrpDevelopProject.h"
+#include "NrpInvention.h"
 
 #include <io.h>
 #include <errno.h>
@@ -122,9 +123,17 @@ void IUser::Save( std::string folderPath )
 	WORK_LIST::iterator tlIter = works_.begin();
 	for( int i=0; tlIter != works_.end(); tlIter++, i++ )
 	{
-		std::string projectName = (*tlIter)->GetValue<INrpProject*>( PARENT )->GetValue<std::string>( NAME );
-		std::string name = (*tlIter)->GetValue<std::string>(NAME);
-		IniFile::Write( TECHTYPE, TECHTYPE+IntToStr( i ), projectName+":"+name, fileName );
+		if( CNrpProjectModule* prjModule = dynamic_cast< CNrpProjectModule* >( *tlIter )  )
+		{
+			std::string projectName = prjModule->GetValue<INrpProject*>( PARENT )->GetValue<std::string>( NAME );
+			std::string name = prjModule->GetValue<std::string>(NAME);
+			IniFile::Write( TECHTYPE, TECHTYPE+IntToStr( i ), projectName+":"+name, fileName );
+		}
+		else if( CNrpInvention* invention = dynamic_cast< CNrpInvention* >( *tlIter ) )
+		{
+			std::string name = invention->GetValue<std::string>(NAME);
+			IniFile::Write( TECHTYPE, TECHTYPE+IntToStr( i ), "invention:"+name, fileName );
+		}
 	}
 
 	INrpConfig::Save( PROPERTIES, fileName );
@@ -164,18 +173,18 @@ void IUser::Load( std::string fileName )
 	}*/
 }
 
-void IUser::AddWork( CNrpProjectModule* module, bool inLoad )
+void IUser::AddWork( IWorkingModule* module, bool inLoad )
 {
 	assert( module != NULL );
 	works_.push_back( module );
 	
-	if( !inLoad )
-		module->SetLider( this );
+	//if( !inLoad )
+	//	module->SetLider( this );
 	
 	SetValue<int>( TECHNUMBER, works_.size() );
 }
 
-void IUser::RemoveWork( CNrpProjectModule* techWork )
+void IUser::RemoveWork( IWorkingModule* techWork )
 {
 	assert( techWork != NULL );
 
@@ -183,7 +192,7 @@ void IUser::RemoveWork( CNrpProjectModule* techWork )
 	for( ; tIter != works_.end(); tIter++ )
 		if( (*tIter) == techWork )
 		{
-			techWork->SetLider( NULL );
+			techWork->RemoveUser( GetValueA<std::string>( NAME ) );
 			works_.erase( tIter );
 			SetValue<int>( TECHNUMBER, works_.size() );
 			return;
@@ -192,7 +201,7 @@ void IUser::RemoveWork( CNrpProjectModule* techWork )
 	OutputDebugString( text.c_str() );
 }
 
-CNrpProjectModule* IUser::GetWork( int index )
+IWorkingModule* IUser::GetWork( int index )
 {
 	assert( index < (int)works_.size() );
 	return index < (int)works_.size() ? works_[ index ] : NULL;

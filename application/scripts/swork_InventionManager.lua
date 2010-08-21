@@ -2,6 +2,8 @@ local windowIM = nil
 local labelInvestiment = nil
 local labelInventionSpeed = nil
 local labelInventionPrognoseFinish = nil
+local labelInventionMoneyPassed = nil 
+local labelInventionDayLeft = nil
 local listInventionStuff = CLuaListBox( nil )
 local currentInvention = CLuaInvention( nil )
 local selectedUser = nil
@@ -17,6 +19,8 @@ local function localUpdateLabels()
 	labelInventionSpeed:SetText( currentInvention:GetSpeed() )
 	local day, month, year = currentInvention:GetPrognoseDateFinish()
 	labelInventionPrognoseFinish:SetText( day.."."..month.."."..year )
+	labelInventionMoneyPassed:SetText( currentInvention:GetPassedMoney() )
+	labelInventionDayLeft:SetText( currentInvention:GetDayLeft() )
 end
 
 --увеличивает затраты на исследования
@@ -48,7 +52,6 @@ function sworkInventionManagerSelectUser( ptr )
 end
 
 function sworkInventionManagerAddPeopleToInvention( ptr )
-
 	--создаем окно в центре экрана
 	windowUserSelect = guienv:AddWindow( "", width / 2 - 300, height / 2 - 200, 
 										     width / 2 + 300, height / 2 + 200, -1, guienv:GetRootGUIElement() )
@@ -72,6 +75,10 @@ function sworkInventionManagerAddPeopleToInvention( ptr )
 	btn:SetAction( "sworkInventionManagerCloseWindowUserAdding" )
 end
 
+function sworkInventionManagerCloseWindowUserAdding( ptr )
+	windowUserSelect:Remove()
+end
+
 function sworkInventionManagerAddSelectedUserToInvention( ptr )
 	currentInvention:AddUser( selectedUser:Self() )
 	localFillListInvnentionStuff()
@@ -79,8 +86,9 @@ end
 
 --отображает окно управления исследованиями
 function sworkShowInventionManager( techName, companyName )
+	Log( {src=SCRIPT, dev=ODS|CON}, "Окрыто окно для исследования="..techName.. "  компания="..companyName )
 	windowIM = guienv:AddWindow( "", 0, 0, width, height, -1, guienv:GetRootGUIElement() )
-	currentInvention:SetObject( applic:GetInvention( techName, companyName ) )
+	currentInvention = applic:GetInvention( techName, companyName )
 
 	--картинка с изображением технологии
 	local btnWidth = width / 3
@@ -110,6 +118,17 @@ function sworkShowInventionManager( techName, companyName )
 	--метка с датой примерного завершения работ при текущем финансировании
 	labelInventionPrognoseFinish = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", 10, ypos, 
 													    btnWidth, ypos + 30, -1, windowIM:Self() )
+													
+	ypos = ypos + 55
+	--метка с датой примерного завершения работ при текущем финансировании
+	labelInventionDayLeft = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONDAYLEFT", 10, ypos, 
+										     btnWidth, ypos + 30, -1, windowIM:Self() )
+													    
+													    
+	ypos = ypos + 55
+	--метка с датой примерного завершения работ при текущем финансировании
+	labelInventionMoneyPassed = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", 10, ypos, 
+											      btnWidth, ypos + 30, -1, windowIM:Self() )
 	
 	--список подключенных к проекту людей
 	listInventionStuff = guienv:AddComponentListBox( btnWidth + 10, 50, width, height - 45, -1, windowIM:Self())
@@ -125,6 +144,9 @@ function sworkShowInventionManager( techName, companyName )
 	btnRemPeople:SetAction( "sworkInventionManagerRemPeopleFromInvention" )	
 end
 
+function sworkInventionManagerRemPeopleFromInvention( ptr )
+	currentInvention:RemoveUser( selectedUser:GetName() )	
+end
 
 function sworkCreateWindowCompanyInventionManager()
 	

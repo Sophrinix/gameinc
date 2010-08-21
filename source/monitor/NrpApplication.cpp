@@ -47,8 +47,8 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( USERNUMBER, 0 );
 	CreateValue<int>( COMPANIESNUMBER, 0 );
 	CreateValue<std::string>( FULLPATH, "" );
-	std::string profileName = IniFile::Read( "options", "currentProfile", std::string( "dalerank" ), "config/system.ini" );
-	std::string profileCompany = IniFile::Read( "options", "currentCompany", std::string( "daleteam" ), "config/system.ini" );
+	std::string profileName = IniFile::Read( SECTION_OPTIONS, "currentProfile", std::string( "dalerank" ), "config/system.ini" );
+	std::string profileCompany = IniFile::Read( SECTION_OPTIONS, "currentCompany", std::string( "daleteam" ), "config/system.ini" );
 	CreateValue<std::string>( PROFILENAME, profileName );
 	CreateValue<std::string>( PROFILECOMPANY, profileCompany );
 	CreateValue<SYSTEMTIME>( CURRENTTIME, time );
@@ -183,8 +183,10 @@ CNrpTechnology* CNrpApplication::GetTechnology( int index ) const
 CNrpTechnology* CNrpApplication::GetTechnology( const std::string& name ) const
 {
 	TECH_LIST::const_iterator pIter = technologies_.begin();
+
 	for( ; pIter != technologies_.end(); pIter++ )
-		if( (*pIter)->GetValue<std::string>( NAME ) == name )
+		if( (*pIter)->GetValue<std::string>( NAME ) == name ||
+			(*pIter)->GetValue<std::string>( INTERNAL_NAME ) == name )
 			return (*pIter);
 
 	return NULL;
@@ -239,8 +241,8 @@ void CNrpApplication::SaveProfile()
 	INrpConfig::Save( PROPERTIES, profileIni );
 
 	std::string config = "config/system.ini";
-	IniFile::Write( "options", "currentProfile", GetValue<std::string>( PROFILENAME ), config );
-	IniFile::Write( "options", "currentCompany", GetValue<std::string>( PROFILECOMPANY ), config );
+	IniFile::Write( SECTION_OPTIONS, "currentProfile", GetValue<std::string>( PROFILENAME ), config );
+	IniFile::Write( SECTION_OPTIONS, "currentCompany", GetValue<std::string>( PROFILECOMPANY ), config );
 	
 	COMPANIES_LIST::iterator cIter = companies_.begin();
 	for( int i=0; cIter != companies_.end(); cIter++, i++ )
@@ -278,6 +280,13 @@ void CNrpApplication::SaveProfile()
 		IniFile::Write( "technologies", "technology_" + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), profileIni );
 	}
 
+	INVENTION_LIST::iterator invIter = inventions_.begin();
+	for( int i=0; invIter != inventions_.end(); invIter++ )
+	{
+		(*invIter)->Save( saveFolder + "inventions/" );
+		IniFile::Write( "inventions", "invention_" + IntToStr( i ), (*invIter)->GetValue<std::string>( NAME ), profileIni );
+	}
+
 	GAMEENGINES_MAP::iterator eIter = engines_.begin();
 	for( int i=0; eIter != engines_.end(); eIter++, i++ )
 	{
@@ -304,21 +313,6 @@ void CNrpApplication::SaveProfile()
 			gli++;
 		}
 	IniFile::Write( PROPERTIES, "ImageListNumber", gli, imageListIni );
-}
-
-void CNrpApplication::AssociateTechnologies_()
-{
-	for( size_t pos=0; pos < technologies_.size(); pos++ )
-	{
-		CNrpTechnology* pTech = technologies_[ pos ];
-		if( pTech->GetValue<std::string>( PARENT ) != "" )
-		{
-			CNrpTechnology* parent = GetTechnology( pTech->GetValue<std::string>( PARENT ) );
-			assert( parent != NULL );
-			if( parent )
-				parent->AddFutureTech( pTech );
-		}
-	}
 }
 
 void CNrpApplication::LoadProfile( std::string profileName, std::string companyName )
@@ -354,8 +348,6 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 		technologies_.push_back( tech );
 		tech->Load( saveFolderTech + name + ".tech" );
 	}
-
-	AssociateTechnologies_();
 
 	std::string saveFolderEngines = saveFolder + "engines/";
 	for( int i=0; i < GetValue<int>( ENGINES_NUMBER ); i++ )
@@ -488,8 +480,22 @@ void CNrpApplication::BeginNewDay_()
 	COMPANIES_LIST::iterator cIter = companies_.begin();
 	for( ; cIter != companies_.end(); cIter++)
 		 (*cIter)->BeginNewDay( GetValue<SYSTEMTIME>( CURRENTTIME ) );
+
 	CNrpPlant::Instance().BeginNewDay();
 	UpdateMarketGames_();
+	UpdateInvention_();
+}
+
+void CNrpApplication::UpdateInvention_()
+{
+	INVENTION_LIST::iterator pIter = inventions_.begin();
+	for( ; pIter != inventions_.end(); pIter++ )
+	{
+		PNrpCompany cmp = (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY );
+		if( cmp )
+			cmp->AddValue<int>( BALANCE, -(*pIter)->GetValue<int>( INVESTIMENT ) / 30 );
+		(*pIter)->CheckParams();
+	} 
 }
 
 float GetConsumerAbility_( float price )
@@ -949,11 +955,16 @@ void CNrpApplication::AddGame( CNrpGame* ptrGame )
 	SetValue<int>( GAMENUMBER, games_.size() );
 }
 
-void CNrpApplication::StartInvention( CNrpTechnology* startTech, CNrpCompany* parentCompany )
+void CNrpApplication::StartInvention( const std::string& name, CNrpCompany* parentCompany )
 {
+	CNrpTechnology* startTech = new CNrpTechnology( PROJECT_TYPE(0) );
+	startTech->Load( "xtras/technology/" + name + "/item.tech" );
+
 	CNrpInvention* inv = new CNrpInvention( startTech, parentCompany );
-	parentCompany->StartInvention( inv );
+	parentCompany->StartInvention( inv );	
 	inventions_.push_back( inv );  
+
+	delete startTech;
 }
 
 void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )
@@ -1013,8 +1024,9 @@ CNrpInvention* CNrpApplication::GetInvention( std::string name, std::string comp
 	{
 		assert( (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY ) != NULL );
 
-		if( (*pIter)->GetValue<std::string>( NAME ) == name &&
-			(*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY )->GetValue<std::string>( NAME ) == companyName )
+		if( ((*pIter)->GetValue<std::string>( NAME ) == name ||
+			 (*pIter)->GetValue<std::string>( INTERNAL_NAME ) == name )
+			&& (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY )->GetValue<std::string>( NAME ) == companyName )
 				return *pIter;
 	}
 

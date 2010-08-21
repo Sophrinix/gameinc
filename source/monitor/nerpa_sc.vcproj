@@ -1697,6 +1697,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IWorkingModule.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NrpDevelopGame.cpp"
 				>
 			</File>

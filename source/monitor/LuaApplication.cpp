@@ -15,6 +15,7 @@
 #include "LuaUser.h"
 #include "LuaBank.h"
 #include "LuaTechnology.h"
+#include "LuaInvention.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -171,9 +172,22 @@ int CLuaApplication::GetTech( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetTech need int parameter" );
 
-	int techNumber = lua_tointeger( L, 2 );
 	CNrpTechnology* tech = NULL;
-	IF_OBJECT_NOT_NULL_THEN	tech = object_->GetTechnology( techNumber );
+
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		if( lua_isnumber( L, 2 ) > 0 )
+		{
+			int techNumber = lua_tointeger( L, 2 );
+			tech = object_->GetTechnology( techNumber );
+		}
+		else if( lua_isstring( L, 2 ) > 0 )
+		{
+			const char* name = lua_tostring( L, 2 );
+			assert( name != NULL );
+			tech = object_->GetTechnology( name );	
+		}
+	}
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
@@ -456,7 +470,7 @@ int CLuaApplication::LoadDiskMachine( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		CNrpDiskMachine* dm = new CNrpDiskMachine();
-		dm->Load( "options", dmIniFile );
+		dm->Load( SECTION_OPTIONS, dmIniFile );
 		object_->AddDiskMachine( dm );
 	}
 
@@ -616,8 +630,9 @@ int CLuaApplication::GetInvention( lua_State* L )
 		IF_OBJECT_NOT_NULL_THEN inv = object_->GetInvention( inventionName, companyName );
 	}
 
-	assert( inv != NULL );
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, inv );
+	Luna< CLuaInvention >::constructor( L );
 	return 1;
 }
 }//namespace nrp 

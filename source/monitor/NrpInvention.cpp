@@ -25,16 +25,27 @@ int CNrpInvention::_GetRealPrice( CNrpTechnology* tech )
 	return static_cast<int>( price );
 }
 
-CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp ) : CNrpProjectModule( pTech, NULL )
+CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp ) 
+			  : IWorkingModule( pTech->GetValue<PROJECT_TYPE>( TECHGROUP ), CLASS_INVENTION )
 {
-	SetValue<PNrpCompany>( PARENTCOMPANY, pCmp );
-	SetValue<TECH_STATUS>( STATUS, TS_INDEVELOP );
 	CreateValue<int>( REALPRICE, _GetRealPrice( pTech ) );
 	CreateValue<int>( PASSEDPRICE, 0 );
 	CreateValue<int>( INVESTIMENT, 1000 );
 	CreateValue<int>( DAYLEFT, 0 );
 	CreateValue<int>( INVENTIONSPEED, 0 );
 	CreateValue<int>( USERNUMBER, 0 );
+
+	SetValue<PNrpCompany>( PARENTCOMPANY, pCmp );
+	SetValue<TECH_STATUS>( STATUS, TS_INDEVELOP );
+	SetValue<std::string>( NAME, pTech->GetValue<std::string>( NAME ) );
+	SetValue<std::string>( INTERNAL_NAME, pTech->GetValue<std::string>( INTERNAL_NAME ) );
+	SetValue<int>( TECHGROUP, pTech->GetValue<int>( TECHGROUP ) );
+	SetValue<PROJECT_TYPE>( TECHTYPE, pTech->GetValue<PROJECT_TYPE>( TECHTYPE ) );
+	SetValue<float>( BASE_CODE, pTech->GetValue<float>( BASE_CODE ) );
+	SetValue<float>( ENGINE_CODE, pTech->GetValue<float>( ENGINE_CODE ) );
+	SetValue<std::string>( TEXTURENORMAL, pTech->GetValue<std::string>( TEXTURENORMAL ) );
+	SetValue<int>( LEVEL, pTech->GetValue<int>( LEVEL ) );
+	SetValue<int>( QUALITY, pTech->GetValue<int>( QUALITY ) );
 	
 	SYSTEMTIME time;
 	memset( &time, 0, sizeof(SYSTEMTIME) );
@@ -44,7 +55,7 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp ) : CNrpP
 
 void CNrpInvention::CheckParams()
 {
-	int needMoney = GetValue<int>( REALPRICE )-GetValue<int>( PASSEDPRICE);
+	int needMoney = GetValue<int>( REALPRICE ) - GetValue<int>( PASSEDPRICE);
 	int dayToFinish = ( needMoney / GetValue<int>( INVESTIMENT )) * 30;
 
 	double time;
@@ -83,19 +94,17 @@ void CNrpInvention::Update( IUser* ptrUser )
 		if( genrePref < 0.1f )
 			genrePref = 0.1f;
 
+		float updateMoney = reqSkill * (genrePref + genreSkill) / ( 30.f * 8 );
+		float maxUpdateMoney = ptrUser->GetValueA<int>( SALARY ) / 8.f;
+		float money = updateMoney * GetValue<int>( INVESTIMENT ) / ( 30.f * 8 );
 		//человек может исследовать технологию в день на сумму не больше своей месячной зарплаты
-		int money = static_cast<int>( reqSkill * (genrePref + genreSkill) * GetValue<int>( INVESTIMENT )) ;
-		//if( money > ptrUser->GetValue<int>( SALARY ) )
-		//	money = ptrUser->GetValue<int>( SALARY );
+		money = min( money, maxUpdateMoney );
 
-		int passedPrice = GetValue<int>( PASSEDPRICE ) + money;
-		if( passedPrice >= GetValue<int>( REALPRICE ) )
-			passedPrice = GetValue<int>( REALPRICE);
-
-		SetValue<int>( PASSEDPRICE, passedPrice );
-		SetValue<float>( READYWORKPERCENT, passedPrice / static_cast< float >( GetValue<int>( REALPRICE ) ) );
-		int quality = GetValue<int>( QUALITY );
-		SetValue<int>( QUALITY, (quality + ptrUser->GetValueA<int>( CODE_QUALITY )) / 2 );
+		//эти средства реально пошли на изучение новых технологий
+		AddValue<int>( PASSEDPRICE, static_cast<int>( money ) );
+	
+		SetValue<float>( READYWORKPERCENT, GetValue<int>(PASSEDPRICE) / static_cast< float >( GetValue<int>( REALPRICE ) ) );
+		AddValue<int>( QUALITY, (GetValue<int>( QUALITY ) + ptrUser->GetValueA<int>( CODE_QUALITY )) / 2 );
 	}
 
 	if( GetValue<float>( READYWORKPERCENT ) >= 1 )
@@ -116,10 +125,12 @@ int CNrpInvention::AddUser( IUser* user )
 			return 1;
 	
 	_users.push_back( user );
+	SetValue<int>( USERNUMBER, _users.size() );
+	user->AddWork( this, false );
 	return 0;
 }
 
-int CNrpInvention::RemoveUser( std::string userName )
+int CNrpInvention::RemoveUser( const std::string& userName )
 {
 	USERS_LIST::iterator pIter = _users.begin();
 	for( ; pIter != _users.end(); pIter++ )
@@ -131,4 +142,5 @@ int CNrpInvention::RemoveUser( std::string userName )
 
 	return 1;
 }
+
 }//end namespace nrp

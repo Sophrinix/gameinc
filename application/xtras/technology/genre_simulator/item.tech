@@ -11,6 +11,7 @@ lastworker:string=
 level:int=0
 moduleerrornumber:int=0
 name:string=#TRANSLATE_GT_SIMULATOR
+internalname:string=genre_simulator
 price:float=0
 quality:int=100
 readyworkpercent:float=0
@@ -22,8 +23,8 @@ texturenormal:string=xtras/technology/genre_simulator/image.png
 volumecode:int=0
 nexttechnumber:int=2
 [nexttechs]
-tech_0=xtras/technology/genre_control
-tech_1=xtras/technology/genre_manager
+tech_0=genre_control
+tech_1=genre_manager
 [techRequire]
 301=10
 [skillRequire]

@@ -11,6 +11,7 @@ lastworker:string=
 level:int=0
 moduleerrornumber:int=0
 name:string=#TRANSLATE_GT_EDUCATION
+internalname:string=genre_education
 price:float=0
 quality:int=100
 readyworkpercent:float=0
@@ -22,7 +23,7 @@ texturenormal:string=xtras/technology/genre_education/image.png
 volumecode:int=0
 nexttechnumber:int=1
 [nexttechs]
-tech_0=xtras/technology/genre_toure
+tech_0=genre_toure
 [techRequire]
 301=10
 [skillRequire]

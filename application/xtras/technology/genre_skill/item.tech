@@ -11,6 +11,7 @@ lastworker:string=
 level:int=0
 moduleerrornumber:int=0
 name:string=#TRANSLATE_GT_SKILL
+internalname:string=genre_skill
 price:float=0
 quality:int=100
 readyworkpercent:float=0
@@ -22,9 +23,9 @@ texturenormal:string=xtras/technology/genre_skill/image.png
 volumecode:int=0
 nexttechnumber:int=3
 [nexttechs]
-tech_0=project:xtras/technology/genre_scroll
-tech_1=project:xtras/technology/genre_test
-tech_2=project:xtras/technology/genre_cardgame
+tech_0=genre_scroll
+tech_1=genre_test
+tech_2=genre_cardgame
 [techRequire]
 301=10
 [skillRequire]

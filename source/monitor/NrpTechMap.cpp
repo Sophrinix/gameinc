@@ -316,7 +316,7 @@ void CNrpTechMap::setCellData(u32 rowIndex, u32 columnIndex, void *data)
 {
 	if ( rowIndex < Rows.size() && columnIndex < Columns.size() )
 	{
-		Rows[rowIndex].Items[columnIndex].ptrTech = (CNrpTechnology*)data;
+		Rows[rowIndex].Items[columnIndex].assignTech = (AssignTech*)data;
 	}
 }
 
@@ -336,7 +336,7 @@ void* CNrpTechMap::getCellData(u32 rowIndex, u32 columnIndex ) const
 {
 	if ( rowIndex < Rows.size() && columnIndex < Columns.size() )
 	{
-		return Rows[rowIndex].Items[columnIndex].ptrTech;
+		return Rows[rowIndex].Items[columnIndex].assignTech;
 	}
 
 	return 0;
@@ -383,7 +383,7 @@ s32 CNrpTechMap::getSelected() const
 */
 CNrpTechnology* CNrpTechMap::getSelectedTech() const
 {
-	return Rows[ _selected.Y ].Items[ _selected.X ].ptrTech;
+	return Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology();
 }
 
 //! set wich row is currently selected
@@ -836,7 +836,7 @@ void CNrpTechMap::selectNew( core::position2di cell, bool onlyHover)
 		Parent->OnEvent(event);
 
 		if( _selected == newSelected )
-			DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, Rows[ _selected.Y ].Items[ _selected.X ].ptrTech );			
+			DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology() );			
 
 		_selected = newSelected;
 	}
@@ -929,53 +929,64 @@ void CNrpTechMap::draw()
 					driver->draw2DRectangle(skin->getColor(EGDC_HIGH_LIGHT), textRect, &clientClip);
 
 				Cell& cell = Rows[ i ].Items[ j ];
-				CNrpTechnology* ptrTech = cell.ptrTech;
-				if( ptrTech != NULL )
+				core::stringw text = cell.BrokenText;
+				video::ITexture* txs = NULL;
+				int minSize = min( textRect.getWidth(), textRect.getHeight() );
+				core::dimension2di txsSize( minSize, minSize );
+				if( cell.assignTech != NULL && cell.assignTech->GetTechnology() )
 				{
-					video::ITexture* txs = driver->getTexture( ptrTech->GetValue<std::string>( TEXTURENORMAL ).c_str() );
+					CNrpTechnology* ptrTech = cell.assignTech->GetTechnology();
+					txs = driver->getTexture( ptrTech->GetValue<std::string>( TEXTURENORMAL ).c_str() );
+					txsSize = txs->getOriginalSize();
+					// draw item text
+					core::stringw text = Rows[i].Items[j].BrokenText;
+					if( ptrTech->GetValue<TECH_STATUS>( STATUS ) == TS_INDEVELOP )
+					{
+						text += "\n(";
+						text += core::stringw( IntToStr( ptrTech->GetValue<float>( READYWORKPERCENT ) ).c_str() );
+						text += ")";
+					}
+				}
+
+				{
 					float scaleWidth, scaleHeight;
-					scaleWidth = textRect.getWidth() / static_cast<float>( txs->getOriginalSize().Width );
-					scaleHeight = textRect.getHeight() /  static_cast<float>( txs->getOriginalSize().Height );
+					scaleWidth = textRect.getWidth() / static_cast<float>( txsSize.Width );
+					scaleHeight = textRect.getHeight() / static_cast<float>( txsSize.Height );
 
 					//это мы нашли наименьший коэффициент для отображения
 					scaleWidth = (( scaleWidth < scaleHeight ) ? scaleWidth : scaleHeight) * 0.45f;
-					core::dimension2du hsize( static_cast< u32 >( txs->getOriginalSize().Width * scaleWidth ),
-											  static_cast< u32 >( txs->getOriginalSize().Height * scaleWidth ) );
-											
+					core::dimension2du hsize( static_cast< u32 >( txsSize.Width * scaleWidth ),
+											  static_cast< u32 >( txsSize.Height * scaleWidth ) );
+
 					core::recti scaleTextRect( textRect.getCenter().X - hsize.Width, textRect.getCenter().Y - hsize.Height,
 											   textRect.getCenter().X + hsize.Width, textRect.getCenter().Y + hsize.Height	);
-					driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txs->getOriginalSize() ) );
+					driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ) );
 
 					cell.imgTechRect = scaleTextRect;
 
-					if( cell.parent )
+					if( cell.assignTech && cell.assignTech->GetParent() )
 					{
-						core::recti pRect( cell.parent->imgTechRect );
+						core::position2di parentPos = cell.assignTech->GetParent()->GetCell();
+						core::recti pRect( Rows[ parentPos.Y ].Items[ parentPos.X ].imgTechRect );
 
 						core::position2di lPoint( pRect.LowerRightCorner.X, (pRect.LowerRightCorner.Y + pRect.UpperLeftCorner.Y) / 2 );
 						core::position2di rPoint( scaleTextRect.UpperLeftCorner.X, (scaleTextRect.LowerRightCorner.Y + scaleTextRect.UpperLeftCorner.Y) / 2 );
 
-						video::SMaterial mat, oldMat; 
-						mat.Thickness = 5; 
-						mat.AntiAliasing = true;
-						mat.EmissiveColor = irr::video::SColor(255,0,0,255); 
-						oldMat = driver->getMaterial2D();
-						driver->setMaterial(mat);
-
 						driver->draw2DLine( lPoint, rPoint, 0xff00ff00 );
-
-						driver->setMaterial( oldMat );
 					}
 				}
 
-				// draw item text
 				if ((s32)i == _selected.Y && j == _selected.X )
 				{
-					font->draw(Rows[i].Items[j].BrokenText.c_str(), textRect, skin->getColor(IsEnabled ? EGDC_HIGH_LIGHT_TEXT : EGDC_GRAY_TEXT), false, true, &clientClip);
+					font->draw( text.c_str(), textRect, 
+						skin->getColor(IsEnabled ? EGDC_HIGH_LIGHT_TEXT : EGDC_GRAY_TEXT), 
+						true, true, &clientClip);
 				}
 				else
 				{
-					font->draw(Rows[i].Items[j].BrokenText.c_str(), textRect, IsEnabled ? Rows[i].Items[j].Color : skin->getColor(EGDC_GRAY_TEXT), false, true, &clientClip);
+					font->draw( text.c_str(), textRect, 
+						IsEnabled ? Rows[i].Items[j].Color : skin->getColor(EGDC_GRAY_TEXT), 
+						true, true, &clientClip);
 				}
 
 				pos += Columns[j].Width;
@@ -1184,7 +1195,7 @@ void CNrpTechMap::deserializeAttributes(io::IAttributes* in, io::SAttributeReadW
 			breakText( cell.Text, cell.BrokenText, Columns[c].Width );
 			label = "Row"; label += i; label += "cell"; label += c; label += "color";
 			cell.Color = in->getAttributeAsColor(label.c_str());
-			cell.ptrTech = NULL;
+			cell.assignTech = NULL;
 
 			Rows[Rows.size()-1].Items.push_back(cell);
 		}
@@ -1231,7 +1242,7 @@ AssignTech* CNrpTechMap::FindTechInMap_( const ATECH_ARRAY& parray, CNrpTechnolo
 {
 	for( size_t pos=0; pos < parray.size(); pos++ )
 	{
-		if( parray[ pos ]->GetData() == obj )
+		if( parray[ pos ]->GetTechnology() == obj )
 			return parray[ pos ];
 
 		AssignTech* tmpTech = FindTechInMap_( parray[ pos ]->GetChilds(), obj );
@@ -1248,7 +1259,7 @@ void CNrpTechMap::AddTechnology( CNrpTechnology* parent, CNrpTechnology* child )
 
 	if( !parent )
 	{
-		techMap_.push_back( new AssignTech( NULL, child ) );
+		techMap_.push_back( new AssignTech( NULL, child, "" ) );
 	}
 	else
 	{
@@ -1257,7 +1268,28 @@ void CNrpTechMap::AddTechnology( CNrpTechnology* parent, CNrpTechnology* child )
 
 		assert( rAssign != NULL );
 		if( rAssign )
-			rAssign->AddChild( child );
+			rAssign->AddChild( child, "" );
+	}
+
+	RelocateTable_();
+}
+
+void CNrpTechMap::AddTechnology( nrp::CNrpTechnology* parent, const char* internalName )
+{
+	AssignTech* rAssign = NULL;
+
+	if( !parent )
+	{
+		techMap_.push_back( new AssignTech( NULL, NULL, internalName ) );
+	}
+	else
+	{
+		if( techMap_.size() > 0 )
+			rAssign = FindTechInMap_( techMap_, parent );
+
+		assert( rAssign != NULL );
+		if( rAssign )
+			rAssign->AddChild( NULL, internalName );
 	}
 
 	RelocateTable_();
@@ -1268,27 +1300,24 @@ void CNrpTechMap::AssignTechMapToTable_( const ATECH_ARRAY& pArray )
 	for( size_t pos=0; pos < pArray.size(); pos++ )
 	{
 		AssignTech* pTech = pArray[ pos ];
-		if( pTech && pTech->GetData() )
+		if( pTech )
 		{
-			std::string name = pTech->GetData()->GetValue<std::string>( NAME );
-			name += pTech->GetData()->GetValue<TECH_STATUS>( STATUS ) == TS_PROJECT ? " ???" : "";
 			if( pTech->GetCell().X >= getColumnCount() )
 				addColumn( L"" );
 			if( pTech->GetCell().Y >= getRowCount() )
 				addRow( getRowCount() );
 
-			Cell* cell = &(Rows[ pTech->GetCell().Y ].Items[ pTech->GetCell().X ]);
+			Cell& cell = Rows[ pTech->GetCell().Y ].Items[ pTech->GetCell().X ];
+			cell.assignTech = pTech;
+			cell.Text = core::stringw( "???" ) + StrToWide( cell.assignTech->GetName() ).c_str();
 
-			cell->Text = StrToWide( name ).c_str();
-			cell->ptrTech = pTech->GetData();
-			cell->parent = NULL;
-			if( pTech->GetParent() )
+			if( pTech->GetTechnology() )
 			{
-				AssignTech* parent = pTech->GetParent();
-				cell->parent = &( Rows[ parent->GetCell().Y ].Items[ parent->GetCell().X ] );
-			}
+				std::string name = pTech->GetTechnology()->GetValue<std::string>( NAME );
+				cell.Text = StrToWide( name ).c_str();
 
-			AssignTechMapToTable_( pTech->GetChilds() );
+				AssignTechMapToTable_( pTech->GetChilds() );
+			}
 		}
 	}
 }
@@ -1313,5 +1342,23 @@ void CNrpTechMap::RelocateTable_()
 	setColumnWidth( 160 );
 }
 
+std::string CNrpTechMap::GetSelectedObjectName()
+{
+	return Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetName();
+}
+
+CNrpTechnology* CNrpTechMap::GetSelectedObject()
+{
+	return Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology();
+}
+
+int CNrpTechMap::GetSelectedObjectType()
+{
+	CNrpTechnology* tech = Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology();
+	
+	return ( tech == NULL ? TS_PROJECT : tech->GetValue<TECH_STATUS>( STATUS ) );
+}
+
 } // end namespace gui
+
 } // end namespace irr

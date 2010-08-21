@@ -107,7 +107,7 @@ public:
 	void ClearImageList();
 	float GetGameGenreInterest( CNrpGame* game );
 
-	void StartInvention( CNrpTechnology* startTech, CNrpCompany* parentCompany );
+	void StartInvention( const std::string& startTech, CNrpCompany* parentCompany );
 	void InventionFinished( CNrpInvention* ptrInvention );
 	void InventionCanceled( CNrpInvention* ptrInvention );
 	CNrpInvention* GetInvention( std::string name, std::string companyName );
@@ -142,7 +142,7 @@ private:
 	int GetFreePlatformNumberForGame_( CNrpGame* game );
 	int GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp );
 	void LoadFreeImageLists_( const std::string& fileName );
-	void AssociateTechnologies_();
+	void UpdateInvention_();
 };
 
 }//namespace nrp

@@ -1,26 +1,32 @@
 #pragma once
-#include "NrpTechnology.h"
+#include "IWorkingModule.h"
 
 namespace nrp
 {
 
+const CLASS_NAME CLASS_PROJECTMODULE( "CNrpProjectModule" );
 class INrpProject;
 
-class CNrpProjectModule : public CNrpTechnology
+class CNrpProjectModule : public IWorkingModule
 {
 public:
 	CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProject  );
 	CNrpProjectModule( PROJECT_TYPE type, INrpProject* pProject );
-	~CNrpProjectModule(void);
+	virtual ~CNrpProjectModule(void);
 
-	void SetLider( IUser* ptrUser );
-	virtual void Update( IUser* ptrUser );
+	int AddUser( IUser* ptrUser );
+	int RemoveUser( const std::string& userName );
+	void Update( IUser* ptrUser );
 
-	virtual void Save( std::string saveFolder );
-	virtual void Load( std::string fileName );
+	void Save( std::string saveFolder );
+	void Load( std::string fileName );
+
 private:
 	void InitializeOptions_();
-	CNrpProjectModule();
+	CNrpProjectModule() : IWorkingModule( PROJECT_TYPE(0), CLASS_PROJECTMODULE ) {};
+
+	typedef std::vector< IUser* > USER_LIST;
+	USER_LIST users_;
 };
 
 typedef CNrpProjectModule* PNrpProjectModule;
