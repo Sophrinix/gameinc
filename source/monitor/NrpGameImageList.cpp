@@ -43,7 +43,7 @@ CNrpGameImageList::~CNrpGameImageList(void)
 
 void CNrpGameImageList::Save( const std::string& fileIni )
 {
-	INrpConfig::Save( PROPERTIES, fileIni );
+	INrpConfig::Save( SECTION_PROPERTIES, fileIni );
 
 	for( size_t k=0; k < imagesPath.size(); k++ )
 		IniFile::Write( SECTION_IMAGES, KEY_IMAGE+IntToStr(k), imagesPath[ k ], fileIni );
@@ -54,7 +54,7 @@ void CNrpGameImageList::Save( const std::string& fileIni )
 
 void CNrpGameImageList::Load( const std::string& fileName )
 {
-	INrpConfig::Load( PROPERTIES, fileName );
+	INrpConfig::Load( SECTION_PROPERTIES, fileName );
 
 	for( int k=0; k < GetValue<int>( IMAGESNUMBER ); k++ )
 		imagesPath.push_back( IniFile::Read( SECTION_IMAGES, KEY_IMAGE+IntToStr(k), std::string(""), fileName ) );

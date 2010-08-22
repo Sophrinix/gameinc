@@ -107,7 +107,7 @@ public:
 	void ClearImageList();
 	float GetGameGenreInterest( CNrpGame* game );
 
-	void StartInvention( const std::string& startTech, CNrpCompany* parentCompany );
+	void AddInvention( const std::string& startTech, CNrpCompany* parentCompany );
 	void InventionFinished( CNrpInvention* ptrInvention );
 	void InventionCanceled( CNrpInvention* ptrInvention );
 	CNrpInvention* GetInvention( std::string name, std::string companyName );

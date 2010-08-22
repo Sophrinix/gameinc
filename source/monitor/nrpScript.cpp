@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include <lua.hpp>
 #include <luna.h>
+#include <irrlicht.h>
+
+#include "nrpEngine.h"
 #include "nrpScriptCore.h"
 #include "nrpScript.h"
 #include "LuaTerrain.h"
@@ -48,8 +51,12 @@
 #include "LuaTechMap.h"
 #include "LuaBrowser.h"
 #include "LuaInvention.h"
+#include "LuaAutoScript.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
+
+using irr::io::IWriteFile;
+using irr::io::IFileSystem;
 
 namespace nrp
 {
@@ -198,6 +205,7 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaTechMap >::Register( vm_ );
 	Luna< CLuaBrowser >::Register( vm_ );
 	Luna< CLuaInvention >::Register( vm_ );
+	Luna< CLuaAutoScript >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()
@@ -311,5 +319,22 @@ void CNrpScript::Load_( char* file_name )
 {
 	CreateValue<std::string>( LOAD_FUNCTIONS_FILENAME, "" );
 	CreateValue<bool>( SHOW_CALL_FUNCTION_NAME, true );
+}
+
+void CNrpScript::CreateTemporaryScript( const std::string& fileName )
+{
+	std::string fn = "tmp/" + fileName + ".lua";
+	IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn.c_str() );
+	file->drop();	
+}
+
+void CNrpScript::AddActionToTemporaryScript( const std::string& fileName, const std::string& action )
+{
+	std::string fn = "tmp/" + fileName + ".lua";
+	IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn.c_str(), true );
+	file->write( action.c_str(), action.size() );
+	std::string endline = "\n";
+	file->write( endline.c_str(), endline.size() );
+	file->drop();		
 }
 }//namespace nrp

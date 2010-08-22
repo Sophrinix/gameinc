@@ -100,7 +100,7 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	if( nProject->GetValue<PNrpTechnology>( PHYSICSENGINE ) )
 	{
 		PNrpProjectModule module = new CNrpProjectModule( nProject->GetValue<PNrpTechnology>( PHYSICSENGINE ), this );
-		module->SetValue<int>( CODEVOLUME, bcv * module->GetValue<float>( BASE_CODE ) );
+		module->SetValue<int>( CODEVOLUME, static_cast<int>( bcv * module->GetValue<float>( BASE_CODE ) ) );
 		gameModules_.push_back( module );
 	}
 
@@ -212,19 +212,19 @@ void CNrpDevelopGame::Save( std::string folderSave )
 	if( GetValue<PNrpGameEngine>( GAME_ENGINE ) )
 	{
 		PNrpGameEngine engine = GetValue<PNrpGameEngine>( GAME_ENGINE );
-		IniFile::Write( PROPERTIES, GAME_ENGINE, engine->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( SECTION_PROPERTIES, GAME_ENGINE, engine->GetValue<std::string>( NAME ), fileName );
 	}
 
 	if( GetValue<PNrpScenario>( SCENARIO ) )
 	{
-		IniFile::Write( PROPERTIES, SCENARIO, GetValue<PNrpScenario>( SCENARIO )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpScenario>( SCENARIO )->Save( PROPERTIES, localFolder + SCENARIO + ".ini" );
+		IniFile::Write( SECTION_PROPERTIES, SCENARIO, GetValue<PNrpScenario>( SCENARIO )->GetValue<std::string>(NAME), fileName );
+		GetValue<PNrpScenario>( SCENARIO )->Save( SECTION_PROPERTIES, localFolder + SCENARIO + ".ini" );
 	}
 
 	if( GetValue<PNrpLicense>( GLICENSE ) )
 	{
-		IniFile::Write( PROPERTIES, GLICENSE, GetValue<PNrpLicense>( GLICENSE )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpLicense>( GLICENSE )->Save( PROPERTIES, localFolder + GLICENSE + ".ini");
+		IniFile::Write( SECTION_PROPERTIES, GLICENSE, GetValue<PNrpLicense>( GLICENSE )->GetValue<std::string>(NAME), fileName );
+		GetValue<PNrpLicense>( GLICENSE )->Save( SECTION_PROPERTIES, localFolder + GLICENSE + ".ini");
 	}
 }
 
@@ -236,7 +236,7 @@ void CNrpDevelopGame::Load( std::string loadFolder )
 
 	std::string fileName = loadFolder + "item.devgame";
 	CNrpCompany* ptrCompany = GetValue<PNrpCompany>( PARENTCOMPANY );
-	INrpProject::Load( PROPERTIES, fileName );
+	INrpProject::Load( SECTION_PROPERTIES, fileName );
 
 	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
 	{
@@ -249,17 +249,17 @@ void CNrpDevelopGame::Load( std::string loadFolder )
 		}
 	}
 
-	std::string name = IniFile::Read( PROPERTIES, GAME_ENGINE, std::string(""), fileName );
+	std::string name = IniFile::Read( SECTION_PROPERTIES, GAME_ENGINE, std::string(""), fileName );
 	SetValue<PNrpGameEngine>( GAME_ENGINE, CNrpApplication::Instance().GetGameEngine( name ) );
 
-	name = IniFile::Read( PROPERTIES, SCENARIO, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, SCENARIO, std::string(""), fileName );
 	PNrpScenario scenario = new CNrpScenario( name );
-	scenario->Load( PROPERTIES, loadFolder + SCENARIO + ".ini" ); 
+	scenario->Load( SECTION_PROPERTIES, loadFolder + SCENARIO + ".ini" ); 
 	SetValue<PNrpScenario>( SCENARIO, scenario );
 
-	name = IniFile::Read( PROPERTIES, GLICENSE, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, GLICENSE, std::string(""), fileName );
 	PNrpLicense license = new CNrpLicense( name );
-	license->Load( PROPERTIES, loadFolder + GLICENSE + ".ini" );
+	license->Load( SECTION_PROPERTIES, loadFolder + GLICENSE + ".ini" );
 	SetValue<PNrpLicense>( GLICENSE, license );
 
 	for( int i=0; i < GetValue<int>( USERNUMBER ); i++ )
@@ -300,7 +300,7 @@ void CNrpGameProject::UpdateDevelopmentMoney()
 		{
 			PUser ptrUser = cmp->GetUser( name );
 			if( ptrUser )
-				money += (int)(ptrUser->GetValueA<int>( SALARY ) / 30.f);
+				money += (int)(ptrUser->GetValue<int>( SALARY ) / 30.f);
 		}
 	}
 

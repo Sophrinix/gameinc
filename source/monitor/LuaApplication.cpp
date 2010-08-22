@@ -243,7 +243,7 @@ int CLuaApplication::GetUserByName( lua_State* L )
 		for( int k = 0; k < userNum; k++ )
 		{
 			IUser* ptrUser = object_->GetUser( k );
-			if( ptrUser->GetValueA<std::string>( NAME ) == std::string( userName ) )
+			if( ptrUser->GetValue<std::string>( NAME ) == std::string( userName ) )
 			{
 				user = ptrUser;
 				break;
@@ -453,7 +453,7 @@ int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 	{
 		std::string pathToFile = std::string( "save/" ) + profileName + "/profile.ini";
 		
-		object_->SetValue<SYSTEMTIME>( CURRENTTIME, IniFile::Read( PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME(), pathToFile ) );
+		object_->SetValue<SYSTEMTIME>( CURRENTTIME, IniFile::Read( SECTION_PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME(), pathToFile ) );
 	}
 
 	return 1;	

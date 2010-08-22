@@ -84,7 +84,7 @@ void CNrpTechnology::Save( std::string saveFolder )
 	std::string fileName = saveFolder + GetValue<std::string>( NAME ) + ".tech";
 
 	DeleteFile( fileName.c_str() );
-	INrpProject::Save( PROPERTIES, fileName );
+	INrpProject::Save( SECTION_PROPERTIES, fileName );
 	SaveRequires_( fileName );
 
 	for( size_t pos=0; pos < futureTech_.size(); pos++ )
@@ -93,14 +93,12 @@ void CNrpTechnology::Save( std::string saveFolder )
 
 void CNrpTechnology::Load( std::string fileName )
 {
-	INrpProject::Load( PROPERTIES, fileName );
+	INrpProject::Load( SECTION_PROPERTIES, fileName );
 	LoadRequries_( fileName );
 
 	if( GetValue<TECH_STATUS>( STATUS ) == TS_READY )
-	{
 		for( int cnt=0; cnt < GetValue<int>( NEXTTECHNUMBER ); cnt++ )
 			futureTech_.push_back( IniFile::Read( SECTION_FUTURE_TECH, "tech_"+IntToStr( cnt ), std::string(""), fileName ) );
-	}
 }
 
 float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )

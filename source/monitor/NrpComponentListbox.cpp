@@ -578,14 +578,14 @@ void CNrpComponentListbox::draw()
 							textRect.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 							textRect.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
-							int expr = user->GetValueA<int>( EXPERIENCE );
-							std::wstring name = StrToWide( user->GetValueA<std::string>( NAME ) );
+							int expr = user->GetValue<int>( EXPERIENCE );
+							std::wstring name = StrToWide( user->GetValue<std::string>( NAME ) );
 
 							swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), expr );
 							core::recti progressRect = frameRect;
 							progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
 							//driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clientClip );
-							std::string pathToImage = user->GetValueA<std::string>( TEXTURENORMAL );
+							std::string pathToImage = user->GetValue<std::string>( TEXTURENORMAL );
 							driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
 												 core::recti( 3, 3, textRect.getHeight(), textRect.getHeight() - 6 ) + textRect.UpperLeftCorner,
 												 core::recti( 0, 0, 128, 128 ) );

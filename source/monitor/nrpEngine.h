@@ -27,6 +27,11 @@ namespace irr
 		class IGUIEnvironment;
 		class CNrpConsole;
 	}
+
+	namespace io
+	{
+		class IFileSystem;
+	}
 }
 
 namespace nrp
@@ -59,6 +64,7 @@ public:
 	irr::video::IVideoDriver* GetVideoDriver();	//Текущий видеодрайвер 
 	irr::scene::ISceneManager* GetSceneManager();  //текущий менеджер сцен
 	irr::gui::IGUIEnvironment* GetGuiEnvironment();
+	irr::io::IFileSystem*  GetFileSystem();
 	irr::gui::CNrpConsole* GetConsole() { return console_; }
 	irr::IrrlichtDevice* GetDevice();
 	HWND GetWindowHandle() { return windowHandle_; }

@@ -59,7 +59,7 @@ void CNrpGameEngine::Save( std::string saveFolder )
 	std::string saveFile = localFolder + "engine.ini";
 
 	DeleteFile( saveFile.c_str() );
-	INrpProject::Save( PROPERTIES, saveFile );
+	INrpProject::Save( SECTION_PROPERTIES, saveFile );
 
 	GENRE_MAP::iterator pIter = avgenres_.begin();
 	for( int i=0; pIter != avgenres_.end(); pIter++, i++ )
@@ -69,7 +69,7 @@ void CNrpGameEngine::Save( std::string saveFolder )
 void CNrpGameEngine::Load( std::string loadFolder )
 {
 	std::string loadFile = loadFolder + "engine.ini";
-	INrpProject::Load( PROPERTIES, loadFile );
+	INrpProject::Load( SECTION_PROPERTIES, loadFile );
 
 	char buffer[ 32000 ];
 	memset( buffer, 0, 32000 );

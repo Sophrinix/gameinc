@@ -112,11 +112,11 @@ void CNrpGame::Save( std::string saveFolder )
 		CreateDirectory( localFolder.c_str(), NULL );
 
 	std::string saveFile = localFolder + "game.ini";
-	INrpConfig::Save( PROPERTIES, saveFile );
+	INrpConfig::Save( SECTION_PROPERTIES, saveFile );
 
 	PNrpGameBox box = GetValue<PNrpGameBox>( GBOX );
 	if( box )
-		box->Save( PROPERTIES, localFolder + "box.ini" );
+		box->Save( SECTION_PROPERTIES, localFolder + "box.ini" );
 
 	CNrpGameImageList* pgList = GetValue<CNrpGameImageList*>( GAMEIMAGELIST );
 	if( pgList )
@@ -151,10 +151,10 @@ void CNrpGame::Load( std::string loadFolder )
 
 	std::string loadFile = loadFolder + "game.ini";
 
-	INrpConfig::Load( PROPERTIES, loadFile );
+	INrpConfig::Load( SECTION_PROPERTIES, loadFile );
 
-	SetValue<SYSTEMTIME>( STARTDATE, IniFile::Read( PROPERTIES, STARTDATE, SYSTEMTIME(), loadFile ) );
-	SetValue<SYSTEMTIME>( ENDDATE, IniFile::Read( PROPERTIES, ENDDATE, SYSTEMTIME(), loadFile ) );
+	SetValue<SYSTEMTIME>( STARTDATE, IniFile::Read( SECTION_PROPERTIES, STARTDATE, SYSTEMTIME(), loadFile ) );
+	SetValue<SYSTEMTIME>( ENDDATE, IniFile::Read( SECTION_PROPERTIES, ENDDATE, SYSTEMTIME(), loadFile ) );
 
 	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
 		techs_.push_back( IniFile::Read( "techs", "tech" + IntToStr(i), std::string(""), loadFile ) );
@@ -166,7 +166,7 @@ void CNrpGame::Load( std::string loadFolder )
 	if( _access( boxIni.c_str(), 0 ) == 0 )
 	{
 		PNrpGameBox box = new CNrpGameBox( this );
-		box->Load( PROPERTIES, boxIni );
+		box->Load( SECTION_PROPERTIES, boxIni );
 		SetValue<PNrpGameBox>( GBOX, box );
 	}
 
@@ -188,7 +188,7 @@ float CNrpGame::GetAuthorFamous()
 		IUser* user = CNrpApplication::Instance().GetUser( *uIter );
 		if( user )
 		{
-			summ += user->GetValueA<float>( FAMOUS );
+			summ += user->GetValue<float>( FAMOUS );
 			summ /= 2.f;
 		}
 	}

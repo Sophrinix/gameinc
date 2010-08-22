@@ -74,7 +74,7 @@ int CLuaPlant::LoadBaseReklame( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		CNrpReklameWork* baseReklame = new CNrpReklameWork( "base", "" );
-		baseReklame->Load( PROPERTIES, fileName );
+		baseReklame->Load( SECTION_PROPERTIES, fileName );
 		object_->AddBaseReklame( baseReklame );
 	}
 
@@ -95,7 +95,7 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 		for( int k=0; k < object_->GetValue<int>( BASEREKLAMENUMBER ); k++ )
 		{
 			CNrpReklameWork* rW = object_->GetBaseReklame( k );
-			IniFile::Write( PROPERTIES, rW->GetValue<std::string>( TECHTYPE ), rW->GetValue<int>( PRICEINDAY ), reklamePrice );
+			IniFile::Write( SECTION_PROPERTIES, rW->GetValue<std::string>( TECHTYPE ), rW->GetValue<int>( PRICEINDAY ), reklamePrice );
 		}
 	}
 
@@ -116,7 +116,7 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 
 		char buffer[ 32000 ];
 		memset( buffer, 0, 32000 );
-		GetPrivateProfileSection( PROPERTIES.c_str(), buffer, 32000, reklamePrice.c_str() );
+		GetPrivateProfileSection( SECTION_PROPERTIES.c_str(), buffer, 32000, reklamePrice.c_str() );
 
 		std::string readLine = buffer;
 		while( readLine != "" )

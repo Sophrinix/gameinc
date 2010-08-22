@@ -18,6 +18,10 @@ OPTION_NAME PROJECTNUMBER( "projectNumber" );
 OPTION_NAME GAMENUMBER( "gameNumber" );
 OPTION_NAME OBJECTSINPORTFELLE( "objectInPortfelle" );
 OPTION_NAME DEVELOPPROJECTS_NUMBER( "developProjectsNumber" );
+OPTION_NAME INVENTIONSNUMBER( "inventionsNumber" );
+
+OPTION_NAME SECTION_INVENTIONS( "inventions" );
+OPTION_NAME SECTION_PORTFELLE( "portfelle" );
 
 class INrpProject;
 class CNrpGame;
@@ -63,8 +67,9 @@ public:
 	INrpProject* GetProject( std::string name );
 	INrpProject* GetProject( size_t index );
 
-	void StartInvention( CNrpInvention* inv );
+	void AddInvention( CNrpInvention* inv );
 	void InventionReleased( CNrpInvention* inv );
+	CNrpInvention* GetInvention( const std::string& name );
 
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );

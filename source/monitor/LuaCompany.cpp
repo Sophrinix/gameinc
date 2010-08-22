@@ -345,7 +345,7 @@ int CLuaCompany::StartInvention( lua_State* L )
 	const char* name = lua_tostring( L, 2 );
 	assert( name != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN	CNrpApplication::Instance().StartInvention( name, object_ );
+	IF_OBJECT_NOT_NULL_THEN	CNrpApplication::Instance().AddInvention( name, object_ );
 
 	return 1;	
 }

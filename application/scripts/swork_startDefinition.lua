@@ -31,8 +31,14 @@ function sloginAddStartPublicTechnology()
 	tech:SetStatus( TS_READY )
 	tech:Load( "xtras/technology/genre_skill/item.tech" )
 	
+	local tech2 = CLuaTech( nil )
+	tech2:Create( PT_GENRE )
+	tech2:SetStatus( TS_READY )
+	tech2:Load( "xtras/technology/genre_contact/item.tech" )
+	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология GT_SKILL")
 	applic:AddPublicTechnology( tech:Self() )
+	applic:AddPublicTechnology( tech2:Self() )
 	
 	local sndTech = CLuaTech( nil )
 	sndTech:Create( PT_SOUNDTECH )

@@ -1327,6 +1327,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaAutoScript.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaAutoScript.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaBrowser.cpp"
 						>
 					</File>

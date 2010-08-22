@@ -32,6 +32,8 @@ public:
 	void DoString( const char* s );
 	void LoadFile( const char* fileName );
 	void CallFunction( const char* funcName, void* userData=NULL );
+	void CreateTemporaryScript( const std::string& fileName );
+	void AddActionToTemporaryScript( const std::string& fileName, const std::string& action );
 	
 private:
 	lua_State* vm_;

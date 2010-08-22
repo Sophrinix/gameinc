@@ -134,7 +134,7 @@ function sworkCreateEmployersWindow( ptr )
 end
 
 function sworkWindowUpEmployerClose( ptr )
-   
+	windowUpEmployer:Remove()
 end
 
 function sworkWindowUpEmployerChangerUserType( ptr )

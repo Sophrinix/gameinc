@@ -835,7 +835,7 @@ void CNrpTechMap::selectNew( core::position2di cell, bool onlyHover)
 		event.GUIEvent.EventType = (_selected != newSelected) ? EGET_TABLE_CHANGED : EGET_TABLE_SELECTED_AGAIN;
 		Parent->OnEvent(event);
 
-		if( _selected == newSelected )
+		if( _selected == newSelected && Rows[ _selected.Y ].Items[ _selected.X ].assignTech )
 			DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology() );			
 
 		_selected = newSelected;
@@ -939,7 +939,6 @@ void CNrpTechMap::draw()
 					txs = driver->getTexture( ptrTech->GetValue<std::string>( TEXTURENORMAL ).c_str() );
 					txsSize = txs->getOriginalSize();
 					// draw item text
-					core::stringw text = Rows[i].Items[j].BrokenText;
 					if( ptrTech->GetValue<TECH_STATUS>( STATUS ) == TS_INDEVELOP )
 					{
 						text += "\n(";
@@ -960,7 +959,11 @@ void CNrpTechMap::draw()
 
 					core::recti scaleTextRect( textRect.getCenter().X - hsize.Width, textRect.getCenter().Y - hsize.Height,
 											   textRect.getCenter().X + hsize.Width, textRect.getCenter().Y + hsize.Height	);
-					driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ) );
+					if( txs )
+						driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ) );
+					else
+						if( cell.assignTech )
+							driver->draw2DRectangle( 0xffffff00, scaleTextRect, &AbsoluteClippingRect );
 
 					cell.imgTechRect = scaleTextRect;
 
@@ -1304,8 +1307,6 @@ void CNrpTechMap::AssignTechMapToTable_( const ATECH_ARRAY& pArray )
 		{
 			if( pTech->GetCell().X >= getColumnCount() )
 				addColumn( L"" );
-			if( pTech->GetCell().Y >= getRowCount() )
-				addRow( getRowCount() );
 
 			Cell& cell = Rows[ pTech->GetCell().Y ].Items[ pTech->GetCell().X ];
 			cell.assignTech = pTech;
@@ -1324,7 +1325,7 @@ void CNrpTechMap::AssignTechMapToTable_( const ATECH_ARRAY& pArray )
 
 void CNrpTechMap::RelocateTable_()
 {
-	int ypos = 0;
+	int ypos = 0, xpos = 0;
 	for( size_t pos=0; pos < techMap_.size(); pos++ )
 	{
 		 ypos = techMap_[ pos ]->RootCell( 0, ypos );
@@ -1332,14 +1333,12 @@ void CNrpTechMap::RelocateTable_()
 	}
 
 	clear();
-	clearRows();
-	while( getColumnCount() > 1 )
-		removeColumn( 0 );
-	addRow( 0 );
+	for( int i=0; i < ypos; i++ )
+		 addRow( -1 );
 	AssignTechMapToTable_( techMap_ );
 
-	SetItemHeight( 80 );
-	setColumnWidth( 160 );
+	SetItemHeight( AbsoluteRect.getHeight() / (Rows.size() + 1) );
+	setColumnWidth( AbsoluteRect.getWidth() / (Columns.size() + 1) );
 }
 
 std::string CNrpTechMap::GetSelectedObjectName()

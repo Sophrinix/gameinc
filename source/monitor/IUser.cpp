@@ -8,6 +8,7 @@
 #include "NrpProjectModule.h"
 #include "INrpDevelopProject.h"
 #include "NrpInvention.h"
+#include "nrpScript.h"
 
 #include <io.h>
 #include <errno.h>
@@ -127,23 +128,48 @@ void IUser::Save( std::string folderPath )
 		{
 			std::string projectName = prjModule->GetValue<INrpProject*>( PARENT )->GetValue<std::string>( NAME );
 			std::string name = prjModule->GetValue<std::string>(NAME);
-			IniFile::Write( TECHTYPE, TECHTYPE+IntToStr( i ), projectName+":"+name, fileName );
+			IniFile::Write( SECTION_WORKS, "work_"+IntToStr( i ), "project", fileName );
+			IniFile::Write( SECTION_WORKS, "projectName_" + IntToStr( i ), projectName, fileName );
+			IniFile::Write( SECTION_WORKS, "moduleName_" + IntToStr( i ), name, fileName );
 		}
 		else if( CNrpInvention* invention = dynamic_cast< CNrpInvention* >( *tlIter ) )
 		{
 			std::string name = invention->GetValue<std::string>(NAME);
-			IniFile::Write( TECHTYPE, TECHTYPE+IntToStr( i ), "invention:"+name, fileName );
+			IniFile::Write( SECTION_WORKS, "work_"+IntToStr( i ), "invention", fileName );
+			IniFile::Write( SECTION_WORKS, "inventioName_" + IntToStr( i ), name, fileName );
 		}
 	}
 
-	INrpConfig::Save( PROPERTIES, fileName );
+	INrpConfig::Save( SECTION_PROPERTIES, fileName );
 }
 
 void IUser::Load( std::string fileName )
 {
-	INrpConfig::Load( PROPERTIES, fileName );
+	INrpConfig::Load( SECTION_PROPERTIES, fileName );
 
 	IniFile::ReadValueList_( "knowledges", knowledges_, fileName );
+
+	for( int k=0; k < GetValue<int>( TECHNUMBER ); k++ )
+	{
+		std::string action = "";
+		std::string workType = IniFile::Read( SECTION_WORKS, "work_" + IntToStr( k ), std::string(""), fileName );
+		if( !workType.empty() )
+		{
+			if( workType == "project" )
+			{
+				std::string projectName = IniFile::Read( SECTION_WORKS, "projectName_" + IntToStr( k ), std::string(""), fileName );	
+				std::string moduleName = IniFile::Read( SECTION_WORKS, "moduleName_" + IntToStr( k ), std::string(""), fileName );
+				action = "autoscript:AddUserToGameProject(\"" + GetValue<std::string>( NAME ) + "\", \"" + projectName + "\", \"" + moduleName + "\")";
+			}
+			else if( workType == "invention" )
+			{
+				std::string inventionName = IniFile::Read( SECTION_WORKS, "inventioName_" + IntToStr( k ), std::string(""), fileName );	
+				action = "autoscript:AddUserToInvention(\"" + GetValue<std::string>( NAME ) + "\" , \"" + inventionName + "\")";	
+			}				
+			
+			CNrpScript::Instance().AddActionToTemporaryScript( "UsersAction", action );
+		}
+	}
 
 /*	NAMEVALUE_MAP::iterator gnrIter = genrePreferences_.begin();
 	for( ; gnrIter != genrePreferences_.end(); ++gnrIter )
@@ -192,7 +218,7 @@ void IUser::RemoveWork( IWorkingModule* techWork )
 	for( ; tIter != works_.end(); tIter++ )
 		if( (*tIter) == techWork )
 		{
-			techWork->RemoveUser( GetValueA<std::string>( NAME ) );
+			techWork->RemoveUser( GetValue<std::string>( NAME ) );
 			works_.erase( tIter );
 			SetValue<int>( TECHNUMBER, works_.size() );
 			return;
@@ -291,5 +317,18 @@ void IUser::IncreaseExperience( int techGroup, int grow )
 		genreExperience_[ techGroup ] += grow;
 	else 
 		genreExperience_[ techGroup ] = grow;
+}
+
+void IUser::CheckModificators_()
+{
+	/*
+	MODIFICATOR_LIST::iterator pIter = modificators_.begin();
+
+	for( ; pIter < modificators_.end(); pIter++ )
+	{
+		if( ((CNrpUserModificator<R>*)*pIter)->GetName() == name )
+			paramValue += ((CNrpUserModificator<R>*)*pIter)->GetValue();
+	}
+	*/
 }
 }//namespace nrp

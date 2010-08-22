@@ -293,4 +293,9 @@ void CNrpEngine::InitializeScene( SCENE_CLASS who )
 		currentScene_->OnEnter();
 	}
 }
+
+irr::io::IFileSystem* CNrpEngine::GetFileSystem()
+{
+	return device_->getFileSystem();
+}
 //////////////////////////////////////////////////////////////////////////

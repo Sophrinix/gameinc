@@ -6,8 +6,8 @@ local selectedTech = CLuaTech( nil )
 local btnOk = CLuaButton( nil )
 local btnCancel = CLuaButton( nil )
 
-local width = 800
-local height = 600
+local width = scrWidth
+local height = scrHeight
 
 local function CreateTechSequence( tech )
 	if tech:Empty() == 1 then

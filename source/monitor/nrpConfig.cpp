@@ -84,7 +84,7 @@ void INrpConfig::Save( std::string scetionName, std::string fileName )
 			{
 				PUser user = ((CNrpProperty<PUser>*)prop)->GetValue();
 				if( user )
-					IniFile::Write( scetionName, paIter->first + ":user", user->GetValueA<std::string>( NAME ), fileName );
+					IniFile::Write( scetionName, paIter->first + ":user", user->GetValue<std::string>( NAME ), fileName );
 			}
 		else
 			IniFile::Write( scetionName, paIter->first + ":unknown", std::string(""), fileName );			

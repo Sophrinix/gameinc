@@ -59,6 +59,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( DEVELOPPROJECTS_NUMBER, 0 );
 	CreateValue<int>( PROJECTNUMBER, 0 );
 	CreateValue<PNrpCompany>( PLAYERCOMPANY, NULL );
+	CreateValue<int>( INVENTIONSNUMBER, 0 );
 
 	srand( GetTickCount() );
 }
@@ -207,7 +208,7 @@ IUser* CNrpApplication::GetUser( std::string name )
 {
 	USER_LIST::iterator pIter = users_.begin();
 	for( ; pIter != users_.end(); pIter++ )
-		if( (*pIter)->GetValueA<std::string>( NAME ) == name )
+		if( (*pIter)->GetValue<std::string>( NAME ) == name )
 			return (*pIter);
 
 	return NULL;	
@@ -238,7 +239,7 @@ void CNrpApplication::SaveProfile()
 
 	std::string profileIni = saveFolder + "profile.ini";
 	DeleteFile( profileIni.c_str() );
-	INrpConfig::Save( PROPERTIES, profileIni );
+	INrpConfig::Save( SECTION_PROPERTIES, profileIni );
 
 	std::string config = "config/system.ini";
 	IniFile::Write( SECTION_OPTIONS, "currentProfile", GetValue<std::string>( PROFILENAME ), config );
@@ -261,7 +262,7 @@ void CNrpApplication::SaveProfile()
 	PROJECTS_MAP::iterator ppIter = projects_.begin();
 	for( int i=0; ppIter != projects_.end(); ppIter++, i++ )
 	{
-		ppIter->second->Save( PROPERTIES, saveFolder + "Projects/" + ppIter->first + ".prj" );
+		ppIter->second->Save( SECTION_PROPERTIES, saveFolder + "Projects/" + ppIter->first + ".prj" );
 		IniFile::Write( "projects", "project_" + IntToStr(i), ppIter->second->ClassName() + ":" + ppIter->first, profileIni );
 	}
 
@@ -269,7 +270,7 @@ void CNrpApplication::SaveProfile()
 	for( int i=0; uIter != users_.end(); uIter++, i++ )
 	{
 		(*uIter)->Save( saveFolder + "users/" );
-		std::string text = (*uIter)->ClassName() + ":" + (*uIter)->GetValueA<std::string>( NAME );
+		std::string text = (*uIter)->ClassName() + ":" + (*uIter)->GetValue<std::string>( NAME );
 		IniFile::Write( "users", "user_" + IntToStr(i), text, profileIni );
 	}
 
@@ -312,14 +313,16 @@ void CNrpApplication::SaveProfile()
 							gameListIter->second->GetValue<std::string>( NAME ), imageListIni );
 			gli++;
 		}
-	IniFile::Write( PROPERTIES, "ImageListNumber", gli, imageListIni );
+	IniFile::Write( SECTION_PROPERTIES, "ImageListNumber", gli, imageListIni );
 }
 
 void CNrpApplication::LoadProfile( std::string profileName, std::string companyName )
 {
+	CNrpScript::Instance().CreateTemporaryScript( "UsersAction" );
+
 	std::string saveFolder = "save/" + profileName + "/";
 	std::string profileIni = saveFolder + "profile.ini";
-	INrpConfig::Load( PROPERTIES, profileIni );
+	INrpConfig::Load( SECTION_PROPERTIES, profileIni );
 
 	std::string saveFolderUsers = saveFolder + "users/";
 	for( int i=0; i < GetValue<int>( USERNUMBER ); i++ )
@@ -402,9 +405,16 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 		games_.push_back( game );
 	}
 
+	for( int k=0; k < GetValue<int>( INVENTIONSNUMBER ); k++ )
+	{
+		std::string name = IniFile::Read( SECTION_INVENTIONS, "invention_"+ IntToStr(k), std::string(""), profileIni );
+		CNrpInvention* invention = new CNrpInvention( saveFolder + "inventions/" + name + ".invent" );
+		inventions_.push_back( invention );
+	}
+	SetValue<int>( INVENTIONSNUMBER, inventions_.size() );
+
 	std::string saveFolderCompanies = saveFolder + "companies/";
-	int companiesNumber = GetValue<int>( COMPANIESNUMBER );
-	for( int k=0; k < companiesNumber; k++ )
+	for( int k=0; k < GetValue<int>( COMPANIESNUMBER ); k++ )
 	{
 		std::string name = IniFile::Read( "companies", "company_" + IntToStr(k), std::string(""), profileIni );
 		CNrpCompany* cmp = new CNrpCompany( name, NULL );
@@ -414,11 +424,12 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 	SetValue<int>( GAMENUMBER, games_.size() );
 
     LoadFreeImageLists_( saveFolder + "imageList.ini" );
+	CNrpScript::Instance().DoFile( "tmp/UsersAction.lua" );
 }
 
 void CNrpApplication::LoadFreeImageLists_( const std::string& fileName )
 {
-	size_t imageListNumber = IniFile::Read( PROPERTIES, "ImageListNumber", (int)0, fileName );
+	size_t imageListNumber = IniFile::Read( SECTION_PROPERTIES, "ImageListNumber", (int)0, fileName );
 
 	if( _access( fileName.c_str(), 0 ) == 0 && imageListNumber > 0)
 	{
@@ -428,7 +439,7 @@ void CNrpApplication::LoadFreeImageLists_( const std::string& fileName )
 
 		for( size_t i=0; i < imageListNumber; i++ )
 		{
-			std::string name = IniFile::Read( PROPERTIES,  "imageList_"+IntToStr( i ), std::string(""), fileName );
+			std::string name = IniFile::Read( SECTION_PROPERTIES,  "imageList_"+IntToStr( i ), std::string(""), fileName );
 			GAMEIMAGES_MAP::iterator findIter = gameImages_.find( name );
 			if( findIter != gameImages_.end() )
 				findIter->second->SetValue<bool>( ISUSED, false );
@@ -955,14 +966,15 @@ void CNrpApplication::AddGame( CNrpGame* ptrGame )
 	SetValue<int>( GAMENUMBER, games_.size() );
 }
 
-void CNrpApplication::StartInvention( const std::string& name, CNrpCompany* parentCompany )
+void CNrpApplication::AddInvention( const std::string& name, CNrpCompany* parentCompany )
 {
 	CNrpTechnology* startTech = new CNrpTechnology( PROJECT_TYPE(0) );
 	startTech->Load( "xtras/technology/" + name + "/item.tech" );
 
 	CNrpInvention* inv = new CNrpInvention( startTech, parentCompany );
-	parentCompany->StartInvention( inv );	
+	parentCompany->AddInvention( inv );	
 	inventions_.push_back( inv );  
+	SetValue<int>( INVENTIONSNUMBER, inventions_.size() );
 
 	delete startTech;
 }
@@ -1022,11 +1034,9 @@ CNrpInvention* CNrpApplication::GetInvention( std::string name, std::string comp
 	INVENTION_LIST::iterator pIter = inventions_.begin();
 	for( ; pIter != inventions_.end(); pIter++ )
 	{
-		assert( (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY ) != NULL );
-
 		if( ((*pIter)->GetValue<std::string>( NAME ) == name ||
 			 (*pIter)->GetValue<std::string>( INTERNAL_NAME ) == name )
-			&& (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY )->GetValue<std::string>( NAME ) == companyName )
+			 && (*pIter)->GetValue<std::string>( COMPANYNAME ) == companyName )
 				return *pIter;
 	}
 

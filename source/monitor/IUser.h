@@ -5,6 +5,8 @@
 namespace nrp
 {
 
+OPTION_NAME SECTION_WORKS("works");
+
 OPTION_NAME CODE_SPEED( "codeSpeed" ); /*< How many string code may write developer in day */
 OPTION_NAME CODE_QUALITY( "codeQuality" );/*< What quality we have on game end.Percent */
 OPTION_NAME KNOWLEDGE_LEVEL( "knowledgeLevel" );/*< Уровень знаний. От этого параметра зависит скорость роста скорости написания кода*/
@@ -55,18 +57,6 @@ public:
 	IWorkingModule* GetWork( int index );
 	void RemoveWork( IWorkingModule* techWork );
 
-	template< class R > R GetValueA( std::string name )
-	{
-		R paramValue = INrpConfig::GetValue<R>( name );
-		MODIFICATOR_LIST::iterator pIter = modificators_.begin();
-
-		for( ; pIter < modificators_.end(); pIter++ )
-			if( ((CNrpUserModificator<R>*)*pIter)->GetName() == name )
-				paramValue += ((CNrpUserModificator<R>*)*pIter)->GetValue();
-
-		return paramValue;
-	}
-
 	void AddModificator( IModificator* ptrModificator );
 
 	void BeginNewHour( const SYSTEMTIME& time );
@@ -77,13 +67,12 @@ public:
 	void Load( std::string fileName );
 
 private:         			
-	template< class R > R& GetValue( std::string name ) { return INrpConfig::GetValue<R>( name ); }
-
 	void Load_( char* file_name ) {}
 	void CalculateWantSalary_();
 	void CalculateKnowledgeLevel_();
 
 	void RemoveOldModificators_( const SYSTEMTIME& time );
+	void CheckModificators_();
 	typedef std::map< int, int > KNOWLEDGE_MAP;
 	typedef std::vector< IWorkingModule* > WORK_LIST;
 	typedef std::vector< IUserAction* > USERACTION_LIST;

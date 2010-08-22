@@ -114,7 +114,7 @@ int CLuaUser::GetParam( lua_State* L )
 	int valuel = 0;
 	assert( name != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValueA<int>( name );
+	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValue<int>( name );
 
 	lua_pushinteger( L, valuel );
 	return 1;	
@@ -143,7 +143,7 @@ int CLuaUser::GetName( lua_State* L )
 
 	std::string name = "";
 
-	IF_OBJECT_NOT_NULL_THEN name = object_->GetValueA<std::string>( NAME );
+	IF_OBJECT_NOT_NULL_THEN name = object_->GetValue<std::string>( NAME );
 
 	lua_pushstring( L, name.c_str() );
 	return 1;	
@@ -209,7 +209,7 @@ int CLuaUser::GetWorkNumber( lua_State* L )
 
 	int valuel = 0;
 
-	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValueA<int>( TECHNUMBER );
+	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValue<int>( TECHNUMBER );
 
 	lua_pushinteger( L, valuel );
 	return 1;		

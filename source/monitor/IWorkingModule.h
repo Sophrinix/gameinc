@@ -19,8 +19,8 @@ public:
 	virtual int AddUser( IUser* ptrUser ) = 0;
 	virtual int RemoveUser( const std::string& userName ) = 0;
 
-	virtual void Save( std::string saveFolder ) {};
-	virtual void Load( std::string fileName ) {};
+	virtual void Save( std::string saveFolder ) {}
+	virtual void Load( std::string fileName ) {}
 
 	virtual ~IWorkingModule() {};
 private:

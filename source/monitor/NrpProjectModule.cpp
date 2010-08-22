@@ -93,9 +93,9 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 		SetValue<int>( CODEPASSED, codePassed );
 		SetValue<float>( READYWORKPERCENT, codePassed / (float)GetValue<int>( CODEVOLUME ) );
 		int quality = GetValue<int>( QUALITY );
-		SetValue<int>( QUALITY, (quality + ptrUser->GetValueA<int>( CODE_QUALITY )) / 2 );
+		SetValue<int>( QUALITY, (quality + ptrUser->GetValue<int>( CODE_QUALITY )) / 2 );
 
-		parent->AddValue<int>( MONEYONDEVELOP, ptrUser->GetValueA<int>( SALARY ) / (20*9) );
+		parent->AddValue<int>( MONEYONDEVELOP, ptrUser->GetValue<int>( SALARY ) / (20*9) );
 	}
 
 	if( GetValue<float>( READYWORKPERCENT ) >= 1 )
@@ -110,7 +110,7 @@ void CNrpProjectModule::Save( std::string saveFolder )
 	std::string fileName = saveFolder + GetValue<std::string>( NAME ) + ".devmod";
 
 	DeleteFile( fileName.c_str() );
-	INrpProject::Save( PROPERTIES, fileName );
+	INrpProject::Save( SECTION_PROPERTIES, fileName );
 	SaveRequires_( fileName );
 }
 
@@ -120,7 +120,7 @@ void CNrpProjectModule::Load( std::string fileName )
 	if( _access( fileName.c_str(), 0 ) == -1 )
 		OutputDebugString( ("указанный файл не существует" + fileName).c_str() );
 		
-	INrpProject::Load( PROPERTIES, fileName );
+	INrpProject::Load( SECTION_PROPERTIES, fileName );
 	LoadRequries_( fileName );
 
 	PUser user = GetValue<PUser>( COMPONENTLIDER );

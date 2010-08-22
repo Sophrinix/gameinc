@@ -218,7 +218,7 @@ void CNrpGameProject::Save( std::string folderSave )
 		CreateDirectory( localFolder.c_str(), NULL );
 
 	std::string fileName = localFolder + "project.ini";
-	INrpProject::Save( PROPERTIES, fileName );
+	INrpProject::Save( SECTION_PROPERTIES, fileName );
 
 	TECH_LIST::iterator tIter = technologies_.begin();
 	for( int i=0; tIter != technologies_.end(); tIter++, i++ )
@@ -239,47 +239,47 @@ void CNrpGameProject::Save( std::string folderSave )
 	if( GetValue<PNrpGameEngine>( GAME_ENGINE ) )
 	{
 		PNrpGameEngine engine = GetValue<PNrpGameEngine>( GAME_ENGINE );
-		IniFile::Write( PROPERTIES, GAME_ENGINE, engine->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( SECTION_PROPERTIES, GAME_ENGINE, engine->GetValue<std::string>( NAME ), fileName );
 	}
 
 	if( GetValue<PNrpGame>( PREV_GAME ) )
-		IniFile::Write( PROPERTIES, PREV_GAME, GetValue<PNrpGame>( PREV_GAME )->GetValue<std::string>(NAME), fileName );
+		IniFile::Write( SECTION_PROPERTIES, PREV_GAME, GetValue<PNrpGame>( PREV_GAME )->GetValue<std::string>(NAME), fileName );
 
 	if( GetValue<PNrpScenario>( SCENARIO ) )
 	{
-		IniFile::Write( PROPERTIES, SCENARIO, GetValue<PNrpScenario>( SCENARIO )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpScenario>( SCENARIO )->Save( PROPERTIES, localFolder + SCENARIO + ".ini" );
+		IniFile::Write( SECTION_PROPERTIES, SCENARIO, GetValue<PNrpScenario>( SCENARIO )->GetValue<std::string>(NAME), fileName );
+		GetValue<PNrpScenario>( SCENARIO )->Save( SECTION_PROPERTIES, localFolder + SCENARIO + ".ini" );
 	}
 
 	if( GetValue<PNrpLicense>( GLICENSE ) )
 	{
-		IniFile::Write( PROPERTIES, GLICENSE, GetValue<PNrpLicense>( GLICENSE )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpLicense>( GLICENSE )->Save( PROPERTIES, localFolder + GLICENSE + ".ini");
+		IniFile::Write( SECTION_PROPERTIES, GLICENSE, GetValue<PNrpLicense>( GLICENSE )->GetValue<std::string>(NAME), fileName );
+		GetValue<PNrpLicense>( GLICENSE )->Save( SECTION_PROPERTIES, localFolder + GLICENSE + ".ini");
 	}
 
 	if( GetValue<PNrpTechnology>( ENGINEEXTENDED ) )
-		IniFile::Write( PROPERTIES, ENGINEEXTENDED, GetValue<PNrpTechnology>(ENGINEEXTENDED)->GetValue<std::string>(NAME), fileName );
+		IniFile::Write( SECTION_PROPERTIES, ENGINEEXTENDED, GetValue<PNrpTechnology>(ENGINEEXTENDED)->GetValue<std::string>(NAME), fileName );
 
 	if( GetValue<PNrpTechnology>( LOCALIZATION ) )
-		IniFile::Write( PROPERTIES, LOCALIZATION, GetValue<PNrpTechnology>(LOCALIZATION)->GetValue<std::string>(NAME), fileName );
+		IniFile::Write( SECTION_PROPERTIES, LOCALIZATION, GetValue<PNrpTechnology>(LOCALIZATION)->GetValue<std::string>(NAME), fileName );
 
 	if( GetValue<PNrpTechnology>( CROSSPLATFORMCODE ) )
-		IniFile::Write( PROPERTIES, CROSSPLATFORMCODE, GetValue<PNrpTechnology>(CROSSPLATFORMCODE)->GetValue<std::string>(NAME), fileName );
+		IniFile::Write( SECTION_PROPERTIES, CROSSPLATFORMCODE, GetValue<PNrpTechnology>(CROSSPLATFORMCODE)->GetValue<std::string>(NAME), fileName );
 
 	if( GetValue<PNrpTechnology>( SCRIPTENGINE ) )
-		IniFile::Write( PROPERTIES, SCRIPTENGINE, GetValue<PNrpTechnology>( SCRIPTENGINE )->GetValue<std::string>(NAME), fileName );
+		IniFile::Write( SECTION_PROPERTIES, SCRIPTENGINE, GetValue<PNrpTechnology>( SCRIPTENGINE )->GetValue<std::string>(NAME), fileName );
 
 	if( GetValue<PNrpTechnology>( MINIGAMEENGINE ) )
-		IniFile::Write( PROPERTIES, MINIGAMEENGINE, GetValue<PNrpTechnology>( MINIGAMEENGINE )->GetValue<std::string>(NAME), fileName );
+		IniFile::Write( SECTION_PROPERTIES, MINIGAMEENGINE, GetValue<PNrpTechnology>( MINIGAMEENGINE )->GetValue<std::string>(NAME), fileName );
 
 	if( GetValue<PNrpTechnology>( PHYSICSENGINE ) )
-		IniFile::Write( PROPERTIES, PHYSICSENGINE, GetValue<PNrpTechnology>( PHYSICSENGINE )->GetValue<std::string>(NAME), fileName );
+		IniFile::Write( SECTION_PROPERTIES, PHYSICSENGINE, GetValue<PNrpTechnology>( PHYSICSENGINE )->GetValue<std::string>(NAME), fileName );
 
 	if( GetValue<PNrpTechnology>( GRAPHICQUALITY ) )
-		IniFile::Write( PROPERTIES, GRAPHICQUALITY, GetValue<PNrpTechnology>( GRAPHICQUALITY )->GetValue<std::string>(NAME), fileName );
+		IniFile::Write( SECTION_PROPERTIES, GRAPHICQUALITY, GetValue<PNrpTechnology>( GRAPHICQUALITY )->GetValue<std::string>(NAME), fileName );
 
 	if( GetValue<PNrpTechnology>( SOUNDQUALITY ) )
-		IniFile::Write( PROPERTIES, SOUNDQUALITY, GetValue<PNrpTechnology>( SOUNDQUALITY )->GetValue<std::string>(NAME), fileName );
+		IniFile::Write( SECTION_PROPERTIES, SOUNDQUALITY, GetValue<PNrpTechnology>( SOUNDQUALITY )->GetValue<std::string>(NAME), fileName );
 }
 
 void CNrpGameProject::Load( std::string loadFolder )
@@ -289,7 +289,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 
 	std::string fileName = loadFolder + "project.ini";
 	CNrpCompany* ptrCompany = GetValue<PNrpCompany>( PARENTCOMPANY );
-	INrpProject::Load( PROPERTIES, fileName );
+	INrpProject::Load( SECTION_PROPERTIES, fileName );
 
 	for( int i=0; i < GetValue<int>( ADVTECHNUMBER ); ++i )
 	{
@@ -323,41 +323,41 @@ void CNrpGameProject::Load( std::string loadFolder )
 			soundTechnologies_.push_back( tech );
 	}
 
-	std::string name = IniFile::Read( PROPERTIES, GAME_ENGINE, std::string(""), fileName );
+	std::string name = IniFile::Read( SECTION_PROPERTIES, GAME_ENGINE, std::string(""), fileName );
 	SetValue<PNrpGameEngine>( GAME_ENGINE, CNrpApplication::Instance().GetGameEngine( name ) );
 
-	name = IniFile::Read( PROPERTIES, SCENARIO, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, SCENARIO, std::string(""), fileName );
 	PNrpScenario scenario = new CNrpScenario( name );
-	scenario->Load( PROPERTIES, loadFolder + SCENARIO + ".ini" ); 
+	scenario->Load( SECTION_PROPERTIES, loadFolder + SCENARIO + ".ini" ); 
 	SetValue<PNrpScenario>( SCENARIO, scenario );
 
-	name = IniFile::Read( PROPERTIES, GLICENSE, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, GLICENSE, std::string(""), fileName );
 	PNrpLicense license = new CNrpLicense( name );
-	license->Load( PROPERTIES, loadFolder + GLICENSE + ".ini" );
+	license->Load( SECTION_PROPERTIES, loadFolder + GLICENSE + ".ini" );
 	SetValue<PNrpLicense>( GLICENSE, license );
 
-	name = IniFile::Read( PROPERTIES, SCRIPTENGINE, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, SCRIPTENGINE, std::string(""), fileName );
 	SetValue<PNrpTechnology>( SCRIPTENGINE, CNrpApplication::Instance().GetTechnology( name ) );
 
-	name = IniFile::Read( PROPERTIES, ENGINEEXTENDED, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, ENGINEEXTENDED, std::string(""), fileName );
 	SetValue<PNrpTechnology>( ENGINEEXTENDED, CNrpApplication::Instance().GetTechnology( name ) );
 
-	name = IniFile::Read( PROPERTIES, LOCALIZATION, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, LOCALIZATION, std::string(""), fileName );
 	SetValue<PNrpTechnology>( LOCALIZATION, CNrpApplication::Instance().GetTechnology( name ) );
 
-	name = IniFile::Read( PROPERTIES, CROSSPLATFORMCODE, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, CROSSPLATFORMCODE, std::string(""), fileName );
 	SetValue<PNrpTechnology>( CROSSPLATFORMCODE, CNrpApplication::Instance().GetTechnology( name ) );
 
-	name = IniFile::Read( PROPERTIES, MINIGAMEENGINE, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, MINIGAMEENGINE, std::string(""), fileName );
 	SetValue<PNrpTechnology>( MINIGAMEENGINE, CNrpApplication::Instance().GetTechnology( name ) );
 
-	name = IniFile::Read( PROPERTIES, PHYSICSENGINE, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, PHYSICSENGINE, std::string(""), fileName );
 	SetValue<PNrpTechnology>( PHYSICSENGINE, CNrpApplication::Instance().GetTechnology( name ) );
 
-	name = IniFile::Read( PROPERTIES, GRAPHICQUALITY, std::string(""), fileName );
+	name = IniFile::Read( SECTION_PROPERTIES, GRAPHICQUALITY, std::string(""), fileName );
 	SetValue<PNrpTechnology>( GRAPHICQUALITY, CNrpApplication::Instance().GetTechnology( name ) );
 
-	name = IniFile::Read( PROPERTIES, SOUNDQUALITY, std::string(""), fileName );	
+	name = IniFile::Read( SECTION_PROPERTIES, SOUNDQUALITY, std::string(""), fileName );	
 	SetValue<PNrpTechnology>( SOUNDQUALITY, CNrpApplication::Instance().GetTechnology( name ) );
 }
 
