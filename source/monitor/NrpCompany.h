@@ -70,6 +70,7 @@ public:
 	void AddInvention( CNrpInvention* inv );
 	void InventionReleased( CNrpInvention* inv );
 	CNrpInvention* GetInvention( const std::string& name );
+	CNrpInvention* GetInvention( int index );
 
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );

@@ -427,6 +427,11 @@ INrpProject* CNrpCompany::GetDevelopProject( size_t index )
 	return NULL;
 }
 
+CNrpInvention* CNrpCompany::GetInvention( int index )
+{
+	return index < (int)inventions_.size() ? inventions_[ index ] : NULL;	
+}
+
 void CNrpCompany::RemoveDevelopProject( std::string name )
 {
 	PROJECT_MAP::iterator pIter = devProjects_.find( name );

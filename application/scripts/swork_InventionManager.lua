@@ -8,7 +8,9 @@ local listInventionStuff = CLuaListBox( nil )
 local currentInvention = CLuaInvention( nil )
 local selectedUser = nil
 local windowUserSelect = nil
-local company = applic:GetPlayerCompany()
+local windowInventionList = nil
+local company = nil 
+local picFlowInvention = nil
 
 local width = scrWidth
 local height = scrHeight
@@ -61,6 +63,7 @@ function sworkInventionManagerAddPeopleToInvention( ptr )
 	local lbxUsers = guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect:Self() )
 	lbxUsers:SetItemHeigth( 60 )
 		
+	company = applic:GetPlayerCompany()
 	for i=1, company:GetUserNumber() do
 		local user = company:GetUser( i-1 )
 		if user:GetWorkNumber() == 0 then
@@ -148,6 +151,26 @@ function sworkInventionManagerRemPeopleFromInvention( ptr )
 	currentInvention:RemoveUser( selectedUser:GetName() )	
 end
 
+function sworkCloseWindowInventionList( ptr )
+
+end
+
 function sworkCreateWindowCompanyInventionManager()
+	windowInventionList = guienv:AddWindow( "", 0, 0, width, height, 
+								            -1, guienv:GetRootGUIElement() ) 
 	
+	picFlowInvention = guienv:AddPictureFlow( 10, 10, width / 2, height - 60, -1, windowInventionList:Self() )
+	picFlowInvention:SetPictureRect( 0, 0, 90, 90 )
+	
+	company = applic:GetPlayerCompany()
+	for i=1, company:GetInventionNumber() do
+		local inv = company:GetInvention( i-1 )
+		picFlowInvention:AddItem( inv:GetTexture(), inv:GetName(), inv:Self() )
+	end
+	
+	local btnOk = guienv:AddButton( 10, 240 - 40, 190, 240, windowInventionList:Self(), -1, "Выбрать" )
+	btnOk:SetAction( "sworkOpenWindowForSelectInvention" )
+	
+	local btnCancel = guienv:AddButton( 210, 240 - 40, 390, 240, windowInventionList:Self(), -1, "Выход" )
+	btnCancel:SetAction( "sworkCloseWindowInventionList" )
 end

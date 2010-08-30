@@ -12,6 +12,7 @@
 #include "LuaUser.h"
 #include "LuaProject.h"
 #include "LuaDevelopProject.h"
+#include "LuaInvention.h"
 
 namespace nrp
 {
@@ -45,6 +46,8 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGame ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, StartInvention ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetInventionNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetInvention ),
 	{0,0}
 };
 
@@ -95,6 +98,12 @@ int CLuaCompany::SetCEO( lua_State* L )
 int CLuaCompany::GetName( lua_State* L )
 {
 	lua_pushstring( L, GetParam_<std::string>( L, "GetName", NAME, "" ).c_str() ); 
+	return 1;
+}
+
+int CLuaCompany::GetInventionNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetInventionNumber", INVENTIONSNUMBER, 0 ) );
 	return 1;
 }
 
@@ -191,6 +200,22 @@ int CLuaCompany::AddUser( lua_State* L )
 int CLuaCompany::GetUserNumber( lua_State* L )
 {
 	lua_pushinteger( L, GetParam_<int>( L, "GetUserNumber", USERNUMBER, 0 ) ); 
+	return 1;
+}
+
+int CLuaCompany::GetInvention( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetInvention need int parameter" );
+
+	int index = lua_tointeger( L, 2 );
+	CNrpInvention* inv = NULL;
+	IF_OBJECT_NOT_NULL_THEN	inv = object_->GetInvention( index );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, inv );
+	Luna< CLuaInvention >::constructor( L );
+
 	return 1;
 }
 

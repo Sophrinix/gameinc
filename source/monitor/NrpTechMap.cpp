@@ -1329,12 +1329,13 @@ void CNrpTechMap::RelocateTable_()
 	for( size_t pos=0; pos < techMap_.size(); pos++ )
 	{
 		 ypos = techMap_[ pos ]->RootCell( 0, ypos );
-		 ypos++;
+		 //ypos++;
 	}
 
 	clear();
-	for( int i=0; i < ypos; i++ )
+	for( int i=0; i < ypos+1; i++ )
 		 addRow( -1 );
+
 	AssignTechMapToTable_( techMap_ );
 
 	SetItemHeight( AbsoluteRect.getHeight() / (Rows.size() + 1) );
