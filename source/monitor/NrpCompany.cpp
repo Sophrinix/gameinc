@@ -470,7 +470,7 @@ void CNrpCompany::InventionReleased( CNrpInvention* inv )
 			//надо что-то делать с похожей технологией... либо развивать следующий уровень,
 			//либо прекращать разработки и переводить людей на другой проект с частичным
 			//переносом опыта...
-			//в любом случае эти иследования прекращаются...
+			//в любом случае текущие иследования прекращаются...
 			CNrpApplication::Instance().InventionCanceled( *pIter );
 			DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED, *pIter );
 			inventions_.erase( pIter );
@@ -482,6 +482,21 @@ void CNrpCompany::InventionReleased( CNrpInvention* inv )
 void CNrpCompany::AddTechnology( CNrpTechnology* tech )
 {
 	technologies_[ tech->GetValue<std::string>( NAME ) ] = tech;
+}
+
+void CNrpCompany::RemoveInvention( CNrpInvention* inv )
+{
+	INVENTION_LIST::iterator pIter = inventions_.begin();
+	for( ; pIter != inventions_.end(); pIter++ )
+		if( *pIter == inv )
+		{
+			inventions_.erase( pIter );
+			break;
+		}
+
+	USER_LIST::iterator uIter = employers_.begin();
+	for( ; uIter != employers_.end(); uIter++ )
+		(*uIter)->RemoveWork( inv );
 }
 
 CNrpInvention* CNrpCompany::GetInvention( const std::string& name )

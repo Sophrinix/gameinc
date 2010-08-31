@@ -129,9 +129,6 @@ void CNrpInvention::Update( IUser* ptrUser )
 		SetValue<float>( READYWORKPERCENT, GetValue<int>(PASSEDPRICE) / static_cast< float >( GetValue<int>( REALPRICE ) ) );
 		AddValue<int>( QUALITY, (GetValue<int>( QUALITY ) + ptrUser->GetValue<int>( CODE_QUALITY )) / 2 );
 	}
-
-	if( GetValue<float>( READYWORKPERCENT ) >= 1 )
-		CNrpApplication::Instance().InventionFinished( this );
 }
 
 IUser* CNrpInvention::GetUser( size_t index )

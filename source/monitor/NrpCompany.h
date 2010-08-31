@@ -71,6 +71,7 @@ public:
 	void InventionReleased( CNrpInvention* inv );
 	CNrpInvention* GetInvention( const std::string& name );
 	CNrpInvention* GetInvention( int index );
+	void RemoveInvention( CNrpInvention* inv );
 
 	void AddUser( IUser* user );
 	IUser* GetUser( int index );

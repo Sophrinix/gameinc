@@ -145,6 +145,16 @@ function sworkShowInventionManager( techName, companyName )
 	
 	local btnRemPeople = guienv:AddButton( btnWidth + 10, height - 40, width - 10, height - 10, windowIM:Self(), -1, "Убрать" )
 	btnRemPeople:SetAction( "sworkInventionManagerRemPeopleFromInvention" )	
+	
+	windowIM:AddLuaFunction( GUIELEMENT_AFTER_DRAW, "sworkInventionManagerUpdateLabelValue" )
+end
+
+local lastTimeUpdate = 0
+function sworkInventionManagerUpdateLabelValue( ptr )
+	if GetTickCount() - lastTimeUpdate > 1000 then
+		lastTimeUpdate = GetTickCount()
+		localUpdateLabels()
+	end
 end
 
 function sworkInventionManagerRemPeopleFromInvention( ptr )
@@ -152,7 +162,18 @@ function sworkInventionManagerRemPeopleFromInvention( ptr )
 end
 
 function sworkCloseWindowInventionList( ptr )
+	windowIM:Remove()
+	windowIM = nil
+end
 
+function sworkOpenWindowForSelectInvention( ptr )
+	local inv = CLuaInvention( picFlowInvention:GetSelectedObject() )
+	sworkShowInventionManager( inv:GetName(), company:GetName() )
+end
+
+function sworkCloseWindowInventionList( ptr )
+	windowInventionList:Remove()
+	windowInventionList = nil
 end
 
 function sworkCreateWindowCompanyInventionManager()
@@ -168,9 +189,13 @@ function sworkCreateWindowCompanyInventionManager()
 		picFlowInvention:AddItem( inv:GetTexture(), inv:GetName(), inv:Self() )
 	end
 	
-	local btnOk = guienv:AddButton( 10, 240 - 40, 190, 240, windowInventionList:Self(), -1, "Выбрать" )
+	local btnOk = guienv:AddButton( 10, height - 60, 
+	                                width / 2 - 10, height - 10, 
+	                                windowInventionList:Self(), -1, "Выбрать" )
 	btnOk:SetAction( "sworkOpenWindowForSelectInvention" )
 	
-	local btnCancel = guienv:AddButton( 210, 240 - 40, 390, 240, windowInventionList:Self(), -1, "Выход" )
+	local btnCancel = guienv:AddButton( width / 2 + 10, height - 60,
+	                                    width - 10, height - 10, 
+	                                    windowInventionList:Self(), -1, "Выход" )	                                    
 	btnCancel:SetAction( "sworkCloseWindowInventionList" )
 end

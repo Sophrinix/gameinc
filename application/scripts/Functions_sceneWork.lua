@@ -30,6 +30,11 @@ function sworkAppYearChange( ptr )
 
 end
 
+function sworkInventionFinished( ptr )
+	local inv = CLuaTech( ptr )
+	guienv:MessageBox( "Закончена работа на изобретением "..inv:GetName(), false, false, "", "" )
+end
+
 function sworkPlayerCompanyReadyProject( ptr )
 	local game = CLuaGame( ptr )
 	guienv:MessageBox( "Закончена работа на проектом "..game:GetName(), false, false, "", "" )
@@ -296,3 +301,4 @@ sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )
 applic:AddLuaFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
 applic:AddLuaFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
 applic:AddLuaFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )
+applic:AddLuaFunction( APP_INVENTION_FINISHED, "sworkInventionFinished" )

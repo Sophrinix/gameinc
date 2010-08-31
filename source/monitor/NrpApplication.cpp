@@ -502,10 +502,17 @@ void CNrpApplication::UpdateInvention_()
 	INVENTION_LIST::iterator pIter = inventions_.begin();
 	for( ; pIter != inventions_.end(); pIter++ )
 	{
-		PNrpCompany cmp = (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY );
-		if( cmp )
-			cmp->AddValue<int>( BALANCE, -(*pIter)->GetValue<int>( INVESTIMENT ) / 30 );
-		(*pIter)->CheckParams();
+		if( (*pIter)->GetValue<float>( READYWORKPERCENT ) >= 1 )
+		{
+			InventionFinished( *pIter );
+		}
+		else
+		{
+			PNrpCompany cmp = (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY );
+			if( cmp )
+				cmp->AddValue<int>( BALANCE, -(*pIter)->GetValue<int>( INVESTIMENT ) / 30 );
+			(*pIter)->CheckParams();
+		}
 	} 
 }
 
@@ -997,11 +1004,15 @@ void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )
 			{
 				delIter = pIter;//найти это изобретение в своем списке и удалить его оттуда...
 				pCmp->AddTechnology( tech );
+				pCmp->RemoveInvention( ptrInvention );
+				continue;
 			}
 		
 			pCmp->InventionReleased( ptrInvention );//уведомить все компании об изобретении технологии
 		}
 	}
+
+	DoLuaFunctionsByType( APP_INVENTION_FINISHED, tech );
 	
 	delete *delIter;
 	inventions_.erase( delIter );
