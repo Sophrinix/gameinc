@@ -14,6 +14,7 @@ const std::string TECH_STATUS_NAME[TS_COUNT] = { "unknown", "ready", "indevelop"
 
 class IUser;
 class CNrpCompany;
+class CNrpInvention;
 
 OPTION_NAME BASE_CODE( "baseCode" );
 OPTION_NAME ENGINE_CODE( "engineCode" );
@@ -39,6 +40,7 @@ class CNrpTechnology : public INrpProject
 {
 public:
 	CNrpTechnology( PROJECT_TYPE typen, const CLASS_NAME className=CLASS_TECHNOLOGY );
+	CNrpTechnology( CNrpInvention* invention );
 	~CNrpTechnology(void);
 
 	void SetEngineTechRequire( int tech_type, int valuel );

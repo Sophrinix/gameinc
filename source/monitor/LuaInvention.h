@@ -35,6 +35,7 @@ public:
 	int GetUserNumber( lua_State* L );
 	int GetUser( lua_State* L );
 	int GetDayLeft( lua_State* L );
+	int IsValid( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaInvention"; }	
 };

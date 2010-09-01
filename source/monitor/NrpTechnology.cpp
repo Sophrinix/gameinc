@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "NrpTechnology.h"
 #include "NrpGameProject.h"
+#include "NrpInvention.h"
 #include "IUser.h"
 #include "NrpCompany.h"
 #include "IniFile.h"
@@ -17,6 +18,11 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen, CLASS_NAME className ) : INr
 	InitializeOptions_();
 
 	SetValue<int>( TECHGROUP, typen );
+}
+
+CNrpTechnology::CNrpTechnology( CNrpInvention* invention )
+{
+	Load( invention->GetValue<std::string>( BASEFILE ) );
 }
 
 void CNrpTechnology::InitializeOptions_()

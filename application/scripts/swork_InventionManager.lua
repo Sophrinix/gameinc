@@ -17,12 +17,16 @@ local height = scrHeight
 
 --обновлеяет текст на метках
 local function localUpdateLabels()
-	labelInvestiment:SetText( currentInvention:GetInvestiment() )
-	labelInventionSpeed:SetText( currentInvention:GetSpeed() )
-	local day, month, year = currentInvention:GetPrognoseDateFinish()
-	labelInventionPrognoseFinish:SetText( day.."."..month.."."..year )
-	labelInventionMoneyPassed:SetText( currentInvention:GetPassedMoney() )
-	labelInventionDayLeft:SetText( currentInvention:GetDayLeft() )
+    if currentInvention and currentInvention:IsValid() then 
+		labelInvestiment:SetText( currentInvention:GetInvestiment() )
+		labelInventionSpeed:SetText( currentInvention:GetSpeed() )
+		local day, month, year = currentInvention:GetPrognoseDateFinish()
+		labelInventionPrognoseFinish:SetText( day.."."..month.."."..year )
+		labelInventionMoneyPassed:SetText( currentInvention:GetPassedMoney() )
+		labelInventionDayLeft:SetText( currentInvention:GetDayLeft() )
+	else
+	    currentInvention = nil
+	end
 end
 
 --увеличивает затраты на исследования

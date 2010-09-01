@@ -835,7 +835,9 @@ void CNrpTechMap::selectNew( core::position2di cell, bool onlyHover)
 		event.GUIEvent.EventType = (_selected != newSelected) ? EGET_TABLE_CHANGED : EGET_TABLE_SELECTED_AGAIN;
 		Parent->OnEvent(event);
 
-		if( _selected == newSelected && Rows[ _selected.Y ].Items[ _selected.X ].assignTech )
+		if( _selected == newSelected && 
+			_selected.Y < Rows.size()&& _selected.X < Rows[ _selected.Y ].Items.size() &&
+			Rows[ _selected.Y ].Items[ _selected.X ].assignTech )
 			DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology() );			
 
 		_selected = newSelected;

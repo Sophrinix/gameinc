@@ -499,20 +499,20 @@ void CNrpApplication::BeginNewDay_()
 
 void CNrpApplication::UpdateInvention_()
 {
+	for( size_t k=0; k < inventions_.size(); k++ )
+		if( inventions_[ k ]->GetValue<float>( READYWORKPERCENT ) >= 1 )
+		{
+			InventionFinished( inventions_[ k ] );
+			k--;
+		}
+
 	INVENTION_LIST::iterator pIter = inventions_.begin();
 	for( ; pIter != inventions_.end(); pIter++ )
 	{
-		if( (*pIter)->GetValue<float>( READYWORKPERCENT ) >= 1 )
-		{
-			InventionFinished( *pIter );
-		}
-		else
-		{
-			PNrpCompany cmp = (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY );
-			if( cmp )
-				cmp->AddValue<int>( BALANCE, -(*pIter)->GetValue<int>( INVESTIMENT ) / 30 );
-			(*pIter)->CheckParams();
-		}
+		PNrpCompany cmp = (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY );
+		if( cmp )
+			cmp->AddValue<int>( BALANCE, -(*pIter)->GetValue<int>( INVESTIMENT ) / 30 );
+		(*pIter)->CheckParams();
 	} 
 }
 
@@ -990,7 +990,7 @@ void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )
 {
 	//создать соответствующую изобретению технологию 
 	//разместить её в списке доступных
-	CNrpTechnology* tech = new CNrpTechnology( *ptrInvention );
+	CNrpTechnology* tech = new CNrpTechnology( ptrInvention );
 	AddTechnology( tech );
 
 	INVENTION_LIST::iterator pIter = inventions_.begin();
