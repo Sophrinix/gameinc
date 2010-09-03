@@ -635,4 +635,4 @@ int CLuaApplication::GetInvention( lua_State* L )
 	Luna< CLuaInvention >::constructor( L );
 	return 1;
 }
-}//namespace nrp 
+}//namespace nrp  

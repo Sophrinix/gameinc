@@ -16,7 +16,7 @@ local function CreateTechSequence( tech )
 	
 	for i=1, tech:GetFutureTechNumber() do
 		local internalName = tech:GetFutureTechInternalName( i-1 )
-		Log({src=SCRIPT, dev=ODS|CON}, "Дочерняя технология="..internalName.." Родительская технология="..tech:GetName() )
+		Log({src=SCRIPT, dev=ODS|CON}, "Дочерняя технолоwгия="..internalName.." Родительская технология="..tech:GetName() )
 
 		local futureTech = applic:GetTech( internalName );
 		--такой технологии нет на рынке
@@ -35,6 +35,7 @@ local function CreateTechSequence( tech )
 		else
 			--такая технология есть на рынке и надо построить
 			--дерево потомков
+			techMap:AddTechnology( tech:Self(), futureTech:Self() )		
 			CreateTechSequence( futureTech )
 		end
 	end

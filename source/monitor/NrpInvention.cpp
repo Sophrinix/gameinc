@@ -46,6 +46,7 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp )
 		SetValue<std::string>( TEXTURENORMAL, pTech->GetValue<std::string>( TEXTURENORMAL ) );
 		SetValue<int>( LEVEL, pTech->GetValue<int>( LEVEL ) );
 		SetValue<int>( QUALITY, pTech->GetValue<int>( QUALITY ) );
+		SetValue<std::string>( BASEFILE, pTech->GetValue<std::string>( BASEFILE ) );
 
 		SYSTEMTIME time;
 		memset( &time, 0, sizeof(SYSTEMTIME) );

@@ -836,7 +836,8 @@ void CNrpTechMap::selectNew( core::position2di cell, bool onlyHover)
 		Parent->OnEvent(event);
 
 		if( _selected == newSelected && 
-			_selected.Y < Rows.size()&& _selected.X < Rows[ _selected.Y ].Items.size() &&
+			_selected.Y < static_cast< s32 >( Rows.size() ) &&
+			_selected.X < static_cast< s32 >( Rows[ _selected.Y ].Items.size() ) &&
 			Rows[ _selected.Y ].Items[ _selected.X ].assignTech )
 			DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology() );			
 
@@ -1258,8 +1259,20 @@ AssignTech* CNrpTechMap::FindTechInMap_( const ATECH_ARRAY& parray, CNrpTechnolo
 	return NULL;
 }
 
+bool CNrpTechMap::_IsAlsoHaveTech( CNrpTechnology* tech )
+{
+	for( size_t k=0; k < techMap_.size(); k++ )
+		if( techMap_[ k ]->FindTech( tech ) )
+			return true;
+
+	return false;
+}
+
 void CNrpTechMap::AddTechnology( CNrpTechnology* parent, CNrpTechnology* child )
 {
+	if( _IsAlsoHaveTech( child) )
+		return;
+
 	AssignTech* rAssign = NULL;
 
 	if( !parent )
@@ -1331,7 +1344,7 @@ void CNrpTechMap::RelocateTable_()
 	for( size_t pos=0; pos < techMap_.size(); pos++ )
 	{
 		 ypos = techMap_[ pos ]->RootCell( 0, ypos );
-		 //ypos++;
+		 ypos += !(techMap_[ pos ]->GetTechnology()->GetValue<int>( NEXTTECHNUMBER ));
 	}
 
 	clear();

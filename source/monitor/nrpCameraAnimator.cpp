@@ -124,11 +124,7 @@ void CNrpCameraAnimator::animateNode(ISceneNode *node, u32 timeMs)		//обработка 
 
 	if( abs( currentAngle_ - needAngle_ ) > abs( stepAngle_ ) )
 		currentAngle_ += stepAngle_;
-#ifdef _DEBUG
-	f32 nRotY = currentAngle_;
-#else
-	f32 nRotY = 90.f;
-#endif
+	f32 nRotY = 45.f;
 
 	if( abs(currentZoom_ - needZoom_ ) > abs(stepZoom_) )
 		currentZoom_ += stepZoom_;

@@ -46,6 +46,18 @@ public:
 
 	const std::string& GetName() { return name_; }
 
+	bool FindTech( nrp::CNrpTechnology* pTech )
+	{
+		if( data_ == pTech )
+			return true;
+
+		for( size_t k=0; k < techs_.size(); k++ )
+			if( techs_[ k ]->FindTech( pTech ) )
+				return true;
+
+		return false;
+	}
+
 	int RootCell( int xpos, int ypos ) 
 	{
 		cell_ = core::position2di( xpos, ypos );
@@ -249,6 +261,7 @@ private:
 	AssignTech* FindTechInMap_( const ATECH_ARRAY& parray, nrp::CNrpTechnology* obj );
 	void AssignTechMapToTable_( const ATECH_ARRAY& pArray );
 	void RelocateTable_();
+	bool _IsAlsoHaveTech( nrp::CNrpTechnology* tech );
 	core::array< Column > Columns;
 	core::array< Row > Rows;
 

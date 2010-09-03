@@ -20,9 +20,13 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen, CLASS_NAME className ) : INr
 	SetValue<int>( TECHGROUP, typen );
 }
 
-CNrpTechnology::CNrpTechnology( CNrpInvention* invention )
+CNrpTechnology::CNrpTechnology( CNrpInvention* invention ) : INrpProject( CLASS_TECHNOLOGY, "" )
 {
+	InitializeOptions_();
+	SetValue<TECH_STATUS>( STATUS, TS_READY );
 	Load( invention->GetValue<std::string>( BASEFILE ) );
+	SetValue<PNrpCompany>( PARENTCOMPANY, invention->GetValue<PNrpCompany>( PARENTCOMPANY ) );
+	SetValue<SYSTEMTIME>( STARTDATE, invention->GetValue<SYSTEMTIME>( ENDDATE ) );
 }
 
 void CNrpTechnology::InitializeOptions_()
@@ -100,6 +104,7 @@ void CNrpTechnology::Save( std::string saveFolder )
 void CNrpTechnology::Load( std::string fileName )
 {
 	INrpProject::Load( SECTION_PROPERTIES, fileName );
+	SetValue<std::string>( BASEFILE, fileName );
 	LoadRequries_( fileName );
 
 	if( GetValue<TECH_STATUS>( STATUS ) == TS_READY )

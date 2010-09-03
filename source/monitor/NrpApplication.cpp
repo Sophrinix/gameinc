@@ -19,6 +19,7 @@
 #include "NrpGameImageList.h"
 #include "NrpDevelopGame.h"
 #include "NrpInvention.h"
+#include "NrpActionType.h"
 
 #include <io.h>
 #include <errno.h>
@@ -502,6 +503,7 @@ void CNrpApplication::UpdateInvention_()
 	for( size_t k=0; k < inventions_.size(); k++ )
 		if( inventions_[ k ]->GetValue<float>( READYWORKPERCENT ) >= 1 )
 		{
+			inventions_[ k ]->SetValue<SYSTEMTIME>( ENDDATE, GetValue<SYSTEMTIME>( CURRENTTIME ) );
 			InventionFinished( inventions_[ k ] );
 			k--;
 		}

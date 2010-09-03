@@ -62,6 +62,7 @@ public:
 
 protected:
 	CNrpTechnology( CLASS_NAME className, PROJECT_TYPE typen );
+	CNrpTechnology();;
 	void Load_( char* file_name ) {}
 	void InitializeOptions_();
 	void SaveRequires_( const std::string& fileName );
