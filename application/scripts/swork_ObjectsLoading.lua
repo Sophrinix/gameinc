@@ -1,3 +1,5 @@
+cityWindow = nil
+
 function ApplicationLoadLaborScene()
 	sceneManager:SetSelectedNode( nil )
 	--guienv:FadeAction( 3000, false )
@@ -41,20 +43,31 @@ function ApplicationLoadLaborScene()
 end
 
 function ApplicationLoadCityScene()
+	
+	if cityWindow then
+		cityWindow:SetVisible( true )
+	else
+		cityWindow = guienv:AddWindow( "media/city_map.jpg", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		local closeBtn = cityWindow:GetCloseButton()
+		closeBtn:SetVisible( false )
+	end
+	
 	sceneManager:SetSelectedNode( nil )
-	--guienv:FadeAction( 3000, false )
 	sceneManager:RemoveAllNodes()
 	
-	ApplicationAddCityCamera()
-	sceneManager:LoadIrrlichtScene( "scene/nrpCityScene.irr" )	
+	local btnOffice = guienv:AddButton( 725, 52, 725 + 229, 52 + 195, cityWindow:Self(), -1, "")
+	btnOffice:SetImage( 0, 0, 229, 195, "media/buttons/office_normal.tga" )
+	btnOffice:SetHoveredImage( 0, 0, 229, 195, "media/buttons/office_select.tga" )	
+	btnOffice:SetPressedImage( 0, 0, 229, 195, "media/buttons/office_select.tga" )	
+	btnOffice:SetAction( "ApplicationLoadOfficeScene" )
 	
-	local office = sceneManager:GetSceneNodeByName( "officeNode" )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( office:Self() )
-	office:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( office:Self(), "office" )
-	SetHelpLinkForObject( "officeNode", "media/html/officeNode.htm" )
-	LogScript( "officeNode find" )	
+	local btnMedia = guienv:AddButton( 417, 82, 417 + 216, 82 + 226, cityWindow:Self(), -1, "")
+	btnMedia:SetImage( 0, 0, 216, 226, "media/buttons/media_normal.tga" )
+	btnMedia:SetHoveredImage( 0, 0, 216, 226, "media/buttons/media_select.tga" )	
+	btnMedia:SetPressedImage( 0, 0, 216, 226, "media/buttons/media_select.tga" )	
+	btnMedia:SetAction( "ApplicationLoadMediaScene" )
 	
+	--[[	
 	local univer = sceneManager:GetSceneNodeByName( "univerNode" )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( univer:Self() ) 
 	univer:SetTriangleSelector( selector )
@@ -104,6 +117,7 @@ function ApplicationLoadCityScene()
 	LogScript( "plantNode find" )	
 	--guienv:FadeAction( 3000, true )
 	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
+	--]]
 end
 
 function ApplicationLoadBankScene()
@@ -179,12 +193,23 @@ function ApplicationLoadShopScene()
 end
 
 function ApplicationLoadOfficeScene()
-	sceneManager:SetSelectedNode( nil )
-	sceneManager:RemoveAllNodes()
-	ApplicationAddCityCamera()
-	sceneManager:LoadIrrlichtScene( "scene/nrpOfficeScene.irr" )
+	cityWindow:SetVisible( false )
 	
-	local newProj = sceneManager:GetSceneNodeByName( "createNewProjectNode" )
+	if receptionWindow then
+		receptionWindow:SetVisible( true )
+	else
+		receptionWindow = guienv:AddWindow( "media/reception.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		local closeBtn = receptionWindow:GetCloseButton()
+		closeBtn:SetVisible( false )
+	end	
+	
+	local btnDirector = guienv:AddButton( 450, 242, 450 + 85, 242 + 176, receptionWindow:Self(), -1, "")
+	btnDirector:SetImage( 0, 0, 85, 176, "media/buttons/director_normal.tga" )
+	btnDirector:SetHoveredImage( 0, 0, 85, 176, "media/buttons/director_select.tga" )	
+	btnDirector:SetPressedImage( 0, 0, 85, 176, "media/buttons/director_select.tga" )	
+	btnDirector:SetAction( "ApplicationLoadDirectorCabinetScene" )
+		
+	--[[local newProj = sceneManager:GetSceneNodeByName( "createNewProjectNode" )
 	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( newProj:Self() )
 	newProj:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( newProj:Self(), "createNewProject" )
@@ -210,6 +235,7 @@ function ApplicationLoadOfficeScene()
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
 	
 	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
+	--]]
 end
 
 function ApplicationLoadPlantScene()

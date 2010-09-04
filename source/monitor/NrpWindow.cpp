@@ -262,9 +262,9 @@ void CNrpWindow::draw()
 		if( background_ )
 		{   
 			core::recti rsize( core::vector2di( 0, 0 ), background_->getSize() );
-			video::SColor color( AlphaBlend, 0xff, 0xff, 0xff );
+			video::SColor color( AlphaBlend, 0xff, 0xff, 0xfe );
 			video::SColor colors[ 4 ] = { color, color, color, color };
-			Environment->getVideoDriver()->draw2DImage( background_, rect, rsize, 0, colors, true );
+			Environment->getVideoDriver()->draw2DImage( background_, AbsoluteRect, rsize, 0, colors, true );
 		}
 
 		//выполн€ютс€ функции после отрисовки элемента
