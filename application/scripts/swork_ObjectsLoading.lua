@@ -1,7 +1,9 @@
 cityWindow = nil
+laborWindow = nil
+receptionWindow = nil
 
 function ApplicationLoadLaborScene()
-	sceneManager:SetSelectedNode( nil )
+	--[[sceneManager:SetSelectedNode( nil )
 	--guienv:FadeAction( 3000, false )
 	sceneManager:RemoveAllNodes()
 	
@@ -40,6 +42,7 @@ function ApplicationLoadLaborScene()
 	
 	sceneManager:SetSelectedNode( nil )
 	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnLaborScene" )
+	--]]
 end
 
 function ApplicationLoadCityScene()
@@ -48,6 +51,7 @@ function ApplicationLoadCityScene()
 		cityWindow:SetVisible( true )
 	else
 		cityWindow = guienv:AddWindow( "media/city_map.jpg", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		cityWindow:SetDraggable( false )
 		local closeBtn = cityWindow:GetCloseButton()
 		closeBtn:SetVisible( false )
 	end
@@ -67,57 +71,24 @@ function ApplicationLoadCityScene()
 	btnMedia:SetPressedImage( 0, 0, 216, 226, "media/buttons/media_select.tga" )	
 	btnMedia:SetAction( "ApplicationLoadMediaScene" )
 	
-	--[[	
-	local univer = sceneManager:GetSceneNodeByName( "univerNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( univer:Self() ) 
-	univer:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( univer:Self(), "univer" )
-	LogScript( "univerNode find" )	
+	local btnLabor = guienv:AddButton( 300, 660 - 140, 300 + 140, 660, cityWindow:Self(), -1, "")
+	btnLabor:SetImage( 0, 0, 140, 140, "media/buttons/labor_normal.tga" )
+	btnLabor:SetHoveredImage( 0, 0, 140, 140, "media/buttons/labor_select.tga" )	
+	btnLabor:SetPressedImage( 0, 0, 140, 140, "media/buttons/labor_select.tga" )	
+	btnLabor:SetAction( "ApplicationLoadLaborScene" )
 	
-	local bank = sceneManager:GetSceneNodeByName( "bankNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( bank:Self() ) 
-	bank:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( bank:Self(), "Bank" )
-	LogScript( "bankNode find" )	
 	
-	local gameShop = sceneManager:GetSceneNodeByName( "gameShopNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameShop:Self() ) 
-    gameShop:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( gameShop:Self(), "gameShop" )
-	LogScript( "gameShopNode find" )	
+	local btnBank = guienv:AddButton( 490, 315, 490 + 200, 315 + 200, cityWindow:Self(), -1, "")
+	btnBank:SetImage( 0, 0, 200, 200, "media/buttons/bank_normal.tga" )
+	btnBank:SetHoveredImage( 0, 0, 200, 200, "media/buttons/bank_select.tga" )	
+	btnBank:SetPressedImage( 0, 0, 200, 200, "media/buttons/bank_select.tga" )	
+	btnBank:SetAction( "ApplicationLoadBankScene" )
 	
-	local labor = sceneManager:GetSceneNodeByName( "laborNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( labor:Self() ) 
-    labor:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( labor:Self(), "laboratory" )
-	LogScript( "laborNode find" )	
-	
-	local pr = sceneManager:GetSceneNodeByName( "prNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( pr:Self() ) 
-    pr:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( pr:Self(), "PR kontora" )
-	LogScript( "prNode find" )	
-	
-	local cinema = sceneManager:GetSceneNodeByID( 1001001 )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( cinema:Self() ) 
-    cinema:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( cinema:Self(), "Cinema" )
-	LogScript( "cinemaNode find" )	
-		
-	local pizza = sceneManager:GetSceneNodeByName( "pizzaNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( pizza:Self() ) 
-    pizza:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( pizza:Self(), "Sabotaje" )
-	LogScript( "pizzaNode find" )	
-	
-	local plant = sceneManager:GetSceneNodeByName( "plantNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( plant:Self() ) 
-	plant:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( plant:Self(), "Производство" )
-	LogScript( "plantNode find" )	
-	--guienv:FadeAction( 3000, true )
-	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnCityScene" )
-	--]]
+	local btnPlant = guienv:AddButton( 0, 0, 159, 92, cityWindow:Self(), -1, "")
+	btnPlant:SetImage( 0, 0, 159, 92, "media/buttons/plant_normal.tga" )
+	btnPlant:SetHoveredImage( 0, 0, 159, 92, "media/buttons/plant_select.tga" )	
+	btnPlant:SetPressedImage( 0, 0, 159, 92, "media/buttons/plant_select.tga" )	
+	btnPlant:SetAction( "ApplicationLoadPlantScene" )
 end
 
 function ApplicationLoadBankScene()
