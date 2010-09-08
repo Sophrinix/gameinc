@@ -15,12 +15,11 @@ pagesName[ "sound" ] = "Звук"; pagesID[ "sound" ] = 9005
 pagesName[ "platforms" ] = "Платформы"; pagesID[ "platforms" ] = 9006
 pagesName[ "end" ] = "Завершить"; pagesID[ "end" ] = 9007
 
-local width = 800
-local height = 600
-
 local ID_CODEVOLUME = 9010
 local ID_PROJECTQUALITY = 9011
 local ID_COMPONENTLIST = 9012
+
+local windowGameProjectCreating = nil
 
 local function ShowParams()
 	local label = CLuaLabel( guienv:GetElementByID( ID_CODEVOLUME ) )
@@ -39,8 +38,8 @@ local function ShowAvaibleEngines( tab )
 	for i=1, maxEngine do
 		local gameeng = CLuaGameEngine( company:GetEngine( i-1 ) )			
 		local linkModule = guienv:AddLinkBox( "Движок ".. i .."/"..maxEngine .. "\r(" .. gameeng:GetName() .. ")", 
-															width / 2 + xoffset, 50 * rowCount, 
-															width / 2 + xoffset + 50, 50 * rowCount + 50, 
+															scrWidth / 2 + xoffset, 50 * rowCount, 
+															scrWidth / 2 + xoffset + 50, 50 * rowCount + 50, 
 															-1, tab )
 		linkModule:SetData( gameeng:Self() )
 		linkModule:SetModuleType( PT_GAMEENGINE )
@@ -70,8 +69,8 @@ local function ShowAvaibleGenreModules( tab )
 		local tech = CLuaTech( arGenres[ i ] )
 		
 		if tech:GetTechGroup() == PT_GENRE then
-			local linkModule = guienv:AddLinkBox( tech:GetName(), width / 2, 200 + showedTech * 50, 
-															 width / 2 + 50, 200 + 50 + showedTech * 50, -1, tab )
+			local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 200 + showedTech * 50, 
+															 scrWidth / 2 + 50, 200 + 50 + showedTech * 50, -1, tab )
 			linkModule:SetModuleType( PT_GENRE )
 			linkModule:SetData( tech:Self() )
 			linkModule:SetEnabled( not project:IsGenreIncluded( tech:GetTechType() ) )
@@ -137,8 +136,8 @@ local function ShowAvaibleVideoQualityAndVideoTech( tab )
 		local tech = CLuaTech( techs[ i ] )
 		local tg = tech:GetTechGroup()
 		if tg == PT_VIDEOTECH or tg == PT_VIDEOQUALITY then
-			local linkModule = guienv:AddLinkBox( tech:GetName(), width / 2, 200 + showedTech * 50, 
-												  width / 2 + 50, 200 + 50 + showedTech * 50, -1, tab )
+			local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 200 + showedTech * 50, 
+												  scrWidth / 2 + 50, 200 + 50 + showedTech * 50, -1, tab )
 			linkModule:SetModuleType( tg )
 			linkModule:SetData( tech:Self() )
 			linkModule:SetEnabled( not project:IsTechInclude( tech:GetTechType() ) )
@@ -165,8 +164,8 @@ local function ShowAvaibleSoundQualityAndSoundTech( tab )
 		local tech = CLuaTech( techs[ i ] )
 		local tg = tech:GetTechGroup()
 		if tg == PT_SOUNDTECH or tg == PT_SOUNDQUALITY then
-			local linkModule = guienv:AddLinkBox( tech:GetName(), width / 2, 200 + showedTech * 50, 
-												   width / 2 + 50, 200 + 50 + showedTech * 50, -1, tab )
+			local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 200 + showedTech * 50, 
+												   scrWidth / 2 + 50, 200 + 50 + showedTech * 50, -1, tab )
 			linkModule:SetModuleType( tg )
 			linkModule:SetData( tech:Self() )
 			linkModule:SetEnabled( not project:IsTechInclude( tech:GetTechType() ) )
@@ -324,8 +323,8 @@ local function ShowAvaibleScriptAndMiniGames( tab )
 		local tg = tech:GetTechGroup()
 		if tg == PT_SCRIPTS or tg == PT_MINIGAME or tg == PT_PHYSIC or tg == PT_ADVTECH then
 			Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:ShowAvaibleScriptLevel element = " .. i .. " " .. 20 + showeddLinks * 50 )
-			local linkModule = guienv:AddLinkBox( tech:GetName(), width / 2, 20 + showeddLinks * 50, 
-												  width / 2 + 50, 20 + 50 + showeddLinks * 50, -1, tab )
+			local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 20 + showeddLinks * 50, 
+												  scrWidth / 2 + 50, 20 + 50 + showeddLinks * 50, -1, tab )
 			linkModule:SetModuleType( tg )
 			linkModule:SetData( tech:Self() )
 			linkModule:SetDraggable( true )
@@ -420,8 +419,8 @@ local function ShowAvaibleScenarioAndLicense( tab )
 		local tech = applic:GetTech( i-1 )
 		
 		if tech:GetTechGroup() == PT_SCENARIOQUALITY then
-				local linkModule = guienv:AddLinkBox( tech:GetName(), width / 2, 10 + showedLinks * 50, 
-													   width / 2 + 50, 10 + 50 + showedLinks * 50, -1, tab )
+				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 10 + showedLinks * 50, 
+													   scrWidth / 2 + 50, 10 + 50 + showedLinks * 50, -1, tab )
 				linkModule:SetModuleType( PT_SCENARIOQUALITY )
 				linkModule:SetData( tech:Self() )		
 				linkModule:SetEnabled( not project:IsTechInclude( tech:GetTechType() ) ) 
@@ -438,8 +437,8 @@ local function ShowAvaibleScenarioAndLicense( tab )
 		local license = company:GetTech( i-1 )
 		
 		if license:GetTechGroup() == PT_LICENSE then
-				local linkModule = guienv:AddLinkBox( license:GetName(), width / 2, 10 + showedLinks * 50,
-											   	      width / 2 + 50, 10 + 50 + showedLinks * 50, -1, tab )
+				local linkModule = guienv:AddLinkBox( license:GetName(), scrWidth / 2, 10 + showedLinks * 50,
+											   	      scrWidth / 2 + 50, 10 + 50 + showedLinks * 50, -1, tab )
 				linkModule:SetModuleType( PT_LICENSE )
 				linkModule:SetData( license:Self() )		
 				linkModule:SetEnabled( not project:IsLicenseIncluded( license:GetName() ) ) 
@@ -616,20 +615,20 @@ function sworkWindowCreateGameProjectClose( ptr )
 end
 
 function sworkCreateGameProject( ptr )
-	local windowg = CLuaWindow( guienv:GetElementByName( WINDOW_PROJECTWIZ_NAME ) )
-	windowg:Remove()
+	if windowGameProjectCreating == nil then
+		project:Create( "defaultGame" )
+		windowGameProjectCreating = guienv:AddWindow( "media/monitor.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		windowGameProjectCreating:SetName( WINDOW_PROJECTWIZ_NAME )
+		windowGameProjectCreating:SetDraggable( false )
+		
+		local btn = windowGameProjectCreating:GetCloseButton()
+		btn:SetVisible( false )
+	end 
 	
-	project:Create( "defaultGame" )
-	windowg = guienv:AddWindow( "GameWizzard", 0, 0, width, height, -1, guienv:GetRootGUIElement() )
-	windowg:SetName( WINDOW_PROJECTWIZ_NAME )
+	local prg = guienv:AddProgressBar( windowGameProjectCreating:Self(), 10, 20, 10 + 140, 20 + 20, ID_PROJECTQUALITY )
+	local volCodeLabel = guienv:AddLabel( "Код", scrWidth / 2, 20, scrWidth, 20 + 20, ID_CODEVOLUME, windowGameProjectCreating:Self() )
 	
-	local btn = windowg:GetCloseButton()
-	btn:SetAction( "sworkWindowCreateGameProjectClose" )
-	
-	local prg = guienv:AddProgressBar( windowg:Self(), 10, 20, 10 + 140, 20 + 20, ID_PROJECTQUALITY )
-	local volCodeLabel = guienv:AddLabel( "Код", width / 2, 20, width, 20 + 20, ID_CODEVOLUME, windowg:Self() )
-	
-	local tabContol = guienv:AddTabControl( 10, 40, 790, 590, -1, windowg:Self() )
+	local tabContol = guienv:AddTabControl( 150, 80, scrWidth - 150, scrHeight - 80, -1, windowGameProjectCreating:Self() )
 	pages[ "name" ] = guienv:AddTab( tabContol, pagesName[ "name" ], pagesID[ "name" ] ) --name
 	CreateGameNamePage( pages[ "name" ] )
 	
@@ -654,7 +653,7 @@ function sworkCreateGameProject( ptr )
 	pages[ "end" ] = guienv:AddTab( tabContol, pagesName[ "end" ], pagesID[ "end" ] ) --end
 	CreateEndPage( pages[ "end" ] )
 	
-	windowg:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkWindowLeftMouseButtonUp" )
+	windowGameProjectCreating:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkWindowLeftMouseButtonUp" )
 end
 
 function sworkWindowLeftMouseButtonUp( ptr )

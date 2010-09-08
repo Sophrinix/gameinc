@@ -1,20 +1,37 @@
 IncludeScript( "swork_wndCreateGameProject" )
+local windowWizardProject = nil
 
-local width = 800
-local height = 600
+function sworkCloseWindowWizardProject( ptr )
+	windowWizardProject:Remove()
+end
 
 function sworkCreateWindowWizardProject( ptr )
-	local itemHeight = 30
-	local i = 1
-	local hTemp = height / 3
-	local windowg = guienv:AddWindow( "", 0, 0, width, height, -1, guienv:GetRootGUIElement() )
-	windowg:SetName( WINDOW_PROJECTWIZ_NAME )
+	local hTemp = scrHeight / 6
 	
-	local button = guienv:AddButton( width / 2 - 200, hTemp * i , width / 2 + 200, hTemp * i + itemHeight, windowg:Self(), -1, "Проект видео движка" )
+	windowWizardProject = guienv:AddWindow( "media/director_cabinet_slider.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+	local closeBtn = windowWizardProject:GetCloseButton()
+    closeBtn:SetVisible( false )
+	
+	local button = guienv:AddButton( scrWidth / 4 - hTemp, scrHeight / 2 - hTemp, 
+									 scrWidth / 4 + hTemp, scrHeight / 2 + hTemp, 
+									 windowWizardProject:Self(), -1, "Проект видео движка" )
+    button:SetImage( 0, 0, 256, 256, "media/buttons/newEngine_normal.png" )
+	button:SetHoveredImage( 0, 0, 256, 256, "media/buttons/newEngine_select.png" )	
+	button:SetPressedImage( 0, 0, 256, 256, "media/buttons/newEngine_select.png" )	
 	button:SetAction( "sworkCreateGameEngineProject" )
-	i = i + 1
 
-	button = guienv:AddButton( width / 2 - 200, hTemp * i, width / 2 + 200, hTemp * i+ itemHeight, windowg:Self(), -1, "Проект игры" )
+	button = guienv:AddButton( scrWidth * 0.75 - hTemp, scrHeight / 2 - hTemp, 
+							   scrWidth * 0.75 + hTemp, scrHeight / 2 + hTemp, 
+							   windowWizardProject:Self(), -1, "Проект игры" )
+	button:SetImage( 0, 0, 256, 256, "media/buttons/newGame_normal.png" )
+	button:SetHoveredImage( 0, 0, 256, 256, "media/buttons/newGame_select.png" )	
+	button:SetPressedImage( 0, 0, 256, 256, "media/buttons/newGame_select.png" )	
 	button:SetAction( "sworkCreateGameProject" )
-	i = i + 1
+	
+	button = guienv:AddButton( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
+							   windowWizardProject:Self(), -1, "" )
+	button:SetImage( 0, 0, 128, 128, "media/buttons/button_down_normal.png" )
+	button:SetHoveredImage( 0, 0, 128, 128, "media/buttons/button_down_select.png" )	
+	button:SetPressedImage( 0, 0, 128, 128, "media/buttons/button_down_select.png" )	
+	button:SetAction( "sworkCloseWindowWizardProject" )
 end

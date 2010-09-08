@@ -1,6 +1,7 @@
 cityWindow = nil
 laborWindow = nil
 receptionWindow = nil
+directorCabinetWindow = nil
 
 function ApplicationLoadLaborScene()
 	--[[sceneManager:SetSelectedNode( nil )
@@ -46,7 +47,6 @@ function ApplicationLoadLaborScene()
 end
 
 function ApplicationLoadCityScene()
-	
 	if cityWindow then
 		cityWindow:SetVisible( true )
 	else
@@ -97,7 +97,7 @@ function ApplicationLoadCityScene()
 end
 
 function ApplicationLoadBankScene()
-	sceneManager:RemoveAllNodes()
+	--[[sceneManager:RemoveAllNodes()
 	ApplicationAddCityCamera()
 	sceneManager:LoadIrrlichtScene( "scene/nrpBankScene.irr" )
 	
@@ -123,10 +123,11 @@ function ApplicationLoadBankScene()
 	
 	sceneManager:SetSelectedNode( nil )
 	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnBankScene" )
+	--]]
 end
 
 function ApplicationLoadShopScene()
-    sceneManager:SetSelectedNode( nil )
+    --[[sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
 	ApplicationAddCityCamera()
 	sceneManager:LoadIrrlichtScene( "scene/nrpShopScene.irr" )
@@ -166,6 +167,7 @@ function ApplicationLoadShopScene()
 	LogScript( "exitN find" )	
 	
 	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnShopScene" )
+	--]]
 end
 
 function ApplicationLoadOfficeScene()
@@ -215,7 +217,7 @@ function ApplicationLoadOfficeScene()
 end
 
 function ApplicationLoadPlantScene()
-	sceneManager:SetSelectedNode( nil )
+	--[[sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
 	ApplicationAddCityCamera()
 	sceneManager:LoadIrrlichtScene( "scene/nrpPlantScene.irr" )
@@ -235,10 +237,11 @@ function ApplicationLoadPlantScene()
 	exitN:SetTriangleSelector( selector )
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
 	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnPlantScene" )
+	--]]
 end
 
 function ApplicationLoadUniverScene()
-	sceneManager:SetSelectedNode( nil )
+	--[[sceneManager:SetSelectedNode( nil )
 	sceneManager:RemoveAllNodes()
 	ApplicationAddCityCamera()
 	sceneManager:LoadIrrlichtScene( "scene/nrpUniverScene.irr" )
@@ -254,4 +257,24 @@ function ApplicationLoadUniverScene()
 	sceneManager:SetMarkText( exitN:Self(), "exit" )
 	
 	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnUniverScene" )
+	--]]
+end
+
+function ApplicationLoadDirectorCabinetScene( ptr )
+	receptionWindow:SetVisible( false )
+	
+	if directorCabinetWindow then
+		directorCabinetWindow:SetVisible( true )
+	else
+		directorCabinetWindow = guienv:AddWindow( "media/director_cabinet.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		local closeBtn = directorCabinetWindow:GetCloseButton()
+		closeBtn:SetVisible( false )
+	end	
+	
+	local btnNewProject = guienv:AddButton( 0, 227, 0 + 197, 227 + 165, directorCabinetWindow:Self(), -1, "")
+	btnNewProject:SetImage( 0, 0, 197, 165, "media/buttons/newProject_normal.png" )
+	btnNewProject:SetHoveredImage( 0, 0, 197, 165, "media/buttons/newProject_select.png" )	
+	btnNewProject:SetPressedImage( 0, 0, 197, 165, "media/buttons/newProject_select.png" )	
+	btnNewProject:SetAction( "sworkCreateWindowWizardProject" )
+
 end

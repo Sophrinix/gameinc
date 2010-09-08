@@ -191,11 +191,6 @@ function sworkSelectObjectOnOfficeScene( ptr )
 	local node = CLuaSceneNode( ptr )
 	local nodeName = node:GetName()
 
-	if nodeName == "createNewProjectNode" then
-		sworkCreateWindowWizardProject()
-		return 0
-	end
-	
 	if nodeName == "employerManageNode" then
 		sworkCreateWindowEmployersManage()
 		return 0	
