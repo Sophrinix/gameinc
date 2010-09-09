@@ -19,6 +19,7 @@ CNrpGameEngine::CNrpGameEngine( std::string name ) : INrpProject( "CNrpGameEngin
 	CreateValue<int>( SKILL_CODING, 0 );
 	CreateValue<std::string>( COMPANYNAME, "" );
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
+	CreateValue<std::string>( TEXTURENORMAL, "" );
 }
 
 CNrpGameEngine::~CNrpGameEngine(void)
@@ -68,7 +69,9 @@ void CNrpGameEngine::Save( std::string saveFolder )
 
 void CNrpGameEngine::Load( std::string loadFolder )
 {
-	std::string loadFile = loadFolder + "engine.ini";
+	std::string loadFile = loadFolder;
+	char lastChar = loadFile[ loadFile.size() - 1 ];
+	loadFile += (lastChar == '/' || lastChar == '\\') ? "engine.ini" : "/engine.ini" ;
 	INrpProject::Load( SECTION_PROPERTIES, loadFile );
 
 	char buffer[ 32000 ];

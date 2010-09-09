@@ -19,7 +19,17 @@ local ID_CODEVOLUME = 9010
 local ID_PROJECTQUALITY = 9011
 local ID_COMPONENTLIST = 9012
 
+local DEFAULT_WIDTH = 80
+
 local windowGameProjectCreating = nil
+
+local localSetLinkBoxOption( lnkx, typer, userdata, textureName, draggable, enabled )
+	lnkx:SetModuleType( typer )
+	lnkx:SetData( userdata )
+	lnkx:SetTexture( textureName )
+	lnkx:SetDraggable( draggable )
+	lnkx:SetEnabled( enabled )
+end
 
 local function ShowParams()
 	local label = CLuaLabel( guienv:GetElementByID( ID_CODEVOLUME ) )
@@ -36,15 +46,16 @@ local function ShowAvaibleEngines( tab )
 	local rowCount = 0	
 	
 	for i=1, maxEngine do
-		local gameeng = CLuaGameEngine( company:GetEngine( i-1 ) )			
+		local gameeng = company:GetEngine( i-1 )
 		local linkModule = guienv:AddLinkBox( "Движок ".. i .."/"..maxEngine .. "\r(" .. gameeng:GetName() .. ")", 
-															scrWidth / 2 + xoffset, 50 * rowCount, 
-															scrWidth / 2 + xoffset + 50, 50 * rowCount + 50, 
+															scrWidth / 2 + xoffset, DEFAULT_WIDTH * (rowCount+1), 
+															scrWidth / 2 + xoffset + DEFAULT_WIDTH, DEFAULT_WIDTH * (rowCount+2), 
 															-1, tab )
 		linkModule:SetData( gameeng:Self() )
 		linkModule:SetModuleType( PT_GAMEENGINE )
 		linkModule:SetDraggable( true )
 		linkModule:SetEnabled( not project:IsMyGameEngine( gameeng:Self() ) )
+		linkModule:SetTexture( gameeng:GetTexture() )
 		linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
 		rowCount = rowCount + 1
 		if rowCount * 50 > 450 then
@@ -258,10 +269,12 @@ local function CreateGameNamePage( tab )
 
 	local ge = CLuaGameEngine( project:GetGameEngine() )
 	local linkModule = guienv:AddLinkBox( "Игровой движок", 10, 50, 10 + 50, 50 + 50, -1, tab )
-	linkModule:SetModuleType( PT_GAMEENGINE )
-	linkModule:SetData( ge:Self() )
-	linkModule:SetDraggable( false )
-	if ge:Empty() == 0 then	linkModule:SetText( ge:GetName() )	end
+	localSetLinkBoxOption( linkModule, PT_GAMEENGINE, ge:Self(), ge:Texture(), false )
+	
+	if ge:Empty() == 0 then	
+		linkModule:SetText( ge:GetName() )	
+	end
+	
 	SetLuaFuncToLinkBox( linkModule, "sworkGameProjectWizzardSetVideoEngine" )
 	
 	linkModule:SetObject( guienv:AddLinkBox( "Продолжение", 10, 100, 10 + 50, 100 + 50, -1, tab ) )
@@ -612,17 +625,27 @@ end
 function sworkWindowCreateGameProjectClose( ptr )
 	LogScript("Удаление временного объекта")
 	project:Remove()
+	windowGameProjectCreating:Remove()
+	windowGameProjectCreating = nil
 end
 
 function sworkCreateGameProject( ptr )
 	if windowGameProjectCreating == nil then
 		project:Create( "defaultGame" )
+		
 		windowGameProjectCreating = guienv:AddWindow( "media/monitor.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		windowGameProjectCreating:SetName( WINDOW_PROJECTWIZ_NAME )
 		windowGameProjectCreating:SetDraggable( false )
 		
 		local btn = windowGameProjectCreating:GetCloseButton()
 		btn:SetVisible( false )
+		
+		btn = guienv:AddButton( scrWidth - 100, scrHeight - 60, 
+			  				    scrWidth - 40, scrHeight - 0, 
+								windowGameProjectCreating:Self(), -1, "" )
+		btn:SetImage( 0, 0, 128, 128, "media/buttons/button_poweroff.png" )
+		btn:SetHoveredImage( 0, 0, 128, 128, "media/buttons/button_poweroff.png" )	
+		btn:SetPressedImage( 0, 0, 128, 128, "media/buttons/button_poweroff.png" )	
+		btn:SetAction( "sworkWindowCreateGameProjectClose" )
 	end 
 	
 	local prg = guienv:AddProgressBar( windowGameProjectCreating:Self(), 10, 20, 10 + 140, 20 + 20, ID_PROJECTQUALITY )

@@ -18,6 +18,7 @@ Luna< CLuaGameEngine >::RegType CLuaGameEngine::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetCodeVolume ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Create ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTexture ),
 	{0,0}
 };
 
@@ -86,4 +87,11 @@ int CLuaGameEngine::GetName( lua_State* L )
 	lua_pushstring( L, GetParam_<std::string>( L, "GetName", NAME, "").c_str() );
 	return 1;
 }
+
+int CLuaGameEngine::GetTexture( lua_State* L )
+{
+	lua_pushstring( L, GetParam_<std::string>( L, "GetTexture", TEXTURENORMAL, "").c_str() );
+	return 1;
+}
+
 }//namespace nrp

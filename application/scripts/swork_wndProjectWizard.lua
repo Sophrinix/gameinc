@@ -9,6 +9,7 @@ function sworkCreateWindowWizardProject( ptr )
 	local hTemp = scrHeight / 6
 	
 	windowWizardProject = guienv:AddWindow( "media/director_cabinet_slider.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+	windowWizardProject:SetDraggable( false )
 	local closeBtn = windowWizardProject:GetCloseButton()
     closeBtn:SetVisible( false )
 	

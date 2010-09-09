@@ -43,4 +43,6 @@ namespace irr
 	}
 }
 
+#define AFTER_LOAD_SCRIPT "AfterLoadAction"
+
 bool operator <(SYSTEMTIME const &t1, SYSTEMTIME const &t2);

@@ -319,7 +319,7 @@ void CNrpApplication::SaveProfile()
 
 void CNrpApplication::LoadProfile( std::string profileName, std::string companyName )
 {
-	CNrpScript::Instance().CreateTemporaryScript( "UsersAction" );
+	CNrpScript::Instance().CreateTemporaryScript( AFTER_LOAD_SCRIPT );
 
 	std::string saveFolder = "save/" + profileName + "/";
 	std::string profileIni = saveFolder + "profile.ini";
@@ -425,7 +425,9 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 	SetValue<int>( GAMENUMBER, games_.size() );
 
     LoadFreeImageLists_( saveFolder + "imageList.ini" );
-	CNrpScript::Instance().DoFile( "tmp/UsersAction.lua" );
+	std::string afterLoad = "tmp/";
+	afterLoad += AFTER_LOAD_SCRIPT;
+	CNrpScript::Instance().DoFile( afterLoad.c_str() );
 }
 
 void CNrpApplication::LoadFreeImageLists_( const std::string& fileName )
@@ -474,17 +476,9 @@ void CNrpApplication::ResetData()
 
 CNrpGameEngine* CNrpApplication::GetGameEngine( std::string name )
 {
-	CNrpGameEngine* resultt= NULL;
-	COMPANIES_LIST::const_iterator pIter = companies_.begin();
+	GAMEENGINES_MAP::const_iterator pIter = engines_.find( name );
 
-	for( ; pIter != companies_.end(); pIter++)
-	{
-		resultt = (*pIter)->GetGameEngine( name );
-		if( resultt )
-			return resultt;
-	}
-
-	return NULL;
+	return (pIter != engines_.end() ? pIter->second : NULL);
 }
 
 void CNrpApplication::BeginNewDay_()

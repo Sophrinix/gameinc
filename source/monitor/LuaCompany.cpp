@@ -13,6 +13,7 @@
 #include "LuaProject.h"
 #include "LuaDevelopProject.h"
 #include "LuaInvention.h"
+#include "LuaGameEngine.h"
 
 namespace nrp
 {
@@ -128,7 +129,10 @@ int CLuaCompany::GetEngine( lua_State* L )
 	CNrpGameEngine* eng = NULL;
 	IF_OBJECT_NOT_NULL_THEN	eng = object_->GetGameEngine( idx );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, eng );
+	Luna< CLuaGameEngine >::constructor( L );
+
 	return 1;
 }
 

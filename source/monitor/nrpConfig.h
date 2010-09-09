@@ -65,6 +65,8 @@ OPTION_NAME TECHGROUP( "techGroup" );
 OPTION_NAME CODEPASSED( "codePassed" );
 OPTION_NAME MONEYONDEVELOP( "moneyDevelop" );
 OPTION_NAME PROJECTREADY( "projectReady" );
+OPTION_NAME TEXTURENORMAL( "textureNormal" );
+OPTION_NAME TEXTUREHOVER( "textureHover" );
 
 void CheckClassesType( const std::string type1, const std::string type2 );
 

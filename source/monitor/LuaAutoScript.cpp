@@ -13,6 +13,7 @@ namespace nrp
 Luna< CLuaAutoScript >::RegType CLuaAutoScript::methods[] = 
 {
 	LUNA_AUTONAME_FUNCTION( CLuaAutoScript, AddUserToInvention ),
+	LUNA_AUTONAME_FUNCTION( CLuaAutoScript, AddGameEngineToCompany ),
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
@@ -40,4 +41,23 @@ int CLuaAutoScript::AddUserToInvention( lua_State* L )
 
 	return 1;
 }
+
+int CLuaAutoScript::AddGameEngineToCompany( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaAutoScript:AddGameEngineToCompany need engineName, companyName params" );
+
+	const char* engineName = lua_tostring( L, 2 );
+	const char* companyName = lua_tostring( L, 3 );
+	assert( engineName != NULL && companyName != NULL );
+
+	CNrpGameEngine* engine = CNrpApplication::Instance().GetGameEngine( engineName );
+	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( companyName );
+	assert( cmp != NULL && engine != NULL );
+
+	cmp->AddGameEngine( engine );
+
+	return 1;	
+}
+
 }

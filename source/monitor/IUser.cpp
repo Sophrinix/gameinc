@@ -167,7 +167,7 @@ void IUser::Load( std::string fileName )
 				action = "autoscript:AddUserToInvention(\"" + GetValue<std::string>( NAME ) + "\" , \"" + inventionName + "\")";	
 			}				
 			
-			CNrpScript::Instance().AddActionToTemporaryScript( "UsersAction", action );
+			CNrpScript::Instance().AddActionToTemporaryScript( AFTER_LOAD_SCRIPT, action );
 		}
 	}
 

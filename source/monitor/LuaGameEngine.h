@@ -18,6 +18,7 @@ public:
 	int SetCodeVolume( lua_State *L );
 	int GetName( lua_State* L );
 	int Create( lua_State* L );
+	int GetTexture( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaGameEngine"; }
 };
