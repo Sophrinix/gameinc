@@ -20,6 +20,7 @@ Luna< CLuaWindow >::RegType CLuaWindow::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaWindow, SetDrawBody ),
 	LUNA_AUTONAME_FUNCTION( CLuaWindow, AddLuaFunction ),
 	LUNA_AUTONAME_FUNCTION( CLuaWindow, RemoveLuaFunction ),
+	LUNA_AUTONAME_FUNCTION( CLuaWindow, Draw ),
 	{0,0}
 };
 
@@ -89,6 +90,16 @@ int CLuaWindow::RemoveLuaFunction( lua_State* L )
 	assert( name != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->RemoveLuaFunction( typef, name );
+
+	return 1;
+}
+
+int CLuaWindow::Draw( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaWindow::Draw not need any parameter");
+
+	IF_OBJECT_NOT_NULL_THEN	object_->draw();
 
 	return 1;
 }

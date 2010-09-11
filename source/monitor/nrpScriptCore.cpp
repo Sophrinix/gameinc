@@ -369,19 +369,6 @@ int ApplicationGetTranslate( lua_State* vm )
 	return 1;
 }
 
-int ApplicationLoadLanguageFile( lua_State* vm )
-{
-	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 1, 1, "Function LoadLanguageFile need string parameter");
-
-	const char* pathToFile = lua_tostring( vm, 1 );
-	assert( pathToFile != NULL );
-
-	translate::LoadLanguageFile( pathToFile );
-
-	return 1;
-}
-
 int ApplicationGetTickCount( lua_State* vm )
 {
 	int argc = lua_gettop(vm);

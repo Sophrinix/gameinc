@@ -6,6 +6,8 @@ local imgTop = 0
 local imgHeight = 32
 local imgWidth = 32
 
+mainMenuWindow = nil
+
 local function AddButton( window, id, x, y, action, pathToTexture )
 
 		local btn = guienv:AddButton( x, y, x + imgWidth, y + imgHeight, window, id, "" )
@@ -96,52 +98,52 @@ function AddMenuWindow()
 	local txsHeight = 0
 	txsWidth, txsHeight = txs:GetSize()
 						  
-	local window = guienv:AddWindow(	"./media/top_menu/top_nerpa.png",
+	mainMenuWindow = guienv:AddWindow(	"./media/top_menu/top_nerpa.png",
 			 							scrWidth/2 - txsWidth/2, 0, scrWidth/2 + txsWidth/2, 50,
 										-1,
 										guienv:GetRootGUIElement() )
-												
-	window:SetDraggable( false )
-	window:SetDrawBody( false )
-	guienv:AddHoveredAnimator( window:Self(), 100, 255, 4, true, false, false )
+																						
+	mainMenuWindow:SetDraggable( false )
+	mainMenuWindow:SetDrawBody( false )
+	guienv:AddHoveredAnimator( mainMenuWindow:Self(), 100, 255, 4, true, false, false )
 
-	local btn = window:GetCloseButton()
+	local btn = mainMenuWindow:GetCloseButton()
 	btn:SetVisible( false )
 	
 	local x = 65
 	local btnCnt = 0
-	mainMenuButtons[ btnCnt ] = AddButton( window:Self(), ID_TRAS_IND, x, imgTop, 
+	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_TRAS_IND, x, imgTop, 
 										    "sworkToggleIndicatorWindowVisible", "media/top_menu/trass" )
 	
 	x = x + imgWidth;  btnCnt = btnCnt + 1
-	mainMenuButtons[ btnCnt ] = AddButton( window:Self(), ID_START_STOP, x, imgTop, 
+	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_START_STOP, x, imgTop, 
 										    "sworkToggleDeviceListenerRejim", "media/top_menu/play" )
 
 	x = x + imgWidth;  btnCnt = btnCnt + 1
-	mainMenuButtons[ btnCnt ] = AddButton( window:Self(), ID_ADMINING, x, imgTop, 
+	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_ADMINING, x, imgTop, 
 										    "AdminingFrameToggleVisible", "media/top_menu/settings" )
 
 	x = x + imgWidth;  btnCnt = btnCnt + 1
-	mainMenuButtons[ btnCnt ] = AddButton( window:Self(), ID_FUNC, x, imgTop, 
+	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_FUNC, x, imgTop, 
 										    "AdvancedFunctionFrameToggleVisible", "media/top_menu/star" )
 	x = 335;  btnCnt = btnCnt + 1
 	--создание метки с часами
-	local timeLabel = guienv:AddLabel( "Время", x - 140, imgTop, x + 40, imgTop + 15, ID_DATETIME_LABEL, window:Self() )
+	local timeLabel = guienv:AddLabel( "Время", x - 140, imgTop, x + 40, imgTop + 15, ID_DATETIME_LABEL, mainMenuWindow:Self() )
 	timeLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
 	mainMenuButtons[ btnCnt ] = timeLabel:Self()
 	
 	btnCnt = btnCnt + 1
-	local userLabel = guienv:AddLabel( "UserName", x - 140, imgTop + 17, x + 40, imgTop + 32, ID_USERNAME_LABEL, window:Self() )
+	local userLabel = guienv:AddLabel( "UserName", x - 140, imgTop + 17, x + 40, imgTop + 32, ID_USERNAME_LABEL, mainMenuWindow:Self() )
 	userLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
 	mainMenuButtons[ btnCnt ] = userLabel:Self()
 	
 	x = x + imgWidth; btnCnt = btnCnt + 1
-	mainMenuButtons[ btnCnt ] = AddButton( window:Self(), ID_QUIT, x, imgTop, 
+	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_QUIT, x, imgTop, 
 										   "sworkApplicationClose", "media/top_menu/off" )
 										   
 	--покажем кнопки главного меню	
-	AddAdminingFunctionButton( window )
-	AddAdvancedFunctionButton( window )
+	AddAdminingFunctionButton( mainMenuWindow )
+	AddAdvancedFunctionButton( mainMenuWindow )
 	SetVisibleToArray( mainMenuButtons, true )
 
 end

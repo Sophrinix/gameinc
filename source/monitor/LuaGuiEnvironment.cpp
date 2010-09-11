@@ -67,6 +67,8 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddListBox ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddPictureFlow ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, FadeAction ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddDestructor ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, BringToFront ),
 	{0,0}
 };
 
@@ -521,6 +523,19 @@ int CLuaGuiEnvironment::AddTextTimeAnimator( lua_State *vm )
 	return 1;
 }
 
+int CLuaGuiEnvironment::AddDestructor( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 3, 3, "Function CLuaGuiEnvironment:AddDestructor need 2 parameter");
+
+	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( vm, 2 );	
+	int time = lua_tointeger( vm, 3 );
+
+	IF_OBJECT_NOT_NULL_THEN object_->AddDestructor( elm, time );
+
+	return 1;
+}
+
 int CLuaGuiEnvironment::AddProgressBar( lua_State* vm )
 {
 	int argc = lua_gettop(vm);
@@ -782,4 +797,22 @@ int CLuaGuiEnvironment::AddTechMap( lua_State *vm )
 
 	return 1;
 }
+
+int CLuaGuiEnvironment::BringToFront( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGuiEnvironment:BringToFront need element parameter" );
+
+	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::IGUIElement* parent = elm->getParent();
+		if( parent)
+			parent->bringToFront( elm );
+	}
+
+	return 1;
+}
+
 }//namespace nrp

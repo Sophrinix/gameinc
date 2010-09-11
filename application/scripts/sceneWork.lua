@@ -10,6 +10,8 @@ IncludeScript("swork_wndEmployersManage")
 IncludeScript("swork_wndShop")
 IncludeScript("swork_InventionManager") 
 
+alwaysOnTopWindow = {}
+
 Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Инициализация работы с БД")
 -- Проверка вспомогательных функций
 LogVideo("Идет создание ландшафта", 0xDEADBEEF)
@@ -48,3 +50,7 @@ end
 if startGameWithTutorial then
 	StartDescriptionGame()
 end
+
+alwaysOnTopWindow[ 1 ] = mainMenuWindow
+alwaysOnTopWindow[ 2 ] = CLuaWindow( browser:GetWindow() )
+

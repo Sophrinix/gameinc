@@ -24,6 +24,8 @@ Luna< CLuaLinkBox >::RegType CLuaLinkBox::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetData ),
 	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, HaveData ),
 	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetDefaultTexture ),
 	{0,0}
 };
 
@@ -167,4 +169,35 @@ int CLuaLinkBox::SetTexture( lua_State* L )
 
 	return 1;	
 }
+
+int CLuaLinkBox::GetTexture( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaLinkBox::GetTexture not need parameter");
+
+	core::stringc textureName = "";
+
+	IF_OBJECT_NOT_NULL_THEN	textureName = object_->GetImage()->getName().getPath();
+
+	lua_pushstring( L, textureName.c_str() );
+
+	return 1;		
+}
+
+int CLuaLinkBox::SetDefaultTexture( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetTexture need string parameter");
+
+	const char* textureName = lua_tostring( L, 2 );
+	assert( textureName != NULL );
+
+	if( textureName != NULL )
+	{
+		IF_OBJECT_NOT_NULL_THEN	object_->setDefaultImage( CNrpEngine::Instance().GetVideoDriver()->getTexture( textureName ) );
+	}
+
+	return 1;	
+}
+
 }//namespace nrp

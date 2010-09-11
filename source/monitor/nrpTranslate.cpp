@@ -1,12 +1,10 @@
 #include "stdafx.h"
 #include "NrpTranslate.h"
+#include "nrpScript.h"
+#include "StrConversation.h"
+#include "lua.hpp"
 
-#include <string>
-#include <map>
-#include <stdio.h>
-
-typedef std::map< std::string, std::string > TRANSLATE_MAP;
-static TRANSLATE_MAP gloabalMapTranslates;
+#include <assert.h>
 
 namespace nrp
 {
@@ -14,38 +12,47 @@ namespace nrp
 namespace translate
 {
 
-void LoadLanguageFile( const char* fileName )
-{
-	const size_t bufferLen = 1024 * 1024;
-	char* buffer = new char[ bufferLen ];
-	memset( buffer, 0, bufferLen );
-	GetPrivateProfileSection( "translate", buffer, bufferLen, fileName );
-
-	std::string readLine = buffer;
-	std::string name, valuel;
-	while( readLine != "" )
-	{
-		name = readLine.substr( 0, readLine.find( '=' ) );
-		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
-
-		gloabalMapTranslates[ name ] = valuel;
-		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
-		readLine = buffer;
-	}
-
-	delete [] buffer;
-}
-
 const char* GetTranslate( const char* name )
 {
-	if( name[ 0 ] == '#' )
+	if( *name == '#' )
 	{
-		TRANSLATE_MAP::iterator pIter = gloabalMapTranslates.find( name+1 );
-		if( pIter != gloabalMapTranslates.end() )
-			return pIter->second.c_str(); 
-	}
+		lua_State* L = CNrpScript::Instance().GetVirtualMachine();
+	
+		lua_getglobal( L, name+1);
 
-	return name;
+		const char* res = NULL;
+		
+		if( lua_isstring( L, -1 ) )
+			res = lua_tostring( L, -1 );
+		else 
+			res = name+1;
+
+		lua_pop( L, 1 );
+		return res;
+	}
+	else
+		return name;
+}
+
+double GetNumber( const char* name )
+{
+	if( *name == '#')
+	{
+		lua_State* L = CNrpScript::Instance().GetVirtualMachine();
+
+		lua_getglobal( L, name+1 );
+
+		double res = 0;
+		if( lua_isnumber( L, -1 ) )
+			res = lua_tonumber( L, -1 );
+		else
+			assert( "undefined parametr" );
+
+		lua_pop( L, 1 );
+		return res;
+	}
+	return
+		static_cast< double >( StrToFloat( name ) );
 }
 
 }

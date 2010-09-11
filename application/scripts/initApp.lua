@@ -2,8 +2,7 @@ require("elmid")
 IncludeScript("logdefs")
 IncludeScript( "NerpaActionType" )
 IncludeScript( "HelpSubSystem" )
-
-NrpLoadLanguageFile( "localization/russian.lng" )
+IncludeScript( "localization/russian" )
 
 NrpLoadPlugins( "Plugins/" )
 

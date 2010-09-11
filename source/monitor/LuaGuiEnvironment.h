@@ -16,7 +16,7 @@ namespace nrp
 /*!
 	Имена луа-функции совпадают с именами методов класса
 */
-	class CLuaGuiEnvironment : public ILuaObject<irr::gui::CNrpGUIEnvironment>
+class CLuaGuiEnvironment : public ILuaObject<irr::gui::CNrpGUIEnvironment>
 {
 public:
 	static Luna<CLuaGuiEnvironment>::RegType methods[];
@@ -82,6 +82,8 @@ public:
 	int AddListBox( lua_State* L );
 	int AddPictureFlow( lua_State* L );
 	int FadeAction( lua_State* L );
+	int AddDestructor( lua_State* vm );
+	int BringToFront( lua_State* L );
 	
 	static const char* StaticGetLuaName() { return "CLuaGuiEnvironment"; }	
 };

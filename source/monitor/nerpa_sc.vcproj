@@ -513,6 +513,14 @@
 			Name="GUI"
 			>
 			<File
+				RelativePath=".\NrpGuiElementDestructor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpGuiElementDestructor.h"
+				>
+			</File>
+			<File
 				RelativePath=".\nrpGUIEnvironment.cpp"
 				>
 			</File>

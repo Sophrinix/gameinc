@@ -128,40 +128,36 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 			{
 				Dragging = false;
 			}
-			else
-				if (event.GUIEvent.EventType == EGET_ELEMENT_FOCUSED)
-				{
+			else if (event.GUIEvent.EventType == EGET_ELEMENT_FOCUSED)
+			{
 					if (Parent && ((event.GUIEvent.Caller == this) || isMyChild(event.GUIEvent.Caller)))
 						Parent->bringToFront(this);
-				}
-				else
-					if (event.GUIEvent.EventType == EGET_BUTTON_CLICKED)
+			}
+			else
+				if (event.GUIEvent.EventType == EGET_BUTTON_CLICKED)
+				{
+					if (event.GUIEvent.Caller == buttons_[ BTNE_CLOSE ] )
 					{
-						if (event.GUIEvent.Caller == buttons_[ BTNE_CLOSE ] )
+						if (Parent)
 						{
-							if (Parent)
-							{
-								// send close event to parent
-								SEvent e;
-								e.EventType = EET_GUI_EVENT;
-								e.GUIEvent.Caller = this;
-								e.GUIEvent.Element = 0;
-								e.GUIEvent.EventType = EGET_ELEMENT_CLOSED;
-
+							// send close event to parent
+							SEvent e;
+							e.EventType = EET_GUI_EVENT;
+							e.GUIEvent.Caller = this;
+							e.GUIEvent.Element = 0;
+							e.GUIEvent.EventType = EGET_ELEMENT_CLOSED;
 								// if the event was not absorbed
-								if (!Parent->OnEvent(e))
-									remove();
-
-								return true;
-
-							}
-							else
-							{
-								remove();
-								return true;
-							}
+							if (!Parent->OnEvent(e))
+							remove();
+							return true;
+						}
+						else
+						{
+							remove();
+							return true;
 						}
 					}
+				}
 		break;
 
 		case EET_MOUSE_INPUT_EVENT:

@@ -66,6 +66,16 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 			return true;
 	}
 	break;
+
+	case EET_GUI_EVENT:
+	{
+		if( event.GUIEvent.EventType == EGET_BUTTON_CLICKED && event.GUIEvent.Caller == buttons_[ BTNE_CLOSE ] )
+		{
+			setVisible( false );
+			return true;
+		}
+	}
+	break;
 	
 	case EET_KEY_INPUT_EVENT:
 	{

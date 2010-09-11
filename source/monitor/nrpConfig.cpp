@@ -33,9 +33,9 @@ void INrpConfig::Load( std::string sectionName, std::string fileName )
 		name = name.substr( 0, name.find( ':' ) );
 		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
 		if( type == "int" )
-			CreateValue<int>( name, StrToInt( valuel.c_str() ) );
+			CreateValue<int>( name, static_cast< int >( translate::GetNumber( valuel.c_str() ) ) );
 		else if( type == "float" )
-			CreateValue<float>( name, StrToFloat( valuel.c_str() ) ); 
+			CreateValue<float>( name, static_cast< float >( translate::GetNumber( valuel.c_str() ) ) ); 
 		else if( type == "bool" )
 			CreateValue<bool>( name, valuel == "true" );
 		else if( type == "string" )

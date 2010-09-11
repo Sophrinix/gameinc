@@ -70,6 +70,8 @@ public:
 									s32 id/* =-1 */, 
 									const wchar_t* text/* =0 */);
 
+	gui::IGUIElement* AddDestructor( gui::IGUIElement* parent, int time );
+
 	gui::IGUIWindow* addMessageBox(const wchar_t* text, s32 flags, core::array< const char* >& funcNames );
 	gui::IGUIWindow* addMessageBox(const wchar_t* caption, const wchar_t* text=0,
 										bool modal = true, 

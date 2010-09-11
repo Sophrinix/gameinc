@@ -3,6 +3,7 @@
 #include <sstream>
 #include "IniFile.h"
 #include "StrConversation.h"
+#include "NrpTranslate.h"
 
 namespace nrp
 {
@@ -247,7 +248,8 @@ void IniFile::ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt, std::s
 		std::string name, valuel;
 		name = readLine.substr( 0, readLine.find( '=' ) );
 		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
-		mapt[ StrToInt( name.c_str() ) ] = StrToInt( valuel.c_str() );
+		int keey = static_cast< int >( translate::GetNumber( name.c_str() ) );
+		mapt[ keey ] = StrToInt( valuel.c_str() );
 
 		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
 		readLine = buffer;

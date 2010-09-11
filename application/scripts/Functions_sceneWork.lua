@@ -292,7 +292,16 @@ function sworkApplicationClose( ptr )
 	NrpApplicationClose()
 end
 
+function sworkDrawOnTopWindows( ptr )
+	for i=1, #alwaysOnTopWindow do
+		alwaysOnTopWindow[ i ]:Draw()
+		
+		guienv:BringToFront( alwaysOnTopWindow[ i ]:Self() )
+	end
+end
+
 sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )
+sceneManager:AddSceneFunction( SCENE_AFTER_RENDER, "sworkDrawOnTopWindows" )
 applic:AddLuaFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
 applic:AddLuaFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
 applic:AddLuaFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )

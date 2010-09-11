@@ -6,6 +6,7 @@
 #include "NrpTechnology.h"
 #include "IUser.h"
 #include "NrpApplication.h"
+#include "LuaCompany.h"
 
 #define NO_POSTFIX
 #define NO_ASSERT
@@ -40,6 +41,7 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetStatus ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetStatus ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetDescriptionLink ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetCompany ),
 	{0,0}
 };
 
@@ -253,4 +255,20 @@ int CLuaTechnology::GetDescriptionLink( lua_State* L )
 	lua_pushstring( L, GetParam_<std::string>( L, "GetDescriptionLink", DESCRIPTIONPATH, "" ).c_str() );
 	return 1;
 }
+
+int CLuaTechnology::GetCompany( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::GetCompany not need any parameter");
+
+	CNrpCompany* cmp = NULL;
+	IF_OBJECT_NOT_NULL_THEN cmp = object_->GetValue<CNrpCompany*>( PARENTCOMPANY );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, cmp );
+	Luna< CLuaCompany >::constructor( L );
+
+	return 1;		
+}
+
 }//namespace nrp

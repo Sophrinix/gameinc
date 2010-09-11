@@ -3,6 +3,7 @@ local windowWizardProject = nil
 
 function sworkCloseWindowWizardProject( ptr )
 	windowWizardProject:Remove()
+	windowWizardProject = nil
 end
 
 function sworkCreateWindowWizardProject( ptr )

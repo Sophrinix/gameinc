@@ -74,8 +74,6 @@ extern "C"
 
 	int GetBrowser( lua_State *vm );
 
-	int ApplicationLoadLanguageFile( lua_State* vm );
-
 	int ApplicationGetTranslate( lua_State* vm );
 
 	int ApplicationGetTickCount( lua_State* vm );

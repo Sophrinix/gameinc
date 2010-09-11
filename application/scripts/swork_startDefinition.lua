@@ -42,11 +42,8 @@ function sloginAddStartPublicTechnology()
 	
 	local sndTech = CLuaTech( nil )
 	sndTech:Create( PT_SOUNDTECH )
-	sndTech:SetTechType( SND_SPEAKER_SOUND )
-	sndTech:SetName( "PC speaker sound" ) 
-	sndTech:SetBaseCode( 0.2 )
-	sndTech:SetAddingEngineCode( 0.3 )
-	sndTech:SetEmployerSkillRequire( SKL_SOUND, 10 )
+	sndTech:SetStatus( TS_READY )
+	sndTech:Load( "xtras/technology/sound_speaker/item.tech" )
 
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология SND_SPEAKER_SOUND")
 	applic:AddPublicTechnology( sndTech:Self() )
@@ -121,11 +118,8 @@ end
 function sloginAddStartScenarioContentTechnology( ptr )
 	local vScn = CLuaTech( nil )
 	vScn:Create( PT_SCENARIOQUALITY ) 
-
-	vScn:SetTechType( SCNQ_SELFWRITE )
-	vScn:SetName( "Написать самому" )
-	vScn:SetBaseCode( 0.2 )			--depended from engine code volume
-	vScn:SetQuality( 10 )
+	vScn:SetStatus( TS_READY )
+	vScn:Load( "xtras/technology/scnq_writeself/item.tech" )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VSQ_SELFWRITE")
 	applic:AddPublicTechnology( vScn:Self() )
@@ -134,12 +128,9 @@ end
 function sloginAddStartSoundContentTechnology( ptr )
 	local vSn = CLuaTech( nil )
 	vSn:Create( PT_SOUNDQUALITY )
-    
-	vSn:SetTechType( VSQ_SELFCOMPOSE )
-	vSn:SetName( "Писать ноты" )
-	vSn:SetBaseCode( 1 )			--depended from engine code volume
-	vSn:SetEmployerSkillRequire( SKL_SOUND, 10 )
-	
+	vSn:SetStatus( TS_READY )
+	vSn:Load( "xtras/technology/sndq_writeself/item.tech" )
+    	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создана технология VSQ_SELFCOMPOSE")
 	applic:AddPublicTechnology( vSn:Self() )
 end

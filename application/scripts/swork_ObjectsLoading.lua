@@ -177,9 +177,10 @@ function ApplicationLoadOfficeScene()
 		receptionWindow:SetVisible( true )
 	else
 		receptionWindow = guienv:AddWindow( "media/reception.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		local closeBtn = receptionWindow:GetCloseButton()
-		closeBtn:SetVisible( false )
+		receptionWindow:GetCloseButton():SetVisible( false )
 	end	
+	
+	UpdateTutorialState( STEP_OVERVIEW_RECEPTION )
 	
 	local btnDirector = guienv:AddButton( 448, 242, 448 + 85, 242 + 175, receptionWindow:Self(), -1, "")
 	btnDirector:SetImage( 0, 0, 85, 175, "media/buttons/director_normal.tga" )
@@ -267,6 +268,8 @@ function ApplicationLoadDirectorCabinetScene( ptr )
 		directorCabinetWindow:SetVisible( true )
 	else
 		directorCabinetWindow = guienv:AddWindow( "media/director_cabinet.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		directorCabinetWindow:SetDraggable( false )
+		
 		local closeBtn = directorCabinetWindow:GetCloseButton()
 		closeBtn:SetVisible( false )
 	end	

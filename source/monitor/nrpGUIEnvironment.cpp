@@ -18,6 +18,7 @@
 #include "NrpComponentListbox.h"
 #include "Nrp2DPictureFlow.h"
 #include "NrpTechMap.h"
+#include "NrpGuiElementDestructor.h"
 
 #include <stdexcept>
 #include <string>
@@ -701,6 +702,12 @@ CNrpTechMap* CNrpGUIEnvironment::AddTechMap( const core::recti& rectangle, IGUIE
 {
 	return new CNrpTechMap( this, parent, id, rectangle, true, drawBackground, false );
 }
+
+gui::IGUIElement* CNrpGUIEnvironment::AddDestructor( gui::IGUIElement* parent, int time )
+{
+	return new CNrpGuiElementDestructor( this, parent, time );
+}
+
 }//namespace gui
 
 }//namespace irr

@@ -28,6 +28,8 @@ public:
 	int SetDraggable( lua_State* L );
 	int IsDraggable( lua_State* L );
 	int SetTexture( lua_State* L );
+	int GetTexture( lua_State* L );
+	int SetDefaultTexture( lua_State* L );
 	int SetData( lua_State* L );
 	int GetData( lua_State* L );
 	int HaveData( lua_State* L );

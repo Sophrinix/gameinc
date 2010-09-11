@@ -52,6 +52,10 @@ public:
 	virtual void setImage( const char* imagePath );
 	virtual void setImage( video::ITexture* image, const core::recti& pos);
 
+	virtual void setDefaultImage( video::ITexture* image );
+
+	video::ITexture* GetImage() { return image_; }
+
 	//! Sets an image which should be displayed on the button when it is in hover state. 
 	virtual void setHoveredImage( video::ITexture* image );
 	virtual void setHoveredImage( video::ITexture* image, const core::recti& pos );
@@ -156,10 +160,12 @@ protected:
 	video::ITexture* image_;
 	video::ITexture* pressedImage_;
 	video::ITexture* hoveredImage_;
+	video::ITexture* _defaultImage;
 
-	core::rect<irr::s32> imageRect_;
-	core::rect<irr::s32> pressedImageRect_;
-	core::rect<irr::s32> hoveredImageRect_;
+	core::recti imageRect_;
+	core::recti pressedImageRect_;
+	core::recti hoveredImageRect_;
+	core::recti _defaultImageRect;
 
 	irr::video::SColor overrideColor_;
 	bool overrideColorEnabled_;

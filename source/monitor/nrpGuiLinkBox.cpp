@@ -22,7 +22,8 @@ CNrpGuiLinkBox::CNrpGuiLinkBox( IGUIEnvironment* environment,
 						  bool noclip)
 			: IGUIButton( environment, parent, id, rectangle), pressed_(false),
 			isPushButton_(false), useAlphaChannel_(false), border_(true), isDraggable_( true ),
-			clickTime_(0), spriteBank_(0), overrideFont_(0), image_(0), pressedImage_(0), hoveredImage_(NULL)
+			clickTime_(0), spriteBank_(0), overrideFont_(0), image_(0), pressedImage_(0), hoveredImage_(NULL),
+			_defaultImage( NULL )
 {
 	pressed_ = false;
 	setNotClipped(noclip);
@@ -289,18 +290,18 @@ void CNrpGuiLinkBox::draw()
 	}
 	else if( border_ )
 	{		
-		/*if( pressed_ )
-			Environment->getSkin()->draw3DButtonPanePressed( this, rect, &AbsoluteClippingRect );
+		if( _defaultImage )
+			driver->draw2DImage( _defaultImage, AbsoluteRect, _defaultImageRect, &AbsoluteClippingRect, 0, true  );
 		else
-			Environment->getSkin()->draw3DButtonPaneStandard( this, rect, &AbsoluteClippingRect );
-		*/
-		core::recti imgRect = rect;
-		imgRect.UpperLeftCorner += core::position2di( 5, 5 );
-		imgRect.LowerRightCorner -= core::position2di( 5, 5 );
+		{
+			core::recti imgRect = rect;
+			imgRect.UpperLeftCorner += core::position2di( 5, 5 );
+			imgRect.LowerRightCorner -= core::position2di( 5, 5 );
 
-		driver->draw2DRectangle( video::SColor( isHovered ? 
-								0x800000ff :
-								(data_ ? 0x8000ff00 : 0x80ff0000) ), imgRect, &AbsoluteClippingRect );
+			driver->draw2DRectangle( video::SColor( isHovered ? 
+					 				 0x800000ff :
+									(data_ ? 0x8000ff00 : 0x80ff0000) ), imgRect, &AbsoluteClippingRect );
+		}
 	}
 
 	if (Text.size())
@@ -564,6 +565,18 @@ void CNrpGuiLinkBox::SetData( void* data )
 	data_ = data;
 	DoLuaFunctionsByType( GUIELEMENT_SET_DATA, (void*)this );
 }
+
+void CNrpGuiLinkBox::setDefaultImage( video::ITexture* image )
+{
+	if (_defaultImage)
+		_defaultImage->drop();
+
+	_defaultImage = image;
+	if (image)
+		_defaultImageRect = core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize());
+
+	if (_defaultImage)
+		_defaultImage->grab();}
 
 }//namespace gui
 
