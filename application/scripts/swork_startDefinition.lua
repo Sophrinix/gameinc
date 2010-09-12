@@ -12,9 +12,7 @@ function sloginAddStartCompanyTechnology()
 	
 	local ge = CLuaGameEngine( nil )
 	ge:Create( "simpleEngine" )
-	ge:AddGenre( GT_SKILL )
-	ge:SetGenreModuleNumber( 2 )
-	ge:SetCodeVolume( 10000 )
+	ge:Load( "xtras/engines/simpleEngine" )
 	company:AddGameEngine( ge:Self() )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создан движок simpleEngine")

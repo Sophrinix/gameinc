@@ -338,26 +338,26 @@ local function CreateAdvContentPage( tab )
 	ShowAvaibleScriptAndMiniGames( tab )
 	
 	local se = project:GetScriptEngine()
-	local linkScript = guienv:AddLinkBox( "Скрипты", 10, 100, 10 + 50, 100 + 50, -1, tab )
-	linkScript:SetModuleType( PT_SCRIPTS )
-	linkScript:SetDraggable( false )
-	linkScript:SetData( se:Self() )
+	local linkScript = guienv:AddLinkBox( "Скрипты", 20, 20, 20 + sizeLinkBox, 20 + sizeLinkBox, -1, tab )
+	localSetLinkBoxOption( linkScript, PT_SCRIPTS, se:Self(), se:GetTexture(), 
+	                       false, true, "media/buttons/scriptsNoImage.png" )
+	                       
 	if se:Empty() == 0 then linkScript:SetText( se:GetName() )	end
 	SetLuaFuncToLinkBox( linkScript, "sworkGameProjectWizzardSetScriptEngine" )
 	
 	local mg = project:GetMiniGameEngine()
-	local linkMiniGames = guienv:AddLinkBox( "Миниигры", 10, 200, 10 + 50, 200 + 50, -1, tab )
-	linkMiniGames:SetModuleType( PT_MINIGAME )
-	linkMiniGames:SetDraggable( false )
-	linkMiniGames:SetData( mg:Self() )
+	local linkMiniGames = guienv:AddLinkBox( "", 20, 120, 20 + sizeLinkBox, 120 + sizeLinkBox, -1, tab )
+	localSetLinkBoxOption( linkMiniGames, PT_MINIGAME, mg:Self(), mg:GetTexture(), 
+	                       false, true, "media/buttons/minigameNoImage.png" )
+
 	if mg:Empty() == 0 then	linkMiniGames:SetText( mg:GetName() ) end
 	SetLuaFuncToLinkBox( linkMiniGames, "sworkGameProjectWizzardSetMiniGameEngine" )
 
 	local ph = project:GetPhysicEngine()
-	local linkPhis = guienv:AddLinkBox( "Физика", 10, 300, 10 + 50, 300 + 50, -1, tab )
-	linkPhis:SetModuleType( PT_PHYSIC )
-	linkPhis:SetDraggable( false )
-	linkPhis:SetData( ph:Self() )
+	local linkPhis = guienv:AddLinkBox( "", 20, 220, 20 + sizeLinkBox, 220 + sizeLinkBox, -1, tab )
+	localSetLinkBoxOption( linkMiniGames, PT_PHYSIC, ph:Self(), ph:GetTexture(), 
+	                       false, true, "media/buttons/physicNoImage.png" )
+
 	if ph:Empty() == 0 then linkPhis:SetText( ph:GetName() ) end
 	SetLuaFuncToLinkBox( linkPhis, "sworkGameProjectWizzardSetPhysicEngine" )
 	
@@ -367,12 +367,12 @@ local function CreateAdvContentPage( tab )
 	
 	for i=0, maxProjectAdvTech do
 		local tech = project:GetAdvTech( i )
-		local linkAdv = guienv:AddLinkBox( tech:GetName(), xoffset, 20 + showeddLinks * 50, 
-										   xoffset + 50, 20 + 50 + showeddLinks * 50, 9200 + i, tab )
+		local linkAdv = guienv:AddLinkBox( tech:GetName(), xoffset, 20 + showeddLinks * sizeLinkBox, 
+										   xoffset + 50, 20 + (showeddLinks + 1) * sizeLinkBox, 9200 + i, tab )
 
-		linkAdv:SetModuleType( PT_ADVTECH )
-		linkAdv:SetData( tech:Self() )
-		linkAdv:SetDraggable( false )
+		ocalSetLinkBoxOption( linkMiniGames, PT_ADVTECH, tech:Self(), tech:GetTexture(), 
+	                       false, true, "media/buttons/physicNoImage.png" )
+
 		SetLuaFuncToLinkBox( linkAdv, "sworkGameProjectWizzardSetAdvTech" )
 		showeddLinks = showeddLinks + 1
 		
@@ -444,7 +444,7 @@ local function CreateScenarioLicensePage( tab )
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:CreateScenarioLicensePage start " )
 
 	local tech = project:GetScenario()
-	local linkScenario = guienv:AddLinkBox( "Сценарий", 100, 40, sizeLinkBox + sizeLinkBox, 40 + sizeLinkBox, -1, tab )
+	local linkScenario = guienv:AddLinkBox( "Сценарий", 100, 40, 100 + sizeLinkBox, 40 + sizeLinkBox, -1, tab )
 	localSetLinkBoxOption( linkScenario, PT_SCENARIOQUALITY, tech:Self(), tech:GetTexture(),		
 						   false, not project:HaveLicense(), "media/buttons/scenarioNoImage.jpg" )
 	if tech:Empty() == 0 then linkScenario:SetText( tech:GetName() ) end
@@ -456,7 +456,7 @@ local function CreateScenarioLicensePage( tab )
 	localSetLinkBoxOption( linkLicense, PT_LICENSE, lic:Self(), lic:GetTexture(),		
 						   false, not project:HaveScenario(), "media/buttons/licenseNoImage.jpg" )
 	if lic:Empty() == 0 then linkLicense:SetText( lic:GetName() ) end
-	linkLicense:SetVisible( not project:HaveScenario() )
+	linkLicense:SetVisible( nwot project:HaveScenario() )
 	SetLuaFuncToLinkBox( linkLicense, "sworkGameProjectWizzardSetLicense" )
 end
 

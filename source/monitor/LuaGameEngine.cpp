@@ -19,6 +19,7 @@ Luna< CLuaGameEngine >::RegType CLuaGameEngine::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Load ),
 	{0,0}
 };
 
@@ -37,6 +38,19 @@ int CLuaGameEngine::Create( lua_State* L )
 	CNrpApplication::Instance().AddGameEngine( object_ );
 
 	lua_pushlightuserdata(L, object_ );
+	return 1;
+}
+
+int CLuaGameEngine::Load( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameEngine:Load need string parameter" );
+
+	const char* name = lua_tostring( L, 2 );
+	assert( name != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN object_->Load( name );
+
 	return 1;
 }
 

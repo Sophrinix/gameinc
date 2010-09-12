@@ -177,7 +177,11 @@ int CLuaLinkBox::GetTexture( lua_State* L )
 
 	core::stringc textureName = "";
 
-	IF_OBJECT_NOT_NULL_THEN	textureName = object_->GetImage()->getName().getPath();
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( object_->GetImage() )
+			textureName = object_->GetImage()->getName().getPath();
+	}
 
 	lua_pushstring( L, textureName.c_str() );
 

@@ -17,6 +17,7 @@
 #include "NrpApplication.h"
 #include "NrpBank.h"
 #include "nrpPlant.h"
+
 using namespace nrp;
 using namespace plugin;
 
@@ -32,7 +33,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	application.SetValue<PNrpBank>( BANK, &CNrpBank::Instance() );
 
 #ifdef _DEBUG
-	application.SetValue<std::string>( FULLPATH, "h:/project/Game Inc, Dev/application/" );
+	application.SetValue<std::string>( FULLPATH, "h:/project/gameinc/application/" );
 #else
 	std::string mypath = __argv[ 0 ];
 	mypath = mypath.erase( mypath.rfind( '\\')+1, 0xff );
