@@ -94,6 +94,13 @@ function ApplicationLoadCityScene()
 	btnPizza:SetHoveredImage( 0, 0, 219, 171, "media/buttons/pizza_select.tga" )	
 	btnPizza:SetPressedImage( 0, 0, 219, 171, "media/buttons/pizza_select.tga" )	
 	btnPizza:SetAction( "ApplicationLoadPizzaScene" )
+	
+	local btnUniver = guienv:AddButton( 0, 287, 287, 287 + 273, cityWindow:Self(), -1, "" )
+	btnUniver:SetImage( 0, 0, 287, 273, "media/buttons/univer_normal.tga" )
+	btnUniver:SetHoveredImage( 0, 0, 287, 273, "media/buttons/univer_select.tga" )	
+	btnUniver:SetPressedImage( 0, 0, 287, 273, "media/buttons/univer_select.tga" )	
+	btnUniver:SetAction( "ApplicationLoadUniverScene" )
+
 end
 
 function ApplicationLoadBankScene()
@@ -178,6 +185,9 @@ function ApplicationLoadOfficeScene()
 	else
 		receptionWindow = guienv:AddWindow( "media/reception.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		receptionWindow:GetCloseButton():SetVisible( false )
+		receptionWindow:SetDraggable( false )
+		
+		--local btn = guienv:AddButton()
 	end	
 	
 	UpdateTutorialState( STEP_OVERVIEW_RECEPTION )
@@ -242,23 +252,24 @@ function ApplicationLoadPlantScene()
 end
 
 function ApplicationLoadUniverScene()
-	--[[sceneManager:SetSelectedNode( nil )
-	sceneManager:RemoveAllNodes()
-	ApplicationAddCityCamera()
-	sceneManager:LoadIrrlichtScene( "scene/nrpUniverScene.irr" )
+	cityWindow:SetVisible( false )
 	
-	local stuffNode = sceneManager:GetSceneNodeByName( "stuffNode" )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( stuffNode:Self() )
-	stuffNode:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( stuffNode:Self(), "stuff" )
+	if univerWindow then
+		univerWindow:SetVisible( true )
+	else
+		univerWindow = guienv:AddWindow( "media/univer_dvor.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		univerWindow:GetCloseButton():SetVisible( false )
+		univerWindow:SetDraggable( false )
+	end	
 	
-	local exitN = sceneManager:GetSceneNodeByName( "exitUniverNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
-	exitN:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( exitN:Self(), "exit" )
+	UpdateTutorialState( STEP_OVERVIEW_UNIVER )
 	
-	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnUniverScene" )
-	--]]
+	local btnStuffUp = guienv:AddButton( 122, 320, 122 + 324, 329 + 130, univerWindow:Self(), -1, "")
+	btnStuffUp:SetImage( 0, 0, 324, 130, "media/buttons/stuffPlate_normal.png" )
+	btnStuffUp:SetHoveredImage( 0, 0, 324, 130, "media/buttons/stuffPlate_select.png" )	
+	btnStuffUp:SetPressedImage( 0, 0, 324, 130, "media/buttons/stuffPlate_select.png" )	
+	btnStuffUp:SetAction( "sworkCreateUserInfoWindow" )
+
 end
 
 function ApplicationLoadDirectorCabinetScene( ptr )

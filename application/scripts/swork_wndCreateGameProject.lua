@@ -2,18 +2,19 @@ local project = CLuaGameProject( nil )
 
 local platform = { "pc", "console", "gamebox", "mobile" }
 local lang = { "Eng", "Den", "France", "Russian", "Jap" }
+
 local pagesName = {  }
 local pagesID = { }
 local pages = { }
 
-pagesName[ "name" ] = "Название"; pagesID[ "name" ] = 9000 
-pagesName[ "genre" ] = "Жанр"; pagesID[ "genre" ] = 9001
-pagesName[ "scenario" ] = "Сценарий"; pagesID[ "scenario" ] = 9002
+pagesName[ "name" ] = "Название";		pagesID[ "name" ] = 9000 
+pagesName[ "genre" ] = "Жанр";			pagesID[ "genre" ] = 9001
+pagesName[ "scenario" ] = "Сценарий";	pagesID[ "scenario" ] = 9002
 pagesName[ "advfunc" ] = "Доп.Возможности"; pagesID[ "advfunc" ] = 9003
-pagesName[ "graphics" ] = "Графика"; pagesID[ "graphics" ] = 9004
-pagesName[ "sound" ] = "Звук"; pagesID[ "sound" ] = 9005
+pagesName[ "graphics" ] = "Графика";	pagesID[ "graphics" ] = 9004
+pagesName[ "sound" ] = "Звук";			pagesID[ "sound" ] = 9005
 pagesName[ "platforms" ] = "Платформы"; pagesID[ "platforms" ] = 9006
-pagesName[ "end" ] = "Завершить"; pagesID[ "end" ] = 9007
+pagesName[ "end" ] = "Завершить";		pagesID[ "end" ] = 9007
 
 local ID_CODEVOLUME = 9010
 local ID_PROJECTQUALITY = 9011
@@ -93,10 +94,10 @@ local function ShowAvaibleGenreModules( tab )
 	end	
 end
 
-local function SetLuaFuncToLinkBox( lb, funcName )
-	lb:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
-	lb:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
-	lb:AddLuaFunction( GUIELEMENT_SET_DATA, funcName )
+local function SetLuaFuncToLinkBox( lbo, funcName )
+	lbo:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+	lbo:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkRigthMouseButtonUp" )
+	lbo:AddLuaFunction( GUIELEMENT_SET_DATA, funcName )
 end
 
 local function CreateGenrePage( tab )
@@ -142,8 +143,8 @@ local function ShowAvaibleVideoQualityAndVideoTech( tab )
 		
 		if techCompany:Empty() == 1 or techCompany:GetName() == companyName then		
 			if tg == PT_VIDEOTECH or tg == PT_VIDEOQUALITY then
-				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 200 + showedTech * sizeLinkBox, 
-													  scrWidth / 2 + 50, 200 + (showedTech + 1) * sizeLinkBox, -1, tab )
+				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 20 + showedTech * sizeLinkBox, 
+													  scrWidth / 2 + sizeLinkBox, 20 + (showedTech + 1) * sizeLinkBox, -1, tab )
 													  
 				localSetLinkBoxOption( linkModule, tg, tech:Self(), tech:GetTexture(), 
 									   true, not project:IsTechInclude( tech:GetTechType() ), "" )			
@@ -216,7 +217,6 @@ local function CreateSoundContentPage( tab )
 end
 
 local function CreateVideoContentPage( tab )
-
 	ShowAvaibleVideoQualityAndVideoTech( tab )
 	
 	local vq = project:GetVideoQuality()
@@ -256,7 +256,7 @@ local function CreateGameNamePage( tab )
 	local edit = guienv:AddEdit( "Название игры", 10, 20, 10 + 180, 20 + 20,  -1, tab )
 	edit:SetName( WNDGMWIZ_NAME_EDIT )
 
-	local ge = CLuaGameEngine( project:GetGameEngine() )
+	local ge = project:GetGameEngine()
 	--create linkbox for gameEngine
 	local linkModule = guienv:AddLinkBox( "", 80, 80, 80 + 80, 80 + 80, -1, tab )
 	localSetLinkBoxOption( linkModule, PT_GAMEENGINE, ge:Self(), ge:GetTexture(), 
@@ -271,18 +271,30 @@ end
 local function CreateEndPage( tab )
 	local linkModule = guienv:AddLinkBox( "Игровой движок", 10, 50, 10 + 50, 50 + 50, -1, tab )
 	linkModule:SetData( project:GetGameEngine() )
+	linkModule:SetTexture( project:GetGameEngine():GetTexture() )
 	
 	linkModule:SetObject( guienv:AddLinkBox( "Жанр", 10, 100, 10 + 50, 100 + 50, -1, tab ) )
 	linkModule:SetData( project:GetGenre( 0 ) )
+	linkModule:SetTexture( project:GetGenre( 0 ):GetTexture() )
 	
 	linkModule:SetObject( guienv:AddLinkBox( "Контент", 10, 150, 10 + 50, 150 + 50, -1, tab ) )
-	if project:HaveLicense() or project:HaveScenario() then linkModule:SetData( linkModule:Self() ) end
+	if project:HaveLicense() or project:HaveScenario() then 
+	   if project:HaveLicense() then
+			linkModule:SetTexture( project:GetLicense():GetTexture() ) 
+	   else
+			linkModule:SetTexture( project:GetScenario():GetTexture() ) 
+	   end
+	end
 	
 	linkModule:SetObject( guienv:AddLinkBox( "Платформы", 10, 200, 10 + 50, 200 + 50, -1, tab ) )
-	if project:GetPlatformsNumber() > 0 then linkModule:SetData( linkModule:Self()  ) end
+	if project:GetPlatformsNumber() > 0 then 
+		linkModule:SetData( linkModule:Self()  ) 
+	end
 	
 	linkModule:SetObject( guienv:AddLinkBox( "Локализация", 10, 250, 10 + 50, 250 + 50, -1, tab ) )
-	if project:GetLanguagesNumber() > 0 then linkModule:SetData( linkModule:Self() ) end
+	if project:GetLanguagesNumber() > 0 then 
+		linkModule:SetData( linkModule:Self() ) 
+	end
 	
 	local button = guienv:AddButton( 10, 10, 10 + 50, 10 + 50, tab, -1, "Завершить" )
 	button:SetAction( "sworkCreateProjectGameToCompany" )	
@@ -306,29 +318,26 @@ function sworkCreateProjectGameToCompany( ptr )
 end
 
 local function ShowAvaibleScriptAndMiniGames( tab )
-	local company = applic:GetPlayerCompany()
-	local maxCompanyScriptTech = company:GetTechNumber()
-	local techs = { }
+	local companyName = applic:GetPlayerCompany():GetName()
 	local showeddLinks = 0
 	local maxPublicTech = applic:GetTechNumber()
 	
-	for i=1, maxCompanyScriptTech do techs[ i ] = company:GetTech( i-1 ) end
-	for i=1, maxPublicTech do techs[ maxCompanyScriptTech + i ] = applic:GetTech( i-1 ) end
-	
-	for i=0, #techs do
-		local tech = CLuaTech( techs[ i ] )
-		
+	for i=1, maxPublicTech do
+		local tech = applic:GetTech( i-1 )
+		local techCompany = tech:GetCompany()
 		local tg = tech:GetTechGroup()
-		if tg == PT_SCRIPTS or tg == PT_MINIGAME or tg == PT_PHYSIC or tg == PT_ADVTECH then
-			Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:ShowAvaibleScriptLevel element = " .. i .. " " .. 20 + showeddLinks * 50 )
-			local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 20 + showeddLinks * 50, 
-												  scrWidth / 2 + 50, 20 + 50 + showeddLinks * 50, -1, tab )
-			linkModule:SetModuleType( tg )
-			linkModule:SetData( tech:Self() )
-			linkModule:SetDraggable( true )
-			linkModule:SetEnabled( not project:IsTechInclude( tech:GetTechType() ) )
-			linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
-			showeddLinks = showeddLinks + 1
+		
+		if techCompany:Empty() == 1 or techCompany:GetName() == companyName then
+			if tg == PT_SCRIPTS or tg == PT_MINIGAME or tg == PT_PHYSIC or tg == PT_ADVTECH then
+				Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:ShowAvaibleScriptLevel element = " .. i .. " " .. 20 + showeddLinks * sizeLinkBox )
+				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 20 + showeddLinks * sizeLinkBox, 
+													  scrWidth / 2 + sizeLinkBox, 20 + (showeddLinks + 1 ) * sizeLinkBox, -1, tab )
+													  
+				localSetLinkBoxOption( linkModule, tg, tech:Self(), tech:GetTexture(), 
+									   true, not project:IsTechInclude( tech:GetTechType() ), "" )												  
+				linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )
+				showeddLinks = showeddLinks + 1
+			end
 		end
 	end	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATEGP:ShowAvaibleScriptLevel public script = " .. showeddLinks )
@@ -353,32 +362,33 @@ local function CreateAdvContentPage( tab )
 	if mg:Empty() == 0 then	linkMiniGames:SetText( mg:GetName() ) end
 	SetLuaFuncToLinkBox( linkMiniGames, "sworkGameProjectWizzardSetMiniGameEngine" )
 
+
 	local ph = project:GetPhysicEngine()
 	local linkPhis = guienv:AddLinkBox( "", 20, 220, 20 + sizeLinkBox, 220 + sizeLinkBox, -1, tab )
-	localSetLinkBoxOption( linkMiniGames, PT_PHYSIC, ph:Self(), ph:GetTexture(), 
-	                       false, true, "media/buttons/physicNoImage.png" )
+	localSetLinkBoxOption( linkPhis, PT_PHYSIC, ph:Self(), ph:GetTexture(), 
+	                       false, true, "media/buttons/physicNoImage.tga" )
 
 	if ph:Empty() == 0 then linkPhis:SetText( ph:GetName() ) end
 	SetLuaFuncToLinkBox( linkPhis, "sworkGameProjectWizzardSetPhysicEngine" )
-	
-	local showeddLinks = 0
-	local xoffset = 70
-	local maxProjectAdvTech = project:GetAdvTechNumber()
-	
-	for i=0, maxProjectAdvTech do
-		local tech = project:GetAdvTech( i )
-		local linkAdv = guienv:AddLinkBox( tech:GetName(), xoffset, 20 + showeddLinks * sizeLinkBox, 
-										   xoffset + 50, 20 + (showeddLinks + 1) * sizeLinkBox, 9200 + i, tab )
 
-		ocalSetLinkBoxOption( linkMiniGames, PT_ADVTECH, tech:Self(), tech:GetTexture(), 
-	                       false, true, "media/buttons/physicNoImage.png" )
+	local showeddLinks = 0
+	local xoffset = 120
+	local maxProjectAdvTech = project:GetGameEngine():GetAdvancedTechNumber()
+    
+	for i=1, maxProjectAdvTech do
+		local tech = project:GetAdvTech( i-1 )
+		local linkAdv = guienv:AddLinkBox( tech:GetName(), xoffset, 20 + showeddLinks * sizeLinkBox, 
+										   xoffset + sizeLinkBox, 20 + (showeddLinks + 1) * sizeLinkBox, 9200 + i, tab )
+
+		localSetLinkBoxOption( linkAdv, PT_ADVTECH, tech:Self(), tech:GetTexture(), 
+	                           false, true, "media/buttons/advTechNoImage.png" )
 
 		SetLuaFuncToLinkBox( linkAdv, "sworkGameProjectWizzardSetAdvTech" )
 		showeddLinks = showeddLinks + 1
 		
-		if showeddLinks * 50 > 450 then
+		if showeddLinks * sizeLinkBox > 300 then
 			showeddLinks = 0
-			xoffset = xoffset + 70
+			xoffset = xoffset + sizeLinkBox
 		end
 	end
 end
@@ -409,7 +419,7 @@ local function CreatePlatformLangPage( tab )
 end
 
 local function ShowAvaibleScenarioAndLicense( tab )
-	local company = applic:GetPlayerCompany()
+	local companyName = applic:GetPlayerCompany():GetName()
 	local maxScenarioNum = applic:GetTechNumber()
 	local showedLinks = 0
 	
@@ -456,8 +466,10 @@ local function CreateScenarioLicensePage( tab )
 	localSetLinkBoxOption( linkLicense, PT_LICENSE, lic:Self(), lic:GetTexture(),		
 						   false, not project:HaveScenario(), "media/buttons/licenseNoImage.jpg" )
 	if lic:Empty() == 0 then linkLicense:SetText( lic:GetName() ) end
-	linkLicense:SetVisible( nwot project:HaveScenario() )
+	linkLicense:SetVisible( not project:HaveScenario() )
 	SetLuaFuncToLinkBox( linkLicense, "sworkGameProjectWizzardSetLicense" )
+	
+	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-CREATESL:CreateScenarioLicensePage end " )
 end
 
 local function sworkRecreatePagesDependedEngine()

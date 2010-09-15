@@ -6,22 +6,22 @@ company:string=
 componentlider:string=
 descriptionpath:string=
 enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
-enginecode:float=0.2
+enginecode:float=0.4
 lastworker:string=
 level:int=0
 moduleerrornumber:int=0
-name:string=#TRANSLATE_SOUND_WRITESELF
-internalname:string=sndq_writeself
+name:string=#TRANSLATE_MINIGAME_TEXTQUEST
+internalname:string=minigame_textquest
 price:float=0
-quality:int=10
+quality:int=100
 readyworkpercent:float=0
 startdate:time=y=1982 m=00 d=00 h=00 mi=00 s=0
-techgroup:int=#PT_SOUNDQUALITY
-techtype:int=#VSQ_SELFCOMPOSE
+techgroup:int=#PT_MINIGAME
+techtype:int=#MNGM_TEXTQUEST
 texturehover:string=
-texturenormal:string=xtras/technology/sndq_speaker/image.png
+texturenormal:string=xtras/technology/minigame_textquest/image.png
 volumecode:int=0
 nexttechnumber:int=0
 [techRequire]
 [skillRequire]
-#SKL_SOUND=10
+#SKL_CODING=10
