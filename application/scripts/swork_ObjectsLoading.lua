@@ -268,7 +268,13 @@ function ApplicationLoadUniverScene()
 	btnStuffUp:SetImage( 0, 0, 324, 130, "media/buttons/stuffPlate_normal.png" )
 	btnStuffUp:SetHoveredImage( 0, 0, 324, 130, "media/buttons/stuffPlate_select.png" )	
 	btnStuffUp:SetPressedImage( 0, 0, 324, 130, "media/buttons/stuffPlate_select.png" )	
-	btnStuffUp:SetAction( "sworkCreateUserInfoWindow" )
+	btnStuffUp:SetAction( "sworkCreateEmployersWindow" )
+	
+	local btnOutsourcing = guienv:AddButton( 612, 300, 612 + 211, 300 + 156, univerWindow:Self(), -1, "")
+	btnOutsourcing:SetImage( 0, 0, 211, 156, "media/buttons/outsorcing_normal.png" )
+	btnOutsourcing:SetHoveredImage( 0, 0, 211, 156, "media/buttons/outsorcing_select.png" )	
+	btnOutsourcing:SetPressedImage( 0, 0, 211, 156, "media/buttons/outsorcing_select.png" )	
+	btnOutsourcing:SetAction( "sworkCreateWindowOutsorcing" )
 
 end
 
