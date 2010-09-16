@@ -15,6 +15,7 @@ Luna< CLuaGameEngine >::RegType CLuaGameEngine::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, AddGenre ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetGenreModuleNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetGenreModuleNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetAdvancedTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetCodeVolume ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Create ),
@@ -105,6 +106,12 @@ int CLuaGameEngine::GetName( lua_State* L )
 int CLuaGameEngine::GetTexture( lua_State* L )
 {
 	lua_pushstring( L, GetParam_<std::string>( L, "GetTexture", TEXTURENORMAL, "").c_str() );
+	return 1;
+}
+
+int CLuaGameEngine::GetAdvancedTechNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetAdvancedTechNumber", ADVTECHNUMBER, 0 ) ) ;
 	return 1;
 }
 

@@ -10,6 +10,7 @@
 #include "NrpTechnology.h"
 #include "NrpApplication.h"
 #include "LuaTechnology.h"
+#include "LuaGameEngine.h"
 
 
 #define SETTER_NUMERICAL_FUNCTION( name, func )\
@@ -116,7 +117,14 @@ int CLuaGameProject::GetCodeVolume( lua_State* L )
 { lua_pushinteger( L, GetParam_<int>( L, "GetCodeQuality", CODEVOLUME, 0 )); return 1; }
 
 int CLuaGameProject::GetGameEngine( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpGameEngine>( L, "GetGameEngine", GAME_ENGINE, NULL )); return 1; }
+{ 
+	PNrpGameEngine ge = GetParam_<PNrpGameEngine>( L, "GetGameEngine", GAME_ENGINE, NULL );
+	lua_pop( L, lua_gettop( L ) ); 
+	lua_pushlightuserdata( L, ge ); 
+	Luna< CLuaGameEngine >::constructor( L );
+
+	return 1; 
+}
 
 int CLuaGameProject::IsProjectReady( lua_State* L )
 { lua_pushboolean( L, GetParam_<bool>( L, "IsProjectReady", PROJECTREADY, false )); return 1; }
