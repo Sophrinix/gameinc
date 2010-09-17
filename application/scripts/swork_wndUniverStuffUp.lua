@@ -26,29 +26,29 @@ function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 	image:SetUseAlphaChannel( true )	
 
 	local xOffset = width / 3
-	guienv:AddLabel( "Опыт", xOffset, 20, width, 20 + 20, -1, windowg:Self() )
-	local prg = guienv:AddProgressBar( windowg:Self(), xOffset, 30, width - 5, 30 + 20, -1 )
+	local prg = guienv:AddProgressBar( windowg:Self(), xOffset, 30, width - 5, 30 + 15, -1 )
 	prg:SetPosition( user:GetParam( "knowledgeLevel" ) )						   
 	prg:SetImage( "media/stars01.tga" )
 	prg:SetFillImage( "media/stars06.tga" )
-	
-	guienv:AddLabel( "Качество", xOffset, 40, width, 40 + 20, -1, windowg:Self() )
-	prg = guienv:AddProgressBar( windowg:Self(), xOffset, 55, width - 5, 55 + 20, -1 )
+	guienv:AddLabel( "Опыт", xOffset, 30, width, 30 + 15, -1, windowg:Self() ):SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
+
+	prg = guienv:AddProgressBar( windowg:Self(), xOffset, 55, width - 5, 55 + 15, -1 )
 	prg:SetPosition( user:GetParam("codeQuality") ) 	
 	prg:SetImage( "media/stars01.tga" )
 	prg:SetFillImage( "media/stars06.tga" )
+	guienv:AddLabel( "Качество", xOffset, 55, width, 55 + 15, -1, windowg:Self() ):SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
 
-    guienv:AddLabel( "Скорость", xOffset, 60, width, 60 + 20, -1, windowg:Self() )
-	prg = guienv:AddProgressBar( windowg:Self(), xOffset, 80, width - 5, 80 + 20, -1 )
+	prg = guienv:AddProgressBar( windowg:Self(), xOffset, 80, width - 5, 80 + 15, -1 )
 	prg:SetPosition( user:GetParam("codeSpeed") ) 
 	prg:SetImage( "media/stars01.tga" )
 	prg:SetFillImage( "media/stars06.tga" )
+	guienv:AddLabel( "Скорость", xOffset, 80, width, 80 + 15, -1, windowg:Self() ):SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
 
-    guienv:AddLabel( "Устойчивость", xOffset, 80, width, 80 + 20, -1, windowg:Self() )
-	prg = guienv:AddProgressBar( windowg:Self(), xOffset, 105, width - 5, 105 + 20, -1 )
+	prg = guienv:AddProgressBar( windowg:Self(), xOffset, 105, width - 5, 105 + 15, -1 )
 	prg:SetPosition( user:GetParam("stability") ) 
 	prg:SetImage( "media/stars01.tga" )
 	prg:SetFillImage( "media/stars06.tga" )
+	guienv:AddLabel( "Устойчивость", xOffset, 105, width, 105 + 15, -1, windowg:Self() ):SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
 					   
     guienv:AddLabel( "Зарплата: "..user:GetParam( "wantMoney" ).."$", xOffset, 110, width, 110 + 20, -1, windowg:Self() )
 	
@@ -122,23 +122,23 @@ function sworkCreateEmployersWindow( ptr )
 	local wTmp = scrWidth / 6
 	local xOffset = 20
 	local yOffset = 30
-	local button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 100, windowUpEmployer:Self(), -1, "Программисты" )
+	local button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Программисты" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 100, windowUpEmployer:Self(), -1, "Дизайнеры" )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Дизайнеры" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 100, windowUpEmployer:Self(), -1, "Композиторы" )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Композиторы" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 100, windowUpEmployer:Self(), -1, "Тестировщики" )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Тестировщики" )
 	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
 	
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 60, windowUpEmployer:Self(), -1, "Выход" )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Выход" )
 	button:SetAction( "sworkWindowUpEmployerClose" )
 	
 	ShowAvaibleEmployers( windowUpEmployer:Self() )

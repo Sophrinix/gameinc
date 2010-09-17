@@ -2,48 +2,31 @@ cityWindow = nil
 laborWindow = nil
 receptionWindow = nil
 directorCabinetWindow = nil
+laborWindow	= nil
 
 function ApplicationLoadLaborScene()
-	--[[sceneManager:SetSelectedNode( nil )
-	--guienv:FadeAction( 3000, false )
-	sceneManager:RemoveAllNodes()
+	guienv:FadeAction( 3000, false )
 	
-	ApplicationAddCityCamera()
-	sceneManager:LoadIrrlichtScene( "scene/nrpLaborScene.irr" )	
-
-	local videoTech = sceneManager:GetSceneNodeByName( "graphicTechsNode" )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( videoTech:Self() )
-	videoTech:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( videoTech:Self(), "Video Technologies" )
-	LogScript( "videoTechsNode find" )	
+	if laborWindow then
+		laborWindow:SetVisible( true )
+	else
+		laborWindow = guienv:AddWindow( "media/laboratory_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		laborWindow:SetDraggable( false )
+		local closeBtn = laborWindow:GetCloseButton()
+		closeBtn:SetVisible( false )
+	end	
 	
-	local soundTech = sceneManager:GetSceneNodeByName( "soundTechsNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( soundTech:Self() )
-	soundTech:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( soundTech:Self(), "Sound Technologies" )
-	LogScript( "soundTechsNode find" )	
+	local btnVideo = guienv:AddButton( 730, 43, 730 + 229, 43 + 215, laborWindow:Self(), -1, "")
+	btnVideo:SetImage( 0, 0, 229, 215, "media/buttons/techMapVideo_normal.png" )
+	btnVideo:SetHoveredImage( 0, 0, 229, 215, "media/buttons/techMapVideo_select.png" )	
+	btnVideo:SetPressedImage( 0, 0, 229, 215, "media/buttons/techMapVideo_select.png" )	
+	btnVideo:SetAction( "" )
 	
-	local genreTech = sceneManager:GetSceneNodeByName( "genreTechsNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( genreTech:Self() )
-	genreTech:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( genreTech:Self(), "Genres" )
-	LogScript( "genreTechsNode find" )
-	
-	local otherTech = sceneManager:GetSceneNodeByName( "otherTechsNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( otherTech:Self() )
-	otherTech:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( otherTech:Self(), "Other" )
-	LogScript( "otherTechsNode find" )
-	
-	local exitN = sceneManager:GetSceneNodeByName( "exitLaborNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
-	exitN:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	LogScript( "exitLaborNode find" )	
-	
-	sceneManager:SetSelectedNode( nil )
-	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnLaborScene" )
-	--]]
+	local btnVideo = guienv:AddButton( 0, 0, 0 + 168, 0 + 144, laborWindow:Self(), -1, "")
+	btnVideo:SetImage( 0, 0, 168, 144, "media/buttons/techMapSound_normal.png" )
+	btnVideo:SetHoveredImage( 0, 0, 168, 144, "media/buttons/techMapSound_select.png" )	
+	btnVideo:SetPressedImage( 0, 0, 168, 144, "media/buttons/techMapSound_select.png" )	
+	btnVideo:SetAction( "" )
 end
 
 function ApplicationLoadCityScene()
@@ -55,9 +38,6 @@ function ApplicationLoadCityScene()
 		local closeBtn = cityWindow:GetCloseButton()
 		closeBtn:SetVisible( false )
 	end
-	
-	sceneManager:SetSelectedNode( nil )
-	sceneManager:RemoveAllNodes()
 	
 	local btnOffice = guienv:AddButton( 730, 43, 730 + 229, 43 + 215, cityWindow:Self(), -1, "")
 	btnOffice:SetImage( 0, 0, 229, 215, "media/buttons/office_normal.tga" )
@@ -275,6 +255,12 @@ function ApplicationLoadUniverScene()
 	btnOutsourcing:SetHoveredImage( 0, 0, 211, 156, "media/buttons/outsorcing_select.png" )	
 	btnOutsourcing:SetPressedImage( 0, 0, 211, 156, "media/buttons/outsorcing_select.png" )	
 	btnOutsourcing:SetAction( "sworkCreateWindowOutsorcing" )
+	
+	local btnExit = guienv:AddButton( 455, 315, 455 + 211, 315 + 156, univerWindow:Self(), -1, "")
+	btnExit:SetImage( 0, 0, 137, 187, "media/buttons/univerExit_normal.png" )
+	btnExit:SetHoveredImage( 0, 0, 137, 187, "media/buttons/univerExit_select.png" )	
+	btnExit:SetPressedImage( 0, 0, 137, 187, "media/buttons/univerExit_select.png" )	
+	btnExit:SetAction( "sworkWindowUpEmployerClose" )
 
 end
 
@@ -290,6 +276,8 @@ function ApplicationLoadDirectorCabinetScene( ptr )
 		local closeBtn = directorCabinetWindow:GetCloseButton()
 		closeBtn:SetVisible( false )
 	end	
+	
+	UpdateTutorialState( STEP_OVERVIEW_DIRECTORS_ROOM )
 	
 	local btnNewProject = guienv:AddButton( 0, 227, 0 + 197, 227 + 165, directorCabinetWindow:Self(), -1, "")
 	btnNewProject:SetImage( 0, 0, 197, 165, "media/buttons/newProject_normal.png" )

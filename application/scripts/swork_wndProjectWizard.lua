@@ -7,6 +7,8 @@ function sworkCloseWindowWizardProject( ptr )
 end
 
 function sworkCreateWindowWizardProject( ptr )
+	UpdateTutorialState( STEP_CREATE_NEW_PROJECT )
+	
 	local hTemp = scrHeight / 6
 	
 	windowWizardProject = guienv:AddWindow( "media/director_cabinet_slider.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
