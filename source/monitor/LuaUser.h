@@ -30,6 +30,7 @@ public:
 	int GetWork( lua_State* L );
 	int Save( lua_State* L );
 	int Create( lua_State* L );
+	int GetTexture( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaUser"; }
 };

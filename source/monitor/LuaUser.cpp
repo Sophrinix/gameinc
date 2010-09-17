@@ -32,6 +32,7 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaUser, RemoveWork ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWork ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, Create ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTexture ),
 	{0,0}
 };
 
@@ -240,6 +241,18 @@ int CLuaUser::GetWork( lua_State* L )
 
 	lua_pushlightuserdata( L, work );
 	return 1;	
+}
+
+int CLuaUser::GetTexture( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetTexture not need any parameter" );
+
+	std::string pathName = "";
+	IF_OBJECT_NOT_NULL_THEN pathName = object_->GetValue<std::string>( TEXTURENORMAL );
+
+	lua_pushstring( L, pathName.c_str() );
+	return 1;		
 }
 
 }//namespace nrp

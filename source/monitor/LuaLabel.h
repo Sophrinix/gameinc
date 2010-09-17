@@ -22,6 +22,7 @@ public:
 																//нажатии на эту кнопку
 	static const char* StaticGetLuaName() { return "CLuaLabel"; }
 	int SetOverrideColor( lua_State* L );
+	int SetTextAlignment( lua_State* L );
 };
 
 }//namespace nrp

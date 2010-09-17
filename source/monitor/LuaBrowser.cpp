@@ -21,6 +21,7 @@ Luna< CLuaBrowser >::RegType CLuaBrowser::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Hide ),
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Navigate ),
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, GetWindow ),
+	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Move ),
 	{0,0}
 };
 
@@ -76,6 +77,20 @@ int CLuaBrowser::Hide( lua_State* L )
 	}
 
 	return 1;	
+}
+
+int CLuaBrowser::Move( lua_State *L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaBrowser::Move need x, y parameter");
+	
+	position2di pos( lua_tointeger( L, 2 ), lua_tointeger( L, 3 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		object_->GetBrowserWindow().setRelativePosition( pos );
+	}
+
+	return 1;
 }
 
 int CLuaBrowser::GetWindow( lua_State *L )

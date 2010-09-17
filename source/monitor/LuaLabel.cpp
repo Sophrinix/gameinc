@@ -15,6 +15,7 @@ Luna< CLuaLabel >::RegType CLuaLabel::methods[] =			//реализуемы методы
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaLabel ),
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideColor ),
+	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetTextAlignment ),
 	{0,0}
 };
 
@@ -32,6 +33,19 @@ int CLuaLabel::SetOverrideColor( lua_State* L )
 	ovColor += lua_tointeger( L, 5 );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->setOverrideColor( ovColor );
+
+	return 1;
+}
+
+int CLuaLabel::SetTextAlignment( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaLabel::SetTextAlignment need bool, bool parameter");
+	
+	int hAl = lua_tointeger( L, 2 );
+	int vAl = lua_tointeger( L, 3 );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->setTextAlignment( gui::EGUI_ALIGNMENT(hAl), gui::EGUI_ALIGNMENT(vAl) );
 
 	return 1;
 }

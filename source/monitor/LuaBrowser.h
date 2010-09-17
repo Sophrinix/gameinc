@@ -22,7 +22,7 @@ public:
 	int Hide( lua_State* L );
 	int Navigate( lua_State* L );
 	int GetWindow( lua_State *L );
-
+	int Move( lua_State *L );
 
 	static const char* StaticGetLuaName() { return CLASS_LUABROWSER.c_str(); }
 };
