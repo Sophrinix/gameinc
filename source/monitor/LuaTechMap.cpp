@@ -23,6 +23,7 @@ Luna< CLuaTechMap >::RegType CLuaTechMap::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectType ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObject ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectName ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetDrawBack ),
 	{0,0}
 };
 
@@ -141,4 +142,16 @@ int CLuaTechMap::GetSelectedObjectName( lua_State* L )
 	lua_pushstring( L, name.c_str() );
 	return 1;
 }
+
+int CLuaTechMap::SetDrawBack( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechMap::SetBackgroundVisible need boolean parameter");
+
+	bool visible = lua_toboolean( L, 2 ) > 0;
+	IF_OBJECT_NOT_NULL_THEN object_->SetDrawBack( visible );
+
+	return 1;
+}
+
 }//namespace nrp

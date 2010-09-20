@@ -139,6 +139,8 @@ public:
 	//! scripting languages, editors, debuggers or xml deserialization purposes.
 	virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options=0);
 
+	virtual void SetDrawBack( bool drawBack ) { _drawBack = drawBack; }
+
 protected:
 	virtual void refreshControls();
 	virtual void checkScrollbars();
@@ -271,7 +273,7 @@ private:
 	gui::IGUIScrollBar* VerticalScrollBar;
 	gui::IGUIScrollBar* HorizontalScrollBar;
 	bool Clip;
-	bool DrawBack;
+	bool _drawBack;
 	bool MoveOverSelect;
 	bool Selecting;
 	s32  CurrentResizedColumn;

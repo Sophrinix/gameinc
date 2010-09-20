@@ -225,6 +225,8 @@ function ApplicationLoadPlantScene()
 		plantWindow:SetDraggable( false )
 	end	
 	
+	UpdateTutorialState( STEP_OVERVIEW_PLANT )
+	
 	local BoxButton = guienv:AddButton( 94, 29, 94 + 241, 29 + 129, plantWindow:Self(), -1, "")
 	BoxButton:SetImage( 0, 0, 241, 129, "media/buttons/boxManager_normal.png" )
 	BoxButton:SetHoveredImage( 0, 0, 241, 129, "media/buttons/boxManager_select.png" )	

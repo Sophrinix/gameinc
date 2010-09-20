@@ -28,6 +28,7 @@ public:
 	int GetSelectedObjectType( lua_State* L );
 	int GetSelectedObject( lua_State* L );
 	int GetSelectedObjectName( lua_State* L );
+	int SetDrawBack( lua_State* L );
 
 	static const char* StaticGetLuaName() { return CLASS_LUATECHMAP.c_str(); }
 };

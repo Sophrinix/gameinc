@@ -284,7 +284,10 @@ void CImageGUISkin::draw3DSunkenPane(IGUIElement* element, video::SColor bgcolor
 	if ( !elstyle.Texture )
 		native_skin_->draw3DSunkenPane(element, bgcolor, flat, fillBackGround, r, clip);
 	else 
-		drawElementStyle( element, elstyle, r, clip );
+	{
+		if( fillBackGround )
+			drawElementStyle( element, elstyle, r, clip );
+	}
 }
 
 //! draws a window background

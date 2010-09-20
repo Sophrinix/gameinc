@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "LuaTable.h"
 #include "StrConversation.h"
+#include "nrpEngine.h"
 #include <irrlicht.h>
 
 using namespace irr;
@@ -46,8 +47,13 @@ int CLuaTable::SetImage( lua_State *L )							//получает имя файла с текстурой, 
 	rectangle.LowerRightCorner.X = lua_tointeger( L, 4 );
 	rectangle.LowerRightCorner.Y = lua_tointeger( L, 5 );
 
-	//video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath.c_str() ); //грузим текстуру в видеокарту
-	//table_->setImage( txs, rectangle );								//размещаем текстуру в кнопке			
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		video::ITexture* txs = NULL;
+		if( texturepath != NULL )
+			txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath ); //грузим текстуру в видеокарту
+		//object_->setImage( txs, rectangle );								//размещаем текстуру в кнопке			
+	}
 
 	return 1;
 }

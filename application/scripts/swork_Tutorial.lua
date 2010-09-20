@@ -35,6 +35,16 @@ function UpdateTutorialState( currentStep )
 	end
 end
 
+function tutorial_ShowPlantTableButton()
+	AddDelayRemImage( 150, 0, 150 + 128, 0 + 64, "media/buttons/mouse_left.png", 5000 )
+	browser:Move( scrWidth / 2, 0 )
+end
+
+function tutorial_ShowPlantProduceButton()
+	AddDelayRemImage( 850, 0, 850 + 128, 0 + 64, "media/buttons/mouse_left.png", 5000 )
+	browser:Move( 0, 0 )
+end
+
 function tutorial_ShowLaboratoryVideoTechButton()
 	AddDelayRemImage( 545, 330, 545 + 128, 330 + 64, "media/buttons/mouse_left.png", 5000 )
 	browser:Move( 0, 0 )

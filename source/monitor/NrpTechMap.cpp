@@ -20,7 +20,7 @@ CNrpTechMap::CNrpTechMap(IGUIEnvironment* environment, IGUIElement* parent,
 						bool drawBack, bool moveOverSelect)
 : IGUITable(environment, parent, id, rectangle), Font(0),
 	VerticalScrollBar(0), HorizontalScrollBar(0),
-	Clip(clip), DrawBack(drawBack), MoveOverSelect(moveOverSelect),
+	Clip(clip), _drawBack(drawBack), MoveOverSelect(moveOverSelect),
 	Selecting(false), CurrentResizedColumn(-1), ResizeStart(0), ResizableColumns(true),
 	ItemHeight(0), overItemHeight_(0), TotalItemHeight(0), TotalItemWidth(0), _selected( core::position2di(-1, -1) ),
 	CellHeightPadding(2), CellWidthPadding(5), ActiveTab(-1),
@@ -883,7 +883,7 @@ void CNrpTechMap::draw()
 		clipRect = &AbsoluteClippingRect;
 
 	// draw background for whole element
-	skin->draw3DSunkenPane(this, skin->getColor(EGDC_3D_HIGH_LIGHT), true, DrawBack, AbsoluteRect, clipRect);
+	skin->draw3DSunkenPane(this, skin->getColor(EGDC_3D_HIGH_LIGHT), true, _drawBack, AbsoluteRect, clipRect);
 
 	// scrolledTableClient is the area where the table items would be if it could be drawn completely
 	core::rect<s32> scrolledTableClient(tableRect);
@@ -911,14 +911,6 @@ void CNrpTechMap::draw()
 		if (rowRect.LowerRightCorner.Y >= AbsoluteRect.UpperLeftCorner.Y &&
 			rowRect.UpperLeftCorner.Y <= AbsoluteRect.LowerRightCorner.Y)
 		{
-			// draw row seperator
-			if ( DrawFlags & EGTDF_ROWS )
-			{
-				core::rect<s32> lineRect(rowRect);
-				lineRect.UpperLeftCorner.Y = lineRect.LowerRightCorner.Y - 1;
-				driver->draw2DRectangle(skin->getColor(EGDC_3D_SHADOW), lineRect, &clientClip);
-			}
-
 			core::rect<s32> textRect(rowRect);
 			pos = rowRect.UpperLeftCorner.X;
 
@@ -956,14 +948,21 @@ void CNrpTechMap::draw()
 					scaleHeight = textRect.getHeight() / static_cast<float>( txsSize.Height );
 
 					//это мы нашли наименьший коэффициент для отображения
-					scaleWidth = (( scaleWidth < scaleHeight ) ? scaleWidth : scaleHeight) * 0.45f;
+					scaleWidth = (( scaleWidth < scaleHeight ) ? scaleWidth : scaleHeight) * 0.43f;
 					core::dimension2du hsize( static_cast< u32 >( txsSize.Width * scaleWidth ),
 											  static_cast< u32 >( txsSize.Height * scaleWidth ) );
 
 					core::recti scaleTextRect( textRect.getCenter().X - hsize.Width, textRect.getCenter().Y - hsize.Height,
 											   textRect.getCenter().X + hsize.Width, textRect.getCenter().Y + hsize.Height	);
 					if( txs )
-						driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ) );
+					{
+						core::recti rr = scaleTextRect;
+						rr.UpperLeftCorner -= core::position2di( 2, 2 );
+						rr.LowerRightCorner += core::position2di( 2, 2 );
+						driver->draw2DRectangle( rr, 0xff000000, 0xff000000, 0xffffffff, 0xffffffff, &AbsoluteClippingRect );
+
+						driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ), &AbsoluteClippingRect );
+					}
 					else
 						if( cell.assignTech )
 							driver->draw2DRectangle( 0xffffff00, scaleTextRect, &AbsoluteClippingRect );
@@ -1002,9 +1001,6 @@ void CNrpTechMap::draw()
 		rowRect.UpperLeftCorner.Y += ItemHeight;
 		rowRect.LowerRightCorner.Y += ItemHeight;
 	}
-
-	core::rect<s32> columnSeparator(clientClip);
-	pos = scrolledTableClient.UpperLeftCorner.X;
 
 	if( _rMouseDown && (GetTickCount() - _startTimeMouseDown > 1000) )
 	{
@@ -1130,7 +1126,7 @@ void CNrpTechMap::serializeAttributes(io::IAttributes* out, io::SAttributeReadWr
 	// gui::IGUIScrollBar* HorizontalScrollBar;		// not serialized
 
 	out->addBool ("Clip", Clip);
-	out->addBool ("DrawBack", DrawBack);
+	out->addBool ("DrawBack", _drawBack);
 	out->addBool ("MoveOverSelect", MoveOverSelect);
 
 	// s32  CurrentResizedColumn;	// runtime info - depends on user action
@@ -1219,7 +1215,7 @@ void CNrpTechMap::deserializeAttributes(io::IAttributes* in, io::SAttributeReadW
 	}
 
 	Clip = in->getAttributeAsBool("Clip");
-	DrawBack = in->getAttributeAsBool("DrawBack");
+	_drawBack = in->getAttributeAsBool("DrawBack");
 	MoveOverSelect = in->getAttributeAsBool("MoveOverSelect");
 
 	CurrentResizedColumn = -1;
@@ -1353,8 +1349,12 @@ void CNrpTechMap::RelocateTable_()
 
 	AssignTechMapToTable_( techMap_ );
 
-	SetItemHeight( AbsoluteRect.getHeight() / (Rows.size() + 1) );
-	setColumnWidth( AbsoluteRect.getWidth() / (Columns.size() + 1) );
+	int itemSize = AbsoluteRect.getHeight() / (Rows.size() + 1);
+	if( itemSize < 100 )
+		itemSize = 100;
+
+	SetItemHeight( itemSize );
+	setColumnWidth( itemSize );
 }
 
 std::string CNrpTechMap::GetSelectedObjectName()
