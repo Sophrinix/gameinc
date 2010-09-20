@@ -8,8 +8,8 @@ local boxImagePictureFlow = nil
 
 local windowImageViewer = CLuaWindow( nil )
 
-local width = 800
-local height = 600
+local width = scrWidth
+local height = scrHeight
 
 local function CreateElementsForGameSelect()
 	local row = 0
@@ -28,11 +28,13 @@ local function CreateElementsForGameSelect()
 			btn:SetAction( "sworkGameBoxManagerSetGame" )			 
 			gameWithoutBox = gameWithoutBox + 1
 		end
-		
 	end
 	
 	if gameWithoutBox == 0 then 
-		guienv:AddLabel( "Нет игр", width / 2, height / 2, width / 2 + 100, height / 2 + 50, -1, wndGBM:Self() )
+		local image = guienv:AddImage( width / 2 - 300, height / 2 - 300, width / 2 + 300, height / 2 + 300, wndGBM:Self(), -1, "" )
+		image:SetImage( "media/noGameForCreateBox.png" )
+		image:SetScaleImage( true )
+		image:SetUseAlphaChannel( true )
 	end
 end
 
@@ -185,12 +187,14 @@ end
 
 function sworkCreateGameBoxManagerWindow( ptr )
 	company = applic:GetPlayerCompany()
-	wndGBM:SetObject( guienv:GetElementByName( WINDOW_GAMEBOXWIZ_NAME ) )
-	wndGBM:Remove()
-	
-	wndGBM = guienv:AddWindow( "GameBoxWizzard", 0, 0, width, height, WINDOW_GAMEBOXWIZ_ID, guienv:GetRootGUIElement() )
-	wndGBM:SetName( WINDOW_GAMEBOXWIZ_NAME )
-	wndGBM:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkGameBoxManagerWindowLeftMouseButtonUp" )
+
+	if wndGBM == nil then	
+		wndGBM = guienv:AddWindow( "media/plant_select.tga", 0, 0, scrWidth, scrHeight, WINDOW_GAMEBOXWIZ_ID, guienv:GetRootGUIElement() )
+		wndGBM:SetName( WINDOW_GAMEBOXWIZ_NAME )
+		wndGBM:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkGameBoxManagerWindowLeftMouseButtonUp" )
+	else
+		wndGBM:SetVisible( true )
+	end
 	
 	CreateElementsForGameSelect()
 end

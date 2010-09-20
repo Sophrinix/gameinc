@@ -17,8 +17,8 @@ local labelDiskInDay = nil
 local cmbxProduceType = nil
 local cmbxGames = nil
 
-local width = 800
-local height = 600
+local width = scrWidth
+local height = scrHeight
 
 local addons = { }
 
@@ -28,11 +28,14 @@ function sworkCreateDiskProducePlantWindow( ptr )
 	company = applic:GetPlayerCompany()
 	
 	produceDiskWork:Create( company:GetName() )
-	wndDPP:SetObject( guienv:GetElementByName( WINDOW_DISKPRODUCEPLANT_NAME ) )
-	wndDPP:Remove()
 	
-	wndDPP = guienv:AddWindow( "GameBoxWizzard", 0, 0, width, height, WINDOW_DISKPRODUCEPLANT_ID, guienv:GetRootGUIElement() )
-	wndDPP:SetName( WINDOW_DISKPRODUCEPLANT_NAME )
+	if wndDPP == nil then
+		wndDPP = guienv:AddWindow( "media/plant_Select.tga", 0, 0, width, height, WINDOW_DISKPRODUCEPLANT_ID, guienv:GetRootGUIElement() )
+		wndDPP:SetName( WINDOW_DISKPRODUCEPLANT_NAME )
+		wndDPP:SetDraggable( false )
+	else
+		wndDPP:SetVisible( true )
+	end
 	
 	--добавим выпадающий список типа аппаратов
 	cmbxProduceType = guienv:AddComboBox( "", 10, 20, width / 2 - 10, 40, -1, wndDPP:Self() )
@@ -123,11 +126,13 @@ function sworkWndDiskProducePlantLocate( ptr )
 	
 	produceDiskWork:Remove()
 	wndDPP:Remove()
+	wndDPP = nil
 end
 
 function sworkWndDiskProducePlantClose( ptr )
 	produceDiskWork:Remove()
 	wndDPP:Remove()
+	wndDPP = nil
 end
 
 local function UpdateAddons( ptrGame )

@@ -1,5 +1,6 @@
 local company = nil 
 local bank = applic:GetBank()
+local windowLoan = nil
 
 function sworkShowLoans( tabler )
 	local tbl = CLuaTable( tabler )
@@ -21,30 +22,46 @@ function sworkShowLoans( tabler )
 	end
 end
 
+function sworkCloseWindowLoanAction( ptr )
+	windowLoan:Remove()
+	windowLoan = nil
+end
+
 function sworkCreateWindowLoanAction()
 	company = applic:GetPlayerCompany()
-	local windowg = guienv:AddWindow( "Loan", 0, 0, 800, 600, -1, guienv:GetRootGUIElement() )
-	windowg:SetName( WINDOW_LOAN_ACTION_NAME )
+	if windowLoan == nil then
+		windowLoan = guienv:AddWindow( "media/bank_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		windowLoan:SetDraggable( false )
+		local closeBtn = windowLoan:GetCloseButton()
+		closeBtn:SetAction( "sworkCloseWindowLoanAction" )
+	else
+		windowLoan:SetVisible( true )	
+	end
 	
 	local summ = bank:GetMaxCompanyLoan( company:GetName() )
 	Log({src=SCRIPT, dev=ODS|CON}, summ )
 	
 	local edit = guienv:AddEdit(  summ, 10, 20, 190, 40,
-								  -1, windowg:Self() )
+								  -1, windowLoan:Self() )
 	edit:SetName( WNDLOANACTION_GETLOAN_EDIT )
 	
-	local button = guienv:AddButton( 10, 80, 10 + 140, 80 + 20, windowg:Self(), -1, "Взять кредит" )
+	local button = guienv:AddButton( 10, 80, 10 + 140, 80 + 20, windowLoan:Self(), -1, "Взять кредит" )
 	button:SetAction( "sworkGetLoan" )
 	
-	button = guienv:AddButton( 160, 80, 160 + 140, 80 + 20, windowg:Self(), -1, "Вернуть кредит" )
+	button = guienv:AddButton( 160, 80, 160 + 140, 80 + 20, windowLoan:Self(), -1, "Вернуть кредит" )
 	button:SetAction( "sworkReturnLoan" )
 	
-	local label = guienv:AddLabel( "Доступная сумма: "..summ, 10, 110, 10 + 280, 110 + 20, -1, windowg:Self() )
+	local label = guienv:AddLabel( "Доступная сумма: "..summ, 10, 110, 10 + 280, 110 + 20, -1, windowLoan:Self() )
 	label:SetName( WNDLOANACTION_MAXSUM_LABEL )
 	
+	local image = guienv:AddImage( 10, 140, scrWidth - 10, scrHeight - 60, windowLoan:Self(), -1, "" )
+	image:SetImage( "media/tableLoanBg.png" )
+	image:SetScaleImage( true )
+	image:SetUseAlphaChannel( true )
+
 	local width = 0
 	local height = 0
-	local tabler = guienv:AddTable( 10, 140, 790, 600 - 50, -1, windowg:Self() )
+	local tabler = guienv:AddTable( 10, 140, scrWidth - 10,  scrHeight - 60, -1, windowLoan:Self() )
 	tabler:SetName( WNDLOANACTION_TABLE )
 	width, height = tabler:GetSize()
 	

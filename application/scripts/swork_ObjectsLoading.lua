@@ -16,17 +16,31 @@ function ApplicationLoadLaborScene()
 		closeBtn:SetVisible( false )
 	end	
 	
-	local btnVideo = guienv:AddButton( 730, 43, 730 + 229, 43 + 215, laborWindow:Self(), -1, "")
-	btnVideo:SetImage( 0, 0, 229, 215, "media/buttons/techMapVideo_normal.png" )
-	btnVideo:SetHoveredImage( 0, 0, 229, 215, "media/buttons/techMapVideo_select.png" )	
-	btnVideo:SetPressedImage( 0, 0, 229, 215, "media/buttons/techMapVideo_select.png" )	
-	btnVideo:SetAction( "" )
+	UpdateTutorialState( STEP_OVERVIEW_LABORATORY )
 	
-	local btnVideo = guienv:AddButton( 0, 0, 0 + 168, 0 + 144, laborWindow:Self(), -1, "")
-	btnVideo:SetImage( 0, 0, 168, 144, "media/buttons/techMapSound_normal.png" )
-	btnVideo:SetHoveredImage( 0, 0, 168, 144, "media/buttons/techMapSound_select.png" )	
-	btnVideo:SetPressedImage( 0, 0, 168, 144, "media/buttons/techMapSound_select.png" )	
-	btnVideo:SetAction( "" )
+	local btnVideo = guienv:AddButton( 545, 330, 545 + 380, 330 + 299, laborWindow:Self(), -1, "")
+	btnVideo:SetImage( 0, 0, 380, 299, "media/buttons/techMapVideo_normal.png" )
+	btnVideo:SetHoveredImage( 0, 0, 380, 299, "media/buttons/techMapVideo_select.png" )	
+	btnVideo:SetPressedImage( 0, 0, 380, 299, "media/buttons/techMapVideo_select.png" )	
+	btnVideo:SetAction( "sworkCreateVideoTechMapWindow" )
+	 
+	local btnSound = guienv:AddButton( 372, 213, 372 + 168, 213 + 144, laborWindow:Self(), -1, "")
+	btnSound:SetImage( 0, 0, 168, 144, "media/buttons/techMapSound_normal.png" )
+	btnSound:SetHoveredImage( 0, 0, 168, 144, "media/buttons/techMapSound_select.png" )	
+	btnSound:SetPressedImage( 0, 0, 168, 144, "media/buttons/techMapSound_select.png" )	
+	btnSound:SetAction( "sworkCreateSoundTechMapWindow" )
+	
+	local btnAdvtech = guienv:AddButton( 749, 222, 749 + 264, 222 + 147, laborWindow:Self(), -1, "")
+	btnAdvtech:SetImage( 0, 0, 264, 147, "media/buttons/techMapAdvTech_normal.png" )
+	btnAdvtech:SetHoveredImage( 0, 0, 264, 147, "media/buttons/techMapAdvTech_select.png" )	
+	btnAdvtech:SetPressedImage( 0, 0, 264, 147, "media/buttons/techMapAdvTech_select.png" )	
+	btnAdvtech:SetAction( "sworkCreateAdvancedMapWindow" )
+	
+	local btnGenre = guienv:AddButton( 73, 202, 73 + 229, 202 + 182, laborWindow:Self(), -1, "")
+	btnGenre:SetImage( 0, 0, 229, 182, "media/buttons/techMapGenre_normal.png" )
+	btnGenre:SetHoveredImage( 0, 0, 229, 182, "media/buttons/techMapGenre_select.png" )	
+	btnGenre:SetPressedImage( 0, 0, 229, 182, "media/buttons/techMapGenre_select.png" )	
+	btnGenre:SetAction( "sworkCreateGenreTechMapWindow" )
 end
 
 function ApplicationLoadCityScene()
@@ -84,33 +98,26 @@ function ApplicationLoadCityScene()
 end
 
 function ApplicationLoadBankScene()
-	--[[sceneManager:RemoveAllNodes()
-	ApplicationAddCityCamera()
-	sceneManager:LoadIrrlichtScene( "scene/nrpBankScene.irr" )
+	if bankWindow then
+		bankWindow:SetVisible( true )
+	else
+		bankWindow = guienv:AddWindow( "media/bank_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		bankWindow:SetDraggable( false )
+		local closeBtn = bankWindow:GetCloseButton()
+		closeBtn:SetVisible( false )
+	end
 	
-	local loan = sceneManager:GetSceneNodeByName( "loanNode" )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( loan:Self() )
-	loan:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( loan:Self(), "loan" )
+	local btnLoan = guienv:AddButton( 80, 402, 80 + 223, 402 + 171, bankWindow:Self(), -1, "")
+	btnLoan:SetImage( 0, 0, 223, 171, "media/buttons/loans_normal.png" )
+	btnLoan:SetHoveredImage( 0, 0, 223, 171, "media/buttons/loans_select.png" )	
+	btnLoan:SetPressedImage( 0, 0, 223, 171, "media/buttons/loans_select.png" )	
+	btnLoan:SetAction( "sworkCreateWindowLoanAction" )
 	
-	local deposit = sceneManager:GetSceneNodeByName( "depositNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( deposit:Self() )
-	deposit:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( deposit:Self(), "deposit" )
-	
-	local akcii = sceneManager:GetSceneNodeByName( "acciiNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( akcii:Self() )
-	akcii:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( akcii:Self(), "akcii" )
-	
-	local exitN = sceneManager:GetSceneNodeByName( "exitBank" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
-	exitN:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	
-	sceneManager:SetSelectedNode( nil )
-	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnBankScene" )
-	--]]
+	local btnDeposit = guienv:AddButton( 258, 301, 258 + 183, 301 + 208, bankWindow:Self(), -1, "")
+	btnDeposit:SetImage( 0, 0, 183, 208, "media/buttons/deposit_normal.png" )
+	btnDeposit:SetHoveredImage( 0, 0, 183, 208, "media/buttons/deposit_select.png" )	
+	btnDeposit:SetPressedImage( 0, 0, 183, 208, "media/buttons/deposit_select.png" )	
+	btnDeposit:SetAction( "sworkCreateWindowDepositAction" )
 end
 
 function ApplicationLoadShopScene()
@@ -208,27 +215,27 @@ function ApplicationLoadOfficeScene()
 end
 
 function ApplicationLoadPlantScene()
-	--[[sceneManager:SetSelectedNode( nil )
-	sceneManager:RemoveAllNodes()
-	ApplicationAddCityCamera()
-	sceneManager:LoadIrrlichtScene( "scene/nrpPlantScene.irr" )
-
-	local createBoxNode = sceneManager:GetSceneNodeByName( "gameBoxManagerNode" )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( createBoxNode:Self() )
-	createBoxNode:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( createBoxNode:Self(), "createBoxNode" )
+	cityWindow:SetVisible( false )
 	
-	local plnatNode = sceneManager:GetSceneNodeByName( "plantCeNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( plnatNode:Self() )
-	plnatNode:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( plnatNode:Self(), "plantCeNode" )
+	if plantWindow then
+		plantWindow:SetVisible( true )
+	else
+		plantWindow = guienv:AddWindow( "media/plant_normal.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		plantWindow:GetCloseButton():SetVisible( false )
+		plantWindow:SetDraggable( false )
+	end	
 	
-	local exitN = sceneManager:GetSceneNodeByName( "exitPlantNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
-	exitN:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnPlantScene" )
-	--]]
+	local BoxButton = guienv:AddButton( 94, 29, 94 + 241, 29 + 129, plantWindow:Self(), -1, "")
+	BoxButton:SetImage( 0, 0, 241, 129, "media/buttons/boxManager_normal.png" )
+	BoxButton:SetHoveredImage( 0, 0, 241, 129, "media/buttons/boxManager_select.png" )	
+	BoxButton:SetPressedImage( 0, 0, 241, 129, "media/buttons/boxManager_select.png" )	
+	BoxButton:SetAction( "sworkCreateGameBoxManagerWindow" )
+	
+	local ProduceButton = guienv:AddButton( 407, 1, 407 + 558, 1 + 234, plantWindow:Self(), -1, "")
+	ProduceButton:SetImage( 0, 0, 558, 234, "media/buttons/produce_normal.png" )
+	ProduceButton:SetHoveredImage( 0, 0, 558, 234, "media/buttons/produce_select.png" )	
+	ProduceButton:SetPressedImage( 0, 0, 558, 234, "media/buttons/produce_select.png" )	
+	ProduceButton:SetAction( "sworkCreateDiskProducePlantWindow" )
 end
 
 function ApplicationLoadUniverScene()

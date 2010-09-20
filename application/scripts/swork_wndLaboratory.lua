@@ -41,23 +41,40 @@ local function CreateTechSequence( tech )
 	end
 end
 
-function sworkCreateGenreTechMapWindow( ptr )
+local function sworkCreateWindow( typef )
 	company = applic:GetPlayerCompany()
-	windowLabor = guienv:AddWindow( "", 0, 0, width, height, WINDOW_SHOP_ID, guienv:GetRootGUIElement() )
+	windowLabor = guienv:AddWindow( "media/laboratory_select.png", 0, 0, width, height, WINDOW_SHOP_ID, guienv:GetRootGUIElement() )
 	Log( {src=SCRIPT, dev=ODS|CON}, "sworkCreateGenreTechMapWindow="..company:GetName() )
 	
-	techMap:SetObject( guienv:AddTechMap( 10, 20, width - 10, height - 10, -1, windowLabor:Self() ) )
+	techMap:SetObject( guienv:AddTechMap( 10, 40, width - 10, height - 10, -1, windowLabor:Self() ) )
 	techMap:AddLuaFunction( GUIELEMENT_SELECTED_AGAIN, "sworkTechMapWindowTechSelected" )
+	techMap:SetDrawBack( false )
 	
 	local tech = nil
 	for i=1, applic:GetTechNumber() do
 	    tech = applic:GetTech( i-1 )
 		
-		if tech:GetTechGroup() == PT_GENRE and not tech:HaveRequireTech() then
+		if tech:GetTechGroup() == typef and not tech:HaveRequireTech() then
 			techMap:AddTechnology( nil, tech:Self() )
 			CreateTechSequence( tech )
 		end
 	end
+end
+
+function sworkCreateAdvancedMapWindow( ptr )
+	sworkCreateWindow( PT_ADVTECH )	
+end
+
+function sworkCreateSoundTechMapWindow( ptr )
+	sworkCreateWindow( PT_SOUNDTECH )	
+end
+
+function sworkCreateVideoTechMapWindow( ptr )
+	sworkCreateWindow( PT_VIDEOTECH )	
+end
+
+function sworkCreateGenreTechMapWindow( ptr )
+	sworkCreateWindow( PT_GENRE )	
 end
 
 function sworkTechMapWindowTechSelected( ptr ) 
