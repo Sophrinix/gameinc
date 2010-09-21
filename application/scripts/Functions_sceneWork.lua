@@ -49,40 +49,6 @@ function ToggleConsoleVisible( ptr )
 	console:ToggleVisible()
 end
 
-function sworkSelectObjectOnShopScene( ptr )
-	local node = CLuaSceneNode( ptr )
-	local nodeName = node:GetName()
-
-	if nodeName == "gameInSaleNode" then
-		sworkCreateGameInSaleWindow()
-		return 0
-	end
-	
-	if nodeName == "gameJournalsNode" then
-		sworkCreateGameJournals()
-		return 0
-	end
-	
-	if nodeName == "topListMonthNode" then
-		sworkCreateMonthTopListWindow() 
-		return 0
-	end
-	
-	if nodeName == "allTimeTopListNode" then
-		sworkCreateAllTimeTopListWindow() 
-		return 0
-	end
-
-	if nodeName == "exitShopNode" then
-		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnShopScene" )
-		ApplicationLoadCityScene()
-		return 0
-	end
-	
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-Shop:Не могу найти узел для работы "..nodeName )
-
-end
-
 function sworkSelectObjectOnOfficeScene( ptr )
 	local node = CLuaSceneNode( ptr )
 	local nodeName = node:GetName()

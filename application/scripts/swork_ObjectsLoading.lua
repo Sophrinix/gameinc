@@ -3,6 +3,7 @@ laborWindow = nil
 receptionWindow = nil
 directorCabinetWindow = nil
 laborWindow	= nil
+shopWindow = nil
 
 function ApplicationLoadLaborScene()
 	guienv:FadeAction( 3000, false )
@@ -63,7 +64,7 @@ function ApplicationLoadCityScene()
 	btnMedia:SetImage( 0, 0, 216, 226, "media/buttons/media_normal.tga" )
 	btnMedia:SetHoveredImage( 0, 0, 216, 226, "media/buttons/media_select.tga" )	
 	btnMedia:SetPressedImage( 0, 0, 216, 226, "media/buttons/media_select.tga" )	
-	btnMedia:SetAction( "ApplicationLoadMediaScene" )
+	btnMedia:SetAction( "ApplicationLoadShopScene" )
 	
 	local btnLabor = guienv:AddButton( 811, 198, 811 + 179, 198 + 154, cityWindow:Self(), -1, "")
 	btnLabor:SetImage( 0, 0, 179, 154, "media/buttons/labor_normal.tga" )
@@ -121,47 +122,49 @@ function ApplicationLoadBankScene()
 end
 
 function ApplicationLoadShopScene()
-    --[[sceneManager:SetSelectedNode( nil )
-	sceneManager:RemoveAllNodes()
-	ApplicationAddCityCamera()
-	sceneManager:LoadIrrlichtScene( "scene/nrpShopScene.irr" )
+    
+    if shopWindow then
+		shopWindow:SetVisible( true )
+	else
+		shopWindow = guienv:AddWindow( "media/windowShop_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		shopWindow:SetDraggable( false )
+		local closeBtn = shopWindow:GetCloseButton()
+		closeBtn:SetVisible( false )
+	end
 
 	--игры в продаже
+	local gameInSale = guienv:AddButton( 147, 333, 147 + 338, 333 + 294, shopWindow:Self(), -1, "")
+	gameInSale:SetImage( 0, 0, 338, 294, "media/buttons/gameInSale_normal.png" )
+	gameInSale:SetHoveredImage( 0, 0, 338, 294, "media/buttons/gameInSale_select.png" )	
+	gameInSale:SetPressedImage( 0, 0, 338, 294, "media/buttons/gameInSale_select.png" )	
+	gameInSale:SetAction( "sworkCreateGameInSaleWindow" )
+	
 	--топ-лист месяца
+	local topListMonth = guienv:AddButton( 703, 67, 703 + 138, 67 + 150, shopWindow:Self(), -1, "")
+	topListMonth:SetImage( 0, 0, 138, 150, "media/buttons/toplistmonth_normal.png" )
+	topListMonth:SetHoveredImage( 0, 0, 138, 150, "media/buttons/toplistmonth_select.png" )	
+	topListMonth:SetPressedImage( 0, 0, 138, 150, "media/buttons/toplistmonth_select.png" )	
+	topListMonth:SetAction( "sworkCreateMonthTopListWindow" )
+
 	--топ-лист за все время
+	local topListAllTime = guienv:AddButton( 119, 94, 119 + 172, 94 + 226, shopWindow:Self(), -1, "")
+	topListAllTime:SetImage( 0, 0, 172, 226, "media/buttons/toplisttime_normal.png" )
+	topListAllTime:SetHoveredImage( 0, 0, 172, 226, "media/buttons/toplisttime_select.png" )	
+	topListAllTime:SetPressedImage( 0, 0, 172, 226, "media/buttons/toplisttime_select.png" )	
+	topListAllTime:SetAction( "sworkCreateAllTimeTopListWindow" )
+
 	--игровые журналы
-	local gameInSale = sceneManager:GetSceneNodeByName( "gameInSaleNode" )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameInSale:Self() )
-	gameInSale:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( gameInSale:Self(), "gameInSale" )
-	LogScript( "gameInSale find" )	
+	local gameJournals = guienv:AddButton( 861, 268, 861 + 163, 268 + 222, shopWindow:Self(), -1, "")
+	gameJournals:SetImage( 0, 0, 163, 222, "media/buttons/showMagazines_normal.png" )
+	gameJournals:SetHoveredImage( 0, 0, 163, 222, "media/buttons/showMagazines_select.png" )	
+	gameJournals:SetPressedImage( 0, 0, 163, 222, "media/buttons/showMagazines_select.png" )	
+	gameJournals:SetAction( "sworkCreateGameJournals" )
 	
-	local topListMonth = sceneManager:GetSceneNodeByName( "topListMonthNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListMonth:Self() )
-	topListMonth:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( topListMonth:Self(), "topListMonth" )
-	LogScript( "topListMonth find" )	
-
-	local topListAllTime = sceneManager:GetSceneNodeByName( "allTimeTopListNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( topListAllTime:Self() )
-	topListAllTime:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( topListAllTime:Self(), "topListAllTime" )
-	LogScript( "topListAllTime find" )	
-
-	local gameJournals = sceneManager:GetSceneNodeByName( "gameJournalsNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( gameJournals:Self() )
-	gameJournals:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( gameJournals:Self(), "gameJournals" )
-	LogScript( "gameJournals find" )	
-	
-	local exitN = sceneManager:GetSceneNodeByName( "exitShopNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
-	exitN:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	LogScript( "exitN find" )	
-	
-	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnShopScene" )
-	--]]
+	local exitN = guienv:AddButton( 700, 500, 700 + 183, 500 + 208, shopWindow:Self(), -1, "")
+	exitN:SetImage( 0, 0, 183, 208, "media/buttons/deposit_normal.png" )
+	exitN:SetHoveredImage( 0, 0, 183, 208, "media/buttons/deposit_select.png" )	
+	exitN:SetPressedImage( 0, 0, 183, 208, "media/buttons/deposit_select.png" )	
+	exitN:SetAction( "sworkCloseWindowShop" )
 end
 
 function ApplicationLoadOfficeScene()
