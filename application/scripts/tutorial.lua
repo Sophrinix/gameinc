@@ -1,3 +1,10 @@
+local base = _G
+
+module('tutorial')
+
+local guienv = base.guienv
+local browser = base.browser
+
 startGameWithTutorial = false
 STEP_OVERVIEW_RECEPTION = 1
 STEP_CREATE_NEW_PROJECT = 2
@@ -14,7 +21,7 @@ function AddDelayRemImage( x1, y1, x2, y2, textureName, time )
 	guienv:AddDestructor( image:Self(), time )
 end
 
-function UpdateTutorialState( currentStep )
+function Update( currentStep )
 	if not startGameWithTutorial then
 		return
 	end
@@ -35,91 +42,91 @@ function UpdateTutorialState( currentStep )
 	end
 end
 
-function tutorial_ShowPlantTableButton()
+function ShowPlantTableButton()
 	AddDelayRemImage( 150, 0, 150 + 128, 0 + 64, "media/buttons/mouse_left.png", 5000 )
-	browser:Move( scrWidth / 2, 0 )
+	browser:Move( base.scrWidth / 2, 0 )
 end
 
-function tutorial_ShowPlantProduceButton()
+function ShowPlantProduceButton()
 	AddDelayRemImage( 850, 0, 850 + 128, 0 + 64, "media/buttons/mouse_left.png", 5000 )
 	browser:Move( 0, 0 )
 end
 
-function tutorial_ShowLaboratoryVideoTechButton()
+function ShowLaboratoryVideoTechButton()
 	AddDelayRemImage( 545, 330, 545 + 128, 330 + 64, "media/buttons/mouse_left.png", 5000 )
 	browser:Move( 0, 0 )
 end
 
-function tutorial_ShowLaboratorySoundTechButton()
+function ShowLaboratorySoundTechButton()
 	AddDelayRemImage( 372, 213, 372 + 128, 213 + 64, "media/buttons/mouse_left.png", 5000 )
-	browser:Move( 0, scrHeight / 2 )
+	browser:Move( 0, base.scrHeight / 2 )
 end
 
-function tutorial_ShowLaboratoryGenreTechButton()
+function ShowLaboratoryGenreTechButton()
 	AddDelayRemImage( 749, 222, 749 + 128, 222 + 64, "media/buttons/mouse_left.png", 5000 )
 	browser:Move( 0, 0 )
 end
 
-function tutorial_ShowLaboratoryAdvancedTechButton()
+function ShowLaboratoryAdvancedTechButton()
 	AddDelayRemImage( 73, 202, 73 + 128, 202 + 64, "media/buttons/mouse_left.png", 5000 )
-	browser:Move( scrWidth / 2, 0 )
+	browser:Move( base.scrWidth / 2, 0 )
 end
 
-function StartDescriptionGame()
+function Start()
 	browser:Show()
 	browser:Navigate( "media/html/TutorialCityMapOverviewEng.htm" )
 end
 
-function tutorial_CityMapShowOffice() 
+function CityMapShowOffice() 
 	AddDelayRemImage( 730, 50, 730 + 128, 50 + 64, "media/buttons/mouse_left.png", 5000 )
 end
 
-function tutorial_ShowWhereStartProjectButton()
+function ShowWhereStartProjectButton()
 	AddDelayRemImage( 93, 265, 93 + 128, 265 + 64, "media/buttons/mouse_left.png", 5000 )
 end
 
-function tutorial_ShowWhereManageEmployersButton()
+function ShowWhereManageEmployersButton()
 	AddDelayRemImage( 850, 300, 850 + 128, 300 + 64, "media/buttons/mouse_left.png", 5000 )
 end
 
-function tutorial_ShowWhereComputerButton()
+function ShowWhereComputerButton()
 	AddDelayRemImage( 653, 278, 653 + 128, 278 + 64, "media/buttons/mouse_left.png", 5000 )
 end
 
-function tutorial_OnReceptionShowDirectorsRoom()
+function OnReceptionShowDirectorsRoom()
 	AddDelayRemImage( 450, 240, 450 + 128, 240 + 64, "media/buttons/mouse_left.png", 5000 )
 end
 
-function tutorial_ShowWhereCaseButton()
+function ShowWhereCaseButton()
 	AddDelayRemImage( 93, 470, 93 + 128, 470 + 64, "media/buttons/mouse_left.png", 5000 )
 end
 
-function tutorial_CityMapShowLaboratory()
+function CityMapShowLaboratory()
 	AddDelayRemImage( 811, 198, 811 + 128, 198 + 64, "media/buttons/mouse_left.png", 5000 )	
 	browser:Move( 0, 0 )
 end
 
-function tutorial_CityMapShowPlant()
+function CityMapShowPlant()
 	AddDelayRemImage( 517, 326, 517 + 128, 326 + 64, "media/buttons/mouse_left.png", 5000 )	
 	browser:Move( 0, 0 )
 end
 
-function tutorial_CityMapShowBank()
+function CityMapShowBank()
 	AddDelayRemImage( 323, 389, 323 + 128, 389 + 64, "media/buttons/mouse_left.png", 5000 )	
 	browser:Move( scrWidth / 2, 0 )
 end
 
-function tutorial_CityMapShowUniversitet()
+function CityMapShowUniversitet()
 	AddDelayRemImage(  0, 287, 0 + 128, 287 + 64, "media/buttons/mouse_left.png", 5000 )	
 	browser:Move( scrWidth / 2, 0 )
 end
 
-function tutorial_ShowNewEngineProjectButton()
+function ShowNewEngineProjectButton()
 	browser:Move( scrWidth / 2, 0 )
 	AddDelayRemImage( scrWidth / 4, scrHeight / 2, scrWidth / 4 + 128, scrHeight / 2 + 64, "media/buttons/mouse_left.png", 5000 )
 end
 
-function tutorial_ShowNewGameProjectButton()
+function ShowNewGameProjectButton()
 	browser:Move( 0, 0 )
 	AddDelayRemImage( scrWidth * 0.75, scrHeight / 2, scrWidth * 0.75 + 128, scrHeight / 2 + 64, "media/buttons/mouse_left.png", 5000 )
 end

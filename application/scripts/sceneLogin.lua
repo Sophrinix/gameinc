@@ -1,5 +1,5 @@
 IncludeScript( "globalVariableInitialize" )
-IncludeScript( "swork_Tutorial" )
+IncludeScript( "Tutorial" )
 
 NrpInitializeLoginScene()
 

@@ -134,11 +134,3 @@ function sworkTechMapWindowCloseConfirmationWindow( ptr )
 	btnCancel:Remove()
 	browser:Hide()
 end
-
-function sworkCloseLaboratoryWindow( ptr )
-	if windowLabor ~= nil then
-		cityWindow:SetVisible( true )
-		windowLabor:Remove()
-	end	
-	windowLabor = nil
-end

@@ -8,7 +8,7 @@ function sworkCloseWindowWizardProject( ptr )
 end
 
 function sworkCreateWindowWizardProject( ptr )
-	UpdateTutorialState( STEP_CREATE_NEW_PROJECT )
+	tutorial.Update( tutorial.STEP_CREATE_NEW_PROJECT )
 	
 	local hTemp = scrHeight / 6
 	

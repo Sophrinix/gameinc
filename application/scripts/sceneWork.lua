@@ -39,8 +39,8 @@ playerCompany:AddLuaFunction( COMPANY_READY_PROJECT, "sworkPlayerCompanyReadyPro
 end
 --]]
 
-if startGameWithTutorial then
-	StartDescriptionGame()
+if tutorial.startGameWithTutorial then
+	tutorial.Start()
 end
 
 alwaysOnTopWindow[ 1 ] = mainMenuWindow
