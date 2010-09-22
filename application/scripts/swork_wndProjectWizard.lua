@@ -1,4 +1,5 @@
 IncludeScript( "swork_wndCreateGameProject" )
+
 local windowWizardProject = nil
 
 function sworkCloseWindowWizardProject( ptr )

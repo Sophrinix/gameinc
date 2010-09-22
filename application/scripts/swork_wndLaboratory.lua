@@ -1,6 +1,5 @@
 local company = nil
 
-local windowLabor = nil
 local techMap = CLuaTechMap( nil )
 local selectedTech = CLuaTech( nil )
 local btnOk = CLuaButton( nil )
@@ -134,4 +133,12 @@ function sworkTechMapWindowCloseConfirmationWindow( ptr )
 	btnOk:Remove()
 	btnCancel:Remove()
 	browser:Hide()
+end
+
+function sworkCloseLaboratoryWindow( ptr )
+	if windowLabor ~= nil then
+		cityWindow:SetVisible( true )
+		windowLabor:Remove()
+	end	
+	windowLabor = nil
 end

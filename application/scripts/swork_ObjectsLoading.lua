@@ -1,47 +1,33 @@
 cityWindow = nil
-laborWindow = nil
+windowLabor = nil
 receptionWindow = nil
 directorCabinetWindow = nil
-laborWindow	= nil
 shopWindow = nil
 
-function ApplicationLoadLaborScene()
-	guienv:FadeAction( 3000, false )
-	
-	if laborWindow then
-		laborWindow:SetVisible( true )
+function ApplicationLoadLaborScene()	
+	if windowLabor then
+		windowLabor:SetVisible( true )
 	else
-		laborWindow = guienv:AddWindow( "media/laboratory_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		laborWindow:SetDraggable( false )
-		local closeBtn = laborWindow:GetCloseButton()
+		windowLabor = guienv:AddWindow( "media/laboratory_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		windowLabor:SetDraggable( false )
+		windowLabor:SetVisible( false )
+		local closeBtn = windowLabor:GetCloseButton()
 		closeBtn:SetVisible( false )
+		
+		closeBtn = button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
+								   "button_down", windowLabor:Self(), -1, "",
+								   "sworkCloseLaboratoryWindow" )
 	end	
 	
 	UpdateTutorialState( STEP_OVERVIEW_LABORATORY )
 	
-	local btnVideo = guienv:AddButton( 545, 330, 545 + 380, 330 + 299, laborWindow:Self(), -1, "")
-	btnVideo:SetImage( 0, 0, 380, 299, "media/buttons/techMapVideo_normal.png" )
-	btnVideo:SetHoveredImage( 0, 0, 380, 299, "media/buttons/techMapVideo_select.png" )	
-	btnVideo:SetPressedImage( 0, 0, 380, 299, "media/buttons/techMapVideo_select.png" )	
-	btnVideo:SetAction( "sworkCreateVideoTechMapWindow" )
-	 
-	local btnSound = guienv:AddButton( 372, 213, 372 + 168, 213 + 144, laborWindow:Self(), -1, "")
-	btnSound:SetImage( 0, 0, 168, 144, "media/buttons/techMapSound_normal.png" )
-	btnSound:SetHoveredImage( 0, 0, 168, 144, "media/buttons/techMapSound_select.png" )	
-	btnSound:SetPressedImage( 0, 0, 168, 144, "media/buttons/techMapSound_select.png" )	
-	btnSound:SetAction( "sworkCreateSoundTechMapWindow" )
-	
-	local btnAdvtech = guienv:AddButton( 749, 222, 749 + 264, 222 + 147, laborWindow:Self(), -1, "")
-	btnAdvtech:SetImage( 0, 0, 264, 147, "media/buttons/techMapAdvTech_normal.png" )
-	btnAdvtech:SetHoveredImage( 0, 0, 264, 147, "media/buttons/techMapAdvTech_select.png" )	
-	btnAdvtech:SetPressedImage( 0, 0, 264, 147, "media/buttons/techMapAdvTech_select.png" )	
-	btnAdvtech:SetAction( "sworkCreateAdvancedMapWindow" )
-	
-	local btnGenre = guienv:AddButton( 73, 202, 73 + 229, 202 + 182, laborWindow:Self(), -1, "")
-	btnGenre:SetImage( 0, 0, 229, 182, "media/buttons/techMapGenre_normal.png" )
-	btnGenre:SetHoveredImage( 0, 0, 229, 182, "media/buttons/techMapGenre_select.png" )	
-	btnGenre:SetPressedImage( 0, 0, 229, 182, "media/buttons/techMapGenre_select.png" )	
-	btnGenre:SetAction( "sworkCreateGenreTechMapWindow" )
+	button.EqualeTexture( 545, 330, "techMapVideo", windowLabor:Self(), -1, "", "sworkCreateVideoTechMapWindow" )
+	button.EqualeTexture( 372, 213, "techMapSound", windowLabor:Self(), -1, "", "sworkCreateSoundTechMapWindow" )
+	button.EqualeTexture( 749, 222, "techMapAdvTech", windowLabor:Self(), -1, "", "sworkCreateAdvancedMapWindow" )
+	button.EqualeTexture( 73, 202,	"techMapGenre", windowLabor:Self(), -1, "", "sworkCreateGenreTechMapWindow" )
+
+	guienv:FadeAction( 1000, false, false )			
+	guienv:AddTimer( 1005, "windowLabor:SetVisible( true ); guienv:FadeAction( 1000, true, true )" )
 end
 
 function ApplicationLoadCityScene()
