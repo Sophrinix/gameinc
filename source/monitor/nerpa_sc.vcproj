@@ -1489,10 +1489,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_Tutorial.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_UpdateFunctions.lua"
 				>
 			</File>
@@ -1558,6 +1554,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\timer.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\tutorial.lua"
 				>
 			</File>
 		</Filter>

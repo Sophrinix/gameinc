@@ -56,12 +56,6 @@ int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функ
 
 	IF_OBJECT_NOT_NULL_THEN	dynamic_cast< gui::CNrpButton* >( object_ )->setOnClickAction( funcName );
 
-#ifdef _DEBUG
-	char text[ MAX_PATH ];
-	sprintf_s( text, MAX_PATH, "Object: %d  FuncName:%s\n", object_, funcName );
-	OutputDebugString( text );
-#endif
-
 	return 1;
 }
 
