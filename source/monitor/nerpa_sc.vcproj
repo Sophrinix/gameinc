@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="GameDev"
 	ProjectGUID="{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"
 	RootNamespace="nerpa_sc"
@@ -679,6 +679,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\NrpTimer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpTimer.h"
+						>
+					</File>
+					<File
 						RelativePath=".\NrpUserInfoWindow.cpp"
 						>
 					</File>
@@ -756,6 +764,14 @@
 					</File>
 					<File
 						RelativePath=".\NrpGuiTextTimeAnimator.h"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpGuiTimeDestructor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpGuiTimeDestructor.h"
 						>
 					</File>
 				</Filter>
@@ -1393,6 +1409,10 @@
 			Name="Scripts"
 			>
 			<File
+				RelativePath="..\..\application\scripts\button.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\create_terrain.lua"
 				>
 			</File>
@@ -1534,6 +1554,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\swork_wndUniverStuffUp.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\timer.lua"
 				>
 			</File>
 		</Filter>

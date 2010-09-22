@@ -4,11 +4,13 @@
 
 #include "LuaGuiEnvironment.h"
 #include "nrpGUIEnvironment.h"
+#include "NrpGuiTimeDestructor.h"
 #include "NrpMiniMap.h"
 #include "StrConversation.h"
 #include "nrpGlobalMap.h"
 #include "nrpChartCtrl.h"
 #include "nrpGuiLinkBox.h"
+#include "NrpTimer.h"
 #include "LuaWindow.h"
 #include "LuaEdit.h"
 #include "LuaButton.h"
@@ -69,6 +71,7 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, FadeAction ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddDestructor ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, BringToFront ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTimer ),
 	{0,0}
 };
 
@@ -759,10 +762,11 @@ int CLuaGuiEnvironment::AddPictureFlow( lua_State* L )
 int CLuaGuiEnvironment::FadeAction( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaGuiEnvironment:FadeOut need int, bool parameter" );
+	luaL_argcheck(L, argc == 4, 4, "Function CLuaGuiEnvironment:FadeOut need int, bool parameter" );
 
 	int time = lua_tointeger( L, 2 );
 	bool inaction = lua_toboolean( L, 3 ) > 0;
+	bool needDestruct = lua_toboolean( L, 4 ) > 0;
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
@@ -770,11 +774,23 @@ int CLuaGuiEnvironment::FadeAction( lua_State* L )
 		if( fader == NULL )
 			fader = object_->addInOutFader(0, object_->getRootGUIElement(), 2002002 );
 
-		//object_->getRootGUIElement()->sendToBack( fader );
-		if( inaction )
-			fader->fadeIn( time );
+		if( time == 0 )
+		{
+				object_->addToDeletionQueue( fader );
+				return 1;
+		}
 		else
-			fader->fadeOut( time );
+		{
+			if( inaction )
+				fader->fadeIn( time );
+			else
+				fader->fadeOut( time );
+
+			if( needDestruct )
+			{
+				new gui::CNrpGuiTimeDestructor( object_, fader, time - 50 );	
+			}
+		}
 	}
 
 	return 1;
@@ -812,6 +828,25 @@ int CLuaGuiEnvironment::BringToFront( lua_State* L )
 			parent->bringToFront( elm );
 	}
 
+	return 1;
+}
+
+int CLuaGuiEnvironment::AddTimer( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaGuiEnvironment:FadeOut need int, bool parameter" );
+
+	int time = lua_tointeger( L, 2 );
+	const char* action = lua_tostring( L, 3 );
+	assert( action != NULL );
+
+	gui::CNrpTimer* timer = NULL;
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		timer = new gui::CNrpTimer( object_, object_->getRootGUIElement(), time, action );
+	}
+
+	lua_pushlightuserdata( L, timer );
 	return 1;
 }
 
