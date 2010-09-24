@@ -608,7 +608,6 @@ function sworkGameProjectWizzardSetPlatform( ptr )
 end
 
 function sworkWindowCreateGameProjectClose( ptr )
-	LogScript("Удаление временного объекта")
 	project:Remove()
 	windowGameProjectCreating:Remove()
 	windowGameProjectCreating = nil
@@ -624,17 +623,13 @@ function sworkCreateGameProject( ptr )
 		
 		windowGameProjectCreating = guienv:AddWindow( "media/monitor.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		windowGameProjectCreating:SetDraggable( false )
+		windowGameProjectCreating:GetCloseButton():SetVisible( false )
 		
-		local btn = windowGameProjectCreating:GetCloseButton()
-		btn:SetVisible( false )
 		
-		btn = guienv:AddButton( scrWidth - 80, scrHeight - 60, 
-			  				    scrWidth - 20, scrHeight - 0, 
-								windowGameProjectCreating:Self(), -1, "" )
-		btn:SetImage( 0, 0, 128, 128, "media/buttons/button_poweroff.png" )
-		btn:SetHoveredImage( 0, 0, 128, 128, "media/buttons/button_poweroff.png" )	
-		btn:SetPressedImage( 0, 0, 128, 128, "media/buttons/button_poweroff.png" )	
-		btn:SetAction( "sworkWindowCreateGameProjectClose" )
+		--adding closeButton
+		button.Stretch( scrWidth - 80, scrHeight - 60, scrWidth - 20, scrHeight, 
+		 			    "button_poweroff", windowGameProjectCreating:Self(), -1, "",
+						"sworkWindowCreateGameProjectClose" )
 	end 
 	
 	local prg = guienv:AddProgressBar( windowGameProjectCreating:Self(), 10, 20, 10 + 140, 20 + 20, ID_PROJECTQUALITY )

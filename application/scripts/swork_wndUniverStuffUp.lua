@@ -19,13 +19,13 @@ function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 	button:SetVisible( false )
 	windowg:SetText( user:GetName() )
 	windowg:SetDraggable( false )
-	
-	image = guienv:AddImage( 10, 10, xOffset, height - 10, windowg:Self(), -1, "" )
+
+	local xOffset = width / 3	
+	image = guienv:AddImage( 30, 30, 30 + 107, 30 + 141, windowg:Self(), -1, "" )
 	image:SetImage( user:GetTexture() )
 	image:SetScaleImage( true )
 	image:SetUseAlphaChannel( true )	
 
-	local xOffset = width / 3
 	local prg = guienv:AddProgressBar( windowg:Self(), xOffset, 30, width - 5, 30 + 15, -1 )
 	prg:SetPosition( user:GetParam( "knowledgeLevel" ) )						   
 	prg:SetImage( "media/stars01.tga" )

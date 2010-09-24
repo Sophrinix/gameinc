@@ -119,12 +119,7 @@ function ApplicationLoadOfficeScene()
 	tutorial.Update( tutorial.STEP_OVERVIEW_RECEPTION )
 	--directors room
 	button.EqualeTexture( 448, 242, "director", receptionWindow:Self(), -1, "", "ApplicationLoadDirectorCabinetScene" )
-		
-	--[[local newProj = sceneManager:GetSceneNodeByName( "createNewProjectNode" )
-	local selector = sceneManager:CreateTriangleSelectorFromBoundingBox( newProj:Self() )
-	newProj:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( newProj:Self(), "createNewProject" )
-	
+	--[[
 	local showEmployers = sceneManager:GetSceneNodeByName( "employerManageNode" )
 	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showEmployers:Self() )
 	showEmployers:SetTriangleSelector( selector )
@@ -150,8 +145,6 @@ function ApplicationLoadOfficeScene()
 end
 
 function ApplicationLoadPlantScene()
-	cityWindow:SetVisible( false )
-	
 	if plantWindow then
 		plantWindow:SetVisible( true )
 	else
@@ -174,8 +167,6 @@ function ApplicationLoadPlantScene()
 end
 
 function ApplicationLoadUniverScene()
-	cityWindow:SetVisible( false )
-	
 	if univerWindow then
 		univerWindow:SetVisible( true )
 	else
@@ -215,4 +206,8 @@ function ApplicationLoadDirectorCabinetScene( ptr )
 	tutorial.Update( tutorial.STEP_OVERVIEW_DIRECTORS_ROOM )
 	
 	button.EqualeTexture( 0, 227, "newProject", directorCabinetWindow:Self(), -1, "", "sworkCreateWindowWizardProject")
+	--employers manager
+	button.EqualeTexture( 805, 238, "employersManager", directorCabinetWindow:Self(), -1, "", "sworkCreateWindowEmployersManage" )
+	--project manager
+	button.EqualeTexture( 612, 251, "projectManager", directorCabinetWindow:Self(), -1, "", "./projectManager.Show()" )
 end

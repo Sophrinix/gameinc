@@ -76,7 +76,7 @@ function sworkCreateWindowEmployersManage( ptr )
 	local windowg = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYERS_MANAGE_ID ) )
 	
 	if windowg:Empty() == 1 then
-		windowg = guienv:AddWindow( "", 0, 0, width, height, WINDOW_EMPLOYERS_MANAGE_ID, guienv:GetRootGUIElement() )
+		windowg = guienv:AddWindow( "media/", 0, 0, width, height, WINDOW_EMPLOYERS_MANAGE_ID, guienv:GetRootGUIElement() )
 	else
 		local elm = CLuaElement( windowg:Self() )
 		elm:RemoveChilds()

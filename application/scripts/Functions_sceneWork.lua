@@ -5,7 +5,7 @@ IncludeScript("swork_wndChartsManage")
 IncludeScript("swork_TargetCameraFunctions") 
 IncludeScript("swork_wndLoanAction")
 IncludeScript("swork_wndUniverStuffUp")
-IncludeScript("swork_wndProjectManager")
+IncludeScript("projectManager")	--as module
 IncludeScript("swork_wndGameBoxCreate")
 IncludeScript("swork_wndDiskPlant")
 IncludeScript("swork_wndReklama")
@@ -52,16 +52,7 @@ end
 function sworkSelectObjectOnOfficeScene( ptr )
 	local node = CLuaSceneNode( ptr )
 	local nodeName = node:GetName()
-
-	if nodeName == "employerManageNode" then
-		sworkCreateWindowEmployersManage()
-		return 0	
-	end
 	
-	if nodeName == "projectManagerNode" then
-		sworkCreateWindowProjectManager()
-		return 0
-	end
 	
 	if nodeName == "inventionManagerNode" then
 		sworkCreateWindowCompanyInventionManager()
