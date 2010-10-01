@@ -30,6 +30,7 @@ void INrpDevelopProject::InitializeOptions_()
 	CreateValue<bool>( PROJECTREADY, false );
 	CreateValue<int>( TECHTYPE, 0 );
 	CreateValue<std::string>( TEXTURENORMAL, "" );
+	CreateValue<float>( FAMOUS, 0.f );
 }
 
 void INrpDevelopProject::SetDeveloper( IUser* user )

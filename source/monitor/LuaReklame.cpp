@@ -22,23 +22,14 @@ Luna< CLuaReklame >::RegType CLuaReklame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetPrice ),
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetDayCost ),
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetFamous ),
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetReklameObject ),
 	{0,0}
 };
 
 CLuaReklame::CLuaReklame(lua_State *L) : ILuaProject( L, CLASS_LUAREKLAME )							//конструктор
 {}
-
-int CLuaReklame::GetQuality( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaReklame::GetQuality not need parameter");
-
-	float result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<float>( QUALITY );
-
-	lua_pushnumber( L, result );
-	return 1;		
-}
 
 int CLuaReklame::Create( lua_State* L )
 {
@@ -72,76 +63,14 @@ int CLuaReklame::Remove( lua_State* L )
 	return 1;	
 }
 
-int CLuaReklame::GetLevel( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaReklame::GetLevel not need parameter");
-
-	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( LEVEL );
-
-	lua_pushinteger( L, result );
-	return 1;		
-}
-
-int CLuaReklame::GetNumberDay( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaReklame::GetNumberDay not need parameter");
-
-	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( NUMBERDAY );
-
-	lua_pushinteger( L, result );
-	return 1;		
-}
-
-int CLuaReklame::GetTypeName( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaReklame::GetNumberDay not need parameter");
-
-	std::string result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<std::string>( TECHTYPE );
-
-	lua_pushstring( L, result.c_str() );
-	return 1;		
-}
-
-int CLuaReklame::SetNumberDay( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaReklame:SetNumberDay need int parameter" );
-
-	int valuel = lua_tointeger( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( NUMBERDAY, valuel );
-
-	return 1;
-}
-
-int CLuaReklame::GetTexture( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaReklame::GetTexture not need parameter");
-
-	std::string result = "";
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<std::string>( TEXTURENORMAL );
-
-	lua_pushstring( L, result.c_str() );
-	return 1;	
-}
-
-int CLuaReklame::GetPrice( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaReklame::GetPrice not need parameter");
-
-	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( BALANCE );
-
-	lua_pushinteger( L, result );
-	return 1;		
-}
-
+int CLuaReklame::GetQuality( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetQuality", QUALITY, 0 ) ); return 1; }
+int CLuaReklame::GetLevel( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) ); return 1; }
+int CLuaReklame::GetNumberDay( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetNumberDay", NUMBERDAY, 0 ) ); return 1; }
+int CLuaReklame::GetTypeName( lua_State* L ) { lua_pushstring( L, GetParam_<std::string>( L, "GetTypeName", TECHTYPE, "" ).c_str() ); return 1; }
+int CLuaReklame::SetNumberDay( lua_State* L ) {	SetParam_<int, lua_Integer>( L, "SetNumberDay", NUMBERDAY, lua_tointeger );	return 1; }
+int CLuaReklame::GetTexture( lua_State* L ) { lua_pushstring( L, GetParam_<std::string>( L, "GetTexture", TEXTURENORMAL, "" ).c_str() ); return 1; }
+int CLuaReklame::GetPrice( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetPrice", BALANCE, 0 ) ); return 1; }
+int CLuaReklame::GetDayCost( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetDayCost", DAYCOST, 0 ) );return 1; }
+int CLuaReklame::GetFamous( lua_State* L ) { lua_pushinteger( L, static_cast< int >( GetParam_<float>( L, "GetDayCost", MAXQUALITY, 0 ) * 100 ) ); return 1; }
+int CLuaReklame::SetReklameObject( lua_State* L ) {	SetParam_( L, "SetReklameObject", GAMENAME ); return 1; }
 }//namespace nrp

@@ -55,7 +55,7 @@ OPTION_NAME PARENTCOMPANY( "parentCompany" ); /*! компания */
 OPTION_NAME RENTPRICE( "rentPrice" );
 OPTION_NAME NUMBERDAY( "numberDay" );
 OPTION_NAME LEVEL( "level" );
-OPTION_NAME PRICEINDAY( "priceInDay" ); 
+OPTION_NAME DAYCOST( "priceInDay" ); 
 OPTION_NAME GAMENAME( "gameName" );
 OPTION_NAME FINISHED( "finished" );
 OPTION_NAME FAMOUS( "famous" );

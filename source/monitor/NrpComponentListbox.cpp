@@ -4,6 +4,7 @@
 #include "NrpTechnology.h"
 #include "IUser.h"
 #include "NrpDevelopGame.h"
+#include "NrpTranslate.h"
 #include <string>
 
 using namespace nrp;
@@ -608,13 +609,12 @@ void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti re
 									    core::recti frameRect, video::SColor color, 
 									    core::recti& clipRect )
 {
-	wchar_t tmpstr[ 128 ];
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	rectangle.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
-	std::wstring name = StrToWide( devGame->GetValue<std::string>( NAME ) );
+	std::wstring name = StrToWide( translate::GetTranslate( "#STR_INDEVELOP" )  + devGame->GetValue<std::string>( NAME ) );
 
 	core::recti progressRect = frameRect;
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
@@ -640,7 +640,7 @@ void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti re
 	driver->draw2DRectangle( 0xff00ff00, famous, &clipRect );
 	driver->draw2DRectangle( 0xff0000ff, finished, &clipRect );
 
-	Font->draw( name.c_str(), rectangle + core::position2di( rectangle.getHeight() + 6, 0 ), color, false, true, &clipRect ); 
+	Font->draw( name.c_str(), frameRect, color, true, true, &clipRect ); 
 }
 
 void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle, 

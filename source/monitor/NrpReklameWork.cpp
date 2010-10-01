@@ -21,7 +21,7 @@ void CNrpReklameWork::InitializeOptions_()
 	CreateValue<int>( LEVEL, 0 );
 	CreateValue<std::string>( NAME, "" );
 	CreateValue<std::string>( TECHTYPE, "" );
-	CreateValue<int>( PRICEINDAY, 0 );
+	CreateValue<int>( DAYCOST, 0 );
 	CreateValue<float>( QUALITY, 0 );
 	CreateValue<float>( MAXQUALITY, 0 );
 	CreateValue<std::string>( GAMENAME, "" );
@@ -36,7 +36,7 @@ CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLA
 	SetValue<int>( NUMBERDAY, p.GetValue<int>( NUMBERDAY ) );
 	SetValue<int>( LEVEL, p.GetValue<int>( LEVEL ) );
 	SetValue<std::string>( NAME, p.GetValue<std::string>( NAME ) );
-	SetValue<int>( PRICEINDAY, p.GetValue<int>( PRICEINDAY ) );
+	SetValue<int>( DAYCOST, p.GetValue<int>( DAYCOST ) );
 	SetValue<float>( QUALITY, p.GetValue<float>( QUALITY ) );
 	SetValue<float>( MAXQUALITY, p.GetValue<float>( MAXQUALITY ) );
 	SetValue<std::string>( GAMENAME, p.GetValue<std::string>( GAMENAME ) );
@@ -72,12 +72,12 @@ void CNrpReklameWork::BeginNewDay()
 			//здесь надо учесть факторы конторы, которые могут влиять на
 			//повышение или понижение этого параметра
 			game->AddValue<float>( FAMOUS, GetValue<float>( QUALITY ) );
-			cmp->AddValue<int>( BALANCE, -GetValue<int>( PRICEINDAY ) );
+			cmp->AddValue<int>( BALANCE, -GetValue<int>( DAYCOST ) );
 		}
 	}
 
 	AddValue<int>( NUMBERDAY, -1 );
-	AddValue<int>( BALANCE, GetValue<int>( PRICEINDAY ) );
+	AddValue<int>( BALANCE, GetValue<int>( DAYCOST ) );
 	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) > 0 );
 }
 }//end namespace nrp

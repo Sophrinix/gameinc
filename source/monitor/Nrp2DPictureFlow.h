@@ -72,19 +72,17 @@ public:
 	void Prev( int offset );
 
 	void clear();
-	s32 getSelected() const { return activeIndex_; }
+	s32 getSelected() const { return _activeIndex; }
 	void* getObject( int index );
 	void setSelected(const wchar_t *item);
 	void setSelected(s32 index);
-	void setDrawBackground(bool draw) { drawBackground_ = draw; }
-	void setPictureRect( core::recti rectangle ) { pictureRect_ = rectangle; }
+	void setDrawBackground(bool draw) { _drawBackground = draw; }
+	void setPictureRect( core::recti rectangle ) { _pictureRect = rectangle; }
 
-	u32 getItemCount() const { return images_.size(); }
+	u32 getItemCount() const { return _images.size(); }
 	const wchar_t* getListItem(u32 id) const;
 private:
 
-	void UpdateImages_();
-	void UpdatePositions_();
 	void clearItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType) {}
 	void clearItemOverrideColor(u32 index) {}
 	bool hasItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType) const { return false; }
@@ -101,14 +99,19 @@ private:
 	void setItemHeight( s32 height ) {};
 	void swapItems(u32 index1, u32 index2) {}
 	s32 insertItem(u32 index, const wchar_t* text, s32 icon) { return 0; }
-	video::ITexture* GetDownTexture_( video::ITexture* pTxr );
-	void DrawPairImage_( CNrpImageDescription* pDesk );
-	s32 activeIndex_;
-	s32 lastTimeKey_;
-	core::array< CNrpImageDescription* > images_;
 
-	bool drawBackground_;
-	core::recti pictureRect_;
+	video::ITexture* _GetDownTexture( video::ITexture* pTxr );
+	void _DrawPairImage( CNrpImageDescription* pDesk );
+	void _SendEventSelected( const SEvent& event );
+	void _UpdateImages();
+	void _UpdatePositions();
+
+	s32 _activeIndex;
+	s32 _lastTimeKey;
+	core::array< CNrpImageDescription* > _images;
+
+	bool _drawBackground;
+	core::recti _pictureRect;
 };
 
 }//end namespace gui

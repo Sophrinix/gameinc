@@ -15,6 +15,7 @@ Luna< CLuaDevelopProject >::RegType CLuaDevelopProject::methods[] =			//реализуе
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModuleNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModule ),
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetFamous ),
 	{0,0}
 };
 
@@ -40,5 +41,11 @@ int CLuaDevelopProject::GetModule( lua_State* L )
 	lua_pushlightuserdata( L, prj );
 	Luna< CLuaDevelopModule >::constructor( L );
 	return 1;	
+}
+
+int CLuaDevelopProject::GetFamous( lua_State* L )
+{
+	lua_pushinteger( L, static_cast< int >( GetParam_<float>( L, "GetFamous", FAMOUS, 0 ) * 100 ) );
+	return 1;
 }
 }//namespace nrp

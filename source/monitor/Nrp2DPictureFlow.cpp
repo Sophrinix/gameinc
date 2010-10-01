@@ -42,22 +42,22 @@ CNrp2DPictureFlow::CNrp2DPictureFlow( IGUIEnvironment* env,
 								  s32 id )
 : IGUIListBox( env, parent, id, rectangle )
 {
-	activeIndex_ = 0;
-	pictureRect_ = pictureRect;
-	drawBackground_ = true;
+	_activeIndex = 0;
+	_pictureRect = pictureRect;
+	_drawBackground = true;
 }
 
 u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text )
 {
 	CNrpImageDescription* descr = new CNrpImageDescription();
-	images_.push_back( descr );
+	_images.push_back( descr );
 	descr->SetTexture( Environment->getVideoDriver(), texture ); 
 	
 	descr->rectangle = core::recti( 0, 0, 0, 0 );
 
-	UpdateImages_();
+	_UpdateImages();
 
-	return images_.size() - 1;
+	return _images.size() - 1;
 }
 
 irr::u32 CNrp2DPictureFlow::addItem( const wchar_t* text )
@@ -68,45 +68,45 @@ irr::u32 CNrp2DPictureFlow::addItem( const wchar_t* text )
 irr::u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text, void* object )
 {
 	u32 resultt = addItem( texture, text );
-	images_[ resultt ]->object = object;
+	_images[ resultt ]->object = object;
 	return resultt;
 }
 
-void CNrp2DPictureFlow::UpdateImages_()
+void CNrp2DPictureFlow::_UpdateImages()
 {
-	core::recti tmpRect( RelativeRect.getCenter().X - pictureRect_.getWidth()/2, 
-						 RelativeRect.getCenter().Y - pictureRect_.getHeight()/2,
-						 RelativeRect.getCenter().X + pictureRect_.getWidth()/2, 
-						 RelativeRect.getCenter().Y + pictureRect_.getHeight()/2 );
+	core::recti tmpRect( RelativeRect.getCenter().X - _pictureRect.getWidth()/2, 
+						 RelativeRect.getCenter().Y - _pictureRect.getHeight()/2,
+						 RelativeRect.getCenter().X + _pictureRect.getWidth()/2, 
+						 RelativeRect.getCenter().Y + _pictureRect.getHeight()/2 );
 
-	if( activeIndex_ < (int)images_.size() )
-		images_[ activeIndex_ ]->rectangle = tmpRect;
+	if( _activeIndex < (int)_images.size() )
+		_images[ _activeIndex ]->rectangle = tmpRect;
 
 	s32 offsetx = 0;
 	core::recti lRect = tmpRect;
-	if( activeIndex_ - 1 >= 0 )
-		for( int k=max( 0, activeIndex_-1); k >= 0; k-- )
+	if( _activeIndex - 1 >= 0 )
+		for( int k=max( 0, _activeIndex-1); k >= 0; k-- )
 		{
-			offsetx += lRect.getWidth() * (0.7f - (activeIndex_-k)*0.1f);
+			offsetx += lRect.getWidth() * (0.7f - (_activeIndex-k)*0.1f);
 			core::dimension2di sides( 0.7f * lRect.getWidth(), 0.7f * lRect.getHeight() ); 
 			lRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
 				                 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
-			images_[ k ]->rectangle = lRect - core::position2di( offsetx, 0 );
+			_images[ k ]->rectangle = lRect - core::position2di( offsetx, 0 );
 		}
 
 	offsetx = 0;
 	core::recti rRect = tmpRect;
-	for( int k=min(activeIndex_+1, images_.size()); k < images_.size(); k++ )
+	for( int k=min(_activeIndex+1, _images.size()); k < _images.size(); k++ )
 	{
-		offsetx += rRect.getWidth() * (0.7f - (k-activeIndex_)*0.1f);
+		offsetx += rRect.getWidth() * (0.7f - (k-_activeIndex)*0.1f);
 		core::dimension2di sides( 0.7f * rRect.getWidth(), 0.7f * rRect.getHeight() ); 
 		rRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
 							 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
-		images_[ k ]->rectangle = rRect + core::position2di( offsetx, 0 );
+		_images[ k ]->rectangle = rRect + core::position2di( offsetx, 0 );
 	}
 }
 
-void CNrp2DPictureFlow::DrawPairImage_( CNrpImageDescription* pDesk )
+void CNrp2DPictureFlow::_DrawPairImage( CNrpImageDescription* pDesk )
 {
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 	core::recti rectangle( pDesk->currentRect.UpperLeftCorner.X, pDesk->currentRect.UpperLeftCorner.Y,
@@ -140,77 +140,87 @@ void CNrp2DPictureFlow::draw()
 	if( !IsVisible )
 		return;
 
-	UpdatePositions_();
+	_UpdatePositions();
 
-	if( drawBackground_ )
+	if( _drawBackground )
 		Environment->getVideoDriver()->draw2DRectangle( video::SColor( 0xff000000 ), AbsoluteRect, &AbsoluteClippingRect );
 
-	if( images_.size() > 0 )
+	if( _images.size() > 0 )
 	{
-		for( size_t pos=max( 0, activeIndex_-4 ); pos < activeIndex_; pos++ )
-			DrawPairImage_( images_[ pos ] );
+		for( size_t pos=max( 0, _activeIndex-4 ); pos < _activeIndex; pos++ )
+			_DrawPairImage( _images[ pos ] );
 
-		for( size_t pos=min( activeIndex_ + 4, images_.size()-1); pos > activeIndex_; pos-- )
-			 DrawPairImage_( images_[ pos ] );
+		for( size_t pos=min( _activeIndex + 4, _images.size()-1); pos > _activeIndex; pos-- )
+			 _DrawPairImage( _images[ pos ] );
 
-		if( activeIndex_ < static_cast< int >( images_.size() ) )
-			DrawPairImage_( images_[ activeIndex_ ] );
+		if( _activeIndex < static_cast< int >( _images.size() ) )
+			_DrawPairImage( _images[ _activeIndex ] );
 	}
 	IGUIListBox::draw();
 }
 
-void CNrp2DPictureFlow::UpdatePositions_()
+void CNrp2DPictureFlow::_UpdatePositions()
 {
-	for( size_t k=0; k < images_.size(); k++ )
+	for( size_t k=0; k < _images.size(); k++ )
 	{
-		if( images_[ k ]->rectangle.LowerRightCorner.X != images_[ k ]->currentRect.LowerRightCorner.X )
+		if( _images[ k ]->rectangle.LowerRightCorner.X != _images[ k ]->currentRect.LowerRightCorner.X )
 		{
-			f32 offset = (images_[ k ]->rectangle.LowerRightCorner.X - images_[ k ]->currentRect.LowerRightCorner.X)
+			f32 offset = (_images[ k ]->rectangle.LowerRightCorner.X - _images[ k ]->currentRect.LowerRightCorner.X)
 														/(float)Environment->getVideoDriver()->getFPS();
 
-			images_[ k ]->currentRect.LowerRightCorner.X += offset;
+			_images[ k ]->currentRect.LowerRightCorner.X += offset;
 		}
 
-		if( images_[ k ]->rectangle.LowerRightCorner.Y != images_[ k ]->currentRect.LowerRightCorner.Y )
+		if( _images[ k ]->rectangle.LowerRightCorner.Y != _images[ k ]->currentRect.LowerRightCorner.Y )
 		{
-			f32 offset = (images_[ k ]->rectangle.LowerRightCorner.Y - images_[ k ]->currentRect.LowerRightCorner.Y)
+			f32 offset = (_images[ k ]->rectangle.LowerRightCorner.Y - _images[ k ]->currentRect.LowerRightCorner.Y)
 				/(float)Environment->getVideoDriver()->getFPS();
 
-			images_[ k ]->currentRect.LowerRightCorner.Y += offset;
+			_images[ k ]->currentRect.LowerRightCorner.Y += offset;
 		}
 
-		if( images_[ k ]->rectangle.UpperLeftCorner.X != images_[ k ]->currentRect.UpperLeftCorner.X )
+		if( _images[ k ]->rectangle.UpperLeftCorner.X != _images[ k ]->currentRect.UpperLeftCorner.X )
 		{
-			f32 offset = (images_[ k ]->rectangle.UpperLeftCorner.X - images_[ k ]->currentRect.UpperLeftCorner.X)
+			f32 offset = (_images[ k ]->rectangle.UpperLeftCorner.X - _images[ k ]->currentRect.UpperLeftCorner.X)
 				/(float)Environment->getVideoDriver()->getFPS();
 
-			images_[ k ]->currentRect.UpperLeftCorner.X += offset;
+			_images[ k ]->currentRect.UpperLeftCorner.X += offset;
 		}
 
-		if( images_[ k ]->rectangle.UpperLeftCorner.Y != images_[ k ]->currentRect.UpperLeftCorner.Y )
+		if( _images[ k ]->rectangle.UpperLeftCorner.Y != _images[ k ]->currentRect.UpperLeftCorner.Y )
 		{
-			f32 offset = (images_[ k ]->rectangle.UpperLeftCorner.Y - images_[ k ]->currentRect.UpperLeftCorner.Y)
+			f32 offset = (_images[ k ]->rectangle.UpperLeftCorner.Y - _images[ k ]->currentRect.UpperLeftCorner.Y)
 				/(float)Environment->getVideoDriver()->getFPS();
 
-			images_[ k ]->currentRect.UpperLeftCorner.Y += offset;
+			_images[ k ]->currentRect.UpperLeftCorner.Y += offset;
 		}
 	}
 }
 
 void CNrp2DPictureFlow::Prev( int offset )
 {
-	activeIndex_ -= offset;
-	activeIndex_ = max( activeIndex_, 0 );
+	_activeIndex -= offset;
+	_activeIndex = max( _activeIndex, 0 );
 
-	UpdateImages_();
+	_UpdateImages();
 }
 
 void CNrp2DPictureFlow::Next( int offset )
 {
-	activeIndex_ += offset;
-	activeIndex_ = min( activeIndex_, images_.size()-1 );
+	_activeIndex += offset;
+	_activeIndex = min( _activeIndex, _images.size()-1 );
 
-	UpdateImages_();
+	_UpdateImages();
+}
+
+void CNrp2DPictureFlow::_SendEventSelected( const SEvent& event )
+{
+	SEvent e;
+	e.EventType = EET_GUI_EVENT;
+	e.GUIEvent.Caller = this;
+	e.GUIEvent.Element = 0;
+	e.GUIEvent.EventType = EGET_LISTBOX_CHANGED;
+	Parent->OnEvent(e);
 }
 
 bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
@@ -220,17 +230,21 @@ bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
 	{
 	case EET_KEY_INPUT_EVENT:
 		//uncheck for double event of keyInput
-		if (event.KeyInput.PressedDown && event.KeyInput.Key == KEY_RIGHT && (curTime - lastTimeKey_ > 20))
+		if (event.KeyInput.PressedDown && event.KeyInput.Key == KEY_RIGHT && (curTime - _lastTimeKey > 20))
 		{
 			Next( +1 );
-			lastTimeKey_ = GetTickCount();
+			_lastTimeKey = GetTickCount();
+
+			_SendEventSelected( event );
 			return true;
 		}
 
-		if (event.KeyInput.PressedDown && event.KeyInput.Key == KEY_LEFT && (curTime - lastTimeKey_ > 20))
+		if (event.KeyInput.PressedDown && event.KeyInput.Key == KEY_LEFT && (curTime - _lastTimeKey > 20))
 		{
 			Prev( 1 );
-			lastTimeKey_ = GetTickCount();
+			_lastTimeKey = GetTickCount();
+
+			_SendEventSelected( event );
 			return true;
 		}
 	break;
@@ -243,11 +257,15 @@ bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
 			{
 				int offset = (event.MouseInput.X-AbsoluteRect.getCenter().X / 2) / side - 1;
 				Next( offset );
+
+				_SendEventSelected( event );
 			}
 			else
 			{
 				int offset = (AbsoluteRect.getCenter().X / 2 - event.MouseInput.X) / side + 1;
 				Prev( offset );
+
+				_SendEventSelected( event );
 			}
 			return true;
 		}
@@ -259,13 +277,13 @@ bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
 
 CNrp2DPictureFlow::~CNrp2DPictureFlow()
 {
-	for( size_t pos=0; pos < images_.size(); pos++ )
-		delete images_[ pos ];
+	for( size_t pos=0; pos < _images.size(); pos++ )
+		delete _images[ pos ];
 }
 
 const wchar_t* CNrp2DPictureFlow::getListItem( u32 id ) const
 {
-	return images_[ id ]->name.c_str();
+	return _images[ id ]->name.c_str();
 }
 
 void CNrp2DPictureFlow::setSelected( const wchar_t *item )
@@ -275,31 +293,31 @@ void CNrp2DPictureFlow::setSelected( const wchar_t *item )
 
 void CNrp2DPictureFlow::setSelected( s32 index )
 {
-	if( index < (int)images_.size() && index >= 0 )
-		activeIndex_ = index;
+	if( index < (int)_images.size() && index >= 0 )
+		_activeIndex = index;
 }
 
 void CNrp2DPictureFlow::removeItem( u32 index )
 {
-	if( index < images_.size() )
+	if( index < _images.size() )
 	{
-		delete images_[ index ];
-		images_.erase( index );
+		delete _images[ index ];
+		_images.erase( index );
 	}
 }
 
 void CNrp2DPictureFlow::clear()
 {
-	for( u32 k=0; k < images_.size(); k++ )
-		delete images_[ k ];
+	for( u32 k=0; k < _images.size(); k++ )
+		delete _images[ k ];
 
-	images_.clear();
-	activeIndex_ = 0;
+	_images.clear();
+	_activeIndex = 0;
 }
 
 void* CNrp2DPictureFlow::getObject( int index )
 {
-	return index < images_.size() ? images_[ index ]->object : NULL;
+	return index < _images.size() ? _images[ index ]->object : NULL;
 }
 }//end namespace gui
 

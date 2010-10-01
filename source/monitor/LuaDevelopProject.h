@@ -20,6 +20,8 @@ public:
 	CLuaDevelopProject(lua_State *L);	
 	int GetModuleNumber( lua_State* L );
 	int GetModule( lua_State* L );
+	int GetFamous( lua_State* L );
+
 	static const char* StaticGetLuaName() { return CLASS_LUADEVPROJECT.c_str(); }
 };
 

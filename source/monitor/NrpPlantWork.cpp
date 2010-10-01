@@ -34,7 +34,7 @@ void CNrpPlantWork::InitializeOptions_()
 	CreateValue<std::string>( DISKMACHINENAME, "" );
 	CreateValue<int>( DISKINDAY, 0 );
 	CreateValue<int>( LEFTPRODUCEDISK, 0 );
-	CreateValue<int>( PRICEINDAY, 0 );
+	CreateValue<int>( DAYCOST, 0 );
 	CreateValue<bool>( FINISHED, false );
 	CreateValue<int>( RENTPRICE, 0 );
 }
@@ -55,7 +55,7 @@ CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPL
 	SetValue<std::string>( DISKMACHINENAME, p.GetValue<std::string>( DISKMACHINENAME ) );
 	SetValue<int>( DISKINDAY, p.GetValue<int>( DISKINDAY ) );
 	SetValue<int>( LEFTPRODUCEDISK, p.GetValue<int>( LEFTPRODUCEDISK ) );
-	SetValue<int>( PRICEINDAY, p.GetValue<int>( PRICEINDAY ) );
+	SetValue<int>( DAYCOST, p.GetValue<int>( DAYCOST ) );
 }
 
 void CNrpPlantWork::Load( std::string sectionName, std::string fileName )
@@ -96,7 +96,7 @@ void CNrpPlantWork::CalcParams_()
 		INrpConfig::SetValue<int>( FINALPRICE, price );
 		INrpConfig::SetValue<std::string>( DISKMACHINENAME, dm->GetValue<std::string>( NAME ) ); 
 		INrpConfig::SetValue<std::string>( GAMENAME, game->GetValue<std::string>( NAME ) );
-		INrpConfig::SetValue<int>( PRICEINDAY, priceInDay );
+		INrpConfig::SetValue<int>( DAYCOST, priceInDay );
 		INrpConfig::SetValue<int>( RENTPRICE, dm->GetValue<int>( RENTPRICE ) * nM );
 		INrpConfig::SetValue<std::string>( COMPANYNAME, game->GetValue<PNrpCompany>( PARENTCOMPANY )->GetValue<std::string>( NAME ) );
 	}
@@ -117,7 +117,7 @@ void CNrpPlantWork::BeginNewDay()
 	if( cmp == NULL )
 		return;
 
-	cmp->AddValue<int>( BALANCE, -GetValue<int>( PRICEINDAY ) );
+	cmp->AddValue<int>( BALANCE, -GetValue<int>( DAYCOST ) );
 	int k = GetValue<PNrpDiskMachine>( PRODUCETYPE )->GetValue<int>( DISKPERHOUR ) * 24;
 	box->AddValue<int>( BOXNUMBER, k );
 	OutputDebugString( ("Сделано " + IntToStr( k ) + " коробок с игрой " + game->GetValue<std::string>( NAME ) + "\n" ).c_str() );

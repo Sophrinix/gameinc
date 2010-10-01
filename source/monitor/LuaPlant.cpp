@@ -95,7 +95,7 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 		for( int k=0; k < object_->GetValue<int>( BASEREKLAMENUMBER ); k++ )
 		{
 			CNrpReklameWork* rW = object_->GetBaseReklame( k );
-			IniFile::Write( SECTION_PROPERTIES, rW->GetValue<std::string>( TECHTYPE ), rW->GetValue<int>( PRICEINDAY ), reklamePrice );
+			IniFile::Write( SECTION_PROPERTIES, rW->GetValue<std::string>( TECHTYPE ), rW->GetValue<int>( DAYCOST ), reklamePrice );
 		}
 	}
 
@@ -127,7 +127,7 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 
 			CNrpReklameWork* rW = object_->GetBaseReklame( name );
 			if( rW != NULL )
-				rW->SetValue<int>( PRICEINDAY,StrToInt( valuel.c_str() ) );
+				rW->SetValue<int>( DAYCOST,StrToInt( valuel.c_str() ) );
 
 			memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
 			readLine = buffer;
