@@ -3,6 +3,7 @@ windowLabor = nil
 receptionWindow = nil
 directorCabinetWindow = nil
 shopWindow = nil
+reklameWindow = nil
 
 function ApplicationLoadLaborScene()	
 	if windowLabor then
@@ -53,6 +54,27 @@ function ApplicationLoadCityScene()
 	button.EqualeTexture( 105, 42, "pizza", cityWindow:Self(), -1, "", "ApplicationLoadPizzaScene" )
 	--univer	
 	button.EqualeTexture( 0, 287, "univer", cityWindow:Self(), -1, "", "ApplicationLoadUniverScene" )
+	
+	--reklame
+	button.EqualeTexture( 0, 94, "reklame", cityWindow:Self(), -1, "", "ApplicationLoadReklameScene" )
+end
+
+function ApplicationLoadReklameScene()
+	if reklameWindow then
+		reklameWindow:SetVisible( true )
+	else
+		reklameWindow = guienv:AddWindow( "media/marketing_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		reklameWindow:SetDraggable( false )
+		reklameWindow:GetCloseButton():SetVisible( false )
+		
+		--adding closeButton
+		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
+		 			    "button_down", reklameWindow:Self(), -1, "",
+						"./reklameWindow:Remove(); reklameWindow = nil" )
+	end
+	
+	--get loan
+	button.EqualeTexture( 534, 255, "reklameCampanies", reklameWindow:Self(), -1, "", "./reklameManager.Show()" )
 end
 
 function ApplicationLoadBankScene()
@@ -96,7 +118,7 @@ function ApplicationLoadShopScene()
 	button.EqualeTexture( 703, 67, "toplistmonth", shopWindow:Self(), -1, "", "sworkCreateMonthTopListWindow" )
 
 	--топ-лист за все время
-	button.Equaletexture( 119, 94, "toplisttime", shopWindow:Self(), -1, "", "sworkCreateAllTimeTopListWindow")
+	button.EqualeTexture( 119, 94, "toplisttime", shopWindow:Self(), -1, "", "sworkCreateAllTimeTopListWindow")
 
 	--игровые журналы
 	button.EqualeTexture( 861, 268, "showMagazines", shopWindow:Self(), -1, "", "sworkCreateGameJournals" )
@@ -163,7 +185,7 @@ function ApplicationLoadPlantScene()
 	--box manager
 	button.EqualeTexture( 94, 29, "boxManager", plantWindow:Self(), -1, "", "sworkCreateGameBoxManagerWindow" )
 	--produce
-	button.EqualeTexture( 407, 1, "produce", plantWindow:Self(), -1, "", "sworkCreateDiskProducePlantWindow")
+	button.EqualeTexture( 407, 1, "produce", plantWindow:Self(), -1, "", "sworkCreateDiskProducePlantWindow" )
 end
 
 function ApplicationLoadUniverScene()
@@ -207,7 +229,7 @@ function ApplicationLoadDirectorCabinetScene( ptr )
 	
 	button.EqualeTexture( 0, 227, "newProject", directorCabinetWindow:Self(), -1, "", "sworkCreateWindowWizardProject")
 	--employers manager
-	button.EqualeTexture( 805, 238, "employersManager", directorCabinetWindow:Self(), -1, "", "sworkCreateWindowEmployersManage" )
+	button.EqualeTexture( 805, 238, "employersManager", directorCabinetWindow:Self(), -1, "", "./userManager.Show()" )
 	--project manager
 	button.EqualeTexture( 612, 251, "projectManager", directorCabinetWindow:Self(), -1, "", "./projectManager.Show()" )
 end

@@ -1,16 +1,3 @@
---безопасная загрузка  скриптов
-
-IncludeScript("swork_wndCharts")
-IncludeScript("swork_wndChartsManage") 
-IncludeScript("swork_TargetCameraFunctions") 
-IncludeScript("swork_wndLoanAction")
-IncludeScript("swork_wndUniverStuffUp")
-IncludeScript("projectManager")	--as module
-IncludeScript("swork_wndGameBoxCreate")
-IncludeScript("swork_wndDiskPlant")
-IncludeScript("swork_wndReklama")
-IncludeScript("swork_wndLaboratory" )
-
 local company = applic:GetPlayerCompany()
 local plant = NrpGetPlant()
 

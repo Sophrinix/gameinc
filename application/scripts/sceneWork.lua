@@ -1,14 +1,24 @@
-
+--безопасная загрузка  скриптов
 IncludeScript("button")
 IncludeScript("swork_MainMenu")
 IncludeScript("swork_wndCompanyInfo")
 IncludeScript("swork_StoreWindow")
 IncludeScript("swork_ObjectsLoading")
 IncludeScript("swork_wndProjectWizard")
-IncludeScript("swork_wndEmployersManage")
+IncludeScript("userManager")
 IncludeScript("swork_wndShop")
+IncludeScript("reklameManager")
 IncludeScript("swork_InventionManager") 
-
+IncludeScript("swork_wndCharts")
+IncludeScript("swork_wndChartsManage") 
+IncludeScript("swork_TargetCameraFunctions") 
+IncludeScript("swork_wndLoanAction")
+IncludeScript("swork_wndUniverStuffUp")
+IncludeScript("projectManager")	--as module
+IncludeScript("swork_wndGameBoxCreate")
+IncludeScript("swork_wndDiskPlant")
+IncludeScript("swork_wndLaboratory" )
+--------------------------------------------
 
 alwaysOnTopWindow = {}
 
@@ -45,4 +55,3 @@ end
 
 alwaysOnTopWindow[ 1 ] = mainMenuWindow
 alwaysOnTopWindow[ 2 ] = CLuaWindow( browser:GetWindow() )
-

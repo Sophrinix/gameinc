@@ -3,5 +3,7 @@ techtype:string=tv
 name:string=Телевидение
 quality:float=0.04
 level:int=1
+popularity:int=88
 maxquality:float=1
 priceinday:int=50000
+texturenormal:string=xtras/reklames/tv.png

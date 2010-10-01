@@ -5,3 +5,5 @@ maxquality:float=0.3
 techtype:string=magazine
 name:string=Журналы
 level:int=1
+texturenormal:string=xtras/reklames/magazine.png
+popularity:int=55

@@ -102,12 +102,6 @@ WINDOW_STUFFUP_NAME = "_SystemWindowStuff_"
 WINDOW_EMPLOYER_SELECT_ID = 11000
 
 --[[
-Окно управления персоналом компании
---]]
-WINDOW_EMPLOYERS_MANAGE_NAME = "_SystemWindowManageEmployers_"
-WINDOW_EMPLOYERS_MANAGE_ID = 11100
-
---[[
 Окно управления проектами
 --]]
 WINDOW_PRJMANAGE_NAME = "_SystemWindowManageProject_"

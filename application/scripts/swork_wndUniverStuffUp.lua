@@ -92,7 +92,7 @@ local function ShowAvaibleEmployers( ptr )
 		local user = applic:GetUser( i-1 )
 	
 		Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleEmployers:user=" .. user:GetName() .. " type=" .. user:GetTypeName() )
-		if modeUserView == user:GetTypeName() then
+		if modeUserView == user:GetTypeName() and user:IsFreeUser() then
 			if cnt < 3 then
 				sworkCreateUserInfoWindow( ptr, xoffset, yoffset + cnt * hTemp, scrWidth / 2 - 30,  hTemp, user:Self() ) 
 			else

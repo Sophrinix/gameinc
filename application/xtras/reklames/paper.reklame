@@ -5,3 +5,5 @@ maxquality:float=0.1
 techtype:string=paper
 name:string=Листовки
 level:int=1
+texturenormal:string=xtras/reklames/paper.png
+popularity:int=22

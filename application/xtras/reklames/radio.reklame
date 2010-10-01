@@ -5,3 +5,5 @@ maxquality:float=0.6
 techtype:string=radio
 name:string=Радио
 level:int=1
+texturenormal:string=xtras/reklames/radio.png
+popularity:int=66
