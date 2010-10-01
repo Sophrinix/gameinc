@@ -14,12 +14,21 @@ local picflowReklames = nil
 local lableDayNumber = nil
 local btnDecDayNumber = nil
 local btnIncDayNumber = nil
+local labelCostInDay = nil
+local labelPrefFamous = nil
+local labelGameFamous = nil
 local labelPrice = nil
+local labelName = nil
+
+local addingDays = 0
+
 local currentWork = nil
 
 local lbxGames = nil
 local selectedGame = nil
 local linkSelectedGame = nil
+
+local btnApplyWork = nil
 
 local reklames = {}
 reklames[ 1 ] = base.CLuaReklame():Create( "paper", "" )
@@ -41,6 +50,14 @@ local function localFillGamesListBox()
 	end	
 end
 
+local function localAddLabel( textr, x1, y1, x2, y2 )
+	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, wndReklame:Self() )
+	label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+	label:SetOverrideColor( 0xff, 0xff, 0xff, 0xff )
+
+	return label
+end
+
 function Show()
 	company = applic:GetPlayerCompany()
 	plant = base.NrpGetPlant()
@@ -57,20 +74,24 @@ function Show()
 	picflowReklames:SetDrawBorder( false )
 
 	btnDecDayNumber = guienv:AddButton( 10, scrHeight / 3 + 20, 70, scrHeight / 3 + 80, wndReklame:Self(), -1, "-" )
-	btnDecDayNumber:SetAction( "./reklameManager.IncDay()" )
+	btnDecDayNumber:SetAction( "./reklameManager.DecDay()" )
+	btnDecDayNumber:SetVisible( false )
 	
 	btnIncDayNumber = guienv:AddButton( scrWidth / 2 - 80, scrHeight / 3 + 20, 
 										scrWidth / 2 - 20, scrHeight / 3 + 80, 
 										wndReklame:Self(), -1, "+" ) 										
-	btnIncDayNumber:SetAction( "./reklameManager.DecDay()" )
+	btnIncDayNumber:SetAction( "./reklameManager.IncDay()" )
+	btnIncDayNumber:SetVisible( false )
 	
 	local yof = scrHeight / 3
-	lableDayNumber = guienv:AddLabel( "0", 60, yof + 20, scrWidth / 2 - 80, yof + 80, -1, wndReklame:Self() )
-	lableDayNumber:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+	local rightY = scrWidth / 2 - 80
+	labelName = localAddLabel( "", 60, yof + 0, rightY, yof + 40 )
+	lableDayNumber = localAddLabel( "", 60, yof + 40, rightY, yof + 90 )
+	labelPrice = localAddLabel( "0", 60, yof + 100, rightY, yof + 150 ) 
+	labelCostInDay = localAddLabel( "0", 60, yof + 160, rightY, yof + 210 ) 
+	labelPrefFamous = localAddLabel( "0", 60, yof + 220, rightY, yof + 270 ) 
+	labelGameFamous = localAddLabel( "0", 60, yof + 280, rightY, yof + 330 ) 
 	
-	labelPrice = guienv:AddLabel( "0", 60, yof + 100, scrWidth / 2 - 80, yof + 160, -1, wndReklame:Self() ) 
-	labelPrice:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
-
 	picflowReklames:AddItem( reklames[ 1 ]:GetTexture(), reklames[ 1 ]:GetName(), reklames[ 1 ]:Self() )
 	--блок рекламы в газете
 	picflowReklames:AddItem( reklames[ 2 ]:GetTexture(), reklames[ 2 ]:GetName(), reklames[ 2 ]:Self() )
@@ -82,11 +103,12 @@ function Show()
 	lbxGames = guienv:AddComponentListBox( scrWidth / 2 + 10, scrHeight / 3 + 20, scrWidth - 10, scrHeight - 80, -1, wndReklame:Self() )
 	localFillGamesListBox()
 		
-	local btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, wndReklame:Self(), -1, base.STR_APPLY )
+	btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, wndReklame:Self(), -1, base.STR_APPLY )
 	btnApplyWork:SetAction( "./reklameManager.ApplyNewWork()" )
+	btnApplyWork:SetVisible( false )
 	
-	local btnApplyWork = guienv:AddButton( scrWidth / 2 + 10, scrHeight - 70, scrWidth - 10, scrHeight - 20, wndReklame:Self(), -1, base.STR_EXIT )
-	btnApplyWork:SetAction( "./reklameManager.Hide()" )
+	local btnExit = guienv:AddButton( scrWidth / 2 + 10, scrHeight - 70, scrWidth - 10, scrHeight - 20, wndReklame:Self(), -1, base.STR_EXIT )
+	btnExit:SetAction( "./reklameManager.Hide()" )
 	
 	--заказать статью в игровом журнале
 		--список журналов
@@ -100,30 +122,54 @@ function Hide()
 	wndReklame = nil
 end
 
-function SelectNewWork()
-	currentWork = CLuaReklame( picflowReklames:GetSelectedObject() )
+local function localUpdateLabels()
+	labelName:SetText( currentWork:GetTypeName() )
+	local text = base.STR_DAYLEFT .. "  " .. currentWork:GetNumberDay()
 	
-	lableDayNumber:SetText( currentWork:GetNumberDay() )
-	labelPrice:SetText( currentWork:GetPrice() )
+	if addingDays > 0 then 
+		text = text .. base.string.format( "( %s  %d )", base.STR_ADDDAYS, addingDays )
+	end
+	
+	lableDayNumber:SetText( text )
+	labelPrice:SetText( base.STR_MONEYLEFT .. "   $" .. currentWork:GetPrice() )
+	labelCostInDay:SetText(  base.STR_DAYCOST .. "   $" .. currentWork:GetDayCost() )	
+	labelPrefFamous:SetText( base.STR_PREFFAMOUS .. "   " .. currentWork:GetFamous() .. "%" ) 
+	labelGameFamous:SetText( selectedGame:GetName() .. ":  " .. base.STR_FAMOUS .. "  " .. selectedGame:GetFamous() .. "%" ) 	
+end
+
+function SelectNewWork()
+	currentWork = base.CLuaReklame( picflowReklames:GetSelectedObject() )
+	selectedGame = base.CLuaDevelopProject( lbxGames:GetSelectedObject() )
+	currentWork:SetReklameObject( selectedGame:GetName() )
+	addingDays = 0	
+	localUpdateLabels()	
+	
+	local vis = selectedGame:Empty() == 0
+	btnApplyWork:SetVisible( vis )
+	btnIncDayNumber:SetVisible( vis )
+	btnDecDayNumber:SetVisible( vis )
 end
 
 function IncDay()
-	currentWork:SetNumberDay(  currentWork:GetNumberDay() + 10 )
+	addingDays = addingDays + 10
 	
-	lableDayNumber:SetText( currentWork:GetNumberDay() )
+	localUpdateLabels()
 end
 
 function DecDay()
-	if currentWork:GetNumberDay() - 10 > 0 then
-		currentWork:SetNumberDay( currentWork:GetNumberDay() - 10 )
+	if addingDays - 10 >= 0 then
+		addingDays = addingDays - 10
 	end
 
-	lableDayNumber:SetText( currentWork:GetNumberDay() )	
+	localUpdateLabels()
 end
 
 function ApplyNewWork()
-	if currentWork:GetNumberDay() > 0 then
+	if addingDays > 0 then
+		currentWork:SetNumberDay( currentWork:GetNumberDay() + addingDays )
 		plant:AddReklameWork( currentWork:Self() )
+		addingDays = 0
+		localUpdateLabels()
 	end
 end
 
