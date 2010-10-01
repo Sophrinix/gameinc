@@ -28,6 +28,7 @@ public:
 	int GetSelectedObject( lua_State* L );
 	int SetSelected( lua_State *L );
 	int SetPictureRect( lua_State* L );
+	int SetDrawBorder( lua_State* L );
 	int Clear( lua_State* L );
 
 	static const char* StaticGetLuaName() { return CLASS_LUAPICTUREFLOW.c_str(); }

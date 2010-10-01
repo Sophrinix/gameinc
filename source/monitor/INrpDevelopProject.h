@@ -28,6 +28,7 @@ public:
 	virtual void ModuleFinished( CNrpProjectModule* module, IUser* ptrUser ) = 0;
 	virtual bool IsReady() = 0; 
 	virtual CNrpProjectModule* GetModule( size_t index ) = 0;
+	virtual CNrpProjectModule* GetModule( const char* name ) = 0;
 	virtual void Save( std::string amount );
 protected:
 	void InitializeOptions_();

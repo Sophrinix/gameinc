@@ -13,6 +13,7 @@ public:
 	CLuaAutoScript(lua_State *L);
 	int AddUserToInvention( lua_State* L );
 	int AddGameEngineToCompany( lua_State* L );
+	int AddUserToGameProject( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaAutoScript"; }
 };

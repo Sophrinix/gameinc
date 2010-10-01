@@ -269,16 +269,24 @@ void CNrpDevelopGame::Load( std::string loadFolder )
 bool CNrpDevelopGame::IsReady()
 {
 	bool ready = true;
+	float workP = 0;
 	for( MODULE_LIST::iterator pIter = gameModules_.begin(); 
 		 pIter != gameModules_.end(); 
 		 pIter++)
-		if( (*pIter) && (*pIter)->GetValue<float>( READYWORKPERCENT ) < 1 )
+	{
+		if( *pIter )
 		{
-			ready = false;		
-			break;
+			float prc = (*pIter)->GetValue<float>( READYWORKPERCENT );
+			if( prc < 1 )
+				ready = false;		
+	
+			workP += prc;
+			workP /= 2.f;
 		}
+	}
 
 	SetValue<bool>( PROJECTREADY, ready );
+	SetValue<float>( READYWORKPERCENT, workP );
 	if( ready )
 		SetValue<std::string>( PROJECTSTATUS, "produce" );
 
@@ -326,5 +334,20 @@ CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index )
 CNrpProjectModule* CNrpDevelopGame::GetModule( size_t index )
 {
 	return index < gameModules_.size() ? gameModules_[ index ] : NULL; 
+}
+
+CNrpProjectModule* CNrpDevelopGame::GetModule( const char* name )
+{
+	MODULE_LIST::iterator pIter = gameModules_.begin();
+	int i=0;
+	for( ; pIter != gameModules_.end(); pIter++ )
+	{
+		if( (*pIter)->GetValue<std::string>( NAME ) == name )
+			return *pIter;
+		else
+			i++;
+	}
+
+	return NULL;
 }
 }//end namespace nrp

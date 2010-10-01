@@ -253,10 +253,10 @@ void CNrpApplication::SaveProfile()
 		IniFile::Write( "companies", "company_" + IntToStr(i), (*cIter)->GetValue<std::string>( NAME ), profileIni );
 	}
 
-	PROJECTS_MAP::iterator dIter = devProjects_.begin();
+	DEVPROJECTS_MAP::iterator dIter = devProjects_.begin();
 	for( int i=0; dIter != devProjects_.end(); dIter++, i++ )
 	{
-		dynamic_cast< INrpDevelopProject* >( dIter->second )->Save( saveFolder + "devProjects/" );
+		dIter->second->Save( saveFolder + "devProjects/" );
 		IniFile::Write( "devprojects", "project_" + IntToStr(i), dIter->second->ClassName() + ":" + dIter->first, profileIni );
 	}
 
@@ -427,6 +427,7 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
     LoadFreeImageLists_( saveFolder + "imageList.ini" );
 	std::string afterLoad = "tmp/";
 	afterLoad += AFTER_LOAD_SCRIPT;
+	afterLoad += ".lua";
 	CNrpScript::Instance().DoFile( afterLoad.c_str() );
 }
 
@@ -732,6 +733,10 @@ IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 	ptrUser->SetValue<int>( STABILITY, rand() % maxParamValue );
 	ptrUser->SetValue<int>( CHARACTER, rand() % maxParamValue );
 
+	char name[64] = { 0 };
+	snprintf( name, 64, "media/face/face%03d.png", rand() % 2 );
+	ptrUser->SetValue<std::string>( TEXTURENORMAL, name );
+
 	for( size_t cnt=0; cnt < randomParams; cnt++ )
 	{
 		ptrUser->SetGenreExperience( rand() % (GT_COUNT%100), rand() % maxParamValue );
@@ -935,15 +940,15 @@ INrpProject* CNrpApplication::GetProject( const std::string& name )
 	return pIter != projects_.end() ? pIter->second : NULL;
 }
 
-void CNrpApplication::AddDevelopProject( nrp::INrpProject* project )
+void CNrpApplication::AddDevelopProject( nrp::INrpDevelopProject* project )
 {
 	devProjects_[ project->GetValue<std::string>( NAME ) ] = project;
 	SetValue<int>( DEVELOPPROJECTS_NUMBER, devProjects_.size() );
 }
 
-INrpProject* CNrpApplication::GetDevelopProject( const std::string&  name ) const
+INrpDevelopProject* CNrpApplication::GetDevelopProject( const std::string&  name ) const
 {
-	PROJECTS_MAP::const_iterator pIter = devProjects_.find( name );
+	DEVPROJECTS_MAP::const_iterator pIter = devProjects_.find( name );
 	if( pIter != devProjects_.end() )
 		return pIter->second;
 
@@ -952,7 +957,7 @@ INrpProject* CNrpApplication::GetDevelopProject( const std::string&  name ) cons
 
 void CNrpApplication::RemoveDevelopProject( const std::string& name )
 {
-	PROJECTS_MAP::iterator pIter = devProjects_.find( name );
+	DEVPROJECTS_MAP::iterator pIter = devProjects_.find( name );
 	if( pIter != devProjects_.end() )
 	{
 		delete pIter->second;

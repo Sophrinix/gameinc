@@ -20,6 +20,7 @@ public:
 	int GetSkill( lua_State* L );
 	int SetCharacter( lua_State* L );
 	int GetTypeName( lua_State* L );
+	int IsFreeUser( lua_State* L );
 	int GetParam( lua_State* L );
 	int SetParam( lua_State* L );
 	int GetName( lua_State* L );

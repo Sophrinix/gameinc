@@ -27,6 +27,7 @@ class CNrpRetailer;
 class CNrpGameImageList;
 class CNrpGameEngine;
 class CNrpInvention;
+class INrpDevelopProject;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
@@ -40,6 +41,7 @@ class CNrpApplication : public INrpConfig, public ILuaFunctionality
 	typedef std::map< std::string, CNrpGameImageList* > GAMEIMAGES_MAP; 
 	typedef std::map< std::string, CNrpGameEngine* > GAMEENGINES_MAP;
 	typedef std::map< std::string, INrpProject* > PROJECTS_MAP;
+	typedef std::map< std::string, INrpDevelopProject* > DEVPROJECTS_MAP;
 public:
 	typedef std::vector< CNrpCompany* > COMPANIES_LIST;
 	typedef enum { SPD_MINUTE=0, SPD_HOUR, SPD_DAY, SPD_MONTH, SPD_COUNT } SPEED;
@@ -62,9 +64,9 @@ public:
 	IUser* GetUser( int index );
 	IUser* GetUser( std::string name );
 
-	void AddDevelopProject( INrpProject* project );
+	void AddDevelopProject( INrpDevelopProject* project );
 	void RemoveDevelopProject( const std::string& name );
-	INrpProject* GetDevelopProject( const std::string& name ) const; 
+	INrpDevelopProject* GetDevelopProject( const std::string& name ) const; 
 
 	void AddGameEngine( nrp::CNrpGameEngine* ptrEngine );
 	CNrpGameEngine* GetGameEngine( std::string name );
@@ -127,7 +129,7 @@ private:
 	RETAILER_LIST retailers_;
 	GAMEENGINES_MAP engines_;
 	PROJECTS_MAP projects_;
-	PROJECTS_MAP devProjects_;
+	DEVPROJECTS_MAP devProjects_;
 
 	SPEED speed_;
 	int lastTimeUpdate_;

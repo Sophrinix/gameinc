@@ -20,6 +20,8 @@ Luna< CLuaReklame >::RegType CLuaReklame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetNumberDay ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetNumberDay ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, Create ),
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetPrice ),
 	{0,0}
 };
 
@@ -48,7 +50,10 @@ int CLuaReklame::Create( lua_State* L )
 	const char* gameName = lua_tostring( L, 3 );
 
 	object_ = CNrpPlant::Instance().CreateReklame( typeName, gameName );
+
+	lua_pop( L, argc );
 	lua_pushlightuserdata(L, object_ );
+	Luna< CLuaReklame >::constructor( L );
 
 	return 1;
 }
@@ -114,4 +119,29 @@ int CLuaReklame::SetNumberDay( lua_State* L )
 
 	return 1;
 }
+
+int CLuaReklame::GetTexture( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaReklame::GetTexture not need parameter");
+
+	std::string result = "";
+	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<std::string>( TEXTURENORMAL );
+
+	lua_pushstring( L, result.c_str() );
+	return 1;	
+}
+
+int CLuaReklame::GetPrice( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaReklame::GetPrice not need parameter");
+
+	int result = 0;
+	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( BALANCE );
+
+	lua_pushinteger( L, result );
+	return 1;		
+}
+
 }//namespace nrp

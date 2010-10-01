@@ -141,6 +141,8 @@ CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 		lua_register( vm_, "NrpGetBrowser", GetBrowser );
 
 		lua_register( vm_, "NrpGetTranslate", ApplicationGetTranslate ),
+		
+		lua_register( vm_, "NrpGetSender", ApplicationGetSender ),
 
 		lua_register( vm_, "GetTickCount", ApplicationGetTickCount ),
 

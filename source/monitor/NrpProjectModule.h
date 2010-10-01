@@ -5,13 +5,13 @@ namespace nrp
 {
 
 const CLASS_NAME CLASS_PROJECTMODULE( "CNrpProjectModule" );
-class INrpProject;
+class INrpDevelopProject;
 
 class CNrpProjectModule : public IWorkingModule
 {
 public:
 	CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProject  );
-	CNrpProjectModule( PROJECT_TYPE type, INrpProject* pProject );
+	CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject* pProject );
 	virtual ~CNrpProjectModule(void);
 
 	int AddUser( IUser* ptrUser );
@@ -24,6 +24,7 @@ public:
 private:
 	void InitializeOptions_();
 	CNrpProjectModule() : IWorkingModule( PROJECT_TYPE(0), CLASS_PROJECTMODULE ) {};
+	float _GetWorkKoeffForUser( IUser* ptrUser );
 
 	typedef std::vector< IUser* > USER_LIST;
 	USER_LIST users_;

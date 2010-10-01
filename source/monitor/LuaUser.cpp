@@ -8,6 +8,7 @@
 #include "NrpApplication.h"
 #include "NrpAiUser.h"
 #include "NrpTechnology.h"
+#include "NrpCompany.h"
 
 using namespace irr;
 
@@ -33,6 +34,7 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWork ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, IsFreeUser ),
 	{0,0}
 };
 
@@ -198,7 +200,7 @@ int CLuaUser::AddWork( lua_State* L )
 	IWorkingModule* work = (IWorkingModule*)lua_touserdata( L, 2 );
 	assert( work != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddWork( work, false );
+	IF_OBJECT_NOT_NULL_THEN object_->AddWork( work );
 
 	return 1;		
 }
@@ -255,4 +257,15 @@ int CLuaUser::GetTexture( lua_State* L )
 	return 1;		
 }
 
+int CLuaUser::IsFreeUser( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:IsFreeUser not need any parameter" );
+
+	bool noCompany = false;
+	IF_OBJECT_NOT_NULL_THEN noCompany = object_->GetValue<PNrpCompany>( PARENTCOMPANY ) == NULL;
+
+	lua_pushboolean( L, noCompany );
+	return 1;		
+}
 }//namespace nrp

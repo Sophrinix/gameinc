@@ -76,6 +76,8 @@ extern "C"
 
 	int ApplicationGetTranslate( lua_State* vm );
 
+	int ApplicationGetSender( lua_State* vm );
+
 	int ApplicationGetTickCount( lua_State* vm );
 
 	// типа справка

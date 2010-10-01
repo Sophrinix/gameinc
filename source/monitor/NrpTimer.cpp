@@ -26,6 +26,7 @@ void CNrpTimer::draw()
 {
 	if( _active && (GetTickCount() - _startTime > _time) )
 	{
+		nrp::CNrpScript::Instance().SetSender( this );
 		nrp::CNrpScript::Instance().DoString( _action.c_str() );
 		_active = false;  
 

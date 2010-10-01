@@ -24,6 +24,7 @@ Luna< CLuaPictureFlow >::RegType CLuaPictureFlow::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelectedObject ),
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelectedItem ),
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetPictureRect ),
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetDrawBorder ),
 	{0,0}
 };
 
@@ -133,4 +134,17 @@ int CLuaPictureFlow::GetSelectedItem( lua_State* L )
 	lua_pushstring( L, text.c_str() );
 	return 1;
 }
+
+int CLuaPictureFlow::SetDrawBorder( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPictureFlow::SetDrawBorder need int parameter");
+
+	bool drawBorder = lua_toboolean( L, 2 ) > 0;
+
+	IF_OBJECT_NOT_NULL_THEN	object_->setDrawBackground( drawBorder );			
+
+	return 1;
+}
+
 }//namespace nrp

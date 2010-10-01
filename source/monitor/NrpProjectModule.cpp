@@ -27,12 +27,12 @@ CNrpProjectModule::CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProje
 	skillRequires_ = pTech->GetSkillRequires();
 }
 
-CNrpProjectModule::CNrpProjectModule( PROJECT_TYPE type, INrpProject* pProject )
+CNrpProjectModule::CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject* pProject )
 	: IWorkingModule( type, CLASS_PROJECTMODULE )
 {
 	InitializeOptions_();
 	SetValue<int>( TECHTYPE, type );
-	SetValue<PNrpProject>( PARENT, pProject );
+	SetValue<INrpDevelopProject*>( PARENT, pProject );
 }
 
 CNrpProjectModule::~CNrpProjectModule(void)
@@ -48,6 +48,7 @@ void CNrpProjectModule::InitializeOptions_()
 	CreateValue<int>( CODEVOLUME, 0 );
 	CreateValue<int>( CODEPASSED, 0 );
 	CreateValue<int>( ERRORNUMBER, 0 );
+	EraseValue( PARENT );
 	CreateValue<INrpDevelopProject*>( PARENT, NULL );
 }
 
@@ -56,12 +57,7 @@ int CNrpProjectModule::AddUser( IUser* ptrUser )
 	IUser* currentLider = GetValue<IUser*>( COMPONENTLIDER );
 	IUser* lastLider = GetValue<IUser*>( LASTWORKER );
 
-	//есть текущий исполнитель
-	SetValue<IUser*>( LASTWORKER, currentLider );
-	SetValue<IUser*>( COMPONENTLIDER, ptrUser  );
-
-	if( lastLider && ptrUser && (lastLider != ptrUser) )
-		SetValue<int>( CODEPASSED,(int)(GetValue<int>( CODEPASSED ) * 0.75f) );
+	users_.push_back( ptrUser );
 
 	return 1;
 }
@@ -75,16 +71,22 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 	{
 		int reqSkill = 0;
 		REQUIRE_MAP::iterator sIter = skillRequires_.begin();
+		float teamKoeff = _GetWorkKoeffForUser( ptrUser );
 		for( ; sIter != skillRequires_.end(); sIter++ )
 			reqSkill += ptrUser->GetSkill( sIter->first );
 
-		float genreSkill = ptrUser->GetGenreExperience( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
+		//коэффициент команды нужен из-за того, что отимальный размер команды 5, а дальнейший рост 
+		//приводит к ухудшению производительности каждого из членов команды,
+		//хотя общая растет
+		float genreSkill = teamKoeff * ptrUser->GetGenreExperience( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
 
 		if( genreSkill < 0.1f )
 			genreSkill = 0.1f;
-		float genrePref = ptrUser->GetGenrePreferences( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
+		float genrePref = teamKoeff * ptrUser->GetGenrePreferences( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
+		
 		if( genrePref < 0.1f )
 			genrePref = 0.1f;
+
 
 		int codePassed = GetValue<int>( CODEPASSED ) + (int)(reqSkill * (genrePref + genreSkill));
 		if( codePassed >= GetValue<int>( CODEVOLUME ) )
@@ -100,6 +102,12 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 
 	if( GetValue<float>( READYWORKPERCENT ) >= 1 )
 		parent->ModuleFinished( this, ptrUser );
+}
+
+float CNrpProjectModule::_GetWorkKoeffForUser( IUser* ptrUser )
+{
+	float teamKoef[10] = { 1/*1*/, 4/*2*/, 3/*3*/, 2/*4*/, 1/*5*/, 0.8/*6*/, 0.65/*7*/, 0.5/*8*/, 0.25/*9*/, 0.1/*10 and more*/};
+	return teamKoef[ users_.size() >= 9 ? 9 : users_.size() ];
 }
 
 void CNrpProjectModule::Save( std::string saveFolder )
@@ -122,14 +130,17 @@ void CNrpProjectModule::Load( std::string fileName )
 		
 	INrpProject::Load( SECTION_PROPERTIES, fileName );
 	LoadRequries_( fileName );
-
-	PUser user = GetValue<PUser>( COMPONENTLIDER );
-	if( user )
-		user->AddWork( this, true );
 }
 
 int CNrpProjectModule::RemoveUser( const std::string& userName )
 {
-	return 1;
+	for( USER_LIST::iterator pIter=users_.begin(); pIter != users_.end(); pIter++ )
+		if( (*pIter)->GetValue<std::string>( NAME ) == userName )
+		{
+			users_.erase( pIter );
+			return 1;
+		}
+
+	return 0;
 }
 }//end namespace nrp

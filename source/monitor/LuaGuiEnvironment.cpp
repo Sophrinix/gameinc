@@ -22,6 +22,7 @@
 #include "LuaProgressBar.h"
 #include "LuaPictureFlow.h"
 #include "LuaTable.h"
+#include "LuaListBox.h"
 
 using namespace irr;
 
@@ -711,7 +712,10 @@ int CLuaGuiEnvironment::AddListBox( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	elm = object_->addListBox( rectangle, parent, iid );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, elm );
+	Luna< CLuaListBox >::constructor( L );
+
 	return 1;
 }
 

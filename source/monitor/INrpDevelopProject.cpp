@@ -26,8 +26,10 @@ void INrpDevelopProject::InitializeOptions_()
 {
 	CreateValue<std::string>( COMPANYNAME, "" );
 	CreateValue<int>( MODULE_NUMBER, 0 );
+	CreateValue<float>( READYWORKPERCENT, 0 );
 	CreateValue<bool>( PROJECTREADY, false );
 	CreateValue<int>( TECHTYPE, 0 );
+	CreateValue<std::string>( TEXTURENORMAL, "" );
 }
 
 void INrpDevelopProject::SetDeveloper( IUser* user )

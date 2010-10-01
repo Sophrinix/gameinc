@@ -52,9 +52,10 @@ public:
 	int GetGenrePreferences( int typen );
 	void SetGenrePreferences( int typen, int valuel );
 	
-	void AddWork( IWorkingModule* techWork, bool inLoad );
+	void AddWork( IWorkingModule* techWork );
 
 	IWorkingModule* GetWork( int index );
+	IWorkingModule* GetWork( std::string name );
 	void RemoveWork( IWorkingModule* techWork );
 
 	void AddModificator( IModificator* ptrModificator );

@@ -31,6 +31,7 @@ class CNrpTechnology;
 class CNrpDevelopGame;
 class CNrpGameProject;
 class CNrpInvention;
+class INrpDevelopProject;
 
 class CNrpCompany : public INrpConfig, public ILuaFunctionality
 {
@@ -39,6 +40,7 @@ public:
 	typedef std::vector< IUser* > USER_LIST;
 	typedef std::map< std::string, CNrpTechnology* > TECH_MAP;
 	typedef std::map< std::string, INrpProject* > PROJECT_MAP;
+	typedef std::map< std::string, INrpDevelopProject* > DEVPROJECT_MAP;
 	typedef std::map< std::string, CNrpGame* > GAME_MAP;
 	typedef std::vector< INrpConfig* > OBJECT_LIST;
 	typedef std::vector< CNrpInvention* > INVENTION_LIST;
@@ -57,9 +59,9 @@ public:
 	void AddToPortfelle( INrpConfig* ptrObject );
 	float GetUserModificatorForGame( CNrpGame* game );
 
-	void AddDevelopProject( INrpProject* ptrDevProject );
-	INrpProject* GetDevelopProject( const std::string name );
-	INrpProject* GetDevelopProject( size_t index );
+	void AddDevelopProject( INrpDevelopProject* ptrDevProject );
+	INrpDevelopProject* GetDevelopProject( const std::string name );
+	INrpDevelopProject* GetDevelopProject( size_t index );
 	void RemoveDevelopProject( std::string name );
 
 	void AddProject( INrpProject* ptrProject );
@@ -94,7 +96,7 @@ private:
 	PROJECT_MAP projects_; 
 	ENGINE_LIST engines_;
 	TECH_MAP technologies_;
-	PROJECT_MAP devProjects_;
+	DEVPROJECT_MAP devProjects_;
 	GAME_MAP games_;
 	USER_LIST employers_;
 	OBJECT_LIST portfelle_;

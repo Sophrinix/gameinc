@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="GameDev"
 	ProjectGUID="{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"
 	RootNamespace="nerpa_sc"
@@ -1413,10 +1413,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\create_terrain.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\elmid.lua"
 				>
 			</File>
@@ -1433,10 +1429,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\HelpSubSystem.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\initApp.lua"
 				>
 			</File>
@@ -1449,15 +1441,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\projectManager.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\reklameManager.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\localization\russian.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\sceneLogin.lua"
 				>
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\sceneWork.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_camera.lua"
 				>
 			</File>
 			<File
@@ -1513,10 +1513,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_wndEmployersManage.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_wndGameBoxCreate.lua"
 				>
 			</File>
@@ -1533,15 +1529,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_wndProjectManager.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_wndProjectWizard.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_wndReklama.lua"
 				>
 			</File>
 			<File
@@ -1553,11 +1541,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\timer.lua"
+				RelativePath="..\..\application\scripts\tutorial.lua"
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\tutorial.lua"
+				RelativePath="..\..\application\scripts\userManager.lua"
 				>
 			</File>
 		</Filter>

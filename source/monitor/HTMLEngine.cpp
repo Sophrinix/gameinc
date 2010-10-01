@@ -255,6 +255,8 @@ void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventI
 	{
 		std::string action = eventIn.getStringValue();
 		action = DecodeUrl( action.substr( strlen( NRP_NOFOLLOW_SCHEME ), action.size() ) );
+		
+		nrp::CNrpScript::Instance().SetSender( NULL );
 		CNrpScript::Instance().DoString( action.c_str() );
 		_noFollowLinkExec = false;
 	}

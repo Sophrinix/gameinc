@@ -138,7 +138,7 @@ void CNrpCompany::Save( const std::string& saveFolder )
 	for( int i=0; pIter != projects_.end(); pIter++, i++ )
 		IniFile::Write( "projects", "project_" + IntToStr(i), pIter->second->GetValue<std::string>( NAME ), saveFile );
 
-	PROJECT_MAP::iterator rIter = devProjects_.begin();
+	DEVPROJECT_MAP::iterator rIter = devProjects_.begin();
 	for( int i=0; rIter != devProjects_.end(); rIter++, i++ )
 		IniFile::Write( "devProjects", "project_" + IntToStr(i), rIter->second->GetValue<std::string>( NAME ), saveFile );
 
@@ -239,7 +239,7 @@ void CNrpCompany::Load( const std::string& loadFolder )
 	for( int i=0; i < GetValue<int>( DEVELOPPROJECTS_NUMBER ); i++ )
 	{
 		std::string prjName = IniFile::Read( "devProjects", "project_" + IntToStr(i), std::string(""), loadFile );
-		INrpProject* prj = CNrpApplication::Instance().GetDevelopProject( prjName );
+		INrpDevelopProject* prj = CNrpApplication::Instance().GetDevelopProject( prjName );
 		if( prj )
 		{
 			devProjects_[ prjName ] = prj;
@@ -311,13 +311,13 @@ void CNrpCompany::BeginNewHour( const SYSTEMTIME& time  )
 
 void CNrpCompany::BeginNewDay( const SYSTEMTIME& time )
 {
-	for( PROJECT_MAP::iterator pIter = devProjects_.begin(); 
+	for( DEVPROJECT_MAP::iterator pIter = devProjects_.begin(); 
 		 pIter != devProjects_.end(); 
 		 pIter++ )
 	{
 		if( pIter->second->ClassName() == CLASS_DEVELOPGAME && pIter->second->GetValue<bool>( PROJECTREADY ) )
 		{
-			INrpProject* project = pIter->second;
+			INrpDevelopProject* project = pIter->second;
 			PNrpGame game = CreateGame(	(CNrpDevelopGame*)project );
 			RemoveDevelopProject( project->GetValue<std::string>( NAME ) );
 			DoLuaFunctionsByType( COMPANY_READY_PROJECT, game );
@@ -397,7 +397,7 @@ float CNrpCompany::GetUserModificatorForGame( CNrpGame* game )
 	return 1;
 }
 
-void CNrpCompany::AddDevelopProject( INrpProject* ptrDevProject )
+void CNrpCompany::AddDevelopProject( INrpDevelopProject* ptrDevProject )
 {
 	if( devProjects_.find( ptrDevProject->GetValue<std::string>( NAME ) ) == devProjects_.end() )
 		devProjects_[ ptrDevProject->GetValue<std::string>( NAME ) ] = ptrDevProject;
@@ -406,20 +406,20 @@ void CNrpCompany::AddDevelopProject( INrpProject* ptrDevProject )
 	ptrDevProject->SetValue<std::string>( COMPANYNAME, GetValue<std::string>( NAME ) );
 }
 
-INrpProject* CNrpCompany::GetDevelopProject( const std::string name )
+INrpDevelopProject* CNrpCompany::GetDevelopProject( const std::string name )
 {
-	PROJECT_MAP::iterator pIter = devProjects_.find( name );
+	DEVPROJECT_MAP::iterator pIter = devProjects_.find( name );
 	if( pIter != devProjects_.end() )
 		return pIter->second;
 
 	return NULL;
 }
 
-INrpProject* CNrpCompany::GetDevelopProject( size_t index )
+INrpDevelopProject* CNrpCompany::GetDevelopProject( size_t index )
 {
 	if( index < devProjects_.size() )
 	{
-		PROJECT_MAP::iterator pIter = devProjects_.begin();
+		DEVPROJECT_MAP::iterator pIter = devProjects_.begin();
 		for( size_t k=0; k != index; k++ ) pIter++;
 		return pIter->second;
 	}
@@ -434,7 +434,7 @@ CNrpInvention* CNrpCompany::GetInvention( int index )
 
 void CNrpCompany::RemoveDevelopProject( std::string name )
 {
-	PROJECT_MAP::iterator pIter = devProjects_.find( name );
+	DEVPROJECT_MAP::iterator pIter = devProjects_.find( name );
 	if( pIter != devProjects_.end() ) 
 		devProjects_.erase( pIter );
 

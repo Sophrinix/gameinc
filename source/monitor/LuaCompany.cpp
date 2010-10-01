@@ -175,7 +175,7 @@ int CLuaCompany::CreateDevelopGame( lua_State* L )
 	CNrpGameProject* ptrData = (CNrpGameProject*)lua_touserdata( L, 2 );
 	assert( ptrData != NULL );
 
-	INrpProject* result = NULL;
+	INrpDevelopProject* result = NULL;
 	
 	IF_OBJECT_NOT_NULL_THEN	
 	{

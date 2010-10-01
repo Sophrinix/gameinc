@@ -378,4 +378,14 @@ int ApplicationGetTickCount( lua_State* vm )
 
 	return 1;	
 }
+
+int ApplicationGetSender( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 0, 0, "Function ApplicationGetSender not need parameter");
+
+	lua_pushlightuserdata( vm, CNrpScript::Instance().GetSender() );
+
+	return 1;
+}
 }//namespace nrp

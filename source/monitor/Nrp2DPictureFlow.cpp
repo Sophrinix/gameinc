@@ -110,12 +110,12 @@ void CNrp2DPictureFlow::DrawPairImage_( CNrpImageDescription* pDesk )
 {
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 	core::recti rectangle( pDesk->currentRect.UpperLeftCorner.X, pDesk->currentRect.UpperLeftCorner.Y,
-							pDesk->currentRect.LowerRightCorner.X, pDesk->currentRect.LowerRightCorner.Y );
+						   pDesk->currentRect.LowerRightCorner.X, pDesk->currentRect.LowerRightCorner.Y );
 
 	if( pDesk->GetTexture() )
 		driver->draw2DImage( pDesk->GetTexture(), rectangle + AbsoluteRect.UpperLeftCorner, 
 			 			 	 core::recti( core::position2di( 0, 0), pDesk->GetTexture()->getSize() ),
-							 &AbsoluteClippingRect );
+							 &AbsoluteClippingRect, NULL, true );
 	else
 		driver->draw2DRectangle(rectangle + AbsoluteRect.UpperLeftCorner, 
 								0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0,

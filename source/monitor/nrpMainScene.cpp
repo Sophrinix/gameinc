@@ -116,6 +116,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 					//пытаемся его обработать
 					if( btn->getOnClickAction() != 0 )
 					{
+						nrp::CNrpScript::Instance().SetSender( btn );
 						const char* dd = btn->getOnClickAction();
 						if( *dd == '.' && *(dd+1) == '/' )
 							nrp::CNrpScript::Instance().DoString( dd+2 );

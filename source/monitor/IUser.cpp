@@ -199,13 +199,12 @@ void IUser::Load( std::string fileName )
 	}*/
 }
 
-void IUser::AddWork( IWorkingModule* module, bool inLoad )
+void IUser::AddWork( IWorkingModule* module )
 {
 	assert( module != NULL );
-	works_.push_back( module );
-	
-	//if( !inLoad )
-	//	module->SetLider( this );
+
+	if( GetWork( module->GetValue<std::string>( NAME ) ) == NULL )
+		works_.push_back( module );
 	
 	SetValue<int>( TECHNUMBER, works_.size() );
 }
@@ -231,6 +230,16 @@ IWorkingModule* IUser::GetWork( int index )
 {
 	assert( index < (int)works_.size() );
 	return index < (int)works_.size() ? works_[ index ] : NULL;
+}
+
+IWorkingModule* IUser::GetWork( std::string name )
+{
+	WORK_LIST::iterator tIter = works_.begin();
+	for( ; tIter != works_.end(); tIter++ )
+		if( (*tIter)->GetValue<std::string>( NAME ) == name )
+			return (*tIter);
+
+	return NULL;
 }
 
 void IUser::BeginNewHour( const SYSTEMTIME& time )

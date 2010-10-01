@@ -3,6 +3,7 @@
 #include "nrpConfig.h"
 #include "NrpTechnology.h"
 #include "IUser.h"
+#include "NrpDevelopGame.h"
 #include <string>
 
 using namespace nrp;
@@ -456,6 +457,53 @@ void CNrpComponentListbox::updateAbsolutePosition()
 	recalculateItemHeight();
 }
 
+void CNrpComponentListbox::_DrawIcon( int index, core::recti rectangle, bool highlight, core::recti &clientClipRect )
+{
+	if (IconBank && (Items[ index ].icon > -1))
+	{
+		core::position2di iconPos = rectangle.UpperLeftCorner;
+		iconPos.Y += rectangle.getHeight() / 2;
+		iconPos.X += ItemsIconWidth / 2;
+
+		if ( index == Selected && highlight )
+		{
+			IconBank->draw2DSprite( (u32)Items[ index ].icon, iconPos, &clientClipRect,
+				hasItemOverrideColor( index, EGUI_LBC_ICON_HIGHLIGHT ) 
+									  ? getItemOverrideColor( index, EGUI_LBC_ICON_HIGHLIGHT) 
+									  : getItemDefaultColor(EGUI_LBC_ICON_HIGHLIGHT),
+				selectTime, GetTickCount(), false, true);
+		}
+		else
+		{
+			IconBank->draw2DSprite( (u32)Items[ index ].icon, iconPos, &clientClipRect,
+				hasItemOverrideColor( index, EGUI_LBC_ICON ) 
+									  ? getItemOverrideColor(index, EGUI_LBC_ICON) 
+									  : getItemDefaultColor(EGUI_LBC_ICON),
+				0, (index==Selected) ? GetTickCount() : 0, false, true);
+		}
+	}
+}
+
+void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti rectangle, 
+											  core::recti frameRect, video::SColor color, 
+											  core::recti& clipRect )
+{
+	wchar_t tmpstr[ 128 ];
+	video::IVideoDriver* driver = Environment->getVideoDriver();
+
+	rectangle.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
+	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
+
+	float percent = tech->GetValue<float>( READYWORKPERCENT );
+	std::wstring name = StrToWide( tech->GetValue<std::string>( NAME ) );
+
+	swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), (int)(percent * 100) );
+	core::recti progressRect = frameRect;
+	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
+	driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clipRect );
+	Font->draw( tmpstr, rectangle, color, false, true, &clipRect );
+}
+
 //! draws the element and its children
 void CNrpComponentListbox::draw()
 {
@@ -474,10 +522,8 @@ void CNrpComponentListbox::draw()
 		core::rect<s32> frameRect(AbsoluteRect);
 
 		// draw items
-
 		core::rect<s32> clientClip(AbsoluteRect);
-		clientClip.UpperLeftCorner.Y += 1;
-		clientClip.UpperLeftCorner.X += 1;
+		clientClip.UpperLeftCorner += core::position2di( 1, 1 );
 		if (ScrollBar->isVisible())
 			clientClip.LowerRightCorner.X = AbsoluteRect.LowerRightCorner.X - skin->getSize(EGDS_SCROLLBAR_SIZE);
 
@@ -485,7 +531,7 @@ void CNrpComponentListbox::draw()
 		clientClip.clipAgainst(AbsoluteClippingRect);
 
 		skin->draw3DSunkenPane(this, skin->getColor(EGDC_3D_HIGH_LIGHT), true,
-			DrawBack, frameRect, &clientClip);
+				   			   DrawBack, frameRect, &clientClip);
 
 		if (clipRect)
 			clientClip.clipAgainst(*clipRect);
@@ -498,15 +544,14 @@ void CNrpComponentListbox::draw()
 		frameRect.LowerRightCorner.Y = AbsoluteRect.UpperLeftCorner.Y + ItemHeight;
 	 
 		int scrollpos = ScrollBar->getPos();
-		frameRect.UpperLeftCorner.Y -= scrollpos;
-		frameRect.LowerRightCorner.Y -= scrollpos;
+		frameRect -= core::position2di( 0, scrollpos );
 
 		bool hl = (HighlightWhenNotFocused || Environment->hasFocus(this) || Environment->hasFocus(ScrollBar));
 
 		for (s32 i=0; i<(s32)Items.size(); ++i)
 		{
 			if ( (frameRect.LowerRightCorner.Y > AbsoluteRect.UpperLeftCorner.Y) &&
-				(frameRect.UpperLeftCorner.Y + 2 < AbsoluteRect.LowerRightCorner.Y) )
+				 (frameRect.UpperLeftCorner.Y + 2 < AbsoluteRect.LowerRightCorner.Y) )
 			{
 				INrpObject* pObject = Items[ i ].obj;
 
@@ -521,25 +566,7 @@ void CNrpComponentListbox::draw()
 
 				if (Font)
 				{
-					if (IconBank && (Items[i].icon > -1))
-					{
-						core::position2di iconPos = textRect.UpperLeftCorner;
-						iconPos.Y += textRect.getHeight() / 2;
-						iconPos.X += ItemsIconWidth/2;
-
-						if ( i==Selected && hl )
-						{
-							IconBank->draw2DSprite( (u32)Items[i].icon, iconPos, &clientClip,
-								hasItemOverrideColor(i, EGUI_LBC_ICON_HIGHLIGHT) ? getItemOverrideColor(i, EGUI_LBC_ICON_HIGHLIGHT) : getItemDefaultColor(EGUI_LBC_ICON_HIGHLIGHT),
-								selectTime, GetTickCount(), false, true);
-						}
-						else
-						{
-							IconBank->draw2DSprite( (u32)Items[i].icon, iconPos, &clientClip,
-								hasItemOverrideColor(i, EGUI_LBC_ICON) ? getItemOverrideColor(i, EGUI_LBC_ICON) : getItemDefaultColor(EGUI_LBC_ICON),
-								0 , (i==Selected) ? GetTickCount() : 0, false, true);
-						}
-					}
+					_DrawIcon( i, textRect, hl, clientClip );
 
 					textRect.UpperLeftCorner.X += ItemsIconWidth+3;
 
@@ -554,43 +581,11 @@ void CNrpComponentListbox::draw()
 					else
 					{	
 						if( CNrpTechnology* tech = dynamic_cast<CNrpTechnology*>( pObject ) )
-						{
-							wchar_t tmpstr[ 128 ];
-							video::IVideoDriver* driver = Environment->getVideoDriver();
-
-							textRect.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
-							textRect.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
-
-							float percent = tech->GetValue<float>( READYWORKPERCENT );
-							std::wstring name = StrToWide( tech->GetValue<std::string>( NAME ) );
-							
-							swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), (int)(percent * 100) );
-							core::recti progressRect = frameRect;
-							progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
-							driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clientClip );
-							Font->draw( tmpstr, textRect, itbncolor, false, true, &clientClip );
-						}
+							_DrawAsTechnology( tech, textRect, frameRect, itbncolor, clientClip );
 						else if( IUser* user = dynamic_cast<IUser*>( pObject ) )
-						{
-							wchar_t tmpstr[ 128 ];
-							video::IVideoDriver* driver = Environment->getVideoDriver();
-
-							textRect.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
-							textRect.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
-
-							int expr = user->GetValue<int>( EXPERIENCE );
-							std::wstring name = StrToWide( user->GetValue<std::string>( NAME ) );
-
-							swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), expr );
-							core::recti progressRect = frameRect;
-							progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
-							//driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clientClip );
-							std::string pathToImage = user->GetValue<std::string>( TEXTURENORMAL );
-							driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
-												 core::recti( 3, 3, textRect.getHeight(), textRect.getHeight() - 6 ) + textRect.UpperLeftCorner,
-												 core::recti( 0, 0, 128, 128 ) );
-							Font->draw( tmpstr, textRect + core::position2di( textRect.getHeight() + 6, 0 ), itbncolor, false, true, &clientClip ); 
-						}
+							_DrawAsUser( user, textRect, frameRect, itbncolor, clientClip );
+						else if( CNrpDevelopGame* devGame = dynamic_cast< CNrpDevelopGame* >( pObject ) )
+							_DrawAsGame( devGame, textRect, frameRect, itbncolor, clientClip );
 					}
 					textRect.UpperLeftCorner.X -= ItemsIconWidth+3;
 				}
@@ -608,6 +603,69 @@ void CNrpComponentListbox::draw()
 	IGUIElement::draw();
 }
 //////////////////////////////////////////////////////////////////////////
+
+void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti rectangle, 
+									    core::recti frameRect, video::SColor color, 
+									    core::recti& clipRect )
+{
+	wchar_t tmpstr[ 128 ];
+	video::IVideoDriver* driver = Environment->getVideoDriver();
+
+	rectangle.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
+	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
+
+	std::wstring name = StrToWide( devGame->GetValue<std::string>( NAME ) );
+
+	core::recti progressRect = frameRect;
+	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
+
+	std::string pathToImage = devGame->GetValue<std::string>( TEXTURENORMAL );
+	driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
+			  			  core::recti( 3, 3, rectangle.getHeight(), rectangle.getHeight() - 6 ) + rectangle.UpperLeftCorner,
+						  core::recti( 0, 0, 128, 128 ) );
+
+	//это создали темповый прямоугольник для отображения
+	core::recti fullRectangle = rectangle; 
+	fullRectangle.LowerRightCorner.Y = fullRectangle.UpperLeftCorner.Y + rectangle.getHeight() * 0.3f;
+
+	//создадим прямоугольник для известности и сдвинем его чуть вниз
+	core::recti famous = fullRectangle + core::position2di( 0, rectangle.getHeight() * 0.1f ) ;
+	famous.LowerRightCorner.Y = famous.UpperLeftCorner.Y + rectangle.getHeight() * 0.3;
+	famous.LowerRightCorner.X = famous.UpperLeftCorner.X + famous.getWidth() * devGame->GetValue<float>( FAMOUS );
+
+	//создадим прямоугольник для завершенности игры
+	core::recti finished = famous + core::position2di( 0, rectangle.getHeight() * 0.1f ) ;
+	finished.LowerRightCorner.X = finished.UpperLeftCorner.X + fullRectangle.getWidth() * devGame->GetValue<float>( READYWORKPERCENT );
+
+	driver->draw2DRectangle( 0xff00ff00, famous, &clipRect );
+	driver->draw2DRectangle( 0xff0000ff, finished, &clipRect );
+
+	Font->draw( name.c_str(), rectangle + core::position2di( rectangle.getHeight() + 6, 0 ), color, false, true, &clipRect ); 
+}
+
+void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle, 
+									    core::recti frameRect, video::SColor color, 
+									    core::recti& clipRect )
+{
+	wchar_t tmpstr[ 128 ];
+	video::IVideoDriver* driver = Environment->getVideoDriver();
+
+	rectangle.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
+	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
+
+	int expr = user->GetValue<int>( EXPERIENCE );
+	std::wstring name = StrToWide( user->GetValue<std::string>( NAME ) );
+
+	swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), expr );
+	core::recti progressRect = frameRect;
+	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
+	//driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clientClip );
+	std::string pathToImage = user->GetValue<std::string>( TEXTURENORMAL );
+	driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
+		core::recti( 3, 3, rectangle.getHeight(), rectangle.getHeight() - 6 ) + rectangle.UpperLeftCorner,
+		core::recti( 0, 0, 128, 128 ) );
+	Font->draw( tmpstr, rectangle + core::position2di( rectangle.getHeight() + 6, 0 ), color, false, true, &clipRect ); 
+}
 
 u32 CNrpComponentListbox::addItem(const wchar_t* text, s32 icon)
 {

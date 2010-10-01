@@ -24,8 +24,11 @@ public:
 	int GetTypeName( lua_State* L );
 	int GetNumberDay( lua_State* L );
 	int SetNumberDay( lua_State* L );
+	int GetPrice( lua_State* L );
 	int Remove( lua_State* L );
+	int GetTexture( lua_State* L );
 	int Create( lua_State* L );
+
 
 	static const char* StaticGetLuaName() { return CLASS_LUAREKLAME.c_str(); }	
 };

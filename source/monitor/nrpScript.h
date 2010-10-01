@@ -34,9 +34,12 @@ public:
 	void CallFunction( const char* funcName, void* userData=NULL );
 	void CreateTemporaryScript( const std::string& fileName );
 	void AddActionToTemporaryScript( const std::string& fileName, const std::string& action );
+	void SetSender( void* ptr ) { _sender = ptr; }
+	void* GetSender() { return _sender; }
 	
 private:
 	lua_State* vm_;
+	void* _sender;
 
 	void Load_( char* file_name );
 	void RegisterLuaClasses_();

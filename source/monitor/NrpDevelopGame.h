@@ -24,6 +24,7 @@ public:
 	void Load( std::string loadFolder );
 	CNrpProjectModule* GetGenre( size_t index );
 	CNrpProjectModule* GetModule( size_t index );
+	CNrpProjectModule* GetModule( const char* name );
 
 	void CalculateCodeVolume();
 	bool IsReady();

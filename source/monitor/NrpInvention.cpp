@@ -147,7 +147,7 @@ int CNrpInvention::AddUser( IUser* user )
 	
 	_users.push_back( user );
 	SetValue<int>( USERNUMBER, _users.size() );
-	user->AddWork( this, false );
+	user->AddWork( this );
 	return 0;
 }
 

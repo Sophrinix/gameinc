@@ -65,6 +65,7 @@ public:
 	*/
 	virtual void AddLuaFunction( const int actionType, const std::string& funcName ) 
 	{
+		assert( actionType != 0 );
 		if( FindLuaFunction(actionType, funcName) != luaFunctions_.end() )
 			return;
 
@@ -94,8 +95,18 @@ public:
 			{
 				PFunctionLink pLink = luaFunctions_[ cnt ];
 				if( pLink->actionType == funcType )
-					nrp::CNrpScript::Instance().CallFunction( pLink->funcName.c_str(), param );
+				{
+					nrp::CNrpScript::Instance().SetSender( param );
+					const char* tmp = pLink->funcName.c_str();
+
+					if( *tmp == '.' && *(tmp+1) == '/')
+						nrp::CNrpScript::Instance().DoString( tmp+2 );
+					else
+						nrp::CNrpScript::Instance().CallFunction( tmp, param );
+
+				}
 			}
+
 		}
 		catch(...)
 		{

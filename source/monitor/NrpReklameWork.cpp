@@ -7,7 +7,8 @@
 namespace nrp
 {
 
-CNrpReklameWork::CNrpReklameWork( std::string typeName, std::string gameName ):INrpConfig( CLASS_REKLAMEWORK, "" )
+CNrpReklameWork::CNrpReklameWork( std::string typeName, std::string gameName )
+				:INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
 	SetValue<std::string>( TECHTYPE, typeName );
@@ -25,19 +26,22 @@ void CNrpReklameWork::InitializeOptions_()
 	CreateValue<float>( MAXQUALITY, 0 );
 	CreateValue<std::string>( GAMENAME, "" );
 	CreateValue<bool>( FINISHED, false );
+	CreateValue<std::string>( TEXTURENORMAL, "" );
+	CreateValue<int>( BALANCE, 0 );
 }
 
 CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
 	SetValue<int>( NUMBERDAY, p.GetValue<int>( NUMBERDAY ) );
-	SetValue<int>( LEVEL,  p.GetValue<int>( LEVEL ) );
-	SetValue<std::string>( NAME,  p.GetValue<std::string>( NAME ) );
-	SetValue<int>( PRICEINDAY,  p.GetValue<int>( PRICEINDAY ) );
-	SetValue<float>( QUALITY,  p.GetValue<float>( QUALITY ) );
-	SetValue<float>( MAXQUALITY,  p.GetValue<float>( MAXQUALITY ) );
-	SetValue<std::string>( GAMENAME,  p.GetValue<std::string>( GAMENAME ) );
+	SetValue<int>( LEVEL, p.GetValue<int>( LEVEL ) );
+	SetValue<std::string>( NAME, p.GetValue<std::string>( NAME ) );
+	SetValue<int>( PRICEINDAY, p.GetValue<int>( PRICEINDAY ) );
+	SetValue<float>( QUALITY, p.GetValue<float>( QUALITY ) );
+	SetValue<float>( MAXQUALITY, p.GetValue<float>( MAXQUALITY ) );
+	SetValue<std::string>( GAMENAME, p.GetValue<std::string>( GAMENAME ) );
 	SetValue<std::string>( TECHTYPE, p.GetValue<std::string>( TECHTYPE ) );
+	SetValue<std::string>( TEXTURENORMAL, p.GetValue<std::string>( TEXTURENORMAL ) );
 }
 
 CNrpReklameWork::~CNrpReklameWork(void)
@@ -73,6 +77,7 @@ void CNrpReklameWork::BeginNewDay()
 	}
 
 	AddValue<int>( NUMBERDAY, -1 );
+	AddValue<int>( BALANCE, GetValue<int>( PRICEINDAY ) );
 	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) > 0 );
 }
 }//end namespace nrp
