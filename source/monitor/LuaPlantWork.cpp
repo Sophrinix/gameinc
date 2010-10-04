@@ -56,8 +56,10 @@ int CLuaPlantWork::Create( lua_State* L )
 	const char* name = lua_tostring( L, 2 );
 	assert( name != NULL );
 	object_ = new CNrpPlantWork( name );
-	lua_pushlightuserdata( L, object_ );
 
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, object_ );
+	Luna< CLuaPlantWork >::constructor( L );
 	return 1;	
 }
 

@@ -1,3 +1,15 @@
+local base = _G
+
+module( "univer" )
+
+local guienv = base.guienv
+
+local scrWidth = base.scrWidth
+local scrHeight = base.scrHeight
+local button = base.button
+local tutorial = base.tutorial
+local applic = base.applic
+
 local mode = { }
 mode[ "Программисты" ] = "coder"
 mode[ "Дизайнеры" ] = "designer"
@@ -10,9 +22,40 @@ local windowUpEmployer = nil
 
 local userToUp = nil
 
-function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
-	local user = CLuaUser( userPtr )
-	local windowg = guienv:AddWindow( "", x, y, x + width, y + height, -1, parentWnd )
+function Show()
+	if univerWindow then
+		univerWindow:SetVisible( true )
+	else
+		univerWindow = guienv:AddWindow( "media/univer_dvor.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		univerWindow:GetCloseButton():SetVisible( false )
+		univerWindow:SetDraggable( false )
+		
+		--adding closeButton
+		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
+		 			    "button_down", univerWindow:Self(), -1, "",
+						"./univerWindow:Hide()" )
+	end	
+	
+	tutorial.Update( tutorial.STEP_OVERVIEW_UNIVER )
+
+	--stuff plate	
+	button.EqualeTexture( 122, 320, "stuffPlate", univerWindow:Self(), -1, "", "./univer.ShowEmployersWindow()" )
+	
+	--outsourcing
+	button.EqualeTexture( 612, 300, "outsorcing", univerWindow:Self(), -1, "", "./outsourcing.Show()" )
+end
+
+local function AddProgressBar( windowe, x1, y1, x2, y2, id, pos, textr )
+	local prg = guienv:AddProgressBar( windowe:Self(), x1, y1, x2, y2, id )
+	prg:SetPosition( pos )						   
+	prg:SetImage( "media/stars01.tga" )
+	prg:SetFillImage( "media/stars06.tga" )
+	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, windowe:Self() )
+	label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+end
+
+function ShowUserInfoWindow( x, y, width, height, user )
+	local windowg = guienv:AddWindow( "", x, y, x + width, y + height, -1, windowUpEmployer:Self() )
 	local button = windowg:GetCloseButton()
 	local image = nil
 	
@@ -26,45 +69,30 @@ function sworkCreateUserInfoWindow( parentWnd, x, y, width, height, userPtr )
 	image:SetScaleImage( true )
 	image:SetUseAlphaChannel( true )	
 
-	local prg = guienv:AddProgressBar( windowg:Self(), xOffset, 30, width - 5, 30 + 15, -1 )
-	prg:SetPosition( user:GetParam( "knowledgeLevel" ) )						   
-	prg:SetImage( "media/stars01.tga" )
-	prg:SetFillImage( "media/stars06.tga" )
-	guienv:AddLabel( "Опыт", xOffset, 30, width, 30 + 15, -1, windowg:Self() ):SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
-
-	prg = guienv:AddProgressBar( windowg:Self(), xOffset, 55, width - 5, 55 + 15, -1 )
-	prg:SetPosition( user:GetParam("codeQuality") ) 	
-	prg:SetImage( "media/stars01.tga" )
-	prg:SetFillImage( "media/stars06.tga" )
-	guienv:AddLabel( "Качество", xOffset, 55, width, 55 + 15, -1, windowg:Self() ):SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
-
-	prg = guienv:AddProgressBar( windowg:Self(), xOffset, 80, width - 5, 80 + 15, -1 )
-	prg:SetPosition( user:GetParam("codeSpeed") ) 
-	prg:SetImage( "media/stars01.tga" )
-	prg:SetFillImage( "media/stars06.tga" )
-	guienv:AddLabel( "Скорость", xOffset, 80, width, 80 + 15, -1, windowg:Self() ):SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
-
-	prg = guienv:AddProgressBar( windowg:Self(), xOffset, 105, width - 5, 105 + 15, -1 )
-	prg:SetPosition( user:GetParam("stability") ) 
-	prg:SetImage( "media/stars01.tga" )
-	prg:SetFillImage( "media/stars06.tga" )
-	guienv:AddLabel( "Устойчивость", xOffset, 105, width, 105 + 15, -1, windowg:Self() ):SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
+	AddProgressBar( windowg, xOffset, 30, width - 5, 30 + 15, -1, 
+					user:GetParam( "knowledgeLevel" ), base.STR_EXPERIENCE )
+	AddProgressBar( windowg, xOffset, 55, width - 5, 55 + 15, -1, 
+					user:GetParam("codeQuality"), base.STR_QUALITY )
+	AddProgressBar( windowg, xOffset, 80, width - 5, 80 + 15, -1,
+					user:GetParam("codeSpeed"), base.STR_SPEED )
+	AddProgressBar( windowg, xOffset, 105, width - 5, 105 + 15, -1,
+	                user:GetParam("stability"), base.STR_STAMINA )
 					   
     guienv:AddLabel( "Зарплата: "..user:GetParam( "wantMoney" ).."$", xOffset, 110, width, 110 + 20, -1, windowg:Self() )
 	
 	local btn = guienv:AddButton( width / 2 - 50, height - 30, width / 2 + 50, height - 10, windowg:Self(), -1, "Нанять" )
-	btn:SetAction( "sworkUpEmployer" )				   
+	btn:SetAction( "./univer.UpEmployer()" )				   
 end
 
-function sworkUpEmployer( ptr )
-	local button = CLuaButton( ptr )
-	local windowg = CLuaWindow( button:GetParent() )
+function UpEmployer()
+	local button = base.CLuaButton( base.NrpGetSender() )
+	local windowg = base.CLuaWindow( button:GetParent() )
 	local name = windowg:GetText() 
 	
 	userToUp = applic:GetUserByName( name )
 	if userToUp:GetParam( "contractMoney" ) > 0 then 
 	    local money = userToUp:GetParam( "contractMoney" ) * userToUp:GetParam( "wantMoney" )
-		guienv:MessageBox( "Деньги за контракт $" .. money, true, true, "sworkEmployContractUser", "" )
+		guienv:MessageBox( "Деньги за контракт $" .. money, true, true, "./univer.UpContractUser()", "" )
 		return 0
 	end
 	
@@ -72,13 +100,13 @@ function sworkUpEmployer( ptr )
 	guienv:AddToDeletionQueue( windowg:Self() )
 end
 
-function sworkEmployContractUser()
+function UpContractUser()
 	local company = applic:GetPlayerCompany()
 	company:AddUser( userToUp:Self() )
 	sworkCreateEmployersWindow()
 end
 
-local function ShowAvaibleEmployers( ptr )
+local function ShowAvaibleEmployers()
 	local maxuser = applic:GetUserNumber()
 	local hTemp = ( scrHeight - 150 ) / 3
 	
@@ -86,17 +114,17 @@ local function ShowAvaibleEmployers( ptr )
 	local yoffset = 100
 	
 	local cnt = 0
-	Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleEmployers:appusers" .. maxuser )
+	base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "ShowAvaibleEmployers:appusers" .. maxuser )
 	
 	for i=1, maxuser do
 		local user = applic:GetUser( i-1 )
 	
-		Log({src=SCRIPT, dev=ODS|CON}, "ShowAvaibleEmployers:user=" .. user:GetName() .. " type=" .. user:GetTypeName() )
+		base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "ShowAvaibleEmployers:user=" .. user:GetName() .. " type=" .. user:GetTypeName() )
 		if modeUserView == user:GetTypeName() and user:IsFreeUser() then
 			if cnt < 3 then
-				sworkCreateUserInfoWindow( ptr, xoffset, yoffset + cnt * hTemp, scrWidth / 2 - 30,  hTemp, user:Self() ) 
+				ShowUserInfoWindow( xoffset, yoffset + cnt * hTemp, scrWidth / 2 - 30,  hTemp, user ) 
 			else
-				sworkCreateUserInfoWindow( ptr, xoffset + scrWidth / 2, yoffset + (cnt - 3) * hTemp, scrWidth / 2 - 30,  hTemp, user:Self() ) 
+				ShowUserInfoWindow( xoffset + scrWidth / 2, yoffset + (cnt - 3) * hTemp, scrWidth / 2 - 30,  hTemp, user ) 
 			end
 		    cnt = cnt + 1
 		end
@@ -107,13 +135,12 @@ local function ShowAvaibleEmployers( ptr )
 	end
 end
 
-function sworkCreateEmployersWindow( ptr )
+function ShowEmployersWindow()
 	if windowUpEmployer == nil then
 		windowUpEmployer = guienv:AddWindow( "media/stuffUpWindowBg.tga", 0, 0, scrWidth, scrHeight, WINDOW_EMPLOYER_SELECT_ID, guienv:GetRootGUIElement() )
 		windowUpEmployer:SetDraggable( false )
 	else
 		windowUpEmployer:SetVisible( true )
-		
 	end
 	
 	local btn = windowUpEmployer:GetCloseButton()
@@ -141,16 +168,15 @@ function sworkCreateEmployersWindow( ptr )
 	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Выход" )
 	button:SetAction( "sworkWindowUpEmployerClose" )
 	
-	ShowAvaibleEmployers( windowUpEmployer:Self() )
+	ShowAvaibleEmployers()
 end
 
-function sworkWindowUpEmployerClose( ptr )
+function Hide()
 	windowUpEmployer:Remove()
 	windowUpEmployer = nil
 end
 
-function sworkWindowUpEmployerChangerUserType( ptr )
-	local button = CLuaButton( ptr )
-	modeUserView = mode[ button:GetText() ] 
-	sworkCreateEmployersWindow()
+function ChangeUserType( name )
+	modeUserView = mode[ name ] 
+	ShowEmployersWindow()
 end

@@ -563,7 +563,7 @@ void CNrpGuiLinkBox::setRelativePosition( const core::recti& rectangle )
 void CNrpGuiLinkBox::SetData( void* data )
 {
 	data_ = data;
-	DoLuaFunctionsByType( GUIELEMENT_SET_DATA, (void*)this );
+	DoLuaFunctionsByType( GUIELEMENT_SET_DATA, this );
 }
 
 void CNrpGuiLinkBox::setDefaultImage( video::ITexture* image )

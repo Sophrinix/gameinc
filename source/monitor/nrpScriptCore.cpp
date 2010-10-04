@@ -6,6 +6,7 @@
 #include <time.h>
 #include <irrlicht.h>
 #include <assert.h>
+#include <typeinfo>
 
 #include "nrpEngine.h"
 #include "nrpScript.h"
@@ -385,7 +386,7 @@ int ApplicationGetSender( lua_State* vm )
 	luaL_argcheck(vm, argc == 0, 0, "Function ApplicationGetSender not need parameter");
 
 	lua_pushlightuserdata( vm, CNrpScript::Instance().GetSender() );
-
+	
 	return 1;
 }
 }//namespace nrp

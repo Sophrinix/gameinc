@@ -1,9 +1,43 @@
+local base = _G
+
+module( "bank" )
+
+local guienv = base.guienv
+
+local scrWidth = base.scrWidth
+local sceHeight = base.scrHeight
+local button = base.button
+local tutorial = base.tutorial
+local applic = base.applic
+
 local company = nil 
-local bank = applic:GetBank()
+local bank = nil
 local windowLoan = nil
 
+function Show()
+	bank = applic:GetBank()
+	
+	if bankWindow then
+		bankWindow:SetVisible( true )
+	else
+		bankWindow = guienv:AddWindow( "media/bank_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		bankWindow:SetDraggable( false )
+		bankWindow:GetCloseButton():SetVisible( false )
+		
+		--adding closeButton
+		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
+		 			    "button_down", bankWindow:Self(), -1, "",
+						"./bankWindow:Remove(); bankWindow = nil" )
+	end
+	
+	--get loan
+	button.EqualeTexture( 80, 402, "loans", bankWindow:Self(), -1, "", "sworkCreateWindowLoanAction" )
+	--deposit	
+	button.EqualeTexture( 258, 301, "deposit", bankWindow:Self(), -1, "", "sworkCreateWindowDepositAction" )
+end
+
 function sworkShowLoans( tabler )
-	local tbl = CLuaTable( tabler )
+	local tbl = base.CLuaTable( tabler )
 	tbl:ClearRows()
 	local loansNumber = bank:GetLoansNumber()
 	if loansNumber > 0 then
@@ -85,12 +119,12 @@ end
 
 function sworkGetLoan( ptr )
 
-	local edit = CLuaEdit( guienv:GetElementByName( WNDLOANACTION_GETLOAN_EDIT ) )
+	local edit = base.CLuaEdit( guienv:GetElementByName( WNDLOANACTION_GETLOAN_EDIT ) )
 	bank:CreateLoan( company:GetName(), edit:GetText(), 14, 10 )
 	
 	sworkShowLoans( guienv:GetElementByName( WNDLOANACTION_TABLE ) )
 	
-	local label = CLuaLabel( guienv:GetElementByName( WNDLOANACTION_MAXSUM_LABEL ) )
+	local label = base.CLuaLabel( guienv:GetElementByName( WNDLOANACTION_MAXSUM_LABEL ) )
 	local summ = bank:GetMaxCompanyLoan( company:GetName() )
 	Log({src=SCRIPT, dev=ODS|CON}, summ )
 	label:SetText(  "Доступная сумма: "..summ )

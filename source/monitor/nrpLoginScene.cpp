@@ -96,16 +96,16 @@ void CNrpLoginScene::OnEnter()
 		core::dimension2d<f32>(0,0),
 		core::dimension2d<f32>(10,10) );
 	
-	waterNode_ = smgr->addWaterSurfaceSceneNode(mesh->getMesh(0), 2.0f, 400.0f, 5.0f);
+/*	waterNode_ = smgr->addWaterSurfaceSceneNode(mesh->getMesh(0), 2.0f, 400.0f, 5.0f);
 	waterNode_->setPosition(core::vector3df(0.0f, 7.0f, 0.0f));
 	waterNode_->setRotation(core::vector3df(0.0f, 45.0f, 0.0f));
 	waterNode_->setMaterialTexture(0, driver->getTexture( "media/stones.jpg" ) );
 	waterNode_->setMaterialTexture(1, driver->getTexture( "media/water.jpg" ) ); 
-	waterNode_->setMaterialType(video::EMT_TRANSPARENT_REFLECTION_2_LAYER);
+	waterNode_->setMaterialType(video::EMT_TRANSPARENT_REFLECTION_2_LAYER);*/
 
 	// необходимо создать источник света,
 	// иначе ничего не будет видно
-	lightNode_ = smgr->addLightSceneNode(0, core::vector3df(0,0,0),
+/*	lightNode_ = smgr->addLightSceneNode(0, core::vector3df(0,0,0),
 		video::SColorf(0.0f, 0.6f, 0.7f, 1.0f), 1200.0f);
 
 
@@ -120,25 +120,17 @@ void CNrpLoginScene::OnEnter()
 	camera_->setPosition(core::vector3df(0,150,0));
 	camera_->setRotation(core::vector3df(0,0,0));
 	camera_->setTarget(core::vector3df(0,0,0));
-	smgr->setActiveCamera( camera_ );
+	smgr->setActiveCamera( camera_ );*/
 
 /*	pf = new gui::CNrp2DPictureFlow( env, env->getRootGUIElement(), core::recti( 0, 0, 400, 400 ), core::recti( 0, 0, 150, 150 ), -1 );
 	for( int k=0; k < 15; k++ )
 		pf->addItem( driver->getTexture( "media/devka.jpg" ), L"" );
 */
-	const core::dimension2du SCREEN_SIZE = driver->getScreenSize();
-	// добавляем надпись "НЕРПА"
-	nerpaLogoTexture_ = driver->getTexture( "media/main.psd" );
-
-	core::dimension2du textureSize = nerpaLogoTexture_->getSize();
-	s32 xOff = (SCREEN_SIZE.Width - textureSize.Width) / 2;
-	s32 yOff = (SCREEN_SIZE.Height - textureSize.Height) / 2;
-	mainLogo_ = env->addImage( nerpaLogoTexture_, core::position2di(xOff,yOff) );
+	env->addImage( driver->getTexture("media/splash.png"), core::position2di( 0, 0 ) );
 
 	// эффект fade-in
 	fader_ = env->addInOutFader();
 	fader_->fadeIn( 5000 );
-	fader_->getParent()->sendToBack( fader_ );
 }
 //////////////////////////////////////////////////////////////////////////
 

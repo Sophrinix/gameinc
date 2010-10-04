@@ -1,23 +1,22 @@
 --безопасная загрузка  скриптов
+
 IncludeScript("button")
 IncludeScript("swork_MainMenu")
 IncludeScript("swork_wndCompanyInfo")
 IncludeScript("swork_StoreWindow")
-IncludeScript("swork_ObjectsLoading")
+IncludeScript("city")
 IncludeScript("swork_wndProjectWizard")
 IncludeScript("userManager")
-IncludeScript("swork_wndShop")
+IncludeScript("shop")
 IncludeScript("reklameManager")
-IncludeScript("swork_InventionManager") 
-IncludeScript("swork_wndCharts")
-IncludeScript("swork_wndChartsManage") 
-IncludeScript("swork_TargetCameraFunctions") 
-IncludeScript("swork_wndLoanAction")
-IncludeScript("swork_wndUniverStuffUp")
-IncludeScript("projectManager")	--as module
-IncludeScript("swork_wndGameBoxCreate")
-IncludeScript("swork_wndDiskPlant")
-IncludeScript("swork_wndLaboratory" )
+IncludeScript("inventionManager") 
+IncludeScript("bank")
+IncludeScript("univer")
+IncludeScript("projectManager")	
+IncludeScript("gameboxManager")
+IncludeScript("plant")
+IncludeScript("laboratory" )
+IncludeScript("office")
 --------------------------------------------
 
 alwaysOnTopWindow = {}
@@ -38,11 +37,10 @@ sceneManager:DrawProgress( 77 )
 applic:CreateNewFreeUsers()
 sceneManager:DrawProgress( 95 )
 
-ApplicationLoadCityScene()
+city.Show()
 sceneManager:DrawProgress( 100 )
 
-local playerCompany = applic:GetPlayerCompany()
-playerCompany:AddLuaFunction( COMPANY_READY_PROJECT, "sworkPlayerCompanyReadyProject" )
+applic:GetPlayerCompany():AddLuaFunction( COMPANY_READY_PROJECT, "sworkPlayerCompanyReadyProject" )
 --[[for i=1, applic:GetCompanyNumber() do
 	local cmp = CLuaCompany( applic:GetCompany( i - 1 ) )
 	cmp:AddLuaFunction( COMPANY_READY_PROJECT, "sworkCompanyReadyProject" )

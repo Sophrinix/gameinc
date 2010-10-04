@@ -137,7 +137,7 @@ bool CNrpApplication::UpdateTime()
 			{
 				time.wHour = 9;
 				spd = SPD_DAY;
-				DoLuaFunctionsByType( APP_DAY_CHANGE, (void*)this );
+				DoLuaFunctionsByType( APP_DAY_CHANGE, this );
 				BeginNewDay_();
 			}
 		}
@@ -150,7 +150,7 @@ bool CNrpApplication::UpdateTime()
 			{
 				time.wDay = 0;
 			    spd = SPD_MONTH;
-				DoLuaFunctionsByType( APP_MONTH_CHANGE, (void*)this );
+				DoLuaFunctionsByType( APP_MONTH_CHANGE, this );
 				BeginNewMonth_();
 			}
 		}
@@ -162,7 +162,7 @@ bool CNrpApplication::UpdateTime()
 			{
 				time.wMonth = 0;
 				time.wYear++;
-				DoLuaFunctionsByType( APP_YEAR_CHANGE, (void*)this );
+				DoLuaFunctionsByType( APP_YEAR_CHANGE, this );
 			}
 		}
 

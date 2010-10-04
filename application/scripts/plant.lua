@@ -1,10 +1,22 @@
+local base = _G
+
+module( "plant" )
+
+local guienv = base.guienv
+
+local scrWidth = base.scrWidth
+local scrHeight = base.scrHeight
+local button = base.button
+local tutorial = base.tutorial
+
 local company = nil
 local wndDPP = nil
-local produceDiskWork = CLuaPlantWork( nil )
+local produceDiskWork = nil
+
 local dayOfProduce = 0
 local numberMachine = 0
 local labelPricePrint = nil
-local currentDiskMachine = CLuaDiskMachine( nil )
+local currentDiskMachine = nil
 local labelPerdomance = nil
 local labelPriceHour = nil
 local labelNumberMachine = nil
@@ -16,35 +28,60 @@ local labelAdvPrice = nil
 local labelDiskInDay = nil
 local cmbxProduceType = nil
 local cmbxGames = nil
-
-local width = scrWidth
-local height = scrHeight
+local plantWindow = mil
 
 local addons = { }
 
-function sworkCreateDiskProducePlantWindow( ptr )
+function Hide()
+	plantWindow:Remove()
+	plantWindow = nil
+end
+
+function Show()
+	if plantWindow then
+		plantWindow:SetVisible( true )
+	else
+		plantWindow = guienv:AddWindow( "media/plant_normal.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		plantWindow:GetCloseButton():SetVisible( false )
+		plantWindow:SetDraggable( false )
+		
+		--adding closeButton
+		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
+		 			    "button_down", plantWindow:Self(), -1, "",
+						"./plant.Hide()" )
+	end	
+	
+	tutorial.Update( tutorial.STEP_OVERVIEW_PLANT )
+	
+	--box manager
+	button.EqualeTexture( 94, 29, "boxManager", plantWindow:Self(), -1, "", "./gameboxManager.Show()" )
+	--produce
+	button.EqualeTexture( 407, 1, "produce", plantWindow:Self(), -1, "", "./plant.ShowDiskManager()" )
+end
+
+function ShowDiskManager()
 	numberMachine = 0
 	dayOfProduce = 0
-	company = applic:GetPlayerCompany()
+	company = base.applic:GetPlayerCompany()
 	
-	produceDiskWork:Create( company:GetName() )
+	produceDiskWork = base.CLuaPlantWork():Create( company:GetName() )
 	
 	if wndDPP == nil then
-		wndDPP = guienv:AddWindow( "media/plant_Select.tga", 0, 0, width, height, WINDOW_DISKPRODUCEPLANT_ID, guienv:GetRootGUIElement() )
-		wndDPP:SetName( WINDOW_DISKPRODUCEPLANT_NAME )
+		wndDPP = guienv:AddWindow( "media/plant_Select.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		wndDPP:SetName( base.WINDOW_DISKPRODUCEPLANT_NAME )
 		wndDPP:SetDraggable( false )
 	else
 		wndDPP:SetVisible( true )
 	end
 	
 	--добавим выпадающий список типа аппаратов
-	cmbxProduceType = guienv:AddComboBox( "", 10, 20, width / 2 - 10, 40, -1, wndDPP:Self() )
-	for i=1, applic:GetDiskMachineNumber() do
-		local dm = CLuaDiskMachine( applic:GetDiskMachine( i-1 ) )
+	cmbxProduceType = guienv:AddComboBox( "", 10, 20, scrWidth / 2 - 10, 40, -1, wndDPP:Self() )
+	for i=1, base.applic:GetDiskMachineNumber() do
+		local dm = base.applic:GetDiskMachine( i-1 )
 		cmbxProduceType:AddItem( dm:GetName(), dm:Self() )		
 	end
 	
-	cmbxGames = guienv:AddComboBox( "", 10, height / 2, width / 2 - 10, height / 2 + 20,  -1, wndDPP:Self() )
+	cmbxGames = guienv:AddComboBox( "", 10, scrHeight / 2, scrWidth / 2 - 10, scrHeight / 2 + 20,  -1, wndDPP:Self() )
 	for i=1, company:GetGameNumber() do
 		local game = company:GetGame( i-1 )
 		if game:HaveBox() then 
@@ -52,76 +89,72 @@ function sworkCreateDiskProducePlantWindow( ptr )
 		end	
 	end
 
-	wndDPP:AddLuaFunction( GUIELEMENT_CMBXITEM_SELECTED, "sworkWndDiskProducePlantCmbxItemSelected" )
+	wndDPP:AddLuaFunction( base.GUIELEMENT_CMBXITEM_SELECTED, "./plant.ComboboxItemSelected()" )
 	
 	--добавим метку цены за наем одного аппарата
 	labelPricePrint = guienv:AddLabel( "Плата за размещение:", 
-												width / 2 + 10, 20, width - 10, 40, 
+												scrWidth / 2 + 10, 20, scrWidth - 10, 40, 
 												-1, wndDPP:Self() )
 	--Добавим метку производительности аппарата
 	labelPerdomance = guienv:AddLabel( "Производительность (коробок\час):", 
-												width / 2 + 10, 50, width - 10, 70, 
+												scrWidth / 2 + 10, 50, scrWidth - 10, 70, 
 												-1, wndDPP:Self() )
 	--добавим метку стоимости работы в час
 	labelPriceHour = guienv:AddLabel( "Стоимость работы ($\час):", 
-											   width / 2 + 10, 80, width - 10, 100, 
+											   scrWidth / 2 + 10, 80, scrWidth - 10, 100, 
 											   -1, wndDPP:Self() )
 	
 	--добавим кнопки изменения количества аппаратов для производства дисков
-	local btn = guienv:AddButton( 10, 50, 60, 100, wndDPP:Self(), -1, "+" )
-	btn:SetAction( "sworkWndDiskProducePlantIncMachineNumber" )
+	guienv:AddButton( 10, 50, 60, 100, wndDPP:Self(), -1, "+" ):SetAction( "./plant.IncMachineNumber()" )
 	
 	labelNumberMachine = guienv:AddLabel( "Количество линий сборки:",
-												   100, 50, width / 2 - 60, 100, 
+												   100, 50, scrWidth / 2 - 60, 100, 
 												   -1, wndDPP:Self() )
-	btn = guienv:AddButton( width / 2 - 60, 50, width / 2 - 10, 100, wndDPP:Self(), -1, "-" )
-	btn:SetAction( "sworkWndDiskProducePlantDecMachineNumber" )
+	guienv:AddButton( scrWidth / 2 - 60, 50, scrWidth / 2 - 10, 100, 
+					  wndDPP:Self(), -1, "-" ):SetAction( "./plant.DecMachineNumber()" )
 	
 	--добавим кнопки изменения количества дней производства
-	btn = guienv:AddButton( 10, 110, 60, 160, wndDPP:Self(), -1, "+" )
-	btn:SetAction( "sworkWndDiskProducePlantIncDayNumber" )
+	guienv:AddButton( 10, 110, 60, 160, wndDPP:Self(), -1, "+" ):SetAction( "./plant.IncDayNumber()" )
 	
 	labelNumberDay = guienv:AddLabel( "Дней производства:", 
-											   100, 110, width / 2 - 60, 160, 
+											   100, 110, scrWidth / 2 - 60, 160, 
 											   -1, wndDPP:Self() )
-	btn = guienv:AddButton( width / 2 - 60, 110, width / 2 - 10, 160, wndDPP:Self(), -1, "-" )
-	btn:SetAction( "sworkWndDiskProducePlantDecDayNumber" )
+	guienv:AddButton( scrWidth / 2 - 60, 110, scrWidth / 2 - 10, 160, 
+					  wndDPP:Self(), -1, "-" ):SetAction( "./plant.DecDayNumber()" )
 	
 	--добавим метку количества произведенных дисков
 	labelDiskNumber = guienv:AddLabel( "Количество дисков:", 
-												width / 2 + 10, 170, width - 10, 220, 
+												scrWidth / 2 + 10, 170, scrWidth - 10, 220, 
 												-1, wndDPP:Self() )
 	
 	--добавим метку общей цены за производство
 	labelFinalPrice = guienv:AddLabel( "Общая цена:", 
-											    width / 2 + 10, 230, width - 10, 280, 
+											    scrWidth / 2 + 10, 230, scrWidth - 10, 280, 
 											    -1, wndDPP:Self() )
 	
 	--добавим метку цены одного диска
 	labelDiskPrice = guienv:AddLabel( "Цена одного диска:", 
-											   width / 2 + 10, 290, width - 10, 340, 
+											   scrWidth / 2 + 10, 290, scrWidth - 10, 340, 
 											   -1, wndDPP:Self() )
 	--Добавим метку стоимости дополнительных фишек
 	labelAdvPrice = guienv:AddLabel(  "Цены дополнительных вещей:", 
-											   width / 2 + 10, 350, width - 10, 400, 
+											   scrWidth / 2 + 10, 350, scrWidth - 10, 400, 
 											   -1, wndDPP:Self() )
 
 	--Добавим метку количества произведенных дисков за день
 	labelDiskInDay = guienv:AddLabel(  "Всего дисков за день:", 
-											   width / 2 + 10, 410, width - 10, 450, 
+											   scrWidth / 2 + 10, 410, scrWidth - 10, 450, 
 											   -1, wndDPP:Self() )
 
 											   
-	local createBtn = guienv:AddButton( 10, height - 50, width / 2 - 10, height - 10, 
-													wndDPP:Self(), -1, "Запустить" )
-	createBtn:SetAction( "sworkWndDiskProducePlantLocate" )
+	guienv:AddButton( 10, scrHeight - 50, scrWidth / 2 - 10, scrHeight - 10, 
+					  wndDPP:Self(), -1, "Запустить" ):SetAction( "./plant.AddWork()" )
 	
-	local closeBtn = guienv:AddButton( width / 2 + 10, height - 50, width - 10, height - 10, 
-												   wndDPP:Self(), -1, "Выход" )
-	closeBtn:SetAction( "sworkWndDiskProducePlantClose" )
+	guienv:AddButton( scrWidth / 2 + 10, scrHeight - 50, scrWidth - 10, scrHeight - 10, 
+					  wndDPP:Self(), -1, "Выход" ):SetAction( "./plant.HideProduceManager()" )
 end
 
-function sworkWndDiskProducePlantLocate( ptr )
+function AddWork()
 	plant:AddProduceWork( produceDiskWork:Self() )
 	
 	produceDiskWork:Remove()
@@ -129,14 +162,14 @@ function sworkWndDiskProducePlantLocate( ptr )
 	wndDPP = nil
 end
 
-function sworkWndDiskProducePlantClose( ptr )
+function HideProduceManager()
 	produceDiskWork:Remove()
 	wndDPP:Remove()
 	wndDPP = nil
 end
 
 local function UpdateAddons( ptrGame )
-	local game = CLuaGame( ptrGame )
+	local game = base.CLuaGame( ptrGame )
 	
 	for i=1, #addons do
 		addons[ 1 ]:Remove()
@@ -147,7 +180,7 @@ local function UpdateAddons( ptrGame )
 	for i=1, addonsNumber do
 		local addon = game:GetBoxAddon( i-1 )
 		local link = guienv:AddLinkBox( addon:GetName(), 
-													 20 + 70 * ( i - 1 ), 20 + height * 0.75,
+					  				    20 + 70 * ( i - 1 ), 20 + scrHeight * 0.75,
 													 20 + 70 * i, 20 + height * 0.75 + 70,
 													 -1, wndDPP:Self() )
 		link:SetData( game:GetBoxAddon( i-1 ) )
@@ -162,20 +195,20 @@ local function UpdateLabels()
 	labelNumberMachine:SetText( "Количество линий сборки:"..produceDiskWork:GetNumberMachine().."(шт)" )
 	labelNumberDay:SetText( "Дней производства:"..produceDiskWork:GetNumberDay().."(дн)" )
 	labelDiskNumber:SetText(  "Количество дисков:"..produceDiskWork:GetNumberDisk().."(шт)" ) 
-	labelDiskPrice:SetText( "Цена одного диска:"..string.format( "%.2f", produceDiskWork:GetDiskPrice() ).."$" )  
+	labelDiskPrice:SetText( "Цена одного диска:"..base.string.format( "%.2f", produceDiskWork:GetDiskPrice() ).."$" )  
 	labelFinalPrice:SetText( "Общая стоимость:"..produceDiskWork:GetPrice().."$" )
-	labelAdvPrice:SetText( "Цены дополнительных вещей:"..string.format( "%.2f", produceDiskWork:GetAdvPrice() ).."$" )
+	labelAdvPrice:SetText( "Цены дополнительных вещей:"..base.string.format( "%.2f", produceDiskWork:GetAdvPrice() ).."$" )
 	labelDiskInDay:SetText( "Всего дисков за день:"..produceDiskWork:GetDiskInDay().." шт" )
 end
 
-function sworkWndDiskProducePlantIncDayNumber( ptr )
+function IncDayNumber()
 	dayOfProduce = dayOfProduce + 1
 	produceDiskWork:SetNumberDay( dayOfProduce )
 	
 	UpdateLabels()
 end
 
-function sworkWndDiskProducePlantDecDayNumber( ptr )
+function DecDayNumber()
 	if dayOfProduce > 1 then
 		dayOfProduce = dayOfProduce - 1
 		produceDiskWork:SetNumberDay( dayOfProduce )
@@ -191,15 +224,14 @@ local function localGetAddinMachine()
 	if numberMachine > 500 then return 100 end
 end
 
-function sworkWndDiskProducePlantIncMachineNumber( ptr )
-
+function IncMachineNumber()
 	numberMachine = numberMachine + localGetAddinMachine()
 	produceDiskWork:SetNumberMachine( numberMachine )
 	
 	UpdateLabels()
 end
 
-function sworkWndDiskProducePlantDecMachineNumber( ptr )
+function DecMachineNumber( ptr )
 	if numberMachine > 1 then
 		numberMachine = numberMachine - localGetAddinMachine()
 		produceDiskWork:SetNumberMachine( numberMachine )
@@ -208,8 +240,8 @@ function sworkWndDiskProducePlantDecMachineNumber( ptr )
 	UpdateLabels()
 end
 
-function sworkWndDiskProducePlantCmbxItemSelected( ptr )
-	local cmbx = CLuaComboBox( ptr )
+function ComboboxItemSelected()
+	local cmbx = base.CLuaComboBox( base.NrpGetSender() )
 	
 	if cmbxProduceType:Self() == cmbx:Self() then
 		currentDiskMachine:SetObject( cmbx:GetSelectedObject() )

@@ -4,6 +4,7 @@
 #include "nrpConfig.h"
 #include <stdexcept>
 #include <string>
+#include <typeinfo>
 
 struct lua_State; //fwd
 

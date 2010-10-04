@@ -282,7 +282,7 @@ CNrpScript& CNrpScript::Instance()
 	if( global_script_engine == NULL )
 		global_script_engine = new CNrpScript();
 	
-	return *global_script_engine;
+	return *global_script_engine; 
 }
 
 void CNrpScript::CallFunction( const char* funcName, void* userData )

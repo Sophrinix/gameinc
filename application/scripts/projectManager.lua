@@ -164,7 +164,7 @@ function Show( ptr )
 end
 
 function ListBoxItemSelected()
-	selectedListBox = base.CLuaComponentListBox( base.NrpGetSender() )
+	selectedListBox = base.CLuaListBox( base.NrpGetSender() )
 	currentComponent = base.CLuaDevelopModule( selectedListBox:GetSelectedObject() )
 	if selectedListBox:Self() == lbxComponents:Self() then
 		localBtnToggleTask:SetText( "Добавить задание" )

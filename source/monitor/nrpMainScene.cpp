@@ -112,7 +112,8 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 			{
 				case gui::EGET_BUTTON_CLICKED:
 				{
-					gui::CNrpButton* btn = (gui::CNrpButton*)event.GUIEvent.Caller;
+					gui::CNrpButton* btn = dynamic_cast< gui::CNrpButton* >( event.GUIEvent.Caller );
+					assert( btn != NULL );
 					//пытаемся его обработать
 					if( btn->getOnClickAction() != 0 )
 					{
@@ -144,7 +145,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 		//если произошло неперехваченное событие от клавы
 		case EET_KEY_INPUT_EVENT:
 		{	//отдадим его на обработку
-			DoLuaFunctionsByType( SCENE_KEY_INPUT_EVENT, (void*)&event );
+			DoLuaFunctionsByType( SCENE_KEY_INPUT_EVENT, &event );
 		}
 		break;
 		//последними обрабатываем события мышки
@@ -154,7 +155,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 			{		 	
 				//нажатие пкм произошло вне гуи
 				case EMIE_RMOUSE_LEFT_UP:	
-					 DoLuaFunctionsByType( SCENE_RMOUSE_LEFT_UP );
+					 DoLuaFunctionsByType<void>( SCENE_RMOUSE_LEFT_UP );
 				break;
 				//вне гуи произошло нажатие лкм
 				case EMIE_LMOUSE_LEFT_UP:
@@ -174,7 +175,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 
 				case EMIE_MOUSE_MOVED:
 				{	//обрабатываем событие перемещения мышки
-					DoLuaFunctionsByType( SCENE_MOUSE_MOVED );
+					DoLuaFunctionsByType<void>( SCENE_MOUSE_MOVED );
 				}
 				break;
 				
@@ -208,17 +209,17 @@ void CNrpMainScene::OnUpdate()
 		video::IVideoDriver* driver = CNrpEngine::Instance().GetVideoDriver();
 		
 		//вызываем событие луа до начала сцены
-		DoLuaFunctionsByType( SCENE_BEFORE_BEGIN );
+		DoLuaFunctionsByType<void>( SCENE_BEFORE_BEGIN );
 		driver->beginScene( true, true, video::SColor(150,50,50,50) );
 		
 		try
 		{
 			//вызываем событие луа до рендера сцены
-			DoLuaFunctionsByType( SCENE_BEFORE_RENDER );
+			DoLuaFunctionsByType<void>( SCENE_BEFORE_RENDER );
 			//рендерим сцену
 			RenderScene_();
 			//вызываем событие луа после рендера сцены
-			DoLuaFunctionsByType( SCENE_AFTER_RENDER );			
+			DoLuaFunctionsByType<void>( SCENE_AFTER_RENDER );			
 
 			//отладочная вещь для просмотра выделенных объектов
 			try
@@ -253,7 +254,7 @@ void CNrpMainScene::OnUpdate()
 			
 		driver->endScene();
 		//вызываем событие луа после завершения рендера сцены
-		DoLuaFunctionsByType( SCENE_AFTER_END );
+		DoLuaFunctionsByType<void>( SCENE_AFTER_END );
 	
 		if( mouseSceneBLeftEvent_ && (GetTickCount() - lastTimeNodeSelect_ > 200) )
 		{

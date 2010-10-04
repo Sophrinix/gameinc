@@ -9,7 +9,8 @@ local guienv = base.guienv
 local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
 
-local wndReklame = nil
+local mainWindow = nil
+local campaniesWindow = nil
 local picflowReklames = nil
 local lableDayNumber = nil
 local btnDecDayNumber = nil
@@ -51,7 +52,7 @@ local function localFillGamesListBox()
 end
 
 local function localAddLabel( textr, x1, y1, x2, y2 )
-	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, wndReklame:Self() )
+	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, campaniesWindow:Self() )
 	label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 	label:SetOverrideColor( 0xff, 0xff, 0xff, 0xff )
 
@@ -59,27 +60,45 @@ local function localAddLabel( textr, x1, y1, x2, y2 )
 end
 
 function Show()
+	if mainWindow then
+		mainWindow:SetVisible( true )
+	else
+		mainWindow = guienv:AddWindow( "media/marketing_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		mainWindow:SetDraggable( false )
+		mainWindow:GetCloseButton():SetVisible( false )
+		
+		--adding closeButton
+		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
+		 			    "button_down", mainWindow:Self(), -1, "",
+						"./reklameWindow:Remove(); reklameWindow = nil" )
+	end
+	
+	--get loan
+	button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow:Self(), -1, "", "./reklameManager.ShowCampaniesManager()" )
+end
+
+function ShowCampaniesManager()
 	company = applic:GetPlayerCompany()
 	plant = base.NrpGetPlant()
 	
-	if wndReklame == nil then
-		wndReklame = guienv:AddWindow( "media/marketing_select.png", 0, 0, scrWidth, 
+	if campaniesWindow == nil then
+		campaniesWindow = guienv:AddWindow( "media/marketing_select.png", 0, 0, scrWidth, 
 									   scrHeight, -1, guienv:GetRootGUIElement() )
-		wndReklame:GetCloseButton():SetVisible( false )
+		campaniesWindow:GetCloseButton():SetVisible( false )
 	end
 		
 	--блок рекламы на листовках
-	picflowReklames = guienv:AddPictureFlow( 60, 10, scrWidth - 10, scrHeight / 3, -1, wndReklame:Self() )
+	picflowReklames = guienv:AddPictureFlow( 60, 10, scrWidth - 10, scrHeight / 3, -1, campaniesWindow:Self() )
 	picflowReklames:SetPictureRect( 0, 0, scrHeight / 3 - 40, scrHeight / 3 - 40 )
 	picflowReklames:SetDrawBorder( false )
 
-	btnDecDayNumber = guienv:AddButton( 10, scrHeight / 3 + 20, 70, scrHeight / 3 + 80, wndReklame:Self(), -1, "-" )
+	btnDecDayNumber = guienv:AddButton( 10, scrHeight / 3 + 20, 70, scrHeight / 3 + 80, campaniesWindow:Self(), -1, "-" )
 	btnDecDayNumber:SetAction( "./reklameManager.DecDay()" )
 	btnDecDayNumber:SetVisible( false )
 	
 	btnIncDayNumber = guienv:AddButton( scrWidth / 2 - 80, scrHeight / 3 + 20, 
 										scrWidth / 2 - 20, scrHeight / 3 + 80, 
-										wndReklame:Self(), -1, "+" ) 										
+										campaniesWindow:Self(), -1, "+" ) 										
 	btnIncDayNumber:SetAction( "./reklameManager.IncDay()" )
 	btnIncDayNumber:SetVisible( false )
 	
@@ -100,26 +119,26 @@ function Show()
 	--блок рекламы по телевидению
 	picflowReklames:AddItem( reklames[ 4 ]:GetTexture(), reklames[ 4 ]:GetName(), reklames[ 4 ]:Self() )
 	
-	lbxGames = guienv:AddComponentListBox( scrWidth / 2 + 10, scrHeight / 3 + 20, scrWidth - 10, scrHeight - 80, -1, wndReklame:Self() )
+	lbxGames = guienv:AddComponentListBox( scrWidth / 2 + 10, scrHeight / 3 + 20, scrWidth - 10, scrHeight - 80, -1, campaniesWindow:Self() )
 	localFillGamesListBox()
 		
-	btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, wndReklame:Self(), -1, base.STR_APPLY )
+	btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, campaniesWindow:Self(), -1, base.STR_APPLY )
 	btnApplyWork:SetAction( "./reklameManager.ApplyNewWork()" )
 	btnApplyWork:SetVisible( false )
 	
-	local btnExit = guienv:AddButton( scrWidth / 2 + 10, scrHeight - 70, scrWidth - 10, scrHeight - 20, wndReklame:Self(), -1, base.STR_EXIT )
-	btnExit:SetAction( "./reklameManager.Hide()" )
+	local btnExit = guienv:AddButton( scrWidth / 2 + 10, scrHeight - 70, scrWidth - 10, scrHeight - 20, campaniesWindow:Self(), -1, base.STR_EXIT )
+	btnExit:SetAction( "./reklameManager.HideCampaniesWindow()" )
 	
 	--заказать статью в игровом журнале
 		--список журналов
 			
 	--картинка с отображением игры
-	wndReklame:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./reklameManager.SelectNewWork()" )
+	campaniesWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./reklameManager.SelectNewWork()" )
 end
 
-function Hide()
-	wndReklame:Remove()
-	wndReklame = nil
+function HideCampaniesWindow()
+	campaniesWindow:Remove()
+	campaniesWindow = nil
 end
 
 local function localUpdateLabels()

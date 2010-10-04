@@ -1409,7 +1409,19 @@
 			Name="Scripts"
 			>
 			<File
+				RelativePath="..\..\application\scripts\bank.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\button.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\city.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\director.lua"
 				>
 			</File>
 			<File
@@ -1425,6 +1437,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\gameboxManager.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\gameprojectManager.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\globalVariableInitialize.lua"
 				>
 			</File>
@@ -1433,11 +1453,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\inventionManager.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\laboratory.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\logdefs.lua"
 				>
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\NerpaActionType.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\office.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\plant.lua"
 				>
 			</File>
 			<File
@@ -1461,15 +1497,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_InventionManager.lua"
+				RelativePath="..\..\application\scripts\shop.lua"
 				>
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\swork_MainMenu.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_ObjectsLoading.lua"
 				>
 			</File>
 			<File
@@ -1481,23 +1513,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_TargetCameraFunctions.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_terrainConfig.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_UpdateFunctions.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_wndCharts.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_wndChartsManage.lua"
 				>
 			</File>
 			<File
@@ -1505,27 +1521,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_wndCreateGameProject.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_wndDiskPlant.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_wndGameBoxCreate.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_wndKeyMap.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_wndLaboratory.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_wndLoanAction.lua"
 				>
 			</File>
 			<File
@@ -1533,15 +1529,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_wndShop.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_wndUniverStuffUp.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\tutorial.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\univer.lua"
 				>
 			</File>
 			<File

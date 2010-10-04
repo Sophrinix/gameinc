@@ -16,6 +16,7 @@
 #include "LuaBank.h"
 #include "LuaTechnology.h"
 #include "LuaInvention.h"
+#include "LuaDiskMachine.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -498,7 +499,10 @@ int CLuaApplication::GetDiskMachine( lua_State* L )
 	CNrpDiskMachine* dm = NULL;
 	IF_OBJECT_NOT_NULL_THEN	dm = object_->GetDiskMachine( dmNumber );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, dm );
+	Luna< CLuaDiskMachine >::constructor( L );
+
 	return 1;	
 }
 

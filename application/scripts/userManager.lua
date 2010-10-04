@@ -5,6 +5,7 @@ module( "userManager" )
 local applic = base.applic
 local guienv = base.guienv
 local company = nil
+local button = base.button
 
 local mode = { }
 mode[ base.STR_CODERS ] = "coder"
@@ -24,6 +25,9 @@ local btnUpSalary = nil
 local btnDownSalary = nil
 local btnGiveWeekEnd = nil
 local btnGivePremia = nil
+
+local scrWidth = 0
+local scrHeight = 0
 
 local function ShowAvaibleEmployersToManage()
 	local maxuser = company:GetUserNumber()
@@ -46,20 +50,20 @@ local function ShowUsersParameters( lbx, user )
 	lbx:AddItem( "Устойчивость=" .. user:GetParam( "stability" ), nil )
 	lbx:AddItem( "Характер=" .. user:GetParam( "character" ), nil )	
 	
-	if user:GetSkill( SKL_CODING ) > 0 then 
-		lbx:AddItem( "Программирование=" .. user:GetSkill( SKL_CODING ), nil )	
+	if user:GetSkill( base.SKL_CODING ) > 0 then 
+		lbx:AddItem( "Программирование=" .. user:GetSkill( base.SKL_CODING ), nil )	
 	end
 end
 
-function sworkCloseAdvancedUserInfoWindow( ptr )
-	Log({src=SCRIPT, dev=ODS}, "Window now will remove" )
+function CloseUserInfoWindow( ptr )
+	Log({src=base.SCRIPT, dev=base.ODS}, "Window now will remove" )
 	winInfo:Remove()
 end
 
-function sworkCreateAdvancedUserInfoWindow( ptr )	
+function ShowUserInfo()	
 	if winInfo ~= nil then winInfo:Remove() end
 
-	currentEmployer = CLuaUser( listBoxCompanyEmployers:GetSelectedObject() )
+	currentEmployer = base.CLuaUser( listBoxCompanyEmployers:GetSelectedObject() )
 	
 	local parent = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYERS_MANAGE_ID ) )
 	winInfo = guienv:AddWindow( "", width / 2 - 300, height / 2 - 200, width / 2 + 300, height / 2 + 200, -1, parent:Self() )
@@ -70,10 +74,10 @@ function sworkCreateAdvancedUserInfoWindow( ptr )
 	local btn = winInfo:GetCloseButton()
 	btn:SetVisible( false )
 	
-	winInfo:AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, "sworkCloseAdvancedUserInfoWindow" )
+	winInfo:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, "./userManager.CloseUserInfoWindow()" )
 	
 	local wd, ht = winInfo:GetSize()
-	local listBox = CLuaListBox( guienv:AddListBox( 10, 20, wd - 10, ht - 10, -1, winInfo:Self() ) )
+	local listBox = guienv:AddListBox( 10, 20, wd - 10, ht - 10, -1, winInfo:Self() )
 	
 	ShowUsersParameters( listBox, currentEmployer )
 end
@@ -84,57 +88,58 @@ function Hide()
 end
 
 function Show()
+	scrWidth, scrHeight = base.scrWidth, base.scrHeight
 	company = applic:GetPlayerCompany()
 	
 	if windowUserManager == nil or windowUserManager:Empty() == 1 then
 		windowUserManager = guienv:AddWindow( "media/director_cabinet_slider.tga", 0, 0, 
-											  base.scrWidth, base.scrHeight, -1, guienv:GetRootGUIElement() )
+											  scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		windowUserManager:GetCloseButton():SetVisible( false )
 		windowUserManager:SetDraggable( false ) 
 		
-		button.Stretch( base.scrWidth - 80, base.scrHeight - 80, base.scrWidth, base.scrHeight, 
+		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
 		 			    "button_down", windowUserManager:Self(), -1, "",
-						"./userManager:Hide()" )
+						"./userManager.Hide()" )
 	else
-		CLuaElement( windowUserManager:Self() ):RemoveChilds()
+		base.CLuaElement( windowUserManager:Self() ):RemoveChilds()
 	end
 	
 	--Coder's button
-	button.EqualeTexture( 20, 40, "buttonCoders", windowg:Self(), -1, base.STR_CODERS, "./userManager.ChangerUserType( STR_CODERS )" )
-	button.EqualeTexture( base.scrWidth * 0.25, 40, "buttonDesigners", windowg:Self(), -1, base.STR_DESIGNERS, "./userManager.ChangerUserType( STR_DESIGNERS )" )
-	button.EqualeTexture( base.scrWidth * 0.5, 40, "buttonComposers", windowg:Self(), -1, base.STR_COMPOSERS, "./userManager.ChangerUserType( STR_COMPOSERS )" )
-	button.EqualeTexture( base.scrWidth * 0.75, 40, "buttonTesters", windowg:Self(), -1, base.STR_TESTERS, "./userManager.ChangerUserType( STR_TESTERS )" )
+	button.EqualeTexture( 20, 40, "buttonCoders", windowUserManager:Self(), -1, base.STR_CODERS, "./userManager.ChangeUserType( STR_CODERS )" )
+	button.EqualeTexture( scrWidth * 0.25, 40, "buttonDesigners", windowUserManager:Self(), -1, base.STR_DESIGNERS, "./userManager.ChangeUserType( STR_DESIGNERS )" )
+	button.EqualeTexture( scrWidth * 0.5, 40, "buttonComposers", windowUserManager:Self(), -1, base.STR_COMPOSERS, "./userManager.ChangeUserType( STR_COMPOSERS )" )
+	button.EqualeTexture( scrWidth * 0.75, 40, "buttonTesters", windowUserManager:Self(), -1, base.STR_TESTERS, "./userManager.ChangeUserType( STR_TESTERS )" )
 	
-	listBoxCompanyEmployers = guienv:AddComponentListBox( 20, 120, base.scrWidth - 20, base.scrHeight - 80, -1, windowUserManager:Self() )
+	listBoxCompanyEmployers = guienv:AddComponentListBox( 20, 160, scrWidth - 20, scrHeight - 80, -1, windowUserManager:Self() )
 	listBoxCompanyEmployers:SetItemHeigth( 128 );
-	windowUserManager:AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, "./userManager.ShowUserInfo()" )
+	windowUserManager:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./userManager.ShowUserInfo()" )
 	
 	ShowAvaibleEmployersToManage()
 	
 	local i = 0
-	btnRemoveUser = guienv:AddButton( 100 * i, height - 70, 100 * (i + 1), height - 10, windowg:Self(), -1, "Уволить" )
-	btnRemoveUser:SetAction( "sworkRemoveUserFromCompany" )
+	btnRemoveUser = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight  - 10, windowUserManager:Self(), -1, "Уволить" )
+	btnRemoveUser:SetAction( "./userManager.RemoveUser()" )
 	
 	i = i + 1
-	btnUpSalary = guienv:AddButton(  100 * i, height - 70,  100 * (i + 1), height - 10, windowg:Self(), -1, "З/П + 5%" )
-	btnUpSalary:SetAction( "sworkUserUpSalary" )
+	btnUpSalary = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, "З/П + 5%" )
+	btnUpSalary:SetAction( "./userManager.UpSalary()" )
 	
 	i = i +	1
-	btnDownSalary = guienv:AddButton( 100 * i, height - 70, 100 * (i + 1), height - 10, windowg:Self(), -1, "З/П - 5%" )
-	btnDownSalary:SetAction( "sworkUserDownSalary" )
+	btnDownSalary = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, "З/П - 5%" )
+	btnDownSalary:SetAction( "./userManager.DownSalary()" )
 	
 	i = i + 1
-	btnGiveWeekEnd = guienv:AddButton(  100 * i, height - 70,  100 * (i + 1), height - 10, windowg:Self(), -1, "Отпуск" )
-	btnGiveWeekEnd:SetAction( "sworkUserGetWeekend" )
+	btnGiveWeekEnd = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, "Отпуск" )
+	btnGiveWeekEnd:SetAction( "./userManager.GetWeekend()" )
 	
 	i = i +  1
-	btnGivePremia = guienv:AddButton(  100 * i, height - 70,  100 * (i + 1), height - 10, windowg:Self(), -1, "Премия" )
-	btnGivePremia:SetAction( "sworkUserGetPremia" )
+	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager
+	:Self(), -1, "Премия" )
+	btnGivePremia:SetAction( "./userManager.GetPremia()" )
 end
 
-function sworkWindowManageEmployersChangerUserType( ptr )
-	local button = CLuaButton( ptr )
-	modeUserView = mode[ button:GetText() ] 
+function ChangeUserType( name )
+	modeUserView = mode[ name ] 
 	currentEmployer = nil
 	
 	ShowAvaibleEmployersToManage()

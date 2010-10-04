@@ -1,4 +1,4 @@
-IncludeScript( "swork_wndCreateGameProject" )
+IncludeScript( "gameprojectManager" )
 
 local windowWizardProject = nil
 

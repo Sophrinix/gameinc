@@ -23,6 +23,7 @@
 #include "LuaPictureFlow.h"
 #include "LuaTable.h"
 #include "LuaListBox.h"
+#include "LuaTechMap.h"
 
 using namespace irr;
 
@@ -813,7 +814,9 @@ int CLuaGuiEnvironment::AddTechMap( lua_State *vm )
 	gui::CNrpTechMap* techMap = NULL;
 	IF_OBJECT_NOT_NULL_THEN techMap = object_->AddTechMap( rectangle, parentElem, id, false );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, techMap );
+	Luna< CLuaTechMap >::constructor( vm );
 
 	return 1;
 }

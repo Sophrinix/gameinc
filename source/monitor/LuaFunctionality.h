@@ -87,7 +87,7 @@ public:
 		}
 	}
 
-	virtual void DoLuaFunctionsByType( int funcType, void* param = NULL )
+	template< class T > void DoLuaFunctionsByType( int funcType, T* param = NULL )
 	{
 		try
 		{
@@ -96,13 +96,13 @@ public:
 				PFunctionLink pLink = luaFunctions_[ cnt ];
 				if( pLink->actionType == funcType )
 				{
-					nrp::CNrpScript::Instance().SetSender( param );
+					nrp::CNrpScript::Instance().SetSender( (void*)param );
 					const char* tmp = pLink->funcName.c_str();
 
 					if( *tmp == '.' && *(tmp+1) == '/')
 						nrp::CNrpScript::Instance().DoString( tmp+2 );
 					else
-						nrp::CNrpScript::Instance().CallFunction( tmp, param );
+						nrp::CNrpScript::Instance().CallFunction( tmp, (void*)param );
 
 				}
 			}
