@@ -5,17 +5,19 @@ module( "bank" )
 local guienv = base.guienv
 
 local scrWidth = base.scrWidth
-local sceHeight = base.scrHeight
+local scrHeight = base.scrHeight
 local button = base.button
 local tutorial = base.tutorial
 local applic = base.applic
 
 local company = nil 
-local bank = nil
+local bankApp = nil
 local windowLoan = nil
+local bankWindow = nil
 
 function Show()
-	bank = applic:GetBank()
+	bankApp = applic:GetBank()
+	company = applic:GetPlayerCompany()
 	
 	if bankWindow then
 		bankWindow:SetVisible( true )
@@ -27,16 +29,24 @@ function Show()
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
 		 			    "button_down", bankWindow:Self(), -1, "",
-						"./bankWindow:Remove(); bankWindow = nil" )
+						"./bank.Hide()" )
 	end
 	
 	--get loan
-	button.EqualeTexture( 80, 402, "loans", bankWindow:Self(), -1, "", "sworkCreateWindowLoanAction" )
+	button.EqualeTexture( 80, 402, "loans", bankWindow:Self(), -1, "", "./bank.ShowLoans()" )
 	--deposit	
-	button.EqualeTexture( 258, 301, "deposit", bankWindow:Self(), -1, "", "sworkCreateWindowDepositAction" )
+	button.EqualeTexture( 258, 301, "deposit", bankWindow:Self(), -1, "", "./bank.ShowDeposits()" )
+	
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "bank.FadeEnterAction()" )
 end
 
-function sworkShowLoans( tabler )
+function FadeEnterAction()
+	bankWindow:SetVisible( true )
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function ShowLoans( tabler )
 	local tbl = base.CLuaTable( tabler )
 	tbl:ClearRows()
 	local loansNumber = bank:GetLoansNumber()
@@ -44,7 +54,7 @@ function sworkShowLoans( tabler )
 		for i=0, loansNumber-1 do
 			local loanID = bank:GetLoanID( i )
 			
-			if bank:GetLoanCompanyName( loanID ) == company:GetName() then
+			if bankApp:GetLoanCompanyName( loanID ) == company:GetName() then
 				local idx = tbl:AddRow( tbl:GetRowCount() )
 				tbl:SetCellText( idx, 0, loanID, 0xff, 0xff, 0, 0 )
 				tbl:SetCellText( idx, 1, bank:GetLoanStartSumm( loanID ), 0xff, 0xff, 0, 0 )
@@ -56,18 +66,22 @@ function sworkShowLoans( tabler )
 	end
 end
 
-function sworkCloseWindowLoanAction( ptr )
+function Hide()
+	bankWindow:Remove()
+	bankWindow = nil
+end
+
+function HideLoans()
 	windowLoan:Remove()
 	windowLoan = nil
 end
 
-function sworkCreateWindowLoanAction()
-	company = applic:GetPlayerCompany()
+function ShowLoans()
+	
 	if windowLoan == nil then
 		windowLoan = guienv:AddWindow( "media/bank_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		windowLoan:SetDraggable( false )
-		local closeBtn = windowLoan:GetCloseButton()
-		closeBtn:SetAction( "sworkCloseWindowLoanAction" )
+		windowLoan:GetCloseButton():SetAction( "./bank.HideLoans()" )
 	else
 		windowLoan:SetVisible( true )	
 	end
@@ -77,7 +91,6 @@ function sworkCreateWindowLoanAction()
 	
 	local edit = guienv:AddEdit(  summ, 10, 20, 190, 40,
 								  -1, windowLoan:Self() )
-	edit:SetName( WNDLOANACTION_GETLOAN_EDIT )
 	
 	local button = guienv:AddButton( 10, 80, 10 + 140, 80 + 20, windowLoan:Self(), -1, "Взять кредит" )
 	button:SetAction( "sworkGetLoan" )
@@ -117,7 +130,7 @@ function sworkCreateWindowLoanAction()
 	sworkShowLoans( tabler:Self() )
 end
 
-function sworkGetLoan( ptr )
+function GetLoan()
 
 	local edit = base.CLuaEdit( guienv:GetElementByName( WNDLOANACTION_GETLOAN_EDIT ) )
 	bank:CreateLoan( company:GetName(), edit:GetText(), 14, 10 )

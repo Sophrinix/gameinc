@@ -5,6 +5,7 @@ module( "reklameManager" )
 local company = nil
 local plant = nil
 local applic = base.applic
+local button = base.button
 local guienv = base.guienv
 local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
@@ -24,6 +25,7 @@ local labelName = nil
 local addingDays = 0
 
 local currentWork = nil
+local realCampany = nil
 
 local lbxGames = nil
 local selectedGame = nil
@@ -32,10 +34,6 @@ local linkSelectedGame = nil
 local btnApplyWork = nil
 
 local reklames = {}
-reklames[ 1 ] = base.CLuaReklame():Create( "paper", "" )
-reklames[ 2 ] = base.CLuaReklame():Create( "magazine", "" )
-reklames[ 3 ] = base.CLuaReklame():Create( "radio", "" )
-reklames[ 4 ] = base.CLuaReklame():Create( "tv", "" )
 
 local function localFillGamesListBox()
 	local game = nil
@@ -57,6 +55,13 @@ local function localAddLabel( textr, x1, y1, x2, y2 )
 	label:SetOverrideColor( 0xff, 0xff, 0xff, 0xff )
 
 	return label
+end
+
+local function localCreateReklames()
+	reklames[ 1 ] = base.CLuaReklame():Create( "paper", "", company:GetName() )
+	reklames[ 2 ] = base.CLuaReklame():Create( "magazine", "", company:GetName() )
+	reklames[ 3 ] = base.CLuaReklame():Create( "radio", "", company:GetName() )
+	reklames[ 4 ] = base.CLuaReklame():Create( "tv", "", company:GetName() )
 end
 
 function Show()
@@ -86,6 +91,9 @@ function ShowCampaniesManager()
 									   scrHeight, -1, guienv:GetRootGUIElement() )
 		campaniesWindow:GetCloseButton():SetVisible( false )
 	end
+		
+		
+	if #reklames == 0 then localCreateReklames() end
 		
 	--блок рекламы на листовках
 	picflowReklames = guienv:AddPictureFlow( 60, 10, scrWidth - 10, scrHeight / 3, -1, campaniesWindow:Self() )
@@ -122,7 +130,7 @@ function ShowCampaniesManager()
 	lbxGames = guienv:AddComponentListBox( scrWidth / 2 + 10, scrHeight / 3 + 20, scrWidth - 10, scrHeight - 80, -1, campaniesWindow:Self() )
 	localFillGamesListBox()
 		
-	btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, campaniesWindow:Self(), -1, base.STR_APPLY )
+	btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, campaniesWindow:Self(), -1, base.STR_STARTREKLAME )
 	btnApplyWork:SetAction( "./reklameManager.ApplyNewWork()" )
 	btnApplyWork:SetVisible( false )
 	
@@ -141,19 +149,35 @@ function HideCampaniesWindow()
 	campaniesWindow = nil
 end
 
+local function localGetGameFamous( value )
+	if value >= 0 and value <= 10 then
+		return base.ABOUT_GAME_KNOWN_NULL
+	elseif value > 10 and value <= 25 then
+		return base.ABOUT_GAME_KNOWN_LESS10
+	elseif value > 25 and value <= 50 then
+		return base.ABOUT_GAME_KNOWN_LESS25
+	elseif value > 50 and value <= 75 then
+		return base.ABOUT_GAME_KNOWN_LESS50
+	elseif value > 75 and value <= 97 then
+		return base.ABOUT_GAME_KNOWN_LESS75
+	else
+		return base.ABOUT_GAME_KNOWN_LESS97
+	end
+end
+
 local function localUpdateLabels()
 	labelName:SetText( currentWork:GetTypeName() )
-	local text = base.STR_DAYLEFT .. "  " .. currentWork:GetNumberDay()
+	local text = base.STR_DAYLEFT .. "  " .. realCampany:GetNumberDay()
 	
 	if addingDays > 0 then 
 		text = text .. base.string.format( "( %s  %d )", base.STR_ADDDAYS, addingDays )
 	end
 	
 	lableDayNumber:SetText( text )
-	labelPrice:SetText( base.STR_MONEYLEFT .. "   $" .. currentWork:GetPrice() )
-	labelCostInDay:SetText(  base.STR_DAYCOST .. "   $" .. currentWork:GetDayCost() )	
-	labelPrefFamous:SetText( base.STR_PREFFAMOUS .. "   " .. currentWork:GetFamous() .. "%" ) 
-	labelGameFamous:SetText( selectedGame:GetName() .. ":  " .. base.STR_FAMOUS .. "  " .. selectedGame:GetFamous() .. "%" ) 	
+	labelPrice:SetText( base.STR_MONEYLEFT .. "   $" .. realCampany:GetPrice() )
+	labelCostInDay:SetText(  base.STR_DAYCOST .. "   $" .. realCampany:GetDayCost() )	
+	labelPrefFamous:SetText( base.STR_PREFFAMOUS .. "   " .. realCampany:GetFamous() .. "%" ) 
+	labelGameFamous:SetText( localGetGameFamous( selectedGame:GetFamous() ).."\n( dbg ".. selectedGame:GetFamous() .. " %)" ) 	
 end
 
 function SelectNewWork()
@@ -161,12 +185,14 @@ function SelectNewWork()
 	selectedGame = base.CLuaDevelopProject( lbxGames:GetSelectedObject() )
 	currentWork:SetReklameObject( selectedGame:GetName() )
 	addingDays = 0	
-	localUpdateLabels()	
 	
 	local vis = selectedGame:Empty() == 0
 	btnApplyWork:SetVisible( vis )
 	btnIncDayNumber:SetVisible( vis )
 	btnDecDayNumber:SetVisible( vis )
+
+	realCampany = plant:GetReklame( currentWork:GetTypeName(), selectedGame:GetName() )
+	localUpdateLabels()		
 end
 
 function IncDay()
@@ -185,10 +211,12 @@ end
 
 function ApplyNewWork()
 	if addingDays > 0 then
-		currentWork:SetNumberDay( currentWork:GetNumberDay() + addingDays )
+		currentWork:SetNumberDay( addingDays )
 		plant:AddReklameWork( currentWork:Self() )
 		addingDays = 0
 		localUpdateLabels()
+	else
+		guienv:ShowMessage( "Выберите количество дней кампании" )
 	end
 end
 

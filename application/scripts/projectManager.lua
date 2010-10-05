@@ -40,7 +40,7 @@ local function localCreateProjectsComboBox()
 		local ptrProject = company:GetDevProject( i-1 )
 		
 		local function dd( pt )
-			if pt == base.PT_GAME then return base.TRANSLATE_STR_GAME else return base.TRANSLATE_STR_ENGINE end
+			if pt == base.PT_GAME then return base.STR_GAME else return base.STR_ENGINE end
 		end
 		
 		comboxProjects:AddItem( dd( ptrProject:GetTechType() ) .. ":" .. ptrProject:GetName(), ptrProject:Self() )	

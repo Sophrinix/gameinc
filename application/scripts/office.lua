@@ -12,6 +12,22 @@ local scrHeight = base.scrHeight
 local button = base.button
 local tutorial = base.tutorial
 
+function FadeEnterAction()
+	receptionWindow:SetVisible( true )
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function FadeExitAction()
+	receptionWindow:Remove()
+	receptionWindow = nil
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function Hide()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "office.FadeExitAction()" )	
+end
+
 function Show()
 	if receptionWindow then
 		receptionWindow:SetVisible( true )
@@ -19,11 +35,13 @@ function Show()
 		receptionWindow = guienv:AddWindow( "media/reception.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		receptionWindow:GetCloseButton():SetVisible( false )
 		receptionWindow:SetDraggable( false )
+		receptionWindow:SetVisible( false )
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
 		 			    "button_down", receptionWindow:Self(), -1, "",
-						"./receptionWindow:Remove(); receptionWindow = nil" )
+						"./office.Hide()" )
+		
 	end	
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_RECEPTION )
@@ -52,4 +70,7 @@ function Show()
 	
 	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
 	--]]
+	
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "office.FadeEnterAction()" )
 end

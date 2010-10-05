@@ -5,7 +5,7 @@ IncludeScript("swork_MainMenu")
 IncludeScript("swork_wndCompanyInfo")
 IncludeScript("swork_StoreWindow")
 IncludeScript("city")
-IncludeScript("swork_wndProjectWizard")
+IncludeScript("projectSelect")
 IncludeScript("userManager")
 IncludeScript("shop")
 IncludeScript("reklameManager")
@@ -17,6 +17,7 @@ IncludeScript("gameboxManager")
 IncludeScript("plant")
 IncludeScript("laboratory" )
 IncludeScript("office")
+IncludeScript("gameprojectManager")
 --------------------------------------------
 
 alwaysOnTopWindow = {}

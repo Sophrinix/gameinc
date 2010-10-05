@@ -21,8 +21,8 @@ local btnOk = nil
 local btnCancel = nil
 
 function Hide()
-	lab:Remove()
-	lab = nil
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeExitAction()" )	
 end
 
 function Show()	
@@ -47,13 +47,19 @@ function Show()
 	button.EqualeTexture( 749, 222, "techMapAdvTech", lab:Self(), -1, "", "./laboratory.ShowAdvancedTechMap()" )
 	button.EqualeTexture( 73, 202,	"techMapGenre", lab:Self(), -1, "", "./laboratory.ShowGenreTechMap()" )
 
-	guienv:FadeAction( 1000, false, false )			
-	guienv:AddTimer( 1005, "laboratory.FadeAction()" )
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeEnterAction()" )
 end
 
-function FadeAction()
+function FadeEnterAction()
 	lab:SetVisible( true )
-	guienv:FadeAction( 1000, true, true )
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function FadeExitAction()
+	lab:Remove()
+	lab = nil
+	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
 local function CreateTechSequence( tech )
