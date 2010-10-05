@@ -20,6 +20,7 @@ namespace gui
 {
 
 class IGUIEnvironment;
+class IGUIFont;
 
 //! Base class of all GUI elements.
 class IGUIElement : public virtual io::IAttributeExchangingObject, public IEventReceiver
@@ -34,7 +35,7 @@ public:
 		MaxSize(0,0), MinSize(1,1), IsVisible(true), IsEnabled(true),
 		IsSubElement(false), NoClip(false), ID(id), IsTabStop(false), TabOrder(-1), IsTabGroup(false),
 		AlignLeft(EGUIA_UPPERLEFT), AlignRight(EGUIA_UPPERLEFT), AlignTop(EGUIA_UPPERLEFT), AlignBottom(EGUIA_UPPERLEFT),
-		Environment(environment), Type(type), AlphaBlend(0xff), Name(L"")
+		Environment(environment), Type(type), AlphaBlend(0xff), Name(L""), RFont(NULL)
 	{
 		#ifdef _DEBUG
 		setDebugName("IGUIElement");
@@ -744,6 +745,16 @@ public:
 		return Type;
 	}
 
+	void setRFont( gui::IGUIFont* newFont )
+	{
+		RFont = newFont;
+	}
+
+	gui::IGUIFont* getRFont()
+	{
+		return RFont;
+	}
+
 	//! Returns true if the gui element supports the given type.
 	/** This is mostly used to check if you can cast a gui element to the class that goes with the type.
 	Most gui elements will only support their own type, but if you derive your own classes from interfaces
@@ -1025,6 +1036,8 @@ protected:
 
 	//! AlphaBlend Value
 	u32 AlphaBlend;
+
+	IGUIFont* RFont;
 
 	//! tab groups are containers like windows, use ctrl+tab to navigate
 	bool IsTabGroup;

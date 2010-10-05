@@ -114,13 +114,16 @@ void CNrpPlant::BeginNewDay()
 	SetValue<int>( REKLAMENUMBER, reklameWorks_.size() );
 }
 
-CNrpReklameWork* CNrpPlant::CreateReklame( std::string type, std::string gameName )
+CNrpReklameWork* CNrpPlant::CreateReklame( const std::string& type, 
+										   const std::string& gameName, 
+										   const std::string& company )
 {
 	CNrpReklameWork* baseWork = GetBaseReklame( type );
 	if( baseWork != NULL )
 	{
 		CNrpReklameWork* newReklame = new CNrpReklameWork( *baseWork );
-		newReklame->SetValue<std::string>( GAMENAME, gameName );
+		newReklame->SetValue( GAMENAME, gameName );
+		newReklame->SetValue( COMPANYNAME, company );
 		return newReklame;
 	}
 	else
@@ -165,7 +168,8 @@ void CNrpPlant::AddReklame( CNrpReklameWork* reklame )
 	SetValue<int>( REKLAMENUMBER, reklameWorks_.size() );
 }
 
-CNrpReklameWork* CNrpPlant::GetReklame( std::string type, std::string gameName )
+CNrpReklameWork* CNrpPlant::GetReklame( const std::string& type, 
+										const std::string& gameName )
 {
 	REKLAME_LIST::iterator pIter = reklameWorks_.begin();
 	for( ; pIter != reklameWorks_.end(); pIter++ ) 

@@ -17,21 +17,11 @@ namespace gui
 
 CNrpComponentListbox::CNrpComponentListbox( gui::IGUIEnvironment* env, IGUIElement* parent,
 								 s32 id, core::rect<s32> rectangle )
-								 : IGUIListBox( env, parent, id, rectangle),
-								 Selected(-1), 
-								 ItemHeight(0),
-								 TotalItemHeight(0), 
-								 ItemsIconWidth(0), 
-								 Font(0), 
-								 IconBank(0),
-								 ScrollBar(0), 
-								 Selecting(false), 
-								 DrawBack(true),
-								 MoveOverSelect(false), 
-								 selectTime(0), 
-								 AutoScroll(true),
-								 KeyBuffer(), 
-								 LastKeyTime(0), 
+								 : IGUIListBox( env, parent, id, rectangle), Selected(-1), ItemHeight(0),
+								 TotalItemHeight(0), ItemsIconWidth(0), 
+								 _font(0), IconBank(0), ScrollBar(0), Selecting(false), 
+								 DrawBack(true), MoveOverSelect(false), selectTime(0), 
+								 AutoScroll(true), KeyBuffer(), LastKeyTime(0), 
 								 HighlightWhenNotFocused(true)
 {
 	IGUISkin* skin = Environment->getSkin();
@@ -151,18 +141,18 @@ void CNrpComponentListbox::recalculateItemHeight()
 {
 	IGUISkin* skin = Environment->getSkin();
 
-	if (Font != skin->getFont())
+	if (_font != skin->getFont())
 	{
-		if (Font)
-			Font->drop();
+		if (_font)
+			_font->drop();
 
-		Font = skin->getFont();
+		_font = skin->getFont();
 		ItemHeight = 0;
 
-		if (Font)
+		if (_font)
 		{
-			ItemHeight = Font->getDimension(L"A").Height + 4;
-			Font->grab();
+			ItemHeight = _font->getDimension(L"A").Height + 4;
+			_font->grab();
 		}
 	}
 
@@ -502,7 +492,7 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 	core::recti progressRect = frameRect;
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
 	driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clipRect );
-	Font->draw( tmpstr, rectangle, color, false, true, &clipRect );
+	_font->draw( tmpstr, rectangle, color, false, true, &clipRect );
 }
 
 //! draws the element and its children
@@ -565,7 +555,7 @@ void CNrpComponentListbox::draw()
 				core::rect<s32> textRect = frameRect;
 				textRect.UpperLeftCorner.X += 3;
 
-				if (Font)
+				if (_font)
 				{
 					_DrawIcon( i, textRect, hl, clientClip );
 
@@ -577,7 +567,7 @@ void CNrpComponentListbox::draw()
 																	: getItemDefaultColor( itbn );
 					if( pObject == NULL )
 					{
-						Font->draw( Items[i].text.c_str(), textRect, itbncolor, false, true, &clientClip);
+						_font->draw( Items[i].text.c_str(), textRect, itbncolor, false, true, &clientClip);
 					}
 					else
 					{	
@@ -640,7 +630,7 @@ void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti re
 	driver->draw2DRectangle( 0xff00ff00, famous, &clipRect );
 	driver->draw2DRectangle( 0xff0000ff, finished, &clipRect );
 
-	Font->draw( name.c_str(), frameRect, color, true, true, &clipRect ); 
+	_font->draw( name.c_str(), frameRect, color, true, true, &clipRect ); 
 }
 
 void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle, 
@@ -664,7 +654,7 @@ void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle,
 	driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
 		core::recti( 3, 3, rectangle.getHeight(), rectangle.getHeight() - 6 ) + rectangle.UpperLeftCorner,
 		core::recti( 0, 0, 128, 128 ) );
-	Font->draw( tmpstr, rectangle + core::position2di( rectangle.getHeight() + 6, 0 ), color, false, true, &clipRect ); 
+	_font->draw( tmpstr, rectangle + core::position2di( rectangle.getHeight() + 6, 0 ), color, false, true, &clipRect ); 
 }
 
 u32 CNrpComponentListbox::addItem(const wchar_t* text, s32 icon)
@@ -995,6 +985,11 @@ void CNrpComponentListbox::setDrawBackground( bool draw )
 
 }
 
+void CNrpComponentListbox::SetOverrideFont( gui::IGUIFont* newFont, video::SColor color )
+{
+	_font = newFont;
+	_textColor = color;
+}
 }
 
 }

@@ -218,7 +218,10 @@ int CLuaGameProject::Create( lua_State* L )
 	assert( name != NULL );
 
 	object_ = new CNrpGameProject( name, NULL );
+
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, object_ );
+	Luna< CLuaGameProject >::constructor( L );
 
 	return 1;
 }

@@ -34,13 +34,14 @@ CLuaReklame::CLuaReklame(lua_State *L) : ILuaProject( L, CLASS_LUAREKLAME )					
 int CLuaReklame::Create( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaReklame:CreateTechnology need string, string parameter" );
+	luaL_argcheck(L, argc == 4, 4, "Function CLuaReklame:CreateTechnology need string, string parameter" );
 
 	const char* typeName = lua_tostring( L, 2 );
-	assert( typeName != NULL );
 	const char* gameName = lua_tostring( L, 3 );
+	const char* company = lua_tostring( L, 4 );
+	assert( typeName && gameName && company );
 
-	object_ = CNrpPlant::Instance().CreateReklame( typeName, gameName );
+	object_ = CNrpPlant::Instance().CreateReklame( typeName, gameName, company );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata(L, object_ );

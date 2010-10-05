@@ -14,8 +14,8 @@ class CNrpReklameWork : public INrpConfig
 	void InitializeOptions_();
 
 public:
-	CNrpReklameWork( std::string typeName, 
-					 std::string gameName );
+	CNrpReklameWork( const std::string& typeName, 
+					 const std::string& gameName );
 
 	void Update( CNrpReklameWork* p );
 	void BeginNewDay();

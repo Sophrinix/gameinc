@@ -24,6 +24,7 @@
 #include "LuaTable.h"
 #include "LuaListBox.h"
 #include "LuaTechMap.h"
+#include "LuaTab.h"
 
 using namespace irr;
 
@@ -593,7 +594,9 @@ int CLuaGuiEnvironment::AddTab( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = parent->addTab( StrToWide( name ).c_str(), id );
 
+	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
+	Luna< CLuaTab >::constructor( vm );
 
 	return 1;
 }

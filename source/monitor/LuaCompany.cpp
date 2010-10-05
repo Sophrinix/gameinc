@@ -14,6 +14,7 @@
 #include "LuaDevelopProject.h"
 #include "LuaInvention.h"
 #include "LuaGameEngine.h"
+#include "LuaGameProject.h"
 
 namespace nrp
 {
@@ -184,7 +185,9 @@ int CLuaCompany::CreateDevelopGame( lua_State* L )
 		object_->AddDevelopProject( result );
 	}
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, result );
+	Luna< CLuaGameProject >::constructor( L );
 	return 1;	
 }
 
@@ -267,7 +270,9 @@ int CLuaCompany::GetProjectByName( lua_State* L )
 	INrpProject* prj = NULL;
 	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetProject( name );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
+	Luna< CLuaGameProject >::constructor( L );
 	return 1;	
 }	
 

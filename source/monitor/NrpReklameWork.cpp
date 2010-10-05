@@ -7,12 +7,13 @@
 namespace nrp
 {
 
-CNrpReklameWork::CNrpReklameWork( std::string typeName, std::string gameName )
+CNrpReklameWork::CNrpReklameWork( const std::string& typeName, 
+								  const std::string& gameName )
 				:INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
-	SetValue<std::string>( TECHTYPE, typeName );
-	SetValue<std::string>( GAMENAME, gameName );
+	SetValue( TECHTYPE, typeName );
+	SetValue( GAMENAME, gameName );
 }
 
 void CNrpReklameWork::InitializeOptions_()
@@ -28,6 +29,7 @@ void CNrpReklameWork::InitializeOptions_()
 	CreateValue<bool>( FINISHED, false );
 	CreateValue<std::string>( TEXTURENORMAL, "" );
 	CreateValue<int>( BALANCE, 0 );
+	CreateValue<std::string>( COMPANYNAME, "" );
 }
 
 CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )
@@ -42,6 +44,7 @@ CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLA
 	SetValue<std::string>( GAMENAME, p.GetValue<std::string>( GAMENAME ) );
 	SetValue<std::string>( TECHTYPE, p.GetValue<std::string>( TECHTYPE ) );
 	SetValue<std::string>( TEXTURENORMAL, p.GetValue<std::string>( TEXTURENORMAL ) );
+	SetValue<std::string>( COMPANYNAME, p.GetValue<std::string>( COMPANYNAME ) );
 }
 
 CNrpReklameWork::~CNrpReklameWork(void)
@@ -62,10 +65,23 @@ void CNrpReklameWork::Update( CNrpReklameWork* p )
 void CNrpReklameWork::BeginNewDay()
 {
 	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( GetValue<std::string>( COMPANYNAME ) );
+	assert( cmp != NULL );
 
 	if( cmp != NULL )
 	{
-		CNrpGame* game = cmp->GetGame( GetValue<std::string>( GAMENAME ) );
+		const std::string name = GetValue<std::string>( GAMENAME );
+		//сначала попробуем получить куказатель на существующую игру
+		INrpConfig* game = reinterpret_cast< INrpConfig* >( cmp->GetGame( name ) );
+
+		//если такой игры нет, может игрок рекламирует проект игры??? проверим
+		if( game == NULL )
+			game = reinterpret_cast< INrpConfig* >( cmp->GetDevelopProject( name ) );
+
+		//к этому моменту уже должны определиться чего хотим рекламировать, иначе ошибка
+		assert( game != NULL );
+		if( game == NULL )
+			return;
+
 		if( GetValue<int>( NUMBERDAY ) > 0 && 
 			GetValue<float>( MAXQUALITY ) > game->GetValue<float>( FAMOUS ) )
 		{	
@@ -78,6 +94,6 @@ void CNrpReklameWork::BeginNewDay()
 
 	AddValue<int>( NUMBERDAY, -1 );
 	AddValue<int>( BALANCE, GetValue<int>( DAYCOST ) );
-	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) > 0 );
+	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) == 0 );
 }
 }//end namespace nrp

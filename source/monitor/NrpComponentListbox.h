@@ -136,6 +136,8 @@ public:
 	virtual irr::s32 insertItem(irr::u32 index, const wchar_t* text, nrp::INrpObject* ptrObject, irr::s32 icon);
 	virtual irr::s32 insertItem(irr::u32 index, const wchar_t* text, irr::s32 icon);
 
+	void SetOverrideFont( gui::IGUIFont* newFont, video::SColor color );
+
 	//! Swap the items at the given indices
 	virtual void swapItems(irr::u32 index1, irr::u32 index2);
 
@@ -188,7 +190,8 @@ protected:
 	irr::s32 ItemHeight;
 	irr::s32 TotalItemHeight;
 	irr::s32 ItemsIconWidth;
-	irr::gui::IGUIFont* Font;
+	irr::gui::IGUIFont* _font;
+	video::SColor _textColor;
 	irr::gui::IGUISpriteBank* IconBank;
 	irr::gui::IGUIScrollBar* ScrollBar;
 	bool Selecting;

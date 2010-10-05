@@ -4,6 +4,7 @@
 #include "LuaPlant.h"
 #include "NrpReklameWork.h"
 #include "NrpPlant.h"
+#include "LuaReklame.h" 
 
 namespace nrp
 {
@@ -18,6 +19,7 @@ Luna< CLuaPlant >::RegType CLuaPlant::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadReklamePrice ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddReklameWork ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, Save ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetReklame ),
 	{0,0}
 };
 
@@ -27,7 +29,7 @@ CLuaPlant::CLuaPlant(lua_State *L)	: ILuaObject(L, CLASS_LUAPLANT )							//конс
 int CLuaPlant::Load( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank::Load need string parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::Load need string parameter");
 
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
@@ -40,7 +42,7 @@ int CLuaPlant::Load( lua_State* L )
 int CLuaPlant::AddProduceWork( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank::AddProduceWork need CNrpPlantWork* parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::AddProduceWork need CNrpPlantWork* parameter");
 
 	CNrpPlantWork* plantWork = (CNrpPlantWork*)lua_touserdata( L, 2 );
 	assert( plantWork != NULL );
@@ -53,7 +55,7 @@ int CLuaPlant::AddProduceWork( lua_State* L )
 int CLuaPlant::Save( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank::Save need string parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::Save need string parameter");
 
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
@@ -66,7 +68,7 @@ int CLuaPlant::Save( lua_State* L )
 int CLuaPlant::LoadBaseReklame( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank::LoadBaseReklame need string parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::LoadBaseReklame need string parameter");
 
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
@@ -84,7 +86,7 @@ int CLuaPlant::LoadBaseReklame( lua_State* L )
 int CLuaPlant::SaveReklamePrice( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank::SaveReklamePrice need string parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::SaveReklamePrice need string parameter");
 
 	const char* profileName = lua_tostring( L, 2 );
 	assert( profileName != NULL );
@@ -105,7 +107,7 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 int CLuaPlant::LoadReklamePrice( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank::LoadReklamePrice need string parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::LoadReklamePrice need string parameter");
 
 	const char* profileName = lua_tostring( L, 2 );
 	assert( profileName != NULL );
@@ -139,7 +141,7 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 int CLuaPlant::AddReklameWork( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank::AddReklameWork need CNrpReklameWork* parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::AddReklameWork need CNrpReklameWork* parameter");
 
 	CNrpReklameWork* reklameWork = (CNrpReklameWork*)lua_touserdata( L, 2 );
 	assert( reklameWork != NULL );
@@ -148,4 +150,26 @@ int CLuaPlant::AddReklameWork( lua_State* L )
 
 	return 1;
 }
+
+int CLuaPlant::GetReklame( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaPlant::GetReklame need string parameter");
+
+	const char* typeName = lua_tostring( L, 2 );
+	const char* game = lua_tostring( L, 3 );
+	assert( typeName && game );
+
+	if( !typeName || !game ) 
+		return 1;
+
+	CNrpReklameWork* r = NULL;
+	IF_OBJECT_NOT_NULL_THEN r = object_->GetReklame( typeName, game );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, r );
+	Luna< CLuaReklame >::constructor( L );
+	return 1;
+}
+
 }//namespace nrp

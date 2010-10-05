@@ -33,9 +33,12 @@ public:
 	CNrpReklameWork* GetBaseReklame( int index );
 
 	void AddReklame( CNrpReklameWork* reklame );
-	CNrpReklameWork* GetReklame( std::string type, std::string gameName );
+	CNrpReklameWork* GetReklame( const std::string& type, 
+								 const std::string& gameName );
 	void RemoveReklame( std::string type, std::string gameName );
-	CNrpReklameWork* CreateReklame( std::string type, std::string gameName );
+	CNrpReklameWork* CreateReklame( const std::string& type, 
+									const std::string& gameName, 
+									const std::string& company );
 
 	void AddWork( CNrpPlantWork* work );
 	CNrpPlantWork* GetWork( int index );

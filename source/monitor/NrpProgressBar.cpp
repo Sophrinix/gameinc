@@ -96,10 +96,10 @@ void CNrpProgressBar::draw()
 		const video::SColor Colors[] = {Color,Color,Color,Color};
 
 		core::recti dr = AbsoluteRect;
-		dr.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + AbsoluteRect.getWidth() * position_ / 100.f;
+		dr.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + (AbsoluteRect.getWidth() * position_) / 100;
 
 		core::recti rt = core::recti(core::position2di(0,0), 
-									 core::dimension2di( fillTexture_->getOriginalSize().Width * position_ / 100.f, 
+									 core::dimension2di( (fillTexture_->getOriginalSize().Width * position_) / 100, 
 														 fillTexture_->getOriginalSize().Height ) );
 
 		driver->draw2DImage(fillTexture_, dr, rt,
@@ -109,7 +109,8 @@ void CNrpProgressBar::draw()
 	{
 		core::recti fillRect;
 		fillRect.UpperLeftCorner = AbsoluteRect.UpperLeftCorner;
-		fillRect.LowerRightCorner = AbsoluteRect.UpperLeftCorner + core::position2di( AbsoluteRect.getWidth() * position_ / 100.f, AbsoluteRect.getHeight() ); 
+		fillRect.LowerRightCorner = AbsoluteRect.UpperLeftCorner + core::position2di( (AbsoluteRect.getWidth() * position_) / 100, 
+																					  AbsoluteRect.getHeight() ); 
 
 		skin->draw2DRectangle(this, video::SColor( Color.getAlpha(), 0xff, 0, 0 ), fillRect, &AbsoluteClippingRect );
 	}

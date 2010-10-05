@@ -56,7 +56,7 @@ void CImageGUISkin::setSize(EGUI_DEFAULT_SIZE which, s32 size)
 //! returns the default font
 IGUIFont* CImageGUISkin::getFont(EGUI_DEFAULT_FONT which) const
 {
-return native_skin_->getFont(which);
+	return native_skin_->getFont(which);
 }
 
 //! sets a default font

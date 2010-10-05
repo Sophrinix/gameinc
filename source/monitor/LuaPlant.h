@@ -21,6 +21,7 @@ public:
 	int AddReklameWork( lua_State* L );
 	int Save( lua_State* L );
 	int AddProduceWork( lua_State* L );
+	int GetReklame( lua_State* L );
 																//нажатии на эту кнопку
 	static const char* StaticGetLuaName() { return CLASS_LUAPLANT.c_str(); }
 };

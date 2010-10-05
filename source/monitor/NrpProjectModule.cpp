@@ -106,7 +106,7 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 
 float CNrpProjectModule::_GetWorkKoeffForUser( IUser* ptrUser )
 {
-	float teamKoef[10] = { 1/*1*/, 4/*2*/, 3/*3*/, 2/*4*/, 1/*5*/, 0.8/*6*/, 0.65/*7*/, 0.5/*8*/, 0.25/*9*/, 0.1/*10 and more*/};
+	float teamKoef[10] = { 1.f/*1*/, 4.f/*2*/, 3.f/*3*/, 2.f/*4*/, 1.f/*5*/, 0.8f/*6*/, 0.65f/*7*/, 0.5f/*8*/, 0.25f/*9*/, 0.1f/*10 and more*/};
 	return teamKoef[ users_.size() >= 9 ? 9 : users_.size() ];
 }
 

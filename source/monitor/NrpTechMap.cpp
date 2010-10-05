@@ -937,7 +937,7 @@ void CNrpTechMap::draw()
 					if( ptrTech->GetValue<TECH_STATUS>( STATUS ) == TS_INDEVELOP )
 					{
 						text += "\n(";
-						text += core::stringw( IntToStr( ptrTech->GetValue<float>( READYWORKPERCENT ) ).c_str() );
+						text += core::stringw( IntToStr( static_cast<int>( ptrTech->GetValue<float>( READYWORKPERCENT )) ).c_str() );
 						text += ")";
 					}
 				}
