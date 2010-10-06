@@ -41,16 +41,7 @@ function sloginAddStartPublicTechnology()
 	localLoadTechnology( PT_SCRIPTS, "xtras/technology/techscript_configfile/item.tech" )	
 	localLoadTechnology( PT_MINIGAME, "xtras/technology/minigame_textquest/item.tech" )	
 	localLoadTechnology( PT_PHYSIC, "xtras/technology/phtech_2dconclusion/item.tech" )	
-end
-
-function sloginAddStartScenarioContentTechnology( ptr )
 	localLoadTechnology( PT_SCENARIOQUALITY, "xtras/technology/scnq_writeself/item.tech" )
-end
-
-function sloginAddStartSoundContentTechnology( ptr )
 	localLoadTechnology( PT_SOUNDQUALITY, "xtras/technology/sndq_writeself/item.tech" )
-end
-
-function sloginAddStartVideoContentTechnology( ptr )
 	localLoadTechnology( PT_VIDEOQUALITY, "xtras/technology/vidq_selfrender/item.tech" )
 end

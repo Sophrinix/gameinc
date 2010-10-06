@@ -393,5 +393,10 @@ void CNrpWindow::setAlphaBlend( u32 new_alpha )
 	IGUIWindow::setAlphaBlend( new_alpha );
 }
 
+void CNrpWindow::setModal()
+{
+	IGUIElement* elm = Environment->addModalScreen( NULL );
+	elm->addChild( this );
+}
 } // end namespace gui
 } // end namespace irr

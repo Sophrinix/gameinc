@@ -29,7 +29,7 @@ function Show()
 	if lab then
 		lab:SetVisible( true )
 	else
-		lab = guienv:AddWindow( "media/laboratory_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		lab = guienv:AddWindow( "media/maps/laboratory_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		lab:SetDraggable( false )
 		lab:SetVisible( false )
 		lab:GetCloseButton():SetVisible( false )
@@ -96,7 +96,7 @@ end
 
 local function CreateWindow( typef )
 	company = applic:GetPlayerCompany()
-	windowMap = guienv:AddWindow( "media/laboratory_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+	windowMap = guienv:AddWindow( "media/maps/laboratory_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 	Log( {src=base.SCRIPT, dev=base.ODS|base.CON}, "sworkCreateGenreTechMapWindow="..company:GetName() )
 	
 	techMap = guienv:AddTechMap( 10, 40, scrWidth - 10, scrHeight - 10, -1, windowMap:Self() )

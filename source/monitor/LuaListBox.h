@@ -21,10 +21,13 @@ public:
 	CLuaListBox(lua_State *L);		
 	
 	int AddItem( lua_State *L );
+	int SetItemBgColor( lua_State* L );
 	int GetSelected( lua_State *L );
 	int GetSelectedObject( lua_State* L );
 	int SetSelected( lua_State *L );
 	int Clear( lua_State* L );
+	int SetFontFromSize( lua_State* L );
+	int SetItemTextColor( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaListBox"; }
 };

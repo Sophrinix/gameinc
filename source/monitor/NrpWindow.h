@@ -70,6 +70,8 @@ public:
 
 	virtual void setAlphaBlend( u32 new_alpha );
 
+	virtual void setModal();
+
 protected:
 	
 	typedef enum { BTNE_CLOSE=0, BTNE_MINIMAZE, BTNE_MAXIMAZE } BUTTON_NAME;

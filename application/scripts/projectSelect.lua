@@ -20,7 +20,7 @@ function Show()
 	
 	local hTemp = scrHeight / 6
 	
-	mainWindow = guienv:AddWindow( "media/director_cabinet_slider.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+	mainWindow = guienv:AddWindow( "media/maps/director_cabinet_slider.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 	mainWindow:SetDraggable( false )
 	mainWindow:SetVisible( false )
 	mainWindow:GetCloseButton():SetVisible( false )

@@ -25,6 +25,8 @@ namespace gui
 		EGUI_LBC_ICON,
 		//! Color of selected icon
 		EGUI_LBC_ICON_HIGHLIGHT,
+		//! background
+		EGUI_LBC_BACKGROUND,
 		//! Not used, just counts the number of available colors
 		EGUI_LBC_COUNT
 	};

@@ -40,7 +40,7 @@ local function CreateElementsForGameSelect()
 		local image = guienv:AddImage( scrWidth / 2 - 300, scrHeight / 2 - 300, 
 									   scrWidth / 2 + 300, scrHeight / 2 + 300, 
 									   wndGBM:Self(), -1, "" )
-		image:SetImage( "media/noGameForCreateBox.png" )
+		image:SetImage( "media/textures/noGameForCreateBox.png" )
 		image:SetScaleImage( true )
 		image:SetUseAlphaChannel( true )
 	end
@@ -199,7 +199,7 @@ function Show()
 	company = applic:GetPlayerCompany()
 
 	if wndGBM == nil then	
-		wndGBM = guienv:AddWindow( "media/plant_select.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		wndGBM = guienv:AddWindow( "media/maps/plant_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		wndGBM:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameboxManager.WindowLeftMouseButtonUp()" )
 	else
 		wndGBM:SetVisible( true )

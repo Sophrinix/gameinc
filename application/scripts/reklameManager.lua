@@ -68,18 +68,38 @@ function Show()
 	if mainWindow then
 		mainWindow:SetVisible( true )
 	else
-		mainWindow = guienv:AddWindow( "media/marketing_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		mainWindow = guienv:AddWindow( "media/maps/marketing_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		mainWindow:SetDraggable( false )
 		mainWindow:GetCloseButton():SetVisible( false )
+		mainWindow:SetVisible( false )
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
 		 			    "button_down", mainWindow:Self(), -1, "",
-						"./reklameWindow:Remove(); reklameWindow = nil" )
+						"./reklameManager.Hide()" )
 	end
 	
 	--get loan
 	button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow:Self(), -1, "", "./reklameManager.ShowCampaniesManager()" )
+	
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "reklameManager.FadeEnterAction()" )
+end
+
+function Hide()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "reklameManager.FadeExitAction()" )	
+end
+
+function FadeEnterAction()
+	mainWindow:SetVisible( true )
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function FadeExitAction()
+	mainWindow:Remove()
+	mainWindow = nil
+	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
 function ShowCampaniesManager()
@@ -87,7 +107,7 @@ function ShowCampaniesManager()
 	plant = base.NrpGetPlant()
 	
 	if campaniesWindow == nil then
-		campaniesWindow = guienv:AddWindow( "media/marketing_select.png", 0, 0, scrWidth, 
+		campaniesWindow = guienv:AddWindow( "media/maps/marketing_select.png", 0, 0, scrWidth, 
 									   scrHeight, -1, guienv:GetRootGUIElement() )
 		campaniesWindow:GetCloseButton():SetVisible( false )
 	end
@@ -175,7 +195,7 @@ local function localUpdateLabels()
 	
 	lableDayNumber:SetText( text )
 	labelPrice:SetText( base.STR_MONEYLEFT .. "   $" .. realCampany:GetPrice() )
-	labelCostInDay:SetText(  base.STR_DAYCOST .. "   $" .. realCampany:GetDayCost() )	
+	labelCostInDay:SetText(  base.STR_DAYCOST .. "   $" .. currentWork:GetDayCost() )	
 	labelPrefFamous:SetText( base.STR_PREFFAMOUS .. "   " .. realCampany:GetFamous() .. "%" ) 
 	labelGameFamous:SetText( localGetGameFamous( selectedGame:GetFamous() ).."\n( dbg ".. selectedGame:GetFamous() .. " %)" ) 	
 end

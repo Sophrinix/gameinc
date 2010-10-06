@@ -739,7 +739,12 @@ int CLuaGuiEnvironment::MessageBox( lua_State* L )
 
 	int flags = (btnYesVisible ? gui::EMBF_YES : 0) | (btnNoVisible ? gui::EMBF_NO : 0 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->addMessageBox( StrToWide( text ).c_str(), flags, funcs );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::IGUIWindow* wnd = object_->addMessageBox( StrToWide( text ).c_str(), flags, funcs );
+		if( gui::CNrpWindow* nrpw = dynamic_cast< gui::CNrpWindow* >( wnd ) )
+			nrpw->setModal();
+	}
 
 	return 1;	
 }

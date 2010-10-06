@@ -23,6 +23,9 @@ Luna< CLuaComponentListBox >::RegType CLuaComponentListBox::methods[] =			//נואכ
 	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, Clear ),
 	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, GetSelectedObject ),
 	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, SetItemHeigth ),
+	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, SetItemBgColor ),
+	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, SetFontFromSize ),
+	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, SetItemTextColor ),
 	{0,0}
 };
 
@@ -105,6 +108,52 @@ int CLuaComponentListBox::SetItemHeigth( lua_State* L )
 	assert( height > 0 && height < 200 );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->setItemHeight( height );			
+
+	return 1;
+}
+
+int CLuaComponentListBox::SetItemBgColor( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 6, 6, "Function CLuaComponentListBox::GetSelectedObject not need any parameter");
+
+	int index = lua_tointeger( L, 2 );
+	video::SColor color( lua_tointeger( L, 3 ), lua_tointeger( L, 4 ), 
+		lua_tointeger( L, 5 ), lua_tointeger( L, 6 ) );
+
+	IF_OBJECT_NOT_NULL_THEN object_->setItemOverrideColor( index, gui::EGUI_LBC_BACKGROUND, color );
+
+	return 1;
+}
+
+int CLuaComponentListBox::SetFontFromSize( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaComponentListBox::SetFontFromSize need size parameter");
+
+	int size = lua_tointeger( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( ("font_" + IntToStr( size )).c_str() );
+		object_->setRFont( font );
+	}
+
+	return 1;
+}
+
+int CLuaComponentListBox::SetItemTextColor( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 6, 6, "Function CLuaComponentListBox::SetTextColor need size parameter");
+
+	int index = lua_tointeger( L, 2 );
+	irr::video::SColor color( lua_tointeger( L, 3 ), 
+		lua_tointeger( L, 4 ),
+		lua_tointeger( L, 5 ),
+		lua_tointeger( L, 6 ) );
+
+	IF_OBJECT_NOT_NULL_THEN object_->setItemOverrideColor( index, gui::EGUI_LBC_TEXT, color );
 
 	return 1;
 }

@@ -38,7 +38,7 @@ function Show()
     if mainWindow then
 		mainWindow:SetVisible( true )
 	else
-		mainWindow = guienv:AddWindow( "media/windowShop_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		mainWindow = guienv:AddWindow( "media/maps/windowShop_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		mainWindow:SetDraggable( false )
 		mainWindow:GetCloseButton():SetVisible( false )
 		

@@ -221,6 +221,7 @@ int CNrpApplication::RemoveUser( IUser* user )
 	for( ; pIter != users_.end(); pIter++ )
 		if( (*pIter) == user )
 		{
+			delete *pIter;
 			users_.erase( pIter );
 			SetValue<int>( USERNUMBER, users_.size() );
 			return 0;

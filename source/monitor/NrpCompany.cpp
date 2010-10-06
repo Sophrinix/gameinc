@@ -108,7 +108,7 @@ IUser* CNrpCompany::GetUser( int index )
 	return index < (int)employers_.size() ? employers_[ index ] : NULL;
 }
 
-IUser* CNrpCompany::GetUser( std::string name )
+IUser* CNrpCompany::GetUser( const std::string& name )
 {
 	USER_LIST::iterator uIter = employers_.begin();
 	for( ; uIter != employers_.end(); uIter++ )
@@ -507,5 +507,22 @@ CNrpInvention* CNrpCompany::GetInvention( const std::string& name )
 			return *pIter;
 
 	return NULL;
+}
+
+void CNrpCompany::RemoveUser( const std::string& name )
+{
+	USER_LIST::iterator uIter = employers_.begin();
+	for( ; uIter != employers_.end(); uIter++ )
+		if( (*uIter)->GetValue<std::string>( NAME ) == name )
+		{
+			IUser* user = *uIter;
+			employers_.erase( uIter );
+
+			user->SetValue<int>( WANTMONEY, user->GetValue<int>( SALARY ) * 1.5 );
+			user->SetValue<PNrpCompany>( PARENTCOMPANY, NULL );
+			SetValue<int>( USERNUMBER, employers_.size() );
+
+			break;
+		}
 }
 }//namespace nrp

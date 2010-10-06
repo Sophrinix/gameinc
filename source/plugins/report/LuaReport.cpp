@@ -23,7 +23,7 @@ void HandleLoggerErrors(const char* fmt, ...)
 	OutputDebugString(msgBuf);
 	OutputDebugString("\n-------------------------------------------------------\n");
 
-	// TODO: Заменить MessageBox на что-нибудь более ХУД'анутое.
+	// TODO: Заменить MessageBox на что-нибудь более .
 	MessageBox(0, msgBuf, "Logger Service Message", MB_ICONSTOP | MB_OK);
 	va_end(list);
 }

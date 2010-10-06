@@ -41,7 +41,7 @@ function Show()
 	if plantWindow then
 		plantWindow:SetVisible( true )
 	else
-		plantWindow = guienv:AddWindow( "media/plant_normal.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		plantWindow = guienv:AddWindow( "media/maps/plant_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		plantWindow:GetCloseButton():SetVisible( false )
 		plantWindow:SetDraggable( false )
 		
@@ -67,7 +67,7 @@ function ShowDiskManager()
 	produceDiskWork = base.CLuaPlantWork():Create( company:GetName() )
 	
 	if wndDPP == nil then
-		wndDPP = guienv:AddWindow( "media/plant_Select.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		wndDPP = guienv:AddWindow( "media/maps/plant_Select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		wndDPP:SetName( base.WINDOW_DISKPRODUCEPLANT_NAME )
 		wndDPP:SetDraggable( false )
 	else

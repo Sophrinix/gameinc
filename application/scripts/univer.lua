@@ -26,7 +26,7 @@ function Show()
 	if univerWindow then
 		univerWindow:SetVisible( true )
 	else
-		univerWindow = guienv:AddWindow( "media/univer_dvor.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		univerWindow = guienv:AddWindow( "media/maps/univer_dvor.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		univerWindow:GetCloseButton():SetVisible( false )
 		univerWindow:SetDraggable( false )
 		
@@ -48,8 +48,8 @@ end
 local function AddProgressBar( windowe, x1, y1, x2, y2, id, pos, textr )
 	local prg = guienv:AddProgressBar( windowe:Self(), x1, y1, x2, y2, id )
 	prg:SetPosition( pos )						   
-	prg:SetImage( "media/stars01.tga" )
-	prg:SetFillImage( "media/stars06.tga" )
+	prg:SetImage( "media/textures/stars01.tga" )
+	prg:SetFillImage( "media/textures/stars06.tga" )
 	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, windowe:Self() )
 	label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 end
@@ -137,7 +137,7 @@ end
 
 function ShowEmployersWindow()
 	if windowUpEmployer == nil then
-		windowUpEmployer = guienv:AddWindow( "media/stuffUpWindowBg.tga", 0, 0, scrWidth, scrHeight, WINDOW_EMPLOYER_SELECT_ID, guienv:GetRootGUIElement() )
+		windowUpEmployer = guienv:AddWindow( "media/textures/stuffUpWindowBg.png", 0, 0, scrWidth, scrHeight, WINDOW_EMPLOYER_SELECT_ID, guienv:GetRootGUIElement() )
 		windowUpEmployer:SetDraggable( false )
 	else
 		windowUpEmployer:SetVisible( true )

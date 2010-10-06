@@ -8,7 +8,7 @@ function sworkAppDayChange( ptr )
 	userLabel:SetText( name..":   $"..summ)
 end
 
-function sworkAppMonthChange( ptr )
+function sworkAppMonthChange()
 	applic:CreateNewFreeUsers()
 	applic:CheckNewTechs()
 end
@@ -19,12 +19,12 @@ end
 
 function sworkInventionFinished( ptr )
 	local inv = CLuaTech( ptr )
-	guienv:MessageBox( "Закончена работа на изобретением "..inv:GetName(), false, false, "", "" )
+	guienv:MessageBox( "Закончена работа над изобретением "..inv:GetName(), false, false, "", "" )
 end
 
 function sworkPlayerCompanyReadyProject( ptr )
 	local game = CLuaGame( ptr )
-	guienv:MessageBox( "Закончена работа на проектом "..game:GetName(), false, false, "", "" )
+	guienv:MessageBox( "Закончена работа над проектом "..game:GetName(), false, false, "", "" )
 end
 
 function sworkMainLoop( ptr )
@@ -45,14 +45,6 @@ function sworkSelectObjectOnOfficeScene( ptr )
 		sworkCreateWindowCompanyInventionManager()
 		return 0
 	end
-
-	if nodeName == "exitOfficeNode" then
-		sceneManager:RemoveSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
-		ApplicationLoadCityScene()
-		return 0
-	end
-	
-	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-OFFICE:Не могу найти узел для работы "..nodeName )
 end
 
 function sworkApplicationClose( ptr )

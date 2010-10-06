@@ -6,6 +6,7 @@ local applic = base.applic
 local guienv = base.guienv
 local company = nil
 local button = base.button
+local Log = base.Log
 
 local mode = { }
 mode[ base.STR_CODERS ] = "coder"
@@ -38,6 +39,12 @@ local function ShowAvaibleEmployersToManage()
 		
 		if modeUserView == user:GetTypeName() then
 			listBoxCompanyEmployers:AddItem( user:GetName(), user:Self() )
+			listBoxCompanyEmployers:SetItemTextColor( i-1, 0xff, 0x0, 0xff, 0x0 )
+			if i % 2 == 0 then
+				listBoxCompanyEmployers:SetItemBgColor( i-1, 0xff, 0x42, 0x42, 0x42 )
+			else
+				listBoxCompanyEmployers:SetItemBgColor( i-1, 0xff, 0x24, 0x24, 0x24 )
+			end
 		end
 	end
 end
@@ -65,15 +72,10 @@ function ShowUserInfo()
 
 	currentEmployer = base.CLuaUser( listBoxCompanyEmployers:GetSelectedObject() )
 	
-	local parent = CLuaWindow( guienv:GetElementByID( WINDOW_EMPLOYERS_MANAGE_ID ) )
-	winInfo = guienv:AddWindow( "", width / 2 - 300, height / 2 - 200, width / 2 + 300, height / 2 + 200, -1, parent:Self() )
+	winInfo = guienv:AddWindow( "", scrWidth / 2 - 300, scrHeight / 2 - 200, scrWidth / 2 + 300, scrHeight / 2 + 200, -1, windowUserManager:Self() )
 	winInfo:SetText( currentEmployer:GetName() )
 	winInfo:SetDraggable( false )
-	
-	--сделаем невидимой кнопку закрыть, чтобы закрывать окно по правой кнопке мыши
-	local btn = winInfo:GetCloseButton()
-	btn:SetVisible( false )
-	
+
 	winInfo:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, "./userManager.CloseUserInfoWindow()" )
 	
 	local wd, ht = winInfo:GetSize()
@@ -92,7 +94,7 @@ function Show()
 	company = applic:GetPlayerCompany()
 	
 	if windowUserManager == nil or windowUserManager:Empty() == 1 then
-		windowUserManager = guienv:AddWindow( "media/director_cabinet_slider.tga", 0, 0, 
+		windowUserManager = guienv:AddWindow( "media/maps/director_cabinet_slider.png", 0, 0, 
 											  scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		windowUserManager:GetCloseButton():SetVisible( false )
 		windowUserManager:SetDraggable( false ) 
@@ -117,25 +119,70 @@ function Show()
 	ShowAvaibleEmployersToManage()
 	
 	local i = 0
-	btnRemoveUser = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight  - 10, windowUserManager:Self(), -1, "Уволить" )
+	btnRemoveUser = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight  - 10, windowUserManager:Self(), -1, base.STR_FIRE_EMP )
 	btnRemoveUser:SetAction( "./userManager.RemoveUser()" )
 	
 	i = i + 1
-	btnUpSalary = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, "З/П + 5%" )
+	btnUpSalary = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, base.STR_INC_SALARY )
 	btnUpSalary:SetAction( "./userManager.UpSalary()" )
 	
 	i = i +	1
-	btnDownSalary = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, "З/П - 5%" )
+	btnDownSalary = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, base.STR_DEC_SALARY )
 	btnDownSalary:SetAction( "./userManager.DownSalary()" )
 	
 	i = i + 1
-	btnGiveWeekEnd = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, "Отпуск" )
+	btnGiveWeekEnd = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, base.STR_GET_WEEKEND )
 	btnGiveWeekEnd:SetAction( "./userManager.GetWeekend()" )
 	
 	i = i +  1
-	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager
-	:Self(), -1, "Премия" )
+	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, base.STR_GET_PRESENT )
 	btnGivePremia:SetAction( "./userManager.GetPremia()" )
+	
+	i = i +  1
+	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, base.STR_SEND_TO_SCHOOL )
+	btnGivePremia:SetAction( "./userManager.SendToLearning()" )	
+	
+	i = i +  1
+	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, base.STR_COMMUNICATE )
+	btnGivePremia:SetAction( "./userManager.Communicate()" )	
+	
+	i = i +  1
+	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager:Self(), -1, base.STR_ROUTINE )
+	btnGivePremia:SetAction( "./userManager.Rooutine()" )	
+end
+
+function GetMoneyForFireEmp()
+	--работник остается на рынке труда
+	company:RemoveUser( currentEmployer:GetName() )
+	
+	--но теряет уважение к компании игрока, и может не пойти 
+	--в неё снова
+	local relation = currentEmployer:GetRelation( company:GetName() ) 
+	
+	currentEmployer:SetRelation( company:GetName(), relation * 0.5 ) 
+	--также это вызовет некоторое снижение отношения к компании
+	--у его друзей, чем выше показатель отношения между людьми
+	--тем больше зависимость падения отношения к компании
+	currentEmployer = nil
+end
+
+function NoGetMoneyForFireEmp()
+
+	company:RemoveUser( currentEmployer:GetName() )
+	--расчет возможности что уволенный человек забрал
+	--какие-то данные или испортил разрабатываемый модуль,
+	--передал разработку в другую компанию, чем увеличил прогресс 
+	--какого нибудть модуля
+	--если это произошло, то его надо убрать с рынка
+	application:RemoveUser( currentEmployer:Self() )
+	currentEmployer = nil
+end
+
+function RemoveUser()
+	--увольняя человека надо выплатить ему зарплату за два месяца
+	--иначе повышается шанс, что он чтонибудь стащит с конторы
+	guienv:MessageBox( "Работник хочет получить жалование за 2 месяца вперед ($" .. currentEmployer:GetParam( "salary" ) * 2 .. ")\nВыплатить???", 
+					   true, true, "./userManager.GetMoneyForFireEmp()", "./userManager.NoGetMoneyForFireEmp()" )
 end
 
 function ChangeUserType( name )

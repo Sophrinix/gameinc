@@ -19,7 +19,7 @@ function Show( ptr )
 	if mainWindow then
 		mainWindow:SetVisible( true )
 	else
-		mainWindow = guienv:AddWindow( "media/director_cabinet.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		mainWindow = guienv:AddWindow( "media/maps/director_cabinet.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		mainWindow:SetDraggable( false )
 		mainWindow:SetVisible( false )
 		mainWindow:GetCloseButton():SetVisible( false )
@@ -36,7 +36,7 @@ function Show( ptr )
 	--employers manager
 	button.EqualeTexture( 805, 238, "employersManager", mainWindow:Self(), -1, "", "./userManager.Show()" )
 	--project manager
-	button.EqualeTexture( 612, 251, "projectManager", mainWindow:Self(), -1, "", "./projectManager.Show()" )
+	button.EqualeTexture( 612, 251, "projectManager", mainWindow:Self(), -1, "", "./monitor.Show()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "director.FadeEnterAction()" )

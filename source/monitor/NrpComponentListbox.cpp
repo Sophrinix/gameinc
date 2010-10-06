@@ -141,20 +141,15 @@ void CNrpComponentListbox::recalculateItemHeight()
 {
 	IGUISkin* skin = Environment->getSkin();
 
-	if (_font != skin->getFont())
-	{
-		if (_font)
-			_font->drop();
-
+	_font = RFont;
+	if( !_font )
 		_font = skin->getFont();
-		ItemHeight = 0;
 
-		if (_font)
-		{
-			ItemHeight = _font->getDimension(L"A").Height + 4;
-			_font->grab();
-		}
-	}
+	ItemHeight = 0;
+	assert( _font != NULL );
+
+	if (_font)
+		ItemHeight = _font->getDimension(L"A").Height + 4;
 
 	TotalItemHeight = ItemHeight * Items.size();
 	ScrollBar->setMax( TotalItemHeight - AbsoluteRect.getHeight()  );
@@ -477,7 +472,7 @@ void CNrpComponentListbox::_DrawIcon( int index, core::recti rectangle, bool hig
 
 void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti rectangle, 
 											  core::recti frameRect, video::SColor color, 
-											  core::recti& clipRect )
+											  core::recti& clipRect, video::SColor bgColor )
 {
 	wchar_t tmpstr[ 128 ];
 	video::IVideoDriver* driver = Environment->getVideoDriver();
@@ -491,7 +486,8 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 	swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), (int)(percent * 100) );
 	core::recti progressRect = frameRect;
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
-	driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clipRect );
+	driver->draw2DRectangle( progressRect, bgColor, bgColor, bgColor, bgColor, &clipRect );
+
 	_font->draw( tmpstr, rectangle, color, false, true, &clipRect );
 }
 
@@ -571,12 +567,16 @@ void CNrpComponentListbox::draw()
 					}
 					else
 					{	
+						video::SColor color = Items[ i ].OverrideColors[ EGUI_LBC_BACKGROUND ].Use 
+											  ? Items[ i ].OverrideColors[ EGUI_LBC_BACKGROUND ].Color
+											  : 0xff454545;
+						color = ( i==Selected && hl ) ? EGUI_LBC_TEXT_HIGHLIGHT : color;
 						if( CNrpTechnology* tech = dynamic_cast<CNrpTechnology*>( pObject ) )
-							_DrawAsTechnology( tech, textRect, frameRect, itbncolor, clientClip );
+							_DrawAsTechnology( tech, textRect, frameRect, itbncolor, clientClip, color );
 						else if( IUser* user = dynamic_cast<IUser*>( pObject ) )
-							_DrawAsUser( user, textRect, frameRect, itbncolor, clientClip );
+							_DrawAsUser( user, textRect, frameRect, itbncolor, clientClip, color );
 						else if( CNrpDevelopGame* devGame = dynamic_cast< CNrpDevelopGame* >( pObject ) )
-							_DrawAsGame( devGame, textRect, frameRect, itbncolor, clientClip );
+							_DrawAsGame( devGame, textRect, frameRect, itbncolor, clientClip, color );
 					}
 					textRect.UpperLeftCorner.X -= ItemsIconWidth+3;
 				}
@@ -597,7 +597,7 @@ void CNrpComponentListbox::draw()
 
 void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti rectangle, 
 									    core::recti frameRect, video::SColor color, 
-									    core::recti& clipRect )
+										core::recti& clipRect, video::SColor bgColor )
 {
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
@@ -635,7 +635,7 @@ void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti re
 
 void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle, 
 									    core::recti frameRect, video::SColor color, 
-									    core::recti& clipRect )
+									    core::recti& clipRect, video::SColor bgColor )
 {
 	wchar_t tmpstr[ 128 ];
 	video::IVideoDriver* driver = Environment->getVideoDriver();
@@ -649,7 +649,9 @@ void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle,
 	swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), expr );
 	core::recti progressRect = frameRect;
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
-	//driver->draw2DRectangle( progressRect, 0xff0000ff, 0xff0000ff, 0xff00ff00, 0xff00ff00, &clientClip );
+
+	driver->draw2DRectangle( frameRect, bgColor, bgColor, bgColor, bgColor, &clipRect );
+
 	std::string pathToImage = user->GetValue<std::string>( TEXTURENORMAL );
 	driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
 		core::recti( 3, 3, rectangle.getHeight(), rectangle.getHeight() - 6 ) + rectangle.UpperLeftCorner,

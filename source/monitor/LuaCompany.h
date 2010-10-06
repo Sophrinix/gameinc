@@ -31,6 +31,7 @@ public:
 	int GetProject( lua_State* L );
 	int GetProjectByName( lua_State* L );
 	int AddUser( lua_State* L );
+	int RemoveUser( lua_State* L );
 	int GetUser( lua_State* L );
 	int AddLuaFunction( lua_State* L );
 	int AddToPortfelle( lua_State* L );

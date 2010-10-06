@@ -32,7 +32,7 @@ function Show()
 	if receptionWindow then
 		receptionWindow:SetVisible( true )
 	else
-		receptionWindow = guienv:AddWindow( "media/reception.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		receptionWindow = guienv:AddWindow( "media/maps/reception.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		receptionWindow:GetCloseButton():SetVisible( false )
 		receptionWindow:SetDraggable( false )
 		receptionWindow:SetVisible( false )

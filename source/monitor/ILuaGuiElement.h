@@ -240,8 +240,16 @@ public:
 
 		IF_OBJECT_NOT_NULL_THEN
 		{
-			object_->remove();
-			object_ = NULL;
+			try
+			{
+				object_->remove();
+				object_ = NULL;
+			}
+			catch(...)
+			{
+				assert( object_ != NULL );
+				object_  = NULL;
+			}
 		}
 
 		return 1;

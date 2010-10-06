@@ -35,6 +35,7 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProjectNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProject ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, RemoveUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUserNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectNumber ),
@@ -382,5 +383,18 @@ int CLuaCompany::StartInvention( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	CNrpApplication::Instance().AddInvention( name, object_ );
 
 	return 1;	
+}
+
+int CLuaCompany::RemoveUser( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:StartInvention need CNrptechnology parameter" );
+
+	const char* name = lua_tostring( L, 2 );
+	assert( name != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->RemoveUser( name );
+
+	return 1;		
 }
 }//namespace nrp

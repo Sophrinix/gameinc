@@ -523,6 +523,9 @@ void CGUIListBox::draw()
 		{
 			if (i == Selected && hl)
 				skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), frameRect, &clientClip);
+			else
+				if( Items[ i ].OverrideColors[ EGUI_LBC_BACKGROUND ].Use )
+					skin->draw2DRectangle(this, Items[ i ].OverrideColors[ EGUI_LBC_BACKGROUND ].Color, frameRect, &clientClip);
 
 			core::rect<s32> textRect = frameRect;
 			textRect.UpperLeftCorner.X += 3;

@@ -107,14 +107,14 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	if( nProject->GetValue<PNrpTechnology>( GRAPHICQUALITY ) )
 	{
 		PNrpProjectModule module = new CNrpProjectModule( nProject->GetValue<PNrpTechnology>( GRAPHICQUALITY ), this );
-		module->SetValue<int>( CODEVOLUME, bcv * module->GetValue<float>( BASE_CODE ) );
+		module->SetValue<int>( CODEVOLUME, static_cast< int >( bcv * module->GetValue<float>( BASE_CODE ) ) );
 		gameModules_.push_back( module );
 	}
 
 	if( nProject->GetValue<PNrpTechnology>( SOUNDQUALITY ) )
 	{
 		PNrpProjectModule module = new CNrpProjectModule( nProject->GetValue<PNrpTechnology>( SOUNDQUALITY ), this );
-		module->SetValue<int>( CODEVOLUME, bcv * module->GetValue<float>( BASE_CODE ) );
+		module->SetValue<int>( CODEVOLUME, static_cast< int >( bcv * module->GetValue<float>( BASE_CODE ) ) );
 		gameModules_.push_back( module );
 	}
 

@@ -76,8 +76,9 @@ public:
 	void RemoveInvention( CNrpInvention* inv );
 
 	void AddUser( IUser* user );
+	void RemoveUser( const std::string& name );
 	IUser* GetUser( int index );
-	IUser* GetUser( std::string name );
+	IUser* GetUser( const std::string& name );
 	
 	CNrpGame* GetGame( std::string gameName );
 	CNrpGame* GetGame( size_t index );

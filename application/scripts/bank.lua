@@ -22,7 +22,7 @@ function Show()
 	if bankWindow then
 		bankWindow:SetVisible( true )
 	else
-		bankWindow = guienv:AddWindow( "media/bank_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		bankWindow = guienv:AddWindow( "media/maps/bank_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		bankWindow:SetDraggable( false )
 		bankWindow:GetCloseButton():SetVisible( false )
 		
@@ -79,7 +79,7 @@ end
 function ShowLoans()
 	
 	if windowLoan == nil then
-		windowLoan = guienv:AddWindow( "media/bank_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		windowLoan = guienv:AddWindow( "media/maps/bank_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		windowLoan:SetDraggable( false )
 		windowLoan:GetCloseButton():SetAction( "./bank.HideLoans()" )
 	else

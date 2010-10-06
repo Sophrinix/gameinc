@@ -13,6 +13,21 @@ local EDIT_NEWCOMPANY_NAME = "_WindowNewGameEditCompany_"
 local width = 200
 local height = 100
 
+function sloginCloseWindowCreateNewProfile( ptr )
+	local btn = CLuaButton( ptr )
+	local windowg = CLuaWindow( btn:GetParent() )
+	windowg:Remove()
+end
+
+local function localPlantLoadBaseReklame()
+	plant:LoadBaseReklame( "xtras/reklames/magazine.reklame" )
+	plant:LoadBaseReklame( "xtras/reklames/tv.reklame" )
+	plant:LoadBaseReklame( "xtras/reklames/radio.reklame" )
+	plant:LoadBaseReklame( "xtras/reklames/paper.reklame" )
+	
+	plant:LoadReklamePrice( applic:GetCurrentProfile() )
+end
+
 --создание новой игры
 function sloginCreateNewProfileAndStartGame( ptr )
 	local editName = CLuaEdit( guienv:GetElementByName( EDIT_NEWPROFILE_NAME ) )
@@ -26,19 +41,13 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	--формируем стартовые условия
 	sloginAddStartPlayerDef()
 	sloginAddStartCompanyTechnology()
-	sloginAddStartVideoContentTechnology()
-	sloginAddStartSoundContentTechnology()
-	sloginAddStartScenarioContentTechnology()
 	DebugFunctionCall( sloginAddStartPublicTechnology )
+	
+	--загружаем базовую рекламу
+	localPlantLoadBaseReklame()
 	
 	--переходим на следующую сцену
 	NrpSetNextScene( "sceneWork" )
-end
-
-function sloginCloseWindowCreateNewProfile( ptr )
-	local btn = CLuaButton( ptr )
-	local windowg = CLuaWindow( btn:GetParent() )
-	windowg:Remove()
 end
 
 function slogin_CreateNewGame( ptr )
@@ -66,15 +75,6 @@ function slogin_CreateNewGame( ptr )
 										windowg:Self(), -1, "Отмена" )
 	btnCancel:SetAction( "sloginCloseWindowCreateNewProfile" )
 	
-end
-
-local function localPlantLoadBaseReklame()
-	plant:LoadBaseReklame( "xtras/reklames/magazine.reklame" )
-	plant:LoadBaseReklame( "xtras/reklames/tv.reklame" )
-	plant:LoadBaseReklame( "xtras/reklames/radio.reklame" )
-	plant:LoadBaseReklame( "xtras/reklames/paper.reklame" )
-	
-	plant:LoadReklamePrice( applic:GetCurrentProfile() )
 end
 
 function slogin_ContinueLastGame( ptr )

@@ -640,7 +640,7 @@ function Show()
 	if mainWindow == nil then
 		project = base.CLuaGameProject():Create( "defaultGame" )
 		
-		mainWindow = guienv:AddWindow( "media/monitor.tga", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		mainWindow = guienv:AddWindow( "media/textures/monitor.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		mainWindow:SetDraggable( false )
 		mainWindow:SetVisible( false )
 		mainWindow:GetCloseButton():SetVisible( false )

@@ -72,8 +72,8 @@ local function ShowWindowUserInfo( userPtr )
 		guienv:AddLabel( named, 5, posy, widdddd, posy + 20, -1, windowUserInfo:Self() )
 		local prg = guienv:AddProgressBar( windowUserInfo:Self(), 50, posy, widdddd - 5, posy + 20, -1 )
 		prg:SetPosition( valuel )						   
-		prg:SetImage( "media/stars01.png" )
-		prg:SetFillImage( "media/stars06.png" )
+		prg:SetImage( "media/textures/stars01.png" )
+		prg:SetFillImage( "media/textures/stars06.png" )
 	end
 	
 	dd( "Опыт", currentEmployer:GetParam( "knowledgeLevel" ), 30 )
@@ -118,13 +118,13 @@ function Show( ptr )
 
 	company = applic:GetPlayerCompany()
 	if windowProjectManager == nil then
-		windowProjectManager = guienv:AddWindow( "media/monitor.tga", 0, 0, base.scrWidth, base.scrHeight, -1, guienv:GetRootGUIElement() )
+		windowProjectManager = guienv:AddWindow( "media/textures/monitor.png", 0, 0, base.scrWidth, base.scrHeight, -1, guienv:GetRootGUIElement() )
 		windowProjectManager:GetCloseButton():SetVisible( false )
 		windowProjectManager:SetDraggable( false )
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 60, scrWidth - 20, scrHeight, 
 		 			    "poweroff", windowProjectManager:Self(), -1, "",
-						"./projectManager:Hide()" )
+						"./projectManager.Hide()" )
 	else
 		windowProjectManager:SetVisible( true )
 		return
@@ -143,8 +143,8 @@ function Show( ptr )
 	comboxUsers = guienv:AddComboBox( "", offsetX + 10, 110, scrWidth - 150, 130, -1, windowProjectManager:Self() )
 	
 	--coders
-	local btn = button.Stretch( offsetX + 10, 50, offsetX + 100, 100, "", windowProjectManager:Self(), -1, 
-								base.STR_CODERS, "./projectManager.UpdateUsersListBox( STR_CODERS )" )
+	button.Stretch( offsetX + 10, 50, offsetX + 100, 100, "", windowProjectManager:Self(), -1, 
+					base.STR_CODERS, "./projectManager.UpdateUsersListBox( STR_CODERS )" )
 	UpdateUsersListBox( base.STR_CODERS )	
 	
 	--designers

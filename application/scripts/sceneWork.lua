@@ -18,6 +18,7 @@ IncludeScript("plant")
 IncludeScript("laboratory" )
 IncludeScript("office")
 IncludeScript("gameprojectManager")
+IncludeScript("monitor")
 --------------------------------------------
 
 alwaysOnTopWindow = {}

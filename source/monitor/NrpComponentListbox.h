@@ -178,13 +178,13 @@ protected:
 	void _DrawIcon( int index, core::recti rectangle, bool highlight, core::recti &clientClipRect );
 	void _DrawAsTechnology( nrp::CNrpTechnology* tech, core::recti rectangle, 
 							core::recti frameRect, video::SColor color, 
-							core::recti& clipRect );
+							core::recti& clipRect, video::SColor bgColor );
 	void _DrawAsUser( nrp::IUser* user, core::recti rectangle, 
 					  core::recti frameRect, video::SColor color, 
-					  core::recti& clipRect);
+					  core::recti& clipRect, video::SColor bgColor );
 	void _DrawAsGame( nrp::CNrpDevelopGame* devGame, core::recti rectangle, 
 					  core::recti frameRect, video::SColor color, 
-					  core::recti& clipRect );
+					  core::recti& clipRect, video::SColor bgColor );
 	irr::core::array< ListItem > Items;
 	irr::s32 Selected;
 	irr::s32 ItemHeight;
