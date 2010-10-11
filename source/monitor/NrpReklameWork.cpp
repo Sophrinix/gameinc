@@ -30,6 +30,10 @@ void CNrpReklameWork::InitializeOptions_()
 	CreateValue<std::string>( TEXTURENORMAL, "" );
 	CreateValue<int>( BALANCE, 0 );
 	CreateValue<std::string>( COMPANYNAME, "" );
+
+	SYSTEMTIME rt;
+	memset( &rt, 0, sizeof( rt ) );
+	CreateValue<SYSTEMTIME>( STARTDATE, rt );
 }
 
 CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )

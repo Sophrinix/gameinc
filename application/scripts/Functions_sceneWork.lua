@@ -10,7 +10,8 @@ end
 
 function sworkAppMonthChange()
 	applic:CreateNewFreeUsers()
-	updates.CheckNewTechs()
+	updates.CheckNewReklames( true )
+	updates.CheckNewTechs() 
 end
 
 function sworkAppYearChange( ptr )

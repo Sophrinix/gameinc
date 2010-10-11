@@ -62,6 +62,8 @@ public:
 	int GetGameTime( lua_State* L );
 	int GetInvention( lua_State* L );
 
+	int CreateDirectorySnapshot( lua_State* L );
+
 	static const char* StaticGetLuaName() { return CLASS_CLUAPPLICATION.c_str(); }
 private:
 	int lastDay_, lastMonth_, lastYear_;

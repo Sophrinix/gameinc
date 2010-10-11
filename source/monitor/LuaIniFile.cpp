@@ -13,6 +13,7 @@ Luna< CLuaIniFile >::RegType CLuaIniFile::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadInteger ),
 	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadString ),
 	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadFloat ),
+	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadTime ),
 	{0,0}
 };
 
@@ -73,6 +74,30 @@ int CLuaIniFile::ReadFloat( lua_State* L )
 	resultt = IniFile::Read( section, key, defaultValue, fileName_ );
 
 	lua_pushnumber( L, resultt );
+
+	return 1;
+}
+
+int CLuaIniFile::ReadTime( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaIniFile::ReadFloat need string parameter");
+
+	const char* section = lua_tostring( L, 2 );
+	const char* key = lua_tostring( L, 3 );
+
+	SYSTEMTIME time;
+	memset( &time, 0, sizeof( SYSTEMTIME ) );
+	assert( section != NULL || key == NULL );
+
+	time = IniFile::Read( section, key, time, fileName_ );
+
+	lua_pushinteger( L, time.wYear );
+	lua_pushinteger( L, time.wMonth );
+	lua_pushinteger( L, time.wDay );
+	lua_pushinteger( L, time.wHour );
+	lua_pushinteger( L, time.wMinute );
+
 
 	return 1;
 }

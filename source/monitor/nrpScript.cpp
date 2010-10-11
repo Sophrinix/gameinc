@@ -148,6 +148,8 @@ CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 
 		lua_register( vm_, "GetTickCount", ApplicationGetTickCount ),
 
+		lua_register( vm_, "RemoveFile", ApplicationRemoveFile ),
+
 		RegisterLuaClasses_();
 	}
 	catch (...)

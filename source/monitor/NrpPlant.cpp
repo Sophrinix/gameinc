@@ -158,6 +158,7 @@ CNrpReklameWork* CNrpPlant::CreateReklame( const std::string& type,
 
 void CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
 {
+	assert( pReklame != NULL );
 	if( GetBaseReklame( pReklame->GetValue<std::string>( NAME ) ) == NULL )
 		baseReklame_.push_back( pReklame );
 
@@ -166,6 +167,8 @@ void CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
 
 CNrpReklameWork* CNrpPlant::GetBaseReklame( std::string name )
 {
+	assert( name.size() != 0 );
+
 	REKLAME_LIST::iterator pIter = baseReklame_.begin();
 	for( ; pIter != baseReklame_.end(); pIter++ ) 
 		if( (*pIter)->GetValue<std::string>( TECHTYPE ) == name )

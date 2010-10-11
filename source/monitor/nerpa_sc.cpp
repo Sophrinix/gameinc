@@ -33,11 +33,14 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	application.SetValue<PNrpBank>( BANK, &CNrpBank::Instance() );
 
 #ifdef _DEBUG
-	application.SetValue<std::string>( FULLPATH, "v:/application/" );
+	std::string mypath = __argv[ 0 ];
+	mypath = mypath.erase( mypath.rfind( '\\'), 0xff );
+	mypath = mypath.erase( mypath.rfind( '\\')+1, 0xff );
+	application.SetValue<std::string>( WORKDIR, mypath );
 #else
 	std::string mypath = __argv[ 0 ];
 	mypath = mypath.erase( mypath.rfind( '\\')+1, 0xff );
-	application.SetValue<std::string>( FULLPATH, mypath );
+	application.SetValue<std::string>( WORKDIR, mypath );
 #endif
 
 	CNrpPluginEngine& p_engine = CNrpPluginEngine::Instance();

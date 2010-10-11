@@ -47,7 +47,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( TECHNUMBER, 0 );
 	CreateValue<int>( USERNUMBER, 0 );
 	CreateValue<int>( COMPANIESNUMBER, 0 );
-	CreateValue<std::string>( FULLPATH, "" );
+	CreateValue<std::string>( WORKDIR, "" );
 	std::string profileName = IniFile::Read( SECTION_OPTIONS, "currentProfile", std::string( "dalerank" ), "config/system.ini" );
 	std::string profileCompany = IniFile::Read( SECTION_OPTIONS, "currentCompany", std::string( "daleteam" ), "config/system.ini" );
 	CreateValue<std::string>( PROFILENAME, profileName );
@@ -236,7 +236,7 @@ void CNrpApplication::SaveProfile()
 	std::string saveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "/";
 	std::string prevSaveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "Old/";
 
-	OpFileSystem::MoveDirectory( saveFolder, prevSaveFolder );
+	OpFileSystem::Move( saveFolder, prevSaveFolder );
 	if( _access( saveFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( saveFolder.c_str(), NULL );
 

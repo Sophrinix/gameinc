@@ -1,4 +1,4 @@
-[1983]
-DescriptionNumber=2
-description_0=xtras/screenshots/1983/bushido
-description_1=xtras/screenshots/1983/galaxian
+[options]
+screenshot0=xtras/Screenshots/1983/bushido/item.desc
+screenshotNumber=2
+screenshot1=xtras/Screenshots/1983/galaxian/item.desc

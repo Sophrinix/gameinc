@@ -20,6 +20,7 @@ public:
 	int ReadInteger( lua_State* L );
 	int ReadString( lua_State* L );
 	int ReadFloat( lua_State* L );
+	int ReadTime( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaIniFile"; }
 };

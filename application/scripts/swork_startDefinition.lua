@@ -1,6 +1,40 @@
 local company = nil
 local user = CLuaUser( nil )
 
+function CreateStuffLists()
+	RemoveFile( updates.fileDiskMachines )
+	applic:CreateDirectorySnapshot( "xtras/diskmachines", updates.fileDiskMachines,
+									"diskMachine", "item.dm" )
+									
+	RemoveFile( updates.fileIniAddons )
+	applic:CreateDirectorySnapshot( "xtras/gameboxaddon", updates.fileIniAddons,
+									"addon", "item.addon" )
+
+	RemoveFile( updates.fileIniPlatforms )
+	applic:CreateDirectorySnapshot( "xtras/platforms", updates.fileIniPlatforms,
+									"platorm", "item.platform" )
+									
+	RemoveFile( updates.fileReklames )
+	applic:CreateDirectorySnapshot( "xtras/reklames", updates.fileReklames,
+									"reklame", "item.reklame" )
+
+	RemoveFile( updates.fileRetailers )
+	applic:CreateDirectorySnapshot( "xtras/retailers", updates.fileRetailers,
+									"retailer", "item.retailer" )
+									
+	RemoveFile( updates.fileScreenshots )
+	applic:CreateDirectorySnapshot( "xtras/Screenshots", updates.fileScreenshots,
+									"screenshot", "item.desc" )
+									
+	RemoveFile( updates.fileEngines )
+	applic:CreateDirectorySnapshot( "xtras/engines", updates.fileEngines,
+									"engine", "engine.ini" )
+									
+	RemoveFile( updates.fileTechs )
+	applic:CreateDirectorySnapshot( "xtras/technology", updates.fileTechs,
+									"tech", "item.tech" )
+end
+
 function sloginResetDataForNewGame()
 	applic:ResetData()
     user:Create( "RealPlayer", applic:GetCurrentProfile() )

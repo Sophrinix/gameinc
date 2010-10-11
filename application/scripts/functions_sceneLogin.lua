@@ -20,11 +20,7 @@ function sloginCloseWindowCreateNewProfile( ptr )
 end
 
 local function localPlantLoadBaseReklame()
-	plant:LoadBaseReklame( "xtras/reklames/magazine.reklame" )
-	plant:LoadBaseReklame( "xtras/reklames/tv.reklame" )
-	plant:LoadBaseReklame( "xtras/reklames/radio.reklame" )
-	plant:LoadBaseReklame( "xtras/reklames/paper.reklame" )
-	
+	updates.CheckNewReklames()
 	plant:LoadReklamePrice( applic:GetCurrentProfile() )
 end
 
@@ -32,6 +28,9 @@ end
 function sloginCreateNewProfileAndStartGame( ptr )
 	local editName = CLuaEdit( guienv:GetElementByName( EDIT_NEWPROFILE_NAME ) )
 	local editCompany = CLuaEdit( guienv:GetElementByName( EDIT_NEWCOMPANY_NAME ) )
+	
+	CreateStuffLists()
+	
 	--создаем новый профиль
 	applic:CreateProfile( editName:GetText(), editCompany:GetText() )
 	
@@ -44,7 +43,7 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	DebugFunctionCall( sloginAddStartPublicTechnology )
 	
 	--загружаем базовую рекламу
-	localPlantLoadBaseReklame()
+	localPlantLoadBaseReklame( false )
 	
 	--переходим на следующую сцену
 	NrpSetNextScene( "sceneWork" )
@@ -98,7 +97,7 @@ function slogin_ContinueLastGame( ptr )
 	plant:Load( applic:GetCurrentProfile() )
 	
 	--загружаем базовую рекламу
-	localPlantLoadBaseReklame()
+	localPlantLoadBaseReklame( false )
 	
 	NrpSetNextScene( "sceneWork" )
 end

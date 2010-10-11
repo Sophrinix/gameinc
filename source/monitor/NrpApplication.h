@@ -9,7 +9,7 @@ namespace nrp
 OPTION_NAME BANK( "bank" );
 OPTION_NAME PROFILENAME( "profileName" );
 OPTION_NAME PROFILECOMPANY( "profileCompany" );
-OPTION_NAME FULLPATH( "fullPath" );
+OPTION_NAME WORKDIR( "workDir" );
 OPTION_NAME CURRENTTIME( "currentTime" );
 OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
 OPTION_NAME BOXADDONNUMBER( "boxAdonNumber" );

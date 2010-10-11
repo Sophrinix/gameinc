@@ -125,6 +125,7 @@ bool CNrpEngine::InitVideo()
 	device_->setWindowCaption( newCaption.c_str() );
 	device_->getVideoDriver()->setTextureCreationFlag( video::ETCF_ALWAYS_32_BIT, true );
 
+	windowHandle_ = 0;
 	windowHandle_ = FindWindow( NULL, nrp::WideToStr( newCaption ).c_str() );							//заменяем обработчик событий
 	OldWindowProc = (WNDPROC)SetWindowLong( windowHandle_, GWL_WNDPROC, (long)NewWindowProc);
 

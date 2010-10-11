@@ -6,4 +6,4 @@ enddate:time=y=2010 m=00 d=00 h=0 mi=0 s=0
 level:int=0
 price:float=0.3
 texturehover:string=
-texturenormal:string=xtras/gameboxaddon/pen_1.png
+texturenormal:string=xtras/gameboxaddon/pen/pen_1.png

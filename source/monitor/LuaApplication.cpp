@@ -17,6 +17,7 @@
 #include "LuaTechnology.h"
 #include "LuaInvention.h"
 #include "LuaDiskMachine.h"
+#include "OpFileSystem.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -69,6 +70,7 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadImageList ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetInvention ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateDirectorySnapshot ),
 	{0,0}
 };
 
@@ -637,6 +639,26 @@ int CLuaApplication::GetInvention( lua_State* L )
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, inv );
 	Luna< CLuaInvention >::constructor( L );
+	return 1;
+}
+
+int CLuaApplication::CreateDirectorySnapshot( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 5, 5, "Function CLuaApplication:CreateDirectorySnapshot need directory, saveFile, itemName, itemTemplate in parameters" );
+
+	const char* directory = lua_tostring( L, 2 );
+	const char* saveFile = lua_tostring( L, 3 );
+	const char* itemTemplate  = lua_tostring( L, 4 );
+	const char* itemName = lua_tostring( L, 5 );
+
+	assert( directory != NULL && saveFile != NULL && itemName != NULL && itemTemplate != NULL );
+	if( directory != NULL && saveFile != NULL && 
+		itemName != NULL && itemTemplate != NULL )
+	{
+		OpFileSystem::CreateDirectorySnapshot( directory, saveFile, itemTemplate, itemName );
+	}
+
 	return 1;
 }
 }//namespace nrp  

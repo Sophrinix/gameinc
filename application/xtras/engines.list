@@ -1,0 +1,3 @@
+[options]
+engine0=xtras/engines/simpleEngine/engine.ini
+engineNumber=1

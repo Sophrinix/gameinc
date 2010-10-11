@@ -80,6 +80,8 @@ extern "C"
 
 	int ApplicationGetTickCount( lua_State* vm );
 
+	int ApplicationRemoveFile( lua_State* vm );
+
 	// типа справка
 	int Help(lua_State *vm);
 };

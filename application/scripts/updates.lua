@@ -5,12 +5,15 @@ module( "updates" )
 local LogScript = base.LogScript
 local applic = base.applic
 
-local fileIniPlatforms = "xtras/platforms.list"
-local fileIniAddons	= "xtras/gameboxaddons.list"
-local fileDiskMachines = "xtras/diskmachines.list"
-local fileRetailers = "xtras/retailers.list"
-local fileImages = "xtras/screenshots.list"
-local fileTechs = "xtras/technologies.list"
+fileIniPlatforms = "xtras/platforms.list"
+fileIniAddons	= "xtras/gameboxaddons.list"
+fileDiskMachines = "xtras/diskmachines.list"
+fileRetailers = "xtras/retailers.list"
+fileImages = "xtras/screenshots.list"
+fileTechs = "xtras/technologies.list"
+fileReklames = "xtras/reklames.list"
+fileScreenshots = "xtras/screenshots.list"
+fileEngines	= "xtras/engines.list"
 
 function CheckGamePlatforms( ptr )
 	
@@ -147,6 +150,37 @@ function CheckScreenshots( ptr )
 	end
 end
 
+function CheckNewReklames( showPdaForNewReklame )
+	local iniFile = base.CLuaIniFile( nil, fileReklames )
+	
+	local reklamesNumber = iniFile:ReadInteger( "options", "reklameNumber", 0 ) 
+	--получим текущую дату
+	local cYear, cMonth, cDay = applic:GetGameTime()
+	local curTime = os.time( {year=cYear, month=cMonth, day=cDay} )
+	
+	--пройдемся по списку реклам, которые вообще доступны
+	for i=1, reklamesNumber do
+		--запоминаем имя файла с описанием рекламы
+		local tmpReklameIni = iniFile:ReadString( "options", "reklame_"..(i-1), "" )
+		
+		--прочитаем время, когда этот вид рекламы появился на рынке
+		local lYear, lMonth, lDay = base.CLuaIniFile( nil, tmpReklameIni ):ReadTime( "options", "startdate:time" )
+		
+		--если уже можно показывать пользователю рекламу
+		if os.time( {year=lYear, month=lMonth, day=lDay} ) <= curTime then --1
+			--попрoбуем загрузить рекламу в двигло...
+			local itNew = plant:LoadBaseReklame( tmpReklameIni )
+			
+			if showPdaForNewReklame and itNew then
+				--надо показать игроку что появилась новая возможность
+				local rName = base.CLuaIniFile( nil, tmpReklameIni ):ReadString( "options", "name:string", "" )
+				base.pda.Show( "На рынке доступен новый вид рекламы "..rName )
+			end
+			
+		end --1
+	end --for
+end
+
 function CheckNewTechs()
 	local iniFile = base.CLuaIniFile( nil, fileTechs )
 
@@ -183,8 +217,8 @@ function CheckNewTechs()
 				-- надо её перевести в разряд общедоступных
 				if techcmp:IsEmpty() == 0 then
 					techcmp:RemoveTech( tech:GetName() )
+					base.pda.Show( "Технология адаптирована для массового применения "..tech:GetName().." от компании "..tech:GetCompany():GetName() )
 					tech:SetCompany( nil )
-					base.pda.Show( "Технология адаптирована для массового применения "..tech:GetName() )
 				end
 			end
 		end

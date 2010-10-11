@@ -58,7 +58,7 @@ int CLuaBrowser::Navigate( lua_State* L )
 		//если путь относительный надо его привести к абсолютному... иначи геко споткнется
 		//и не сможет обработать страницу
 		if( advpath.find( ':' ) == -1 )
-			advpath = CNrpApplication::Instance().GetValue<std::string>( FULLPATH ) + advpath;
+			advpath = CNrpApplication::Instance().GetValue<std::string>( WORKDIR ) + advpath;
 		object_->Navigate( "file://" + advpath );
 	}
 
