@@ -23,6 +23,7 @@ public:
 	static const char* StaticGetLuaName() { return "CLuaLabel"; }
 	int SetOverrideColor( lua_State* L );
 	int SetTextAlignment( lua_State* L );
+	int SetOverrideFont( lua_State* L );
 };
 
 }//namespace nrp

@@ -187,6 +187,10 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module, IUser* ptrUser 
 	{
 		OutputDebugString( ("Закончен проект " + GetValue<std::string>( NAME ) + "\n").c_str() );
 	}
+	else
+	{
+		CNrpApplication::Instance().DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
+	}
 }
 
 void CNrpDevelopGame::Save( std::string folderSave )

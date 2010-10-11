@@ -52,6 +52,7 @@
 #include "LuaBrowser.h"
 #include "LuaInvention.h"
 #include "LuaAutoScript.h"
+#include "LuaRelation.h"
 #include "LuaTab.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
@@ -208,6 +209,7 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaInvention >::Register( vm_ );
 	Luna< CLuaAutoScript >::Register( vm_ );
 	Luna< CLuaTab >::Register( vm_ );
+	Luna< CLuaRelation >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()

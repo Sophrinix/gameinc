@@ -71,4 +71,38 @@ void OpFileSystem::CopyFile( const std::string& pathOld, const std::string& path
 	sh.hNameMappings = 0;
 	sh.lpszProgressTitle = NULL;
 }
+
+void OpFileSystem::CreateDirectorySnapshot( const std::string& directory,
+											const std::string& saveFile, 
+											const std::string& templateName,
+											const std::string& itemName )
+{
+	assert( directory.size() );
+	if( directory.size() )
+	{
+		
+		if( ! FindFirst( directory+"\\*.*",faAnyFile,sr) )
+			do
+			{
+				if (!(sr.Name=="." || sr.Name==".."))// это удалять не надо
+					if (((sr.Attr & faDirectory) == faDirectory ) ||
+						(sr.Attr == faDirectory))// найдена папка
+					{
+						FileSetAttr(DirName+"\\"+sr.Name, faDirectory );// сброс всяких read-only
+						DeleteDir(DirName+"\\"+sr.Name);//рекурсивно удаляем содержимое
+						RemoveDir(DirName + "\\"+sr.Name);// удаляем теперь уже пустую папку
+					}
+					else// иначе найден файл
+					{
+						FileSetAttr(DirName+"\\"+sr.Name, 0);// сброс всяких read-only
+						DeleteFile(DirName+"\\"+sr.Name);// удаляем файл
+					}
+			}
+			while (!FindNext(sr));// ищем опять, пока не найдем все
+			FindClose(sr);
+	}
+	RemoveDir(DirName);
+	return true;
+}
+
 }//end namespace nrp

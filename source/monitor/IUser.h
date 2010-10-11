@@ -16,7 +16,7 @@ OPTION_NAME MAXMOOD( "maxMood" );/*! Максимальный уровень настроения, рассчитыва
 OPTION_NAME MOOD( "mood" );/*< Настроение. При низком настроении может уволиться */
 OPTION_NAME POPULARITY( "popularity" );/*< изветность разработчика */
 OPTION_NAME SALARY( "salary" );/*< зарплата разработчика*/
-OPTION_NAME WANTMONEY( "wantMoney" ); /*! Зарплата, которой будет доволен юзер */
+OPTION_NAME WANTMONEY( "wantMoney" ); /*! Зарплата, которой будет доволен работник */
 OPTION_NAME STABILITY("stability");/*< скорость падения усталости */
 OPTION_NAME CHARACTER( "character" ); /*< характер персонажа */
 OPTION_NAME CONTRACTMONEY( "contractMoney" ); /*! стартовая сумма при подписании контракта*/
@@ -36,6 +36,7 @@ class CNrpTechnology;
 class CNrpCompany;
 class IModificator;
 class IWorkingModule;
+class CNrpRelation;
 
 class IUser : public INrpConfig
 {
@@ -63,6 +64,8 @@ public:
 	void BeginNewHour( const SYSTEMTIME& time );
 	void BeginNewDay( const SYSTEMTIME& time );
 
+	CNrpRelation* GetRelation( const std::string& name );
+
 	~IUser(void);
 	void Save( std::string folderPath );
 	void Load( std::string fileName );
@@ -78,6 +81,7 @@ private:
 	typedef std::vector< IWorkingModule* > WORK_LIST;
 	typedef std::vector< IUserAction* > USERACTION_LIST;
 	typedef std::vector< IModificator* > MODIFICATOR_LIST;
+	typedef std::map< std::string, CNrpRelation* > RELATION_MAP;
 
 	KNOWLEDGE_MAP genrePreferences_; /*< предпочтения в жанре, растут рандомно со временем */
 	KNOWLEDGE_MAP genreExperience_;  /*< опыт написания игр, растет по мере выполнения компонентов */
@@ -85,6 +89,7 @@ private:
 	USERACTION_LIST peopleFeels_; /*< Отношения с окружающими людьми */
 	WORK_LIST works_;
 	MODIFICATOR_LIST modificators_;
+	RELATION_MAP _relations;	
 };
 
 typedef IUser* PUser;

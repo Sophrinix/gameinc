@@ -25,6 +25,7 @@ public:
 	int GetEmployerPosibility( lua_State* L );
 	int Remove( lua_State* L );
 	int GetTexture( lua_State* L );
+	int GetParent( lua_State* L );
 
 	static const char* StaticGetLuaName() { return CLASS_DEVELOPMODULE.c_str(); }	
 };

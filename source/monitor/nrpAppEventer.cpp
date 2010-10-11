@@ -40,7 +40,12 @@ bool CNrpAppEventer::OnEvent( const SEvent& event )
 			if( event.KeyInput.Char == nrp::CNrpConsoleConfig::Instance().GetValue<int>( CONSOLE_INIT_KEY ) )							//перхват вызова консоли
 			{
 				if( !event.KeyInput.Control && event.KeyInput.PressedDown && ptrCon )
+				{
+					gui::IGUIElement* parent = ptrCon->getParent();
+					if( parent )
+						parent->bringToFront( ptrCon );
 					ptrCon->ToggleVisible();
+				}
 
 				return true;
 			}

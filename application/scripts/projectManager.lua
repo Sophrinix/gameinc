@@ -164,8 +164,10 @@ function Show( ptr )
 end
 
 function ListBoxItemSelected()
-	selectedListBox = base.CLuaListBox( base.NrpGetSender() )
+	selectedListBox = base.CLuaComponentListBox( base.NrpGetSender() )
 	currentComponent = base.CLuaDevelopModule( selectedListBox:GetSelectedObject() )
+	LogScript({src=base.SCRIPT, dev=OUTPUT_ALL}, "!!!!!!!!!!!! CurrentComponent "..currentComponent:GetName() )
+
 	if selectedListBox:Self() == lbxComponents:Self() then
 		localBtnToggleTask:SetText( "ƒобавить задание" )
 		button.SetEqualeImage( localBtnToggleTask, "tuda" )	
@@ -187,18 +189,16 @@ local function ShowUnworkedGameProjectComponent()
 end
 
 function ToggleComponentLider()
-	LogScript({src=SCRIPT, dev=OUTPUT_ALL}, "sworkWindowManagerProjectToggleComponentLider" )
-	
 	if selectedListBox:Self() == lbxComponents:Self() then
-		LogScript({src=SCRIPT, dev=OUTPUT_ALL}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
-		if currentComponent:Empty() == 0 then
+		LogScript({src=base.SCRIPT, dev=OUTPUT_ALL}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
+		if currentComponent ~= nil and currentComponent:Empty() == 0 then
 			currentEmployer:AddWork( currentComponent:Self() )	
 			if currentComponent:GetEmployerPosibility( currentEmployer:Self() ) < 0.4 then
 				guienv:MessageBox( currentEmployer:GetName() .. " имеет недостаточные навыки.", true, false, "", "" )
 			end
 		end
 	else
-		LogScript({src=SCRIPT, dev=OUTPUT_ALL}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
+		LogScript({src=base.SCRIPT, dev=OUTPUT_ALL}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
 		if currentComponent:Empty() == 0 then
 			currentEmployer:RemoveWork( currentComponent:Self() )
 		end

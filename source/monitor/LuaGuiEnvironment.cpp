@@ -75,6 +75,7 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddDestructor ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, BringToFront ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTimer ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextRunner ),
 	{0,0}
 };
 
@@ -835,6 +836,7 @@ int CLuaGuiEnvironment::BringToFront( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGuiEnvironment:BringToFront need element parameter" );
 
 	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( L, 2 );
+	assert( elm != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -865,4 +867,21 @@ int CLuaGuiEnvironment::AddTimer( lua_State* L )
 	return 1;
 }
 
+int CLuaGuiEnvironment::AddTextRunner( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 3, 3, "Function CLuaGuiEnvironment:AddTextRunner need 2 parameter");
+
+	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 2 );
+	const char* text = lua_tostring( vm, 3 );
+
+	assert( text != NULL );
+	gui::IGUIAnimator* anim = NULL;
+
+	IF_OBJECT_NOT_NULL_THEN anim = object_->addTextRunnerAnimator( parent, StrToWide( text ).c_str() );
+
+	lua_pushlightuserdata( vm, (void*)anim );
+
+	return 1;
+}
 }//namespace nrp

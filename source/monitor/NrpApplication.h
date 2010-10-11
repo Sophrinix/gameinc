@@ -15,6 +15,7 @@ OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
 OPTION_NAME BOXADDONNUMBER( "boxAdonNumber" );
 OPTION_NAME MARKETGAMENUMBER( "marketGameNumber" );
 OPTION_NAME PLAYERCOMPANY( "playerCompany" );
+OPTION_NAME MINIMUM_USER_SALARY( "minimumUserSalary" );
 
 class CNrpCompany;
 class IUser;
@@ -113,7 +114,6 @@ public:
 	void InventionFinished( CNrpInvention* ptrInvention );
 	void InventionCanceled( CNrpInvention* ptrInvention );
 	CNrpInvention* GetInvention( std::string name, std::string companyName );
-
 private:
 	CNrpApplication(void);
 	~CNrpApplication(void);

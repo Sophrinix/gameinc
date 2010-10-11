@@ -162,6 +162,17 @@ public:
 	//! имя класса объекта
 	CLASS_NAME GetType() { return ClassName(); }
 
+	template< class T > bool IsValueTypeA( std::string name )
+	{
+		std::transform( name.begin(), name.end(), name.begin(), tolower );
+		PropertyArray::iterator pIter = options_.find( name );
+
+		if( pIter == options_.end() )
+			return typeid( T ).name() == pIter->second->GetValueType();
+
+		return false;
+	}
+
 	PropertyArray& GetProperties() { return options_; }
 
 	void EraseValue( std::string name )

@@ -9,6 +9,7 @@
 #include "INrpDevelopProject.h"
 #include "NrpInvention.h"
 #include "nrpScript.h"
+#include "NrpRelation.h"
 
 #include <io.h>
 #include <errno.h>
@@ -340,4 +341,13 @@ void IUser::CheckModificators_()
 	}
 	*/
 }
+
+CNrpRelation* IUser::GetRelation( const std::string& name )
+{
+	RELATION_MAP::iterator rIter = _relations.find( name );
+	if( rIter == _relations.end() )
+		_relations[ name ] = new CNrpRelation( name, 0 );
+	return  _relations[ name ];
+}
+
 }//namespace nrp

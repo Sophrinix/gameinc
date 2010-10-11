@@ -19,6 +19,7 @@
 #include "Nrp2DPictureFlow.h"
 #include "NrpTechMap.h"
 #include "NrpGuiElementDestructor.h"
+#include "NrpGuiTextRunnerAnimator.h"
 
 #include <stdexcept>
 #include <string>
@@ -41,7 +42,7 @@ bool CNrpGUIEnvironment::CreateSkin_()
 	CImageGUISkin* adv_skin = new CImageGUISkin( this );
 	adv_skin->LoadConfig( guicfg );													//инициализируем скин										
     
-	native_gui_->setSkin( adv_skin );													//заменяем дефолтовый обработчик	
+	_nativeEnv->setSkin( adv_skin );													//заменяем дефолтовый обработчик	
 
 	LoadFonts_();  //получаем шрифты для работы	
 						
@@ -60,7 +61,7 @@ void CNrpGUIEnvironment::LoadFonts_()
 		std::string option = "font_" + nrp::IntToStr( (int)cnt );
 		std::string filename = nrp::CNrpHUDConfig::Instance().GetValue<std::string>( option );
 	
-		IGUIFont* font = native_gui_->getFont( filename.c_str() );
+		IGUIFont* font = _nativeEnv->getFont( filename.c_str() );
 		if ( font )																	//если шрифт подключен	
 		{	
 			fonts_[ option ] = font;
@@ -70,30 +71,30 @@ void CNrpGUIEnvironment::LoadFonts_()
 	
 	{
 		std::string filename = nrp::CNrpHUDConfig::Instance().GetValue<std::string>( nrp::FONT_TOOLTIP );
-		IGUIFont* font = native_gui_->getFont( filename.c_str() );
+		IGUIFont* font = _nativeEnv->getFont( filename.c_str() );
 	
 		if( !font )
-			font = native_gui_->getBuiltInFont();
+			font = _nativeEnv->getBuiltInFont();
 
-		native_gui_->getSkin()->setFont( font, gui::EGDF_TOOLTIP); //устанавливаем шрифт
+		_nativeEnv->getSkin()->setFont( font, gui::EGDF_TOOLTIP); //устанавливаем шрифт
 	}
 
 	{
 		std::string filename = nrp::CNrpHUDConfig::Instance().GetValue<std::string>( nrp::FONT_SIMPLE );
-		IGUIFont* font = native_gui_->getFont( filename.c_str() );
+		IGUIFont* font = _nativeEnv->getFont( filename.c_str() );
 
 		if( !font )
-			font = native_gui_->getBuiltInFont();
+			font = _nativeEnv->getBuiltInFont();
 
-		native_gui_->getSkin()->setFont( font, gui::EGDF_BUTTON ); //устанавливаем шрифт
-		native_gui_->getSkin()->setFont( font, gui::EGDF_DEFAULT );
+		_nativeEnv->getSkin()->setFont( font, gui::EGDF_BUTTON ); //устанавливаем шрифт
+		_nativeEnv->getSkin()->setFont( font, gui::EGDF_DEFAULT );
 	}
 }
 //////////////////////////////////////////////////////////////////////////
 
 CNrpGUIEnvironment::CNrpGUIEnvironment( gui::IGUIEnvironment* native_gui )
 {
-	native_gui_ = native_gui;
+	_nativeEnv = native_gui;
 	dragObject_ = NULL;
 	CreateSkin_();
 }
@@ -101,13 +102,13 @@ CNrpGUIEnvironment::CNrpGUIEnvironment( gui::IGUIEnvironment* native_gui )
 
 CNrpGUIEnvironment::~CNrpGUIEnvironment()
 {
-	CImageGUISkin* adv_skin = reinterpret_cast< CImageGUISkin* >( native_gui_->getSkin() );
-	native_gui_->setSkin( adv_skin->GetNativeSkin() );
+	CImageGUISkin* adv_skin = reinterpret_cast< CImageGUISkin* >( _nativeEnv->getSkin() );
+	_nativeEnv->setSkin( adv_skin->GetNativeSkin() );
 
-	IGUIFont* fonggg =  native_gui_->getSkin()->getFont( gui::EGDF_TOOLTIP );
+	IGUIFont* fonggg =  _nativeEnv->getSkin()->getFont( gui::EGDF_TOOLTIP );
 
 	adv_skin->drop();
-	IGUISkin* old_skin = native_gui_->getSkin();
+	IGUISkin* old_skin = _nativeEnv->getSkin();
 	
 	old_skin->drop();
 }
@@ -120,7 +121,7 @@ IGUIEditBox* CNrpGUIEnvironment::addEditBox( const wchar_t* text,
 											 IGUIElement* parent/*=0*/, 
 											 s32 id/*=-1*/ )
 {
-	IGUIEditBox *result = native_gui_->addEditBox( text, rectangle, border, parent, id );
+	IGUIEditBox *result = _nativeEnv->addEditBox( text, rectangle, border, parent, id );
 	result->setOverrideColor( video::SColor(0xff, 0, 0, 0 ) );
 	result->enableOverrideColor( true );
 
@@ -156,7 +157,7 @@ IGUIButton* CNrpGUIEnvironment::addButton( const core::rect<s32>& rectangle,
 	button->setText( L"" );
 	button->setToolTipText( L"" );
 
-	video::IVideoDriver* driver = native_gui_->getVideoDriver();
+	video::IVideoDriver* driver = _nativeEnv->getVideoDriver();
 	button->setImage( driver->getTexture( normal_texture ) );
 	button->setPressedImage( driver->getTexture( pressed_texture ) );
 	button->setHoveredImage( driver->getTexture( hovered_texture ) );
@@ -172,7 +173,7 @@ IGUIButton* CNrpGUIEnvironment::addButton( const core::rect<s32>& rectangle,
 
 IGUIStaticText* CNrpGUIEnvironment::addStaticText( const wchar_t* text, const core::rect<s32>& rectangle, bool border/*=false*/, bool wordWrap/*=true*/, gui::IGUIElement* parent/*=0*/, s32 id/*=-1*/, bool fillBackground /*= false*/ )
 {
-	IGUIStaticText *result = native_gui_->addStaticText( text, rectangle, border, wordWrap, parent, id, fillBackground );
+	IGUIStaticText *result = _nativeEnv->addStaticText( text, rectangle, border, wordWrap, parent, id, fillBackground );
 	result->setOverrideColor( video::SColor(0xff, 0, 0, 0 ) );
 	result->enableOverrideColor( true );
 
@@ -182,7 +183,7 @@ IGUIStaticText* CNrpGUIEnvironment::addStaticText( const wchar_t* text, const co
 //////////////////////////////////////////////////////////////////////////
 irr::gui::IGUIElement* CNrpGUIEnvironment::getRootGUIElement()
 {
-	return native_gui_->getRootGUIElement();
+	return _nativeEnv->getRootGUIElement();
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -194,7 +195,7 @@ void CNrpGUIEnvironment::drawAll()
 
 	deletionQueue_.clear();
 
-	native_gui_->drawAll();
+	_nativeEnv->drawAll();
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -203,25 +204,25 @@ irr::gui::IGUIContextMenu* CNrpGUIEnvironment::addContextMenu(
 	irr::gui::IGUIElement* parent/*=0*/, 
 	irr::s32 id/*=-1 */ )
 {
-  return native_gui_->addContextMenu( rectangle, parent, id );
+  return _nativeEnv->addContextMenu( rectangle, parent, id );
 }
 //////////////////////////////////////////////////////////////////////////
 
 bool CNrpGUIEnvironment::setFocus( irr::gui::IGUIElement* element )
 {
-    return native_gui_->setFocus( element );
+    return _nativeEnv->setFocus( element );
 }
 //////////////////////////////////////////////////////////////////////////
 
 irr::gui::IGUIElement* CNrpGUIEnvironment::getFocus() const
 {
-	return native_gui_->getFocus();
+	return _nativeEnv->getFocus();
 }
 //////////////////////////////////////////////////////////////////////////
 
 irr::video::IVideoDriver* CNrpGUIEnvironment::getVideoDriver() const
 {
-	return native_gui_->getVideoDriver();
+	return _nativeEnv->getVideoDriver();
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -240,7 +241,7 @@ irr::gui::IGUIFileOpenDialog* CNrpGUIEnvironment::addFileOpenDialog(
 						irr::gui::IGUIElement* parent/*=0*/, 
 						irr::s32 id/*=-1*/ )
 {
-	return native_gui_->addFileOpenDialog( title, modal, parent, id );
+	return _nativeEnv->addFileOpenDialog( title, modal, parent, id );
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -252,7 +253,7 @@ irr::gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* caption,
 														irr::s32 id/*=-1*/,
 														video::ITexture* image )
 {
-	return native_gui_->addMessageBox( caption, text, modal, flags, parent, id, image );
+	return _nativeEnv->addMessageBox( caption, text, modal, flags, parent, id, image );
 }
 
 gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 flags, core::array< const char* >& funcNames )
@@ -263,14 +264,14 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 	rectangle = wnd->getRelativePosition();
 	addStaticText( text, core::recti( 20, 20, rectangle.getWidth() - 20, 40 ), false, false, wnd, -1, false );
 
-	core::recti btnRect( rectangle.getWidth() / 2 - 60, rectangle.getHeight() - 40, rectangle.getWidth() / 2 + 50,  rectangle.getHeight() - 20 );
+	core::recti btnRect( 30, rectangle.getHeight() - 50, rectangle.getWidth() / 2 - 30,  rectangle.getHeight() - 20 );
 	if( flags & gui::EMBF_YES )
 	{
 		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"Yes", 0 );
 		btn->setOnClickAction( funcNames[ 0 ] );
 	}
 
-	btnRect += core::position2di( 70, 0 );
+	btnRect += core::position2di( rectangle.getWidth() / 2, 0 );
 	if( flags & gui::EMBF_NO )
 	{
 		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"No", 0 );
@@ -287,7 +288,7 @@ irr::gui::IGUICheckBox* CNrpGUIEnvironment::addCheckBox( bool checked,
 														irr::s32 id /*= -1*/, 
 														const wchar_t* text /*= 0*/ )
 {
-	return native_gui_->addCheckBox( checked, rectangle, parent, id, text );
+	return _nativeEnv->addCheckBox( checked, rectangle, parent, id, text );
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -295,7 +296,7 @@ irr::gui::IGUIComboBox* CNrpGUIEnvironment::addComboBox( const irr::core::rect< 
 														irr::gui::IGUIElement* parent/*=0*/, 
 														irr::s32 id/*=-1*/ )
 {
-	return native_gui_->addComboBox( rectangle, parent, id );
+	return _nativeEnv->addComboBox( rectangle, parent, id );
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -305,13 +306,13 @@ irr::gui::IGUIListBox* CNrpGUIEnvironment::addListBox(
 				irr::s32 id/*=-1*/, 
 				bool drawBackground/*=false*/ )
 {
-	return native_gui_->addListBox( rectangle, parent, id, drawBackground );
+	return _nativeEnv->addListBox( rectangle, parent, id, drawBackground );
 }
 //////////////////////////////////////////////////////////////////////////
 
 irr::gui::IGUISkin* CNrpGUIEnvironment::getSkin() const
 {
-	return native_gui_->getSkin();
+	return _nativeEnv->getSkin();
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -321,7 +322,7 @@ irr::gui::IGUIImage* CNrpGUIEnvironment::addImage(
 					irr::s32 id/*=-1*/, 
 					const wchar_t* text/*=0*/ )
 {
-	return native_gui_->addImage( rectangle, parent, id, text );
+	return _nativeEnv->addImage( rectangle, parent, id, text );
 }
 
 irr::gui::IGUIImage* CNrpGUIEnvironment::addImage(  irr::video::ITexture* image, 
@@ -330,7 +331,7 @@ irr::gui::IGUIImage* CNrpGUIEnvironment::addImage(  irr::video::ITexture* image,
 																						irr::gui::IGUIElement* parent/*=0*/, 
 																						irr::s32 id/*=-1*/, const wchar_t* text/*=0*/ )
 {
-	return native_gui_->addImage( image, pos, useAlphaChannel, parent, id, text );
+	return _nativeEnv->addImage( image, pos, useAlphaChannel, parent, id, text );
 }
 
 irr::gui::IGUIFont* CNrpGUIEnvironment::getFont( const io::path& font_name )
@@ -342,13 +343,13 @@ irr::gui::IGUIFont* CNrpGUIEnvironment::getFont( const io::path& font_name )
 	if( pIter != fonts_.end() )
 		return pIter->second;
 	
-	return native_gui_->getFont( font_name );
+	return _nativeEnv->getFont( font_name );
 }
 //////////////////////////////////////////////////////////////////////////
 
 irr::gui::IGUIFont* CNrpGUIEnvironment::getBuiltInFont() const
 {
-	return native_gui_->getBuiltInFont();
+	return _nativeEnv->getBuiltInFont();
 }
 
 irr::gui::IGUIColorSelectDialog* CNrpGUIEnvironment::addColorSelectDialog( const wchar_t* text, 
@@ -356,42 +357,42 @@ irr::gui::IGUIColorSelectDialog* CNrpGUIEnvironment::addColorSelectDialog( const
 																		   irr::gui::IGUIElement* parent/*=0*/, 
 																		   irr::s32 id /*= -1*/ )
 {
-	return native_gui_->addColorSelectDialog( text, modal, parent, id );	
+	return _nativeEnv->addColorSelectDialog( text, modal, parent, id );	
 }
 
 irr::IOSOperator* CNrpGUIEnvironment::getOSOperator() const
 {
-	return native_gui_->getOSOperator();
+	return _nativeEnv->getOSOperator();
 }
 
 bool CNrpGUIEnvironment::removeFocus( IGUIElement* element )
 {
-	return native_gui_->removeFocus( element );	
+	return _nativeEnv->removeFocus( element );	
 }
 
 bool CNrpGUIEnvironment::hasFocus( IGUIElement* element ) const
 {
-	return native_gui_->hasFocus( element );
+	return _nativeEnv->hasFocus( element );
 }
 
 io::IFileSystem* CNrpGUIEnvironment::getFileSystem() const
 {
-	return native_gui_->getFileSystem();
+	return _nativeEnv->getFileSystem();
 }
 
 void CNrpGUIEnvironment::clear()
 {
-	native_gui_->clear();
+	_nativeEnv->clear();
 }
 
 bool CNrpGUIEnvironment::postEventFromUser( const SEvent& event )
 {
-	return native_gui_->postEventFromUser( event );
+	return _nativeEnv->postEventFromUser( event );
 }
 
 void CNrpGUIEnvironment::setUserEventReceiver( IEventReceiver* evr )
 {
-	native_gui_->setUserEventReceiver( evr );
+	_nativeEnv->setUserEventReceiver( evr );
 }
 
 void CNrpGUIEnvironment::setSkin( IGUISkin* skin )
@@ -408,47 +409,47 @@ IGUISkin* CNrpGUIEnvironment::createSkin( EGUI_SKIN_TYPE type )
 
 IGUIImageList* CNrpGUIEnvironment::createImageList( video::ITexture* texture, core::dimension2di imageSize, bool useAlphaChannel )
 {
-	return native_gui_->createImageList( texture, imageSize, useAlphaChannel );
+	return _nativeEnv->createImageList( texture, imageSize, useAlphaChannel );
 }
 
 IGUISpriteBank* CNrpGUIEnvironment::getSpriteBank( const io::path& filename )
 {
-	return native_gui_->getSpriteBank( filename );
+	return _nativeEnv->getSpriteBank( filename );
 }
 
 IGUISpriteBank* CNrpGUIEnvironment::addEmptySpriteBank( const io::path& name )
 {
-	return native_gui_->addEmptySpriteBank( name );
+	return _nativeEnv->addEmptySpriteBank( name );
 }
 
 IGUIWindow* CNrpGUIEnvironment::addWindow( const core::rect<s32>& rectangle, bool modal /*= false*/, const wchar_t* text/*=0*/, IGUIElement* parent/*=0*/, s32 id/*=-1*/ )
 {
-	return native_gui_->addWindow( rectangle, modal, text, parent, id );
+	return _nativeEnv->addWindow( rectangle, modal, text, parent, id );
 }
 
 IGUIElement* CNrpGUIEnvironment::addModalScreen( IGUIElement* parent )
 {
-	return native_gui_->addModalScreen( parent );
+	return _nativeEnv->addModalScreen( parent );
 }
 
 IGUITreeView* CNrpGUIEnvironment::addTreeView( const core::rect<s32>& rectangle, IGUIElement* parent/*=0*/, s32 id/*=-1*/, bool drawBackground/*=false*/, bool scrollBarVertical /*= true*/, bool scrollBarHorizontal /*= false*/ )
 {
-	return native_gui_->addTreeView( rectangle, parent, id, drawBackground, scrollBarVertical, scrollBarHorizontal );
+	return _nativeEnv->addTreeView( rectangle, parent, id, drawBackground, scrollBarVertical, scrollBarHorizontal );
 }
 
 IGUIMeshViewer* CNrpGUIEnvironment::addMeshViewer( const core::rect<s32>& rectangle, IGUIElement* parent/*=0*/, s32 id/*=-1*/, const wchar_t* text/*=0*/ )
 {
-	return native_gui_->addMeshViewer( rectangle, parent, id, text );
+	return _nativeEnv->addMeshViewer( rectangle, parent, id, text );
 }
 
 IGUISpinBox* CNrpGUIEnvironment::addSpinBox( const wchar_t* text, const core::rect<s32>& rectangle, bool border/*=true*/,IGUIElement* parent/*=0*/, s32 id/*=-1*/ )
 {
-	return native_gui_->addSpinBox( text, rectangle, border, parent, id );
+	return _nativeEnv->addSpinBox( text, rectangle, border, parent, id );
 }
 
 IGUIInOutFader* CNrpGUIEnvironment::addInOutFader( const core::rect<s32>* rectangle/*=0*/, IGUIElement* parent/*=0*/, s32 id/*=-1*/ )
 {
-	return native_gui_->addInOutFader( rectangle, parent, id );
+	return _nativeEnv->addInOutFader( rectangle, parent, id );
 }
 
 IGUITabControl* CNrpGUIEnvironment::addTabControl(	const core::rect<s32>& rectangle, 
@@ -457,22 +458,22 @@ IGUITabControl* CNrpGUIEnvironment::addTabControl(	const core::rect<s32>& rectan
 													bool border/*=true*/, 
 													s32 id/*=-1*/ )
 {
-	return native_gui_->addTabControl( rectangle, parent, fillbackground, border, id );
+	return _nativeEnv->addTabControl( rectangle, parent, fillbackground, border, id );
 }
 
 IGUITab* CNrpGUIEnvironment::addTab( const core::rect<s32>& rectangle, IGUIElement* parent/*=0*/, s32 id/*=-1*/ )
 {
-	return native_gui_->addTab( rectangle, parent, id );
+	return _nativeEnv->addTab( rectangle, parent, id );
 }
 
 IGUIContextMenu* CNrpGUIEnvironment::addMenu( IGUIElement* parent/*=0*/, s32 id/*=-1*/ )
 {
-	return native_gui_->addMenu( parent, id );
+	return _nativeEnv->addMenu( parent, id );
 }
 
 IGUIToolBar* CNrpGUIEnvironment::addToolBar( IGUIElement* parent/*=0*/, s32 id/*=-1*/ )
 {
-	return native_gui_->addToolBar( parent, id );
+	return _nativeEnv->addToolBar( parent, id );
 }
 
 IGUITable* CNrpGUIEnvironment::addTable( const core::rect<s32>& rectangle, 
@@ -480,77 +481,77 @@ IGUITable* CNrpGUIEnvironment::addTable( const core::rect<s32>& rectangle,
 										 s32 id/*=-1*/, 
 										 bool drawBackground/*=false*/ )
 {
-	return native_gui_->addTable( rectangle, parent, id, drawBackground );
+	return _nativeEnv->addTable( rectangle, parent, id, drawBackground );
 }
 
 IGUIElementFactory* CNrpGUIEnvironment::getDefaultGUIElementFactory() const
 {
-	return native_gui_->getDefaultGUIElementFactory();
+	return _nativeEnv->getDefaultGUIElementFactory();
 }
 
 void CNrpGUIEnvironment::registerGUIElementFactory( IGUIElementFactory* factoryToAdd )
 {
-	native_gui_->registerGUIElementFactory( factoryToAdd );
+	_nativeEnv->registerGUIElementFactory( factoryToAdd );
 }
 
 irr::u32 CNrpGUIEnvironment::getRegisteredGUIElementFactoryCount() const
 {
-	return native_gui_->getRegisteredGUIElementFactoryCount();
+	return _nativeEnv->getRegisteredGUIElementFactoryCount();
 }
 
 IGUIElementFactory* CNrpGUIEnvironment::getGUIElementFactory( u32 index ) const
 {
-	return native_gui_->getGUIElementFactory( index );
+	return _nativeEnv->getGUIElementFactory( index );
 }
 
 IGUIElement* CNrpGUIEnvironment::addGUIElement( const c8* elementName, IGUIElement* parent/*=0*/ )
 {
-	return native_gui_->addGUIElement( elementName, parent );
+	return _nativeEnv->addGUIElement( elementName, parent );
 }
 
 bool CNrpGUIEnvironment::saveGUI( io::IWriteFile* file, IGUIElement* start/*=0*/ )
 {
-	return native_gui_->saveGUI( file, start );
+	return _nativeEnv->saveGUI( file, start );
 }
 
 bool CNrpGUIEnvironment::saveGUI( const io::path& file, IGUIElement* start/*=0*/ )
 {
-	return native_gui_->saveGUI( file, start );
+	return _nativeEnv->saveGUI( file, start );
 }
 
 bool CNrpGUIEnvironment::loadGUI( io::IReadFile* file, IGUIElement* parent/*=0*/ )
 {
-	return native_gui_->loadGUI( file, parent );
+	return _nativeEnv->loadGUI( file, parent );
 }
 
 bool CNrpGUIEnvironment::loadGUI( const io::path& filename, IGUIElement* parent/*=0*/ )
 {
-	return native_gui_->loadGUI( filename, parent );
+	return _nativeEnv->loadGUI( filename, parent );
 }
 
 void CNrpGUIEnvironment::serializeAttributes( io::IAttributes* out, io::SAttributeReadWriteOptions* options/*=0*/ ) const
 {
-	native_gui_->serializeAttributes( out, options );
+	_nativeEnv->serializeAttributes( out, options );
 }
 
 void CNrpGUIEnvironment::deserializeAttributes( io::IAttributes* in, io::SAttributeReadWriteOptions* options/*=0*/ )
 {
-	native_gui_->deserializeAttributes( in, options );
+	_nativeEnv->deserializeAttributes( in, options );
 }
 
 void CNrpGUIEnvironment::writeGUIElement( io::IXMLWriter* writer, IGUIElement* node )
 {
-	native_gui_->writeGUIElement( writer, node );
+	_nativeEnv->writeGUIElement( writer, node );
 }
 
 void CNrpGUIEnvironment::readGUIElement( io::IXMLReader* reader, IGUIElement* node )
 {
-	native_gui_->readGUIElement( reader, node );
+	_nativeEnv->readGUIElement( reader, node );
 }
 
 bool CNrpGUIEnvironment::isHovered( IGUIElement* element ) const
 {
-	return native_gui_->isHovered( element );
+	return _nativeEnv->isHovered( element );
 }
 
 IGUIWindow* CNrpGUIEnvironment::addWindow( video::ITexture* texture, 
@@ -596,7 +597,7 @@ gui::IGUIAnimator* CNrpGUIEnvironment::addRectAnimator( IGUIElement* parent, con
 
 gui::IGUIFont* CNrpGUIEnvironment::addFont( const io::path& name, IGUIFont* font )
 {
-	return native_gui_->addFont(name, font);
+	return _nativeEnv->addFont(name, font);
 }
 
 gui::IGUIAnimator* CNrpGUIEnvironment::addMoveAnimator( IGUIElement* parent, core::position2di stopPos, u32 step, 
@@ -641,9 +642,9 @@ gui::IGUIElement* CNrpGUIEnvironment::addProgressBar( IGUIElement* parent, s32 i
 gui::CNrpGuiLinkBox* CNrpGUIEnvironment::addLinkBox( IGUIElement* parent, s32 id, core::recti rectangle )
 {
 	gui::CNrpGuiLinkBox* elm = new CNrpGuiLinkBox( this, parent, id, rectangle, false );
-	elm->setImage( native_gui_->getVideoDriver()->getTexture( "skin/combobox.png" ) );
-	elm->setHoveredImage( native_gui_->getVideoDriver()->getTexture( "skin/combobox_focused.png" ) );
-	elm->setPressedImage( native_gui_->getVideoDriver()->getTexture( "skin/combobox_disabled.png" ) );
+	elm->setImage( _nativeEnv->getVideoDriver()->getTexture( "skin/combobox.png" ) );
+	elm->setHoveredImage( _nativeEnv->getVideoDriver()->getTexture( "skin/combobox_focused.png" ) );
+	elm->setPressedImage( _nativeEnv->getVideoDriver()->getTexture( "skin/combobox_disabled.png" ) );
 	elm->setScaleImage( true );
 
 	return elm;
@@ -706,6 +707,16 @@ CNrpTechMap* CNrpGUIEnvironment::AddTechMap( const core::recti& rectangle, IGUIE
 gui::IGUIElement* CNrpGUIEnvironment::AddDestructor( gui::IGUIElement* parent, int time )
 {
 	return new CNrpGuiElementDestructor( this, parent, time );
+}
+
+gui::IGUIAnimator* CNrpGUIEnvironment::addTextRunnerAnimator( IGUIElement* parent, const wchar_t* text )
+{
+	return new CNrpGuiTextRunnerAnimator( this, parent, text );
+}
+
+void CNrpGUIEnvironment::LunchToolTip( IGUIElement* elm )
+{
+
 }
 
 }//namespace gui

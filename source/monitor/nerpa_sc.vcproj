@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="GameDev"
 	ProjectGUID="{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"
 	RootNamespace="nerpa_sc"
@@ -172,7 +172,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="buildver ."
+				CommandLine=""
 			/>
 		</Configuration>
 	</Configurations>
@@ -759,6 +759,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\NrpGuiTextRunnerAnimator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpGuiTextRunnerAnimator.h"
+						>
+					</File>
+					<File
 						RelativePath=".\NrpGuiTextTimeAnimator.cpp"
 						>
 					</File>
@@ -1295,6 +1303,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaRelation.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaRelation.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaUser.cpp"
 						>
 					</File>
@@ -1473,6 +1489,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\mainmenu.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\monitor.lua"
 				>
 			</File>
@@ -1482,6 +1502,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\office.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\pda.lua"
 				>
 			</File>
 			<File
@@ -1517,19 +1541,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_MainMenu.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_startDefinition.lua"
 				>
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\swork_StoreWindow.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_UpdateFunctions.lua"
 				>
 			</File>
 			<File
@@ -1546,6 +1562,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\univer.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\updates.lua"
 				>
 			</File>
 			<File
@@ -1837,6 +1857,14 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\NrpRelation.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\NrpRelation.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

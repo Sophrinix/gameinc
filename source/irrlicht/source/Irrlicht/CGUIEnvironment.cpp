@@ -405,6 +405,7 @@ void CGUIEnvironment::OnPostRender( u32 time )
 		getSkin()->getFont(EGDF_TOOLTIP)
 		)
 	{
+		LunchToolTip();
 		core::rect<s32> pos;
 
 		pos.UpperLeftCorner = LastHoveredMousePos;

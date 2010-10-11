@@ -14,7 +14,7 @@ CNrpGuiElementDestructor::~CNrpGuiElementDestructor(void)
 {
 }
 
-CNrpGuiElementDestructor::CNrpGuiElementDestructor( IGUIEnvironment* environment, IGUIElement* node, int time )
+CNrpGuiElementDestructor::CNrpGuiElementDestructor( IGUIEnvironment* environment, IGUIElement* node, size_t time )
 		: IGUIElement( EGUIET_ELEMENT, environment, node, -1, core::rect<s32>( 0, 0, 0, 0 ) )
 {
 	_delay = time;

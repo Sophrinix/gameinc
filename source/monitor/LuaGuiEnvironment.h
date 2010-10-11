@@ -84,6 +84,7 @@ public:
 	int AddPictureFlow( lua_State* L );
 	int FadeAction( lua_State* L );
 	int AddDestructor( lua_State* vm );
+	int AddTextRunner( lua_State* vm );
 	int BringToFront( lua_State* L );
 	
 	static const char* StaticGetLuaName() { return "CLuaGuiEnvironment"; }	

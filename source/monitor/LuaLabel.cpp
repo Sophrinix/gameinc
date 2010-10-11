@@ -15,12 +15,29 @@ Luna< CLuaLabel >::RegType CLuaLabel::methods[] =			//реализуемы методы
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaLabel ),
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideColor ),
+	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideFont ),
 	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetTextAlignment ),
 	{0,0}
 };
 
 CLuaLabel::CLuaLabel(lua_State *L)	: ILuaGuiElement(L, "CLuaLabel")							//конструктор
 {}
+
+int CLuaLabel::SetOverrideFont( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaLabel::SetOverrideFont need fontName parameter");
+
+	const char* fontName = lua_tostring( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( fontName );
+		object_->setOverrideFont( font );
+	}
+
+	return 1;
+}
 
 int CLuaLabel::SetOverrideColor( lua_State* L )
 {

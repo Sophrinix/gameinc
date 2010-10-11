@@ -12,6 +12,7 @@ public:
 	static void RemoveDirectory( const std::string& pathTo );
 	static void CopyFile( const std::string& pathOld, const std::string& pathNew );
 	static void MoveDirectory( const std::string& pathOld, const std::string& pathNew );
+	static void 
 };
 
 }//end namespace nrp

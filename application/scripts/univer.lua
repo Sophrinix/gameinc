@@ -11,18 +11,22 @@ local tutorial = base.tutorial
 local applic = base.applic
 
 local mode = { }
-mode[ "Программисты" ] = "coder"
-mode[ "Дизайнеры" ] = "designer"
-mode[ "Композиторы" ] = "composer"
-mode[ "Тестировщики" ] = "tester"
+mode[ base.STR_CODERS ] = "coder"
+mode[ base.STR_DESIGNERS ] = "designer"
+mode[ base.STR_COMPOSERS ] = "composer"
+mode[ base.STR_TESTERS ] = "tester"
 --"coder" "designer" "composer" "tester"
 
 local modeUserView = "coder"
 local windowUpEmployer = nil
 
 local userToUp = nil
+local company = nil
+
+local usersWindow = {}
 
 function Show()
+	company = applic:GetPlayerCompany()
 	if univerWindow then
 		univerWindow:SetVisible( true )
 	else
@@ -78,10 +82,49 @@ function ShowUserInfoWindow( x, y, width, height, user )
 	AddProgressBar( windowg, xOffset, 105, width - 5, 105 + 15, -1,
 	                user:GetParam("stability"), base.STR_STAMINA )
 					   
-    guienv:AddLabel( "Зарплата: "..user:GetParam( "wantMoney" ).."$", xOffset, 110, width, 110 + 20, -1, windowg:Self() )
+	local money = user:GetParam( "wantMoney" )
+    guienv:AddLabel( "Зарплата: "..money.."$", xOffset, 110, width, 110 + 20, -1, windowg:Self() )
 	
 	local btn = guienv:AddButton( width / 2 - 50, height - 30, width / 2 + 50, height - 10, windowg:Self(), -1, "Нанять" )
-	btn:SetAction( "./univer.UpEmployer()" )				   
+	btn:SetAction( "./univer.UpEmployer()" )	
+	
+	return windowg			   
+end
+
+local function ShowAvaibleEmployers()
+	local maxuser = applic:GetUserNumber()
+	local hTemp = ( scrHeight - 150 ) / 3
+	
+	local xoffset = 10
+	local yoffset = 100
+	
+	local cnt = 0
+	base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "ShowAvaibleEmployers:appusers" .. maxuser )
+	
+	for i=1, #usersWindow do
+		guienv:AddToDeletionQueue( usersWindow[ i ]:Self() )
+		usersWindow[ i ] = nil
+	end
+	
+	local position=1
+	for i=1, maxuser do
+		local user = applic:GetUser( i-1 )
+	
+		--base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "ShowAvaibleEmployers:user=" .. user:GetName() .. " type=" .. user:GetTypeName() )
+		if modeUserView == user:GetTypeName() and user:IsFreeUser() then
+			if cnt < 3 then
+				usersWindow[ position ] = ShowUserInfoWindow( xoffset, yoffset + cnt * hTemp, scrWidth / 2 - 30,  hTemp, user ) 
+			else
+				usersWindow[ position ] = ShowUserInfoWindow( xoffset + scrWidth / 2, yoffset + (cnt - 3) * hTemp, scrWidth / 2 - 30,  hTemp, user ) 
+			end
+		    cnt = cnt + 1
+		    position = position + 1
+		end
+		
+		if cnt > 6 then 
+			return 0 
+		end
+	end
 end
 
 function UpEmployer()
@@ -96,43 +139,19 @@ function UpEmployer()
 		return 0
 	end
 	
-	sworkEmployContractUser()
+	company:AddUser( userToUp:Self() )
 	guienv:AddToDeletionQueue( windowg:Self() )
+	ShowAvaibleEmployers()
 end
 
 function UpContractUser()
-	local company = applic:GetPlayerCompany()
 	company:AddUser( userToUp:Self() )
-	sworkCreateEmployersWindow()
+	ShowAvaibleEmployers()
 end
 
-local function ShowAvaibleEmployers()
-	local maxuser = applic:GetUserNumber()
-	local hTemp = ( scrHeight - 150 ) / 3
-	
-	local xoffset = 10
-	local yoffset = 100
-	
-	local cnt = 0
-	base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "ShowAvaibleEmployers:appusers" .. maxuser )
-	
-	for i=1, maxuser do
-		local user = applic:GetUser( i-1 )
-	
-		base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "ShowAvaibleEmployers:user=" .. user:GetName() .. " type=" .. user:GetTypeName() )
-		if modeUserView == user:GetTypeName() and user:IsFreeUser() then
-			if cnt < 3 then
-				ShowUserInfoWindow( xoffset, yoffset + cnt * hTemp, scrWidth / 2 - 30,  hTemp, user ) 
-			else
-				ShowUserInfoWindow( xoffset + scrWidth / 2, yoffset + (cnt - 3) * hTemp, scrWidth / 2 - 30,  hTemp, user ) 
-			end
-		    cnt = cnt + 1
-		end
-		
-		if cnt > 6 then 
-			return 0 
-		end
-	end
+function CloseEmployersWindow()
+	windowUpEmployer:Remove()
+	windowUpEmployer = nil
 end
 
 function ShowEmployersWindow()
@@ -149,24 +168,24 @@ function ShowEmployersWindow()
 	local wTmp = scrWidth / 6
 	local xOffset = 20
 	local yOffset = 30
-	local button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Программисты" )
-	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
+	local button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, base.STR_CODERS )
+	button:SetAction( "./univer.ChangeUserType( STR_CODERS )" )
 	
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Дизайнеры" )
-	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, base.STR_DESIGNERS )
+	button:SetAction( "./univer.ChangeUserType( STR_DESIGNERS )" )
 
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Композиторы" )
-	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, base.STR_COMPOSERS )
+	button:SetAction( "./univer.ChangeUserType( STR_COMPOSERS )" )
 	
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Тестировщики" )
-	button:SetAction( "sworkWindowUpEmployerChangerUserType" )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, base.STR_TESTERS  )
+	button:SetAction( "./univer.ChangeUserType( STR_TESTERS )" )
 	
 	xOffset = xOffset + wTmp + 20
 	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Выход" )
-	button:SetAction( "sworkWindowUpEmployerClose" )
+	button:SetAction( "./univer.CloseEmployersWindow()" )
 	
 	ShowAvaibleEmployers()
 end

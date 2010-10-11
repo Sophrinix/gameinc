@@ -10,7 +10,7 @@ end
 
 function sworkAppMonthChange()
 	applic:CreateNewFreeUsers()
-	applic:CheckNewTechs()
+	updates.CheckNewTechs()
 end
 
 function sworkAppYearChange( ptr )
@@ -29,11 +29,6 @@ end
 
 function sworkMainLoop( ptr )
 	applic:UpdateGameTime( ID_DATETIME_LABEL )	
-end
-
-function ToggleConsoleVisible( ptr )
-	local console = CLuaConsole( guienv:GetElementByName( "SystemConsole" ) )
-	console:ToggleVisible()
 end
 
 function sworkSelectObjectOnOfficeScene( ptr )
@@ -62,9 +57,20 @@ function sworkDrawOnTopWindows( ptr )
 	end
 end
 
+function sworkModuleFinished( ptrModule )
+	local mod = CLuaDevelopModule( ptrModule )
+	pda.Show( "Завершена работа над модулем "..mod:GetName().." проекта "..mod:GetParent():GetName() )
+end
+
+function sworkUserMarketUpdated()
+	pda.Show( "Обновление на рынке труда" )
+end
+
 sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )
 sceneManager:AddSceneFunction( SCENE_AFTER_RENDER, "sworkDrawOnTopWindows" )
 applic:AddLuaFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
 applic:AddLuaFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
 applic:AddLuaFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )
 applic:AddLuaFunction( APP_INVENTION_FINISHED, "sworkInventionFinished" )
+applic:AddLuaFunction( APP_MODULE_FINISHED, "sworkModuleFinished" )
+applic:AddLuaFunction( APP_USER_MARKETUPDATE, "sworkUserMarketUpdated" )

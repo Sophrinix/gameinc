@@ -41,9 +41,9 @@ local function ShowAvaibleEmployersToManage()
 			listBoxCompanyEmployers:AddItem( user:GetName(), user:Self() )
 			listBoxCompanyEmployers:SetItemTextColor( i-1, 0xff, 0x0, 0xff, 0x0 )
 			if i % 2 == 0 then
-				listBoxCompanyEmployers:SetItemBgColor( i-1, 0xff, 0x42, 0x42, 0x42 )
+				listBoxCompanyEmployers:SetItemBgColor( i-1, 0xff, 0x82, 0x82, 0x82 )
 			else
-				listBoxCompanyEmployers:SetItemBgColor( i-1, 0xff, 0x24, 0x24, 0x24 )
+				listBoxCompanyEmployers:SetItemBgColor( i-1, 0xff, 0xA4, 0xA4, 0xA4 )
 			end
 		end
 	end
@@ -151,24 +151,39 @@ function Show()
 	btnGivePremia:SetAction( "./userManager.Rooutine()" )	
 end
 
+function UpSalary()
+	if currentEmployer ~= nil then
+		local curSalary = currentEmployer:GetParam( "salary" )
+		currentEmployer:SetParam( "salary", curSalary * 1.1 )
+		Log({src=base.SCRIPT, dev=base.ODS}, "!!!!!!!!!!!!!! Salary to "..currentEmployer:GetName().." is $"..curSalary )
+		
+		--currentEmployer:AddModificator( "effectively", 1.2, "7 day" ) 
+	end
+end
+
 function GetMoneyForFireEmp()
 	--работник остается на рынке труда
 	company:RemoveUser( currentEmployer:GetName() )
 	
 	--но теряет уважение к компании игрока, и может не пойти 
 	--в неё снова
+	-- получим текущее значение отношения рабочего к компании
 	local relation = currentEmployer:GetRelation( company:GetName() ) 
-	
-	currentEmployer:SetRelation( company:GetName(), relation * 0.5 ) 
+	relation:SetValue( "rel_value", relation:GetValue( "rel_value" ) * 0.8 ) 
 	--также это вызовет некоторое снижение отношения к компании
 	--у его друзей, чем выше показатель отношения между людьми
-	--тем больше зависимость падения отношения к компании
+	--тем больше зависимость падения отношения к компании у друга
+
+	-- больше к этому человеку нет доступа
 	currentEmployer = nil
+	ShowAvaibleEmployersToManage()
 end
 
 function NoGetMoneyForFireEmp()
-
 	company:RemoveUser( currentEmployer:GetName() )
+	
+	local relation = currentEmployer:GetRelation( company:GetName() ) 
+	relation:SetValue( "rel_value", realtion:GetValue( "rel_value" ) * 0.3 ) 
 	--расчет возможности что уволенный человек забрал
 	--какие-то данные или испортил разрабатываемый модуль,
 	--передал разработку в другую компанию, чем увеличил прогресс 
@@ -176,6 +191,7 @@ function NoGetMoneyForFireEmp()
 	--если это произошло, то его надо убрать с рынка
 	application:RemoveUser( currentEmployer:Self() )
 	currentEmployer = nil
+	ShowAvaibleEmployersToManage()
 end
 
 function RemoveUser()

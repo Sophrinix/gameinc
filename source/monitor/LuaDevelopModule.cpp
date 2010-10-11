@@ -6,6 +6,7 @@
 #include "NrpProjectModule.h"
 #include "IUser.h"
 #include "NrpApplication.h"
+#include "LuaDevelopProject.h"
 
 #define NO_POSTFIX
 #define NO_ASSERT
@@ -24,6 +25,7 @@ Luna< CLuaDevelopModule >::RegType CLuaDevelopModule::methods[] =			//реализуемы
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, Remove ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetLevel ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetParent ),
 	{0,0}
 };
 
@@ -101,4 +103,20 @@ int CLuaDevelopModule::GetTexture( lua_State* L )
 	lua_pushstring( L, GetParam_<std::string>( L, "CLuaDevelopModule", TEXTURENORMAL, "" ).c_str() );
 	return 1;
 }
+
+int CLuaDevelopModule::GetParent( lua_State* L )
+{
+	int argc = lua_gettop( L );
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaDevelopModule:GetParent not need parameter");
+
+	INrpDevelopProject* prj = NULL;
+	IF_OBJECT_NOT_NULL_THEN prj = object_->GetValue<INrpDevelopProject*>( PARENT );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, prj );
+	Luna< CLuaDevelopProject >::constructor( L );
+
+	return 1;
+}
+
 }//namespace nrp

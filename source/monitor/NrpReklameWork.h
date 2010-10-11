@@ -20,6 +20,7 @@ public:
 	void Update( CNrpReklameWork* p );
 	void BeginNewDay();
 	void Load( std::string sectionName, std::string fileName );
+	void Save( std::string sectionName, std::string fileName );
 	CNrpReklameWork( CNrpReklameWork& p );
 	~CNrpReklameWork(void);
 };

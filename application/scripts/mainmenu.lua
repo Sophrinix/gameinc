@@ -1,3 +1,12 @@
+local base = _G
+
+module( "mainmenu" )
+
+local guienv = base.guienv
+local driver = base.driver
+local scrWidth = base.scrWidth
+local scrHeight = base.scrHeight
+
 local advFuncButtons = { }
 local adminFuncButtons = { }
 local mainMenuButtons = { } 
@@ -6,93 +15,93 @@ local imgTop = 0
 local imgHeight = 32
 local imgWidth = 32
 
-mainMenuWindow = nil
+local mainMenuWindow = nil
+
+function GetWindow()
+	return mainMenuWindow
+end
 
 local function AddButton( window, id, x, y, action, pathToTexture )
-
 		local btn = guienv:AddButton( x, y, x + imgWidth, y + imgHeight, window, id, "" )
 		btn:SetAction( action )
-		btn:SetImage( 0, 0, 70, 70, pathToTexture..".png" )
-		btn:SetHoveredImage( 0, 0, 70, 70, pathToTexture.."_x.png" )
-		btn:SetPressedImage( 0, 0, 70, 70, pathToTexture.."_y.png" )
+		btn:SetImage( 0, 0, 70, 70, pathToTexture.."_normal.png" )
+		btn:SetHoveredImage( 0, 0, 70, 70, pathToTexture.."_select.png" )
+		btn:SetPressedImage( 0, 0, 70, 70, pathToTexture.."_pressed.png" )
 		btn:SetVisible( false )
 
 		return btn:Self()
 end
 
 local function SetVisibleToArray( ptr, visible )
-	
-	local elm = CLuaElement( ptr[ 0 ] )
+	local elm = base.CLuaElement( ptr[ 0 ] )
 	
 	for i=0, #ptr do
 		elm:SetObject( ptr[ i ] )
 		elm:SetVisible( visible )	
 	end
-	
+end
+
+function ToggleConsole()
+	local con = base.CLuaConsole( guienv:GetElementByName( "SystemConsole" ) )
+	con:ToggleVisible()
 end
 
 local function AddAdvancedFunctionButton( menuw )
-
 	local x = 65
 	
 	local btnCnt = 0
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_CONSOLE_TOGGLE_VISIBLE, x, imgTop, 
-										  "ToggleConsoleVisible", "media/top_menu/cmd" )
+	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
+										  "./mainmenu.ToggleConsole()", "media/top_menu/cmd" )
 	
 	x = x + imgWidth;	btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_SONAR_TOGGLE_ENABLED, x, imgTop, 
-										  "ToggleSonarEnabled", "media/top_menu/ok" )
+	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
+										  "./userManager.Show()", "media/top_menu/ue" )
 	
 	x = x + imgWidth;	btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_GRAPHIC_TOGGLE_VISIBLE, x, imgTop, 
+	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
 										  "sworkToggleGraphicWindowVisible", "media/top_menu/graf" )
 	
 	x = x + imgWidth;	btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_SELECT_OBJECT_IN_SCENE, x, imgTop, 
+	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
 										  "sworkSelectModeObjectAction", "media/top_menu/move" )
 	
 	x = x + imgWidth;	btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_DRAWREGION_IN_SCENE, x, imgTop, 
+	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
 										  "sworkDrawRegionInSceneAction", "media/top_menu/move" )
 	
-	x = x + imgWidth;	btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_TARGETCAMERA_TOGGLE, x, imgTop, 
-										  "sworkTargetCameraToggleVisible", "media/top_menu/replay" )
 
 	x = 360; btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_BACK_FROM_ADVFUNC_FRAME, x, imgTop, 
-										  "AdvancedFunctionFrameToggleVisible", "media/top_menu/back" )
+	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
+										  "./mainmenu.ToggleVisibleComanyButtons()", "media/top_menu/back" )
 	
 end
 
 local function AddAdminingFunctionButton( menuw )
-
 	local x = 65
 	
 	local btnCnt = 0
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_REPORT_TOGGLE_VISIBLE, x, imgTop, 
+	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
 										    "sworkWindowReportToggleVisible", "media/top_menu/report" )
 
 	x = x + imgWidth; btnCnt = btnCnt + 1
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_ARCHIVE_TOGGLE_VISIBLE, x, imgTop, 
+	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
 										    "sworkToggleArchiveWindowVisible", "media/top_menu/targets" )
 	
 	x = x + imgWidth; btnCnt = btnCnt + 1
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_HARDWARE_TOGGLE_VISIBLE, x, imgTop, 
+	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
 										    "sworkToggleHardwareWindowVisible", "media/top_menu/hard" )
 
 	x = x + imgWidth; btnCnt = btnCnt + 1
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_PLAY_REC, x, imgTop, 
+	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
 										    "sworkTogglePlayerWindowVisible", "media/top_menu/replay" )
 
 	x = 360; btnCnt = btnCnt + 1
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), ID_BACK_FROM_ADMINING_FRAME, x, imgTop, 
+	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
 										    "AdminingFrameToggleVisible", "media/top_menu/back" )
 
 end
 
-function AddMenuWindow()
-
+function Show()
 	local txs = driver:GetTexture( "./media/top_menu/top_nerpa.png")
 	local txsWidth = 0
 	local txsHeight = 0
@@ -125,15 +134,15 @@ function AddMenuWindow()
 
 	x = x + imgWidth;  btnCnt = btnCnt + 1
 	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_FUNC, x, imgTop, 
-										    "AdvancedFunctionFrameToggleVisible", "media/top_menu/star" )
+										    "./mainmenu.ToggleVisibleComanyButtons()", "media/top_menu/one" )
 	x = 335;  btnCnt = btnCnt + 1
 	--создание метки с часами
-	local timeLabel = guienv:AddLabel( "Время", x - 140, imgTop, x + 40, imgTop + 15, ID_DATETIME_LABEL, mainMenuWindow:Self() )
+	local timeLabel = guienv:AddLabel( "Время", x - 140, imgTop, x + 40, imgTop + 15, base.ID_DATETIME_LABEL, mainMenuWindow:Self() )
 	timeLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
 	mainMenuButtons[ btnCnt ] = timeLabel:Self()
 	
 	btnCnt = btnCnt + 1
-	local userLabel = guienv:AddLabel( "UserName", x - 140, imgTop + 17, x + 40, imgTop + 32, ID_USERNAME_LABEL, mainMenuWindow:Self() )
+	local userLabel = guienv:AddLabel( "UserName", x - 140, imgTop + 17, x + 40, imgTop + 32, base.ID_USERNAME_LABEL, mainMenuWindow:Self() )
 	userLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
 	mainMenuButtons[ btnCnt ] = userLabel:Self()
 	
@@ -145,20 +154,17 @@ function AddMenuWindow()
 	AddAdminingFunctionButton( mainMenuWindow )
 	AddAdvancedFunctionButton( mainMenuWindow )
 	SetVisibleToArray( mainMenuButtons, true )
-
 end
 
-function AdvancedFunctionFrameToggleVisible( ptr )
-
-	local elm = CLuaElement( advFuncButtons[ 0 ] )
+function ToggleVisibleComanyButtons()
+	local elm = base.CLuaElement( advFuncButtons[ 0 ] )
 	local visible = not elm:GetVisible()
 	SetVisibleToArray( mainMenuButtons, not visible )
-	SetVisibleToArray( advFuncButtons, visible )
-		
+	SetVisibleToArray( advFuncButtons, visible )	
 end
 
-function AdminingFrameToggleVisible( ptr )
-	local elm = CLuaElement( adminFuncButtons[ 0 ] )
+function ToggleVisibleOptions( ptr )
+	local elm = base.CLuaElement( adminFuncButtons[ 0 ] )
 	local visible = not elm:GetVisible()
 	SetVisibleToArray( mainMenuButtons, not visible )
 	SetVisibleToArray( adminFuncButtons, visible )

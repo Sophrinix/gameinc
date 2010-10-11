@@ -43,6 +43,15 @@ void CNrpPlant::Save( std::string scetionName, std::string saveFolder )
 		(*wIter)->Save( SECTION_OPTIONS, workFile );
 		IniFile::Write( "works", "work_" + IntToStr( k ), workFile, fileName );
 	}
+
+	REKLAME_LIST::iterator rIter = reklameWorks_.begin();
+	for( int k=0; rIter != reklameWorks_.end(); rIter++, k++ )
+	{
+		std::string rekFile = saveFolder + (*rIter)->GetValue<std::string>( GAMENAME ) + "." + (*rIter)->GetValue<std::string>( TECHTYPE );
+
+		(*rIter)->Save( SECTION_OPTIONS, rekFile );
+		IniFile::Write( "reklames", "reklame_" + IntToStr( k ), rekFile, fileName );
+	}
 }
 
 void CNrpPlant::Load( std::string scetionName, std::string saveFolder )
@@ -61,6 +70,18 @@ void CNrpPlant::Load( std::string scetionName, std::string saveFolder )
 			CNrpPlantWork* work = new CNrpPlantWork( "" );
 			work->Load( SECTION_OPTIONS, workFile );
 			AddWork( work );
+		}
+	}
+
+	for( int k=0; k < GetValue<int>( REKLAMENUMBER ); k++ )
+	{
+		std::string rekFile = IniFile::Read( "reklames", "reklame_" + IntToStr( k ), std::string(""), fileName );
+
+		if( _access( rekFile.c_str(), 0 ) != -1 )
+		{
+			CNrpReklameWork* reklame = new CNrpReklameWork( "error", "error" );
+			reklame->Load( SECTION_OPTIONS, rekFile );
+			AddReklame( reklame );
 		}
 	}
 }

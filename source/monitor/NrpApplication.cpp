@@ -61,6 +61,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( PROJECTNUMBER, 0 );
 	CreateValue<PNrpCompany>( PLAYERCOMPANY, NULL );
 	CreateValue<int>( INVENTIONSNUMBER, 0 );
+	CreateValue<int>( MINIMUM_USER_SALARY, 250 );
 
 	srand( GetTickCount() );
 }
@@ -619,6 +620,9 @@ void CNrpApplication::CreateNewFreeUsers()
 	for( ; pIter != users_.end(); pIter++ )
 	{
 		std::string typeName = (*pIter)->GetType();
+		if( (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY ) != NULL )
+			continue;
+
 		if( group.find( typeName ) != group.end() )
 			group[ typeName ]->push_back( *pIter );
 		else
@@ -648,6 +652,10 @@ void CNrpApplication::CreateNewFreeUsers()
 	for( ; gIter != group.end(); gIter++ )
 		for(  size_t cnt=0; cnt < gIter->second->size(); cnt++ )
 			users_.push_back( gIter->second->at( cnt ) );
+
+	if( GetValue<int>( USERNUMBER ) != users_.size() )
+		DoLuaFunctionsByType<void>( APP_USER_MARKETUPDATE, NULL );
+
 	SetValue<int>( USERNUMBER, users_.size() );
 }
 
@@ -733,6 +741,9 @@ IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 	ptrUser->SetValue<int>( STAMINA, rand() % maxParamValue );
 	ptrUser->SetValue<int>( STABILITY, rand() % maxParamValue );
 	ptrUser->SetValue<int>( CHARACTER, rand() % maxParamValue );
+
+	if( ptrUser->GetValue<int>( WANTMONEY ) < GetValue<int>( MINIMUM_USER_SALARY ) )
+		ptrUser->SetValue<int>( WANTMONEY, GetValue<int>( MINIMUM_USER_SALARY ) );
 
 	char name[64] = { 0 };
 	snprintf( name, 64, "media/face/face%03d.png", rand() % 2 );
@@ -1055,4 +1066,5 @@ CNrpInvention* CNrpApplication::GetInvention( std::string name, std::string comp
 
 	return NULL;
 }
+
 }//namespace nrp

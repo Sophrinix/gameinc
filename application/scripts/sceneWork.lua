@@ -1,7 +1,7 @@
 --безопасная загрузка  скриптов
 
 IncludeScript("button")
-IncludeScript("swork_MainMenu")
+IncludeScript("mainmenu")
 IncludeScript("swork_wndCompanyInfo")
 IncludeScript("swork_StoreWindow")
 IncludeScript("city")
@@ -19,6 +19,7 @@ IncludeScript("laboratory" )
 IncludeScript("office")
 IncludeScript("gameprojectManager")
 IncludeScript("monitor")
+IncludeScript("pda")
 --------------------------------------------
 
 alwaysOnTopWindow = {}
@@ -28,7 +29,7 @@ NrpInitializeWorkScene()
 sceneManager:DrawProgress( 0 )
 
 --создание главного меню
-AddMenuWindow()
+mainmenu.Show()
 sceneManager:DrawProgress( 70 )
 
 --создание окна отображения содержимого портфеля
@@ -53,5 +54,5 @@ if tutorial.startGameWithTutorial then
 	tutorial.Start()
 end
 
-alwaysOnTopWindow[ 1 ] = mainMenuWindow
+alwaysOnTopWindow[ 1 ] = mainmenu.GetWindow()
 alwaysOnTopWindow[ 2 ] = CLuaWindow( browser:GetWindow() )

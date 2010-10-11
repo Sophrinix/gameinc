@@ -1,17 +1,25 @@
+local base = _G
+
+module( "updates" )
+
+local LogScript = base.LogScript
+local applic = base.applic
+
 local fileIniPlatforms = "xtras/platforms.list"
 local fileIniAddons	= "xtras/gameboxaddons.list"
 local fileDiskMachines = "xtras/diskmachines.list"
 local fileRetailers = "xtras/retailers.list"
 local fileImages = "xtras/screenshots.list"
+local fileTechs = "xtras/technologies.list"
 
-function ApplicationUpdateGamePlatforms( ptr )
+function CheckGamePlatforms( ptr )
 	
-	local iniFile = CLuaIniFile( nil, fileIniPlatforms )
+	local iniFile = base.CLuaIniFile( nil, fileIniPlatforms )
 	
 	local plNumber = iniFile:ReadInteger( "options", "platformNumber", 0 )
     local plIniFile = ""
 	for i=1, plNumber do
-		local platform = CLuaPlatform( applic:CreatePlatform( "none" ) )
+		local platform = base.CLuaPlatform( applic:CreatePlatform( "none" ) )
 		
 		plIniFile = iniFile:ReadString( "platform_"..(i-1), fileIniPlatforms, "" ) 
 		platform:Load( plIniFile ) 
@@ -31,8 +39,8 @@ function ApplicationUpdateGamePlatforms( ptr )
 	end
 end
 
-function ApplicationUpdateGameBoxAddons( ptr )
-	local iniFile = CLuaIniFile( nil, fileIniAddons )
+function CheckGameBoxAddons( ptr )
+	local iniFile = base.CLuaIniFile( nil, fileIniAddons )
 
 	local plNumber = iniFile:ReadInteger( "options", "addonNumber", 0 )
     local plIniFile = ""
@@ -61,15 +69,15 @@ function ApplicationUpdateGameBoxAddons( ptr )
 	end
 end
 
-function ApplicationUpdateDiskMachines( ptr )
-	local iniFile = CLuaIniFile( nil, fileDiskMachines )
+function CheckDiskMachines( ptr )
+	local iniFile = base.CLuaIniFile( nil, fileDiskMachines )
 
 	local dmNumber = iniFile:ReadInteger( "options", "diskMachineNumber", 0 )
     local dmIniFile = ""
 	
 	LogScript( "Open config file "..fileDiskMachines.." with diskMachineNumber="..dmNumber )
 	for i=1, dmNumber do
-		local dm = CLuaDiskMachine( nil )
+		local dm = base.CLuaDiskMachine( nil )
 		dm:Create()
 
 		dmIniFile = iniFile:ReadString( "options", "diskMachine_"..(i-1), "" ) 
@@ -91,15 +99,15 @@ function ApplicationUpdateDiskMachines( ptr )
 	end
 end
 
-function ApplicationUpdateRetailers( ptr )
-	local iniFile = CLuaIniFile( nil, fileRetailers )
+function CheckRetailers( ptr )
+	local iniFile = base.CLuaIniFile( nil, fileRetailers )
 
 	local retlNumber = iniFile:ReadInteger( "options", "retailerNumber", 0 )
     local retlIniFile = ""
 	
 	LogScript( "Open config file "..fileRetailers.." with retailNumber="..retlNumber )
 	for i=1, retlNumber do
-		local retailer = CLuaRetailer( nil )
+		local retailer = base.CLuaRetailer( nil )
 		retailer:Create()
 
 		retlIniFile = iniFile:ReadString( "options", "retailer_"..(i-1), "" ) 
@@ -121,8 +129,8 @@ function ApplicationUpdateRetailers( ptr )
 	end
 end
 
-function ApplicationUpdateScreenshots( ptr )
-	local iniFile = CLuaIniFile( nil, fileImages )
+function CheckScreenshots( ptr )
+	local iniFile = base.CLuaIniFile( nil, fileImages )
 
 	local maxYear = applic:GetGameTime()
 	
@@ -135,6 +143,50 @@ function ApplicationUpdateScreenshots( ptr )
 		for i=1, descNumber do
 			descIniFile = iniFile:ReadString( maxYear, "description_"..(i-1), "" ) 
 			applic:LoadImageList( descIniFile )	
+		end
+	end
+end
+
+function CheckNewTechs()
+	local iniFile = base.CLuaIniFile( nil, fileTechs )
+
+	local plNumber = iniFile:ReadInteger( "options", "techNumber", 0 )
+    local plIniFile = ""
+    local cYear, cMonth, cDay = applic.GetGameTime()
+    local currentDate = os.time{year=cYear, month=cMonth, day=cDay }
+	
+	base.LogScript( "Open config file "..fileIniAddons.." with tech="..plNumber )
+	for i=1, plNumber do
+		plIniFile = iniFile:ReadString( "options", "tech_"..(i-1), "" ) 
+		
+		local techIni = base.CLuaIniFile( nil, plIniFile )
+		local tYear, tMonth, tDay = techIni:ReadTime( "options", "startdate:time", "y=0000 m=00 d=00 h=00 mi=00 s=0" )
+		local techName = techIni:ReadString( "options", "name:string", "" )
+
+		if os.time{year=tYear, month=tMonth, day=tDay} <= currentDate then
+			--такую технологию никто не изобрел
+			local tech = applic:GetTech( techName )
+			if tech:Empty() == 1 then
+				tech:Create( 0 )
+				tech:SetStatus( TS_READY )
+				tech:Load( techIni )
+	
+				LogScript({src=SCRIPT, dev=ODS|CON}, "!!!!!! LOAD TECH FROM "..techIni )
+				--добавим технологию в игру
+				applic:AddPublicTechnology( tech:Self() ) 
+				
+				base.pda.Show( "На рынке появилась новая технология "..tech:GetName() )
+			else
+				--технология уже есть в игре
+				local techcmp = tech:GetCompany()
+				--это технология зарегестрирована на какую-то контору,
+				-- надо её перевести в разряд общедоступных
+				if techcmp:IsEmpty() == 0 then
+					techcmp:RemoveTech( tech:GetName() )
+					tech:SetCompany( nil )
+					base.pda.Show( "Технология адаптирована для массового применения "..tech:GetName() )
+				end
+			end
 		end
 	end
 end

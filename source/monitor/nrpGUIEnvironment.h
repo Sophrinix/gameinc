@@ -150,6 +150,8 @@ public:
 
 	gui::IGUIAnimator* addTextTimeAnimator( IGUIElement* parent );
 
+	gui::IGUIAnimator* addTextRunnerAnimator( IGUIElement* parent, const wchar_t* text );
+
 	void drawAll();
 
 	video::IVideoDriver* getVideoDriver() const;
@@ -244,8 +246,9 @@ public:
 	virtual void addToDeletionQueue( IGUIElement* ptrElement );
 	virtual void RemoveAnimators( IGUIElement* elm );
 
+
 private:
-	IGUIEnvironment* native_gui_;									//указатель на простую фабрику элементов
+	IGUIEnvironment* _nativeEnv;									//указатель на простую фабрику элементов
 	std::map< std::string, gui::IGUIFont* > fonts_;												//основной шрифт
 
 	std::vector< IGUIElement* > deletionQueue_;
@@ -254,6 +257,7 @@ private:
 	core::position2di dragObjBeginPos_;
 	bool CreateSkin_();
 	void LoadFonts_();
+	virtual void LunchToolTip( IGUIElement* elm );
 };
 
 }	//namespace gui

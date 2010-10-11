@@ -96,4 +96,10 @@ void CNrpReklameWork::BeginNewDay()
 	AddValue<int>( BALANCE, GetValue<int>( DAYCOST ) );
 	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) == 0 );
 }
+
+void CNrpReklameWork::Save( std::string sectionName, std::string fileName )
+{
+	INrpConfig::Save( sectionName, fileName );
+}
+
 }//end namespace nrp

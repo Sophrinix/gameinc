@@ -326,7 +326,7 @@ void CNrpCompany::BeginNewDay( const SYSTEMTIME& time )
 	}
 
 	for( size_t cnt=0; cnt < employers_.size(); cnt++ )
-		employers_[ cnt ]->BeginNewDay( time );
+		 employers_[ cnt ]->BeginNewDay( time );
 }
 
 void CNrpCompany::PaySalaries_()
@@ -518,7 +518,7 @@ void CNrpCompany::RemoveUser( const std::string& name )
 			IUser* user = *uIter;
 			employers_.erase( uIter );
 
-			user->SetValue<int>( WANTMONEY, user->GetValue<int>( SALARY ) * 1.5 );
+			user->SetValue<int>( WANTMONEY, static_cast< int >( user->GetValue<int>( SALARY ) * 1.5 ) );
 			user->SetValue<PNrpCompany>( PARENTCOMPANY, NULL );
 			SetValue<int>( USERNUMBER, employers_.size() );
 

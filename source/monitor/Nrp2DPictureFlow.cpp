@@ -147,10 +147,10 @@ void CNrp2DPictureFlow::draw()
 
 	if( _images.size() > 0 )
 	{
-		for( size_t pos=max( 0, _activeIndex-4 ); pos < _activeIndex; pos++ )
+		for( int pos=max( 0, _activeIndex-4 ); pos < _activeIndex; pos++ )
 			_DrawPairImage( _images[ pos ] );
 
-		for( size_t pos=min( _activeIndex + 4, _images.size()-1); pos > _activeIndex; pos-- )
+		for( int pos=min( _activeIndex + 4, _images.size()-1); pos > _activeIndex; pos-- )
 			 _DrawPairImage( _images[ pos ] );
 
 		if( _activeIndex < static_cast< int >( _images.size() ) )

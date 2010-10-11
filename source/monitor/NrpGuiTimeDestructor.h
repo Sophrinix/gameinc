@@ -15,8 +15,8 @@ public:
 
 	virtual void draw();
 private:
-	int _time;
-	int _startTime;
+	size_t _time;
+	size_t _startTime;
 	bool _active;
 };
 

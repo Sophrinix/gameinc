@@ -258,6 +258,8 @@ private:
 
 	void loadBuiltInFont();
 
+	void LunchToolTip() {};
+
 	struct SFont
 	{
 		io::SNamedPath NamedPath;

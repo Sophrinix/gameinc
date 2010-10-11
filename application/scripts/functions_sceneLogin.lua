@@ -1,6 +1,6 @@
 --Подключаем скрипт создания стартовых условий новой игры
 IncludeScript("swork_startDefinition")
-IncludeScript("swork_UpdateFunctions")
+IncludeScript("updates")
 
 --переменные для работы
 local plant = NrpGetPlant()
@@ -82,17 +82,17 @@ function slogin_ContinueLastGame( ptr )
 	applic:LoadGameTimeFromProfile( applic:GetCurrentProfile() )
 	
 	--загружаем текущие аддоны для коробки для текущего времени
-	ApplicationUpdateGameBoxAddons()
+	updates.CheckGameBoxAddons()
 	applic:LoadBoxAddonsPrice()
 
 	--загружаем профиль
 	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
 		
 	--загружаем аппараты по производству дисков
-	ApplicationUpdateDiskMachines()
+	updates.CheckDiskMachines()
 	
 	--загружаем скриншоты для игр
-	ApplicationUpdateScreenshots()
+	updates.CheckScreenshots()
 	
 	--загружаем производство
 	plant:Load( applic:GetCurrentProfile() )

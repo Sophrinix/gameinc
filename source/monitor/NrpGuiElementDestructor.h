@@ -10,13 +10,13 @@ namespace gui
 class CNrpGuiElementDestructor : public IGUIElement
 {
 public:
-	CNrpGuiElementDestructor( IGUIEnvironment* environment, IGUIElement* node, int time );
+	CNrpGuiElementDestructor( IGUIEnvironment* environment, IGUIElement* node, size_t time );
 	~CNrpGuiElementDestructor(void);
 
 	virtual void draw();
 private:
-	int _delay;
-	int _startTime;
+	size_t _delay;
+	size_t _startTime;
 };
 
 }//namspace gui

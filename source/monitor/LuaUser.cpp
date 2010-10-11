@@ -9,6 +9,7 @@
 #include "NrpAiUser.h"
 #include "NrpTechnology.h"
 #include "NrpCompany.h"
+#include "LuaRelation.h"
 
 using namespace irr;
 
@@ -35,6 +36,7 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaUser, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, IsFreeUser ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetRelation ),
 	{0,0}
 };
 
@@ -268,4 +270,23 @@ int CLuaUser::IsFreeUser( lua_State* L )
 	lua_pushboolean( L, noCompany );
 	return 1;		
 }
+
+int CLuaUser::GetRelation( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetRelation need name of relation parameter" );
+
+	const char* name = lua_tostring(L, 2 );
+	CNrpRelation* ret = 0;
+
+	assert( name != NULL );
+	IF_OBJECT_NOT_NULL_THEN ret = object_->GetRelation( name );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, ret );
+	Luna< CLuaRelation >::constructor( L );
+
+	return 1;	
+}
+
 }//namespace nrp

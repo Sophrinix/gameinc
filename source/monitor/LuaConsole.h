@@ -19,6 +19,7 @@ public:
 
 	CLuaConsole(lua_State *L);
 	int ToggleVisible( lua_State *L );
+	int Draw( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaConsole"; }
 };
