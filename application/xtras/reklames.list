@@ -1,3 +1,6 @@
 [options]
 reklame0=xtras/reklames/magazine/item.reklame
-reklameNumber=1
+reklameNumber=4
+reklame1=xtras/reklames/paper/item.reklame
+reklame2=xtras/reklames/radio/item.reklame
+reklame3=xtras/reklames/tv/item.reklame

@@ -20,6 +20,7 @@
 #include "NrpDevelopGame.h"
 #include "NrpInvention.h"
 #include "NrpActionType.h"
+#include "NrpPda.h"
 
 #include <io.h>
 #include <errno.h>
@@ -62,6 +63,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<PNrpCompany>( PLAYERCOMPANY, NULL );
 	CreateValue<int>( INVENTIONSNUMBER, 0 );
 	CreateValue<int>( MINIMUM_USER_SALARY, 250 );
+	CreateValue<CNrpPda*>( PDA, new CNrpPda() );
 
 	srand( GetTickCount() );
 }
@@ -628,7 +630,7 @@ void CNrpApplication::CreateNewFreeUsers()
 		else
 			group[ "other" ]->push_back( *pIter );
 	}
-	users_.clear();
+
 	size_t USER_GROUP_COUNT = 6;
 
 	std::map< std::string, USER_LIST* >::iterator gIter = group.begin();

@@ -156,13 +156,19 @@ CNrpReklameWork* CNrpPlant::CreateReklame( const std::string& type,
 	return NULL;
 }
 
-void CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
+bool CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
 {
 	assert( pReklame != NULL );
+
+	bool ret = false;
 	if( GetBaseReklame( pReklame->GetValue<std::string>( NAME ) ) == NULL )
+	{
 		baseReklame_.push_back( pReklame );
+		ret = true;
+	}
 
 	SetValue<int>( BASEREKLAMENUMBER, baseReklame_.size() );
+	return ret;
 }
 
 CNrpReklameWork* CNrpPlant::GetBaseReklame( std::string name )

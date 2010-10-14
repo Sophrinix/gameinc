@@ -56,3 +56,4 @@ end
 
 alwaysOnTopWindow[ 1 ] = mainmenu.GetWindow()
 alwaysOnTopWindow[ 2 ] = CLuaWindow( browser:GetWindow() )
+alwaysOnTopWindow[ 3 ] = pda.GetWindow()

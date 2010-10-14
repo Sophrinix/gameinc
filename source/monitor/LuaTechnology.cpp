@@ -32,7 +32,6 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetLevel ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, IsLoaded ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, ValidTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveRequireTech ),
@@ -174,24 +173,6 @@ int CLuaTechnology::GetLevel( lua_State* L )
 {
 	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) );
 	return 1;
-}
-
-int CLuaTechnology::ValidTime( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::ValidTime not need any parameter");
-
-	bool validTime = false; 
-	IF_OBJECT_NOT_NULL_THEN
-	{
-		SYSTEMTIME starttime = object_->GetValue<SYSTEMTIME>( STARTDATE );
-		SYSTEMTIME endtime = object_->GetValue<SYSTEMTIME>( ENDDATE );
-		SYSTEMTIME currentTime = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
-		validTime = (starttime < currentTime) && (currentTime < endtime);
-	}
-	
-	lua_pushboolean( L, validTime );
-	return 1;	
 }
 
 int CLuaTechnology::IsLoaded( lua_State* L )

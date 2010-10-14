@@ -17,6 +17,7 @@
 #include "LuaTechnology.h"
 #include "LuaInvention.h"
 #include "LuaDiskMachine.h"
+#include "LuaPda.h"
 #include "OpFileSystem.h"
 
 #include <assert.h>
@@ -71,6 +72,7 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetInvention ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateDirectorySnapshot ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPda ),
 	{0,0}
 };
 
@@ -660,5 +662,20 @@ int CLuaApplication::CreateDirectorySnapshot( lua_State* L )
 	}
 
 	return 1;
+}
+
+int CLuaApplication::GetPda( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetGameTime not need any parameter" );
+
+	CNrpPda* pda = NULL;
+	IF_OBJECT_NOT_NULL_THEN pda = object_->GetValue<CNrpPda*>( PDA );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, pda );
+	Luna< CLuaPda >::constructor( L );
+
+	return 1;		
 }
 }//namespace nrp  

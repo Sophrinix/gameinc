@@ -16,6 +16,7 @@ OPTION_NAME BOXADDONNUMBER( "boxAdonNumber" );
 OPTION_NAME MARKETGAMENUMBER( "marketGameNumber" );
 OPTION_NAME PLAYERCOMPANY( "playerCompany" );
 OPTION_NAME MINIMUM_USER_SALARY( "minimumUserSalary" );
+OPTION_NAME PDA( "pda" ); 
 
 class CNrpCompany;
 class IUser;

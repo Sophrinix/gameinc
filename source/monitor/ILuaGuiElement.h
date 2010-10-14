@@ -40,10 +40,10 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, ( "Function " + ClassName() + ":GetParent not need any parameter" ).c_str() );
 
-		gui::IGUIElement* parent = NULL;
+		void* parent = NULL;
 
 		IF_OBJECT_NOT_NULL_THEN parent = object_->getParent();
-		lua_pushlightuserdata( L, (void*)parent );
+		lua_pushlightuserdata( L, parent );
 
 		return 1;
 	}
@@ -96,7 +96,11 @@ public:
 		const char* text = lua_tostring( L, 2 );
 		assert( text != NULL );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setText( StrToWide( text ).c_str() );
+		IF_OBJECT_NOT_NULL_THEN	
+		{
+			if( text )
+				object_->setText( StrToWide( text ).c_str() );
+		}
 
 		return 1;
 	}

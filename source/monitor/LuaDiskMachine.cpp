@@ -17,7 +17,6 @@ Luna< CLuaDiskMachine >::RegType CLuaDiskMachine::methods[] =
 	/************************************************************************/
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Load ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, ValidTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, IsLoaded ),
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Remove ),
@@ -61,24 +60,6 @@ int CLuaDiskMachine::Load( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN object_->Load( SECTION_OPTIONS, fileName );
 
-	return 1;	
-}
-
-int CLuaDiskMachine::ValidTime( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaDiskMachine::ValidTime not need any parameter");
-
-	bool validTime = false; 
-	IF_OBJECT_NOT_NULL_THEN
-	{
-		SYSTEMTIME starttime = object_->GetValue<SYSTEMTIME>( STARTDATE );
-		SYSTEMTIME endtime = object_->GetValue<SYSTEMTIME>( ENDDATE );
-		SYSTEMTIME currentTime = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
-		validTime = (starttime < currentTime) && (currentTime < endtime);
-	}
-
-	lua_pushboolean( L, validTime );
 	return 1;	
 }
 

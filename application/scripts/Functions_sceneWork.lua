@@ -12,6 +12,7 @@ function sworkAppMonthChange()
 	applic:CreateNewFreeUsers()
 	updates.CheckNewReklames( true )
 	updates.CheckNewTechs() 
+	updates.CheckGameBoxAddons()
 end
 
 function sworkAppYearChange( ptr )

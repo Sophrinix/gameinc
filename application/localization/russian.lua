@@ -30,6 +30,7 @@ TRANSLATE_VDQ_SELFRENDER="Рисовать самим"
 TRANSLATE_SCENARIO_WRITESELF="Написать самому"
 TRANSLATE_SOUND_WRITESELF="Сочинить самому"
 TRANSLATE_ST_SPEAKER="Выводить звук\n через спикер"
+TRANSLATE_ADVTECH_HELP="Система помощи"
 ---------------------------------------------------
 STR_GAME="Игра"
 STR_ENGINE="Движок"
@@ -78,4 +79,5 @@ STR_GET_PRESENT="Премия"
 STR_SEND_TO_SCHOOL="Обучение"
 STR_COMMUNICATE="Пригласить \nдля разговора"
 STR_ROUTINE="Дать поручение"
+
 

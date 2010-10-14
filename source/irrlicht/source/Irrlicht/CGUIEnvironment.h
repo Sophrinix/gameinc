@@ -258,7 +258,7 @@ private:
 
 	void loadBuiltInFont();
 
-	void LunchToolTip() {};
+	void LunchToolTip( gui::IGUIElement* elm ) {};
 
 	struct SFont
 	{

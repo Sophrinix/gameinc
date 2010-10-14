@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="GameDev"
 	ProjectGUID="{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"
 	RootNamespace="nerpa_sc"
@@ -216,26 +216,6 @@
 						RelativePath=".\nrpMainScene.h"
 						>
 					</File>
-					<Filter
-						Name="terrain"
-						>
-						<File
-							RelativePath=".\nrpTerrainMaterial.h"
-							>
-						</File>
-						<Filter
-							Name="shader"
-							>
-							<File
-								RelativePath="..\..\application\media\shaders\terrain_ps.glsl"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\media\shaders\terrain_vs.glsl"
-								>
-							</File>
-						</Filter>
-					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
@@ -1399,6 +1379,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaPda.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaPda.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaPlant.cpp"
 						>
 					</File>
@@ -1606,6 +1594,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpGameImageList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpPda.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpPda.h"
 				>
 			</File>
 			<File

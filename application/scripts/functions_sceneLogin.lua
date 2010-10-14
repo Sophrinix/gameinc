@@ -30,6 +30,7 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	local editCompany = CLuaEdit( guienv:GetElementByName( EDIT_NEWCOMPANY_NAME ) )
 	
 	CreateStuffLists()
+	updates.CheckGameBoxAddons()
 	
 	--создаем новый профиль
 	applic:CreateProfile( editName:GetText(), editCompany:GetText() )
@@ -73,7 +74,6 @@ function slogin_CreateNewGame( ptr )
 	local btnCancel = guienv:AddButton( scrW / 2 + 50,scrH - 30, scrW / 2 + 150, scrH - 10, 
 										windowg:Self(), -1, "Отмена" )
 	btnCancel:SetAction( "sloginCloseWindowCreateNewProfile" )
-	
 end
 
 function slogin_ContinueLastGame( ptr )

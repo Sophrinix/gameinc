@@ -61,6 +61,7 @@ public:
 	int LoadImageList( lua_State* L );
 	int GetGameTime( lua_State* L );
 	int GetInvention( lua_State* L );
+	int GetPda( lua_State* L );
 
 	int CreateDirectorySnapshot( lua_State* L );
 

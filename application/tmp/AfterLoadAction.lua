@@ -1,5 +1,0 @@
-autoscript:AddUserToGameProject("Gabriel Fulton", "Название игры", "Файлы конфигурации")
-autoscript:AddUserToGameProject("Owen Pass", "Название игры", "Файлы конфигурации")
-autoscript:AddUserToGameProject("Jonathan Donaldson", "Название игры", "Файлы конфигурации")
-autoscript:AddUserToGameProject("Nicholas Bradberry", "Название игры", "Файлы конфигурации")
-autoscript:AddUserToGameProject("Jesse Saunder", "Название игры", "Файлы конфигурации")

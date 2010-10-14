@@ -92,14 +92,16 @@ int CLuaIniFile::ReadTime( lua_State* L )
 
 	time = IniFile::Read( section, key, time, fileName_ );
 
+	assert( time.wYear > 0 && time.wMonth > 0 && time.wMonth <= 12 && 
+			time.wDay > 0 && time.wDay <= 31 );
+
 	lua_pushinteger( L, time.wYear );
 	lua_pushinteger( L, time.wMonth );
 	lua_pushinteger( L, time.wDay );
 	lua_pushinteger( L, time.wHour );
 	lua_pushinteger( L, time.wMinute );
 
-
-	return 1;
+	return 5;
 }
 
 

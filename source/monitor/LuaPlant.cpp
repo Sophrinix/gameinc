@@ -73,13 +73,15 @@ int CLuaPlant::LoadBaseReklame( lua_State* L )
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
 
+	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		CNrpReklameWork* baseReklame = new CNrpReklameWork( "base", "" );
 		baseReklame->Load( SECTION_PROPERTIES, fileName );
-		object_->AddBaseReklame( baseReklame );
+		ret = object_->AddBaseReklame( baseReklame );
 	}
 
+	lua_pushboolean( L, ret );
 	return 1;
 }
 

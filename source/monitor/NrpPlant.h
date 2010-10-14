@@ -28,7 +28,7 @@ class CNrpPlant : public INrpConfig
 public:
 	static CNrpPlant& Instance();
 
-	void AddBaseReklame( CNrpReklameWork* pReklame );
+	bool AddBaseReklame( CNrpReklameWork* pReklame );
 	CNrpReklameWork* GetBaseReklame( std::string name );
 	CNrpReklameWork* GetBaseReklame( int index );
 

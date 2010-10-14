@@ -24,7 +24,6 @@ public:
 	int SetDrawBody( lua_State *L );
 	int AddLuaFunction( lua_State* L );
 	int RemoveLuaFunction( lua_State* L );
-	int RemoveAllAnimators( lua_State* L );
 	int Draw( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaWindow"; }
