@@ -165,7 +165,7 @@ local function ShowAvaibleVideoQualityAndVideoTech( tab )
 			end
 		end
 	end	
-	Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "SCRIPT-CREATEVTP:ShowAvaibleVideoQualityAndVideoTech public = " .. showedTech )
+	--Log("SCRIPT-CREATEVTP:ShowAvaibleVideoQualityAndVideoTech public = " .. showedTech )
 end
 
 local function ShowAvaibleSoundQualityAndSoundTech( tab )
@@ -190,12 +190,13 @@ local function ShowAvaibleSoundQualityAndSoundTech( tab )
 			end
 		end
 	end	
-	Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "SCRIPT-CREATEVTP:ShowAvaibleSoundQualityAndSoundTech public = " .. showedTech )
+	Log( "SCRIPT-CREATEVTP:ShowAvaibleSoundQualityAndSoundTech public = " .. showedTech )
 end
 
 local function CreateSoundContentPage( tab )
+	Log( "Start Sound" )
 	ShowAvaibleSoundQualityAndSoundTech( tab )
-	
+		
 	local sq = project:GetSoundQuality()
 	local linkModule = guienv:AddLinkBox( "", sizeLinkBox, 20, sizeLinkBox + sizeLinkBox, 20 + sizeLinkBox, -1, tab )
 	
@@ -273,7 +274,7 @@ local function CreateGameNamePage( tab )
 	localSetLinkBoxOption( linkModule, base.PT_GAMEENGINE, ge:Self(), ge:GetTexture(), 
 	                       false, true, "media/buttons/GameNoEngine.png" )
 	--set function for resolve input for linkbox	
-	SetLuaFuncToLinkBox( linkModule, "./gameprojectManager.SetVideoEngine" )
+	SetLuaFuncToLinkBox( linkModule, "./gameprojectManager.SetVideoEngine()" )
 	
 	linkModule = guienv:AddLinkBox( "Продолжение", 80, 200, 80 + 80, 200 + 80, -1, tab )
 	localSetLinkBoxOption( linkModule, base.PT_GAME, nil, "", false, true )
@@ -338,19 +339,19 @@ local function ShowAvaibleScriptAndMiniGames( tab )
 		
 		if techCompany:Empty() == 1 or techCompany:GetName() == companyName then
 			if tg == base.PT_SCRIPTS or tg == base.PT_MINIGAME or tg == base.PT_PHYSIC or tg == base.PT_ADVTECH then
-				Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "SCRIPT-CREATEGP:ShowAvaibleScriptLevel element = " .. i .. " " .. 20 + showeddLinks * sizeLinkBox )
+				--Log("SCRIPT-CREATEGP:ShowAvaibleScriptLevel element = " .. i .. " " .. 20 + showeddLinks * sizeLinkBox )
 				
 				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 20 + showeddLinks * sizeLinkBox, 
 													  scrWidth / 2 + sizeLinkBox, 20 + (showeddLinks + 1 ) * sizeLinkBox, -1, tab )
 													  
 				localSetLinkBoxOption( linkModule, tg, tech:Self(), tech:GetTexture(), 
 									   true, not project:IsTechInclude( tech:GetTechType() ), "" )												  
-				linkModule:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameprojectManager.LeftMouseButtonUp" )
+				linkModule:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameprojectManager.LeftMouseButtonUp()" )
 				showeddLinks = showeddLinks + 1
 			end
 		end
 	end	
-	Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "SCRIPT-CREATEGP:ShowAvaibleScriptLevel public script = " .. showeddLinks )
+	--Log("SCRIPT-CREATEGP:ShowAvaibleScriptLevel public script = " .. showeddLinks )
 end
 
 local function CreateAdvContentPage( tab )
@@ -404,27 +405,27 @@ local function CreateAdvContentPage( tab )
 end
 
 local function CreatePlatformLangPage( tab )
-
 	for i=1, #lang do
-		local button = guienv:AddButton( 10 + 100 * (i-1), 50, 10 + 100 * i, 50 + 100, tab, 9600 + i, "" )
+		local btnF = guienv:AddButton( 10 + 100 * (i-1), 50, 10 + 100 * i, 50 + 100, tab, 9600 + i, "" )
 		if project:IsLangAvaible( lang[ i ] ) then
-			button:SetText( lang[ i ] )
+			btnF:SetText( lang[ i ] )
 		else
-			button:SetText( "not " .. lang[ i ] )
+			--Log( "not " .. lang[ i ]  )
+			btnF:SetText( "not " .. lang[ i ] )
 		end
 		
-		button:SetAction( "./gameprojectManager.SetLang()" )
+		btnF:SetAction( "./gameprojectManager.SetLang()" )
 	end
 
 	for i=1, #platform do
-		local button = guienv:AddButton( 10 + 100 * (i-1), 200, 10 + 100 * i, 200 + 100, tab, 9700 + i,  "" )
+		local btnF = guienv:AddButton( 10 + 100 * (i-1), 200, 10 + 100 * i, 200 + 100, tab, 9700 + i,  "" )
 		
 		if project:IsPlatformAvaible( platform[ i ] ) then
-			button:SetText( platform[ i ] )
+			btnF:SetText( platform[ i ] )
 		else
-			button:SetText( "not " .. platform[ i ] )
+			btnF:SetText( "not " .. platform[ i ] )
 		end
-		button:SetAction( "./gameprojectManager.SetPlatform()" )
+		btnF:SetAction( "./gameprojectManager.SetPlatform()" )
 	end
 end
 
@@ -461,7 +462,7 @@ end
 
 local function CreateScenarioLicensePage( tab )
 	ShowAvaibleScenarioAndLicense( tab )
-	Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "SCRIPT-CREATESL:CreateScenarioLicensePage start " )
+	--Log("SCRIPT-CREATESL:CreateScenarioLicensePage start " )
 
 	local tech = project:GetScenario()
 	local linkScenario = guienv:AddLinkBox( base.STR_SCENARIO, 100, 40, 100 + sizeLinkBox, 40 + sizeLinkBox, -1, tab )
@@ -480,49 +481,39 @@ local function CreateScenarioLicensePage( tab )
 	linkLicense:SetVisible( not project:HaveScenario() )
 	SetLuaFuncToLinkBox( linkLicense, "./gameprojectManager.SetLicense()" )
 	
-	Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "SCRIPT-CREATESL:CreateScenarioLicensePage end " )
+	--Log( "SCRIPT-CREATESL:CreateScenarioLicensePage end " )
 end
 
 local function sworkRecreatePagesDependedEngine()
-	local elm = CLuaElement( pages[ "genre" ] )
-	elm:RemoveChilds()
-	CreateGenrePage( elm:Self() )
+	pages[ "genre" ]:RemoveChilds()
+	CreateGenrePage( pages[ "genre" ]:Self() )
 	
-	elm:SetObject( pages[ "graphics" ] )
-	elm:RemoveChilds()
-	CreateVideoContentPage( elm:Self() )
+	pages[ "graphics" ]:RemoveChilds()
+	CreateVideoContentPage( pages[ "graphics" ]:Self() )
 	
-	elm:SetObject( pages[ "name" ] )
-	elm:RemoveChilds()
-	CreateGameNamePage( elm:Self() )
+	pages[ "name" ]:RemoveChilds()
+	CreateGameNamePage( pages[ "name" ]:Self() )
 	
-	elm:SetObject( pages[ "advfunc" ] )
-	elm:RemoveChilds() 
-	CreateAdvContentPage( elm:Self() )
+	pages[ "advfunc" ]:RemoveChilds() 
+	CreateAdvContentPage( pages[ "advfunc" ]:Self() )
 	
-	elm:SetObject( pages[ "graphics" ] )
-	elm:RemoveChilds()
-	CreateVideoContentPage( elm:Self() )
+	pages[ "graphics" ]:RemoveChilds()
+	CreateVideoContentPage( pages[ "graphics" ]:Self() )
 	
-	elm:SetObject( pages[ "sound" ] )
-	elm:RemoveChilds()
-	CreateSoundContentPage( elm:Self() )
+	pages[ "sound" ]:RemoveChilds()
+	CreateSoundContentPage( pages[ "sound" ]:Self() )
 	
-	elm:SetObject( pages[ "scenario" ] )
-	elm:RemoveChilds()
-	CreateScenarioLicensePage( elm:Self() )
+	pages[ "scenario" ]:RemoveChilds()
+	CreateScenarioLicensePage( pages[ "scenario" ]:Self() )
 	
-	elm:SetObject( pages[ "platforms" ] )
-	elm:RemoveChilds()
-	CreatePlatformLangPage( elm:Self() )
+	pages[ "platforms" ]:RemoveChilds()
+	CreatePlatformLangPage( pages[ "platforms" ]:Self() )
 	
-	elm:SetObject( pages[ "end" ] )
-	elm:RemoveChilds()
-	CreateEndPage( elm:Self() )
+	pages[ "end" ]:RemoveChilds()
+	CreateEndPage( pages[ "end" ]:Self() )
 end
 
 function SetVideoEngine()
-
 	local sender = base.CLuaLinkBox( base.NrpGetSender() )
 	project:SetGameEngine( sender:GetData() )
 	sworkRecreatePagesDependedEngine()
@@ -538,7 +529,6 @@ function SetVideoQuality()
 end
 
 function SetSoundQuality()
-
 	local sender = base.CLuaLinkBox( base.NrpGetSender() )
 	project:SetSoundQuality( sender:GetData() )
 	sworkRecreatePagesDependedEngine()
@@ -582,7 +572,7 @@ function SetPhysicEngine()
 	ShowParams()
 end
 
-function sworkGameProjectWizzardSetAdvTech()
+function SetAdvTech()
 	local sender = base.CLuaLinkBox( base.NrpGetSender() )
 	local id = sender:GetID() - 9200
 	project:SetAdvTech( sender:GetData(), id )
@@ -681,7 +671,7 @@ function FadeExitAction()
 	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
-function RigthMouseButtonUp()
+function RightMouseButtonUp()
 	local link = base.CLuaLinkBox( base.NrpGetSender() ) 
 	link:SetData( nil )
 	link:SetTexture( "media/buttons/LinkBoxNoImage.png" )
@@ -706,5 +696,7 @@ function LeftMouseButtonUp()
 			
 			guienv:SetDragObject( nil )
 		end
+	else
+		guienv:SetDragObject( nil )
 	end
 end

@@ -113,12 +113,11 @@ function CheckDiskMachines( showPdaForNewDm )
 		Log({src=SCRIPT, dev=ODS|CON}, "diskMachine"..(i-1).."="..dmIniFile )
 		
 		--прочитаем параметры платформы
-		local dmName = base.CLuaIniFile( nil, tmpAddonIni ):ReadString( "properties", "name:string", "error" )
+		local dmName = base.CLuaIniFile( nil, dmIniFile ):ReadString( "properties", "name:string", "error" )
 		local dmStartTime = GetDate( dmIniFile, "startdate:time" )
-		--local addonEndDate = GetDate( tmpPlatformIni, "enddate:time" )
 		
 		--проверяем попадание врмененного интервала аддона в текущее время
-		if addonStartTime <= curTime then
+		if dmStartTime <= curTime then
 			--попрoбуем загрузить новую аддон
 			applic:LoadDiskMachine( dmIniFile )
 			

@@ -69,8 +69,9 @@ local function ShowWindowUserInfo( userPtr )
 	end
 	
 	local function dd( named, valuel, posy )
-		guienv:AddLabel( named, 5, posy, widdddd, posy + 20, -1, windowUserInfo:Self() )
-		local prg = guienv:AddProgressBar( windowUserInfo:Self(), 50, posy, widdddd - 5, posy + 20, -1 )
+		local lbd = guienv:AddLabel( named, 5, posy, widdddd, posy + 20, -1, windowUserInfo:Self() )
+		lbd:SetOverrideColor( 0xff, 0xff, 0xff, 0xff )
+		local prg = guienv:AddProgressBar( windowUserInfo:Self(), 80, posy, widdddd - 5, posy + 20, -1 )
 		prg:SetPosition( valuel )						   
 		prg:SetImage( "media/textures/stars01.png" )
 		prg:SetFillImage( "media/textures/stars06.png" )
@@ -82,9 +83,9 @@ local function ShowWindowUserInfo( userPtr )
 	dd( "Устойчивость", currentEmployer:GetParam("stability"), 90 ) 
 				   
 	local lbx = guienv:AddComponentListBox( 10, 135, widdddd - 10, hhhhhhh - 10, -1, windowUserInfo:Self() )
-	
 	for i=1, currentEmployer:GetWorkNumber() do
 		lbx:AddItem( "", currentEmployer:GetWork( i-1 ) )
+		lbx:SetItemTextColor( i-1, 0xff, 0xff, 0xff, 0xff )
 	end
 end
 
@@ -184,6 +185,7 @@ local function ShowUnworkedGameProjectComponent()
 	    local module = currentProject:GetModule( i-1 )
 		if module:Empty() == 0 then 
 		  lbxComponents:AddItem( module:GetName(), module:Self() )	
+		  lbxComponents:SetItemTextColor( i-1, 0xff, 0xff, 0xff, 0xff )
 		end
 	end
 end

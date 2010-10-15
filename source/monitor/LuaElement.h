@@ -19,7 +19,6 @@ public:
 	static Luna<CLuaElement>::RegType methods[];				//методы обертки
 
 	CLuaElement(lua_State *L);	
-	int RemoveChilds( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaElement"; }
 };

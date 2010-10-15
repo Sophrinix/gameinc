@@ -40,6 +40,7 @@ public:
 	int GetDescriptionLink( lua_State* L );
 	int GetCompany( lua_State* L );
 	int SetCompany( lua_State* L );
+	int GetInternalName( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaTech"; }	
 };

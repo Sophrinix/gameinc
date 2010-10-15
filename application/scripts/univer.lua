@@ -9,6 +9,7 @@ local scrHeight = base.scrHeight
 local button = base.button
 local tutorial = base.tutorial
 local applic = base.applic
+local univerWindow = nil
 
 local mode = { }
 mode[ base.STR_CODERS ] = "coder"
@@ -33,11 +34,12 @@ function Show()
 		univerWindow = guienv:AddWindow( "media/maps/univer_dvor.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		univerWindow:GetCloseButton():SetVisible( false )
 		univerWindow:SetDraggable( false )
+		univerWindow:SetVisible( false )
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
 		 			    "button_down", univerWindow:Self(), -1, "",
-						"./univerWindow:Hide()" )
+						"./univer:Hide()" )
 	end	
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_UNIVER )
@@ -47,6 +49,9 @@ function Show()
 	
 	--outsourcing
 	button.EqualeTexture( 612, 300, "outsorcing", univerWindow:Self(), -1, "", "./outsourcing.Show()" )
+	
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "univer.FadeEnterAction()" )
 end
 
 local function AddProgressBar( windowe, x1, y1, x2, y2, id, pos, textr )
@@ -191,11 +196,27 @@ function ShowEmployersWindow()
 end
 
 function Hide()
-	windowUpEmployer:Remove()
-	windowUpEmployer = nil
+	univerWindow:Remove()
+	univerWindow = nil
 end
 
 function ChangeUserType( name )
 	modeUserView = mode[ name ] 
 	ShowEmployersWindow()
+end
+
+function FadeEnterAction()
+	univerWindow:SetVisible( true )
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function FadeExitAction()
+	univerWindow:Remove()
+	univerWindow = nil
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function Hide()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "univer.FadeExitAction()" )	
 end

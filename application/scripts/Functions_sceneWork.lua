@@ -47,6 +47,7 @@ end
 function sworkApplicationClose( ptr )
 	NrpApplicationSave()
 	applic:SaveBoxAddonsPrice()
+	applic:GetPda():Save()
 	plant:Save( applic:GetCurrentProfile() )
 	NrpApplicationClose()
 end

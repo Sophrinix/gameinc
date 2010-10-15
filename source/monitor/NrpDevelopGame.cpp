@@ -126,6 +126,7 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 		pIter != nProject->GetTechList().end(); 
 		pIter++ )
 	{
+		assert( *pIter != NULL );
 		CNrpProjectModule* nTech = new CNrpProjectModule( *pIter, this );
 		nTech->SetValue<int>( CODEVOLUME, (int)(bcv * nTech->GetValue<float>( BASE_CODE )) );
 		gameModules_.push_back( nTech );
@@ -135,6 +136,7 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 		 pIter != nProject->GetGenreList().end(); 
 		 pIter++ )
 	{
+		assert( *pIter != NULL );
 		if( *pIter == NULL )
 			continue;
 
@@ -147,6 +149,8 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 		 pIter != nProject->GetVideoTechList().end(); 
 		 pIter++ )
 	{
+		assert( *pIter != NULL );
+
 		CNrpProjectModule* nTech = new CNrpProjectModule( *pIter, this );
 		nTech->SetValue<int>( CODEVOLUME, (int)(bcv * nTech->GetValue<float>( BASE_CODE )) );
 		gameModules_.push_back( nTech );
@@ -156,9 +160,13 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 		 pIter != nProject->GetSoundTechList().end(); 
 		 pIter++ )
 	{
-		CNrpProjectModule* nTech = new CNrpProjectModule( *pIter, this );
-		nTech->SetValue<int>( CODEVOLUME, (int)(bcv * nTech->GetValue<float>( BASE_CODE )) );
-		gameModules_.push_back( nTech );
+		assert( *pIter != NULL );
+		if( *pIter != NULL )
+		{
+			CNrpProjectModule* nTech = new CNrpProjectModule( *pIter, this );
+			nTech->SetValue<int>( CODEVOLUME, (int)(bcv * nTech->GetValue<float>( BASE_CODE )) );
+			gameModules_.push_back( nTech );
+		}
 	}
 
 	SetValue<std::string>( PROJECTSTATUS, std::string("develop") );

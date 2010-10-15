@@ -156,7 +156,7 @@ function TechSelected()
 	
 	--
 	if selectedTech:GetStatus() == base.TS_INDEVELOP then
-		sworkShowInventionManager( techMap:GetSelectedObject(), company:GetName() )
+		inventionManager.Show( techMap:GetSelectedObject(), company:GetName() )
 		return 0
 	end
 end
@@ -176,7 +176,7 @@ function AssignInvention()
 	local inventionName = techMap:GetSelectedObjectName()
 	company:StartInvention( inventionName )
 	
-	sworkShowInventionManager( inventionName, company:GetName() )
+	base.inventionManager.Show( inventionName, company:GetName() )
 	
 	btnOk:Remove()
 	btnCancel:Remove()

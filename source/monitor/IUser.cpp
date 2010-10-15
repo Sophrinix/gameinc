@@ -47,7 +47,6 @@ IUser::~IUser(void)
 {
 }
 
-
 void IUser::SetSkill( int typen, int valuel )
 {
 	knowledges_[ typen ] = valuel;
@@ -100,53 +99,61 @@ int IUser::GetSkill( int typen )
 
 void IUser::Save( std::string folderPath )
 {
-	if( _access( folderPath.c_str(), 0 ) == -1 )
-		CreateDirectory( folderPath.c_str(), NULL );
-
-	std::string fileName = folderPath + GetValue<std::string>( NAME ) + ".ini";
-	DeleteFile( fileName.c_str() );
-
-	KNOWLEDGE_MAP::iterator gnrIter = genrePreferences_.begin();
-	for( ; gnrIter != genrePreferences_.end(); gnrIter++ )
-		IniFile::Write( "genrePreference", IntToStr( gnrIter->first ), gnrIter->second, fileName );
-	
-	KNOWLEDGE_MAP::iterator gnrExp = genreExperience_.begin();
-	for( ; gnrExp != genreExperience_.end(); gnrExp++ )
-		IniFile::Write( "genreExperience", IntToStr( gnrExp->first ), gnrExp->second, fileName );
-
-	KNOWLEDGE_MAP::iterator knIter = knowledges_.begin();
-	for( ; knIter != knowledges_.end(); knIter++ )
-		IniFile::Write( "knowledges", IntToStr( knIter->first ), knIter->second, fileName );
-
-	USERACTION_LIST::iterator uaIter = peopleFeels_.begin();
-	//for( ; uaIter != peopleFeels_.end(); ++uaIter )
-	//	IniFile::Write( "knowledges", uaIter->first, uaIter->second, fileName );
-
-	WORK_LIST::iterator tlIter = works_.begin();
-	for( int i=0; tlIter != works_.end(); tlIter++, i++ )
+	try
 	{
-		if( CNrpProjectModule* prjModule = dynamic_cast< CNrpProjectModule* >( *tlIter )  )
-		{
-			std::string projectName = prjModule->GetValue<INrpProject*>( PARENT )->GetValue<std::string>( NAME );
-			std::string name = prjModule->GetValue<std::string>(NAME);
-			IniFile::Write( SECTION_WORKS, "work_"+IntToStr( i ), "project", fileName );
-			IniFile::Write( SECTION_WORKS, "projectName_" + IntToStr( i ), projectName, fileName );
-			IniFile::Write( SECTION_WORKS, "moduleName_" + IntToStr( i ), name, fileName );
-		}
-		else if( CNrpInvention* invention = dynamic_cast< CNrpInvention* >( *tlIter ) )
-		{
-			std::string name = invention->GetValue<std::string>(NAME);
-			IniFile::Write( SECTION_WORKS, "work_"+IntToStr( i ), "invention", fileName );
-			IniFile::Write( SECTION_WORKS, "inventioName_" + IntToStr( i ), name, fileName );
-		}
-	}
+		if( _access( folderPath.c_str(), 0 ) == -1 )
+			CreateDirectory( folderPath.c_str(), NULL );
 
-	INrpConfig::Save( SECTION_PROPERTIES, fileName );
+		std::string fileName = folderPath + GetValue<std::string>( NAME ) + ".ini";
+		DeleteFile( fileName.c_str() );
+
+		KNOWLEDGE_MAP::iterator gnrIter = genrePreferences_.begin();
+		for( ; gnrIter != genrePreferences_.end(); gnrIter++ )
+			IniFile::Write( "genrePreference", IntToStr( gnrIter->first ), gnrIter->second, fileName );
+		
+		KNOWLEDGE_MAP::iterator gnrExp = genreExperience_.begin();
+		for( ; gnrExp != genreExperience_.end(); gnrExp++ )
+			IniFile::Write( "genreExperience", IntToStr( gnrExp->first ), gnrExp->second, fileName );
+
+		KNOWLEDGE_MAP::iterator knIter = knowledges_.begin();
+		for( ; knIter != knowledges_.end(); knIter++ )
+			IniFile::Write( "knowledges", IntToStr( knIter->first ), knIter->second, fileName );
+
+		USERACTION_LIST::iterator uaIter = peopleFeels_.begin();
+		//for( ; uaIter != peopleFeels_.end(); ++uaIter )
+		//	IniFile::Write( "knowledges", uaIter->first, uaIter->second, fileName );
+
+		WORK_LIST::iterator tlIter = works_.begin();
+		for( int i=0; tlIter != works_.end(); tlIter++, i++ )
+		{
+			if( CNrpProjectModule* prjModule = dynamic_cast< CNrpProjectModule* >( *tlIter )  )
+			{
+				std::string projectName = prjModule->GetValue<INrpProject*>( PARENT )->GetValue<std::string>( NAME );
+				std::string name = prjModule->GetValue<std::string>(NAME);
+				IniFile::Write( SECTION_WORKS, "work_"+IntToStr( i ), "project", fileName );
+				IniFile::Write( SECTION_WORKS, "projectName_" + IntToStr( i ), projectName, fileName );
+				IniFile::Write( SECTION_WORKS, "moduleName_" + IntToStr( i ), name, fileName );
+			}
+			else if( CNrpInvention* invention = dynamic_cast< CNrpInvention* >( *tlIter ) )
+			{
+				std::string name = invention->GetValue<std::string>(NAME);
+				IniFile::Write( SECTION_WORKS, "work_"+IntToStr( i ), "invention", fileName );
+				IniFile::Write( SECTION_WORKS, "inventioName_" + IntToStr( i ), name, fileName );
+			}
+		}
+
+		INrpConfig::Save( SECTION_PROPERTIES, fileName );
+	}
+	catch(...)
+	{
+		
+	}
 }
 
 void IUser::Load( std::string fileName )
 {
 	INrpConfig::Load( SECTION_PROPERTIES, fileName );
+	assert( GetValue<std::string>( NAME ).size() > 0 );
 
 	IniFile::ReadValueList_( "knowledges", knowledges_, fileName );
 
@@ -213,6 +220,8 @@ void IUser::AddWork( IWorkingModule* module )
 void IUser::RemoveWork( IWorkingModule* techWork )
 {
 	assert( techWork != NULL );
+	if( techWork == NULL )
+		return;
 
 	WORK_LIST::iterator tIter = works_.begin();
 	for( ; tIter != works_.end(); tIter++ )
@@ -223,19 +232,20 @@ void IUser::RemoveWork( IWorkingModule* techWork )
 			SetValue<int>( TECHNUMBER, works_.size() );
 			return;
 		}
+		
 	std::string text = "Ќе могу найти компонент дл€ удалени€ " + techWork->GetValue<std::string>( NAME );
 	OutputDebugString( text.c_str() );
 }
 
-IWorkingModule* IUser::GetWork( int index )
+IWorkingModule* IUser::GetWork( int index ) const
 {
-	assert( index < (int)works_.size() );
-	return index < (int)works_.size() ? works_[ index ] : NULL;
+	assert( index >= 0 && index < (int)works_.size() );
+	return ( index >= 0 && index < (int)works_.size()) ? works_[ index ] : NULL;
 }
 
-IWorkingModule* IUser::GetWork( std::string name )
+IWorkingModule* IUser::GetWork( const std::string& name ) const
 {
-	WORK_LIST::iterator tIter = works_.begin();
+	WORK_LIST::const_iterator tIter = works_.begin();
 	for( ; tIter != works_.end(); tIter++ )
 		if( (*tIter)->GetValue<std::string>( NAME ) == name )
 			return (*tIter);
@@ -248,8 +258,8 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 	if( time.wHour == 9 && GetValue<std::string>( USERSTATE ) == "readyToWork" )
 	{
 		SetValue<std::string>( USERSTATE, "work" );
-		std::string text = GetValue<std::string>( NAME ) + " приступил к работе\n";
-		OutputDebugString( text.c_str() );
+		//std::string text = GetValue<std::string>( NAME ) + " приступил к работе\n";
+		//OutputDebugString( text.c_str() );
 	}
 
 	if(	AddValue<int>( HANGRY, -15 ) < 30 )
@@ -268,11 +278,11 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 	{
 		if( works_.size() > 0 )
 		{
-			works_[ 0 ]->Update( this );
-
 			//закончили обработку компонента
 			if( works_[ 0 ]->GetValue<float>( READYWORKPERCENT ) >= 1 )
 				RemoveWork( works_[ 0 ] );
+			else
+				works_[ 0 ]->Update( this );			
 		}
 	}
 }

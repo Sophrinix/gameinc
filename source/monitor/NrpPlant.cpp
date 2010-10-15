@@ -186,7 +186,7 @@ CNrpReklameWork* CNrpPlant::GetBaseReklame( std::string name )
 void CNrpPlant::AddReklame( CNrpReklameWork* reklame )
 {
 	CNrpReklameWork* rWork = GetReklame( reklame->GetValue<std::string>( TECHTYPE ), 
-										 reklame->GetValue<std::string>( NAME ) );
+										 reklame->GetValue<std::string>( GAMENAME ) );
 
 	if( rWork != NULL )
 	{

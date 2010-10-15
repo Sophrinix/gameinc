@@ -28,13 +28,24 @@ local labelAdvPrice = nil
 local labelDiskInDay = nil
 local cmbxProduceType = nil
 local cmbxGames = nil
-local plantWindow = mil
+local plantWindow = nil
 
 local addons = { }
 
-function Hide()
+function FadeEnterAction()
+	plantWindow:SetVisible( true )
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function FadeExitAction()
 	plantWindow:Remove()
 	plantWindow = nil
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function Hide()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "plant.FadeExitAction()" )	
 end
 
 function Show()
@@ -44,6 +55,7 @@ function Show()
 		plantWindow = guienv:AddWindow( "media/maps/plant_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		plantWindow:GetCloseButton():SetVisible( false )
 		plantWindow:SetDraggable( false )
+		plantWindow:SetVisible( false )
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
@@ -57,6 +69,9 @@ function Show()
 	button.EqualeTexture( 94, 29, "boxManager", plantWindow:Self(), -1, "", "./gameboxManager.Show()" )
 	--produce
 	button.EqualeTexture( 407, 1, "produce", plantWindow:Self(), -1, "", "./plant.ShowDiskManager()" )
+	
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "plant.FadeEnterAction()" )
 end
 
 function ShowDiskManager()

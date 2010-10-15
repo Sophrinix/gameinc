@@ -29,9 +29,20 @@ local windowAnonce = nil
 local selectedGame = nil
 local lastTimeParamsUpdate = base.GetTickCount()
 
-function Hide()
+function FadeEnterAction()
+	mainWindow:SetVisible( true )
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function FadeExitAction()
 	mainWindow:Remove()
 	mainWindow = nil
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function Hide()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "shop.FadeExitAction()" )	
 end
 
 function Show()  
@@ -41,6 +52,7 @@ function Show()
 		mainWindow = guienv:AddWindow( "media/maps/windowShop_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		mainWindow:SetDraggable( false )
 		mainWindow:GetCloseButton():SetVisible( false )
+		mainWindow:SetVisible( false )
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
@@ -59,6 +71,9 @@ function Show()
 
 	--игровые журналы
 	button.EqualeTexture( 861, 268, "showMagazines", mainWindow:Self(), -1, "", "./shop.ShowJournals()" )
+	
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "shop.FadeEnterAction()" )
 end
 
 local function localFillListboxGame()
@@ -81,7 +96,7 @@ local function localUpdateCurrentGameParams()
 	--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
 	labelGamePrice:SetText( "Цена:" .. selectedGame:GetPrice() )
 	
-	if selectedGame:GetCompany() == company:Self() then
+	if selectedGame:GetCompany():Self() == company:Self() then
 		btnDecreaseGamePrice:SetVisible( true )
 		btnIncreaseGamePrice:SetVisible( true )		
 	else

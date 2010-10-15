@@ -43,6 +43,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	application.SetValue<std::string>( WORKDIR, mypath );
 #endif
 
+	application.SetValue<std::string>( SAVEDIR, "save/");
+
 	CNrpPluginEngine& p_engine = CNrpPluginEngine::Instance();
 
 	CNrpVideoConfig& videoConfig = CNrpVideoConfig::Instance();

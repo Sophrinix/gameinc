@@ -542,11 +542,8 @@ void CNrpComponentListbox::draw()
 			{
 				INrpObject* pObject = Items[ i ].obj;
 
-				u32 ucolor =  0xC0C0C0C0;
 				if (i == Selected && hl)
-					ucolor = 0xC0000000;
-
-				skin->draw2DRectangle(this, video::SColor( ucolor ), frameRect, &clientClip);
+					skin->draw2DRectangle(this, video::SColor( 0xC0C0C0C0 ), frameRect, &clientClip);	
 
 				core::rect<s32> textRect = frameRect;
 				textRect.UpperLeftCorner.X += 3;
@@ -557,26 +554,32 @@ void CNrpComponentListbox::draw()
 
 					textRect.UpperLeftCorner.X += ItemsIconWidth+3;
 
-					EGUI_LISTBOX_COLOR itbn = ( i==Selected && hl ) ? EGUI_LBC_TEXT_HIGHLIGHT : EGUI_LBC_TEXT;
-					video::SColor itbncolor = hasItemOverrideColor( i, EGUI_LBC_TEXT_HIGHLIGHT ) 
-																	? getItemOverrideColor( i, itbn ) 
-																	: getItemDefaultColor( itbn );
+					
 					if( pObject == NULL )
 					{
+						EGUI_LISTBOX_COLOR itbn = ( i==Selected && hl ) ? EGUI_LBC_TEXT_HIGHLIGHT : EGUI_LBC_TEXT;
+						video::SColor itbncolor = hasItemOverrideColor( i, EGUI_LBC_TEXT_HIGHLIGHT ) 
+														? getItemOverrideColor( i, itbn ) 
+														: getItemDefaultColor( itbn );
+	
 						_font->draw( Items[i].text.c_str(), textRect, itbncolor, false, true, &clientClip);
 					}
 					else
 					{	
-						video::SColor color = Items[ i ].OverrideColors[ EGUI_LBC_BACKGROUND ].Use 
-											  ? Items[ i ].OverrideColors[ EGUI_LBC_BACKGROUND ].Color
-											  : 0xff454545;
-						color = ( i==Selected && hl ) ? EGUI_LBC_TEXT_HIGHLIGHT : color;
+						video::SColor bgcolor = hasItemOverrideColor( i, EGUI_LBC_BACKGROUND )
+											    ? getItemOverrideColor( i, EGUI_LBC_BACKGROUND)
+											    : getItemDefaultColor( EGUI_LBC_BACKGROUND );
+
+						video::SColor itbncolor = hasItemOverrideColor( i, EGUI_LBC_TEXT )
+												? getItemOverrideColor( i, EGUI_LBC_TEXT )
+												: getItemDefaultColor( EGUI_LBC_TEXT );
+						bgcolor = ( i==Selected && hl ) ? EGUI_LBC_TEXT_HIGHLIGHT : bgcolor;
 						if( CNrpTechnology* tech = dynamic_cast<CNrpTechnology*>( pObject ) )
-							_DrawAsTechnology( tech, textRect, frameRect, itbncolor, clientClip, color );
+							_DrawAsTechnology( tech, textRect, frameRect, itbncolor, clientClip, bgcolor );
 						else if( IUser* user = dynamic_cast<IUser*>( pObject ) )
-							_DrawAsUser( user, textRect, frameRect, itbncolor, clientClip, color );
+							_DrawAsUser( user, textRect, frameRect, itbncolor, clientClip, bgcolor );
 						else if( CNrpDevelopGame* devGame = dynamic_cast< CNrpDevelopGame* >( pObject ) )
-							_DrawAsGame( devGame, textRect, frameRect, itbncolor, clientClip, color );
+							_DrawAsGame( devGame, textRect, frameRect, itbncolor, clientClip, bgcolor );
 					}
 					textRect.UpperLeftCorner.X -= ItemsIconWidth+3;
 				}

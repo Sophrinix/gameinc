@@ -17,6 +17,8 @@ public:
 	int Next( lua_State* L );
 	int Prev( lua_State* L );
 	int AddMessage( lua_State* L );
+	int Save( lua_State* L );
+	int Load( lua_State* L );
 
 	static const char* StaticGetLuaName() { return "CLuaPda"; }
 };

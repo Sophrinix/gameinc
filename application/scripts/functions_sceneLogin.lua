@@ -29,14 +29,17 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	local editName = CLuaEdit( guienv:GetElementByName( EDIT_NEWPROFILE_NAME ) )
 	local editCompany = CLuaEdit( guienv:GetElementByName( EDIT_NEWCOMPANY_NAME ) )
 	
-	CreateStuffLists()
-	updates.CheckGameBoxAddons()
-	
 	--создаем новый профиль
 	applic:CreateProfile( editName:GetText(), editCompany:GetText() )
 	
 	--убираем данные из пам€ти
 	sloginResetDataForNewGame()
+	
+	CreateStuffLists()
+	updates.CheckGameBoxAddons()
+	
+	--создание рабочих
+	applic:CreateNewFreeUsers()
 	
 	--формируем стартовые услови€
 	sloginAddStartPlayerDef()
@@ -80,12 +83,14 @@ function slogin_ContinueLastGame( ptr )
 	--устанавливаем текущее времс€
 	applic:LoadGameTimeFromProfile( applic:GetCurrentProfile() )
 	
+	--загружаем профиль
+	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
+	
 	--загружаем текущие аддоны дл€ коробки дл€ текущего времени
 	updates.CheckGameBoxAddons()
 	applic:LoadBoxAddonsPrice()
-
-	--загружаем профиль
-	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
+	
+	applic:GetPda():Load()
 		
 	--загружаем аппараты по производству дисков
 	updates.CheckDiskMachines()

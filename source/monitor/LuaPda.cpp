@@ -15,6 +15,8 @@ Luna< CLuaPda >::RegType CLuaPda::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaPda, Next ),
 	LUNA_AUTONAME_FUNCTION( CLuaPda, Prev ),
 	LUNA_AUTONAME_FUNCTION( CLuaPda, AddMessage ),
+	LUNA_AUTONAME_FUNCTION( CLuaPda, Save ),
+	LUNA_AUTONAME_FUNCTION( CLuaPda, Load ),
 	{0,0}
 };
 
@@ -92,4 +94,37 @@ int CLuaPda::AddMessage( lua_State* L )
 
 	return 1;
 }
+
+int CLuaPda::Save( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaPda::Save not need parameter");
+
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		std::string saveFile = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
+		saveFile += CNrpApplication::Instance().GetValue<std::string>( PROFILENAME );
+		saveFile += "/pda.ini";
+		object_->Save( saveFile );
+	}
+
+	return 1;
+}	
+
+int CLuaPda::Load( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaPda::Load not need parameter");
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		std::string saveFile = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
+		saveFile += CNrpApplication::Instance().GetValue<std::string>( PROFILENAME );
+		saveFile += "/pda.ini";
+		object_->Load( saveFile );
+	}
+
+	return 1;
+}
+
 }//namespace nrp

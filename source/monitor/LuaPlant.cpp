@@ -5,6 +5,7 @@
 #include "NrpReklameWork.h"
 #include "NrpPlant.h"
 #include "LuaReklame.h" 
+#include "NrpApplication.h"
 
 namespace nrp
 {
@@ -34,7 +35,12 @@ int CLuaPlant::Load( lua_State* L )
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->Load( SECTION_OPTIONS, std::string("save/")+fileName+"/" );
+	
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		std::string savedir = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
+		object_->Load( SECTION_OPTIONS, savedir+fileName+"/" );
+	}
 
 	return 1;
 }
@@ -60,7 +66,11 @@ int CLuaPlant::Save( lua_State* L )
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->Save( SECTION_OPTIONS, std::string("save/")+fileName+"/" );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		std::string savedir = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
+		object_->Save( SECTION_OPTIONS, savedir+fileName+"/" );
+	}
 
 	return 1;
 }
@@ -95,7 +105,8 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string reklamePrice = std::string("save/")+profileName+"/reklameprice.ini";
+		std::string savedir = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
+		std::string reklamePrice = savedir+profileName+"/reklameprice.ini";
 		for( int k=0; k < object_->GetValue<int>( BASEREKLAMENUMBER ); k++ )
 		{
 			CNrpReklameWork* rW = object_->GetBaseReklame( k );
@@ -116,7 +127,8 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string reklamePrice = std::string("save/")+profileName+"/reklameprice.ini";
+		std::string savedir = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
+		std::string reklamePrice = savedir+profileName+"/reklameprice.ini";
 
 		char buffer[ 32000 ];
 		memset( buffer, 0, 32000 );

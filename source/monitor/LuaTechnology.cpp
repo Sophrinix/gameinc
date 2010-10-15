@@ -42,6 +42,7 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetDescriptionLink ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetCompany ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetCompany ),
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetInternalName ),
 	{0,0}
 };
 
@@ -256,6 +257,12 @@ int CLuaTechnology::GetCompany( lua_State* L )
 int CLuaTechnology::SetCompany( lua_State* L )
 {
 	return SetParam_<CNrpCompany*, void*>( L, "SetCompany", PARENTCOMPANY, lua_touserdata );
+}
+
+int CLuaTechnology::GetInternalName( lua_State* L )
+{
+	lua_pushstring( L, GetParam_<std::string>( L, "GetInternalName", INTERNAL_NAME, "" ).c_str() );
+	return 1;
 }
 
 }//namespace nrp

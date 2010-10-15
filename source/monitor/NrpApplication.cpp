@@ -38,8 +38,8 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	speed_ = SPD_MINUTE;
 	SYSTEMTIME time;
 	time.wYear = 1983;
-	time.wMonth = 0;
-	time.wDay = 0;
+	time.wMonth = 1;
+	time.wDay = 1;
 	time.wHour = 0;
 	time.wMinute = 0;
 	lastTimeUpdate_ = 0;
@@ -49,6 +49,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( USERNUMBER, 0 );
 	CreateValue<int>( COMPANIESNUMBER, 0 );
 	CreateValue<std::string>( WORKDIR, "" );
+	CreateValue<std::string>( SAVEDIR, "" );
 	std::string profileName = IniFile::Read( SECTION_OPTIONS, "currentProfile", std::string( "dalerank" ), "config/system.ini" );
 	std::string profileCompany = IniFile::Read( SECTION_OPTIONS, "currentCompany", std::string( "daleteam" ), "config/system.ini" );
 	CreateValue<std::string>( PROFILENAME, profileName );
@@ -149,9 +150,9 @@ bool CNrpApplication::UpdateTime()
 		{
 			time.wDay++;
 			int monthL = monthLen[ time.wMonth ] + (( time.wMonth == 1 && (time.wYear % 4 == 0)) ? 1 : 0 );
-			if( time.wDay > monthL )
+			if( time.wDay > monthL+1 )
 			{
-				time.wDay = 0;
+				time.wDay = 1;
 			    spd = SPD_MONTH;
 				DoLuaFunctionsByType( APP_MONTH_CHANGE, this );
 				BeginNewMonth_();
@@ -161,9 +162,9 @@ bool CNrpApplication::UpdateTime()
 		if( spd == SPD_MONTH )
 		{
 			time.wMonth++;
-			if( time.wMonth > 11 )
+			if( time.wMonth > 12 )
 			{
-				time.wMonth = 0;
+				time.wMonth = 1;
 				time.wYear++;
 				DoLuaFunctionsByType( APP_YEAR_CHANGE, this );
 			}
@@ -203,14 +204,14 @@ void CNrpApplication::AddTechnology( CNrpTechnology* ptrTech )
 	SetValue<int>( TECHNUMBER, technologies_.size() );
 }
 
-IUser* CNrpApplication::GetUser( int index )
+IUser* CNrpApplication::GetUser( int index ) const
 {
 	return index < (int)users_.size() ? users_[ index ] : NULL;
 }
 
-IUser* CNrpApplication::GetUser( std::string name )
+IUser* CNrpApplication::GetUser( const std::string& name ) const
 {
-	USER_LIST::iterator pIter = users_.begin();
+	USER_LIST::const_iterator pIter = users_.begin();
 	for( ; pIter != users_.end(); pIter++ )
 		if( (*pIter)->GetValue<std::string>( NAME ) == name )
 			return (*pIter);
@@ -235,9 +236,10 @@ int CNrpApplication::RemoveUser( IUser* user )
 
 void CNrpApplication::SaveProfile()
 {
-	std::string saveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "/";
-	std::string prevSaveFolder = "save/" + GetValue<std::string>( PROFILENAME ) + "Old/";
+	std::string saveFolder = GetValue<std::string>( SAVEDIR ) + GetValue<std::string>( PROFILENAME ) + "/";
+	std::string prevSaveFolder = GetValue<std::string>( SAVEDIR ) + GetValue<std::string>( PROFILENAME ) + "Old/";
 
+	OpFileSystem::Remove( prevSaveFolder );
 	OpFileSystem::Move( saveFolder, prevSaveFolder );
 	if( _access( saveFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( saveFolder.c_str(), NULL );
@@ -283,14 +285,14 @@ void CNrpApplication::SaveProfile()
 	for( int i=0; tIter != technologies_.end(); tIter++, i++ )
 	{
 		(*tIter)->Save( saveFolder + "techs/" );
-		IniFile::Write( "technologies", "technology_" + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), profileIni );
+		IniFile::Write( "technologies", "technology_" + IntToStr(i), (*tIter)->GetValue<std::string>( INTERNAL_NAME ), profileIni );
 	}
 
 	INVENTION_LIST::iterator invIter = inventions_.begin();
 	for( int i=0; invIter != inventions_.end(); invIter++ )
 	{
 		(*invIter)->Save( saveFolder + "inventions/" );
-		IniFile::Write( "inventions", "invention_" + IntToStr( i ), (*invIter)->GetValue<std::string>( NAME ), profileIni );
+		IniFile::Write( "inventions", "invention_" + IntToStr( i ), (*invIter)->GetValue<std::string>( INTERNAL_NAME ), profileIni );
 	}
 
 	GAMEENGINES_MAP::iterator eIter = engines_.begin();
@@ -318,35 +320,41 @@ void CNrpApplication::SaveProfile()
 							gameListIter->second->GetValue<std::string>( NAME ), imageListIni );
 			gli++;
 		}
+
 	IniFile::Write( SECTION_PROPERTIES, "ImageListNumber", gli, imageListIni );
 }
 
-void CNrpApplication::LoadProfile( std::string profileName, std::string companyName )
+void CNrpApplication::_LoadUsers( const std::string& saveFolder, const std::string& iniFile )
 {
-	CNrpScript::Instance().CreateTemporaryScript( AFTER_LOAD_SCRIPT );
-
-	std::string saveFolder = "save/" + profileName + "/";
-	std::string profileIni = saveFolder + "profile.ini";
-	INrpConfig::Load( SECTION_PROPERTIES, profileIni );
-
 	std::string saveFolderUsers = saveFolder + "users/";
 	for( int i=0; i < GetValue<int>( USERNUMBER ); i++ )
 	{
-		std::string name = IniFile::Read( "users", "user_" + IntToStr(i), std::string(""), profileIni );
+		std::string name = IniFile::Read( "users", "user_" + IntToStr(i), std::string(""), iniFile );
 		std::string className = name.substr( 0, name.find( ':' ) );
 		name = name.substr( name.find(':') + 1, 0xff );
 		IUser* usert = NULL;
 		if( className == "RealPlayer" ) 
 			usert = new CNrpPlayer( name, NULL );
 		else
-		if( className == "AIPlayer" )
-			usert = new CNrpAiUser( name, NULL );
-		else
-			usert = new IUser( className, "" );
+			if( className == "AIPlayer" )
+				usert = new CNrpAiUser( name, NULL );
+			else
+				usert = new IUser( className, "" );
 
 		users_.push_back( usert );
 		usert->Load( saveFolderUsers + name + ".ini" );
 	}
+}
+
+void CNrpApplication::LoadProfile( std::string profileName, std::string companyName )
+{
+	CNrpScript::Instance().CreateTemporaryScript( AFTER_LOAD_SCRIPT );
+
+	std::string saveFolder = GetValue<std::string>( SAVEDIR ) + profileName + "/";
+	std::string profileIni = saveFolder + "profile.ini";
+	INrpConfig::Load( SECTION_PROPERTIES, profileIni );
+
+	_LoadUsers( saveFolder, profileIni );	
 
 	std::string saveFolderTech = saveFolder + "Techs/";
 	for( int i=0; i < GetValue<int>( TECHNUMBER ); i++ )
@@ -640,7 +648,7 @@ void CNrpApplication::CreateNewFreeUsers()
 		if( tmpList.size() > USER_GROUP_COUNT )
 		{
 			for( size_t cnt=USER_GROUP_COUNT; cnt < tmpList.size(); cnt++ )
-				delete tmpList[ cnt ];
+				RemoveUser( tmpList[ cnt ] );
 			tmpList.erase( tmpList.begin() + USER_GROUP_COUNT, tmpList.end() );
 		}
 		else 

@@ -175,7 +175,7 @@ void CNrpInvention::Save( std::string saveFolder )
 	if( _access( saveFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( saveFolder.c_str(), NULL );
 
-	std::string fileName = saveFolder + GetValue<std::string>( NAME ) + ".invent";
+	std::string fileName = saveFolder + GetValue<std::string>( INTERNAL_NAME ) + ".invent";
 
 	DeleteFile( fileName.c_str() );
 	INrpProject::Save( SECTION_PROPERTIES, fileName );

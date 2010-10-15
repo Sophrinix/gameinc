@@ -25,6 +25,7 @@ function Show()
 		bankWindow = guienv:AddWindow( "media/maps/bank_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		bankWindow:SetDraggable( false )
 		bankWindow:GetCloseButton():SetVisible( false )
+		bankWindow:SetVisible( false )
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
@@ -39,11 +40,6 @@ function Show()
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "bank.FadeEnterAction()" )
-end
-
-function FadeEnterAction()
-	bankWindow:SetVisible( true )
-	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
 function ShowLoans( tabler )
@@ -64,11 +60,6 @@ function ShowLoans( tabler )
 			end
 		end
 	end
-end
-
-function Hide()
-	bankWindow:Remove()
-	bankWindow = nil
 end
 
 function HideLoans()
@@ -141,4 +132,20 @@ function GetLoan()
 	local summ = bank:GetMaxCompanyLoan( company:GetName() )
 	Log({src=SCRIPT, dev=ODS|CON}, summ )
 	label:SetText(  "Доступная сумма: "..summ )
+end
+
+function FadeEnterAction()
+	bankWindow:SetVisible( true )
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function FadeExitAction()
+	bankWindow:Remove()
+	bankWindow = nil
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function Hide()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "bank.FadeExitAction()" )	
 end

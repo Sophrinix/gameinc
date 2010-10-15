@@ -3,6 +3,8 @@
 #include <assert.h>
 #include "ILuaObject.h"
 #include "StrConversation.h"
+#include "nrpGUIEnvironment.h"
+#include "nrpEngine.h"
 
 namespace nrp
 {
@@ -25,7 +27,8 @@ namespace nrp
 											LUNA_AUTONAME_FUNCTION(class, GetID),\
 											LUNA_AUTONAME_FUNCTION(class, GetRelativePosition ),\
 											LUNA_AUTONAME_FUNCTION(class, SetEnabled ),\
-											LUNA_AUTONAME_FUNCTION(class, IsEnabled )
+											LUNA_AUTONAME_FUNCTION(class, IsEnabled ),\
+											LUNA_AUTONAME_FUNCTION(class, RemoveChilds )
 
 template< class T > class ILuaGuiElement : public ILuaObject< T >
 {
@@ -33,6 +36,24 @@ public:
 	ILuaGuiElement(lua_State *L, std::string luaName) : ILuaObject( L, luaName )
 	{
 
+	}
+
+	int RemoveChilds( lua_State* L )
+	{	
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 1, 1, "Function CLuaElement:RemoveChilds not need parameter" );
+
+		gui::CNrpGUIEnvironment* guienv = dynamic_cast< gui::CNrpGUIEnvironment* >( CNrpEngine::Instance().GetGuiEnvironment() ); 
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			core::list< gui::IGUIElement* > childs = object_->getChildren();
+
+			core::list< gui::IGUIElement* >::Iterator pIter = childs.begin();
+			for( ; pIter != childs.end(); pIter++ ) 
+				guienv->addToDeletionQueue( *pIter );
+		}
+
+		return 1;			
 	}
 
 	int GetParent( lua_State *L )
@@ -111,7 +132,13 @@ public:
 		luaL_argcheck(L, argc == 1, 1, ("Function " + ClassName() + ":GetTypeName not need any parameter").c_str() );
 
 		std::string typen("");
-		IF_OBJECT_NOT_NULL_THEN typen = object_->getTypeName();
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			if( object_->getType() < gui::EGUIET_COUNT )
+				typen = object_->getTypeName();
+			else
+				typen = "";
+		}
 
 		lua_pushstring( L, typen.c_str() );
 

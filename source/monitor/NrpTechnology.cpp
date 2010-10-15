@@ -91,7 +91,7 @@ void CNrpTechnology::Save( std::string saveFolder )
 	if( _access( saveFolder.c_str(), 0 ) == -1 )
 		CreateDirectory( saveFolder.c_str(), NULL );
 
-	std::string fileName = saveFolder + GetValue<std::string>( NAME ) + ".tech";
+	std::string fileName = saveFolder + GetValue<std::string>( INTERNAL_NAME ) + ".tech";
 
 	DeleteFile( fileName.c_str() );
 	INrpProject::Save( SECTION_PROPERTIES, fileName );

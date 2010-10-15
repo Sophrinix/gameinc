@@ -369,7 +369,9 @@ int CLuaApplication::GetCompany( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	ptrCompany = object_->GetCompany( cmpNumber );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, ptrCompany );
+	Luna< CLuaCompany >::constructor( L );
 	return 1;
 }
 
@@ -384,7 +386,9 @@ int CLuaApplication::GetCompanyByName( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	ptrCompany = object_->GetCompany( cmpName );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, ptrCompany );
+	Luna< CLuaCompany >::constructor( L );
 	return 1;
 }
 
@@ -456,7 +460,7 @@ int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string pathToFile = std::string( "save/" ) + profileName + "/profile.ini";
+		std::string pathToFile = object_->GetValue<std::string>( SAVEDIR ) + profileName + "/profile.ini";
 		
 		object_->SetValue<SYSTEMTIME>( CURRENTTIME, IniFile::Read( SECTION_PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME(), pathToFile ) );
 	}
@@ -515,7 +519,8 @@ int CLuaApplication::LoadBoxAddonsPrice( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:LoadBoxAddonsPrice not need any parameter" );
 
-	std::string boxAddonsIni = "save/" + object_->GetValue<std::string>(PROFILENAME)+ "/boxaddons.ini";
+	std::string boxAddonsIni = object_->GetValue<std::string>( SAVEDIR ) + 
+								object_->GetValue<std::string>(PROFILENAME)+ "/boxaddons.ini";
 	for( int k=0; k < object_->GetValue<int>( BOXADDONNUMBER ); k++ )
 	{
 		CNrpTechnology* tech = object_->GetBoxAddon( k );
@@ -531,7 +536,8 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:SaveBoxAddonsPrice not need any parameter" );
 
-	std::string boxAddonsIni = "save/" + object_->GetValue<std::string>(PROFILENAME)+ "/boxaddons.ini";
+	std::string boxAddonsIni = object_->GetValue<std::string>( SAVEDIR ) +
+								object_->GetValue<std::string>(PROFILENAME)+ "/boxaddons.ini";
 	for( int k=0; k < object_->GetValue<int>( BOXADDONNUMBER ); k++ )
 	{
 		CNrpTechnology* tech = object_->GetBoxAddon( k );

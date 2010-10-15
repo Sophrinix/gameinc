@@ -25,10 +25,10 @@ function ToggleVisible()
 	guienv:RemoveAnimators( mainWindow:Self() )
 	
 	if visible then	
-		guienv:AddMoveAnimator( mainWindow:Self(), scrWidth - hw, scrHeight - offsethh, 
+		guienv:AddMoveAnimator( mainWindow:Self(), 0, scrHeight - offsethh, 
 							1, true, true, false )
 	else
-		guienv:AddMoveAnimator( mainWindow:Self(), scrWidth - hw, scrHeight - hh, 
+		guienv:AddMoveAnimator( mainWindow:Self(), 0, scrHeight - hh, 
 							1, true, true, false )
 	end
 	
@@ -37,14 +37,14 @@ end
 
 function Next()
 	appPda:Next()
-	base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "NextR" )
+	base.LogScript( "NextR" )
 	local textr = appPda:GetTimeStr().."\n"..appPda:GetMessage()
 	base.CLuaElement( animTextRunner ):SetText( textr )
 end
 
 function Prev()
 	appPda:Prev()
-	base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "PrevR" )
+	base.LogScript( "PrevR" )
 	local textr = appPda:GetTimeStr().."\n"..appPda:GetMessage()
 	base.CLuaElement( animTextRunner ):SetText( textr )
 end
@@ -85,7 +85,7 @@ function Show( textr )
 	end
 	
 	guienv:RemoveAnimators( mainWindow:Self() )
-	guienv:AddMoveAnimator( mainWindow:Self(), scrWidth - hw, scrHeight - hh, 
+	guienv:AddMoveAnimator( mainWindow:Self(), 0, scrHeight - hh, 
 							1, true, true, false )
 	visible = true
 end

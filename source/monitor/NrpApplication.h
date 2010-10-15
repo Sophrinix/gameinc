@@ -10,6 +10,7 @@ OPTION_NAME BANK( "bank" );
 OPTION_NAME PROFILENAME( "profileName" );
 OPTION_NAME PROFILECOMPANY( "profileCompany" );
 OPTION_NAME WORKDIR( "workDir" );
+OPTION_NAME SAVEDIR( "saveDir" );
 OPTION_NAME CURRENTTIME( "currentTime" );
 OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
 OPTION_NAME BOXADDONNUMBER( "boxAdonNumber" );
@@ -63,8 +64,8 @@ public:
 	int AddUser( bool player, IUser* user );
 	int RemoveUser( IUser* user );
 	void CreateNewFreeUsers();
-	IUser* GetUser( int index );
-	IUser* GetUser( std::string name );
+	IUser* GetUser( int index ) const;
+	IUser* GetUser( const std::string& name ) const;
 
 	void AddDevelopProject( INrpDevelopProject* project );
 	void RemoveDevelopProject( const std::string& name );
@@ -146,6 +147,7 @@ private:
 	int GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp );
 	void LoadFreeImageLists_( const std::string& fileName );
 	void UpdateInvention_();
+	void _LoadUsers( const std::string& saveFolder, const std::string& iniFile );
 };
 
 }//namespace nrp

@@ -55,8 +55,8 @@ public:
 	
 	void AddWork( IWorkingModule* techWork );
 
-	IWorkingModule* GetWork( int index );
-	IWorkingModule* GetWork( std::string name );
+	IWorkingModule* GetWork( int index ) const;
+	IWorkingModule* GetWork( const std::string& name ) const;
 	void RemoveWork( IWorkingModule* techWork );
 
 	void AddModificator( IModificator* ptrModificator );

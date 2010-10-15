@@ -8,6 +8,7 @@
 #include "NrpApplication.h"
 #include "NrpCompany.h"
 #include "LuaUser.h"
+#include "LuaCompany.h"
 
 namespace nrp
 {
@@ -34,6 +35,8 @@ Luna< CLuaInvention >::RegType CLuaInvention::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPassedMoney ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetDayLeft ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, IsValid ),
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetCompany ),
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetInternalName ),
 	{0,0}
 };
 
@@ -208,6 +211,27 @@ int CLuaInvention::IsValid( lua_State* L )
 	}
 
 	lua_pushboolean( L, avaible );
+	return 1;
+}
+
+int CLuaInvention::GetCompany( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:GetCompany not need parameter");
+
+	PNrpCompany cmp = NULL;
+	IF_OBJECT_NOT_NULL_THEN	cmp = object_->GetValue<PNrpCompany>( PARENTCOMPANY );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, cmp );
+	Luna< CLuaCompany >::constructor( L );
+
+	return 1;
+}
+
+int CLuaInvention::GetInternalName( lua_State* L )
+{
+	lua_pushstring( L, GetParam_<std::string>( L, "GetInternalName", INTERNAL_NAME, "" ).c_str() );
 	return 1;
 }
 

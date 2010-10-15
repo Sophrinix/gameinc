@@ -21,28 +21,41 @@ OpFileSystem::~OpFileSystem(void)
 
 void OpFileSystem::Remove( const std::string& pathTo )
 {
-	std::string mStr = CNrpApplication::Instance().GetValue<std::string>( WORKDIR ) +  pathTo;
+	std::string mStr = pathTo;
 	if( mStr[ mStr.length() -1 ] == '\\' || mStr[ mStr.length() -1 ] == '/' )
 		mStr = mStr.substr( 0, mStr.length() - 1 );
+	_finddata_t fdata;	
+	intptr_t hFile;
 
-	SHFILEOPSTRUCT sh;
-	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );
-	sh.hwnd   =  CNrpEngine::Instance().GetWindowHandle(); //Для BCB sh.hwnd=FormX->Handle;
-	sh.wFunc  = FO_DELETE;
-	char patth[ MAX_PATH ] = { 0 };
-	strncpy( patth, mStr.c_str(), mStr.length() );
-	sh.pFrom  = patth;
-	sh.pTo    = NULL;
-	sh.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;
-	sh.hNameMappings = 0;
-	sh.lpszProgressTitle = NULL;
+	assert( mStr.size() );
+	if( mStr.size() )
+	{
+		hFile = _findfirst( (mStr+"\\*.*").c_str(), &fdata);
+		while( hFile )
+		{
+			if ( !( strcmp( fdata.name, ".") == 0 || strcmp( fdata.name, ".." ) == 0 ) )// это удалять не надо
+				if ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ))// найдена папка
+				{
+					Remove( mStr + "/" + std::string( fdata.name ) );
+				}
+				else// иначе найден файл
+				{
+					DeleteFile( (mStr + "/" + std::string( fdata.name )).c_str() );
+				}
 
-	SHFileOperation (&sh);
+				if( _findnext( hFile, &fdata) != 0 )
+					break;
+		}
+	}
+
+	_findclose( hFile );
+	RemoveDirectory( mStr.c_str() );
 }
 
 void OpFileSystem::Move( const std::string& pathOld, const std::string& pathNew )
 {
-	std::string mStr = pathOld, mStr2 = pathNew;
+	std::string mStr = CNrpApplication::Instance().GetValue<std::string>( WORKDIR ) + pathOld;
+	std::string mStr2 = CNrpApplication::Instance().GetValue<std::string>( WORKDIR ) + pathNew;
 	if( mStr[ mStr.length() -1 ] == '\\' || mStr[ mStr.length() -1 ] == '/' )
 		mStr = mStr.substr( 0, mStr.length() - 1 );
 
@@ -56,8 +69,9 @@ void OpFileSystem::Move( const std::string& pathOld, const std::string& pathNew 
 
 	char from[ MAX_PATH ] = { 0 };
 	strncpy( from, mStr.c_str(), mStr.length() );
+
 	char to[ MAX_PATH ] = { 0 };
-	strncpy( to, mStr2.c_str(), mStr.length() );
+	strncpy( to, mStr2.c_str(), mStr2.length() );
 
 	sh.pFrom  = from;
 	sh.pTo    = to;
@@ -83,13 +97,16 @@ void OpFileSystem::Copy( const std::string& pathOld, const std::string& pathNew 
 	sh.wFunc  = FO_COPY;
 	char from[ MAX_PATH ] = { 0 };
 	strncpy( from, mStr.c_str(), mStr.length() );
+
 	char to[ MAX_PATH ] = { 0 };
-	strncpy( to, mStr2.c_str(), mStr.length() );
+	strncpy( to, mStr2.c_str(), mStr2.length() );
 	sh.pFrom  = from;
 	sh.pTo    = to;
 	sh.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;
 	sh.hNameMappings = 0;
 	sh.lpszProgressTitle = NULL;
+
+	SHFileOperation (&sh);
 }
 
 void OpFileSystem::CreateDirectorySnapshot( const std::string& directory,
