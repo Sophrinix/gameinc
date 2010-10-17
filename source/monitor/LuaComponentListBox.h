@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_COMPONENTLISTBOX( "CLuaComponentListBox" );
 
 class CLuaComponentListBox : public ILuaGuiElement<irr::gui::CNrpComponentListbox>
 {
@@ -31,7 +32,8 @@ public:
 	
 	int Clear( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaComponentListBox"; }
+	static const char* ClassName() { return CLASS_COMPONENTLISTBOX.c_str(); }
+	virtual std::string ObjectName() { return CLASS_COMPONENTLISTBOX; }
 };
 
 }//namespace nrp

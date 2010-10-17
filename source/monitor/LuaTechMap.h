@@ -14,6 +14,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATECHMAP( "CLuaTechMap" );
 
 class CLuaTechMap : public ILuaGuiElement<irr::gui::CNrpTechMap>
 {
@@ -30,7 +31,8 @@ public:
 	int GetSelectedObjectName( lua_State* L );
 	int SetDrawBack( lua_State* L );
 
-	static const char* StaticGetLuaName() { return CLASS_LUATECHMAP.c_str(); }
+	static const char* ClassName() { return CLASS_LUATECHMAP.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUATECHMAP; }
 };
 
 }//namespace nrp

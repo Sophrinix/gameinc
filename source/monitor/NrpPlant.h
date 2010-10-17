@@ -5,11 +5,10 @@
 namespace nrp
 {
 
-const std::string CLASS_NRPPLANT( "CNrpPlant" );
+CLASS_NAME CLASS_NRPPLANT( "CNrpPlant" );
 class CNrpPlantWork;
 class CNrpReklameWork;
 
-OPTION_NAME WORKNUMBER( "workNumber" );
 OPTION_NAME BASEREKLAMENUMBER( "baseReklameNumber" );
 OPTION_NAME REKLAMENUMBER( "reklameNumber" );
 
@@ -49,6 +48,9 @@ public:
 
 	void Load( std::string scetionName, std::string saveFolder );
 	void Save( std::string scetionName, std::string saveFolder );
+
+	static std::string ClassName() { return CLASS_NRPPLANT; }
+	virtual std::string ObjectName() { return CLASS_NRPPLANT; }
 };
 
 }//end namespace nrp

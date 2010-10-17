@@ -4,7 +4,7 @@
 namespace nrp
 {
 
-CNrpAiUser::CNrpAiUser( std::string name, CNrpCompany* ptrCmp ) : IUser( "AiPlayer", name )
+CNrpAiUser::CNrpAiUser( const std::string& name, CNrpCompany* ptrCmp ) : IUser( CLASS_AIUSER, name )
 {
 	SetValue< std::string >( NAME, name );
 }

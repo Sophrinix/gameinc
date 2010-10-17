@@ -8,6 +8,7 @@ namespace nrp
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAUSER( "CLuaUser" );
 
 class CLuaUser : public ILuaObject<nrp::IUser>
 {
@@ -28,13 +29,15 @@ public:
 	int AddWork( lua_State* L );
 	int GetWorkNumber( lua_State* L);
 	int RemoveWork( lua_State* L );
+	int HaveInvention( lua_State* L );
 	int GetWork( lua_State* L );
 	int Save( lua_State* L );
 	int Create( lua_State* L );
 	int GetTexture( lua_State* L );
 	int GetRelation( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaUser"; }
+	static const char* ClassName() { return CLASS_LUAUSER.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAUSER; }
 };
 
 }//namespace nrp

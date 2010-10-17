@@ -4,6 +4,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_BANK( "CNrpBank" );
 
 OPTION_NAME LOANNUMBER( "loanNumber" );
 class CNrpLoan;
@@ -19,6 +20,8 @@ public:
 	CNrpLoan* FindLoadByID( size_t id );
 	void CreateLoan( std::string name, int money, int percent, int month );
 
+	static std::string ClassName() { return CLASS_BANK; }
+	virtual std::string ObjectName() { return CLASS_BANK; }
 private:
 	CNrpBank(void);
 	~CNrpBank(void);

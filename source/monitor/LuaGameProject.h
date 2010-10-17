@@ -10,6 +10,7 @@ namespace nrp
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAGMEPROJECT( "CLuaGameProject" );
 
 class CLuaGameProject : public ILuaProject<nrp::CNrpGameProject>
 {
@@ -64,7 +65,8 @@ public:
 	int Create( lua_State* L );
 	int Remove( lua_State* L );
 																
-	static const char* StaticGetLuaName() { return "CLuaGameProject"; }
+	static const char* ClassName() { return CLASS_LUAGMEPROJECT.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAGMEPROJECT; }
 private:
 	int SetNamedTech_( lua_State* L, std::string funcName, const std::string paramName );
 	

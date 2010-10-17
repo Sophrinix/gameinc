@@ -28,6 +28,7 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetBalance ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetEnginesNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetEngine ),
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddBalance ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddGameEngine ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech ),
@@ -397,4 +398,17 @@ int CLuaCompany::RemoveUser( lua_State* L )
 
 	return 1;		
 }
+
+int CLuaCompany::AddBalance( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:AddBalance need integer parameter" );
+
+	int valuel = lua_tointeger( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->AddValue<int>( BALANCE, valuel );
+
+	return 1;		
+}
+
 }//namespace nrp

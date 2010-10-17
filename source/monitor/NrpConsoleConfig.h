@@ -4,6 +4,8 @@
 namespace nrp
 {
 
+CLASS_NAME CLASS_CONSOLECONFIG( "CNrpConsoleConfig" );
+
 const std::string CONSOLE_INIT_KEY( "initKey" );
 const std::string CONSOLE_RELATIVE_SIZE( "relativeSize" );
 const std::string CONSOLE_LINE_SPACING( "lineSpacing" );
@@ -26,6 +28,9 @@ class CNrpConsoleConfig : public INrpConfig
 private:
 	CNrpConsoleConfig();
 	void Load_( char* file_name );
+
+	virtual std::string ObjectName() { return CLASS_CONSOLECONFIG; }
+	static std::string ClassName() { return CLASS_CONSOLECONFIG; }
 public:
 	static CNrpConsoleConfig& Instance();
 };

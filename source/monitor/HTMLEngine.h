@@ -56,7 +56,7 @@ public:
 	void KeyPress( int key );
 	void MouseMoved( size_t x, size_t y );
 
-
+	static std::string ClassName() { return "CHtmlEngine"; }
 private:
 
 	HTMLEngine();

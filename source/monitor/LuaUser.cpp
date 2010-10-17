@@ -10,6 +10,8 @@
 #include "NrpTechnology.h"
 #include "NrpCompany.h"
 #include "LuaRelation.h"
+#include "IWorkingModule.h"
+#include "NrpInvention.h"
 
 using namespace irr;
 
@@ -37,6 +39,7 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, IsFreeUser ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetRelation ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, HaveInvention ),
 	{0,0}
 };
 
@@ -104,7 +107,7 @@ int CLuaUser::GetTypeName( lua_State* L )
 	
 	std::string name = "";
 
-	IF_OBJECT_NOT_NULL_THEN name = object_->GetType();
+	IF_OBJECT_NOT_NULL_THEN name = object_->ObjectName();
 
 	lua_pushstring( L, name.c_str() );
 	return 1;	
@@ -134,7 +137,7 @@ int CLuaUser::IsTypeAs( lua_State* L )
 	assert( name != NULL );
 	bool result = false;
 
-	std::string tname = object_->GetType();
+	std::string tname = object_->ObjectName();
 	IF_OBJECT_NOT_NULL_THEN result = ( tname == std::string(name));
 
 	lua_pushboolean( L, result );
@@ -214,7 +217,7 @@ int CLuaUser::GetWorkNumber( lua_State* L )
 
 	int valuel = 0;
 
-	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValue<int>( TECHNUMBER );
+	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValue<int>( WORKNUMBER );
 
 	lua_pushinteger( L, valuel );
 	return 1;		
@@ -289,4 +292,25 @@ int CLuaUser::GetRelation( lua_State* L )
 	return 1;	
 }
 
+int CLuaUser::HaveInvention( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:HaveInvention not need any parameter" );
+
+	bool ret = false;
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		for( int k=0; k < object_->GetValue<int>( WORKNUMBER ); k++ )
+		{
+			if( object_->GetWork( k )->ObjectName() == CNrpInvention::ClassName() )
+			{
+				ret = true;
+				break;
+			}
+		}
+	}
+
+	lua_pushboolean( L, ret );
+	return 1;		
+}
 }//namespace nrp

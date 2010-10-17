@@ -25,7 +25,7 @@ Luna< CLuaButton >::RegType CLuaButton::methods[] =			//реализуемы методы
 	{0,0}
 };
 
-CLuaButton::CLuaButton(lua_State *L)	: ILuaGuiElement(L, "CLuaButton")							//конструктор
+CLuaButton::CLuaButton(lua_State *L)	: ILuaGuiElement(L, CLASS_LUABUTTON )							//конструктор
 {}
 
 int CLuaButton::SetImage( lua_State *L )							//получает имя файла с текстурой, область из которой надо брать кнопку

@@ -4,6 +4,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_USER( "IUser" );
 
 OPTION_NAME SECTION_WORKS("works");
 
@@ -53,7 +54,7 @@ public:
 	int GetGenrePreferences( int typen );
 	void SetGenrePreferences( int typen, int valuel );
 	
-	void AddWork( IWorkingModule* techWork );
+	void AddWork( IWorkingModule* techWork, bool toFront=false );
 
 	IWorkingModule* GetWork( int index ) const;
 	IWorkingModule* GetWork( const std::string& name ) const;
@@ -69,6 +70,8 @@ public:
 	~IUser(void);
 	void Save( std::string folderPath );
 	void Load( std::string fileName );
+
+	static std::string ClassName() { return CLASS_USER; }
 
 private:         			
 	void Load_( char* file_name ) {}

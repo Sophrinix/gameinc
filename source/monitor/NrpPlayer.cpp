@@ -4,7 +4,7 @@
 namespace nrp
 {
 
-CNrpPlayer::CNrpPlayer( std::string name, CNrpCompany* ptrCmp ) : IUser( CLASS_REALPLAYER, name )
+CNrpPlayer::CNrpPlayer( const std::string& name, CNrpCompany* ptrCmp ) : IUser( CLASS_REALPLAYER, name )
 {
 	SetValue<std::string>( NAME, name );
 }

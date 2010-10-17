@@ -6,7 +6,7 @@
 namespace nrp
 {
 
-const std::string CLASS_LUADISKMACHINE("CLuaDiskMachine");
+CLASS_NAME CLASS_LUADISKMACHINE("CLuaDiskMachine");
 
 class CNrpDiskMachine;
 
@@ -22,7 +22,8 @@ public:
 	int IsLoaded( lua_State* L );
 	int GetName( lua_State* L );
 
-	static const char* StaticGetLuaName() { return CLASS_LUADISKMACHINE.c_str(); }
+	static const char* ClassName() { return CLASS_LUADISKMACHINE.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUADISKMACHINE; }
 };
 
 }//namespace nrp

@@ -32,7 +32,8 @@ public:
 	int GetFamous( lua_State* L );
 	int SetReklameObject( lua_State* L );
 
-	static const char* StaticGetLuaName() { return CLASS_LUAREKLAME.c_str(); }	
+	static const char* ClassName() { return CLASS_LUAREKLAME.c_str(); }	
+	virtual std::string ObjectName() { return CLASS_LUAREKLAME; }
 };
 
 }//namespace nrp

@@ -19,7 +19,7 @@ Luna< CLuaEdit >::RegType CLuaEdit::methods[] =			//реализуемы методы
 	{0,0}
 };
 
-CLuaEdit::CLuaEdit(lua_State *L)	: ILuaGuiElement(L, "CLuaEdit")							//конструктор
+CLuaEdit::CLuaEdit(lua_State *L)	: ILuaGuiElement(L, CLASS_LUAEDIT )							//конструктор
 {}
 
 int CLuaEdit::SetOverrideColor( lua_State* L )

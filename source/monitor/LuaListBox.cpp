@@ -27,7 +27,7 @@ Luna< CLuaListBox >::RegType CLuaListBox::methods[] =			//реализуемы методы
 	{0,0}
 };
 
-CLuaListBox::CLuaListBox(lua_State *L)	: ILuaGuiElement(L, "CLuaListBox")							//конструктор
+CLuaListBox::CLuaListBox(lua_State *L)	: ILuaGuiElement(L, CLASS_LUALISTBOX )							//конструктор
 {}
 
 int CLuaListBox::AddItem( lua_State *L )	//добавляет текст в списко отображения

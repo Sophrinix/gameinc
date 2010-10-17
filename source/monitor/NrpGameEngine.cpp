@@ -8,7 +8,7 @@
 namespace nrp
 {
 
-CNrpGameEngine::CNrpGameEngine( std::string name ) : INrpProject( "CNrpGameEngine", "" )
+CNrpGameEngine::CNrpGameEngine( std::string name ) : INrpProject( CLASS_GAMEENGINE, "" )
 {
 	SetValue<std::string>( NAME, name );
 	CreateValue<int>( AVGENRE_COUNT, 0 );

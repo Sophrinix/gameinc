@@ -5,9 +5,10 @@
 #include <string>
 #include "INrpObject.h"
 #include <rect.h>
+#include <assert.h>
 
-#define FUNC_NOT_NEED_PARAM (std::string( "Function " ) + ClassName() + std::string( ":Self not need any parameter" )).c_str()
-#define ASSIGN_EMPTY_OBJECT (std::string( "Assign empty object in " ) + ClassName() ).c_str()
+#define FUNC_NOT_NEED_PARAM (std::string( "Function " ) + ObjectName() + std::string( ":Self not need any parameter" )).c_str()
+#define ASSIGN_EMPTY_OBJECT (std::string( "Assign empty object in " ) + ObjectName() ).c_str()
 #define IF_OBJECT_NOT_NULL_THEN if( object_ == NULL ) DebugReport( __FILE__, __LINE__, "Access null object" ); else
 
 #define LUNA_ILUAOBJECT_HEADER(class) LUNA_AUTONAME_FUNCTION(class,	SetObject),\

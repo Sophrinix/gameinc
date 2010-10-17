@@ -6,6 +6,8 @@
 namespace nrp
 {
 
+CLASS_NAME CLASS_NRPAPPLICATION( "CNrpApplication" );
+
 OPTION_NAME BANK( "bank" );
 OPTION_NAME PROFILENAME( "profileName" );
 OPTION_NAME PROFILECOMPANY( "profileCompany" );
@@ -116,6 +118,8 @@ public:
 	void InventionFinished( CNrpInvention* ptrInvention );
 	void InventionCanceled( CNrpInvention* ptrInvention );
 	CNrpInvention* GetInvention( std::string name, std::string companyName );
+
+	static std::string ClassName() { return CLASS_NRPAPPLICATION; }
 private:
 	CNrpApplication(void);
 	~CNrpApplication(void);

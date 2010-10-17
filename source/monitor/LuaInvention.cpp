@@ -37,6 +37,8 @@ Luna< CLuaInvention >::RegType CLuaInvention::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, IsValid ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetCompany ),
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetInternalName ),
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetMonthPay ),
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, ClearMonthPay ),
 	{0,0}
 };
 
@@ -232,6 +234,22 @@ int CLuaInvention::GetCompany( lua_State* L )
 int CLuaInvention::GetInternalName( lua_State* L )
 {
 	lua_pushstring( L, GetParam_<std::string>( L, "GetInternalName", INTERNAL_NAME, "" ).c_str() );
+	return 1;
+}
+
+int CLuaInvention::GetMonthPay( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetMonthPay", MONEY_TODECREASE, 0 ) );
+	return 1;
+}
+
+int CLuaInvention::ClearMonthPay( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:ClearMonthPay not need parameter");
+
+	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( MONEY_TODECREASE, 0 );
+
 	return 1;
 }
 

@@ -34,7 +34,7 @@ IUser::IUser(const std::string className, const std::string systemName ) : INrpC
 	CreateValue<int>( CHARACTER, 0 );
 	CreateValue<int>( WANTMONEY, 0 );
 	CreateValue<int>( CONTRACTMONEY, 0 );
-	CreateValue<int>( TECHNUMBER, 0 );
+	CreateValue<int>( WORKNUMBER, 0 );
 	CreateValue<std::string>( USERSTATE, "readyToWork" );
 	CreateValue<std::string>( ROOMSTATE, "unknown" );
 	CreateValue<int>( HANGRY, 100 );
@@ -157,7 +157,7 @@ void IUser::Load( std::string fileName )
 
 	IniFile::ReadValueList_( "knowledges", knowledges_, fileName );
 
-	for( int k=0; k < GetValue<int>( TECHNUMBER ); k++ )
+	for( int k=0; k < GetValue<int>( WORKNUMBER ); k++ )
 	{
 		std::string action = "";
 		std::string workType = IniFile::Read( SECTION_WORKS, "work_" + IntToStr( k ), std::string(""), fileName );
@@ -207,14 +207,19 @@ void IUser::Load( std::string fileName )
 	}*/
 }
 
-void IUser::AddWork( IWorkingModule* module )
+void IUser::AddWork( IWorkingModule* module, bool toFront )
 {
 	assert( module != NULL );
 
 	if( GetWork( module->GetValue<std::string>( NAME ) ) == NULL )
-		works_.push_back( module );
-	
-	SetValue<int>( TECHNUMBER, works_.size() );
+	{
+		if( toFront )
+			works_.insert( works_.begin(), module );
+		else
+			works_.push_back( module );
+	}
+
+	SetValue<int>( WORKNUMBER, works_.size() );
 }
 
 void IUser::RemoveWork( IWorkingModule* techWork )
@@ -229,7 +234,7 @@ void IUser::RemoveWork( IWorkingModule* techWork )
 		{
 			techWork->RemoveUser( GetValue<std::string>( NAME ) );
 			works_.erase( tIter );
-			SetValue<int>( TECHNUMBER, works_.size() );
+			SetValue<int>( WORKNUMBER, works_.size() );
 			return;
 		}
 		

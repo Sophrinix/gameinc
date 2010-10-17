@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATEXTURE( "CLuaTexture" );
 
 class CLuaTexture : public ILuaObject<irr::video::ITexture>
 {
@@ -24,7 +25,8 @@ public:
 	int GetHeight( lua_State *L );
 	int Drop( lua_State *L );
 
-	static const char* StaticGetLuaName() { return "CLuaTexture"; }
+	static const char* ClassName() { return CLASS_LUATEXTURE.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUATEXTURE; }
 };
 
 }//namespace nrp

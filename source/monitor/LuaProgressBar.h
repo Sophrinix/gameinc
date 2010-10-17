@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAPROGRESBAR( "CLuaProgressBar" );
 
 class CLuaProgressBar : public ILuaGuiElement<irr::gui::CNrpProgressBar>
 {
@@ -23,7 +24,8 @@ public:
 	int SetImage( lua_State* L );
 	int SetFillImage( lua_State* L );
 																//нажатии на эту кнопку
-	static const char* StaticGetLuaName() { return "CLuaProgressBar"; }
+	static const char* ClassName() { return CLASS_LUAPROGRESBAR.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAPROGRESBAR; }
 };
 
 }//namespace nrp

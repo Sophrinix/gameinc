@@ -9,6 +9,7 @@ namespace nrp
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUABANK( "CLuaBank" );
 
 class CLuaBank : public ILuaProject<nrp::CNrpBank>
 {
@@ -26,7 +27,8 @@ public:
 	int GetLoanMonthToEnd( lua_State* L );
 	int CreateLoan( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaBank"; }
+	static const char* ClassName() { return CLASS_LUABANK.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUABANK; }
 private:
 	template< class T > T GetLoanParam_( lua_State* L, std::string funcName, std::string name, T defValue );
 };

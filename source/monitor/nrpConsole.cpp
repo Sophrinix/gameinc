@@ -6,6 +6,7 @@
 #include "IniFile.h"
 #include "NrpConsoleConfig.h"
 #include "nrpEngine.h"
+#include "AlignmentNames.h"
 
 using namespace nrp;
 

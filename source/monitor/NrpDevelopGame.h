@@ -1,10 +1,10 @@
 #pragma once
 #include "INrpDevelopProject.h"
 
-const std::string CLASS_DEVELOPGAME("CNrpDevelopGame");
-
 namespace nrp
 {
+CLASS_NAME CLASS_DEVELOPGAME("CNrpDevelopGame");
+
 
 class CNrpProjectModule;
 class CNrpGameProject;
@@ -16,6 +16,7 @@ class CNrpDevelopGame : public INrpDevelopProject
 {
 	typedef std::vector< CNrpProjectModule* > MODULE_LIST;
 	CNrpDevelopGame() : INrpDevelopProject( CLASS_DEVELOPGAME, "" ) {}; 
+
 public:
 	CNrpDevelopGame( std::string name, CNrpCompany* ptrCompany );
 	CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCompany );
@@ -30,6 +31,9 @@ public:
 	bool IsReady();
 
 	~CNrpDevelopGame(void);
+
+	static std::string ClassName() { return CLASS_DEVELOPGAME; }
+	virtual std::string ObjectName() { return CLASS_DEVELOPGAME; }
 private:
 	MODULE_LIST gameModules_;
 

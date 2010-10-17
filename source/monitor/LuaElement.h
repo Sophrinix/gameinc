@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAELEMENT( "CLuaElement" );
 
 class CLuaElement : public ILuaGuiElement<irr::gui::IGUIElement>
 {
@@ -20,7 +21,8 @@ public:
 
 	CLuaElement(lua_State *L);	
 
-	static const char* StaticGetLuaName() { return "CLuaElement"; }
+	static const char* ClassName() { return CLASS_LUAELEMENT.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAELEMENT; }
 };
 
 }//namespace nrp

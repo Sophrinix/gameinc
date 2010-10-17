@@ -8,7 +8,7 @@
 namespace nrp
 {
 
-OPTION_NAME CLASS_NRPCOMPANY( "CNrpCompany" );
+CLASS_NAME CLASS_NRPCOMPANY( "CNrpCompany" );
 
 typedef enum { ET_DAY_END=0, ET_COUNT } EVENT_TYPE;
 
@@ -91,6 +91,8 @@ public:
 	void Save( const std::string& saveFolder );
 	void Load( const std::string& loadFolder );
 
+	static std::string ClassName() { return CLASS_NRPCOMPANY; }
+	virtual std::string ObjectName() { return CLASS_NRPCOMPANY; }
 private:
 	void Load_( char* file_name ) {}
 

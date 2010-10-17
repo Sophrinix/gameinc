@@ -4,7 +4,7 @@
 namespace nrp
 {
 
-const CLASS_NAME CLASS_PROJECTMODULE( "CNrpProjectModule" );
+CLASS_NAME CLASS_PROJECTMODULE( "CNrpProjectModule" );
 class INrpDevelopProject;
 
 class CNrpProjectModule : public IWorkingModule
@@ -20,6 +20,8 @@ public:
 
 	void Save( std::string saveFolder );
 	void Load( std::string fileName );
+
+	static std::string ClassName() { return CLASS_PROJECTMODULE; }
 
 private:
 	void InitializeOptions_();

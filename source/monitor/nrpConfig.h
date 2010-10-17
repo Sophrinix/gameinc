@@ -19,55 +19,11 @@
 
 #include "INrpObject.h"
 #include "IniFile.h"
+#include "SectionNames.h"
+#include "OptionNames.h"
 
 namespace nrp
 {
-
-typedef const std::string OPTION_NAME;
-typedef const std::string ELEMENT_ALIGN;
-OPTION_NAME CONFIG_FILE( "configFile" );
-
-ELEMENT_ALIGN ALIGN_TOP( "top" );
-ELEMENT_ALIGN ALIGN_BOTTOM( "bottom" );
-ELEMENT_ALIGN ALIGN_MIDDLE( "middle" );
-ELEMENT_ALIGN ALIGN_LEFT( "left" );
-ELEMENT_ALIGN ALIGN_RIGTH( "rigth" );
-ELEMENT_ALIGN ALIGN_CENTER( "center" );
-
-OPTION_NAME SECTION_OPTIONS( "options" );
-
-OPTION_NAME BALANCE("balance");
-OPTION_NAME NAME("name");
-OPTION_NAME QUALITY( "quality" );
-OPTION_NAME TECHTYPE( "techType" );
-OPTION_NAME READYWORKPERCENT( "readyWorkPercent" );
-OPTION_NAME TECHNUMBER( "techNumber" );
-OPTION_NAME USERNUMBER( "userNumber" );
-OPTION_NAME COMPANIESNUMBER( "companiesNumber" );
-OPTION_NAME COMPANYNAME( "company" );
-OPTION_NAME SECTION_PROPERTIES( "properties" );
-OPTION_NAME CODEVOLUME( "volumeCode" );
-OPTION_NAME COMPONENTLIDER( "componentLider" );
-OPTION_NAME STARTDATE( "startDate" );
-OPTION_NAME ENDDATE( "endDate" );
-OPTION_NAME PARENT( "parent" );
-OPTION_NAME PARENTCOMPANY( "parentCompany" ); /*! компания */
-OPTION_NAME RENTPRICE( "rentPrice" );
-OPTION_NAME NUMBERDAY( "numberDay" );
-OPTION_NAME LEVEL( "level" );
-OPTION_NAME DAYCOST( "priceInDay" ); 
-OPTION_NAME GAMENAME( "gameName" );
-OPTION_NAME FINISHED( "finished" );
-OPTION_NAME FAMOUS( "famous" );
-OPTION_NAME GENRETECH( "genreTech" );
-OPTION_NAME GENRE_MODULE_NUMBER( "genreModuleNumber" );
-OPTION_NAME TECHGROUP( "techGroup" );
-OPTION_NAME CODEPASSED( "codePassed" );
-OPTION_NAME MONEYONDEVELOP( "moneyDevelop" );
-OPTION_NAME PROJECTREADY( "projectReady" );
-OPTION_NAME TEXTURENORMAL( "textureNormal" );
-OPTION_NAME TEXTUREHOVER( "textureHover" );
-OPTION_NAME ADVTECHNUMBER( "advTechNumber" );
 
 void CheckClassesType( const std::string type1, const std::string type2 );
 
@@ -82,11 +38,9 @@ public:
 };
 typedef std::map< OPTION_NAME, INrpProperty* > PropertyArray;
 
-class INrpConfig;
-
 template< class ValClass > class CNrpProperty : public INrpProperty
 {
-	friend INrpConfig;
+	friend class INrpConfig;
 public:
 	CNrpProperty( ValClass pValue )
 	{
@@ -158,9 +112,6 @@ public:
 
 		options_.clear();
 	}
-
-	//! имя класса объекта
-	CLASS_NAME GetType() { return ClassName(); }
 
 	template< class T > bool IsValueTypeA( std::string name )
 	{
@@ -260,7 +211,7 @@ public:
 		if( pIter == options_.end() )
 		{
 #ifdef _DEBUG
-			std::string text = "write: bad config param " + ClassName() + ":" + name + "\n";
+			std::string text = "write: bad config param " + ObjectName() + ":" + name + "\n";
 			OutputDebugString( text.c_str() );
 			throw text.c_str();
 #endif

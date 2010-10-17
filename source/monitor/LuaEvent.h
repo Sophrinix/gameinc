@@ -9,6 +9,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAEVENT( "CLuaEvent" );
 
 class CLuaEvent : public ILuaObject<irr::SEvent>
 {
@@ -23,7 +24,8 @@ public:
 	int IsKeyDown( lua_State* L );
 	int GetGuiCaller( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaEvent"; }
+	static const char* ClassName() { return CLASS_LUAEVENT.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAEVENT; }
 };
 
 }//namespace nrp

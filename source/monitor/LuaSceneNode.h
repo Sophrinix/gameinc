@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUASCENENODE( "CLuaSceneNode" );
 
 class CLuaSceneNode : public ILuaSceneNode< irr::scene::ISceneNode >
 {
@@ -20,7 +21,8 @@ public:
 
 	CLuaSceneNode(lua_State *L);		
 						
-	static const char* StaticGetLuaName() { return "CLuaSceneNode"; }
+	static const char* ClassName() { return CLASS_LUASCENENODE.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUASCENENODE; }
 private:
 	irr::scene::ISceneNode* GetTextSceneNode_();
 	bool IsChildOfCurrentScene_();

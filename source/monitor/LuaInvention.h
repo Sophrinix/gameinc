@@ -9,6 +9,7 @@ namespace nrp
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAINVENTION( "CLuaInvention" );
 
 class CLuaInvention : public ILuaProject<nrp::CNrpInvention>
 {
@@ -28,6 +29,8 @@ public:
 	int GetDescriptionLink( lua_State* L );
 	int GetInvestiment( lua_State* L );
 	int SetInvestiment( lua_State* L );
+	int GetMonthPay( lua_State* L );
+	int ClearMonthPay( lua_State* L );
 	int GetSpeed( lua_State* L );
 	int GetPrognoseDateFinish( lua_State* L );
 	int GetPassedMoney( lua_State* L );
@@ -39,7 +42,8 @@ public:
 	int GetCompany( lua_State* L );
 	int GetInternalName( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaInvention"; }	
+	static const char* ClassName() { return CLASS_LUAINVENTION.c_str(); }	
+	virtual std::string ObjectName() { return CLASS_LUAINVENTION; }
 };
 
 }//namespace nrp

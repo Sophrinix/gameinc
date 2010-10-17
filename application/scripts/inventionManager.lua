@@ -9,18 +9,27 @@ local labelInventionPrognoseFinish = nil
 local labelInventionMoneyPassed = nil 
 local labelInventionDayLeft = nil
 local listInventionStuff = nil
+local labelInventionName = nil
+local labelInventionMonthMoney = nil
 local currentInvention = nil
 
 local selectedUser = nil
 local windowUserSelect = nil
-local windowInventionList = nil
 local company = nil 
 local picFlowInvention = nil
+local lbxUsers = nil
+
 local applic = base.applic
 local guienv = base.guienv
-
 local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
+
+local function AddLabel( textr, x1, y1, x2, y2 )
+	local lb = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", x1, y1, x2, y2, -1, windowIM:Self() )
+	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )		
+	lb:SetOverrideColor( 0xff, 0xff, 0xff, 0xff )
+	return lb
+end
 
 --обновлеяет текст на метках
 local function localUpdateLabels()
@@ -32,6 +41,8 @@ local function localUpdateLabels()
 		labelInventionPrognoseFinish:SetText( day.."."..month.."."..year )
 		labelInventionMoneyPassed:SetText( currentInvention:GetPassedMoney() )
 		labelInventionDayLeft:SetText( currentInvention:GetDayLeft() )
+		labelInventionName:SetText( currentInvention:GetName() )
+		labelInventionMonthMoney:SetText( currentInvention:GetMonthPay() )
 	else
 	    currentInvention = nil
 	end
@@ -41,14 +52,12 @@ end
 function IncreaseInvestiment()
 	currentInvention:SetInvestiment( currentInvention:GetInvestiment() * 2 )
 	currentInvention:CheckParams()
-	localUpdateLabels()
 end
 
 --уменьшает затраты на исследования
 function DecreaseInvestiment()
 	currentInvention:SetInvestiment( currentInvention:GetInvestiment() / 2 )
 	currentInvention:CheckParams()
-	localUpdateLabels()
 end
 
 local function localFillListInvnentionStuff()
@@ -56,13 +65,31 @@ local function localFillListInvnentionStuff()
 	
 	for i=1, currentInvention:GetUserNumber() do
 		local user = currentInvention:GetUser( i-1 )
-		listInventionStuff:AddItem( "Unknown", user:Self() )
+		local dd = listInventionStuff:AddItem( "Unknown", user:Self() )
+		listInventionStuff:SetItemTextColor( dd, 0xff, 0xff, 0xff, 0xff )
 	end
 end
 
-function SelectUser()
-    local lbx = base.CLuaComponentListBox( base.NrpGetSender() )
-	selectedUser = base.CLuaUser( lbx:GetSelectedObject() )
+function InventionSelect() 		
+	currentInvention = base.CLuaInvention( picFlowInvention:GetSelectedObject() ) 
+end
+
+
+function UserSelect()	
+	selectedUser = base.CLuaUser( lbxUsers:GetSelectedObject() )
+end
+
+local function localShowUserAvaibleForInvention( listbox )
+	listbox:Clear()
+	company = applic:GetPlayerCompany()
+	for i=1, company:GetUserNumber() do
+		local user = company:GetUser( i-1 )
+		
+		if not user:HaveInvention() then
+			local dd = listbox:AddItem( "Unknown", user:Self() )
+			listbox:SetItemTextColor( dd, 0xff, 0xff, 0xff, 0xff )
+		end
+	end
 end
 
 function AddPeopleToInvention()
@@ -70,35 +97,37 @@ function AddPeopleToInvention()
 	windowUserSelect = guienv:AddWindow( "", scrWidth / 2 - 300, scrHeight / 2 - 200, 
 										     scrWidth / 2 + 300, scrHeight / 2 + 200, 
 										 -1, guienv:GetRootGUIElement() )
-	windowUserSelect:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./inventionManager.SelectUser()" )
 													  
 	local wd, hd = windowUserSelect:GetSize()												  
-	local lbxUsers = guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect:Self() )
-	lbxUsers:SetItemHeigth( 60 )
+	lbxUsers = guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect:Self() )
+	lbxUsers:SetItemHeigth( 80 )
 		
-	company = applic:GetPlayerCompany()
-	for i=1, company:GetUserNumber() do
-		local user = company:GetUser( i-1 )
-		
-		if user:GetWorkNumber() == 0 then
-			lbxUsers:AddItem( "Unknown", user:Self() )
-		end
-	end
+	localShowUserAvaibleForInvention( lbxUsers )
 	
 	local btn = guienv:AddButton( 10, hd - 35, wd / 2 - 10, hd - 5, windowUserSelect:Self(), -1, "Select")
 	btn:SetAction( "./inventionManager.AddSelectedUserToInvention()" )
 		
 	btn = guienv:AddButton( wd / 2 + 10, hd - 35, wd - 10, hd - 5, windowUserSelect:Self(), -1, "Close")
 	btn:SetAction( "./inventionManager.CloseWindowUserAdding()" )
+	
+	--обработчик выбора в списке
+	windowUserSelect:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./inventionManager.UserSelect()" )
 end
 
 function CloseWindowUserAdding()
 	windowUserSelect:Remove()
+	windowUserSelect = nil
 end
 
 function AddSelectedUserToInvention()
 	currentInvention:AddUser( selectedUser:Self() )
+	
+	guienv:MessageBox( base.string.format( "%s будет участвовать в проекте %s исследовательского отдела", 
+											selectedUser:GetName(), currentInvention:GetName() ), true, false,
+											"", "" )
+											
 	localFillListInvnentionStuff()
+	localShowUserAvaibleForInvention( lbxUsers )
 end
 
 --отображает окно управления исследованиями
@@ -132,50 +161,60 @@ function Show( techName, companyName )
 	local btnMinus = guienv:AddButton( btnWidth - 30, ypos, btnWidth, ypos + 30, windowIM:Self(), -1, "-" )
 	btnMinus:SetAction( "./inventionManager.DecreaseInvestiment()" )
 	
-	guienv:AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT", 45, ypos - 15, 
-													    btnWidth - 45, ypos + 15, -1, windowIM:Self() )
-	labelInvestiment = guienv:AddLabel(  currentInvention:GetInvestiment(), 45, ypos + 16, 
-													    btnWidth - 45, ypos + 46, -1, windowIM:Self() )													
+	AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT", 45, ypos - 15, btnWidth - 45, ypos + 15 )
+	labelInvestiment = AddLabel( "", 45, ypos + 16, btnWidth - 45, ypos + 46 )													
 	
 	ypos = ypos + 55
 	--метка с отображением скорости исследований
-	labelInventionSpeed = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED", 10, ypos, 
-													    btnWidth, ypos + 30, -1, windowIM:Self())
+	labelInventionSpeed = AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED", 10, ypos, btnWidth, ypos + 30 )
 	
 	ypos = ypos + 55
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionPrognoseFinish = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", 10, ypos, 
-													    btnWidth, ypos + 30, -1, windowIM:Self() )
+	labelInventionPrognoseFinish = AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", 10, ypos, btnWidth, ypos + 30 )
 													
 	ypos = ypos + 55
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionDayLeft = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONDAYLEFT", 10, ypos, 
-										     btnWidth, ypos + 30, -1, windowIM:Self() )
-													    
-													    
+	labelInventionDayLeft = AddLabel( "#TRANSLATE_TEXT_INVENTIONDAYLEFT", 10, ypos, btnWidth, ypos + 30 )													    
+												    
 	ypos = ypos + 55
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionMoneyPassed = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", 10, ypos, 
-											      btnWidth, ypos + 30, -1, windowIM:Self() )
+	labelInventionMoneyPassed = AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", 10, ypos, btnWidth, ypos + 30 )										      
 	
-	--список подключенных к проекту людей
-	listInventionStuff = guienv:AddComponentListBox( btnWidth + 10, scrHeight / 3 + 20, scrWidth, scrHeight - 45, -1, windowIM:Self())
+	ypos = ypos + 55
+	--метка месячным финансированием
+	labelInventionMonthMoney = AddLabel( "", "#TRANSLATE_TEXT_MONTHPAY", 10, ypos, btnWidth, ypos + 30 )
+
+	labelInventionName = AddLabel( "", btnWidth + 10, scrHeight / 3 + 10, scrWidth, scrHeight / 3 + 40 )
+
+	
+	--список подключенных к проекту людей 
+	listInventionStuff = guienv:AddComponentListBox( btnWidth + 10, scrHeight / 3 + 50, scrWidth - 10, scrHeight - 45, -1, windowIM:Self())
+	listInventionStuff:SetItemHeigth( 80 )
 	localFillListInvnentionStuff()
 	
+	--показать данные по изобретению
+	local btnShowInfo = guienv:AddButton( btnWidth + 10,  scrHeight - 40, 
+										  btnWidth + 120, scrHeight - 10,
+	 									  windowIM:Self(), -1, "Инфо" )
+	btnShowInfo:SetAction( "./inventionManager.ShowInfoAboutInvention()" )
+
 	--кнопка добавления людей к исследованию, по которой показывается список со служащими 
 	--и возможность добавления выделенного человека
-	--удаление людей из списка
-	local btnAddPeople = guienv:AddButton( btnWidth + 10,  scrHeight - 40, 
-										   btnWidth + 120, scrHeight - 10, 
+	local btnAddPeople = guienv:AddButton( btnWidth + 130,  scrHeight - 40, 
+										   btnWidth + 250, scrHeight - 10,  
 										   windowIM:Self(), -1, "Добавить" )
-	btnAddPeople:SetAction( "/inventionManager.AddPeopleToInvention()" )
-	
-	local btnRemPeople = guienv:AddButton( btnWidth + 130, scrHeight - 40, 
+	btnAddPeople:SetAction( "./inventionManager.AddPeopleToInvention()" )
+
+	--удаление людей из списка
+	local btnRemPeople = guienv:AddButton( btnWidth + 260, scrHeight - 40, 
 										   scrWidth - 10,  scrHeight - 10, 
 										   windowIM:Self(), -1, "Убрать" )
 	btnRemPeople:SetAction( "./inventionManager.RemPeopleFromInvention()" )	
 	
+	--обновление надписей
 	windowIM:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, "./inventionManager.UpdateLabelValue()" )
+	--обработчик выбора технологии
+	windowIM:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./inventionManager.InventionSelect()" )
 end
 
 local lastTimeUpdate = 0
@@ -186,13 +225,8 @@ function UpdateLabelValue()
 	end
 end
 
-function RemPeopleFromInvention()
+function RemoveUser()
 	currentInvention:RemoveUser( selectedUser:GetName() )	
-end
-
-function OpenWindowForSelectInvention()
-	local inv = base.CLuaInvention( picFlowInvention:GetSelectedObject() )
-	Show( inv:GetName(), company:GetName() )
 end
 
 function CloseWindowInventionList()
@@ -200,28 +234,4 @@ function CloseWindowInventionList()
 	windowInventionList = nil
 	windowIM:Remove()
 	windowIM = nil
-end
-
-function CreateWindowCompanyInventionManager()
-	windowInventionList = guienv:AddWindow( "", 0, 0, scrWidth, scrHeight, 
-								            -1, guienv:GetRootGUIElement() ) 
-	
-	picFlowInvention = guienv:AddPictureFlow( 10, 10, scrWidth / 2, scrHeight - 60, -1, windowInventionList:Self() )
-	picFlowInvention:SetPictureRect( 0, 0, 90, 90 )
-	
-	company = applic:GetPlayerCompany()
-	for i=1, company:GetInventionNumber() do
-		local inv = company:GetInvention( i-1 )
-		picFlowInvention:AddItem( inv:GetTexture(), inv:GetName(), inv:Self() )
-	end
-	
-	local btnOk = guienv:AddButton( 10, scrHeight - 60, 
-	                                scrWidth / 2 - 10, scrHeight - 10, 
-	                                windowInventionList:Self(), -1, "Выбрать" )
-	btnOk:SetAction( "./inventionManager.OpenWindowForSelectInvention()" )
-	
-	local btnCancel = guienv:AddButton( scrWidth / 2 + 10, scrHheight - 60,
-	                                    scrWidth - 10, scrHeight - 10, 
-	                                    windowInventionList:Self(), -1, "Выход" )	                                    
-	btnCancel:SetAction( "./inventionManager.CloseWindowInventionList()" )
 end

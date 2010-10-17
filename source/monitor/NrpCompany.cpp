@@ -161,7 +161,7 @@ void CNrpCompany::Save( const std::string& saveFolder )
 	OBJECT_LIST::iterator oIter = portfelle_.begin();
 	for( int i=0; oIter != portfelle_.end(); oIter++, i++ )
 	{
-		IniFile::Write( SECTION_PORTFELLE, "object_" + IntToStr( i ), (*oIter)->ClassName(), saveFile ); 
+		IniFile::Write( SECTION_PORTFELLE, "object_" + IntToStr( i ), (*oIter)->ObjectName(), saveFile ); 
 		IniFile::Write( SECTION_PORTFELLE, "name_" + IntToStr( i ), (*oIter)->GetValue<std::string>( NAME ), saveFile );
 	}
 
@@ -371,8 +371,8 @@ void CNrpCompany::UpdateGameProjectState_()
 	PROJECT_MAP::iterator pIter = projects_.begin();
 	for( ; pIter != projects_.end(); pIter++ ) 
 	{
-		if( pIter->second->GetType() == "CNrpGameProject" )
-			dynamic_cast< CNrpGameProject* >( pIter->second )->UpdateDevelopmentMoney();
+		if( CNrpGameProject* prj = dynamic_cast< CNrpGameProject* >( pIter->second ) )
+			prj->UpdateDevelopmentMoney();
 	}
 }
 

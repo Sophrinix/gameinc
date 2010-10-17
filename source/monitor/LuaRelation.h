@@ -4,6 +4,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_RELATION( "CLuaRelation" );
 
 class CLuaRelation : public ILuaObject<nrp::CNrpRelation>
 {
@@ -14,7 +15,8 @@ public:
 	int SetValue( lua_State *L );
 	int GetValue( lua_State *L );
 
-	static const char* StaticGetLuaName() { return "CLuaRelation"; }
+	static const char* ClassName() { return CLASS_RELATION.c_str(); }
+	virtual std::string ObjectName() { return CLASS_RELATION; }
 };
 
 }//namespace nrp

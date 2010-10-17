@@ -11,6 +11,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACONSOLE( "CLuaConsole" );
 
 class CLuaConsole : public ILuaGuiElement<irr::gui::CNrpConsole>
 {
@@ -21,7 +22,8 @@ public:
 	int ToggleVisible( lua_State *L );
 	int Draw( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaConsole"; }
+	static const char* ClassName() { return CLASS_LUACONSOLE.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUACONSOLE; }
 };
 
 }//namespace nrp

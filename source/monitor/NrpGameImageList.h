@@ -4,7 +4,7 @@
 namespace nrp
 {
 
-const std::string CLASS_IMAGEGAMELIST( "CNrpGameImageList" );
+CLASS_NAME CLASS_IMAGEGAMELIST( "CNrpGameImageList" );
 
 OPTION_NAME ISUSED( "isUsed" );
 OPTION_NAME YEAR( "year" );
@@ -28,6 +28,8 @@ public:
 	CNrpGameImageList( const CNrpGameImageList& a );
 
 	~CNrpGameImageList(void);
+
+	static std::string ClassName() { return CLASS_IMAGEGAMELIST; }
 };
 
 }//end namespace nrp

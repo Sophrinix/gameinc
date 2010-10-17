@@ -106,3 +106,7 @@ function slogin_ContinueLastGame( ptr )
 	
 	NrpSetNextScene( "sceneWork" )
 end
+
+function slogin_CloseApp()
+	NrpApplicationClose()
+end

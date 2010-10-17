@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUALISTBOX( "CLuaListBox" );
 
 class CLuaListBox : public ILuaGuiElement<irr::gui::IGUIListBox>
 {
@@ -29,7 +30,8 @@ public:
 	int SetFontFromSize( lua_State* L );
 	int SetItemTextColor( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaListBox"; }
+	static const char* ClassName() { return CLASS_LUALISTBOX.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUALISTBOX; }
 };
 
 }//namespace nrp

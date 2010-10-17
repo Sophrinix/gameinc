@@ -2,8 +2,6 @@
 
 #include "ILuaProject.h"
 
-const std::string CLASS_CLUAPPLICATION( "CLuaApplication" );
-
 namespace nrp
 {
 	class CNrpApplication;
@@ -12,6 +10,7 @@ namespace nrp
 
 namespace nrp
 {
+CLASS_NAME CLASS_CLUAPPLICATION( "CLuaApplication" );
 
 class CLuaApplication : public ILuaProject<nrp::CNrpApplication>
 {
@@ -65,7 +64,8 @@ public:
 
 	int CreateDirectorySnapshot( lua_State* L );
 
-	static const char* StaticGetLuaName() { return CLASS_CLUAPPLICATION.c_str(); }
+	static const char* ClassName() { return CLASS_CLUAPPLICATION.c_str(); }
+	virtual std::string ObjectName() { return CLASS_CLUAPPLICATION; }
 private:
 	int lastDay_, lastMonth_, lastYear_;
 	int AddRemLuaFunction_( lua_State* L, std::string funcName, bool rem );

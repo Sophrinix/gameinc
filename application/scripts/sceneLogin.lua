@@ -32,7 +32,7 @@ btnOptionsGame:SetAction( "slogin_OptionsGame" )
 
 local btnExitGame = guienv:AddButton( scrWidth / 2 + 200, scrHeight - 120, scrWidth / 2 + 350, scrHeight - 80, 
 											 guienv:GetRootGUIElement(), -1, "Выход")
-btnExitGame:SetAction( "slogin_ExitGame" )
+btnExitGame:SetAction( "slogin_CloseApp" )
 
 browser:Show()
 browser:Navigate( "media/html/intro.htm" )

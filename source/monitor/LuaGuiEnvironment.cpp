@@ -85,7 +85,7 @@ CLuaGuiEnvironment::CLuaGuiEnvironment(lua_State *L) : ILuaObject(L, "CLuaGuiEnv
 int CLuaGuiEnvironment::RemoveAnimators( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, ("Function " + ClassName() + ":RemoveAnimators not need any parameter").c_str() );
+	luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectName() + ":RemoveAnimators not need any parameter").c_str() );
 
 	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( L, 2 );
 

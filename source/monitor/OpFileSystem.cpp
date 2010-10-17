@@ -31,7 +31,7 @@ void OpFileSystem::Remove( const std::string& pathTo )
 	if( mStr.size() )
 	{
 		hFile = _findfirst( (mStr+"\\*.*").c_str(), &fdata);
-		while( hFile )
+		while( hFile > 0 )
 		{
 			if ( !( strcmp( fdata.name, ".") == 0 || strcmp( fdata.name, ".." ) == 0 ) )// это удалять не надо
 				if ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ))// найдена папка

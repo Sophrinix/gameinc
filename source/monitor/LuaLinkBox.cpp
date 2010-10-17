@@ -29,7 +29,7 @@ Luna< CLuaLinkBox >::RegType CLuaLinkBox::methods[] =			//реализуемы методы
 	{0,0}
 };
 
-CLuaLinkBox::CLuaLinkBox(lua_State *L)	: ILuaGuiElement(L, "CLuaLinkBox")							//конструктор
+CLuaLinkBox::CLuaLinkBox(lua_State *L)	: ILuaGuiElement(L, CLASS_LINKBOX )							//конструктор
 {}
 
 int CLuaLinkBox::AddLuaFunction( lua_State *L )									//устанавливает имя новой функции для этой кнопки	

@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATERRAIN( "CLuaTerrain" );
 
 class CLuaTerrain : public ILuaSceneNode< irr::scene::ITerrainSceneNode >
 {
@@ -25,7 +26,8 @@ public:
 	int SetMaterialType( lua_State *L );
 	int GetSideProjSize( lua_State *L );
 
-	static const char* StaticGetLuaName() { return "CLuaTerrain"; }
+	static const char* ClassName() { return CLASS_LUATERRAIN.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUATERRAIN; }
 	
 	~CLuaTerrain();
 };

@@ -82,14 +82,14 @@ template<class T> class Luna
 public:
     static void Register(lua_State *L) {
       lua_pushcfunction(L, &Luna<T>::constructor);
-      lua_setglobal(L, T::StaticGetLuaName() ); // T() in lua will make a new instance.
+      lua_setglobal(L, T::ClassName() ); // T() in lua will make a new instance.
 
       RegisterMetatable(L);
     }
 
     // register the metatable without registering the class constructor
     static void RegisterMetatable(lua_State *L) {
-      luaL_newmetatable(L, T::StaticGetLuaName() ); // create a metatable in the registry
+      luaL_newmetatable(L, T::ClassName() ); // create a metatable in the registry
       lua_pushstring(L, "__gc");
       lua_pushcfunction(L, &Luna<T>::gc_obj);
       lua_settable(L, -3); // metatable["__gc"] = Luna<T>::gc_obj
@@ -107,7 +107,7 @@ public:
 
       T** a = static_cast<T**>(lua_newuserdata(L, sizeof(T*))); // store a ptr to the ptr
       *a = obj; // set the ptr to the ptr to point to the ptr... >.>
-      luaL_newmetatable(L, T::StaticGetLuaName() ); // get (or create) the unique metatable
+      luaL_newmetatable(L, T::ClassName() ); // get (or create) the unique metatable
       lua_setmetatable(L, -2); // self.metatable = uniqe_metatable
 
       lua_settable(L, -3); // self[0] = obj;
@@ -128,7 +128,7 @@ public:
       lua_pushnumber(L, 0);
       lua_gettable(L, 1); // get the class table (i.e, self)
 
-      T** obj = static_cast<T**>(luaL_checkudata(L, -1, T::StaticGetLuaName()));
+      T** obj = static_cast<T**>(luaL_checkudata(L, -1, T::ClassName()));
       lua_remove(L, -1); // remove the userdata from the stack
 
       return ((*obj)->*(T::methods[i].mfunc))(L); // execute the thunk
@@ -138,7 +138,7 @@ public:
 	{
       // clean up
       //printf("GC called: %s\n", T::className);
-      T** obj = static_cast<T**>(luaL_checkudata(L, -1, T::StaticGetLuaName()));
+      T** obj = static_cast<T**>(luaL_checkudata(L, -1, T::ClassName()));
       delete (*obj);
       return 0;
     }

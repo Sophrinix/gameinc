@@ -97,7 +97,7 @@ end
 local function CreateWindow( typef )
 	company = applic:GetPlayerCompany()
 	windowMap = guienv:AddWindow( "media/maps/laboratory_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-	Log( {src=base.SCRIPT, dev=base.ODS|base.CON}, "sworkCreateGenreTechMapWindow="..company:GetName() )
+	base.LogScript( "sworkCreateGenreTechMapWindow="..company:GetName() )
 	
 	techMap = guienv:AddTechMap( 10, 40, scrWidth - 10, scrHeight - 10, -1, windowMap:Self() )
 	techMap:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, "./laboratory.TechSelected()" )
@@ -133,31 +133,21 @@ end
 function TechSelected() 
     local type = techMap:GetSelectedObjectType()
     
-	--технологи€ уже в ходу
 	if type == base.TS_READY then
-	    selectedTech = CLuaTech( techMap:GetSelectedObject() )
-		Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "¬ыбрана технологи€="..selectedTech:GetName()..
-									   " ќписание="..selectedTech:GetDescriptionLink()..
-									   " —татус="..selectedTech:GetStatus() )
+		--технологи€ уже в ходу
+	    selectedTech = base.CLuaTech( techMap:GetSelectedObject() )
+		base.LogScript( base.string.format( "¬ыбрана технологи€=%s ќписание=%s —татус=%s", 
+											selectedTech:GetName(), selectedTech:GetDescriptionLink(), selectedTech:GetStatus() ) )
 	    
 	    browser:Show()
 	    browser:Navigate( selectedTech:GetDescriptionLink() )
-	    --local btn = CLuaButton( guienv:AddButton( 10, 10, 10 + 140, 10 + 20, browser:GetWindow(), -1, "«акрыть" ) )
-	    --btn:SetAction( "sworkTechMapWindowClose" )
-	    return 0
-	end
-	
-	--или технологию только предстоит изобрести
-	--то повторный выбор предполагает желание пользовател€ начать исследование...
-	if type == base.TS_PROJECT then
+	elseif type == base.TS_PROJECT then
+		--или технологию только предстоит изобрести
+		--то повторный выбор предполагает желание пользовател€ начать исследование...
 		StartInvention()
-		return 0
-	end
-	
-	--
-	if selectedTech:GetStatus() == base.TS_INDEVELOP then
-		inventionManager.Show( techMap:GetSelectedObject(), company:GetName() )
-		return 0
+	elseif type == base.TS_INDEVELOP then
+		selectedTech = base.CLuaInvention( techMap:GetSelectedObject() )
+		base.inventionManager.Show( selectedTech:GetInternalName(), company:GetName() )
 	end
 end
 
@@ -177,6 +167,8 @@ function AssignInvention()
 	company:StartInvention( inventionName )
 	
 	base.inventionManager.Show( inventionName, company:GetName() )
+	windowMap:Remove()
+	windowMap = nil
 	
 	btnOk:Remove()
 	btnCancel:Remove()

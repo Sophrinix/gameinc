@@ -319,6 +319,10 @@
 			Name="Helpers"
 			>
 			<File
+				RelativePath=".\AlignmentNames.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EnginePrivate.cpp"
 				>
 			</File>
@@ -363,7 +367,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OptionNames.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PeopleName.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SectionNames.h"
 				>
 			</File>
 			<File
@@ -372,6 +384,10 @@
 			</File>
 			<File
 				RelativePath=".\StrConversation.h"
+				>
+			</File>
+			<File
+				RelativePath=".\timeHelpers.h"
 				>
 			</File>
 			<Filter

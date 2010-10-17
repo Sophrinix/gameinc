@@ -4,6 +4,8 @@
 namespace nrp
 {
 
+CLASS_NAME CLASS_GAMEENGINE( "CNrpGameEngine" );
+
 OPTION_NAME AVGENRE_COUNT( "avGenreCount" );
 OPTION_NAME TIME_ACTUAL( "timeActual" ); //актуальность движка... пересчитывается при выходе новых технологий
 OPTION_NAME SKILL_CODING( "skillCoding" );
@@ -20,6 +22,9 @@ public:
 	void Load( std::string loadFolder );
 
 	~CNrpGameEngine(void);
+
+	static std::string ClassName() { return CLASS_GAMEENGINE; }
+	virtual std::string ObjectName() { return CLASS_GAMEENGINE; }
 private:
 	typedef std::map< GENRE_TYPE, int > GENRE_MAP;
 

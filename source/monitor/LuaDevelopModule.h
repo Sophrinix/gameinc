@@ -10,7 +10,7 @@ namespace nrp
 namespace nrp
 {
 
-const std::string CLASS_DEVELOPMODULE( "CLuaDevelopModule" );
+CLASS_NAME CLASS_DEVELOPMODULE( "CLuaDevelopModule" );
 
 class CLuaDevelopModule : public ILuaProject<nrp::CNrpProjectModule>
 {
@@ -27,7 +27,8 @@ public:
 	int GetTexture( lua_State* L );
 	int GetParent( lua_State* L );
 
-	static const char* StaticGetLuaName() { return CLASS_DEVELOPMODULE.c_str(); }	
+	static const char* ClassName() { return CLASS_DEVELOPMODULE.c_str(); }	
+	virtual std::string ObjectName() { return CLASS_DEVELOPMODULE; }
 };
 
 }//namespace nrp

@@ -8,8 +8,8 @@ namespace nrp
 OPTION_NAME MESSAGE( "message" );
 OPTION_NAME ACTION( "action" );
 
-const std::string CLASS_PDAITEM( "CPdaItem" );
-const std::string CLASS_CNRPPDA( "CNrpPda" );
+CLASS_NAME CLASS_PDAITEM( "CPdaItem" );
+CLASS_NAME CLASS_CNRPPDA( "CNrpPda" );
 
 class CPdaItem : public INrpConfig
 {
@@ -25,6 +25,8 @@ public:
 		CreateValue<SYSTEMTIME>( STARTDATE, t );
 	}
 
+	static std::string ClassName() { return CLASS_PDAITEM; }
+	virtual std::string ObjectName() { return CLASS_PDAITEM; }
 private:
 	CPdaItem() : INrpConfig( CLASS_PDAITEM, "" ) {}
 	void Load_( char* file_name ) {}
@@ -45,6 +47,8 @@ public:
 	const CPdaItem& Current();
 	void Clear();
 
+	static std::string ClassName() { return CLASS_CNRPPDA; }
+	virtual std::string ObjectName() { return CLASS_CNRPPDA; }
 private:
 
 	void Load_( char* file_name ) {}

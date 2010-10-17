@@ -101,7 +101,7 @@ int CNrpApplication::AddCompany( CNrpCompany* company )
 
 	SetValue<int>( COMPANIESNUMBER, companies_.size() );
 	PUser ceo = company->GetValue<PUser>( CEO );
-	if( ceo && ceo->ClassName() == CLASS_REALPLAYER )
+	if( ceo && ceo->ObjectName() == CNrpPlayer::ClassName() )
 		SetValue<PNrpCompany>( PLAYERCOMPANY, company );
 
 	return 1;
@@ -263,21 +263,21 @@ void CNrpApplication::SaveProfile()
 	for( int i=0; dIter != devProjects_.end(); dIter++, i++ )
 	{
 		dIter->second->Save( saveFolder + "devProjects/" );
-		IniFile::Write( "devprojects", "project_" + IntToStr(i), dIter->second->ClassName() + ":" + dIter->first, profileIni );
+		IniFile::Write( "devprojects", "project_" + IntToStr(i), dIter->second->ObjectName() + ":" + dIter->first, profileIni );
 	}
 
 	PROJECTS_MAP::iterator ppIter = projects_.begin();
 	for( int i=0; ppIter != projects_.end(); ppIter++, i++ )
 	{
 		ppIter->second->Save( SECTION_PROPERTIES, saveFolder + "Projects/" + ppIter->first + ".prj" );
-		IniFile::Write( "projects", "project_" + IntToStr(i), ppIter->second->ClassName() + ":" + ppIter->first, profileIni );
+		IniFile::Write( "projects", "project_" + IntToStr(i), ppIter->second->ObjectName() + ":" + ppIter->first, profileIni );
 	}
 
 	USER_LIST::iterator uIter = users_.begin();
 	for( int i=0; uIter != users_.end(); uIter++, i++ )
 	{
 		(*uIter)->Save( saveFolder + "users/" );
-		std::string text = (*uIter)->ClassName() + ":" + (*uIter)->GetValue<std::string>( NAME );
+		std::string text = (*uIter)->ObjectName() + ":" + (*uIter)->GetValue<std::string>( NAME );
 		IniFile::Write( "users", "user_" + IntToStr(i), text, profileIni );
 	}
 
@@ -360,9 +360,8 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 	for( int i=0; i < GetValue<int>( TECHNUMBER ); i++ )
 	{
 		std::string name = IniFile::Read( "technologies", "technology_" + IntToStr(i), std::string(""), profileIni );
-		CNrpTechnology* tech = new CNrpTechnology( PROJECT_TYPE(0) );
+		CNrpTechnology* tech = new CNrpTechnology( saveFolderTech + name + ".tech" );
 		technologies_.push_back( tech );
-		tech->Load( saveFolderTech + name + ".tech" );
 	}
 
 	std::string saveFolderEngines = saveFolder + "engines/";
@@ -380,7 +379,7 @@ void CNrpApplication::LoadProfile( std::string profileName, std::string companyN
 		std::string name = IniFile::Read( "devProjects", "project_" + IntToStr( i ), std::string(""), profileIni );
 		std::string type = name.substr( 0, name.find( ':' ) );
 		name = name.substr( name.find( ':' ) + 1, name.length() );
-		if( type == CLASS_DEVELOPGAME )
+		if( type == CNrpDevelopGame::ClassName() )
 		{
 			CNrpDevelopGame* game = new CNrpDevelopGame( "tmp", NULL );
 			game->Load( saveDevelopProjects + name + "/" );
@@ -629,7 +628,7 @@ void CNrpApplication::CreateNewFreeUsers()
 	
 	for( ; pIter != users_.end(); pIter++ )
 	{
-		std::string typeName = (*pIter)->GetType();
+		std::string typeName = (*pIter)->ObjectName();
 		if( (*pIter)->GetValue<PNrpCompany>( PARENTCOMPANY ) != NULL )
 			continue;
 
@@ -998,15 +997,19 @@ void CNrpApplication::AddGame( CNrpGame* ptrGame )
 
 void CNrpApplication::AddInvention( const std::string& name, CNrpCompany* parentCompany )
 {
-	CNrpTechnology* startTech = new CNrpTechnology( PROJECT_TYPE(0) );
-	startTech->Load( "xtras/technology/" + name + "/item.tech" );
+	CNrpInvention* tmp = GetInvention( name, parentCompany->GetValue<std::string>( NAME ) );
 
-	CNrpInvention* inv = new CNrpInvention( startTech, parentCompany );
-	parentCompany->AddInvention( inv );	
-	inventions_.push_back( inv );  
-	SetValue<int>( INVENTIONSNUMBER, inventions_.size() );
+	if( tmp == NULL )
+	{
+		CNrpTechnology* startTech = new CNrpTechnology( "xtras/technology/" + name + "/item.tech" );
 
-	delete startTech;
+		CNrpInvention* inv = new CNrpInvention( startTech, parentCompany );
+		parentCompany->AddInvention( inv );	
+		inventions_.push_back( inv );  
+		SetValue<int>( INVENTIONSNUMBER, inventions_.size() );
+
+		delete startTech;
+	}
 }
 
 void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )

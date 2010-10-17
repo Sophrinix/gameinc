@@ -24,7 +24,7 @@ Luna< CLuaBank >::RegType CLuaBank::methods[] =			//реализуемы методы
 	{0,0}
 };
 
-CLuaBank::CLuaBank(lua_State *L)	: ILuaProject(L, "CLuaBank")	//конструктор
+CLuaBank::CLuaBank(lua_State *L)	: ILuaProject(L, CLASS_LUABANK)	//конструктор
 {}
 
 int CLuaBank::GetMaxCompanyLoan( lua_State* L )

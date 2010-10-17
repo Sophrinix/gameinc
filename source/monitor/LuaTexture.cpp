@@ -21,7 +21,7 @@ Luna< CLuaTexture >::RegType CLuaTexture::methods[] =
 	{0,0}
 };
 
-CLuaTexture::CLuaTexture(lua_State *L) : ILuaObject( L, "CLuaTexture" )
+CLuaTexture::CLuaTexture(lua_State *L) : ILuaObject( L, CLASS_LUATEXTURE )
 {}
 
 int CLuaTexture::GetSize( lua_State *L )

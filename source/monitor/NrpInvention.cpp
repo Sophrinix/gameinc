@@ -47,6 +47,7 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp )
 		SetValue<int>( LEVEL, pTech->GetValue<int>( LEVEL ) );
 		SetValue<int>( QUALITY, pTech->GetValue<int>( QUALITY ) );
 		SetValue<std::string>( BASEFILE, pTech->GetValue<std::string>( BASEFILE ) );
+		SetValue<SYSTEMTIME>( USERSTARTDATE, CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ) );
 
 		SYSTEMTIME time;
 		memset( &time, 0, sizeof(SYSTEMTIME) );
@@ -74,22 +75,26 @@ void CNrpInvention::InitializeOptions_()
 	CreateValue<int>( INVENTIONSPEED, 0 );
 	CreateValue<int>( USERNUMBER, 0 );
 	CreateValue<std::string>( COMPANYNAME, "" );
+	CreateValue<SYSTEMTIME>( USERSTARTDATE, SYSTEMTIME() );
+	CreateValue<int>( MONEY_TODECREASE, 0 );
 }
 
 void CNrpInvention::CheckParams()
 {
-	int needMoney = GetValue<int>( REALPRICE ) - GetValue<int>( PASSEDPRICE);
-	int dayToFinish = ( needMoney / GetValue<int>( INVESTIMENT )) * 30;
+	int dayFromStart = TimeHelper::GetDaysBetweenDate( GetValue<SYSTEMTIME>( USERSTARTDATE ),
+													   CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME) ); 
 
-	double time;
-	int errCurrTime = SystemTimeToVariantTime( &CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ), &time );
-	assert( errCurrTime > 0 );
-	time += dayToFinish;
+	//получим скока тратим в день на исследования
+	int moneyInDay = GetValue<int>( PASSEDPRICE) / dayFromStart;
+	//вычислим сколько дней осталось до конца при нынешних затратах
+	int dayToFinish = ( GetValue<int>( REALPRICE ) - GetValue<int>( PASSEDPRICE) ) / moneyInDay;
+	
+	SetValue<SYSTEMTIME>( PROGNOSEDATEFINISH, TimeHelper::GetDateWithDay( CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME),
+																		  dayToFinish ) );
 
-	VariantTimeToSystemTime( time, &GetValue<SYSTEMTIME>( PROGNOSEDATEFINISH ) );//прогноз завершения работ
 	SetValue<int>( DAYLEFT, dayToFinish );//сколько дней осталось до завершения работ, при полном освоении финансирования
 	
-	int speed = ( GetValue<int>( INVESTIMENT ) * 3 ) / GetValue<int>( REALPRICE ) * 100;
+	int speed = min( 100 - GetValue<int>( REALPRICE ) / moneyInDay, 100 );
 	SetValue<int>( INVENTIONSPEED, speed );
 }
 
@@ -100,7 +105,7 @@ CNrpInvention::~CNrpInvention(void)
 void CNrpInvention::Update( IUser* ptrUser )
 {
 	PNrpCompany company = GetValue<PNrpCompany>( PARENTCOMPANY );
-	assert( company != NULL );
+	assert( ptrUser != NULL && company != NULL );
 
 	if( GetValue<int>( PASSEDPRICE ) < GetValue<int>( REALPRICE ) )
 	{
@@ -108,7 +113,6 @@ void CNrpInvention::Update( IUser* ptrUser )
 		REQUIRE_MAP::iterator sIter = skillRequires_.begin();
 		for( ; sIter != skillRequires_.end(); sIter++ )
 			reqSkill += ptrUser->GetSkill( sIter->first );
-		assert( reqSkill != 0 );
 
 		float genreSkill = ptrUser->GetGenreExperience( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
 
@@ -120,12 +124,14 @@ void CNrpInvention::Update( IUser* ptrUser )
 
 		float updateMoney = reqSkill * (genrePref + genreSkill) / ( 30.f * 8 );
 		float maxUpdateMoney = ptrUser->GetValue<int>( SALARY ) / 8.f;
-		float money = updateMoney * GetValue<int>( INVESTIMENT ) / ( 30.f * 8 );
+		float money = updateMoney * GetValue<int>( INVESTIMENT );
 		//человек может исследовать технологию в день на сумму не больше своей месячной зарплаты
 		money = min( money, maxUpdateMoney );
 
 		//эти средства реально пошли на изучение новых технологий
 		AddValue<int>( PASSEDPRICE, static_cast<int>( money ) );
+		//эту сумму надо списать у конторы в конце месяца
+		AddValue<int>( MONEY_TODECREASE, GetValue<int>( INVESTIMENT ) / ( 30 * 8 ) );
 	
 		SetValue<float>( READYWORKPERCENT, GetValue<int>(PASSEDPRICE) / static_cast< float >( GetValue<int>( REALPRICE ) ) );
 		AddValue<int>( QUALITY, (GetValue<int>( QUALITY ) + ptrUser->GetValue<int>( CODE_QUALITY )) / 2 );
@@ -147,7 +153,7 @@ int CNrpInvention::AddUser( IUser* user )
 	
 	_users.push_back( user );
 	SetValue<int>( USERNUMBER, _users.size() );
-	user->AddWork( this );
+	user->AddWork( this, true );
 	return 0;
 }
 

@@ -5,8 +5,7 @@
 namespace nrp
 {
 
-class CNrpCompany;
-const std::string CLASS_GAMEPROJECT( "CNrpGameProject" );
+CLASS_NAME CLASS_GAMEPROJECT( "CNrpGameProject" );
 
 OPTION_NAME VIDEOTECH( "videoTech" );
 OPTION_NAME ADVTECH( "advtech" );
@@ -38,6 +37,7 @@ class CNrpGameEngine;
 class CNrpTechnology;
 class CNrpProjectModule;
 class IUser;
+class CNrpCompany;
 
 typedef std::vector< CNrpTechnology* > TECH_LIST;
 
@@ -69,6 +69,8 @@ public:
 	const TECH_LIST& GetVideoTechList() { return videoTechnologies_; }
 	const TECH_LIST& GetSoundTechList() { return soundTechnologies_; }
 
+	static std::string ClassName() { return CLASS_GAMEPROJECT; }
+	virtual std::string ObjectName() { return CLASS_GAMEPROJECT; }
 private:
 	void InitializeOptions_( std::string name );
 	CNrpGameProject( CNrpGameProject& ptr );

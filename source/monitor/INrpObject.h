@@ -16,34 +16,28 @@
 namespace nrp
 {
 
+typedef const std::string CLASS_NAME; 
+
 class INrpObject
 {
 private:
-	const CLASS_NAME className_;
-	SYSTEM_NAME systemName_;
+	SYSTEM_NAME systemName_, objectName_;
 
 	INrpObject(void)
 	{
 
 	}
 public:
-	//имя класса
-	CLASS_NAME ClassName() { return className_; }
 	//уникальное имя объекта в массиве
-	SYSTEM_NAME GetSystemName() { return systemName_; }
-
-	//проверка типа класса
-	bool IsClassA( CLASS_NAME name )
-	{
-		return name == className_;
-	}
+	SYSTEM_NAME SystemName() { return systemName_; }
+	const std::string& ObjectName() { return objectName_; }
 
 	//размещение объекта в массиве
-	INrpObject( CLASS_NAME className, SYSTEM_NAME sysName ) : 
-					className_(className), systemName_(sysName)
+	INrpObject( CLASS_NAME objectName, SYSTEM_NAME sysName ):
+			objectName_( objectName ), systemName_( sysName )
 	{
 		if( systemName_.empty() )
-			systemName_ = className_ + "_object" + IntToStr( rand() );
+			systemName_ = objectName + "_object" + IntToStr( rand() );
 
 		GInsertObjectToSystemMap( this );
 	}

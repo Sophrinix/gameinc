@@ -429,8 +429,7 @@ int CLuaApplication::LoadGameBoxAddon( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpTechnology* tech = new CNrpTechnology( PT_GAMEBOXADDON );
-		tech->Load( techIniFile );
+		CNrpTechnology* tech = new CNrpTechnology( techIniFile );
 		object_->AddBoxAddon( tech );
 	}
 

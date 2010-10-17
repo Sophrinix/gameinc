@@ -3,7 +3,7 @@
 
 namespace nrp
 {
-const std::string CLASS_INRPDEVELOPPROJECT( "INrpDevelopProject" );
+CLASS_NAME CLASS_INRPDEVELOPPROJECT( "INrpDevelopProject" );
 
 OPTION_NAME MODULE_NUMBER( "moduleNumber" );
 
@@ -30,6 +30,8 @@ public:
 	virtual CNrpProjectModule* GetModule( size_t index ) = 0;
 	virtual CNrpProjectModule* GetModule( const char* name ) = 0;
 	virtual void Save( std::string amount );
+
+	static std::string ClassName() { return CLASS_INRPDEVELOPPROJECT; }
 protected:
 	void InitializeOptions_();
 

@@ -21,7 +21,7 @@ Luna< CLuaProgressBar >::RegType CLuaProgressBar::methods[] =			//реализуемы мет
 	{0,0}
 };
 
-CLuaProgressBar::CLuaProgressBar(lua_State *L)	: ILuaGuiElement(L, "CLuaProgressBar")							//конструктор
+CLuaProgressBar::CLuaProgressBar(lua_State *L)	: ILuaGuiElement(L, CLASS_LUAPROGRESBAR )							//конструктор
 {}
 
 int CLuaProgressBar::SetPosition( lua_State* L )

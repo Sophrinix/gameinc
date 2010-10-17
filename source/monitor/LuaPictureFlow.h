@@ -31,7 +31,8 @@ public:
 	int SetDrawBorder( lua_State* L );
 	int Clear( lua_State* L );
 
-	static const char* StaticGetLuaName() { return CLASS_LUAPICTUREFLOW.c_str(); }
+	static const char* ClassName() { return CLASS_LUAPICTUREFLOW.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAPICTUREFLOW; }
 };
 
 }//namespace nrp

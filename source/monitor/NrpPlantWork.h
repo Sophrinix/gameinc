@@ -4,7 +4,7 @@
 namespace nrp
 {
 
-OPTION_NAME CLASS_NRPPLANTWORK( "CNrpPlantWork" );
+CLASS_NAME CLASS_NRPPLANTWORK( "CNrpPlantWork" );
 
 OPTION_NAME PRODUCETYPE( "produceType" );
 OPTION_NAME NUMBERMACHINE( "numberMachine" );
@@ -35,6 +35,9 @@ public:
 	void Save( std::string sectionName, std::string fileName );
 	void Load( std::string sectionName, std::string fileName );
 	void BeginNewDay();
+
+	static std::string ClassName() { return CLASS_NRPPLANTWORK; }
+	virtual std::string ObjectName() { return CLASS_NRPPLANTWORK; }
 };
 
 }//end of namespace nrp

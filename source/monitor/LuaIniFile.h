@@ -9,6 +9,7 @@ namespace nrp
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAINIFILE( "CLuaIniFile" );
 
 class CLuaIniFile : public ILuaObject<nrp::IniFile>
 {
@@ -22,7 +23,8 @@ public:
 	int ReadFloat( lua_State* L );
 	int ReadTime( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaIniFile"; }
+	static const char* ClassName() { return CLASS_LUAINIFILE.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAINIFILE; }
 };
 
 }//namespace nrp

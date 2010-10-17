@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACHART( "CLuaChart" );
 
 class CLuaChart : public ILuaGuiElement<irr::gui::CChartCtrl>
 {
@@ -27,7 +28,8 @@ public:
 	int UpdateData( lua_State *L);
 	int SetOffsetPoints( lua_State *L);
 
-	static const char* StaticGetLuaName() { return "CLuaChart"; }
+	static const char* ClassName() { return CLASS_LUACHART.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUACHART; }
 };
 
 }//namespace nrp

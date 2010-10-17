@@ -11,6 +11,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAMINIMAP( "CLuaMiniMap" );
 
 class CLuaMiniMap : public ILuaGuiElement< irr::gui::CNrpMiniMap >
 {
@@ -22,7 +23,8 @@ public:
 	int GetAngleOffset( lua_State *L );
 	int SetOnRotateAction( lua_State *L );
 
-	static const char* StaticGetLuaName() { return "CLuaMiniMap"; }
+	static const char* ClassName() { return CLASS_LUAMINIMAP.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAMINIMAP; }
 };
 
 }//namespace nrp

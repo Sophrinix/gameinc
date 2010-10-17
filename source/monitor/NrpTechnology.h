@@ -6,7 +6,7 @@
 namespace nrp
 {
 
-const CLASS_NAME CLASS_TECHNOLOGY( "CNrpTechnology" );
+CLASS_NAME CLASS_TECHNOLOGY( "CNrpTechnology" );
 
 typedef std::map< int, int > REQUIRE_MAP;
 typedef enum { TS_UNKNOWN=0, TS_READY, TS_INDEVELOP, TS_PROJECT, TS_COUNT } TECH_STATUS;
@@ -39,6 +39,7 @@ class CNrpTechnology : public INrpProject
 public:
 	CNrpTechnology( PROJECT_TYPE typen, const CLASS_NAME className=CLASS_TECHNOLOGY );
 	CNrpTechnology( CNrpInvention* invention );
+	CNrpTechnology( const std::string& fileTech );
 	~CNrpTechnology(void);
 
 	void SetEngineTechRequire( int tech_type, int valuel );
@@ -58,6 +59,8 @@ public:
 	const REQUIRE_MAP& GetTechRequires() { return techRequires_; }
 	const REQUIRE_MAP& GetSkillRequires() { return skillRequires_; }
 
+	static std::string ClassName() { return CLASS_TECHNOLOGY; }
+	virtual std::string ObjectName() { return CLASS_TECHNOLOGY; }
 protected:
 	CNrpTechnology( CLASS_NAME className, PROJECT_TYPE typen );
 	CNrpTechnology();;

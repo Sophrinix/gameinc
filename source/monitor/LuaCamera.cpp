@@ -42,7 +42,7 @@ void CLuaCamera::FindRtsAnimator_()
 		}
 }
 
-CLuaCamera::CLuaCamera(lua_State *L) : ILuaSceneNode( L, "CLuaCamera" )
+CLuaCamera::CLuaCamera(lua_State *L) : ILuaSceneNode( L, CLASS_LUACAMERA )
 {
 	IF_OBJECT_NOT_NULL_THEN FindRtsAnimator_();
 }

@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATABLE( "CLuaTable" );
 
 class CLuaTable : public ILuaGuiElement<irr::gui::IGUITable>
 {
@@ -31,7 +32,8 @@ public:
 	int RemoveColumn( lua_State *L );
 	int ClearRows( lua_State* L);
 
-	static const char* StaticGetLuaName() { return "CLuaTable"; }
+	static const char* ClassName() { return CLASS_LUATABLE.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUATABLE; }
 };
 
 }//namespace nrp

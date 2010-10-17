@@ -9,6 +9,8 @@
 namespace nrp
 {
 
+CLASS_NAME CLASS_HUDCONFIG( "CNrpHUDConfig" );
+
 const std::string MIN_FONT_SIZE( "minFontSize" );
 const std::string MAX_FONT_SIZE( "maxFontSize" );
 const std::string FONT_8_INCH( "font_8" );
@@ -41,6 +43,9 @@ private:
 	const std::string SECTION_NAME;
 public:
 	static CNrpHUDConfig& Instance();
+
+	virtual std::string ObjectName() { return CLASS_HUDCONFIG; }
+	static std::string ClassName() { return CLASS_HUDCONFIG; }
 };
 
 }//namespace nrp

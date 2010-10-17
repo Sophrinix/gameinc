@@ -3,6 +3,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_NRPRELATION( "CNrpRelation" );
 
 OPTION_NAME REL_VALUE( "rel_value" );
 OPTION_NAME REL_TIME( "rel_time" );
@@ -21,6 +22,8 @@ public:
 		GetLocalTime( &time );
 		CreateValue<SYSTEMTIME>( REL_TIME, time );
 	}
+
+	static std::string ClassName() { return CLASS_NRPRELATION; }
 	~CNrpRelation(void);
 };
 

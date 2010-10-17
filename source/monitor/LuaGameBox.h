@@ -4,6 +4,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAGAMEBOX( "CLuaGameBox" );
 
 class CNrpGameBox;
 
@@ -14,7 +15,8 @@ public:
 
 	CLuaGameBox(lua_State *L);		
 																//нажатии на эту кнопку
-	static const char* StaticGetLuaName() { return "CLuaGameBox"; }
+	static const char* ClassName() { return CLASS_LUAGAMEBOX.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAGAMEBOX; }
 };
 
 }//namespace nrp

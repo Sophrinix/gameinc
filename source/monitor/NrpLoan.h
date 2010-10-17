@@ -3,6 +3,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LOAN( "CNrpLoan" );
 
 OPTION_NAME YEARPERCENT( "percentInYear");
 OPTION_NAME MONEY( "money" );
@@ -18,6 +19,9 @@ public:
 	typedef enum { TL_FREEMONEY=0, TL_TIMEMONEY, TL_COUNT } TYPE_LOAN;
 	CNrpLoan( int id );
 	~CNrpLoan(void);
+
+	static std::string ClassName() { return CLASS_LOAN; }
+	virtual std::string ObjectName() { return CLASS_LOAN; }
 private:
 	void Load_( char* name ) {}
 };

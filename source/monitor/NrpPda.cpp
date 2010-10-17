@@ -87,6 +87,7 @@ const CPdaItem& CNrpPda::Current()
 {
 	bool valid =  _currentIndex >= 0 && _currentIndex < static_cast< int >( _items.size() );
 	assert( valid );
+
 	return valid ? *_items[ _currentIndex ] : CPdaItem( "", "", SYSTEMTIME() );
 }
 }//end namespace nrp

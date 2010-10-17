@@ -1,4 +1,3 @@
-local company = applic:GetPlayerCompany()
 local plant = NrpGetPlant()
 
 function sworkAppDayChange( ptr )
@@ -13,6 +12,18 @@ function sworkAppMonthChange()
 	updates.CheckNewReklames( true )
 	updates.CheckNewTechs() 
 	updates.CheckGameBoxAddons()
+	
+	GiveMoneyForInvention()
+end
+
+function GiveMoneyForInvention()
+	local company = applic:GetPlayerCompany()
+	for index=1, company:GetInventionNumber() do
+		local invention = company:GetInvention( index-1 )
+					
+		company:AddBalance( -invention:GetMonthPay() )
+		invention:ClearMonthPay()
+	end
 end
 
 function sworkAppYearChange( ptr )

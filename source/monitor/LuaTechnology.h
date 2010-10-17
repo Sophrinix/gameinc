@@ -9,6 +9,7 @@ namespace nrp
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATECH( "CLuaTechnology" );
 
 class CLuaTechnology : public ILuaProject<nrp::CNrpTechnology>
 {
@@ -42,7 +43,8 @@ public:
 	int SetCompany( lua_State* L );
 	int GetInternalName( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaTech"; }	
+	static const char* ClassName() { return CLASS_LUATECH.c_str(); }	
+	virtual std::string ObjectName() { return CLASS_LUATECH; }
 };
 
 }//namespace nrp

@@ -26,7 +26,7 @@ Luna< CLuaComboBox >::RegType CLuaComboBox::methods[] =			//реализуемы методы
 	{0,0}
 };
 
-CLuaComboBox::CLuaComboBox(lua_State *L)	: ILuaGuiElement(L, "CLuaComboBox")							//конструктор
+CLuaComboBox::CLuaComboBox(lua_State *L)	: ILuaGuiElement(L, CLASS_LUACOMBOBOX )							//конструктор
 {}
 
 int CLuaComboBox::SetImage( lua_State *L )							//получает имя файла с текстурой, область из которой надо брать кнопку

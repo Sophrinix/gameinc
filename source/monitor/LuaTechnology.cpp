@@ -46,7 +46,7 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	{0,0}
 };
 
-CLuaTechnology::CLuaTechnology(lua_State *L) : ILuaProject( L, "CLuaTech" )							//конструктор
+CLuaTechnology::CLuaTechnology(lua_State *L) : ILuaProject( L, CLASS_LUATECH )							//конструктор
 {}
 
 int CLuaTechnology::GetTechGroup( lua_State* L ) 

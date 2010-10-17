@@ -5,6 +5,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAGAMEENGINE( "CLuaGameEngine" );
 
 class CLuaGameEngine : public ILuaProject<nrp::CNrpGameEngine>
 {
@@ -22,7 +23,8 @@ public:
 	int GetTexture( lua_State* L );
 	int Load( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaGameEngine"; }
+	static const char* ClassName() { return CLASS_LUAGAMEENGINE.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAGAMEENGINE; }
 };
 
 }//namespace nrp

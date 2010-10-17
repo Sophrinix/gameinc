@@ -3,6 +3,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAPDA( "CLuaPda" );
 
 class CNrpPda;
 
@@ -20,7 +21,8 @@ public:
 	int Save( lua_State* L );
 	int Load( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaPda"; }
+	static const char* ClassName() { return CLASS_LUAPDA.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAPDA; }
 };
 
 }//namespace nrp

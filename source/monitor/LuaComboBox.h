@@ -24,6 +24,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACOMBOBOX( "CLuaComboBox" );
 
 class CLuaComboBox : public ILuaGuiElement<irr::gui::IGUIComboBox>
 {
@@ -41,7 +42,8 @@ public:
 	int GetSelectedObject( lua_State *L );
 	int SetSelected( lua_State *L );
 
-	static const char* StaticGetLuaName() { return "CLuaComboBox"; }
+	virtual std::string ObjectName() { return CLASS_LUACOMBOBOX; }
+	static const char* ClassName() { return CLASS_LUACOMBOBOX.c_str(); }
 };
 
 }//namespace nrp

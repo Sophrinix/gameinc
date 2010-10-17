@@ -4,8 +4,8 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAGAME( "CLuaGame" );
 
-const std::string CLASS_LUAGAME( "CLuaGame" );
 class CNrpGame;
 
 class CLuaGame : public ILuaBaseProject<nrp::CNrpGame>
@@ -38,8 +38,8 @@ public:
 	int GetCurrentMonthSales( lua_State* L );
 	int GetCompany( lua_State* L );
 
-	static const char* StaticGetLuaName() { return CLASS_LUAGAME.c_str(); }
-
+	static const char* ClassName() { return CLASS_LUAGAME.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAGAME; }
 private:
 	template< class R > R GetImageLisParam_( lua_State* L, 
 		                                     std::string funcName, 

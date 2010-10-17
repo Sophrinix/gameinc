@@ -91,7 +91,7 @@ float CNrpGameBox::GetBoxAddonsPrice()
 	return sum;
 }
 
-nrp::CNrpGameBox::CNrpGameBox( CNrpGame* ptrGame ) : INrpConfig( "CNrpGameBox", "" )
+nrp::CNrpGameBox::CNrpGameBox( CNrpGame* ptrGame ) : INrpConfig( CLASS_GAMEBOX, "" )
 {
 	CreateValue<std::string>( NAME, ptrGame->GetValue<std::string>( NAME ) );
 	CreateValue<PNrpGame>( GAME, ptrGame );

@@ -24,7 +24,7 @@ Luna< CLuaWindow >::RegType CLuaWindow::methods[] =
 	{0,0}
 };
 
-CLuaWindow::CLuaWindow(lua_State *L) : ILuaGuiElement(L, "CLuaWindow")
+CLuaWindow::CLuaWindow(lua_State *L) : ILuaGuiElement(L, CLASS_LUAWINDOW )
 {}
 
 int CLuaWindow::GetCloseButton( lua_State *L )

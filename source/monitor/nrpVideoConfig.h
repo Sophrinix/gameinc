@@ -9,6 +9,8 @@
 namespace nrp
 {
 
+CLASS_NAME CLASS_VIDEOCONFIG( "CNrpVideoConfig" );
+
 const std::string FULLSCREEN("fullScreen");
 const std::string USE_SHADOWS("useShadows");
 const std::string VSYNC("vSync");
@@ -22,6 +24,9 @@ private:
 	void Load_( char* file_name );
 
 	const std::string SECTION_NAME;
+
+	virtual std::string ObjectName() { return CLASS_VIDEOCONFIG; }
+	static std::string ClassName() { return CLASS_VIDEOCONFIG; }
 public:
 	static CNrpVideoConfig& Instance();
 };

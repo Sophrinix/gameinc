@@ -37,6 +37,7 @@ namespace irr
 namespace nrp
 {
 	class INrpConfig;
+	CLASS_NAME CLASS_NRPENGINE( "CNrpEngine" );
 }
 
 class CNrpEngine : public nrp::INrpObject
@@ -75,6 +76,8 @@ public:
 
 	// by d.a, для управления объектами на сцене
 	irr::scene::INrpScene* GetCurrentScene() const;
+
+	static std::string ClassName() { return nrp::CLASS_NRPENGINE; }
 private:
 	// закрыл конструкторы (синглетон-акцесс)
 	CNrpEngine();
@@ -95,7 +98,7 @@ private:
 	irr::gui::IGUIEnvironment* guienv_;
 	irr::gui::CNrpConsole* console_;
 
-	std::map< CLASS_NAME, nrp::INrpConfig* > config_;
+	std::map< std::string, nrp::INrpConfig* > config_;
 	std::map< std::string, std::string > scenes_;
 };
 

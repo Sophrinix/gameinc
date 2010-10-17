@@ -3,7 +3,7 @@
 
 namespace nrp
 {
-OPTION_NAME CLASS_NRPGAME( "CNrpGame" );
+CLASS_NAME CLASS_NRPGAME( "CNrpGame" );
 
 class CNrpGameProject;
 class CNrpCompany;
@@ -68,6 +68,9 @@ public:
 
 	void Save( std::string saveFolder );
 	void Load( std::string loadFolder );
+
+	static std::string ClassName() { return CLASS_NRPGAME; }
+	virtual std::string ObjectName() { return CLASS_NRPGAME; }
 private:
 	void Load_( char* name ) {}
 	void InitializeOptions_();

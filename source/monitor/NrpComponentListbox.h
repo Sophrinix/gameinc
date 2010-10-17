@@ -188,6 +188,7 @@ protected:
 	irr::core::array< ListItem > Items;
 	irr::s32 Selected;
 	irr::s32 ItemHeight;
+	irr::s32 _userSetItemHeight;
 	irr::s32 TotalItemHeight;
 	irr::s32 ItemsIconWidth;
 	irr::gui::IGUIFont* _font;

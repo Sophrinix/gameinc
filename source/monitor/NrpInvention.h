@@ -4,7 +4,7 @@
 namespace nrp
 {
 
-const CLASS_NAME CLASS_INVENTION( "CNrpInvention" );
+CLASS_NAME CLASS_INVENTION( "CNrpInvention" );
 
 OPTION_NAME SECTIONS_USERS( "users" );
 
@@ -14,6 +14,8 @@ OPTION_NAME INVESTIMENT( "investiment" );
 OPTION_NAME INVENTIONSPEED( "inventionspeed" );
 OPTION_NAME PROGNOSEDATEFINISH( "prognosedatefinish" );
 OPTION_NAME DAYLEFT( "dayleft" );
+OPTION_NAME USERSTARTDATE( "userStartDate" );
+OPTION_NAME MONEY_TODECREASE( "moneyToDecrease" );
 
 class CNrpInvention : public IWorkingModule
 {
@@ -30,6 +32,9 @@ public:
 
 	void Save( std::string saveFolder );
 	void Load( std::string fileName );
+
+	static std::string ClassName() { return CLASS_INVENTION; }
+	virtual std::string ObjectName() { return CLASS_INVENTION; }
 
 private:
 	int _GetRealPrice( CNrpTechnology* tech );

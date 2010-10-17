@@ -20,7 +20,7 @@ Luna< CLuaLabel >::RegType CLuaLabel::methods[] =			//реализуемы методы
 	{0,0}
 };
 
-CLuaLabel::CLuaLabel(lua_State *L)	: ILuaGuiElement(L, "CLuaLabel")							//конструктор
+CLuaLabel::CLuaLabel(lua_State *L)	: ILuaGuiElement(L, CLASS_LUALABEL )							//конструктор
 {}
 
 int CLuaLabel::SetOverrideFont( lua_State* L )

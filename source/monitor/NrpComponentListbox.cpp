@@ -22,7 +22,7 @@ CNrpComponentListbox::CNrpComponentListbox( gui::IGUIEnvironment* env, IGUIEleme
 								 _font(0), IconBank(0), ScrollBar(0), Selecting(false), 
 								 DrawBack(true), MoveOverSelect(false), selectTime(0), 
 								 AutoScroll(true), KeyBuffer(), LastKeyTime(0), 
-								 HighlightWhenNotFocused(true)
+								 HighlightWhenNotFocused(true), _userSetItemHeight(0)
 {
 	IGUISkin* skin = Environment->getSkin();
 
@@ -149,7 +149,7 @@ void CNrpComponentListbox::recalculateItemHeight()
 	assert( _font != NULL );
 
 	if (_font)
-		ItemHeight = _font->getDimension(L"A").Height + 4;
+		ItemHeight = (_userSetItemHeight == 0 ? _font->getDimension(L"A").Height + 4 : _userSetItemHeight);
 
 	TotalItemHeight = ItemHeight * Items.size();
 	ScrollBar->setMax( TotalItemHeight - AbsoluteRect.getHeight()  );
@@ -483,7 +483,7 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 	float percent = tech->GetValue<float>( READYWORKPERCENT );
 	std::wstring name = StrToWide( tech->GetValue<std::string>( NAME ) );
 
-	swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), (int)(percent * 100) );
+	swprintf( tmpstr, 127, L"(%s)%s  (%d %%)", tech->ObjectName(), name.c_str(), (int)(percent * 100) );
 	core::recti progressRect = frameRect;
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
 	driver->draw2DRectangle( progressRect, bgColor, bgColor, bgColor, bgColor, &clipRect );
@@ -623,7 +623,7 @@ void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti re
 
 	//создадим прямоугольник для известности и сдвинем его чуть вниз
 	core::recti famous = fullRectangle + core::position2di( 0, rectangle.getHeight() * 0.1f ) ;
-	famous.LowerRightCorner.Y = famous.UpperLeftCorner.Y + rectangle.getHeight() * 0.3;
+	famous.LowerRightCorner.Y = famous.UpperLeftCorner.Y + rectangle.getHeight() * 0.3f;
 	famous.LowerRightCorner.X = famous.UpperLeftCorner.X + famous.getWidth() * devGame->GetValue<float>( FAMOUS );
 
 	//создадим прямоугольник для завершенности игры
@@ -656,9 +656,15 @@ void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle,
 	driver->draw2DRectangle( frameRect, bgColor, bgColor, bgColor, bgColor, &clipRect );
 
 	std::string pathToImage = user->GetValue<std::string>( TEXTURENORMAL );
-	driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
-		core::recti( 3, 3, rectangle.getHeight(), rectangle.getHeight() - 6 ) + rectangle.UpperLeftCorner,
-		core::recti( 0, 0, 128, 128 ) );
+	video::ITexture* txs = driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() );
+	f32 koeff = txs ? (rectangle.getHeight() / static_cast< float >( txs->getSize().Height ) ) : 1;
+	core::dimension2du imSize( static_cast< u32 >( txs->getSize().Width * koeff ),
+							   static_cast< u32 >( txs->getSize().Height * koeff ) );
+		
+	driver->draw2DImage( txs, 
+		core::recti( core::position2di( 0, 0 ), imSize ) + rectangle.UpperLeftCorner,
+					 core::recti( core::position2di( 0, 0 ), txs->getSize() ), &clipRect );
+
 	_font->draw( tmpstr, rectangle + core::position2di( rectangle.getHeight() + 6, 0 ), color, false, true, &clipRect ); 
 }
 
@@ -982,7 +988,7 @@ void* CNrpComponentListbox::getSelectedObject()
 
 void CNrpComponentListbox::setItemHeight( s32 height )
 { 
-	ItemHeight = height;
+	_userSetItemHeight = height;
 }
 
 void CNrpComponentListbox::setDrawBackground( bool draw )

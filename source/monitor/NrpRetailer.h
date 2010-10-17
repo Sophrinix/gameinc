@@ -4,13 +4,15 @@
 namespace nrp
 {
 
-const std::string CLASS_NRPRETAILER( "CNrpRetailer" );
+CLASS_NAME CLASS_NRPRETAILER( "CNrpRetailer" );
 
 class CNrpRetailer : public INrpProject
 {
 public:
 	CNrpRetailer(std::string name);
 	~CNrpRetailer(void);
+
+	static std::string ClassName() { return CLASS_NRPRETAILER; }
 };
 
 typedef CNrpRetailer* PNrpRetailer;

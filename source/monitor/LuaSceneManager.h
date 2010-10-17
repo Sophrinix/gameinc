@@ -14,6 +14,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUASCENEMANAGER( "CLuaSceneManager" );
 
 class CLuaSceneManager : public ILuaObject< irr::scene::ISceneManager >
 {
@@ -57,7 +58,8 @@ public:
 	int LoadIrrlichtScene( lua_State* L );
 	int SetSelectedNode( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaSceneManager"; }
+	static const char* ClassName() { return CLASS_LUASCENEMANAGER.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUASCENEMANAGER; }
 private:
 	void RecalculateWorldParams_( irr::scene::ITerrainSceneNode* newTerrain );
 	irr::scene::ISceneNode* GetTextSceneNode_( irr::scene::ISceneNode* ptrNode );

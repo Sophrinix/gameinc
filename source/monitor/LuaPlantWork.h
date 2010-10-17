@@ -5,7 +5,7 @@
 namespace nrp
 {
 
-const std::string CLASS_LUAPLANTWORK("CLuaPlantWork");
+CLASS_NAME CLASS_LUAPLANTWORK("CLuaPlantWork");
 
 class CNrpPlantWork;
 
@@ -13,7 +13,8 @@ class CLuaPlantWork : public ILuaObject< nrp::CNrpPlantWork >
 {
 public:
 	static Luna<CLuaPlantWork>::RegType methods[];
-	static const char* StaticGetLuaName() { return CLASS_LUAPLANTWORK.c_str(); }
+	static const char* ClassName() { return CLASS_LUAPLANTWORK.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUAPLANTWORK; }
 
 	CLuaPlantWork(lua_State *L);
 	int Create( lua_State* L );

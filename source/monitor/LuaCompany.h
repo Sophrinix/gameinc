@@ -9,6 +9,7 @@ namespace nrp
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACOMPANY( "CLuaCompany" );
 
 class CLuaCompany : public ILuaProject<nrp::CNrpCompany>
 {
@@ -19,6 +20,7 @@ public:
 	int SetCEO( lua_State* L );
 	int GetName( lua_State* L );
 	int GetBalance( lua_State* L );
+	int AddBalance( lua_State* L );
 	int GetEnginesNumber( lua_State* L );
 	int GetEngine( lua_State* L );
 	int AddGameEngine( lua_State* L );
@@ -47,7 +49,8 @@ public:
 	int GetInventionNumber( lua_State* L );
 	int GetInvention( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaCompany"; }
+	static const char* ClassName() { return CLASS_LUACOMPANY.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUACOMPANY; }
 };
 
 }//namespace nrp

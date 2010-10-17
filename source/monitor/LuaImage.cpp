@@ -20,7 +20,7 @@ Luna< CLuaImage >::RegType CLuaImage::methods[] =			//реализуемыe методы
 	{0,0}
 };
 
-CLuaImage::CLuaImage(lua_State *L)	: ILuaGuiElement(L, "CLuaImage")							//конструктор
+CLuaImage::CLuaImage(lua_State *L)	: ILuaGuiElement(L, CLASS_LUAIMAGE )							//конструктор
 {}
 
 int CLuaImage::SetImage( lua_State *L )								

@@ -20,7 +20,7 @@ CNrpGameProject::CNrpGameProject( std::string name, CNrpCompany* ptrCompany ) : 
 	SetValue<PNrpCompany>( PARENTCOMPANY, ptrCompany );
 }
 
-CNrpGameProject::CNrpGameProject( CNrpGameProject& ptr ) : INrpProject( "CNrpGameProject", ptr.GetValue<std::string>( NAME ) )
+CNrpGameProject::CNrpGameProject( CNrpGameProject& ptr ) : INrpProject( CLASS_GAMEPROJECT, ptr.GetValue<std::string>( NAME ) )
 {
 	throw "function not done";
 }

@@ -13,6 +13,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACAMERA( "CLuaCamera" );
 
 class CLuaCamera : public ILuaSceneNode< irr::scene::ICameraSceneNode >
 {
@@ -32,7 +33,8 @@ public:
 	int GetRotate( lua_State *L );
 	int SetObject(lua_State *L);
 
-	static const char* StaticGetLuaName() { return "CLuaCamera"; }
+	static const char* ClassName() { return CLASS_LUACAMERA.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUACAMERA; }
 
 private:
 	irr::scene::CNrpCameraAnimator* anim_;

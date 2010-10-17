@@ -12,6 +12,7 @@ namespace irr
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUADRIVER( "CLuaDriver" );
 
 //! Lua-обертка для работы с видеодрайвером
 /*!
@@ -56,7 +57,8 @@ public:
 
 	int SetRenderTarget( lua_State* L );
 
-	static const char* StaticGetLuaName() { return "CLuaDriver"; }
+	static const char* ClassName() { return CLASS_LUADRIVER.c_str(); }
+	virtual std::string ObjectName() { return CLASS_LUADRIVER; }
 };
 
 }//namespace nrp

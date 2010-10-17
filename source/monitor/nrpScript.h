@@ -10,6 +10,7 @@ struct lua_State; //fwd
 
 namespace nrp
 {
+CLASS_NAME CLASS_NRPSCRIPT( "CNrpScript" );
 
 const std::string LOAD_FUNCTIONS_FILENAME("functionsFilename");
 const std::string SHOW_CALL_FUNCTION_NAME("showCallFunctionName");
@@ -38,6 +39,8 @@ public:
 	void SetSender( void* ptr ) { _sender = ptr; }
 	void* GetSender() { return _sender; }
 	
+	static std::string ClassName() { return CLASS_NRPSCRIPT; }
+	virtual std::string ObjectName() { return CLASS_NRPSCRIPT; }
 private:
 	lua_State* vm_;
 	void* _sender;
