@@ -2,37 +2,42 @@ local company = nil
 local user = CLuaUser( nil )
 
 function CreateStuffLists()
-	RemoveFile( updates.fileDiskMachines )
+	os.remove( updates.fileDiskMachines )
 	applic:CreateDirectorySnapshot( "xtras/diskmachines", updates.fileDiskMachines,
 									"diskMachine", "item.dm" )
 									
-	RemoveFile( updates.fileIniAddons )
+	os.remove( updates.fileIniAddons )
 	applic:CreateDirectorySnapshot( "xtras/gameboxaddon", updates.fileIniAddons,
 									"addon", "item.addon" )
 
-	RemoveFile( updates.fileIniPlatforms )
+	os.remove( updates.fileIniPlatforms )
 	applic:CreateDirectorySnapshot( "xtras/platforms", updates.fileIniPlatforms,
 									"platorm", "item.platform" )
 									
-	RemoveFile( updates.fileReklames )
+	os.remove( updates.fileReklames )
 	applic:CreateDirectorySnapshot( "xtras/reklames", updates.fileReklames,
 									"reklame", "item.reklame" )
 
-	RemoveFile( updates.fileRetailers )
+	os.remove( updates.fileRetailers )
 	applic:CreateDirectorySnapshot( "xtras/retailers", updates.fileRetailers,
 									"retailer", "item.retailer" )
 									
-	RemoveFile( updates.fileScreenshots )
+	os.remove( updates.fileScreenshots )
 	applic:CreateDirectorySnapshot( "xtras/Screenshots", updates.fileScreenshots,
 									"screenshot", "item.desc" )
 									
-	RemoveFile( updates.fileEngines )
+	os.remove( updates.fileEngines )
 	applic:CreateDirectorySnapshot( "xtras/engines", updates.fileEngines,
-									"engine", "engine.ini" )
+									"engine", "item.engine" )
 									
-	RemoveFile( updates.fileTechs )
+	os.remove( updates.fileTechs )
 	applic:CreateDirectorySnapshot( "xtras/technology", updates.fileTechs,
 									"tech", "item.tech" )
+									
+									
+	os.remove( updates.fileGames )
+	applic:CreateDirectorySnapshot( "xtras/games", updates.fileGames,
+									"game", "item.game" )									
 end
 
 function sloginResetDataForNewGame()

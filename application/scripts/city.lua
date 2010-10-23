@@ -9,6 +9,10 @@ local button = base.button
 
 local mainWindow = nil
 
+function SetVisible( vis )
+	mainWindow:SetVisible( vis )
+end
+
 function Show()
 	if mainWindow then
 		mainWindow:SetVisible( true )

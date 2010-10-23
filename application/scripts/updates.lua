@@ -9,15 +9,20 @@ local CON = base.CON
 local applic = base.applic
 local plant = base.NrpGetPlant()
 
-fileIniPlatforms = "xtras/platforms.list"
-fileIniAddons	= "xtras/gameboxaddons.list"
-fileDiskMachines = "xtras/diskmachines.list"
-fileRetailers = "xtras/retailers.list"
-fileImages = "xtras/screenshots.list"
-fileTechs = "xtras/technologies.list"
-fileReklames = "xtras/reklames.list"
-fileScreenshots = "xtras/screenshots.list"
-fileEngines	= "xtras/engines.list"
+fileIniPlatforms	= "xtras/platforms.list"
+fileIniAddons		= "xtras/gameboxaddons.list"
+fileDiskMachines	= "xtras/diskmachines.list"
+fileRetailers		= "xtras/retailers.list"
+fileImages			= "xtras/screenshots.list"
+fileTechs			= "xtras/technologies.list"
+fileReklames		= "xtras/reklames.list"
+fileScreenshots		= "xtras/screenshots.list"
+fileEngines			= "xtras/engines.list"
+fileGames			= "xtras/games.list"
+
+local function GetString( fileName, key ) 
+	return base.CLuaIniFile( nil, fileName ):ReadString( "properties", key, "error" )
+end
 
 local function GetDate( fileName, keyName )
 	local ini = base.CLuaIniFile( nil, fileName )
@@ -26,14 +31,18 @@ local function GetDate( fileName, keyName )
 	return base.os.time( {year=cYear, month=cMonth, day=cDay} )
 end
 
+local function GetCurrentDate()
+	local cYear, cMonth, cDay = applic:GetGameTime()
+	return base.os.time( {year=cYear, month=cMonth, day=cDay} )
+end
+
 function CheckGamePlatforms( showPdaForNewPlatform )
 	local iniFile = base.CLuaIniFile( nil, fileIniPlatforms )
 	
 	local plNumber = iniFile:ReadInteger( "options", "platformNumber", 0 ) 
 	--получим текущую дату
-	local cYear, cMonth, cDay = applic:GetGameTime()
-	local curTime = base.os.time( {year=cYear, month=cMonth, day=cDay} )
-	
+
+	local curTime = GetCurrentDate()
 	--пройдемс€ по списку платформ, которые вообще доступны
 	for i=1, plNumber do
 		--запоминаем им€ файла с описанием платформы
@@ -41,7 +50,7 @@ function CheckGamePlatforms( showPdaForNewPlatform )
 		Log({src=SCRIPT, dev=ODS|CON}, "platform"..(i-1).."="..tmpPlatformIni )
 		
 		--прочитаем параметры платформы
-		local plName = base.CLuaIniFile( nil, tmpPlatformIni ):ReadString( "properties", "name:string", "error" )
+		local plName = GetString( tmpPlatformIni, "name:string" )
 		local platformStartTime = GetDate( tmpPlatformIni, "startdate:time" )
 		--local platformEndDate = GetDate( tmpPlatformIni, "enddate:time" )
 		
@@ -68,19 +77,18 @@ function CheckGameBoxAddons( showPdaForNewPAddon )
 	local iniFile = base.CLuaIniFile( nil, fileIniAddons )
 	
 	local plNumber = iniFile:ReadInteger( "options", "addonNumber", 0 ) 
-	Log( {src=SCRIPT, dev=ODS|CON}, "Open config file "..fileIniAddons.." with addonNumber="..plNumber )
+	base.LogScript( "Open config file "..fileIniAddons.." with addonNumber="..plNumber )
 	--получим текущую дату
-	local cYear, cMonth, cDay = applic:GetGameTime()
-	local curTime = base.os.time( {year=cYear, month=cMonth, day=cDay} )
+	local curTime = GetCurrentDate()
 	
 	--пройдемс€ по списку аддонов, которые вообще доступны
 	for i=1, plNumber do
 		--запоминаем им€ файла с описанием аддона
 		local tmpAddonIni = iniFile:ReadString( "options", "addon"..(i-1), "" )
-		Log({src=SCRIPT, dev=ODS|CON}, "addon"..(i-1).."="..tmpAddonIni )
+		base.LogScript( "addon"..(i-1).."="..tmpAddonIni )
 		
 		--прочитаем параметры платформы
-		local addonName = base.CLuaIniFile( nil, tmpAddonIni ):ReadString( "properties", "name:string", "error" )
+		local addonName = GetString( tmpAddonIni, "name:string" )
 		local addonStartTime = GetDate( tmpAddonIni, "startdate:time" )
 		--local addonEndDate = GetDate( tmpPlatformIni, "enddate:time" )
 		
@@ -101,10 +109,9 @@ function CheckDiskMachines( showPdaForNewDm )
 	local iniFile = base.CLuaIniFile( nil, fileDiskMachines )
 	
 	local dmNumber = iniFile:ReadInteger( "options", "diskMachineNumber", 0 ) 
-	Log( {src=SCRIPT, dev=ODS|CON}, "Open config file "..fileDiskMachines.." with diskMachineNumber="..dmNumber )
+	base.LogScript( "Open config file "..fileDiskMachines.." with diskMachineNumber="..dmNumber )
 	--получим текущую дату
-	local cYear, cMonth, cDay = applic:GetGameTime()
-	local curTime = base.os.time( {year=cYear, month=cMonth, day=cDay} )
+	local curTime = GetCurrentDate()
 	
 	--пройдемс€ по списку аддонов, которые вообще доступны
 	for i=1, dmNumber do
@@ -113,7 +120,7 @@ function CheckDiskMachines( showPdaForNewDm )
 		Log({src=SCRIPT, dev=ODS|CON}, "diskMachine"..(i-1).."="..dmIniFile )
 		
 		--прочитаем параметры платформы
-		local dmName = base.CLuaIniFile( nil, dmIniFile ):ReadString( "properties", "name:string", "error" )
+		local dmName = GetString( dmIniFile, "name:string" )
 		local dmStartTime = GetDate( dmIniFile, "startdate:time" )
 		
 		--провер€ем попадание врмененного интервала аддона в текущее врем€
@@ -135,7 +142,7 @@ function CheckRetailers( ptr )
 	local retlNumber = iniFile:ReadInteger( "options", "retailerNumber", 0 )
     local retlIniFile = ""
 	
-	Log( {src=SCRIPT, dev=ODS|CON}, "Open config file "..fileRetailers.." with retailNumber="..retlNumber )
+	base.LogScript( "Open config file "..fileRetailers.." with retailNumber="..retlNumber )
 	for i=1, retlNumber do
 		local retailer = base.CLuaRetailer( nil )
 		retailer:Create()
@@ -168,7 +175,7 @@ function CheckScreenshots( ptr )
     local descIniFile = ""
     applic:ClearImageList()
 	
-	Log( {src=SCRIPT, dev=ODS|CON}, "Open config file "..fileImages.." with DescriptionNumber="..descNumber )
+	base.LogScript( "Open config file "..fileImages.." with DescriptionNumber="..descNumber )
 	for year=1983, maxYear do
 		for i=1, descNumber do
 			descIniFile = iniFile:ReadString( maxYear, "description"..(i-1), "" ) 
@@ -182,57 +189,88 @@ function CheckNewReklames( showPdaForNewReklame )
 	
 	local reklamesNumber = iniFile:ReadInteger( "options", "reklameNumber", 0 ) 
 	--получим текущую дату
-	local cYear, cMonth, cDay = applic:GetGameTime()
-	local curTime = base.os.time( {year=cYear, month=cMonth, day=cDay} )
+	local curTime = GetCurrentDate()
 	
 	--пройдемс€ по списку реклам, которые вообще доступны
 	for i=1, reklamesNumber do
 		--запоминаем им€ файла с описанием рекламы
 		local tmpReklameIni = iniFile:ReadString( "options", "reklame"..(i-1), "" )
 		
-		--прочитаем врем€, когда этот вид рекламы по€вилс€ на рынке		
-		local rTime = GetDate( tmpReklameIni, "startdate:time" )
-		
-		Log({src=SCRIPT, dev=ODS|CON}, "reklame"..(i-1).."="..tmpReklameIni.."   rTime="..rTime.."   curTime="..curTime )
 		--если уже можно показывать пользователю рекламу
-		if rTime <= curTime then --1
+		if GetDate( tmpReklameIni, "startdate:time" ) <= curTime then --1
 			--попрoбуем загрузить рекламу в двигло...
-			local itNew = plant:LoadBaseReklame( tmpReklameIni )
+			local rName = GetString( tmpReklameIni, "techtype:string" )
+			local itNew = plant:LoadBaseReklame( rName, tmpReklameIni )
 			
 			if showPdaForNewReklame and itNew then
 				--надо показать игроку что по€вилась нова€ возможность
-				local rName = base.CLuaIniFile( nil, tmpReklameIni ):ReadString( "properties", "name:string", "error" )
 				base.pda.Show( "Ќа рынке доступен новый вид рекламы "..rName )
-			end
-			
+			end			
 		end --1
 	end --for
 end
 
+function CheckNewGames()
+	base.LogDebug( "!!!!!!!! Start update games" )
+	local iniFile = base.CLuaIniFile( nil, fileGames )
+
+	local gameNumber = iniFile:ReadInteger( "options", "gameNumber", 0 )
+	local gameIniFile = ""
+	local currentDate = GetCurrentDate()
+	
+	for i=1, gameNumber do
+		gameIniFile = iniFile:ReadString( "options", "game"..(i-1), "" )
+		base.LogDebug( "open game "..gameIniFile )
+		
+		local gameName = GetString( gameIniFile, "internalname:string" )
+		local startDate = GetDate( gameIniFile, "startdate:time" )
+		
+		if startDate <= currentDate then
+			--если така€ игра уже выпущена, то еЄ не надо показывать
+			--искать будем по внутреннему имени
+			local game = applic:GetGame( gameName )
+			
+			base.LogScript( "find new game in"..gameIniFile )
+			if game:Empty() == 1 then
+				game:Create( gameIniFile )
+				applic:AddGameToMarket( game:Self() )
+				base.pda.Show( "Ќа рынке по€вилась нова€ игра "..game:GetName() )
+			else
+				base.LogDebug("»гра "..game:GetName().." уже кем-то создана")
+			end
+		end 
+	end
+end
+
 function CheckNewTechs()
+	base.LogDebug( "!!!!!!!!Start update technologies" )
 	local iniFile = base.CLuaIniFile( nil, fileTechs )
 
 	local plNumber = iniFile:ReadInteger( "options", "techNumber", 0 )
     local plIniFile = ""
-    local cYear, cMonth, cDay = applic.GetGameTime()
-    local currentDate = os.time( {year=cYear, month=cMonth, day=cDay } )
+    local currentDate = GetCurrentDate()
 	
 	for i=1, plNumber do
 		plIniFile = iniFile:ReadString( "options", "tech"..(i-1), "" ) 
 		
-		local techIni = base.CLuaIniFile( nil, plIniFile )
+		base.LogDebug( "open tech "..plIniFile ) 
+		
+		local techName = base.CLuaIniFile( nil, plIniFile ):ReadString( "properties", "internalname:string", "error" )
 		local startDate = GetDate( plIniFile, "startdate:time" )
-		local techName = techIni:ReadString( "properties", "name:string", "error" )
+		--local t = base.os.date( "*t", startDate )
+		--base.LogScript( base.string.format( "readed date %d.%d.%d", t.year, t.month, t.day ) )
 
 		if startDate <= currentDate then
 			--такую технологию никто не изобрел
 			local tech = applic:GetTech( techName )
+			
+			base.LogScript( "find new tech... is "..techName )
 			if tech:Empty() == 1 then
 				tech:Create( 0 )
 				tech:SetStatus( TS_READY )
-				tech:Load( techIni )
+				tech:Load( plIniFile )
 	
-				Log({src=SCRIPT, dev=ODS|CON}, "!!!!!! LOAD TECH FROM "..techIni )
+				base.LogScript("!!!!!! LOAD TECH FROM "..plIniFile )
 				--добавим технологию в игру
 				applic:AddPublicTechnology( tech:Self() ) 
 				
@@ -242,10 +280,12 @@ function CheckNewTechs()
 				local techcmp = tech:GetCompany()
 				--это технологи€ зарегестрирована на какую-то контору,
 				-- надо еЄ перевести в разр€д общедоступных
-				if techcmp:IsEmpty() == 0 then
+				if techcmp:Empty() == 0 then
 					techcmp:RemoveTech( tech:GetName() )
 					base.pda.Show( "“ехнологи€ адаптирована дл€ массового применени€ "..tech:GetName().." от компании "..tech:GetCompany():GetName() )
 					tech:SetCompany( nil )
+				else
+					base.LogDebug("“ехнологи€ уже в общественном пользовании "..tech:GetName() )
 				end
 			end
 		end

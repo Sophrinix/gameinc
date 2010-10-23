@@ -136,6 +136,7 @@ function Show( techName, companyName )
 	
 	base.LogScript( "ќкрыто окно дл€ исследовани€="..techName.. "  компани€="..company:GetName() )
 	windowIM = guienv:AddWindow( "media/maps/laboratory_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+	windowIM:SetDraggable( false )
 	
 	picFlowInvention = guienv:AddPictureFlow( 60, 10, scrWidth - 10, scrHeight / 3, -1, windowIM:Self() )
 	picFlowInvention:SetPictureRect( 0, 0, scrHeight / 3 - 40, scrHeight / 3 - 40 )
@@ -182,7 +183,7 @@ function Show( techName, companyName )
 	
 	ypos = ypos + 55
 	--метка мес€чным финансированием
-	labelInventionMonthMoney = AddLabel( "", "#TRANSLATE_TEXT_MONTHPAY", 10, ypos, btnWidth, ypos + 30 )
+	labelInventionMonthMoney = AddLabel( "#TRANSLATE_TEXT_MONTHPAY", 10, ypos, btnWidth, ypos + 30 )
 
 	labelInventionName = AddLabel( "", btnWidth + 10, scrHeight / 3 + 10, scrWidth, scrHeight / 3 + 40 )
 

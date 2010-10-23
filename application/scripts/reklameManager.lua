@@ -58,10 +58,9 @@ local function localAddLabel( textr, x1, y1, x2, y2 )
 end
 
 local function localCreateReklames()
-	reklames[ 1 ] = base.CLuaReklame():Create( "paper", "", company:GetName() )
-	reklames[ 2 ] = base.CLuaReklame():Create( "magazine", "", company:GetName() )
-	reklames[ 3 ] = base.CLuaReklame():Create( "radio", "", company:GetName() )
-	reklames[ 4 ] = base.CLuaReklame():Create( "tv", "", company:GetName() )
+	for i=1, plant:GetBaseReklameNumber() do
+		reklames[ i ] = plant:GetBaseReklame( i-1 )
+	end
 end
 
 function Show()
@@ -151,7 +150,7 @@ function ShowCampaniesManager()
 	localFillGamesListBox()
 		
 	btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, campaniesWindow:Self(), -1, base.STR_STARTREKLAME )
-	btnApplyWork:SetAction( "./reklameManager.ApplyNewWork()" )
+	btnApplyWork:SetAction( "./reklameManager.QuerryUserToApplyWork()" )
 	btnApplyWork:SetVisible( false )
 	
 	local btnExit = guienv:AddButton( scrWidth / 2 + 10, scrHeight - 70, scrWidth - 10, scrHeight - 20, campaniesWindow:Self(), -1, base.STR_EXIT )
@@ -203,7 +202,7 @@ end
 function SelectNewWork()
 	currentWork = base.CLuaReklame( picflowReklames:GetSelectedObject() )
 	selectedGame = base.CLuaDevelopProject( lbxGames:GetSelectedObject() )
-	currentWork:SetReklameObject( selectedGame:GetName() )
+	currentWork:SetReklameObject( selectedGame:Self() )
 	addingDays = 0	
 	
 	local vis = selectedGame:Empty() == 0
@@ -230,13 +229,28 @@ function DecDay()
 end
 
 function ApplyNewWork()
+	local parent = base.CLuaElement( base.NrpGetSender() ):GetParent()
+	local parentCompany = applic:GetCompanyByName( currentWork:GetCompanyName() )
+	
+	plant:AddReklameWork( currentWork:Self() )
+	addingDays = 0
+	localUpdateLabels()
+	
+	--снимем деньги со счета компании для проведения рекламной акции
+	parentCompany:AddBalance( -1 * currentWork:GetDayCost() * currentWork:GetNumberDay() )
+	
+	base.CLuaElement( parent ):Remove()
+end
+
+function QuerryUserToApplyWork()
 	if addingDays > 0 then
 		currentWork:SetNumberDay( addingDays )
-		plant:AddReklameWork( currentWork:Self() )
-		addingDays = 0
-		localUpdateLabels()
+		local text = "Рекламная кампания:"..currentWork:GetName().."\n"
+		text = text .. "Стоимость:" .. currentWork:GetDayCost() * currentWork:GetNumberDay() .. "\n"
+		text = text .. "Длительность:" .. currentWork:GetNumberDay()
+		guienv:MessageBox( text, true, true, "./reklameManager.ApplyNewWork()", "./reklameManager.CancelNewWork()" )
 	else
-		guienv:ShowMessage( "Выберите количество дней кампании" )
+		guienv:MessageBox( "Выберите количество дней кампании", false, false, "", "" )
 	end
 end
 

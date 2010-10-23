@@ -94,9 +94,17 @@ local function CreateTechSequence( tech )
 	end
 end
 
+function HideTechMap()
+	windowMap:Remove()
+	windowMap = nil
+end
+
 local function CreateWindow( typef )
 	company = applic:GetPlayerCompany()
 	windowMap = guienv:AddWindow( "media/maps/laboratory_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+	windowMap:SetDraggable( false )
+	windowMap:GetCloseButton():SetVisible( false )
+	
 	base.LogScript( "sworkCreateGenreTechMapWindow="..company:GetName() )
 	
 	techMap = guienv:AddTechMap( 10, 40, scrWidth - 10, scrHeight - 10, -1, windowMap:Self() )
@@ -112,6 +120,11 @@ local function CreateWindow( typef )
 			CreateTechSequence( tech )
 		end
 	end
+	
+	--adding closeButton
+	button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
+	 			    "button_down", windowMap:Self(), -1, "",
+					"./laboratory.HideTechMap()" )
 end
 
 function ShowAdvancedTechMap()

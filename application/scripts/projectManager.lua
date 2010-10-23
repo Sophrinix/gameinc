@@ -136,6 +136,7 @@ function Show( ptr )
 	--project componentlistbox 
 	local offsetX = 140 + 300
 	lbxComponents = guienv:AddComponentListBox( 140, 80, offsetX, scrHeight - 60, -1, windowProjectManager:Self() )
+	lbxComponents:SetItemHeigth( 40 )
 	
 	localBtnToggleTask = button.Stretch( offsetX + 10, scrHeight / 2, offsetX + 60, scrHeight / 2 + 60, "tuda",
 								     	 windowProjectManager:Self(), -1, "Добавить задание",

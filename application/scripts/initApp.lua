@@ -2,6 +2,8 @@ require("elmid")
 IncludeScript("logdefs")
 IncludeScript( "NerpaActionType" )
 IncludeScript( "localization/russian" )
+IncludeScript( "globalVariableInitialize" )
+IncludeScript( "Tutorial" )
 
 NrpLoadPlugins( "Plugins/" )
 

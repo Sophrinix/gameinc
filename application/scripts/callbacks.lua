@@ -1,6 +1,8 @@
 local plant = NrpGetPlant()
 
 function sworkAppDayChange( ptr )
+	local company = applic:GetPlayerCompany()
+	
 	local userLabel = CLuaLabel( guienv:GetElementByID( ID_USERNAME_LABEL ) )
 	local name = company:GetName()
 	local summ = company:GetBalance()
@@ -12,11 +14,29 @@ function sworkAppMonthChange()
 	updates.CheckNewReklames( true )
 	updates.CheckNewTechs() 
 	updates.CheckGameBoxAddons()
+	updates.CheckNewGames()
 	
-	GiveMoneyForInvention()
+	PayMoneyToInventions()
+	PaySalaryToWorkers()
 end
 
-function GiveMoneyForInvention()
+function PaySalaryToWorkers()
+	local company = applic:GetPlayerCompany()
+	
+	local needMoney = 0
+	local user = nil
+	local salary = 0
+	for i=1, company:GetUserNumber() do
+		user = company:GetUser( i-1 )
+		salary = user:GetParam( "salary" )
+		user:AddParam( "balance", salary )
+		needMoney = needMoney + salary
+	end
+	
+	company:AddBalance( -needMoney )
+end
+
+function PayMoneyToInventions()
 	local company = applic:GetPlayerCompany()
 	for index=1, company:GetInventionNumber() do
 		local invention = company:GetInvention( index-1 )
@@ -59,7 +79,7 @@ function sworkApplicationClose( ptr )
 	NrpApplicationSave()
 	applic:SaveBoxAddonsPrice()
 	applic:GetPda():Save()
-	plant:Save( applic:GetCurrentProfile() )
+	plant:Save()
 	NrpApplicationClose()
 end
 
@@ -80,6 +100,11 @@ function sworkUserMarketUpdated()
 	pda.Show( "Обновление на рынке труда" )
 end
 
+function sworkReklameFinished( ptrReklame )
+	local reklame = CLuaReklame( ptrModule )
+	pda.Show( "Завершена работа над модулем "..reklame:GetName() )
+end
+
 sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )
 sceneManager:AddSceneFunction( SCENE_AFTER_RENDER, "sworkDrawOnTopWindows" )
 applic:AddLuaFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
@@ -87,4 +112,5 @@ applic:AddLuaFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
 applic:AddLuaFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )
 applic:AddLuaFunction( APP_INVENTION_FINISHED, "sworkInventionFinished" )
 applic:AddLuaFunction( APP_MODULE_FINISHED, "sworkModuleFinished" )
+applic:AddLuaFunction( APP_REKLAME_FINISHED, "sworkReklameFinished" )
 applic:AddLuaFunction( APP_USER_MARKETUPDATE, "sworkUserMarketUpdated" )

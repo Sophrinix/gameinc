@@ -53,6 +53,25 @@ local function localSetLinkBoxOption( lnkx, typer, userdata, textureName, dragga
 	end
 end
 
+local function localCreateLigthingBetweenElements( link )
+	local parentE = base.CLuaElement( link:GetParent() )
+	
+	--проидемс€ по вкладке
+	for i=1, parentE:GetChildCount() do
+		--найдем все линкбоксы
+		local child = base.CLuaElement( parentE:GetChild( i-1 ) )
+		
+		--проверим их на соответствие с заданным типом
+		if child:GetTypeName() == base.ELEMENT_GUILINKBOX then
+			local tmpLink = base.CLuaLinkBox( child:Self() )
+		   
+			if tmpLink:GetModuleType() == link:GetModuleType() and not tmpLink:IsDraggable() then
+				guienv:AddLigthing( child:Self(), link:Self(), "media/textures/larrow.png", 10 )
+			end	
+		end	
+	end
+end
+
 local function ShowParams()
 	labelCodeVolume:SetText( " од:" .. project:GetCodeVolume() )
 	prgProjectQuality:SetPosition( project:GetCodeQuality() )
@@ -680,13 +699,14 @@ end
 function LeftMouseButtonUp()
 	local elm = base.CLuaElement( base.NrpGetSender() )
 	
-	if elm:Empty() == 0 and elm:GetTypeName() == "CNrpGuiLinkBox" then
+	if elm:Empty() == 0 and elm:GetTypeName() == base.ELEMENT_GUILINKBOX then
 		local link = base.CLuaLinkBox( elm:Self() ) 
 		local linkRecv = base.CLuaLinkBox( guienv:GetDragObject() )
 		
 		if link:IsDraggable() then
 			if link:IsEnabled() then
 				guienv:SetDragObject( link:Self() )
+				localCreateLigthingBetweenElements( link )
 			end
 		else
 			if link:GetModuleType() == linkRecv:GetModuleType() then

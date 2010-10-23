@@ -58,9 +58,18 @@ FATAL 			= 3
 -- 
 -- Вспомогательные функции (для удобства?)
 --
+DEFINE_DEBUG_OUTPUT = false
+
+function LogDebug(...)
+	if DEFINE_DEBUG_OUTPUT then
+		Log({src=SCRIPT, dev=ALL}, ...)
+	end
+end
+
 function LogScript(...)
 		Log({src=SCRIPT, dev=ALL}, ...)
 end
+
 function LogVideo(...)
 		Log({src=VIDEO, dev=ALL}, ...)
 end

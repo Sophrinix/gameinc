@@ -1,5 +1,3 @@
-IncludeScript( "globalVariableInitialize" )
-IncludeScript( "Tutorial" )
 
 NrpInitializeLoginScene()
 
@@ -36,4 +34,8 @@ btnExitGame:SetAction( "slogin_CloseApp" )
 
 browser:Show()
 browser:Navigate( "media/html/intro.htm" )
+
+IncludeScript( "functions_sceneLogin" )
+
+--guienv:AddLigthing( btnNewGame:Self(), btnExitGame:Self(), "media/textures/larrow.png", 10 )
 --

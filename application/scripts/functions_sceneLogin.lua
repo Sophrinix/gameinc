@@ -98,13 +98,14 @@ function slogin_ContinueLastGame( ptr )
 	--загружаем скриншоты для игр
 	updates.CheckScreenshots()
 	
-	--загружаем производство
-	plant:Load( applic:GetCurrentProfile() )
+	--загружаем производство и рекламу
+	plant:Load()
 	
 	--загружаем базовую рекламу
 	localPlantLoadBaseReklame( false )
 	
-	NrpSetNextScene( "sceneWork" )
+	guienv:FadeAction( 2000, FADE_OUT, REMOVE_ON_END )
+	guienv:AddTimer( 2005, "NrpSetNextScene( \"sceneWork\" )" );
 end
 
 function slogin_CloseApp()
