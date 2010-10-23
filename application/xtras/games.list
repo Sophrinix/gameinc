@@ -1,3 +1,6 @@
 [options]
-gameNumber=10
-game_0=xtras/games/
+game0=xtras/games/1983/10_Yard_Fight/item.game
+gameNumber=4
+game1=xtras/games/1983/3_Demon/item.game
+game2=xtras/games/1983/Alley_cat/item.game
+game3=xtras/games/1983/Antarctic_Adventure/item.game

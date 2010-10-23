@@ -1,0 +1,7 @@
+[properties]
+name:string=10-Yard Fight
+owner:string=Irem
+startdate:time=y=1983 m=01 d=02 h=0 mi=0
+platform:string=platform_dendy
+description:string=desc.htm
+genre:string=football_simulator

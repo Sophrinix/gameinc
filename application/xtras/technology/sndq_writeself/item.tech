@@ -15,7 +15,7 @@ internalname:string=sndq_writeself
 price:float=0
 quality:int=10
 readyworkpercent:float=0
-startdate:time=y=1982 m=00 d=00 h=00 mi=00 s=0
+startdate:time=y=1982 m=01 d=01 h=00 mi=00 s=0
 techgroup:int=#PT_SOUNDQUALITY
 techtype:int=#VSQ_SELFCOMPOSE
 texturehover:string=

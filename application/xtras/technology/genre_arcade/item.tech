@@ -15,7 +15,7 @@ internalname:string=genre_arcade
 price:float=0
 quality:int=100
 readyworkpercent:float=0
-startdate:time=y=1989 m=00 d=00 h=00 mi=00 s=0
+startdate:time=y=1989 m=01 d=01 h=00 mi=00 s=0
 techgroup:int=3
 techtype:int=313
 texturehover:string=

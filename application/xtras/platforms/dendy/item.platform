@@ -4,6 +4,7 @@ ram:float=0.049
 cpu:float=0.006
 startTime:time=y=1982 m=00 d=00 h=00 mi=00
 endTime:time=y=2003 m=00 d=00 h=00 mi=00
+internalname:string=platform_dendy
 rwidth:int=260
 rheight:int=240
 video:string=черно-белая и цветная

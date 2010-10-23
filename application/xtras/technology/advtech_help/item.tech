@@ -5,7 +5,7 @@ codepassed:int=0
 company:string=
 componentlider:string=
 descriptionpath:string=
-enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
+enddate:time=y=2019 m=05 d=01 h=00 mi=00 s=0
 enginecode:float=0.2
 lastworker:string=
 level:int=0
@@ -15,7 +15,7 @@ internalname:string=advtech_help
 price:float=0
 quality:int=100
 readyworkpercent:float=0
-startdate:time=y=1984 m=06 d=00 h=00 mi=00 s=0
+startdate:time=y=1984 m=05 d=01 h=00 mi=00 s=0
 techgroup:int=#PT_ADVTECH
 techtype:int=#ADV_HELP
 texturehover:string=

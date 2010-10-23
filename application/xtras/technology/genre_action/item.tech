@@ -15,7 +15,7 @@ internalName:string=genre_action
 price:float=0
 quality:int=100
 readyworkpercent:float=0
-startdate:time=y=1995 m=00 d=00 h=00 mi=00 s=0
+startdate:time=y=1995 m=01 d=01 h=00 mi=00 s=0
 techgroup:int=3
 techtype:int=324
 texturehover:string=
