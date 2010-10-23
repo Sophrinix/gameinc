@@ -16,6 +16,13 @@ public:
 										 const std::string& saveFile, 
 										 const std::string& templateName,
 										 const std::string& itemName );
+	static std::string CheckEndSlash( std::string pathTo );
+
+	static void CreateDirectory( std::string pathTo );
+	static bool IsExist( const std::string& pathTo );
+	static bool IsFolder( const std::string& pathTo );
+	static std::string GetExtension( const std::string& pathTo );
+	static std::string UpDir( const std::string& pathTo );
 };
 
 }//end namespace nrp

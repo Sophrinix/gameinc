@@ -961,7 +961,7 @@ void CNrpTechMap::draw()
 						rr.LowerRightCorner += core::position2di( 2, 2 );
 						driver->draw2DRectangle( rr, 0xff000000, 0xff000000, 0xffffffff, 0xffffffff, &AbsoluteClippingRect );
 
-						driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ), &AbsoluteClippingRect );
+						driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ), &AbsoluteClippingRect, NULL, true );
 					}
 					else
 						if( cell.assignTech )

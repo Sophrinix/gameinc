@@ -8,7 +8,7 @@
 #include "NrpLicense.h"
 #include "NrpCompany.h"
 #include "NrpApplication.h"
-#include <io.h>
+#include "OpFileSystem.h"
 
 namespace nrp
 {
@@ -173,43 +173,46 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	SetValue<int>( MODULE_NUMBER, gameModules_.size() );
 }
 
-CNrpDevelopGame::CNrpDevelopGame( std::string name, CNrpCompany* ptrCompany )
+CNrpDevelopGame::CNrpDevelopGame( const std::string& name, CNrpCompany* ptrCompany )
 : INrpDevelopProject( CLASS_DEVELOPGAME, name )
 {
 	InitializeOptions_( name );
 	SetValue<PNrpCompany>( PARENTCOMPANY, ptrCompany );
 }
 
-void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module, IUser* ptrUser )
+CNrpDevelopGame::CNrpDevelopGame( const std::string& fileName ) 
+: INrpDevelopProject( CLASS_DEVELOPGAME, fileName )
 {
-	SetDeveloper( ptrUser );
-	float growExp = module->GetValue<int>( CODEVOLUME ) / (float)GetValue<int>( BASE_CODEVOLUME );
+	InitializeOptions_( fileName );
 
-	int techType = GetGenre( 0 )->GetValue<PROJECT_TYPE>( TECHTYPE );
-
-	//опыт пользовател€ растет по мере выполнени€ компонентов
-	//а если у пользовател€ не было опыта в этом жанре, то он по€вл€етс€
-	ptrUser->IncreaseExperience( techType, (int)growExp );
-
-	if( IsReady() )
-	{
-		OutputDebugString( ("«акончен проект " + GetValue<std::string>( NAME ) + "\n").c_str() );
-	}
-	else
-	{
-		CNrpApplication::Instance().DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
-	}
+	Load( fileName );
 }
 
-void CNrpDevelopGame::Save( std::string folderSave )
+void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
 {
-	if( _access( folderSave.c_str(), 0 ) == -1 )
-		CreateDirectory( folderSave.c_str(), NULL );
+	const CNrpProjectModule::USER_LIST& uList = module->GetUsers();
+	
+	for( size_t k=0; k < uList.size(); k++ )
+	{
+		 SetDeveloper( uList[ k ] );
+		 float growExp = module->GetValue<int>( CODEVOLUME ) / (float)GetValue<int>( BASE_CODEVOLUME );
+		 int techType = GetGenre( 0 )->GetValue<PROJECT_TYPE>( TECHTYPE );
+		 //опыт пользовател€ растет по мере выполнени€ компонентов
+		 //а если у пользовател€ не было опыта в этом жанре, то он по€вл€етс€
+		 uList[ k ]->IncreaseExperience( techType, (int)growExp );
+	}
+
+	if( IsReady() )
+		CNrpApplication::Instance().DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
+}
+
+std::string CNrpDevelopGame::Save( const std::string& folderSave )
+{
+	assert( OpFileSystem::IsExist( folderSave ) );
 
 	std::string localFolder = folderSave + GetValue<std::string>( NAME ) + "/";
 
-	if( _access( localFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( localFolder.c_str(), NULL );
+	OpFileSystem::CreateDirectory( localFolder );
 
 	std::string fileName = localFolder + "item.devgame";
 	INrpDevelopProject::Save( fileName );
@@ -218,37 +221,38 @@ void CNrpDevelopGame::Save( std::string folderSave )
 	for( int i=0; tIter != gameModules_.end(); tIter++, i++ )
 	{
 		(*tIter)->Save( localFolder + "modules/" );
-		IniFile::Write( "modules", "module" + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( SECTION_MODULES, KEY_MODULE(i), (*tIter)->GetString( NAME ), fileName );
 	}
 
 	if( GetValue<PNrpGameEngine>( GAME_ENGINE ) )
 	{
 		PNrpGameEngine engine = GetValue<PNrpGameEngine>( GAME_ENGINE );
-		IniFile::Write( SECTION_PROPERTIES, GAME_ENGINE, engine->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( SECTION_PROPERTIES, GAME_ENGINE, engine->GetString( NAME ), fileName );
 	}
 
-	if( GetValue<PNrpScenario>( SCENARIO ) )
+	if( PNrpScenario sxn = GetValue<PNrpScenario>( SCENARIO ) )
 	{
-		IniFile::Write( SECTION_PROPERTIES, SCENARIO, GetValue<PNrpScenario>( SCENARIO )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpScenario>( SCENARIO )->Save( SECTION_PROPERTIES, localFolder + SCENARIO + ".ini" );
+		IniFile::Write( SECTION_PROPERTIES, SCENARIO, sxn->GetString(NAME), fileName );
+		sxn->Save( localFolder + SCENARIO + ".ini" );
 	}
 
-	if( GetValue<PNrpLicense>( GLICENSE ) )
+	if( PNrpLicense sln = GetValue<PNrpLicense>( GLICENSE ) )
 	{
-		IniFile::Write( SECTION_PROPERTIES, GLICENSE, GetValue<PNrpLicense>( GLICENSE )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpLicense>( GLICENSE )->Save( SECTION_PROPERTIES, localFolder + GLICENSE + ".ini");
+		IniFile::Write( SECTION_PROPERTIES, GLICENSE, sln->GetString(NAME), fileName );
+		sln->Save( localFolder + GLICENSE + ".ini");
 	}
+
+	return folderSave;
 }
 
-void CNrpDevelopGame::Load( std::string loadFolder )
+void CNrpDevelopGame::Load( const std::string& loadFolder )
 {
-	if( loadFolder[ loadFolder.length() - 1 ] != '/' && 
-		loadFolder[ loadFolder.length() - 1 ] != '\\' )
-		loadFolder += "/";
+	assert( OpFileSystem::IsExist(loadFolder) );
+	std::string myFolder = OpFileSystem::CheckEndSlash(loadFolder);
 
-	std::string fileName = loadFolder + "item.devgame";
+	std::string fileName = myFolder + "item.devgame";
 	CNrpCompany* ptrCompany = GetValue<PNrpCompany>( PARENTCOMPANY );
-	INrpProject::Load( SECTION_PROPERTIES, fileName );
+	INrpProject::Load( fileName );
 
 	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
 	{
@@ -256,7 +260,7 @@ void CNrpDevelopGame::Load( std::string loadFolder )
 		if( !name.empty() )
 		{
 			CNrpProjectModule* tech = new CNrpProjectModule( PROJECT_TYPE( 0 ), this );
-			tech->Load( loadFolder + "modules/" + name + ".devmod" );
+			tech->Load( myFolder + "modules/" + name + ".devmod" );
 			gameModules_.push_back( tech );		
 		}
 	}
@@ -266,16 +270,13 @@ void CNrpDevelopGame::Load( std::string loadFolder )
 
 	name = IniFile::Read( SECTION_PROPERTIES, SCENARIO, std::string(""), fileName );
 	PNrpScenario scenario = new CNrpScenario( name );
-	scenario->Load( SECTION_PROPERTIES, loadFolder + SCENARIO + ".ini" ); 
+	scenario->Load( myFolder + SCENARIO + ".ini" ); 
 	SetValue<PNrpScenario>( SCENARIO, scenario );
 
 	name = IniFile::Read( SECTION_PROPERTIES, GLICENSE, std::string(""), fileName );
 	PNrpLicense license = new CNrpLicense( name );
-	license->Load( SECTION_PROPERTIES, loadFolder + GLICENSE + ".ini" );
+	license->Load( myFolder + GLICENSE + ".ini" );
 	SetValue<PNrpLicense>( GLICENSE, license );
-
-	for( int i=0; i < GetValue<int>( USERNUMBER ); i++ )
-		developers_.push_back( IniFile::Read( "developers", "user_" + IntToStr( i ), std::string(""), fileName ) );
 }
 
 bool CNrpDevelopGame::IsReady()
@@ -315,7 +316,7 @@ void CNrpGameProject::UpdateDevelopmentMoney()
 	TECH_LIST::iterator pIter = rt.begin();
 	for( ; pIter != rt.end(); pIter++ )
 	{
-		std::string name = (*pIter)->GetValue<std::string>( COMPONENTLIDER );
+		std::string name = (*pIter)->GetString( COMPONENTLIDER );
 		if( !name.empty() )
 		{
 			PUser ptrUser = cmp->GetUser( name );
@@ -354,7 +355,7 @@ CNrpProjectModule* CNrpDevelopGame::GetModule( const char* name )
 	int i=0;
 	for( ; pIter != gameModules_.end(); pIter++ )
 	{
-		if( (*pIter)->GetValue<std::string>( NAME ) == name )
+		if( (*pIter)->GetString( NAME ) == name )
 			return *pIter;
 		else
 			i++;

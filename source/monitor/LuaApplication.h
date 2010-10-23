@@ -41,7 +41,6 @@ public:
 	int ResetData( lua_State* L );
 	int LoadProfile( lua_State* L );
 	int CreateNewFreeUsers( lua_State* L );
-	int PayUserSalary( lua_State* L );
 	int GetGameBoxAddonNumber( lua_State* L );
 	int GameBoxLoaded( lua_State* L );
 	int GetGameBoxAddon( lua_State* L );
@@ -65,7 +64,6 @@ public:
 	int CreateDirectorySnapshot( lua_State* L );
 
 	static const char* ClassName() { return CLASS_CLUAPPLICATION.c_str(); }
-	virtual std::string ObjectName() { return CLASS_CLUAPPLICATION; }
 private:
 	int lastDay_, lastMonth_, lastYear_;
 	int AddRemLuaFunction_( lua_State* L, std::string funcName, bool rem );

@@ -37,24 +37,32 @@ CNrpGameImageList::CNrpGameImageList( const char* name ) : INrpConfig( CLASS_IMA
 	SetValue<std::string>( NAME, name );
 }
 
+CNrpGameImageList::CNrpGameImageList( const std::string& fileName, bool load ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
+{
+	InitializeOptions_();
+	Load( fileName );
+}
+
 CNrpGameImageList::~CNrpGameImageList(void)
 {
 }
 
-void CNrpGameImageList::Save( const std::string& fileIni )
+std::string CNrpGameImageList::Save( const std::string& fileIni )
 {
-	INrpConfig::Save( SECTION_PROPERTIES, fileIni );
+	INrpConfig::Save( fileIni );
 
 	for( size_t k=0; k < imagesPath.size(); k++ )
 		IniFile::Write( SECTION_IMAGES, KEY_IMAGE+IntToStr(k), imagesPath[ k ], fileIni );
 
 	for( size_t k=0; k < imagesBoxPath.size(); k++ )
 		IniFile::Write( SECTION_BOXIMAGES, KEY_BOX_IMAGE+IntToStr(k), imagesBoxPath[ k ], fileIni );
+
+	return fileIni;
 }
 
 void CNrpGameImageList::Load( const std::string& fileName )
 {
-	INrpConfig::Load( SECTION_PROPERTIES, fileName );
+	INrpConfig::Load( fileName );
 
 	for( int k=0; k < GetValue<int>( IMAGESNUMBER ); k++ )
 		imagesPath.push_back( IniFile::Read( SECTION_IMAGES, KEY_IMAGE+IntToStr(k), std::string(""), fileName ) );
@@ -73,7 +81,4 @@ void CNrpGameImageList::InitializeOptions_()
 	CreateValue<int>( IMAGESBOXNUMBER, 0 );
 }
 
-void CNrpGameImageList::Load_( char* fileName )
-{
-}
 }//end namespace nrp

@@ -42,7 +42,6 @@ public:
 	int GetSelectedObject( lua_State *L );
 	int SetSelected( lua_State *L );
 
-	virtual std::string ObjectName() { return CLASS_LUACOMBOBOX; }
 	static const char* ClassName() { return CLASS_LUACOMBOBOX.c_str(); }
 };
 

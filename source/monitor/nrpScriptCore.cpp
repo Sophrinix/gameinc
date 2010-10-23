@@ -391,17 +391,4 @@ int ApplicationGetSender( lua_State* vm )
 	return 1;
 }
 
-int ApplicationRemoveFile( lua_State* vm )
-{
-	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 1, 1, "Function RemoveFile need path parameter");
-
-	const char* pathh = lua_tostring( vm, 1 );
-	assert( pathh != NULL );
-
-	if( pathh != NULL )
-		OpFileSystem::Remove( pathh );
-
-	return 1;
-}
 }//namespace nrp

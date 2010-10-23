@@ -9,7 +9,7 @@ static nrp::CNrpBank* globalBankPointer=NULL;
 namespace nrp
 {
 
-CNrpBank::CNrpBank(void) : INrpConfig( "CNrpBank", "systemBank" )
+CNrpBank::CNrpBank(void) : INrpConfig( CLASS_BANK, "systemBank" )
 {
 	loanId_ = 0;
 	CreateValue<int>( LOANNUMBER, 0 );
@@ -76,9 +76,7 @@ void CNrpBank::CreateLoan( std::string name, int money, int percent, int month )
 	loan->SetValue<std::string>( COMPANYNAME, cmp->GetValue<std::string>( NAME ) );
 
 	loans_.push_back( loan );
-
-	int bnm = cmp->GetValue<int>( BALANCE ) + money;
-	cmp->SetValue<int>( BALANCE, bnm );
+	cmp->AddValue<int>( BALANCE, money );
 
 	int lNum = loans_.size();
 	SetValue<int>( LOANNUMBER, lNum ); 

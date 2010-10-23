@@ -22,7 +22,6 @@ public:
 	CLuaElement(lua_State *L);	
 
 	static const char* ClassName() { return CLASS_LUAELEMENT.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUAELEMENT; }
 };
 
 }//namespace nrp

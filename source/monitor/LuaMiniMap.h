@@ -24,7 +24,6 @@ public:
 	int SetOnRotateAction( lua_State *L );
 
 	static const char* ClassName() { return CLASS_LUAMINIMAP.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUAMINIMAP; }
 };
 
 }//namespace nrp

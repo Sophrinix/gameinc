@@ -32,7 +32,6 @@ public:
 	int SetDrawBack( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUATECHMAP.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUATECHMAP; }
 };
 
 }//namespace nrp

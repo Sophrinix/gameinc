@@ -1,6 +1,4 @@
 #pragma once
-#include <string>
-
 class CVideoOptions;
 
 namespace irr
@@ -12,16 +10,17 @@ namespace scene
 class CLoadingScreen
 {
 public:
-	CLoadingScreen( irr::video::IVideoDriver* driver );
+	CLoadingScreen( video::IVideoDriver* driver, gui::IGUIFont* font );
 	~CLoadingScreen(void);
 
-	void render( int progress );
+	void render( int progress, const core::stringw& text );
 private:
-	std::string background_,
-				loading_bar_,
-				fillbar_;
+	core::stringc background_,
+				  loading_bar_,
+				  fillbar_;
 
-	irr::video::IVideoDriver* driver_;
+	video::IVideoDriver* _driver;
+	gui::IGUIFont* _font;
 };
 
 }//namespace scene

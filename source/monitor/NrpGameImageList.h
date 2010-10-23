@@ -15,16 +15,15 @@ class CNrpGameImageList : public INrpConfig
 {
 	void InitializeOptions_();
 	CNrpGameImageList();
-	void Load_( char* file_name );
 public:
 	std::vector< std::string > imagesPath;
 	std::vector< std::string > imagesBoxPath;
 
-	void Save( const std::string& fileName );
+	std::string Save( const std::string& fileName );
 	void Load( const std::string& fileName );
 
 	CNrpGameImageList( const char* name );
-
+	CNrpGameImageList( const std::string& fileName, bool load );
 	CNrpGameImageList( const CNrpGameImageList& a );
 
 	~CNrpGameImageList(void);

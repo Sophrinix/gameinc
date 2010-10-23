@@ -11,7 +11,6 @@ OPTION_NAME PRICEPERHOUR( "pricePerHour" );
 
 class CNrpDiskMachine : public INrpConfig
 {
-	void Load_( char* file_name ) {} ;
 public:
 	CNrpDiskMachine(void);
 	~CNrpDiskMachine(void);
@@ -19,7 +18,6 @@ public:
 	void Load( std::string sectionName, std::string fileName );
 
 	static std::string ClassName() { return CLASS_DISKMACHINE; }
-	virtual std::string ObjectName() { return CLASS_DISKMACHINE; }
 };
 
 typedef CNrpDiskMachine* PNrpDiskMachine;

@@ -23,7 +23,6 @@ public:
 	int GetName( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUADISKMACHINE.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUADISKMACHINE; }
 };
 
 }//namespace nrp

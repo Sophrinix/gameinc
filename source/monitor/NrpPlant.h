@@ -19,8 +19,6 @@ class CNrpPlant : public INrpConfig
 	CNrpPlant(void);
 	~CNrpPlant(void);
 
-	void Load_( char* file_name ) {}
-
 	WORK_LIST works_;
 	REKLAME_LIST baseReklame_;
 	REKLAME_LIST reklameWorks_;
@@ -28,7 +26,7 @@ public:
 	static CNrpPlant& Instance();
 
 	bool AddBaseReklame( CNrpReklameWork* pReklame );
-	CNrpReklameWork* GetBaseReklame( std::string name );
+	CNrpReklameWork* GetBaseReklame( const std::string& name );
 	CNrpReklameWork* GetBaseReklame( int index );
 
 	void AddReklame( CNrpReklameWork* reklame );
@@ -50,7 +48,6 @@ public:
 	void Save( std::string scetionName, std::string saveFolder );
 
 	static std::string ClassName() { return CLASS_NRPPLANT; }
-	virtual std::string ObjectName() { return CLASS_NRPPLANT; }
 };
 
 }//end namespace nrp

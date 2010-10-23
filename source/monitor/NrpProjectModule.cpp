@@ -3,7 +3,7 @@
 #include "IUser.h"
 #include "INrpDevelopProject.h"
 #include <assert.h>
-#include <io.h>
+#include "OpFileSystem.h"
 
 namespace nrp
 {
@@ -48,18 +48,20 @@ void CNrpProjectModule::InitializeOptions_()
 	CreateValue<int>( CODEVOLUME, 0 );
 	CreateValue<int>( CODEPASSED, 0 );
 	CreateValue<int>( ERRORNUMBER, 0 );
+	CreateValue<int>( USERNUMBER, 0 );
 	EraseValue( PARENT );
 	CreateValue<INrpDevelopProject*>( PARENT, NULL );
 }
 
 int CNrpProjectModule::AddUser( IUser* ptrUser )
 {
-	IUser* currentLider = GetValue<IUser*>( COMPONENTLIDER );
-	IUser* lastLider = GetValue<IUser*>( LASTWORKER );
+	if( GetValue<float>( READYWORKPERCENT ) < 1 )
+	{
+		_users.push_back( ptrUser );
+		SetValue( USERNUMBER, _users.size() );
+	}
 
-	users_.push_back( ptrUser );
-
-	return 1;
+	return (GetValue<float>( READYWORKPERCENT ) < 1);
 }
 
 void CNrpProjectModule::Update( IUser* ptrUser )
@@ -74,6 +76,9 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 		float teamKoeff = _GetWorkKoeffForUser( ptrUser );
 		for( ; sIter != skillRequires_.end(); sIter++ )
 			reqSkill += ptrUser->GetSkill( sIter->first );
+
+		if( reqSkill < 10 )
+			reqSkill = 10;
 
 		//коэффициент команды нужен из-за того, что отимальный размер команды 5, а дальнейший рост 
 		//приводит к ухудшению производительности каждого из членов команды,
@@ -101,43 +106,42 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 	}
 
 	if( GetValue<float>( READYWORKPERCENT ) >= 1 )
-		parent->ModuleFinished( this, ptrUser );
+		parent->ModuleFinished( this );
 }
 
 float CNrpProjectModule::_GetWorkKoeffForUser( IUser* ptrUser )
 {
 	float teamKoef[10] = { 1.f/*1*/, 4.f/*2*/, 3.f/*3*/, 2.f/*4*/, 1.f/*5*/, 0.8f/*6*/, 0.65f/*7*/, 0.5f/*8*/, 0.25f/*9*/, 0.1f/*10 and more*/};
-	return teamKoef[ users_.size() >= 9 ? 9 : users_.size() ];
+	return teamKoef[ _users.size() >= 9 ? 9 : _users.size() ];
 }
 
-void CNrpProjectModule::Save( std::string saveFolder )
+std::string CNrpProjectModule::Save( const std::string& saveFolder )
 {
-	if( _access( saveFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( saveFolder.c_str(), NULL );
+	OpFileSystem::CreateDirectory( saveFolder );
 
 	std::string fileName = saveFolder + GetValue<std::string>( NAME ) + ".devmod";
 
 	DeleteFile( fileName.c_str() );
-	INrpProject::Save( SECTION_PROPERTIES, fileName );
+	INrpProject::Save( fileName );
 	SaveRequires_( fileName );
+
+	return saveFolder;
 }
 
-void CNrpProjectModule::Load( std::string fileName )
+void CNrpProjectModule::Load( const std::string& fileName )
 {
-	assert( _access( fileName.c_str(), 0 ) == 0 );
-	if( _access( fileName.c_str(), 0 ) == -1 )
-		OutputDebugString( ("указанный файл не существует" + fileName).c_str() );
+	assert( OpFileSystem::IsExist( fileName ) );
 		
-	INrpProject::Load( SECTION_PROPERTIES, fileName );
+	INrpProject::Load( fileName );
 	LoadRequries_( fileName );
 }
 
 int CNrpProjectModule::RemoveUser( const std::string& userName )
 {
-	for( USER_LIST::iterator pIter=users_.begin(); pIter != users_.end(); pIter++ )
+	for( USER_LIST::iterator pIter=_users.begin(); pIter != _users.end(); pIter++ )
 		if( (*pIter)->GetValue<std::string>( NAME ) == userName )
 		{
-			users_.erase( pIter );
+			_users.erase( pIter );
 			return 1;
 		}
 

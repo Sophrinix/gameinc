@@ -122,8 +122,9 @@ void HTMLEngine::onPageChanged( const LLEmbeddedBrowserWindowEvent& eventIn )
 	dataUpdated_ = true;
 }
 
-void HTMLEngine::Navigate( std::string url )
+void HTMLEngine::Navigate( const std::string& url )
 {
+	Log( SCRIPT ) << "Navigate to " << url << term;
 	llmozlib_->navigateTo(browserWindowId_, url);
 }
 
@@ -161,8 +162,9 @@ void HTMLEngine::onNavigateBegin( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
 	if( _firstMessage )
 	{
-		std::string a = "Event: begin navigation to " + eventIn.getEventUri() + CARET_RESPONSE;
-		OutputDebugString( a.c_str() );
+#ifdef _DEBUG
+		Log( SCRIPT ) << "Event: begin navigation to " << eventIn.getEventUri() << term;
+#endif
 		_firstMessage = false;
 	}
 	else
@@ -173,8 +175,10 @@ void HTMLEngine::onNavigateComplete( const LLEmbeddedBrowserWindowEvent& eventIn
 {
 	if( _firstMessage )
 	{
-		std::string a = "Event: end navigation to " + eventIn.getEventUri() + std::string( " with response status of " ) + IntToStr( eventIn.getIntValue() ) + CARET_RESPONSE;
-		OutputDebugString( a.c_str() );
+#ifdef _DEBUG
+		Log( SCRIPT ) << "Event: end navigation to " << eventIn.getEventUri() 
+					  << " with response status of " << eventIn.getIntValue() << term;
+#endif
 		_firstMessage = false;
 	}
 	else
@@ -185,8 +189,9 @@ void HTMLEngine::onUpdateProgress( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
 	if( _firstMessage )
 	{
-		std::string a = "Event: progress value updated to " + eventIn.getIntValue() + CARET_RESPONSE;
-		OutputDebugString( a.c_str() );
+#ifdef _DEBUG
+		Log( SCRIPT ) << "Event: progress value updated to "  << eventIn.getIntValue() << term;
+#endif
 		_firstMessage = false;
 	}
 	else
@@ -197,8 +202,9 @@ void HTMLEngine::onStatusTextChange( const LLEmbeddedBrowserWindowEvent& eventIn
 {
 	if( _firstMessage )
 	{
-		std::string a = "Event: status updated to " + eventIn.getStringValue() + CARET_RESPONSE;
-		OutputDebugString( a.c_str() );
+#ifdef _DEBUG
+		Log( SCRIPT ) << "Event: status updated to " << eventIn.getStringValue() << term;
+#endif
 		_firstMessage = false;
 	}
 	else
@@ -209,8 +215,9 @@ void HTMLEngine::onLocationChange( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
 	if( _firstMessage )
 	{
-		std::string a = "Event: location changed to " + eventIn.getEventUri() + CARET_RESPONSE;
-		OutputDebugString( a.c_str() );
+#ifdef _DEBUG
+		Log( SCRIPT ) << "Event: location changed to " << eventIn.getEventUri() << term;
+#endif
 		_firstMessage = false;
 	}
 	else
@@ -221,9 +228,9 @@ void HTMLEngine::onClickLinkHref( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
 	if( _firstMessage )
 	{
-		std::string a = "Event: clicked on link to " + eventIn.getStringValue() + CARET_RESPONSE;
-		//eventIn.mStringVal2
-		OutputDebugString( a.c_str() );
+#ifdef _DEBUG
+		Log( SCRIPT ) << "Event: clicked on link to " << eventIn.getStringValue() << term;
+#endif
 		llmozlib_->navigateTo(browserWindowId_, eventIn.getStringValue());
 		_firstMessage = false;
 	}
@@ -249,8 +256,6 @@ std::string DecodeUrl( std::string url )
 
 void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
-	std::string a = "Event: clicked on nofollow link to " + eventIn.getStringValue() + CARET_RESPONSE;
-
 	if( _noFollowLinkExec )
 	{
 		std::string action = eventIn.getStringValue();
@@ -262,6 +267,9 @@ void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventI
 	}
 	else
 		_noFollowLinkExec = true;
-	OutputDebugString( a.c_str() );
+
+#ifdef _DEBUG
+	Log( SCRIPT ) << "Event: clicked on nofollow link to " << eventIn.getStringValue() << term;
+#endif
 }
 }

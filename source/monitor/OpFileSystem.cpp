@@ -147,4 +147,77 @@ void OpFileSystem::CreateDirectorySnapshot( const std::string& directory,
 	_findclose( hFile );
 }
 
+std::string OpFileSystem::CheckEndSlash( std::string pathTo )
+{
+	char endsym = pathTo[ pathTo.length() - 1 ];
+	if( endsym != '/' && endsym != '\\' )
+		pathTo += "/";
+
+	return pathTo;
+}
+
+void OpFileSystem::CreateDirectory( std::string pathTo )
+{
+	pathTo = CheckEndSlash( pathTo );
+	if( _access( pathTo.c_str(), 0 ) == -1 )
+		::CreateDirectory( pathTo.c_str(), NULL );
+
+	assert( _access( pathTo.c_str(), 0 ) != -1 );
+}
+
+bool OpFileSystem::IsExist( const std::string& pathTo )
+{
+	bool ex = (_access( pathTo.c_str(), 0 ) != -1);
+
+#ifdef _DEBUG
+	if( ! ex )
+		Log(SCRIPT) << "Yказанный файл не существует" <<  pathTo << term;
+#endif
+	return ex;
+}
+
+bool OpFileSystem::IsFolder( const std::string& pathTo )
+{
+	assert( IsExist( pathTo ) );
+	
+	_finddata_t fdata;	
+	intptr_t hFile;
+
+	hFile = _findfirst( pathTo.c_str(), &fdata);
+	if( hFile )
+	{
+		return ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ));// это папка
+	}
+
+	return false;
+}
+
+std::string OpFileSystem::GetExtension( const std::string& pathTo )
+{
+	assert( !IsFolder( pathTo ) );
+	int index = pathTo.find_last_of( '.' );
+	if( index >= 0 )
+	    return pathTo.substr( index, 0xff );
+
+	return "";
+}
+
+std::string OpFileSystem::UpDir( const std::string& pathTo )
+{
+	assert( IsExist( pathTo ) );
+	if( pathTo.empty() )
+		return "";
+
+	std::string pathToAny = CheckEndSlash( pathTo );
+	pathToAny.erase( pathToAny.end()-1 );
+	int index = pathTo.find_last_of( '\\' );
+	if( index < 0 )
+		index = pathTo.find_last_of( '/' );
+
+	if( index >=0 )
+		return pathTo.substr( 0, index+1 );
+
+	assert( IsExist( pathTo ) );
+	return "";
+}
 }//end namespace nrp

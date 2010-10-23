@@ -237,14 +237,15 @@ int CLuaSceneManager::CreateCollisionResponseAnimator( lua_State* vm )
 int CLuaSceneManager::DrawProgress( lua_State* vm )
 {
 	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 2, 2, "Function CLuaSceneManager:DrawProgress need one parameter ");
+	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:DrawProgress need one parameter ");
 
 	int progress = lua_tointeger(vm, 2);	
+	const char* text = lua_tostring( vm, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		scene::CLoadingScreen ld( object_->getVideoDriver() );
-		ld.render( progress );
+		scene::CLoadingScreen ld( object_->getVideoDriver(), CNrpEngine::Instance().GetGuiEnvironment()->getFont( "font_14" ) );
+		ld.render( progress, StrToWide( text ? text : "").c_str() );
 	}
 
 	return 1;

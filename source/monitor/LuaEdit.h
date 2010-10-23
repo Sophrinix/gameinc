@@ -25,7 +25,6 @@ public:
 	int SetOverrideColor( lua_State* L );
 	int SetPasswordBox( lua_State* L );
 
-	virtual std::string ObjectName() { return CLASS_LUAEDIT; }
 	static const char* ClassName() { return CLASS_LUAEDIT.c_str(); }
 };
 

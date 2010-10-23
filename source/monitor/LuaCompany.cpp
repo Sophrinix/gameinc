@@ -73,7 +73,7 @@ int CLuaCompany::Create( lua_State* L )
 
 	if( !user )
 	{
-		OutputDebugString( ("не удалось найти пользователя с именем" + std::string(ceo)).c_str() );
+		Log(HW) << "не удалось найти пользователя с именем" << ceo << term;
 		return 1;
 	}
 	object_ = new CNrpCompany( name, user );

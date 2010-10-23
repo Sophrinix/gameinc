@@ -23,7 +23,6 @@ public:
 	int Draw( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUACONSOLE.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUACONSOLE; }
 };
 
 }//namespace nrp

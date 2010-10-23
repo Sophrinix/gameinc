@@ -24,15 +24,13 @@ const std::string CONSOLE_GUINAME( "guiname" );
 
 class CNrpConsoleConfig : public INrpConfig
 {
-	const std::string SECTION_NAME;
 private:
 	CNrpConsoleConfig();
-	void Load_( char* file_name );
-
-	virtual std::string ObjectName() { return CLASS_CONSOLECONFIG; }
-	static std::string ClassName() { return CLASS_CONSOLECONFIG; }
+	
+	void _InitializeOptions();
 public:
 	static CNrpConsoleConfig& Instance();
+	static std::string ClassName() { return CLASS_CONSOLECONFIG; }	
 };
 
 } //namespace nrp

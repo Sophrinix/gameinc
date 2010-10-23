@@ -25,7 +25,6 @@ public:
 	int SetFillImage( lua_State* L );
 																//нажатии на эту кнопку
 	static const char* ClassName() { return CLASS_LUAPROGRESBAR.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUAPROGRESBAR; }
 };
 
 }//namespace nrp

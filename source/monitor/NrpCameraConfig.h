@@ -14,16 +14,12 @@ const std::string CAMERA_FARVALUE( "farValue" );
 
 class CNrpCameraConfig : public INrpConfig
 {
-	const std::string SECTION_NAME;
 private:
-
 	CNrpCameraConfig();
 	~CNrpCameraConfig(void);
 
-	void Load_( char* file_name );
-
-	virtual std::string ObjectName() { return CLASS_CAMERACONFIG; }
 	static std::string ClassName() { return CLASS_CAMERACONFIG; }
+
 public:
 	static CNrpCameraConfig& Instance();
 };

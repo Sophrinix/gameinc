@@ -481,12 +481,25 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
 	float percent = tech->GetValue<float>( READYWORKPERCENT );
-	std::wstring name = StrToWide( tech->GetValue<std::string>( NAME ) );
+	std::wstring name = StrToWide( tech->GetString( NAME ) );
 
-	swprintf( tmpstr, 127, L"(%s)%s  (%d %%)", tech->ObjectName(), name.c_str(), (int)(percent * 100) );
+	swprintf( tmpstr, 127, L"%s (%d %%)", name.c_str(), (int)(percent * 100) );
 	core::recti progressRect = frameRect;
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
 	driver->draw2DRectangle( progressRect, bgColor, bgColor, bgColor, bgColor, &clipRect );
+
+	std::string pathToImage = tech->GetString( TEXTURENORMAL );
+	video::ITexture* txs = driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() );
+	if( txs )
+	{
+		f32 koeff = txs ? (rectangle.getHeight() / static_cast< float >( txs->getSize().Height ) ) : 1;
+		core::dimension2du imSize( static_cast< u32 >( txs->getSize().Width * koeff ),
+							       static_cast< u32 >( txs->getSize().Height * koeff ) );
+
+		driver->draw2DImage( txs, 
+						 	 core::recti( core::position2di( 0, 0 ), imSize ) + rectangle.UpperLeftCorner,
+							 core::recti( core::position2di( 0, 0 ), txs->getSize() ), &clipRect );
+	}
 
 	_font->draw( tmpstr, rectangle, color, false, true, &clipRect );
 }
@@ -619,16 +632,17 @@ void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti re
 
 	//это создали темповый прямоугольник для отображения
 	core::recti fullRectangle = rectangle; 
-	fullRectangle.LowerRightCorner.Y = fullRectangle.UpperLeftCorner.Y + rectangle.getHeight() * 0.3f;
+	fullRectangle.LowerRightCorner.Y = fullRectangle.UpperLeftCorner.Y + rectangle.getHeight() / 4;
 
 	//создадим прямоугольник для известности и сдвинем его чуть вниз
-	core::recti famous = fullRectangle + core::position2di( 0, rectangle.getHeight() * 0.1f ) ;
-	famous.LowerRightCorner.Y = famous.UpperLeftCorner.Y + rectangle.getHeight() * 0.3f;
-	famous.LowerRightCorner.X = famous.UpperLeftCorner.X + famous.getWidth() * devGame->GetValue<float>( FAMOUS );
+	core::recti famous = fullRectangle + core::position2di( 0, rectangle.getHeight() / 10 ) ;
+	famous.LowerRightCorner.Y = famous.UpperLeftCorner.Y + rectangle.getHeight() / 4;
+	famous.LowerRightCorner.X = famous.UpperLeftCorner.X + static_cast< s32 >( famous.getWidth() * devGame->GetValue<float>( FAMOUS ) );
 
 	//создадим прямоугольник для завершенности игры
-	core::recti finished = famous + core::position2di( 0, rectangle.getHeight() * 0.1f ) ;
-	finished.LowerRightCorner.X = finished.UpperLeftCorner.X + fullRectangle.getWidth() * devGame->GetValue<float>( READYWORKPERCENT );
+	core::recti finished = famous + core::position2di( 0, rectangle.getHeight() / 10 ) ;
+	finished.LowerRightCorner.X = finished.UpperLeftCorner.X + 
+								  static_cast< s32 >( fullRectangle.getWidth() * devGame->GetValue<float>( READYWORKPERCENT ) );
 
 	driver->draw2DRectangle( 0xff00ff00, famous, &clipRect );
 	driver->draw2DRectangle( 0xff0000ff, finished, &clipRect );
@@ -663,7 +677,7 @@ void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle,
 		
 	driver->draw2DImage( txs, 
 		core::recti( core::position2di( 0, 0 ), imSize ) + rectangle.UpperLeftCorner,
-					 core::recti( core::position2di( 0, 0 ), txs->getSize() ), &clipRect );
+		core::recti( core::position2di( 0, 0 ), txs->getSize() ), &clipRect );
 
 	_font->draw( tmpstr, rectangle + core::position2di( rectangle.getHeight() + 6, 0 ), color, false, true, &clipRect ); 
 }

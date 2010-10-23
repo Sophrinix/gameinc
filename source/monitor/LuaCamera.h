@@ -34,7 +34,6 @@ public:
 	int SetObject(lua_State *L);
 
 	static const char* ClassName() { return CLASS_LUACAMERA.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUACAMERA; }
 
 private:
 	irr::scene::CNrpCameraAnimator* anim_;

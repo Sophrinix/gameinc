@@ -27,7 +27,6 @@ public:
 	int GetSideProjSize( lua_State *L );
 
 	static const char* ClassName() { return CLASS_LUATERRAIN.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUATERRAIN; }
 	
 	~CLuaTerrain();
 };

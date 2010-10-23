@@ -49,12 +49,9 @@ public:
 
 	static CNrpEngine& Instance();
 	
-	void SetConfig( nrp::INrpConfig* config );
 	bool InitVideo();
 	bool InitConsole();
 	void InitializeScene( SCENE_CLASS who );
-	nrp::INrpConfig* GetConfig( CONFIG_TYPE name_conf );
-
 
 	RUNNING_STATUS GetStatus() { return status_; }
 	void SetStatus( RUNNING_STATUS new_status, void* data );

@@ -10,7 +10,6 @@ CLASS_NAME CLASS_GAMEBOX( "CNrpGameBox" );
 
 OPTION_NAME GAME( "game" );
 OPTION_NAME NUMBERADDON( "numberAddon" );
-OPTION_NAME BOXNUMBER( "boxNumber" );
 
 class CNrpGameBox : public INrpConfig
 {
@@ -23,13 +22,11 @@ public:
 	float GetBoxAddonsPrice();
 
 	~CNrpGameBox(void);
-	void Save( std::string scetionName, std::string fileName );
-	void Load( std::string sectionName, std::string fileName );
+	std::string Save( const std::string& fileName );
+	void Load( const std::string& fileName );
 
 	static std::string ClassName() { return CLASS_GAMEBOX; }
-	virtual std::string ObjectName() { return CLASS_GAMEBOX; }
 private:
-	void Load_( char* file_name ) {}
 	typedef std::vector< CNrpTechnology* > ADDON_LIST;
 	typedef ADDON_LIST::iterator ADDON_LIST_ITERATOR;
 

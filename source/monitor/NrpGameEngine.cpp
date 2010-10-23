@@ -1,17 +1,24 @@
 #include "StdAfx.h"
 #include "NrpGameEngine.h"
 #include "NrpCompany.h"
+#include "OpFileSystem.h"
 
-#include <io.h>
 #include <errno.h>
 
 namespace nrp
 {
 
-CNrpGameEngine::CNrpGameEngine( std::string name ) : INrpProject( CLASS_GAMEENGINE, "" )
+CNrpGameEngine::CNrpGameEngine( const std::string& name ) : INrpProject( CLASS_GAMEENGINE, "" )
 {
+	_InitialyzeOptions();
+
 	SetValue<std::string>( NAME, name );
+}
+
+void CNrpGameEngine::_InitialyzeOptions()
+{
 	CreateValue<int>( AVGENRE_COUNT, 0 );
+	CreateValue<std::string>( INTERNAL_NAME, "" ); 
 	CreateValue<int>( TIME_ACTUAL, 0 );
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
 	CreateValue<int>( CODEVOLUME, 0 );
@@ -20,6 +27,14 @@ CNrpGameEngine::CNrpGameEngine( std::string name ) : INrpProject( CLASS_GAMEENGI
 	CreateValue<std::string>( COMPANYNAME, "" );
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
 	CreateValue<std::string>( TEXTURENORMAL, "" );
+}
+
+CNrpGameEngine::CNrpGameEngine( const std::string& fileName, bool load )
+: INrpProject( CLASS_GAMEENGINE, fileName )
+{
+	_InitialyzeOptions();
+
+	Load( fileName );
 }
 
 CNrpGameEngine::~CNrpGameEngine(void)
@@ -50,17 +65,17 @@ nrp::GENRE_TYPE CNrpGameEngine::GetGenreType( int index )
 
 void CNrpGameEngine::Save( std::string saveFolder )
 {
-	if( _access( saveFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( saveFolder.c_str(), NULL );
+	saveFolder = OpFileSystem::CheckEndSlash(saveFolder);
 
-	std::string localFolder = saveFolder + GetValue<std::string>( NAME ) + "/";
+	assert( OpFileSystem::IsExist( saveFolder ) );
 
-	if( _access( localFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( localFolder.c_str(), NULL );
-	std::string saveFile = localFolder + "engine.ini";
+	std::string localFolder = OpFileSystem::CheckEndSlash( saveFolder + GetValue<std::string>( NAME ) );
+
+	OpFileSystem::CreateDirectory( localFolder );
+	std::string saveFile = localFolder + "item.engine";
 
 	DeleteFile( saveFile.c_str() );
-	INrpProject::Save( SECTION_PROPERTIES, saveFile );
+	INrpProject::Save( saveFile );
 
 	GENRE_MAP::iterator pIter = avgenres_.begin();
 	for( int i=0; pIter != avgenres_.end(); pIter++, i++ )
@@ -69,10 +84,8 @@ void CNrpGameEngine::Save( std::string saveFolder )
 
 void CNrpGameEngine::Load( std::string loadFolder )
 {
-	std::string loadFile = loadFolder;
-	char lastChar = loadFile[ loadFile.size() - 1 ];
-	loadFile += (lastChar == '/' || lastChar == '\\') ? "engine.ini" : "/engine.ini" ;
-	INrpProject::Load( SECTION_PROPERTIES, loadFile );
+	std::string loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + "item.engine" ;
+	INrpProject::Load( loadFile );
 
 	char buffer[ 32000 ];
 	memset( buffer, 0, 32000 );

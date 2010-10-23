@@ -14,6 +14,7 @@ public:
 	static Luna<CLuaGame>::RegType methods[];				//методы обертки
 
 	CLuaGame(lua_State *L);		
+	int Create( lua_State* L );
 	int HaveBox( lua_State* L );
 	int GetName( lua_State* L );
 	int IsMyBoxAddon( lua_State* L );
@@ -39,7 +40,6 @@ public:
 	int GetCompany( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUAGAME.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUAGAME; }
 private:
 	template< class R > R GetImageLisParam_( lua_State* L, 
 		                                     std::string funcName, 

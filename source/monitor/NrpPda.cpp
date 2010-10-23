@@ -24,7 +24,7 @@ void CNrpPda::Clear()
 	_items.clear();
 }
 
-void CNrpPda::Save( const std::string& fileName )
+std::string CNrpPda::Save( const std::string& fileName )
 {
 	LIST_ITEM::iterator pItem = _items.begin();
 	for( int k=0; pItem != _items.end(); pItem++, k++ )
@@ -35,6 +35,8 @@ void CNrpPda::Save( const std::string& fileName )
 		IniFile::Write( section, "time", (*pItem)->GetValue<SYSTEMTIME>( STARTDATE ), fileName );
 		IniFile::Write( section, "action", (*pItem)->GetValue<std::string>( ACTION ), fileName );
 	}	
+
+	return fileName;
 }
 
 void CNrpPda::Load( const std::string& fileName )

@@ -22,7 +22,6 @@ public:
 	CLuaLinkBox(lua_State *L);		
 																//нажатии на эту кнопку
 	static const char* ClassName() { return CLASS_LINKBOX.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LINKBOX; }
 
 	int AddLuaFunction( lua_State* L );
 	int RemoveLuaFunction( lua_State* L );

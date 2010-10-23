@@ -24,7 +24,6 @@ public:
 	int ReadTime( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUAINIFILE.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUAINIFILE; }
 };
 
 }//namespace nrp

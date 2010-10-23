@@ -26,10 +26,8 @@ public:
 	}
 
 	static std::string ClassName() { return CLASS_PDAITEM; }
-	virtual std::string ObjectName() { return CLASS_PDAITEM; }
 private:
 	CPdaItem() : INrpConfig( CLASS_PDAITEM, "" ) {}
-	void Load_( char* file_name ) {}
 };
 
 class CNrpPda : INrpConfig
@@ -38,7 +36,7 @@ public:
 	CNrpPda();
 	~CNrpPda();
 
-	void Save( const std::string& fileName );
+	std::string Save( const std::string& fileName );
 	void Load( const std::string& fileName );
 
 	void AddItem( const std::string message, const std::string& action, const SYSTEMTIME& lTime );
@@ -48,10 +46,8 @@ public:
 	void Clear();
 
 	static std::string ClassName() { return CLASS_CNRPPDA; }
-	virtual std::string ObjectName() { return CLASS_CNRPPDA; }
 private:
 
-	void Load_( char* file_name ) {}
 	void _ClearOldItems();
 	typedef std::vector< CPdaItem* > LIST_ITEM;
 	LIST_ITEM _items;

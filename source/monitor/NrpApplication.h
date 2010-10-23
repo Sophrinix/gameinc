@@ -13,6 +13,17 @@ OPTION_NAME PROFILENAME( "profileName" );
 OPTION_NAME PROFILECOMPANY( "profileCompany" );
 OPTION_NAME WORKDIR( "workDir" );
 OPTION_NAME SAVEDIR( "saveDir" );
+OPTION_NAME SAVEDIR_INVENTIONS( "saveDirInvention" );
+OPTION_NAME SAVEDIR_COMPANIES( "saveDirCompanies" );
+OPTION_NAME SAVEDIR_DEVPR( "saveDirDevProjects" );
+OPTION_NAME SAVEDIR_GAMES( "saveDirGames" );
+OPTION_NAME SAVEDIR_PROJECTS( "saveDirProjects" );
+OPTION_NAME SAVEDIR_ENGINES( "saveDirEngines" );
+OPTION_NAME SAVEDIR_PLANT( "saveDirPlant" );
+OPTION_NAME SAVEDIR_USERS( "saveDirUsers" );
+OPTION_NAME SAVEINI_PROFILE( "saveIniProfile" );
+OPTION_NAME SAVEDIR_PROFILE( "saveDirProfile" );
+OPTION_NAME SAVEDIR_TECHS( "saveDirTechs" );
 OPTION_NAME CURRENTTIME( "currentTime" );
 OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
 OPTION_NAME BOXADDONNUMBER( "boxAdonNumber" );
@@ -20,6 +31,7 @@ OPTION_NAME MARKETGAMENUMBER( "marketGameNumber" );
 OPTION_NAME PLAYERCOMPANY( "playerCompany" );
 OPTION_NAME MINIMUM_USER_SALARY( "minimumUserSalary" );
 OPTION_NAME PDA( "pda" ); 
+OPTION_NAME SYSTEMINI( "systemIni" );
 
 class CNrpCompany;
 class IUser;
@@ -74,7 +86,7 @@ public:
 	INrpDevelopProject* GetDevelopProject( const std::string& name ) const; 
 
 	void AddGameEngine( nrp::CNrpGameEngine* ptrEngine );
-	CNrpGameEngine* GetGameEngine( std::string name );
+	CNrpGameEngine* GetGameEngine( const std::string& name ) const;
 	void RemoveGameEngine( nrp::CNrpGameEngine* ptrEngine );
 
 	bool UpdateTime();
@@ -140,18 +152,19 @@ private:
 	SPEED speed_;
 	int lastTimeUpdate_;
 
-	void Load_( char* fileName ) {}
 	void BeginNewHour_();
 	void BeginNewDay_();
 	void BeginNewMonth_();
 	IUser* CreateRandomUser_( std::string userType );
-	int GetGameRating_( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );
 	void UpdateMarketGames_();
 	int GetFreePlatformNumberForGame_( CNrpGame* game );
 	int GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp );
 	void LoadFreeImageLists_( const std::string& fileName );
 	void UpdateInvention_();
-	void _LoadUsers( const std::string& saveFolder, const std::string& iniFile );
+	void _LoadUsers( const std::string& iniFile );
+	void _CreateDirectoriesMapForSave( const std::string& rootFolder );
+	void _InitialyzeSaveDirectories( const std::string& profileName );
+	void _UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );
 };
 
 }//namespace nrp

@@ -66,7 +66,9 @@ namespace nrp
 
 CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 {
-	Load_( "" );
+	CreateValue<std::string>( LOAD_FUNCTIONS_FILENAME, "" );
+	CreateValue<bool>( SHOW_CALL_FUNCTION_NAME, true );
+
 	// NULL если была ошибка аллокации памяти
 	if (!(vm_ = luaL_newstate()))
 		Log(SCRIPT, FATAL) << "Инициализация интерпретатора NerpaScript не удалась (недостаточно памяти)" << term;
@@ -148,8 +150,6 @@ CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 		lua_register( vm_, "NrpGetSender", ApplicationGetSender ),
 
 		lua_register( vm_, "GetTickCount", ApplicationGetTickCount ),
-
-		lua_register( vm_, "RemoveFile", ApplicationRemoveFile ),
 
 		RegisterLuaClasses_();
 	}
@@ -265,11 +265,6 @@ void CNrpScript::DoFile( const char* fileName )
 			Log(SCRIPT, FATAL)  << "Неизвестная ошибка скрипта \"" + std::string( fileName ) << term;
 		else
 			Log(SCRIPT, FATAL)  << errMsg  << term;
-
-#ifdef _DEBUG
-		OutputDebugString( errMsg );
-		OutputDebugString( "\n" );
-#endif
 	}
 }
 
@@ -298,15 +293,6 @@ void CNrpScript::CallFunction( const char* funcName, void* userData )
 	lua_getfield( vm_, LUA_GLOBALSINDEX, funcName );
 	lua_pushlightuserdata( vm_, userData );
 
-	if( GetValue<bool>( SHOW_CALL_FUNCTION_NAME ) )
-	{
-#ifdef _DEBUG
-		char text[MAX_PATH];
-		sprintf_s( text, MAX_PATH, "LuaFuncCall: %s\n", funcName );
-		//OutputDebugString( text );
-#endif
-	}
-
 	if( lua_pcall( vm_, 1, LUA_MULTRET, 0 ) != 0 )
 	{
 		// Вытаскиваем сообщение об ошибке
@@ -315,25 +301,27 @@ void CNrpScript::CallFunction( const char* funcName, void* userData )
 
 		lua_pop(vm_, -1);
 		Log(SCRIPT, FATAL) << errMsg << term;
-
-#ifdef _DEBUG
-		OutputDebugString( errMsg );
-		OutputDebugString( "\n" );
-#endif
 	}
 }
 
-void CNrpScript::Load_( char* file_name )
+void CNrpScript::TemporaryScript( const std::string& fileName, SCRIPT_ACTION action )
 {
-	CreateValue<std::string>( LOAD_FUNCTIONS_FILENAME, "" );
-	CreateValue<bool>( SHOW_CALL_FUNCTION_NAME, true );
-}
+	switch( action )
+	{
+	case SA_CREATE:
+		{
+			std::string fn = "tmp/" + fileName + ".lua";
+			IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn.c_str() );
+			file->drop();	
+		}
+	break;
 
-void CNrpScript::CreateTemporaryScript( const std::string& fileName )
-{
-	std::string fn = "tmp/" + fileName + ".lua";
-	IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn.c_str() );
-	file->drop();	
+	case SA_EXEC:
+		{
+			std::string fn = "tmp/" + fileName + ".lua";
+			DoFile( fn.c_str() );
+		}
+	}
 }
 
 void CNrpScript::AddActionToTemporaryScript( const std::string& fileName, const std::string& action )

@@ -39,9 +39,7 @@ public:
 	int SetScaleImage( lua_State *L );
 	int SetUseAlphaChannel( lua_State* L );
 								
-	virtual std::string ObjectName() { return CLASS_LUAIMAGE; }
 	static const char* ClassName() { return CLASS_LUAIMAGE.c_str(); }
-	
 };
 
 }//namespace nrp

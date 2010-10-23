@@ -38,7 +38,6 @@ public:
 	int SetPressedImage( lua_State *L );					//привязка к текстуре в нажатом состоянии
 	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при 
 																//нажатии на эту кнопку
-	virtual std::string ObjectName() { return CLASS_LUABUTTON; }
 	static const char* ClassName() { return CLASS_LUABUTTON.c_str(); }
 private:
 	typedef enum { TI_IMAGE=0, TI_HOVER, TI_PRESSED } TYPE_IMAGE;

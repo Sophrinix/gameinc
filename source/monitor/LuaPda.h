@@ -22,7 +22,6 @@ public:
 	int Load( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUAPDA.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUAPDA; }
 };
 
 }//namespace nrp

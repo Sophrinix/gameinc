@@ -101,8 +101,6 @@ bool CNrpCircleScrollBar::OnEvent( const SEvent& event )
 				}
 				else
 				{
-					OutputDebugString( nrp::IntToStr( (int)(offset + startAngle_) ).c_str() );
-					OutputDebugString( "\n" );
 					mouse2rotate_ = false;
 				}
 			}		

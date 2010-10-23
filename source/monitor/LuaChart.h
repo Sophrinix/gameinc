@@ -29,7 +29,6 @@ public:
 	int SetOffsetPoints( lua_State *L);
 
 	static const char* ClassName() { return CLASS_LUACHART.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUACHART; }
 };
 
 }//namespace nrp

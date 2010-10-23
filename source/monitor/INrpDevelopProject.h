@@ -16,20 +16,21 @@ typedef std::vector< std::string > DEVELOPERS_LIST;
 class INrpDevelopProject : public INrpProject
 {
 	INrpDevelopProject();
+
 public:
-	INrpDevelopProject( std::string className, std::string systemName )
-		: INrpProject( className, systemName )
-	{
-	}
+	INrpDevelopProject( const std::string& className, const std::string& systemName );
+	 
 	~INrpDevelopProject(void);
 
 	void SetDeveloper( IUser* user );
 	const DEVELOPERS_LIST& GetDevelopers() { return developers_; }
-	virtual void ModuleFinished( CNrpProjectModule* module, IUser* ptrUser ) = 0;
+	virtual void ModuleFinished( CNrpProjectModule* module ) = 0;
 	virtual bool IsReady() = 0; 
 	virtual CNrpProjectModule* GetModule( size_t index ) = 0;
 	virtual CNrpProjectModule* GetModule( const char* name ) = 0;
-	virtual void Save( std::string amount );
+
+	virtual std::string Save( const std::string& amount );
+	virtual void Load( const std::string& pathTo );
 
 	static std::string ClassName() { return CLASS_INRPDEVELOPPROJECT; }
 protected:
@@ -37,10 +38,6 @@ protected:
 
 	DEVELOPERS_LIST developers_;
 private:
-	void Save( std::string scetionName, std::string fileName ) 
-	{
-		throw "deprecated function";
-	};
 };
 
 }//end namespace nrp

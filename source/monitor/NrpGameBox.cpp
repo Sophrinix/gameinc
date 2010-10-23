@@ -38,14 +38,14 @@ void CNrpGameBox::RemoveMyBoxAddon( std::string name )
 		return;
 	}
 
-	OutputDebugString( ("Не нашел подходящего элемента = " + name).c_str() );
+	Log(HW) << "Не нашел подходящего элемента = " << name << term;
 }
 
 void CNrpGameBox::AddBoxAddon( CNrpTechnology* tech )
 {
 	if( tech == NULL )
 	{
-		OutputDebugString( "Нельзя добавить пустой аддон" );
+		Log(HW) << "Нельзя добавить пустой аддон" << term;
 		return;
 	}
 	addons_.push_back( tech );
@@ -57,18 +57,20 @@ CNrpTechnology* CNrpGameBox::GetAddon( size_t index )
 	return index < addons_.size() ? addons_[ index ] : NULL;
 }
 
-void CNrpGameBox::Save( std::string scetionName, std::string fileName )
+std::string CNrpGameBox::Save( const std::string& fileName )
 {
 	ADDON_LIST_ITERATOR pIter = addons_.begin();
 	for( int k=0; pIter != addons_.end(); pIter++, k++ )
 		IniFile::Write( "addons", "addon_" + IntToStr( k ), (*pIter)->GetValue<std::string>( NAME ), fileName );
 
-	INrpConfig::Save( scetionName, fileName );	
+	INrpConfig::Save( fileName );	
+
+	return fileName;
 }
 
-void CNrpGameBox::Load( std::string sectionName, std::string fileName )
+void CNrpGameBox::Load( const std::string& fileName )
 {
-	INrpConfig::Load( sectionName, fileName );
+	INrpConfig::Load(  fileName );
 
 	for( int k=0; k < GetValue<int>( NUMBERADDON ); k++ )
 	{

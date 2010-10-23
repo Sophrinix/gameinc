@@ -18,11 +18,12 @@ class CNrpDevelopGame : public INrpDevelopProject
 	CNrpDevelopGame() : INrpDevelopProject( CLASS_DEVELOPGAME, "" ) {}; 
 
 public:
-	CNrpDevelopGame( std::string name, CNrpCompany* ptrCompany );
+	CNrpDevelopGame( const std::string& name, CNrpCompany* ptrCompany );
 	CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCompany );
+	CNrpDevelopGame( const std::string& fileName );
 
-	void Save( std::string folderSave );
-	void Load( std::string loadFolder );
+	std::string Save( const std::string& folderSave );
+	void Load( const std::string& loadFolder );
 	CNrpProjectModule* GetGenre( size_t index );
 	CNrpProjectModule* GetModule( size_t index );
 	CNrpProjectModule* GetModule( const char* name );
@@ -33,12 +34,11 @@ public:
 	~CNrpDevelopGame(void);
 
 	static std::string ClassName() { return CLASS_DEVELOPGAME; }
-	virtual std::string ObjectName() { return CLASS_DEVELOPGAME; }
 private:
 	MODULE_LIST gameModules_;
 
 	void InitializeOptions_( const std::string& name );
-	void ModuleFinished( CNrpProjectModule* module, IUser* ptrUser );
+	void ModuleFinished( CNrpProjectModule* module );
 	void FindPlaformsAndLanguages_();
 };
 

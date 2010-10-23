@@ -70,13 +70,13 @@ typedef enum { PT_UNKNOWN=0,
 
 class INrpProject : public INrpConfig
 {
+	INrpProject() : INrpConfig( "error", "error" ) {}
+
 public:
-	INrpProject(std::string className, std::string systemName);
+	INrpProject( const std::string& className, const std::string& systemName);
+
+	virtual std::string Save( const std::string& fileName );
 	~INrpProject(void);
-
-protected:
-
-	void Load_( char* file_name ) {}
 };
 
 typedef INrpProject* PNrpProject;

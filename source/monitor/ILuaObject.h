@@ -7,8 +7,8 @@
 #include <rect.h>
 #include <assert.h>
 
-#define FUNC_NOT_NEED_PARAM (std::string( "Function " ) + ObjectName() + std::string( ":Self not need any parameter" )).c_str()
-#define ASSIGN_EMPTY_OBJECT (std::string( "Assign empty object in " ) + ObjectName() ).c_str()
+#define FUNC_NOT_NEED_PARAM (std::string( "Function " ) + ObjectTypeName() + std::string( ":Self not need any parameter" )).c_str()
+#define ASSIGN_EMPTY_OBJECT (std::string( "Assign empty object in " ) + ObjectTypeName() ).c_str()
 #define IF_OBJECT_NOT_NULL_THEN if( object_ == NULL ) DebugReport( __FILE__, __LINE__, "Access null object" ); else
 
 #define LUNA_ILUAOBJECT_HEADER(class) LUNA_AUTONAME_FUNCTION(class,	SetObject),\
@@ -81,9 +81,7 @@ public:
 	virtual int DebugReport( const char* fileName, const int lineNumber, const char* text )
 	{
 #ifdef _DEBUG
-		char errStr[ MAX_PATH ];
-		sprintf_s( errStr, MAX_PATH, "%s:%d Error: %s\n", fileName, lineNumber, text );
-		OutputDebugString( errStr );
+		Log(HW) << fileName << ":" << lineNumber << " Error" << text;
 #endif
 		return 1;
 	}

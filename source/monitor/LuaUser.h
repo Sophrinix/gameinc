@@ -24,6 +24,7 @@ public:
 	int IsFreeUser( lua_State* L );
 	int GetParam( lua_State* L );
 	int SetParam( lua_State* L );
+	int AddParam( lua_State* L );
 	int GetName( lua_State* L );
 	int IsTypeAs( lua_State* L );
 	int AddWork( lua_State* L );
@@ -37,7 +38,6 @@ public:
 	int GetRelation( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUAUSER.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUAUSER; }
 };
 
 }//namespace nrp

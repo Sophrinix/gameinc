@@ -25,6 +25,8 @@ Luna< CLuaReklame >::RegType CLuaReklame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetDayCost ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetFamous ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetReklameObject ),
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetCompanyName ),
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetCompanyName ),
 	{0,0}
 };
 
@@ -64,6 +66,28 @@ int CLuaReklame::Remove( lua_State* L )
 	return 1;	
 }
 
+int CLuaReklame::SetReklameObject( lua_State* L ) 
+{	
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaReklame:SetReklameObject need INrpConfig* parameter" );
+
+	INrpConfig* reklameObject = (INrpConfig*)lua_touserdata( L, 2 );
+	assert( reklameObject );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( reklameObject )
+		{
+			object_->SetString( GAMENAME, reklameObject->GetString( NAME ) );
+			object_->SetString( TYPEOBJECT, reklameObject->ObjectTypeName() );
+			object_->SetString( COMPANYNAME, reklameObject->GetString( COMPANYNAME ) );
+		}
+	}
+
+	return 1;
+}
+
+
 int CLuaReklame::GetQuality( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetQuality", QUALITY, 0 ) ); return 1; }
 int CLuaReklame::GetLevel( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) ); return 1; }
 int CLuaReklame::GetNumberDay( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetNumberDay", NUMBERDAY, 0 ) ); return 1; }
@@ -73,5 +97,6 @@ int CLuaReklame::GetTexture( lua_State* L ) { lua_pushstring( L, GetParam_<std::
 int CLuaReklame::GetPrice( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetPrice", BALANCE, 0 ) ); return 1; }
 int CLuaReklame::GetDayCost( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetDayCost", DAYCOST, 0 ) );return 1; }
 int CLuaReklame::GetFamous( lua_State* L ) { lua_pushinteger( L, static_cast< int >( GetParam_<float>( L, "GetDayCost", MAXQUALITY, 0 ) * 100 ) ); return 1; }
-int CLuaReklame::SetReklameObject( lua_State* L ) {	SetParam_( L, "SetReklameObject", GAMENAME ); return 1; }
+int CLuaReklame::SetCompanyName( lua_State* L ) {	SetParam_( L, "SetCompany", COMPANYNAME ); return 1; }
+int CLuaReklame::GetCompanyName( lua_State* L ) { lua_pushstring( L, GetParam_<std::string>( L, "GetCompanyName", COMPANYNAME, "" ).c_str() ); return 1; }
 }//namespace nrp

@@ -20,6 +20,6 @@ CNrpDiskMachine::~CNrpDiskMachine(void)
 
 void CNrpDiskMachine::Load( std::string sectionName, std::string fileName )
 {
-	INrpConfig::Load( SECTION_PROPERTIES, fileName );
+	INrpConfig::Load( fileName );
 }
 }//end namespace nrp

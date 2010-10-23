@@ -59,8 +59,7 @@ void CNrpConsole::SaveCommands_()																	//сохранение введенных комманд
 	catch(...)
 	{
 #ifdef _DEBUG
-		std::string err = "Can't write command to " + path;
-		OutputDebugString( err.c_str() );
+		Log(HW) << "Can't write command to " << path << term;
 #endif
 	}
 }

@@ -30,7 +30,7 @@ private:
 public:
 	//уникальное имя объекта в массиве
 	SYSTEM_NAME SystemName() { return systemName_; }
-	const std::string& ObjectName() { return objectName_; }
+	const std::string& ObjectTypeName() { return objectName_; }
 
 	//размещение объекта в массиве
 	INrpObject( CLASS_NAME objectName, SYSTEM_NAME sysName ):

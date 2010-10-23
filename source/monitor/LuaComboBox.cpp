@@ -55,16 +55,6 @@ int CLuaComboBox::SetAction( lua_State *L )									//устанавливает имя новой фу
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaComboBox::SetAction need string parameter");
 
-	/*std::string funcName = lua_tostring( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN	dynamic_cast< gui::CNrpComboBox* >( object_ )->setOnClickAction( funcName.c_str() );
-
-#ifdef _DEBUG
-	char text[ MAX_PATH ];
-	sprintf_s( text, MAX_PATH, "Object: %d  FuncName:%s\n", object_, funcName.c_str() );
-	OutputDebugString( text );
-#endif
-	*/
 	return 1;
 }
 

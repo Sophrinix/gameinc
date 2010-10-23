@@ -13,4 +13,14 @@ CNrpLicense::~CNrpLicense(void)
 {
 }
 
+void CNrpLicense::Load( const std::string& pathTo )
+{
+
+}
+
+std::string CNrpLicense::Save( const std::string& pathTo )
+{
+	return "";
+}
+
 }//namespace nrp

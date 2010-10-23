@@ -16,13 +16,9 @@ class CNrpWorldConfig : public INrpConfig
 {
 private:
 	CNrpWorldConfig();
-
-	void Load_( char* file_name );
-	const std::string SECTION_NAME;
 public:
 	static CNrpWorldConfig& Instance();
 
-	virtual std::string ObjectName() { return CLASS_WORLDCONFIG; }
 	static std::string ClassName() { return CLASS_WORLDCONFIG; }
 };
 

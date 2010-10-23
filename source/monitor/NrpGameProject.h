@@ -70,7 +70,7 @@ public:
 	const TECH_LIST& GetSoundTechList() { return soundTechnologies_; }
 
 	static std::string ClassName() { return CLASS_GAMEPROJECT; }
-	virtual std::string ObjectName() { return CLASS_GAMEPROJECT; }
+	virtual std::string ObjectTypeName() { return CLASS_GAMEPROJECT; }
 private:
 	void InitializeOptions_( std::string name );
 	CNrpGameProject( CNrpGameProject& ptr );

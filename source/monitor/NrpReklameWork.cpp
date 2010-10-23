@@ -3,6 +3,7 @@
 #include "NrpCompany.h"
 #include "NrpApplication.h"
 #include "NrpGame.h"
+#include "OpFileSystem.h"
 
 namespace nrp
 {
@@ -30,6 +31,7 @@ void CNrpReklameWork::InitializeOptions_()
 	CreateValue<std::string>( TEXTURENORMAL, "" );
 	CreateValue<int>( BALANCE, 0 );
 	CreateValue<std::string>( COMPANYNAME, "" );
+	CreateValue<std::string>( TYPEOBJECT, "" );
 
 	SYSTEMTIME rt;
 	memset( &rt, 0, sizeof( rt ) );
@@ -45,22 +47,31 @@ CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLA
 	SetValue<int>( DAYCOST, p.GetValue<int>( DAYCOST ) );
 	SetValue<float>( QUALITY, p.GetValue<float>( QUALITY ) );
 	SetValue<float>( MAXQUALITY, p.GetValue<float>( MAXQUALITY ) );
-	SetValue<std::string>( GAMENAME, p.GetValue<std::string>( GAMENAME ) );
-	SetValue<std::string>( TECHTYPE, p.GetValue<std::string>( TECHTYPE ) );
-	SetValue<std::string>( TEXTURENORMAL, p.GetValue<std::string>( TEXTURENORMAL ) );
-	SetValue<std::string>( COMPANYNAME, p.GetValue<std::string>( COMPANYNAME ) );
+	SetString( GAMENAME, p.GetString( GAMENAME ) );
+	SetString( TECHTYPE, p.GetString( TECHTYPE ) );
+	SetString( TEXTURENORMAL, p.GetString( TEXTURENORMAL ) );
+	SetString( COMPANYNAME, p.GetString( COMPANYNAME ) );
+	
+	//надо проверять корректность загруженных данных
+	assert( !GetString( GAMENAME ).empty() );
+}
+
+CNrpReklameWork::CNrpReklameWork( const std::string& fileName ) : INrpConfig( CLASS_REKLAMEWORK, "" )
+{
+	InitializeOptions_();
+	Load( fileName );
 }
 
 CNrpReklameWork::~CNrpReklameWork(void)
 {
 }
 
-void CNrpReklameWork::Load( std::string sectionName, std::string fileName )
+void CNrpReklameWork::Load( const std::string& fileName )
 {
-	INrpConfig::Load( sectionName, fileName );
+	INrpConfig::Load( fileName );
 }
 
-void CNrpReklameWork::Update( CNrpReklameWork* p )
+void CNrpReklameWork::Update( const CNrpReklameWork* p )
 {
 	AddValue<int>( NUMBERDAY, p->GetValue<int>( NUMBERDAY ) );
 	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) > 0 );
@@ -74,7 +85,7 @@ void CNrpReklameWork::BeginNewDay()
 	if( cmp != NULL )
 	{
 		const std::string name = GetValue<std::string>( GAMENAME );
-		//сначала попробуем получить куказатель на существующую игру
+		//сначала попробуем получить указатель на существующую игру
 		INrpConfig* game = reinterpret_cast< INrpConfig* >( cmp->GetGame( name ) );
 
 		//если такой игры нет, может игрок рекламирует проект игры??? проверим
@@ -92,18 +103,19 @@ void CNrpReklameWork::BeginNewDay()
 			//здесь надо учесть факторы конторы, которые могут влиять на
 			//повышение или понижение этого параметра
 			game->AddValue<float>( FAMOUS, GetValue<float>( QUALITY ) );
-			cmp->AddValue<int>( BALANCE, -GetValue<int>( DAYCOST ) );
 		}
 	}
 
 	AddValue<int>( NUMBERDAY, -1 );
-	AddValue<int>( BALANCE, GetValue<int>( DAYCOST ) );
+	//AddValue<int>( BALANCE, GetValue<int>( DAYCOST ) );
 	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) == 0 );
 }
 
-void CNrpReklameWork::Save( std::string sectionName, std::string fileName )
+std::string CNrpReklameWork::Save( const std::string& saveFolder )
 {
-	INrpConfig::Save( sectionName, fileName );
-}
+	std::string fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + "reklame." + GetString( TECHTYPE );
+	INrpConfig::Save( fileName );
 
+	return fileName;
+}
 }//end namespace nrp

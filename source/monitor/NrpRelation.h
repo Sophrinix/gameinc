@@ -10,7 +10,6 @@ OPTION_NAME REL_TIME( "rel_time" );
 
 class CNrpRelation : public INrpConfig
 {		
-	void Load_( char * ) {}
 	CNrpRelation() : INrpConfig( "CNrpRelation", "" ) {};
 
 public:

@@ -23,7 +23,6 @@ public:
 	CLuaLabel(lua_State *L);		
 																//нажатии на эту кнопку
 	static const char* ClassName() { return CLASS_LUALABEL.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUALABEL; }
 
 	int SetOverrideColor( lua_State* L );
 	int SetTextAlignment( lua_State* L );

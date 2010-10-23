@@ -627,6 +627,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\NrpGuiLigthing.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpGuiLigthing.h"
+						>
+					</File>
+					<File
 						RelativePath=".\nrpGuiLinkBox.cpp"
 						>
 					</File>
@@ -1445,6 +1453,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\callbacks.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\city.lua"
 				>
 			</File>
@@ -1458,10 +1470,6 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\functions_sceneLogin.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\Functions_sceneWork.lua"
 				>
 			</File>
 			<File
@@ -1693,6 +1701,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NrpRelation.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpRelation.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NrpUserModificator.cpp"
 				>
 			</File>
@@ -1805,6 +1821,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NrpHistory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpHistory.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NrpInvention.cpp"
 				>
 			</File>
@@ -1869,14 +1893,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\NrpRelation.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\NrpRelation.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

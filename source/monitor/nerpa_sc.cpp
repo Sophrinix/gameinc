@@ -5,8 +5,6 @@
 #include "nerpa_sc.h"
 #include "nrpVideoConfig.h"
 #include "nrpHUDConfig.h"
-#include "NrpWorldConfig.h"
-#include "NrpSkyConfig.h"
 #include "nrpEngine.h"
 #include "NrpConsoleConfig.h"
 #include "Logger.h"
@@ -43,30 +41,18 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	application.SetValue<std::string>( WORKDIR, mypath );
 #endif
 
-	application.SetValue<std::string>( SAVEDIR, "save/");
-
 	CNrpPluginEngine& p_engine = CNrpPluginEngine::Instance();
 
+	//инициализация систем
 	CNrpVideoConfig& videoConfig = CNrpVideoConfig::Instance();
 	CNrpHUDConfig& hudConfig = CNrpHUDConfig::Instance();
-	CNrpWorldConfig& worldConfig = CNrpWorldConfig::Instance();
-	CNrpSkyConfig& skyConfig = CNrpSkyConfig::Instance();
 	CNrpConsoleConfig& consoleConfig = CNrpConsoleConfig::Instance();
 	CNrpHtmlEngineConfig& heConfig = CNrpHtmlEngineConfig::Instance();
 	CNrpPlant& plant = CNrpPlant::Instance();
-
 	CNrpScript& scriptSystem = CNrpScript::Instance();
-	scriptSystem.DoFile( "scripts/initApp.lua" );
-	
-	v_engine.SetConfig( &videoConfig );
-	v_engine.SetConfig( &hudConfig );
-	v_engine.SetConfig( &skyConfig );
-	v_engine.SetConfig( &consoleConfig );
 
+	//ожидаем подгрузки видео
 	v_engine.InitVideo();
-	
-	while( v_engine.GetDevice() == NULL )
-		Sleep( 100 );
 
 	HTMLEngine& htmlEngine = HTMLEngine::Instance();
 	v_engine.InitConsole();

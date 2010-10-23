@@ -31,7 +31,6 @@ public:
 	int SetItemTextColor( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUALISTBOX.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUALISTBOX; }
 };
 
 }//namespace nrp

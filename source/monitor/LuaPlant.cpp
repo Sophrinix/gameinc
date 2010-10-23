@@ -21,25 +21,22 @@ Luna< CLuaPlant >::RegType CLuaPlant::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddReklameWork ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, Save ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetReklame ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklame ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklameNumber ),
 	{0,0}
 };
 
-CLuaPlant::CLuaPlant(lua_State *L)	: ILuaObject(L, CLASS_LUAPLANT )							//конструктор
+CLuaPlant::CLuaPlant(lua_State *L)	: ILuaBaseProject(L, CLASS_LUAPLANT )							//конструктор
 {}
 
 int CLuaPlant::Load( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::Load need string parameter");
-
-	const char* fileName = lua_tostring( L, 2 );
-	assert( fileName != NULL );
-
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaPlant::Load not need any parameter");
 	
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		std::string savedir = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
-		object_->Load( SECTION_OPTIONS, savedir+fileName+"/" );
+		object_->Load( SECTION_PROPERTIES, CNrpApplication::Instance().GetString( SAVEDIR_PROFILE ) );
 	}
 
 	return 1;
@@ -61,15 +58,13 @@ int CLuaPlant::AddProduceWork( lua_State* L )
 int CLuaPlant::Save( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::Save need string parameter");
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaPlant::Save not need any parameter");
 
-	const char* fileName = lua_tostring( L, 2 );
-	assert( fileName != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string savedir = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
-		object_->Save( SECTION_OPTIONS, savedir+fileName+"/" );
+		std::string savedir = CNrpApplication::Instance().GetString( SAVEDIR_PROFILE );
+		object_->Save( SECTION_PROPERTIES, savedir );
 	}
 
 	return 1;
@@ -78,17 +73,20 @@ int CLuaPlant::Save( lua_State* L )
 int CLuaPlant::LoadBaseReklame( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::LoadBaseReklame need string parameter");
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaPlant::LoadBaseReklame need reklameName, saveFilePath parameter");
 
-	const char* fileName = lua_tostring( L, 2 );
+	const char* reklameName = lua_tostring( L, 2 );
+	const char* fileName = lua_tostring( L, 3 );
 	assert( fileName != NULL );
 
 	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpReklameWork* baseReklame = new CNrpReklameWork( "base", "" );
-		baseReklame->Load( SECTION_PROPERTIES, fileName );
-		ret = object_->AddBaseReklame( baseReklame );
+		if( object_->GetBaseReklame( reklameName ) == NULL )
+		{
+			CNrpReklameWork* baseReklame = new CNrpReklameWork( fileName );
+			ret = object_->AddBaseReklame( baseReklame );
+		}
 	}
 
 	lua_pushboolean( L, ret );
@@ -110,7 +108,7 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 		for( int k=0; k < object_->GetValue<int>( BASEREKLAMENUMBER ); k++ )
 		{
 			CNrpReklameWork* rW = object_->GetBaseReklame( k );
-			IniFile::Write( SECTION_PROPERTIES, rW->GetValue<std::string>( TECHTYPE ), rW->GetValue<int>( DAYCOST ), reklamePrice );
+			IniFile::Write( SECTION_PROPERTIES, rW->GetString( TECHTYPE ), rW->GetValue<int>( DAYCOST ), reklamePrice );
 		}
 	}
 
@@ -127,7 +125,7 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string savedir = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
+		std::string savedir = CNrpApplication::Instance().GetString( SAVEDIR );
 		std::string reklamePrice = savedir+profileName+"/reklameprice.ini";
 
 		char buffer[ 32000 ];
@@ -182,6 +180,29 @@ int CLuaPlant::GetReklame( lua_State* L )
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, r );
+	Luna< CLuaReklame >::constructor( L );
+	return 1;
+}
+
+int CLuaPlant::GetBaseReklameNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetBaseReklameNumber", BASEREKLAMENUMBER, 0 ) );
+	return 1;
+}
+
+int CLuaPlant::GetBaseReklame( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::GetBaseReklame need int parameter");
+
+	int index = lua_tointeger( L, 2 );
+	assert( index >= 0 );
+
+	CNrpReklameWork* ret = NULL;
+	IF_OBJECT_NOT_NULL_THEN  ret = object_->GetBaseReklame( index );
+	
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, ret );
 	Luna< CLuaReklame >::constructor( L );
 	return 1;
 }

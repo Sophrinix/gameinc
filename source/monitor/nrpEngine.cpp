@@ -27,6 +27,8 @@ void CNrpEngine::Run() //создание нерпы
 {
 	try
 	{		
+		CNrpScript::Instance().DoFile( "scripts/initApp.lua" );
+
 		terminated_ = false;											//флаг завершения работы
 		currentScene_ = NULL;											//текущая сцена
 		status_ = STATUS_UNKNOWN;										//флаг завершения работы
@@ -133,6 +135,9 @@ bool CNrpEngine::InitVideo()
 
 	device_->setEventReceiver( new CNrpAppEventer( this ) );
 
+	while( device_ == NULL )
+		Sleep( 100 );
+
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////
@@ -144,17 +149,9 @@ void CNrpEngine::ActivateScene_( std::string name )
 	for(; pIter != scenes_.end(); pIter++ )
 		if( (*pIter).first == name )
 		{
-			CNrpScript::Instance().DoFile( (*pIter).second.c_str() );
-				
-			std::string fileName = "/functions_" + nrp::ExtractFileName( (*pIter).second );
-			std::string fileDir = nrp::ExtractFileDir( (*pIter).second );
-			
-			CNrpScript::Instance().LoadFile( ( fileDir + fileName ).c_str() );
-
+			CNrpScript::Instance().DoFile( (*pIter).second.c_str() );	
 			guienv_->getRootGUIElement()->addChild( console_ );
-
 			run_state_ = DRAW;
-
 			return;
 		}
 
@@ -170,17 +167,6 @@ CNrpEngine& CNrpEngine::Instance()
 
 	return *global_app_instance;
 }
-
-void CNrpEngine::SetConfig( INrpConfig* config )
-{
-	//config_[ config->GetType() ] = config;
-}
-
-INrpConfig* CNrpEngine::GetConfig( CONFIG_TYPE name_conf )
-{
-	return config_[ name_conf ];
-}
-//////////////////////////////////////////////////////////////////////////
 
 scene::INrpScene* CNrpEngine::GetCurrentScene() const
 {

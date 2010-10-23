@@ -30,15 +30,19 @@ public:
 	int AddUser( IUser* user );
 	int RemoveUser( const std::string& userName );
 
-	void Save( std::string saveFolder );
+	std::string Save( const std::string& saveFolder, bool k );
 	void Load( std::string fileName );
 
 	static std::string ClassName() { return CLASS_INVENTION; }
-	virtual std::string ObjectName() { return CLASS_INVENTION; }
-
 private:
 	int _GetRealPrice( CNrpTechnology* tech );
+	
+	//deperecated 
+	void Save( std::string saveFolder ) {};
+	//
+
 	void InitializeOptions_();
+	std::string _GetFileName();
 	typedef std::vector< IUser* > USERS_LIST;
 	USERS_LIST _users;
 };

@@ -50,7 +50,6 @@ public:
 	int GetInvention( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUACOMPANY.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUACOMPANY; }
 };
 
 }//namespace nrp

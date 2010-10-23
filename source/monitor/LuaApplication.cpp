@@ -18,6 +18,7 @@
 #include "LuaInvention.h"
 #include "LuaDiskMachine.h"
 #include "LuaPda.h"
+#include "LuaGame.h"
 #include "OpFileSystem.h"
 
 #include <assert.h>
@@ -53,7 +54,6 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, ResetData ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadProfile ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateNewFreeUsers ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, PayUserSalary ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddonNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddon ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameBoxAddon ),
@@ -148,9 +148,7 @@ int CLuaApplication::AddRemLuaFunction_( lua_State* L, std::string funcName,  bo
 	}
 
 #ifdef _DEBUG
-	char text[ MAX_PATH ];
-	sprintf_s( text, MAX_PATH, "Object:%s %d  FuncName:%s\n", rem ? "remove" : "added", object_, fName );
-	OutputDebugString( text );
+	Log(HW) << "Object:" << std::string(rem ? "remove" : "added") << (int)object_ << fName << term;
 #endif
 
 	return 1;
@@ -330,21 +328,6 @@ int CLuaApplication::CreateNewFreeUsers( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	object_->CreateNewFreeUsers();
 
 	return 1;		
-}
-
-int CLuaApplication::PayUserSalary( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:PayUserSalary not need parameter" );
-
-	IF_OBJECT_NOT_NULL_THEN
-	{
-		CNrpApplication::COMPANIES_LIST& cmpList = object_->GetCompanies();
-		//for( size_t cnt=0; cnt < cmpList.size(); cnt++ )
-		//	cmpList[ cnt ]->PaySalaries_();
-	}
-
-	return 1;
 }
 
 int CLuaApplication::GetCompanyNumber( lua_State* L )
@@ -561,7 +544,9 @@ int CLuaApplication::GetGame( lua_State* L )
 	CNrpGame* game = NULL;
 	IF_OBJECT_NOT_NULL_THEN	game = object_->GetGame( index );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, game );
+	Luna< CLuaGame >::constructor( L );
 	return 1;		
 }
 
@@ -600,7 +585,7 @@ int CLuaApplication::LoadImageList( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( _access( imageListName, 0 ) == 0 )
+		if( OpFileSystem::IsExist( imageListName ) )
 		{
 			CNrpGameImageList* pList = new CNrpGameImageList("tmp");
 			pList->Load( std::string(imageListName) + "/item.desc" );

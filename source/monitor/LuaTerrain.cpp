@@ -24,7 +24,6 @@ CLuaTerrain::CLuaTerrain(lua_State *L) : ILuaSceneNode(L, "CLuaTerrain")
 
 CLuaTerrain::~CLuaTerrain()
 {
-	OutputDebugString( "deleted Lua Terrain Object\n");
 }
 
 

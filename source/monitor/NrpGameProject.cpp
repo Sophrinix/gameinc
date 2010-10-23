@@ -7,8 +7,8 @@
 #include "NrpGame.h"
 #include "NrpCompany.h"
 #include "NrpApplication.h"
+#include "OpFileSystem.h"
 
-#include <io.h>
 #include <errno.h>
 
 namespace nrp
@@ -209,16 +209,14 @@ void CNrpGameProject::SetSoundTech( CNrpTechnology* ptrTech, int index )
 
 void CNrpGameProject::Save( std::string folderSave )
 {
-	if( _access( folderSave.c_str(), 0 ) == -1 )
-		CreateDirectory( folderSave.c_str(), NULL );
+	assert( OpFileSystem::IsExist(folderSave) );
 
-	std::string localFolder = folderSave + GetValue<std::string>( NAME ) + "/";
+	std::string localFolder = OpFileSystem::CheckEndSlash( folderSave + GetValue<std::string>( NAME ) );
 
-	if( _access( localFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( localFolder.c_str(), NULL );
+	OpFileSystem::CreateDirectory( localFolder );
 
 	std::string fileName = localFolder + "project.ini";
-	INrpProject::Save( SECTION_PROPERTIES, fileName );
+	INrpProject::Save( fileName );
 
 	TECH_LIST::iterator tIter = technologies_.begin();
 	for( int i=0; tIter != technologies_.end(); tIter++, i++ )
@@ -248,13 +246,13 @@ void CNrpGameProject::Save( std::string folderSave )
 	if( GetValue<PNrpScenario>( SCENARIO ) )
 	{
 		IniFile::Write( SECTION_PROPERTIES, SCENARIO, GetValue<PNrpScenario>( SCENARIO )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpScenario>( SCENARIO )->Save( SECTION_PROPERTIES, localFolder + SCENARIO + ".ini" );
+		GetValue<PNrpScenario>( SCENARIO )->Save( localFolder + SCENARIO + ".ini" );
 	}
 
 	if( GetValue<PNrpLicense>( GLICENSE ) )
 	{
 		IniFile::Write( SECTION_PROPERTIES, GLICENSE, GetValue<PNrpLicense>( GLICENSE )->GetValue<std::string>(NAME), fileName );
-		GetValue<PNrpLicense>( GLICENSE )->Save( SECTION_PROPERTIES, localFolder + GLICENSE + ".ini");
+		GetValue<PNrpLicense>( GLICENSE )->Save( localFolder + GLICENSE + ".ini");
 	}
 
 	if( GetValue<PNrpTechnology>( ENGINEEXTENDED ) )
@@ -289,7 +287,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 
 	std::string fileName = loadFolder + "project.ini";
 	CNrpCompany* ptrCompany = GetValue<PNrpCompany>( PARENTCOMPANY );
-	INrpProject::Load( SECTION_PROPERTIES, fileName );
+	INrpProject::Load( fileName );
 
 	for( int i=0; i < GetValue<int>( ADVTECHNUMBER ); ++i )
 	{
@@ -328,12 +326,12 @@ void CNrpGameProject::Load( std::string loadFolder )
 
 	name = IniFile::Read( SECTION_PROPERTIES, SCENARIO, std::string(""), fileName );
 	PNrpScenario scenario = new CNrpScenario( name );
-	scenario->Load( SECTION_PROPERTIES, loadFolder + SCENARIO + ".ini" ); 
+	scenario->Load( loadFolder + SCENARIO + ".ini" ); 
 	SetValue<PNrpScenario>( SCENARIO, scenario );
 
 	name = IniFile::Read( SECTION_PROPERTIES, GLICENSE, std::string(""), fileName );
 	PNrpLicense license = new CNrpLicense( name );
-	license->Load( SECTION_PROPERTIES, loadFolder + GLICENSE + ".ini" );
+	license->Load( loadFolder + GLICENSE + ".ini" );
 	SetValue<PNrpLicense>( GLICENSE, license );
 
 	name = IniFile::Read( SECTION_PROPERTIES, SCRIPTENGINE, std::string(""), fileName );

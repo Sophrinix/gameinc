@@ -5,8 +5,8 @@
 #include "IUser.h"
 #include "NrpCompany.h"
 #include "IniFile.h"
+#include "OpFileSystem.h"
 
-#include <io.h>
 #include <errno.h>
 #include <assert.h>
 
@@ -94,24 +94,28 @@ int CNrpTechnology::GetEployerSkillRequire( int skil_require )
 	return skillRequires_[ skil_require ];
 }
 
-void CNrpTechnology::Save( std::string saveFolder )
+std::string CNrpTechnology::Save( const std::string& saveFolder )
 {
-	if( _access( saveFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( saveFolder.c_str(), NULL );
+	OpFileSystem::CreateDirectory( saveFolder );
 
 	std::string fileName = saveFolder + GetValue<std::string>( INTERNAL_NAME ) + ".tech";
+	//не должно быть файла с такимже именем в директории
+	assert( !OpFileSystem::IsExist( fileName ) );
 
 	DeleteFile( fileName.c_str() );
-	INrpProject::Save( SECTION_PROPERTIES, fileName );
+	INrpProject::Save( fileName );
 	SaveRequires_( fileName );
 
 	for( size_t pos=0; pos < futureTech_.size(); pos++ )
 		IniFile::Write( SECTION_FUTURE_TECH, "tech_" + IntToStr( pos ), futureTech_[ pos ], fileName );
+
+	return fileName;
 }
 
-void CNrpTechnology::Load( std::string fileName )
+void CNrpTechnology::Load( const std::string& fileName )
 {
-	INrpProject::Load( SECTION_PROPERTIES, fileName );
+
+	INrpProject::Load( fileName );
 	SetValue<std::string>( BASEFILE, fileName );
 	LoadRequries_( fileName );
 

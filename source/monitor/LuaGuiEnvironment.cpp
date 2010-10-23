@@ -5,6 +5,7 @@
 #include "LuaGuiEnvironment.h"
 #include "nrpGUIEnvironment.h"
 #include "NrpGuiTimeDestructor.h"
+#include "NrpGuiLigthing.h"
 #include "NrpMiniMap.h"
 #include "StrConversation.h"
 #include "nrpGlobalMap.h"
@@ -76,6 +77,7 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, BringToFront ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTimer ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextRunner ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLigthing ),
 	{0,0}
 };
 
@@ -85,7 +87,7 @@ CLuaGuiEnvironment::CLuaGuiEnvironment(lua_State *L) : ILuaObject(L, "CLuaGuiEnv
 int CLuaGuiEnvironment::RemoveAnimators( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectName() + ":RemoveAnimators not need any parameter").c_str() );
+	luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":RemoveAnimators not need any parameter").c_str() );
 
 	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( L, 2 );
 
@@ -884,4 +886,28 @@ int CLuaGuiEnvironment::AddTextRunner( lua_State* vm )
 
 	return 1;
 }
+
+int CLuaGuiEnvironment::AddLigthing( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 5, 5, "Function CLuaGuiEnvironment:AddLigthing need 2 parameter");
+
+	gui::IGUIElement* p1 = (gui::IGUIElement*)lua_touserdata( L, 2 );
+	gui::IGUIElement* p2 = (gui::IGUIElement*)lua_touserdata( L, 3 );
+	const char* textureName = lua_tostring( L, 4 );
+	int timeToDeath = lua_tointeger( L, 5 );
+
+	assert( textureName != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		video::ITexture* txs = NULL;
+
+		txs = object_->getVideoDriver()->getTexture( textureName );
+		new gui::CNrpGuiLigthing( object_, p1, p2, -1, txs, timeToDeath );
+	}
+
+	return 1;
+}
+
 }//namespace nrp

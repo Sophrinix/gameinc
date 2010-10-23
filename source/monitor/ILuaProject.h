@@ -46,7 +46,7 @@ protected:
 	int SetName( lua_State* vm )
 	{
 		int argc = lua_gettop(vm);
-		luaL_argcheck(vm, argc == 2, 2, ("Function " + ObjectName() + ":SetName need string parameter").c_str() );
+		luaL_argcheck(vm, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetName need string parameter").c_str() );
 
 		const char* name = lua_tostring( vm, 2 );
 		assert( name != NULL );

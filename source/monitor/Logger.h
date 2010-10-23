@@ -2,6 +2,8 @@
 #include <sstream>
 #include <deque>
 #include <windows.h>
+#include "StrConversation.h"
+
 namespace nrp 
 {
 
@@ -89,6 +91,12 @@ struct Log
 	template<typename T> Log& operator<< (T t) 
 	{
 		Text << t << " ";
+		return *this;
+	}
+
+	template<> Log& operator<< <int>(int t)
+	{
+		Text << nrp::IntToStr(t);
 		return *this;
 	}
 	// Кто-нибудь знает, зачем переопределять шаблон специально для cch* ?

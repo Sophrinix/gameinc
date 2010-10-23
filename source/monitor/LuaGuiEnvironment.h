@@ -87,9 +87,9 @@ public:
 	int AddDestructor( lua_State* vm );
 	int AddTextRunner( lua_State* vm );
 	int BringToFront( lua_State* L );
+	int AddLigthing( lua_State* L );
 	
 	static const char* ClassName() { return CLASS_LUAGUI.c_str(); }	
-	virtual std::string ObjectName() {return CLASS_LUAGUI; }
 };
 
 }//namespace nrp

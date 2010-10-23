@@ -6,8 +6,6 @@ namespace nrp
 {
 CLASS_NAME CLASS_USER( "IUser" );
 
-OPTION_NAME SECTION_WORKS("works");
-
 OPTION_NAME CODE_SPEED( "codeSpeed" ); /*< How many string code may write developer in day */
 OPTION_NAME CODE_QUALITY( "codeQuality" );/*< What quality we have on game end.Percent */
 OPTION_NAME KNOWLEDGE_LEVEL( "knowledgeLevel" );/*< Уровень знаний. От этого параметра зависит скорость роста скорости написания кода*/
@@ -68,13 +66,12 @@ public:
 	CNrpRelation* GetRelation( const std::string& name );
 
 	~IUser(void);
-	void Save( std::string folderPath );
-	void Load( std::string fileName );
+	std::string Save( const std::string& folderPath );
+	void Load( const std::string& fileName );
 
 	static std::string ClassName() { return CLASS_USER; }
 
 private:         			
-	void Load_( char* file_name ) {}
 	void CalculateWantSalary_();
 	void CalculateKnowledgeLevel_();
 

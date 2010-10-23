@@ -8,6 +8,7 @@ CLASS_NAME CLASS_NRPGAME( "CNrpGame" );
 class CNrpGameProject;
 class CNrpCompany;
 class CNrpDevelopGame;
+class CNrpHistory;
 
 OPTION_NAME CASH( "cash" );
 OPTION_NAME COPYSELL( "copySell" );
@@ -32,30 +33,12 @@ OPTION_NAME GAMEIMAGELIST( "gameImageList" );
 OPTION_NAME VIEWIMAGE( "viewImage" );
 OPTION_NAME GAMERETAILER( "gameRetailer" );
 
-class CNrpHistoryStep
-{
-	CNrpHistoryStep() {}
-public:
-	int numberSale;
-	int month;
-	int cash;
-	CNrpHistoryStep( int m, int n, int c) : month(m), numberSale(n), cash(c)
-	{}
-
-	void Add( int n, int c )
-	{
-		numberSale += n;
-		cash += c;
-	}
-};
-
 class CNrpGame : public INrpConfig
 {
 public:
 	typedef std::vector< std::string > STRINGS;
-	typedef std::map< int, CNrpHistoryStep* > SALE_HISTORY_MAP;
 public:
-	CNrpGame( std::string name );
+	CNrpGame( const std::string& fileName );
 	~CNrpGame(void);
 	CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany );
 
@@ -63,22 +46,21 @@ public:
 	std::string GetGenreName( size_t index );
 	float GetAuthorFamous();
 
-	const SALE_HISTORY_MAP& GetSalesHistory() { return history_; }
+	CNrpHistory* GetHistory() { return history_; }
 	void GameBoxSaling( int number );
 
-	void Save( std::string saveFolder );
-	void Load( std::string loadFolder );
+	std::string Save( const std::string& saveFolder );
+	void Load( const std::string& loadFolder );
 
 	static std::string ClassName() { return CLASS_NRPGAME; }
-	virtual std::string ObjectName() { return CLASS_NRPGAME; }
 private:
-	void Load_( char* name ) {}
 	void InitializeOptions_();
+	CNrpGame() : INrpConfig( CLASS_NRPGAME, "" ) {};
 	
 	STRINGS developers_;
 	STRINGS genres_;
 	STRINGS techs_;
-	SALE_HISTORY_MAP history_;
+	CNrpHistory*  history_;
 };
 
 typedef CNrpGame* PNrpGame;

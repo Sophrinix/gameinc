@@ -84,20 +84,6 @@ private:
 class INrpConfig : public INrpObject
 
 {
-protected: 
-	//! чтение свойства из конфигурационного файла
-	template< class B > B Read_( std::string section, std::string key, B def_value )
-	{
-		B read_value;
-		
-		read_value = nrp::IniFile::Read( section, key, def_value, GetValue< std::string >( CONFIG_FILE ) );
-
-		return (B)read_value;
-	}
-
-	//! загрузка свойств объекта
-	virtual void Load_( char* file_name ) = 0;
-
 public:
 	INrpConfig( CLASS_NAME className, SYSTEM_NAME sysName ) : INrpObject( className, sysName )
 	{
@@ -134,8 +120,7 @@ public:
 		if( pIter == options_.end() )
 		{
 #ifdef _DEBUG
-			std::string errstr = "erase: bad config param " + name + " \n"; 
-			OutputDebugString( errstr.c_str() );
+			Log(HW) << "erase: bad config param " << name << term;
 #endif
 			throw "error"; 
 		}
@@ -179,13 +164,22 @@ public:
 		if( pIter == options_.end() )
 		{
 #ifdef _DEBUG
-			std::string errstr = "read: bad config param " + name + " \n"; 
-			OutputDebugString( errstr.c_str() );
+			Log(HW) << "read: bad config param " << name << term;
 #endif
 			throw "error"; 
 		}
 		else 
 			return ((CNrpProperty<B>*)pIter->second)->GetValue();
+	}
+
+	std::string GetString( const std::string& name )
+	{
+		return GetValue<std::string>( name );
+	}
+
+	void SetString( std::string name, std::string valuel )
+	{
+		SetValue<std::string>( name, valuel );
 	}
 
 	template< class B > B& AddValue( std::string name, B valuel ) const
@@ -195,8 +189,7 @@ public:
 		if( pIter == options_.end() )
 		{
 #ifdef _DEBUG
-			std::string errstr = "dec: bad config param " + name + " \n"; 
-			OutputDebugString( errstr.c_str() );
+			Log(HW) << "add: bad config param " << name << term;
 #endif
 			throw "error"; 
 		}
@@ -211,18 +204,26 @@ public:
 		if( pIter == options_.end() )
 		{
 #ifdef _DEBUG
-			std::string text = "write: bad config param " + ObjectName() + ":" + name + "\n";
-			OutputDebugString( text.c_str() );
-			throw text.c_str();
+			Log(HW) << "write: bad config param " << ObjectTypeName() << ":" << name << term;
 #endif
 		}
 		else 
 			((CNrpProperty<B>*)pIter->second)->SetValue( valuel );
 	}
 
-	virtual void Save( std::string scetionName, std::string fileName );
-	virtual void Load( std::string sectionName, std::string fileName );
+protected:
+	virtual std::string Save( const std::string& fileName );
+	virtual void Load( const std::string& fileName );
 
+	//! чтение свойства из конфигурационного файла
+	template< class B > B Read_( std::string section, std::string key, B def_value )
+	{
+		B read_value;
+
+		read_value = nrp::IniFile::Read( section, key, def_value, GetString( CONFIG_FILE ) );
+
+		return (B)read_value;
+	}
 private:
 	//! определение массива свойств
 	PropertyArray options_;

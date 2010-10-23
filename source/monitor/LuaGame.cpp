@@ -8,6 +8,8 @@
 #include "NrpGameBox.h"
 #include "NrpGameImageList.h"
 #include "LuaTechnology.h"
+#include "LuaCompany.h"
+#include "NrpHistory.h"
 
 using namespace irr;
 
@@ -41,6 +43,7 @@ Luna< CLuaGame >::RegType CLuaGame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetPrice ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, SetPrice ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetCompany ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, Create ),
 	{0,0}
 };
 
@@ -287,11 +290,11 @@ int CLuaGame::GetCurrentMonthSales( lua_State* L )
 
 	int lastMonthSales = 0;
 	IF_OBJECT_NOT_NULL_THEN
-		if( object_->GetSalesHistory().size() > 0 )
+		if( object_->GetHistory()->GetValue<int>( HISTORY_SIZE ) > 0 )
 		{
-			CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
-			pIter--;
-			lastMonthSales = pIter->second->numberSale;	
+			//CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
+			//pIter--;
+			//lastMonthSales = pIter->second->numberSale;	
 		}
 
 		lua_pushinteger( L, lastMonthSales );
@@ -305,11 +308,11 @@ int CLuaGame::GetLastMonthSales( lua_State* L )
 
 	int lastMonthSales = 0;
 	IF_OBJECT_NOT_NULL_THEN
-		if( object_->GetSalesHistory().size() > 1 )
+		if( object_->GetHistory()->GetValue<int>( HISTORY_SIZE ) > 0 )
 		{
-			CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
-			pIter--; pIter--;
-			lastMonthSales = pIter->second->numberSale;	
+			//CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
+			//pIter--; pIter--;
+			//lastMonthSales = pIter->second->numberSale;	
 		}
 
 	lua_pushinteger( L, lastMonthSales );
@@ -365,7 +368,24 @@ int CLuaGame::GetCompany( lua_State* L )
 	CNrpCompany* cmp = NULL;
 	IF_OBJECT_NOT_NULL_THEN cmp = object_->GetValue<CNrpCompany*>( PARENTCOMPANY );
 
+	lua_pop( L, argc );
 	lua_pushlightuserdata( L, cmp );
+	Luna< CLuaCompany >::constructor( L );
 	return 1;		
 }
+
+int CLuaGame::Create( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:Create need string parameter" );
+
+	const char* fileName = lua_tostring( L, 2 );
+	assert( fileName != NULL );
+
+	if( fileName != NULL )
+		object_ = new CNrpGame( fileName  );
+
+	return 1;		
+}
+
 }//namespace nrp

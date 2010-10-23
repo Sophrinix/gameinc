@@ -87,7 +87,7 @@ void CNrp2DPictureFlow::_UpdateImages()
 	if( _activeIndex - 1 >= 0 )
 		for( int k=max( 0, _activeIndex-1); k >= 0; k-- )
 		{
-			offsetx += lRect.getWidth() * (0.7f - (_activeIndex-k)*0.1f);
+			offsetx += static_cast< s32 >( lRect.getWidth() * (0.7f - (_activeIndex-k)*0.1f) );
 			core::dimension2di sides( 0.7f * lRect.getWidth(), 0.7f * lRect.getHeight() ); 
 			lRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
 				                 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
@@ -96,9 +96,9 @@ void CNrp2DPictureFlow::_UpdateImages()
 
 	offsetx = 0;
 	core::recti rRect = tmpRect;
-	for( int k=min(_activeIndex+1, _images.size()); k < _images.size(); k++ )
+	for( size_t k=min(_activeIndex+1, _images.size()); k < _images.size(); k++ )
 	{
-		offsetx += rRect.getWidth() * (0.7f - (k-_activeIndex)*0.1f);
+		offsetx += static_cast< s32 >( rRect.getWidth() * (0.7f - (k-_activeIndex)*0.1f) );
 		core::dimension2di sides( 0.7f * rRect.getWidth(), 0.7f * rRect.getHeight() ); 
 		rRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
 							 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
@@ -150,7 +150,7 @@ void CNrp2DPictureFlow::draw()
 		for( int pos=max( 0, _activeIndex-4 ); pos < _activeIndex; pos++ )
 			_DrawPairImage( _images[ pos ] );
 
-		for( int pos=min( _activeIndex + 4, _images.size()-1); pos > _activeIndex; pos-- )
+		for( size_t pos=min( _activeIndex + 4, _images.size()-1); pos > _activeIndex; pos-- )
 			 _DrawPairImage( _images[ pos ] );
 
 		if( _activeIndex < static_cast< int >( _images.size() ) )

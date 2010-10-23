@@ -22,7 +22,6 @@ public:
 	CLuaSceneNode(lua_State *L);		
 						
 	static const char* ClassName() { return CLASS_LUASCENENODE.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUASCENENODE; }
 private:
 	irr::scene::ISceneNode* GetTextSceneNode_();
 	bool IsChildOfCurrentScene_();

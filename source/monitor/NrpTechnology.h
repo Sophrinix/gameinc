@@ -28,11 +28,6 @@ OPTION_NAME INTEREST( "interest" );
 OPTION_NAME NEXTTECHNUMBER( "nexttechnumber" );
 OPTION_NAME REQUIRETECH( "requireTech" );
 OPTION_NAME STATUS( "status" );
-OPTION_NAME INTERNAL_NAME( "internalName" );
-
-OPTION_NAME SECTION_FUTURE_TECH( "nexttechs" );
-OPTION_NAME SECTION_REQUIRE_TECH( "techRequire" );
-OPTION_NAME SECTION_REQUIRE_SKILL( "skillRequire" );
 
 class CNrpTechnology : public INrpProject
 {
@@ -53,18 +48,17 @@ public:
 
 	float GetEmployerPosibility( IUser* ptrUser );
 
-	virtual void Save( std::string saveFolder );
-	virtual void Load( std::string fileName );
+	std::string Save( const std::string& saveFolder );
+	void Load( const std::string& fileName );
 
 	const REQUIRE_MAP& GetTechRequires() { return techRequires_; }
 	const REQUIRE_MAP& GetSkillRequires() { return skillRequires_; }
 
 	static std::string ClassName() { return CLASS_TECHNOLOGY; }
-	virtual std::string ObjectName() { return CLASS_TECHNOLOGY; }
 protected:
 	CNrpTechnology( CLASS_NAME className, PROJECT_TYPE typen );
-	CNrpTechnology();;
-	void Load_( char* file_name ) {}
+	CNrpTechnology();
+
 	void InitializeOptions_();
 	void SaveRequires_( const std::string& fileName );
 	void LoadRequries_( const std::string& fileName );

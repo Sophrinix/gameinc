@@ -33,7 +33,6 @@ public:
 	int ClearRows( lua_State* L);
 
 	static const char* ClassName() { return CLASS_LUATABLE.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUATABLE; }
 };
 
 }//namespace nrp

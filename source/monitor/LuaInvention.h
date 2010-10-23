@@ -43,7 +43,6 @@ public:
 	int GetInternalName( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUAINVENTION.c_str(); }	
-	virtual std::string ObjectName() { return CLASS_LUAINVENTION; }
 };
 
 }//namespace nrp

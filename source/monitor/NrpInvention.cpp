@@ -3,9 +3,10 @@
 #include "NrpCompany.h"
 #include "NrpApplication.h"
 #include "IUser.h"
+#include "timeHelpers.h"
+#include "OpFileSystem.h"
 
 #include <OleAuto.h>
-#include <io.h>
 
 
 namespace nrp
@@ -85,17 +86,18 @@ void CNrpInvention::CheckParams()
 													   CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME) ); 
 
 	//получим скока тратим в день на исследования
-	int moneyInDay = GetValue<int>( PASSEDPRICE) / dayFromStart;
+	int moneyInDay = GetValue<int>( PASSEDPRICE ) / dayFromStart;
 	//вычислим сколько дней осталось до конца при нынешних затратах
+	assert( moneyInDay > 0 );
+	if( moneyInDay == 0 )
+		moneyInDay = 1;
 	int dayToFinish = ( GetValue<int>( REALPRICE ) - GetValue<int>( PASSEDPRICE) ) / moneyInDay;
 	
 	SetValue<SYSTEMTIME>( PROGNOSEDATEFINISH, TimeHelper::GetDateWithDay( CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME),
 																		  dayToFinish ) );
 
 	SetValue<int>( DAYLEFT, dayToFinish );//сколько дней осталось до завершения работ, при полном освоении финансирования
-	
-	int speed = min( 100 - GetValue<int>( REALPRICE ) / moneyInDay, 100 );
-	SetValue<int>( INVENTIONSPEED, speed );
+	SetValue<int>( INVENTIONSPEED, moneyInDay );
 }
 
 CNrpInvention::~CNrpInvention(void)
@@ -172,22 +174,32 @@ int CNrpInvention::RemoveUser( const std::string& userName )
 
 void CNrpInvention::Load( std::string fileName )
 {
-	INrpProject::Load( SECTION_PROPERTIES, fileName );
+	INrpProject::Load( fileName );
 	LoadRequries_( fileName );
 }
 
-void CNrpInvention::Save( std::string saveFolder )
+std::string CNrpInvention::_GetFileName()
 {
-	if( _access( saveFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( saveFolder.c_str(), NULL );
+	return GetString( INTERNAL_NAME ) + ".invent";
+}
 
-	std::string fileName = saveFolder + GetValue<std::string>( INTERNAL_NAME ) + ".invent";
+std::string CNrpInvention::Save( const std::string& saveFolder, bool k )
+{
+	std::string myFolder = OpFileSystem::CheckEndSlash( saveFolder );
+
+	OpFileSystem::CreateDirectory( myFolder );
+
+	std::string fileName = myFolder + _GetFileName();
 
 	DeleteFile( fileName.c_str() );
-	INrpProject::Save( SECTION_PROPERTIES, fileName );
+	INrpProject::Save( fileName );
+	assert( OpFileSystem::IsExist( fileName ) );
+
 	SaveRequires_( fileName );
 
 	for( size_t pos=0; pos < _users.size(); pos++ )
-		IniFile::Write( SECTIONS_USERS, "user_" + IntToStr( pos ), _users[ pos ]->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( SECTIONS_USERS, "user_" + IntToStr( pos ), _users[ pos ]->GetString( NAME ), fileName );
+
+	return fileName;
 }
 }//end namespace nrp

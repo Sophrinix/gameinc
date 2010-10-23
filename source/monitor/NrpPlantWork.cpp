@@ -9,7 +9,7 @@
 namespace nrp
 {
 
-CNrpPlantWork::CNrpPlantWork( std::string companyName ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
+CNrpPlantWork::CNrpPlantWork( const std::string& companyName ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
 {
 	InitializeOptions_();
 	SetValue<std::string>( NAME, companyName );
@@ -58,9 +58,15 @@ CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPL
 	SetValue<int>( DAYCOST, p.GetValue<int>( DAYCOST ) );
 }
 
-void CNrpPlantWork::Load( std::string sectionName, std::string fileName )
+CNrpPlantWork::CNrpPlantWork( const std::string& fileName, bool load ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
 {
-	INrpConfig::Load( sectionName, fileName );
+	InitializeOptions_();
+	Load( fileName );
+}
+
+void CNrpPlantWork::Load( const std::string& fileName )
+{
+	INrpConfig::Load( fileName );
 	CNrpGame* pGame = CNrpApplication::Instance().GetGame( GetValue<std::string>( GAMENAME ) );
 	assert( pGame != NULL );
 	SetValue<PNrpGame>( PARENT, pGame );
@@ -102,9 +108,9 @@ void CNrpPlantWork::CalcParams_()
 	}
 }
 
-void CNrpPlantWork::Save( std::string sectionName, std::string fileName )
+std::string CNrpPlantWork::Save( const std::string& fileName )
 {
-	INrpConfig::Save( sectionName, fileName );
+	return INrpConfig::Save( fileName );
 }
 
 void CNrpPlantWork::BeginNewDay()
@@ -120,12 +126,12 @@ void CNrpPlantWork::BeginNewDay()
 	cmp->AddValue<int>( BALANCE, -GetValue<int>( DAYCOST ) );
 	int k = GetValue<PNrpDiskMachine>( PRODUCETYPE )->GetValue<int>( DISKPERHOUR ) * 24;
 	box->AddValue<int>( BOXNUMBER, k );
-	OutputDebugString( ("Сделано " + IntToStr( k ) + " коробок с игрой " + game->GetValue<std::string>( NAME ) + "\n" ).c_str() );
+	Log(HW) << "Сделано " << k << " коробок с игрой " << game->GetString( NAME ) << term;
 
 	if( GetValue<int>( NUMBERDAY ) < 0 )
 	{
 		SetValue<bool>( FINISHED, true );
-		OutputDebugString( std::string( "Закончено производство коробок с игрой " + game->GetValue<std::string>( NAME ) + "\n").c_str() );
+		Log(HW) << "Закончено производство коробок с игрой " << game->GetString( NAME ) << term;
 	}
 }
 }//end namespace nrp 

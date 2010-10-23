@@ -39,12 +39,9 @@ class CNrpHUDConfig : public INrpConfig
 private:
 	CNrpHUDConfig();
 
-	void Load_( char* file_name );
-	const std::string SECTION_NAME;
 public:
 	static CNrpHUDConfig& Instance();
 
-	virtual std::string ObjectName() { return CLASS_HUDCONFIG; }
 	static std::string ClassName() { return CLASS_HUDCONFIG; }
 };
 

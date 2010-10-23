@@ -2,11 +2,11 @@
 
 [Header,2]
 0,Version,2,0
-1,AppDir,f:\project\Game Inc, Dev\application\monitor_release
+1,AppDir,v:\application\monitor_release
 
 [Directories,2]
-0,f:\project\Game Inc, Dev\application\monitor_release\components
-1,f:\project\Game Inc, Dev\application\monitor_release\plugins
+0,v:\application\monitor_release\components
+1,v:\application\monitor_release\plugins
 
 [Files,1]
 0,all.xpt,0,308278,1267791642000

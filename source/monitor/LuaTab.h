@@ -24,7 +24,6 @@ public:
 	int SetTextColor( lua_State *L );
 
 	static const char* ClassName() { return CLASS_LUATAB.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUATAB; }
 };
 
 }//namespace nrp

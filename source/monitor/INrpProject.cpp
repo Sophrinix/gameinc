@@ -4,7 +4,7 @@
 namespace nrp
 {
 	
-INrpProject::INrpProject( std::string className, std::string systemName ) : INrpConfig( className, systemName )
+INrpProject::INrpProject( const std::string& className, const std::string& systemName ) : INrpConfig( className, systemName )
 {
 	CreateValue<std::string>( NAME, "defaultName" );
 	CreateValue<int>( BALANCE, 0 );
@@ -13,6 +13,11 @@ INrpProject::INrpProject( std::string className, std::string systemName ) : INrp
 
 INrpProject::~INrpProject(void)
 {
+}
+
+std::string INrpProject::Save( const std::string& fileName )
+{
+	return INrpConfig::Save( fileName );
 }
 
 }//namespace nrp

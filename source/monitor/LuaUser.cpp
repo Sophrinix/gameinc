@@ -28,6 +28,7 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTypeName ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetParam ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, SetParam ),
+	LUNA_AUTONAME_FUNCTION( CLuaUser, AddParam ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, IsTypeAs ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaUser, Save ),
@@ -107,7 +108,7 @@ int CLuaUser::GetTypeName( lua_State* L )
 	
 	std::string name = "";
 
-	IF_OBJECT_NOT_NULL_THEN name = object_->ObjectName();
+	IF_OBJECT_NOT_NULL_THEN name = object_->ObjectTypeName();
 
 	lua_pushstring( L, name.c_str() );
 	return 1;	
@@ -137,7 +138,7 @@ int CLuaUser::IsTypeAs( lua_State* L )
 	assert( name != NULL );
 	bool result = false;
 
-	std::string tname = object_->ObjectName();
+	std::string tname = object_->ObjectTypeName();
 	IF_OBJECT_NOT_NULL_THEN result = ( tname == std::string(name));
 
 	lua_pushboolean( L, result );
@@ -302,7 +303,7 @@ int CLuaUser::HaveInvention( lua_State* L )
 	{
 		for( int k=0; k < object_->GetValue<int>( WORKNUMBER ); k++ )
 		{
-			if( object_->GetWork( k )->ObjectName() == CNrpInvention::ClassName() )
+			if( object_->GetWork( k )->ObjectTypeName() == CNrpInvention::ClassName() )
 			{
 				ret = true;
 				break;
@@ -312,5 +313,22 @@ int CLuaUser::HaveInvention( lua_State* L )
 
 	lua_pushboolean( L, ret );
 	return 1;		
+}
+
+int CLuaUser::AddParam( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaUser:AddParam need integer parameter" );
+
+	const char* name = lua_tostring( L, 2 );
+	int addvalue = lua_tointeger( L, 3 );
+
+	assert( name != NULL );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		object_->AddValue<int>( name, addvalue );
+	}
+
+	return 1;	
 }
 }//namespace nrp

@@ -27,7 +27,6 @@ public:
 	int RemoveLuaFunction( lua_State* L );
 	int Draw( lua_State* L );
 
-	virtual std::string ObjectName() { return CLASS_LUAWINDOW; }
 	static const char* ClassName() { return CLASS_LUAWINDOW.c_str(); }
 };
 

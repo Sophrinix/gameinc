@@ -21,9 +21,6 @@ public:
 	~CNrpLoan(void);
 
 	static std::string ClassName() { return CLASS_LOAN; }
-	virtual std::string ObjectName() { return CLASS_LOAN; }
-private:
-	void Load_( char* name ) {}
 };
 
 }//namespace nrp

@@ -7,6 +7,10 @@ namespace nrp
 
 INrpDevelopProject::INrpDevelopProject(void) : INrpProject( CLASS_INRPDEVELOPPROJECT, "" )
 {
+}
+
+INrpDevelopProject::INrpDevelopProject( const std::string& className, const std::string& systemName ) : INrpProject( className, systemName )
+{
 	InitializeOptions_();
 }
 
@@ -14,12 +18,14 @@ INrpDevelopProject::~INrpDevelopProject(void)
 {
 }
 
-void INrpDevelopProject::Save( std::string amount )
+std::string INrpDevelopProject::Save( const std::string& amount )
 {
-	INrpProject::Save( SECTION_PROPERTIES, amount );
+	INrpProject::Save( amount );
 
 	for( size_t i=0; i < developers_.size(); i++ )
-		IniFile::Write( "developers", "user_" + IntToStr( i ), developers_[ i ], amount );
+		IniFile::Write( SECTION_USERS, KEY_USER( i ), developers_[ i ], amount );
+
+	return amount;
 }
 
 void INrpDevelopProject::InitializeOptions_()
@@ -36,9 +42,18 @@ void INrpDevelopProject::InitializeOptions_()
 void INrpDevelopProject::SetDeveloper( IUser* user )
 {
 	for( size_t i=0; i < developers_.size(); i++ )
-		if( developers_[ i ] == user->GetValue<std::string>( NAME ) )
+		if( developers_[ i ] == user->GetString( NAME ) )
 			return;
 
-	developers_.push_back( user->GetValue<std::string>( NAME ) );
+	developers_.push_back( user->GetString( NAME ) );
 }
+
+void INrpDevelopProject::Load( const std::string& pathTo )
+{
+	INrpProject::Load( pathTo );
+
+	for( int i=0; i < GetValue<int>( USERNUMBER ); i++ )
+		developers_.push_back( IniFile::Read( SECTION_USERS, KEY_USER( i ), std::string(""), pathTo ) );
+}
+
 }//end namespace name

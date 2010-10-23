@@ -262,7 +262,7 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 	core::recti rectangle( scrsize.Width / 2 - 200, scrsize.Height / 2 - 100, scrsize.Width / 2 + 200, scrsize.Height / 2 + 100 );
 	IGUIWindow* wnd = new CNrpWindow( this, getRootGUIElement(), NULL, -1, rectangle );
 	rectangle = wnd->getRelativePosition();
-	addStaticText( text, core::recti( 20, 20, rectangle.getWidth() - 20, 40 ), false, false, wnd, -1, false );
+	addStaticText( text, core::recti( 20, 20, rectangle.getWidth() - 20, rectangle.getHeight() - 50 ), false, false, wnd, -1, false );
 
 	core::recti btnRect( 30, rectangle.getHeight() - 50, rectangle.getWidth() / 2 - 30,  rectangle.getHeight() - 20 );
 	if( flags & gui::EMBF_YES )
@@ -276,6 +276,14 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 	{
 		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"No", 0 );
 		btn->setOnClickAction( funcNames[ 1 ] );
+	}
+
+	if( flags == 0 )
+	{
+		CNrpButton* btn = (CNrpButton*)addButton( core::recti( rectangle.getWidth() / 3, rectangle.getHeight() - 50,
+												        	   rectangle.getWidth() * 2 / 3, rectangle.getHeight() - 20 ),
+												  wnd, -1, L"OK", 0 );
+		btn->setOnClickAction( funcNames[ 0 ] );
 	}
 
 	return wnd;

@@ -59,7 +59,6 @@ public:
 	int SetSelectedNode( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUASCENEMANAGER.c_str(); }
-	virtual std::string ObjectName() { return CLASS_LUASCENEMANAGER; }
 private:
 	void RecalculateWorldParams_( irr::scene::ITerrainSceneNode* newTerrain );
 	irr::scene::ISceneNode* GetTextSceneNode_( irr::scene::ISceneNode* ptrNode );

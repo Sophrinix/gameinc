@@ -6,8 +6,8 @@
 #include "NrpGame.h"
 #include "NrpDiskMachine.h"
 #include "NrpReklameWork.h"
+#include "OpFileSystem.h"
 
-#include <io.h>
 #include <assert.h>
 
 static nrp::CNrpPlant* _GlobalObjectPlant_ = NULL;
@@ -28,59 +28,57 @@ CNrpPlant::~CNrpPlant(void)
 
 void CNrpPlant::Save( std::string scetionName, std::string saveFolder )
 {
-	std::string fileName = saveFolder + "plant.ini";
-	INrpConfig::Save( scetionName, fileName );
+	assert( OpFileSystem::IsExist( saveFolder ) );
 
-	saveFolder += "plant/";
-	if( _access( saveFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( saveFolder.c_str(), NULL );
+	std::string fileName = saveFolder + "plant.ini";
+	INrpConfig::Save( fileName );
 
 	WORK_LIST::iterator wIter = works_.begin();
 	for( int k=0; wIter != works_.end(); wIter++, k++ )
 	{
 		std::string workFile = saveFolder + (*wIter)->GetValue<std::string>( NAME ) + ".work";
 
-		(*wIter)->Save( SECTION_OPTIONS, workFile );
-		IniFile::Write( "works", "work_" + IntToStr( k ), workFile, fileName );
+		(*wIter)->Save( workFile );
+		IniFile::Write( SECTION_WORKS, KEY_WORK( k ), workFile, fileName );
 	}
 
 	REKLAME_LIST::iterator rIter = reklameWorks_.begin();
 	for( int k=0; rIter != reklameWorks_.end(); rIter++, k++ )
 	{
-		std::string rekFile = saveFolder + (*rIter)->GetValue<std::string>( GAMENAME ) + "." + (*rIter)->GetValue<std::string>( TECHTYPE );
-
-		(*rIter)->Save( SECTION_OPTIONS, rekFile );
-		IniFile::Write( "reklames", "reklame_" + IntToStr( k ), rekFile, fileName );
+		std::string reglameSaveFolder = saveFolder + KEY_REKLAME( k );
+		OpFileSystem::CreateDirectory( reglameSaveFolder );
+		std::string reklameSaveFile = (*rIter)->Save( reglameSaveFolder );
+		IniFile::Write( SECTION_REKLAMES, KEY_REKLAME( k ), reklameSaveFile, fileName );
 	}
 }
 
 void CNrpPlant::Load( std::string scetionName, std::string saveFolder )
 {
 	std::string fileName = saveFolder + "plant.ini";
-	std::string plantFolder = saveFolder + "plantWork/";
+	assert( OpFileSystem::IsExist( fileName ) );
 
-	INrpConfig::Load( scetionName, fileName );
+	INrpConfig::Load( fileName );
 
 	for( int k=0; k < GetValue<int>( WORKNUMBER ); k++ )
 	{
-		std::string workFile = IniFile::Read( "works", "work_" + IntToStr( k ), std::string(""), fileName );
+		std::string workFile = IniFile::Read( SECTION_WORKS, KEY_WORK( k ), std::string(""), fileName );
 
-		if( _access( workFile.c_str(), 0 ) != -1 )
+		assert( OpFileSystem::IsExist( workFile ) );
+		if( OpFileSystem::IsExist( workFile ) )
 		{
-			CNrpPlantWork* work = new CNrpPlantWork( "" );
-			work->Load( SECTION_OPTIONS, workFile );
+			CNrpPlantWork* work = new CNrpPlantWork( workFile, true );
 			AddWork( work );
 		}
 	}
 
 	for( int k=0; k < GetValue<int>( REKLAMENUMBER ); k++ )
 	{
-		std::string rekFile = IniFile::Read( "reklames", "reklame_" + IntToStr( k ), std::string(""), fileName );
+		std::string rekFile = IniFile::Read( SECTION_REKLAMES, KEY_REKLAME( k ), std::string(""), fileName );
 
-		if( _access( rekFile.c_str(), 0 ) != -1 )
+		assert( OpFileSystem::IsExist( rekFile ) );
+		if( OpFileSystem::IsExist( rekFile.c_str() ) )
 		{
-			CNrpReklameWork* reklame = new CNrpReklameWork( "error", "error" );
-			reklame->Load( SECTION_OPTIONS, rekFile );
+			CNrpReklameWork* reklame = new CNrpReklameWork( rekFile );
 			AddReklame( reklame );
 		}
 	}
@@ -125,6 +123,7 @@ void CNrpPlant::BeginNewDay()
 		//не кончился ли срок рекламирования товара
 		if( reklameWorks_[ k ]->GetValue<bool>( FINISHED ) )
 		{
+			CNrpApplication::Instance().DoLuaFunctionsByType( APP_REKLAME_FINISHED, reklameWorks_[ k ] );
 			delete reklameWorks_[ k ];
 			//если кончился, то надо удалить его из списка активных заданий
 			reklameWorks_.erase( reklameWorks_.begin() + k );
@@ -161,7 +160,7 @@ bool CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
 	assert( pReklame != NULL );
 
 	bool ret = false;
-	if( GetBaseReklame( pReklame->GetValue<std::string>( NAME ) ) == NULL )
+	if( GetBaseReklame( pReklame->GetString( TECHTYPE ) ) == NULL )
 	{
 		baseReklame_.push_back( pReklame );
 		ret = true;
@@ -171,13 +170,13 @@ bool CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
 	return ret;
 }
 
-CNrpReklameWork* CNrpPlant::GetBaseReklame( std::string name )
+CNrpReklameWork* CNrpPlant::GetBaseReklame( const std::string& name )
 {
 	assert( name.size() != 0 );
 
 	REKLAME_LIST::iterator pIter = baseReklame_.begin();
 	for( ; pIter != baseReklame_.end(); pIter++ ) 
-		if( (*pIter)->GetValue<std::string>( TECHTYPE ) == name )
+		if( (*pIter)->GetString( TECHTYPE ) == name )
 			return *pIter;
 
 	return NULL;
@@ -185,8 +184,8 @@ CNrpReklameWork* CNrpPlant::GetBaseReklame( std::string name )
 
 void CNrpPlant::AddReklame( CNrpReklameWork* reklame )
 {
-	CNrpReklameWork* rWork = GetReklame( reklame->GetValue<std::string>( TECHTYPE ), 
-										 reklame->GetValue<std::string>( GAMENAME ) );
+	CNrpReklameWork* rWork = GetReklame( reklame->GetString( TECHTYPE ), 
+										 reklame->GetString( GAMENAME ) );
 
 	if( rWork != NULL )
 	{
@@ -203,8 +202,8 @@ CNrpReklameWork* CNrpPlant::GetReklame( const std::string& type,
 {
 	REKLAME_LIST::iterator pIter = reklameWorks_.begin();
 	for( ; pIter != reklameWorks_.end(); pIter++ ) 
-		if( (*pIter)->GetValue<std::string>( TECHTYPE ) == type &&
-			(*pIter)->GetValue<std::string>( GAMENAME ) == gameName )
+		if( (*pIter)->GetString( TECHTYPE ) == type &&
+			(*pIter)->GetString( GAMENAME ) == gameName )
 			return *pIter;
 
 	return NULL;

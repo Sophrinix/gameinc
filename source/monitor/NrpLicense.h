@@ -10,9 +10,10 @@ class CNrpLicense : public INrpProject
 public:
 	CNrpLicense(std::string name);
 	~CNrpLicense(void);
+	std::string Save( const std::string& pathTo );
+	void Load( const std::string& pathTo );
 
 	static std::string ClassName() { return CLASS_LICENSE; }
-	virtual std::string ObjectName() { return CLASS_LICENSE; }
 };
 
 typedef CNrpLicense* PNrpLicense;

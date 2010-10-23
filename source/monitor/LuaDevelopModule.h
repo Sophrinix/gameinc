@@ -28,7 +28,6 @@ public:
 	int GetParent( lua_State* L );
 
 	static const char* ClassName() { return CLASS_DEVELOPMODULE.c_str(); }	
-	virtual std::string ObjectName() { return CLASS_DEVELOPMODULE; }
 };
 
 }//namespace nrp

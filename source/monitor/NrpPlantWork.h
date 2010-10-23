@@ -17,12 +17,12 @@ OPTION_NAME LEFTPRODUCEDISK( "leftProduceDisk" );
 
 class CNrpPlantWork : public INrpConfig
 {
-	void Load_( char* file_name ) {};
 	void CalcParams_();
 	void InitializeOptions_();
 
 public:
-	CNrpPlantWork( std::string companyName );
+	CNrpPlantWork( const std::string& companyName );
+	CNrpPlantWork( const std::string& fileName, bool load );
 	CNrpPlantWork( const CNrpPlantWork& p );
 	~CNrpPlantWork(void);
 
@@ -32,12 +32,11 @@ public:
 		CalcParams_();
 	}
 
-	void Save( std::string sectionName, std::string fileName );
-	void Load( std::string sectionName, std::string fileName );
+	std::string Save( const std::string& fileName );
+	void Load( const std::string& fileName );
 	void BeginNewDay();
 
 	static std::string ClassName() { return CLASS_NRPPLANTWORK; }
-	virtual std::string ObjectName() { return CLASS_NRPPLANTWORK; }
 };
 
 }//end of namespace nrp

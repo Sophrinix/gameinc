@@ -21,12 +21,9 @@ public:
 	void CreateLoan( std::string name, int money, int percent, int month );
 
 	static std::string ClassName() { return CLASS_BANK; }
-	virtual std::string ObjectName() { return CLASS_BANK; }
 private:
 	CNrpBank(void);
 	~CNrpBank(void);
-
-	virtual void Load_( char* file_name ) {}
 
 	LOAN_LIST loans_;
 	int loanId_;

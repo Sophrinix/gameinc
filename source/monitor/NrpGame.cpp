@@ -9,24 +9,19 @@
 #include "NrpDevelopGame.h"
 #include "NrpProjectModule.h"
 #include "IUser.h"
+#include "OpFileSystem.h"
 
-#include <io.h>
 #include <errno.h>
 #include <OleAuto.h>
 
 namespace nrp
 {
 	
-CNrpGame::CNrpGame( std::string name ) : INrpConfig( CLASS_NRPGAME, name )
-{
-	InitializeOptions_();
-	SetValue<std::string>( NAME, name );
-}
-
 void CNrpGame::InitializeOptions_()
 {
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
 	CreateValue<std::string>( NAME, "" );
+	CreateValue<std::string>( INTERNAL_NAME, "" );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
 	CreateValue<int>( MONEYONDEVELOP, 0 );
@@ -46,7 +41,7 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<int>( CURRENTSOUNDRATING, 0 );
 	CreateValue<int>( LOCALIZATIONRATING, 0 );
 	CreateValue<int>( CURRENTBUGRATING, 0 );	
-	CreateValue<std::string>(GAME_ENGINE, "" );
+	CreateValue<std::string>( GAME_ENGINE, "" );
 	CreateValue<std::string>( PREV_GAME, "" );
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
 	CreateValue<PNrpGameBox>( GBOX, NULL );
@@ -60,22 +55,22 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<int>( USERNUMBER, 0 );
 }
 
-CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany )
-		 : INrpConfig( "CNrpGame", devGame->GetValue<std::string>( NAME ) )
+CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpConfig( CLASS_NRPGAME, devGame->GetString( NAME ) )
 {
 	InitializeOptions_();
 
 	SetValue<PNrpCompany>( PARENTCOMPANY, ptrCompany );
-	SetValue<std::string>( NAME, devGame->GetValue<std::string>( NAME ) );
+	SetString( NAME, devGame->GetString( NAME ) );
 	SetValue<int>( MONEYONDEVELOP, devGame->GetValue<int>( MONEYONDEVELOP ) );
 	INrpProject* ge = devGame->GetValue<INrpProject*>( GAME_ENGINE );
 	if( ge )
-		SetValue<std::string>( GAME_ENGINE, ge->GetValue<std::string>( NAME ) );
+		SetString( GAME_ENGINE, ge->GetString( NAME ) );
+
 	SetValue<float>( FAMOUS, devGame->GetValue<float>( FAMOUS ) );
 	assert( devGame->GetValue<int>( PLATFORMNUMBER ) != 0 );
 	SetValue<int>( PLATFORMNUMBER, devGame->GetValue<int>( PLATFORMNUMBER ) );
 	SetValue<int>( USERNUMBER, devGame->GetValue<int>( USERNUMBER ) );
-	SetValue<std::string>( PREV_GAME, devGame->GetValue<std::string>( NAME ) ); 
+	SetString( PREV_GAME, devGame->GetString( NAME ) ); 
 	
 	developers_ = devGame->GetDevelopers();
 
@@ -85,96 +80,109 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany )
 
 	SetValue<int>( MODULE_NUMBER, devGame->GetValue<int>( MODULE_NUMBER ) );
 	for( int cnt=0; cnt < GetValue<int>( MODULE_NUMBER ); cnt++ )
-		 techs_.push_back( devGame->GetModule( cnt )->GetValue<std::string>( NAME ) );
+		 techs_.push_back( devGame->GetModule( cnt )->GetString( NAME ) );
 
-	SetValue<std::string>( IMAGENAME, CNrpApplication::Instance().GetFreeInternalName( this ) );
-	CNrpGameImageList* pgList = CNrpApplication::Instance().GetGameImageList( GetValue<std::string>( IMAGENAME ) );
+	SetString( IMAGENAME, CNrpApplication::Instance().GetFreeInternalName( this ) );
+	CNrpGameImageList* pgList = CNrpApplication::Instance().GetGameImageList( GetString( IMAGENAME ) );
 	assert( pgList != NULL );
 	if( pgList != NULL )
 		SetValue<CNrpGameImageList*>( GAMEIMAGELIST, new CNrpGameImageList( *pgList ) );
+}
+
+CNrpGame::CNrpGame( const std::string& fileName ) : INrpConfig( CLASS_NRPGAME, fileName )
+{
+	InitializeOptions_();
+	Load( fileName );
 }
 
 CNrpGame::~CNrpGame(void)
 {
 }
 
-void CNrpGame::Save( std::string saveFolder )
+std::string CNrpGame::Save( const std::string& saveFolder )
 {
-	if( saveFolder[ saveFolder.length() - 1 ] != '/' && 
-		saveFolder[ saveFolder.length() - 1 ] != '\\' )
-		saveFolder += "/";
+	bool upDirExist = OpFileSystem::IsExist( saveFolder );
+	assert( upDirExist );
 
-	if( _access( saveFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( saveFolder.c_str(), NULL );
+	if( !upDirExist )
+		return "";
+	
+	std::string localFolder = OpFileSystem::CheckEndSlash( OpFileSystem::CheckEndSlash( saveFolder ) + GetString( NAME ) );
+	std::string saveFile = localFolder + "item.game";
 
-	std::string localFolder = saveFolder + GetValue<std::string>( NAME ) + "/";
-	if( _access( localFolder.c_str(), 0 ) == -1 )
-		CreateDirectory( localFolder.c_str(), NULL );
+	OpFileSystem::CreateDirectory( localFolder );
+	INrpConfig::Save( saveFile );
 
-	std::string saveFile = localFolder + "game.ini";
-	INrpConfig::Save( SECTION_PROPERTIES, saveFile );
+	if( PNrpGameBox box = GetValue<PNrpGameBox>( GBOX ) )
+	{
+		box->Save( localFolder + "box.ini" );
+	}
 
-	PNrpGameBox box = GetValue<PNrpGameBox>( GBOX );
-	if( box )
-		box->Save( SECTION_PROPERTIES, localFolder + "box.ini" );
-
-	CNrpGameImageList* pgList = GetValue<CNrpGameImageList*>( GAMEIMAGELIST );
-	if( pgList )
+	if( CNrpGameImageList* pgList = GetValue<CNrpGameImageList*>( GAMEIMAGELIST ) )
 		pgList->Save( localFolder+"imageList.ini" );
 
 	int i=0;
 	for( STRINGS::iterator gIter = techs_.begin(); 
 		 gIter != techs_.end(); 
 		 gIter++, i++ )
-		IniFile::Write( "techs", "tech" + IntToStr(i), *gIter, saveFile );
+		IniFile::Write( SECTION_TECHS, KEY_TECH(i), *gIter, saveFile );
 
 	i=0;
 	for( STRINGS::iterator gIter = genres_.begin(); 
 		gIter != genres_.end(); 
 		gIter++, i++ )
-		IniFile::Write( "genres", "genre" + IntToStr(i), *gIter, saveFile );
+		IniFile::Write( SECTION_GENRES, KEY_GENRE(i), *gIter, saveFile );
+
+	return localFolder;
 }
 
-void CNrpGame::Load( std::string loadFolder )
+void CNrpGame::Load( const std::string& loadPath )
 {
-	assert( !loadFolder.empty() );
+	bool mayLoad = OpFileSystem::IsExist( loadPath );
+	assert( mayLoad );
 
-	if( loadFolder.empty() )
+	if( !mayLoad )
+		return;
+
+	std::string loadFolder, loadFile ;
+	if( OpFileSystem::IsFolder( loadPath ) )
 	{
-		throw ("пустая директория для загрузки игры" + GetValue<std::string>( NAME )).c_str();	
-		return; 
+		loadFolder = loadPath; 
+		//стандартное имя
+		loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + "item.game";
+	}
+	else 
+	{
+		assert( OpFileSystem::GetExtension( loadPath ) == ".game" );
+		if( OpFileSystem::GetExtension( loadPath ) == ".game" )
+		{
+			loadFile = loadPath;
+			loadFolder = OpFileSystem::UpDir( loadPath );
+		}
+		else
+			return;
 	}
 
-	if( loadFolder[ loadFolder.length() -1 ] != '/' && 
-		loadFolder[ loadFolder.length() -1 ] != '\\' )
-		loadFolder += "/";
-
-	std::string loadFile = loadFolder + "game.ini";
-
-	INrpConfig::Load( SECTION_PROPERTIES, loadFile );
-
-	SetValue<SYSTEMTIME>( STARTDATE, IniFile::Read( SECTION_PROPERTIES, STARTDATE, SYSTEMTIME(), loadFile ) );
-	SetValue<SYSTEMTIME>( ENDDATE, IniFile::Read( SECTION_PROPERTIES, ENDDATE, SYSTEMTIME(), loadFile ) );
+	INrpConfig::Load( loadFile );
 
 	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
-		techs_.push_back( IniFile::Read( "techs", "tech" + IntToStr(i), std::string(""), loadFile ) );
+		techs_.push_back( IniFile::Read( SECTION_TECHS, KEY_TECH(i), std::string(""), loadFile ) );
 
 	for( int i=0; i < GetValue<int>( GENRE_MODULE_NUMBER ); ++i )
-		genres_.push_back( IniFile::Read( "genres", "genre" + IntToStr(i), std::string(""), loadFile ) );
+		genres_.push_back( IniFile::Read( SECTION_GENRES, KEY_GENRE(i), std::string(""), loadFile ) );
 
 	std::string boxIni = loadFolder + "box.ini";
-	if( _access( boxIni.c_str(), 0 ) == 0 )
+	if( OpFileSystem::IsExist( boxIni ) )
 	{
 		PNrpGameBox box = new CNrpGameBox( this );
-		box->Load( SECTION_PROPERTIES, boxIni );
+		box->Load( boxIni );
 		SetValue<PNrpGameBox>( GBOX, box );
 	}
 
 	std::string imageListIni = loadFolder + "imageList.ini";
-	if( _access( imageListIni.c_str(), 0 ) == 0 )
+	if( OpFileSystem::IsExist( imageListIni ) )
 	{
-		CNrpGameImageList* pList = new CNrpGameImageList( "" );
-		pList->Load( imageListIni );
+		CNrpGameImageList* pList = new CNrpGameImageList( imageListIni, true );
 		SetValue<CNrpGameImageList*>( GAMEIMAGELIST, pList );
 	}
 }
@@ -220,15 +228,8 @@ void CNrpGame::GameBoxSaling( int number )
 		GetValue<PNrpCompany>( PARENTCOMPANY )->AddValue<int>( BALANCE, price * number );
 
 	SYSTEMTIME curTime = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
-	curTime.wDay = curTime.wDayOfWeek = curTime.wHour = 0;
-	curTime.wMilliseconds = curTime.wMinute = curTime.wSecond = 0;
-	double curMonth;
-	SystemTimeToVariantTime( &curTime, &curMonth );
-	SALE_HISTORY_MAP::iterator pIter = history_.find( (int)curMonth );
-	if( pIter == history_.end() )
-		history_[ (int)curMonth ] = new CNrpHistoryStep( (int)curMonth, number, price * number );
-	else
-		history_[ (int)curMonth ]->Add( number, price * number );
+
+	//history_->AddStep( CURRENTTIME, number, price * number );
 }
 
 }//namespace nrp

@@ -46,7 +46,7 @@ public:
 	//*! Функция вызывается, когда пользователь перешел по неправильносй ссылке... например http://dosomething
 	void onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventIn );
 	//*! Указание движку перейти по заданной ссылке
-	void Navigate( std::string url );
+	void Navigate( const std::string& url );
 	//*! Передача в веб-движок события ЛКМ
 	void MouseDown( size_t x, size_t y );
 	//*! Передача в веб движок события ЛКМ

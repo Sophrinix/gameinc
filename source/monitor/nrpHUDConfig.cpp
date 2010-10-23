@@ -15,37 +15,24 @@ using namespace video;
 namespace nrp
 {
 
-CNrpHUDConfig::CNrpHUDConfig() : INrpConfig("CNrpHUDConfig", "hudConfig"), SECTION_NAME("Options")							//читаем конфиг для видео опций
+CNrpHUDConfig::CNrpHUDConfig() : INrpConfig("CNrpHUDConfig", "hudConfig")
 {		
-	//DbgLog(conf) << con << "OptionsVideo object created" << term;
+	CreateValue<int>( MIN_FONT_SIZE, 8 );
+	CreateValue<int>( MAX_FONT_SIZE, 8 );
+
+	for( int cnt=GetValue<int>(MIN_FONT_SIZE); cnt < GetValue<int>(MAX_FONT_SIZE); cnt++)
+		CreateValue<std::string>( "font_" + nrp::IntToStr(cnt), "" );
+
+	Load( "config/hud.ini" );
 }
 //////////////////////////////////////////////////////////////////////////
 
 CNrpHUDConfig& CNrpHUDConfig::Instance()
 {
 	if( !global_hud_config_instance)
-	{
 		global_hud_config_instance = new CNrpHUDConfig();
-		global_hud_config_instance->Load_( "config/hud.ini" );
-	}
 
 	return *global_hud_config_instance;
 }
-
-void CNrpHUDConfig::Load_( char* file_name )
-{
-	CreateValue<std::string>( CONFIG_FILE, file_name );								//запоминаем путь к файлу настроек
-	CreateValue<int>( MIN_FONT_SIZE, Read_<int>( SECTION_NAME, MIN_FONT_SIZE, 8 ) );
-	CreateValue<int>( MAX_FONT_SIZE, Read_<int>( SECTION_NAME, MAX_FONT_SIZE, 8 ) );
-
-	for( int cnt=GetValue<int>(MIN_FONT_SIZE);
-		 cnt < GetValue<int>(MAX_FONT_SIZE);
-		 cnt++)
-	{
-		std::string fname = "font_" + nrp::IntToStr(cnt);
-		CreateValue<std::string>( fname, Read_< std::string >( SECTION_NAME, fname, "" ) );
-	}
-}
-//////////////////////////////////////////////////////////////////////////
 
 } //namespace nrp
