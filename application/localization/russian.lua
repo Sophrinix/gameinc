@@ -31,6 +31,7 @@ TRANSLATE_SCENARIO_WRITESELF="Написать самому"
 TRANSLATE_SOUND_WRITESELF="Сочинить самому"
 TRANSLATE_ST_SPEAKER="Выводить звук через спикер"
 TRANSLATE_ADVTECH_HELP="Система помощи"
+TRANSLATE_ADVTECH_MOUSE="Мышь"
 ---------------------------------------------------
 STR_GAME="Игра"
 STR_ENGINE="Движок"
