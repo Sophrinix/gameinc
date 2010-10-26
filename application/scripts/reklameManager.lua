@@ -138,13 +138,9 @@ function ShowCampaniesManager()
 	labelPrefFamous = localAddLabel( "0", 60, yof + 220, rightY, yof + 270 ) 
 	labelGameFamous = localAddLabel( "0", 60, yof + 280, rightY, yof + 330 ) 
 	
-	picflowReklames:AddItem( reklames[ 1 ]:GetTexture(), reklames[ 1 ]:GetName(), reklames[ 1 ]:Self() )
-	--блок рекламы в газете
-	picflowReklames:AddItem( reklames[ 2 ]:GetTexture(), reklames[ 2 ]:GetName(), reklames[ 2 ]:Self() )
-	--блок рекламы на радио
-	picflowReklames:AddItem( reklames[ 3 ]:GetTexture(), reklames[ 3 ]:GetName(), reklames[ 3 ]:Self() )
-	--блок рекламы по телевидению
-	picflowReklames:AddItem( reklames[ 4 ]:GetTexture(), reklames[ 4 ]:GetName(), reklames[ 4 ]:Self() )
+	for y=1, #reklames do
+		picflowReklames:AddItem( reklames[ y ]:GetTexture(), reklames[ y ]:GetName(), reklames[ y ]:Self() )
+	end
 	
 	lbxGames = guienv:AddComponentListBox( scrWidth / 2 + 10, scrHeight / 3 + 20, scrWidth - 10, scrHeight - 80, -1, campaniesWindow:Self() )
 	localFillGamesListBox()

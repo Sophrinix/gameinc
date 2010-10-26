@@ -137,29 +137,16 @@ local function CreateGenrePage( tab )
 	
 	local maxModuleNumber = project:GetGenreModuleNumber()
 
-	if maxModuleNumber > 0 then
-		local genre = project:GetGenre( 0 )
-		local linkModule = guienv:AddLinkBox( base.STR_GENRE, 80, 20, 80 + sizeLinkBox, 20 + sizeLinkBox, 9100, tab )
+	for i=1, maxModuleNumber do
+		local genre = project:GetGenre( i-1 )
+		local linkModule = guienv:AddLinkBox( "Модуль " .. i .. "/" .. maxModuleNumber.."\n"..genre:GetName(), 
+												 80, 20 + (i-1) * sizeLinkBox, 
+												 80 + sizeLinkBox, 20 + i * sizeLinkBox, 
+												 9100+(i-1), tab )
 		localSetLinkBoxOption( linkModule, base.PT_GENRE, genre:Self(), genre:GetTexture(), 
-							   false, true, "media/buttons/genreNoImage2.png" )		
-							   
-		SetLuaFuncToLinkBox( linkModule, "./gameprojectManager.SetGenre()" )
-		if genre:Empty() == 0 then linkModule:SetText( genre:GetName() ) end
-
-		for i=1, maxModuleNumber-1 do
-			genre:SetObject( project:GetGenre( i ) )
-			linkModule:SetObject( guienv:AddLinkBox( "Модуль " .. i .. "/" .. maxModuleNumber, 
-													 80, 200 + i * sizeLinkBox, 
-													 80 + sizeLinkBox, 200 + (i+1) * sizeLinkBox, 
-													 9100+i, tab ) )
-			localSetLinkBoxOption( linkModule, base.PT_GENRE, genre:Self(), genre:GetTexture(), 
-							       false, true, "media/buttons/genreNoImage2.png" )		
-			
-			if genre:Empty() == 0 then	linkModule:SetData( genre:GetName() ) end
-			SetLuaFuncToLinkBox( linkModule, "./gameprojectManager.SetGenre()" )
-		end
-	else
+						       false, true, "media/buttons/genreNoImage2.png" )		
 		
+		SetLuaFuncToLinkBox( linkModule, "./gameprojectManager.SetGenre()" )
 	end
 end
 

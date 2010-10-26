@@ -230,7 +230,7 @@ function CheckNewGames()
 			--искать будем по внутреннему имени
 			local game = applic:GetGame( gameName )
 			
-			base.LogScript( "find new game in"..gameIniFile )
+			base.LogScript( "find new game in "..gameIniFile )
 			if game:Empty() == 1 then
 				game:Create( gameIniFile )
 				applic:AddGameToMarket( game:Self() )

@@ -1,5 +1,4 @@
 local company = nil
-local user = CLuaUser( nil )
 
 function CreateStuffLists()
 	os.remove( updates.fileDiskMachines )
@@ -41,6 +40,8 @@ function CreateStuffLists()
 end
 
 function sloginResetDataForNewGame()
+	local user = CLuaUser( nil )
+	
 	applic:ResetData()
     user:Create( "RealPlayer", applic:GetCurrentProfile() )
     company = applic:GetPlayerCompany()
@@ -54,10 +55,6 @@ function sloginAddStartCompanyTechnology()
 	company:AddGameEngine( ge:Self() )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создан движок simpleEngine")
-end
-
-function sloginAddStartPlayerDef()
-	company:SetCEO( user:Self() )
 end
 
 local function localLoadTechnology( typer, filer )

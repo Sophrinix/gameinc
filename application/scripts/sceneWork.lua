@@ -20,6 +20,7 @@ IncludeScript("office")
 IncludeScript("gameprojectManager")
 IncludeScript("monitor")
 IncludeScript("pda")
+IncludeScript("journals")
 --------------------------------------------
 
 --создание рабочей сцены 

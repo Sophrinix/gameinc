@@ -42,7 +42,6 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	applic:CreateNewFreeUsers()
 	
 	--формируем стартовые условия
-	sloginAddStartPlayerDef()
 	sloginAddStartCompanyTechnology()
 	DebugFunctionCall( sloginAddStartPublicTechnology )
 	

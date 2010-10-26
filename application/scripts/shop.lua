@@ -7,6 +7,7 @@ local guienv = base.guienv
 local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
 local button = base.button
+local browser = base.browser
 local tutorial = base.tutorial
 
 local company = nil
@@ -70,7 +71,7 @@ function Show()
 	button.EqualeTexture( 119, 94, "toplisttime", mainWindow:Self(), -1, "", "./shop.ShowAllTimeTopList()")
 
 	--игровые журналы
-	button.EqualeTexture( 861, 268, "showMagazines", mainWindow:Self(), -1, "", "./shop.ShowJournals()" )
+	button.EqualeTexture( 861, 268, "showMagazines", mainWindow:Self(), -1, "", "./journals.Show()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "shop.FadeEnterAction()" )
@@ -182,10 +183,6 @@ function ShowGameInSale()
 	btnIncreaseGamePrice = guienv:AddButton( scrWidth - 40, hh + 170, scrWidth - 20, hh + 190, 
 									windowShop:Self(), -1, "+" )
 	btnIncreaseGamePrice:SetAction( "./shop.IncreaseGamePrice()" ) 	
-end
-
-function ShowJournals()
-
 end
 
 function AnonceGame()
