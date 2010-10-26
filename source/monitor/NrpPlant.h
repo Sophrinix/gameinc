@@ -44,8 +44,8 @@ public:
 
 	void BeginNewDay( );
 
-	void Load( std::string scetionName, std::string saveFolder );
-	void Save( std::string scetionName, std::string saveFolder );
+	void Load( const std::string& saveFolder );
+	std::string Save( const std::string& saveFolder );
 
 	static std::string ClassName() { return CLASS_NRPPLANT; }
 };

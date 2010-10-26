@@ -44,8 +44,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	CNrpPluginEngine& p_engine = CNrpPluginEngine::Instance();
 
 	//инициализация систем
-	CNrpVideoConfig& videoConfig = CNrpVideoConfig::Instance();
 	CNrpHUDConfig& hudConfig = CNrpHUDConfig::Instance();
+	CNrpVideoConfig& videoConfig = CNrpVideoConfig::Instance();
 	CNrpConsoleConfig& consoleConfig = CNrpConsoleConfig::Instance();
 	CNrpHtmlEngineConfig& heConfig = CNrpHtmlEngineConfig::Instance();
 	CNrpPlant& plant = CNrpPlant::Instance();

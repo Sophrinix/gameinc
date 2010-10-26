@@ -195,4 +195,10 @@ SYSTEMTIME StrToTime( const char* s )
 
 	return time;	
 }
+
+bool StrToBool( const char* s )
+{
+	return (_stricmp( s, "true" ) == 0 || _stricmp( s, "1" ) == 0);
+}
+
 } //namespace nrp

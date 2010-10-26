@@ -60,6 +60,7 @@ namespace nrp
 	bool IsFloatNumber( const char* s );
 	float StrToFloat( const char* s );
 	SYSTEMTIME StrToTime( const char* s );
+	bool StrToBool( const char* s );
 
 }; //namespace nrp
 

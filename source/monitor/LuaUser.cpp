@@ -60,18 +60,18 @@ int CLuaUser::Create( lua_State *L )
 	if( strcmp( userType, "RealPlayer" ) == 0 )
 	{
 		object_ = new CNrpPlayer( name, NULL );
-		CNrpApplication::Instance().AddUser( true, object_ );
+		CNrpApplication::Instance().AddUser( object_ );
 	}
 	else if( strcmp( userType, "AIPlayer" ) == 0 )
 	{
 		object_ = new CNrpAiUser( name, NULL );
-		CNrpApplication::Instance().AddUser( true, object_ );
+		CNrpApplication::Instance().AddUser( object_ );
 	}
 	else 
 	{
 		object_ = new IUser( std::string(userType), std::string(name) );
 		object_->SetValue<std::string>( NAME, name );
-		CNrpApplication::Instance().AddUser( false, object_ );
+		CNrpApplication::Instance().AddUser( object_ );
 	}
 
 	lua_pushlightuserdata( L, (void*)object_ );

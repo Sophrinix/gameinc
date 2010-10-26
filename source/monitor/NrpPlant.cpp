@@ -26,11 +26,11 @@ CNrpPlant::~CNrpPlant(void)
 {
 }
 
-void CNrpPlant::Save( std::string scetionName, std::string saveFolder )
+std::string CNrpPlant::Save( const std::string& saveFolder )
 {
 	assert( OpFileSystem::IsExist( saveFolder ) );
 
-	std::string fileName = saveFolder + "plant.ini";
+	std::string fileName = OpFileSystem::CheckEndSlash( saveFolder ) + "plant.ini";
 	INrpConfig::Save( fileName );
 
 	WORK_LIST::iterator wIter = works_.begin();
@@ -45,16 +45,18 @@ void CNrpPlant::Save( std::string scetionName, std::string saveFolder )
 	REKLAME_LIST::iterator rIter = reklameWorks_.begin();
 	for( int k=0; rIter != reklameWorks_.end(); rIter++, k++ )
 	{
-		std::string reglameSaveFolder = saveFolder + KEY_REKLAME( k );
+		std::string reglameSaveFolder = OpFileSystem::CheckEndSlash( saveFolder ) + KEY_REKLAME( k );
 		OpFileSystem::CreateDirectory( reglameSaveFolder );
 		std::string reklameSaveFile = (*rIter)->Save( reglameSaveFolder );
 		IniFile::Write( SECTION_REKLAMES, KEY_REKLAME( k ), reklameSaveFile, fileName );
 	}
+
+	return fileName;
 }
 
-void CNrpPlant::Load( std::string scetionName, std::string saveFolder )
+void CNrpPlant::Load( const std::string& saveFolder )
 {
-	std::string fileName = saveFolder + "plant.ini";
+	std::string fileName = OpFileSystem::CheckEndSlash( saveFolder ) + "plant.ini";
 	assert( OpFileSystem::IsExist( fileName ) );
 
 	INrpConfig::Load( fileName );

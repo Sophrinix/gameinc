@@ -35,7 +35,7 @@ public:
 
 	static std::string ClassName() { return CLASS_DEVELOPGAME; }
 private:
-	MODULE_LIST gameModules_;
+	MODULE_LIST _modules;
 
 	void InitializeOptions_( const std::string& name );
 	void ModuleFinished( CNrpProjectModule* module );

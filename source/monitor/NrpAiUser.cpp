@@ -9,6 +9,11 @@ CNrpAiUser::CNrpAiUser( const std::string& name, CNrpCompany* ptrCmp ) : IUser( 
 	SetValue< std::string >( NAME, name );
 }
 
+CNrpAiUser::CNrpAiUser( const std::string& fileName ) : IUser( CLASS_AIUSER, "" )
+{
+	Load( fileName );
+}
+
 CNrpAiUser::~CNrpAiUser(void)
 {
 }

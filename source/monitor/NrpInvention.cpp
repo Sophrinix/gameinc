@@ -191,10 +191,10 @@ std::string CNrpInvention::Save( const std::string& saveFolder, bool k )
 
 	std::string fileName = myFolder + _GetFileName();
 
-	DeleteFile( fileName.c_str() );
+	assert( !OpFileSystem::IsExist( fileName ) );
 	INrpProject::Save( fileName );
-	assert( OpFileSystem::IsExist( fileName ) );
 
+	assert( OpFileSystem::IsExist( fileName ) ); 
 	SaveRequires_( fileName );
 
 	for( size_t pos=0; pos < _users.size(); pos++ )

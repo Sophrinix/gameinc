@@ -11,6 +11,7 @@ class CNrpAiUser : public IUser
 {
 public:
 	CNrpAiUser( const std::string& name, CNrpCompany* ptrCmp );
+	CNrpAiUser( const std::string& fileName );
 	~CNrpAiUser(void);	
 
 	static std::string ClassName() { return CLASS_AIUSER; } 

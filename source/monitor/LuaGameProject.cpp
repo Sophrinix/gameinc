@@ -11,11 +11,7 @@
 #include "NrpApplication.h"
 #include "LuaTechnology.h"
 #include "LuaGameEngine.h"
-
-
-#define SETTER_NUMERICAL_FUNCTION( name, func )\
-	int CLuaGameProject::name( lua_State* L ) { return SetNumericalTech_( L, #name, &CNrpGameProject::func ); }
-												
+										
 namespace nrp
 {
 
@@ -188,26 +184,41 @@ int CLuaGameProject::GetGenre( lua_State* L )
 {
 	return GetNumericalTech_( L, "", &CNrpGameProject::GetGenre );
 }	
-SETTER_NUMERICAL_FUNCTION( SetGenre, SetGenre )
+
+int CLuaGameProject::SetGenre( lua_State* L ) 
+{ 
+	return SetNumericalTech_( L, "SetGenre", &CNrpGameProject::SetGenre ); 
+}
 
 int CLuaGameProject::GetAdvTech( lua_State* L )
 {
 	return GetNumericalTech_( L, "", &CNrpGameProject::GetTechnology );
 }
 
-SETTER_NUMERICAL_FUNCTION( SetAdvTech, SetTechnology )
+int CLuaGameProject::SetAdvTech( lua_State* L ) 
+{
+	return SetNumericalTech_( L, "SetAdvTech", &CNrpGameProject::SetTechnology ); 
+}
 
 int CLuaGameProject::GetVideoTech( lua_State* L )
 {
 	return GetNumericalTech_( L, "", &CNrpGameProject::GetVideoTech );
 }
-SETTER_NUMERICAL_FUNCTION( SetVideoTech, SetVideoTech )
+
+int CLuaGameProject::SetVideoTech( lua_State* L ) 
+{
+	return SetNumericalTech_( L, "SetVideoTech", &CNrpGameProject::SetVideoTech ); 
+}
 
 int CLuaGameProject::GetSoundTech( lua_State* L )
 {
 	return GetNumericalTech_( L, "", &CNrpGameProject::GetSoundTech );
 }
-SETTER_NUMERICAL_FUNCTION( SetSoundTech, SetSoundTech )
+
+int CLuaGameProject::SetSoundTech( lua_State* L ) 
+{
+	return SetNumericalTech_( L, "SetSoundTech", &CNrpGameProject::SetSoundTech ); 
+}
 
 int CLuaGameProject::Create( lua_State* L )
 {

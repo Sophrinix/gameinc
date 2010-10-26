@@ -53,6 +53,9 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<int>( PLATFORMNUMBER, 0 );
 	CreateValue<int>( MODULE_NUMBER, 0 );
 	CreateValue<int>( USERNUMBER, 0 );
+	CreateValue<std::string>( DESCRIPTIONPATH, "" );
+	CreateValue<std::string>( TEXTURENORMAL, "" );
+	CreateValue<float>( READYWORKPERCENT, 1.f );
 }
 
 CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpConfig( CLASS_NRPGAME, devGame->GetString( NAME ) )
@@ -215,20 +218,24 @@ std::string CNrpGame::GetTechName( size_t index )
 
 void CNrpGame::GameBoxSaling( int number )
 {
-	assert( GetValue<PNrpGameBox>( GBOX ) != NULL );
-	int boxNumber = GetValue<PNrpGameBox>( GBOX )->GetValue<int>( BOXNUMBER );
-	number = number > boxNumber ? boxNumber : number;
-	GetValue<PNrpGameBox>( GBOX )->AddValue<int>( BOXNUMBER, -number );
-	int price = GetValue<PNrpGameBox>( GBOX )->GetValue<int>( PRICE );
+	PNrpGameBox gameBox = GetValue<PNrpGameBox>( GBOX );
+	Log(HW) << "gameBox == NULL " << GetString( INTERNAL_NAME ) << term;
 
-	AddValue<int>( CASH, price * number );
-	AddValue<int>( COPYSELL, number );
+	if( gameBox != NULL )
+	{
+		int boxNumber = GetValue<PNrpGameBox>( GBOX )->GetValue<int>( BOXNUMBER );
+		number = number > boxNumber ? boxNumber : number;
+		GetValue<PNrpGameBox>( GBOX )->AddValue<int>( BOXNUMBER, -number );
+		int price = GetValue<PNrpGameBox>( GBOX )->GetValue<int>( PRICE );
 
-	if( GetValue<PNrpCompany>( PARENTCOMPANY ) )
-		GetValue<PNrpCompany>( PARENTCOMPANY )->AddValue<int>( BALANCE, price * number );
+		AddValue<int>( CASH, price * number );
+		AddValue<int>( COPYSELL, number );
 
-	SYSTEMTIME curTime = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
+		if( GetValue<PNrpCompany>( PARENTCOMPANY ) )
+			GetValue<PNrpCompany>( PARENTCOMPANY )->AddValue<int>( BALANCE, price * number );
 
+		SYSTEMTIME curTime = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
+	}
 	//history_->AddStep( CURRENTTIME, number, price * number );
 }
 

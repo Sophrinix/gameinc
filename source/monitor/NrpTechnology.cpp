@@ -102,7 +102,6 @@ std::string CNrpTechnology::Save( const std::string& saveFolder )
 	//не должно быть файла с такимже именем в директории
 	assert( !OpFileSystem::IsExist( fileName ) );
 
-	DeleteFile( fileName.c_str() );
 	INrpProject::Save( fileName );
 	SaveRequires_( fileName );
 

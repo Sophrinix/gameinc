@@ -20,7 +20,7 @@ void CNrpLicense::Load( const std::string& pathTo )
 
 std::string CNrpLicense::Save( const std::string& pathTo )
 {
-	return "";
+	return INrpProject::Save( pathTo );
 }
 
 }//namespace nrp

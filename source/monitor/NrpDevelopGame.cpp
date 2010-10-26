@@ -56,27 +56,27 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	SetValue<PNrpGameEngine>( GAME_ENGINE, ge );
 
 	CNrpProjectModule* extEngine = new CNrpProjectModule( PT_ENGINDEEXTEND, this );
-	extEngine->SetValue<std::string>( NAME, GetValue<std::string>( NAME ) + " Расширение движка" );
+	extEngine->SetString( NAME, GetString( NAME ) + " Расширение движка" );
 	extEngine->SetEmployerSkillRequire( SKL_CODING, ge->GetValue<int>( SKILL_CODING ) );
 	extEngine->SetValue<int>( CODEVOLUME, nProject->GetValue<int>( ENGINE_CODEVOLUME) );
 	extEngine->SetValue<float>( BASE_CODE, 1 );
-	gameModules_.push_back( extEngine );
+	_modules.push_back( extEngine );
 	
 	CNrpProjectModule* langSupport = new CNrpProjectModule( PT_LANGSUPPORT, this );
-	langSupport->SetValue<std::string>( NAME, "Локализация" );
+	langSupport->SetString( NAME, "Локализация" );
 	langSupport->SetEmployerSkillRequire( SKL_CODING, 10 );
 	langSupport->SetValue<float>( BASE_CODE, nProject->GetValue<int>( LANGNUMBER ) * 0.05f );
 	langSupport->SetValue<int>( CODEVOLUME, (int)(bcv * langSupport->GetValue<float>( BASE_CODE )) );
-	gameModules_.push_back( langSupport );
+	_modules.push_back( langSupport );
 
 	CNrpProjectModule* cpCode = new CNrpProjectModule( PT_PLATFORMSUPPORT, this );
-	cpCode->SetValue<std::string>( NAME, "Кроссплатформенный код" );
+	cpCode->SetString( NAME, "Кроссплатформенный код" );
 	cpCode->SetEmployerSkillRequire( SKL_CODING, ge->GetValue<int>( SKILL_CODING ) );
 	cpCode->SetValue<float>( BASE_CODE, nProject->GetValue<int>( PLATFORMNUMBER ) * 0.1f );
 	cpCode->SetValue<int>( CODEVOLUME, (int)(bcv * cpCode->GetValue<float>( BASE_CODE )) );
-	gameModules_.push_back( cpCode );
+	_modules.push_back( cpCode );
 
-	SetValue<std::string>( PREV_GAME, nProject->GetValue<std::string>( PREV_GAME ) );
+	SetString( PREV_GAME, nProject->GetString( PREV_GAME ) );
 	SetValue<int>( BASE_CODEVOLUME, nProject->GetValue<int>( BASE_CODEVOLUME ) );
 	SetValue<int>( CODEVOLUME, nProject->GetValue<int>( CODEVOLUME ) );
 	SetValue<int>( TECHTYPE, nProject->GetValue<int>( TECHTYPE ) );
@@ -87,35 +87,35 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	{
 		PNrpProjectModule module = new CNrpProjectModule( nProject->GetValue<PNrpTechnology>( SCRIPTENGINE ), this );
 		module->SetValue<int>( CODEVOLUME, static_cast< int >( bcv * module->GetValue<float>( BASE_CODE ) ) );
-		gameModules_.push_back( module );
+		_modules.push_back( module );
 	}
 
 	if( nProject->GetValue<PNrpTechnology>( MINIGAMEENGINE ) )
 	{
 		PNrpProjectModule module = new CNrpProjectModule( nProject->GetValue<PNrpTechnology>( MINIGAMEENGINE ), this );
 		module->SetValue<int>( CODEVOLUME, static_cast< int >( bcv * module->GetValue<float>( BASE_CODE ) ) );
-		gameModules_.push_back( module );
+		_modules.push_back( module );
 	}
 
 	if( nProject->GetValue<PNrpTechnology>( PHYSICSENGINE ) )
 	{
 		PNrpProjectModule module = new CNrpProjectModule( nProject->GetValue<PNrpTechnology>( PHYSICSENGINE ), this );
 		module->SetValue<int>( CODEVOLUME, static_cast<int>( bcv * module->GetValue<float>( BASE_CODE ) ) );
-		gameModules_.push_back( module );
+		_modules.push_back( module );
 	}
 
 	if( nProject->GetValue<PNrpTechnology>( GRAPHICQUALITY ) )
 	{
 		PNrpProjectModule module = new CNrpProjectModule( nProject->GetValue<PNrpTechnology>( GRAPHICQUALITY ), this );
 		module->SetValue<int>( CODEVOLUME, static_cast< int >( bcv * module->GetValue<float>( BASE_CODE ) ) );
-		gameModules_.push_back( module );
+		_modules.push_back( module );
 	}
 
 	if( nProject->GetValue<PNrpTechnology>( SOUNDQUALITY ) )
 	{
 		PNrpProjectModule module = new CNrpProjectModule( nProject->GetValue<PNrpTechnology>( SOUNDQUALITY ), this );
 		module->SetValue<int>( CODEVOLUME, static_cast< int >( bcv * module->GetValue<float>( BASE_CODE ) ) );
-		gameModules_.push_back( module );
+		_modules.push_back( module );
 	}
 
 	SetValue<int>( BASEQUALITY, nProject->GetValue<int>( BASEQUALITY ) );
@@ -129,20 +129,19 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 		assert( *pIter != NULL );
 		CNrpProjectModule* nTech = new CNrpProjectModule( *pIter, this );
 		nTech->SetValue<int>( CODEVOLUME, (int)(bcv * nTech->GetValue<float>( BASE_CODE )) );
-		gameModules_.push_back( nTech );
+		_modules.push_back( nTech );
 	}
 
 	for( TECH_LIST::const_iterator pIter = nProject->GetGenreList().begin();
 		 pIter != nProject->GetGenreList().end(); 
 		 pIter++ )
 	{
-		assert( *pIter != NULL );
 		if( *pIter == NULL )
 			continue;
 
 		CNrpProjectModule* nTech = new CNrpProjectModule( *pIter, this );
 		nTech->SetValue<int>( CODEVOLUME, (int)(bcv * nTech->GetValue<float>( BASE_CODE )) );
-		gameModules_.push_back( nTech );
+		_modules.push_back( nTech );
 	}
 
 	for( TECH_LIST::const_iterator pIter = nProject->GetVideoTechList().begin();
@@ -153,7 +152,7 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 
 		CNrpProjectModule* nTech = new CNrpProjectModule( *pIter, this );
 		nTech->SetValue<int>( CODEVOLUME, (int)(bcv * nTech->GetValue<float>( BASE_CODE )) );
-		gameModules_.push_back( nTech );
+		_modules.push_back( nTech );
 	}
 
 	for( TECH_LIST::const_iterator pIter = nProject->GetSoundTechList().begin();
@@ -165,12 +164,12 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 		{
 			CNrpProjectModule* nTech = new CNrpProjectModule( *pIter, this );
 			nTech->SetValue<int>( CODEVOLUME, (int)(bcv * nTech->GetValue<float>( BASE_CODE )) );
-			gameModules_.push_back( nTech );
+			_modules.push_back( nTech );
 		}
 	}
 
-	SetValue<std::string>( PROJECTSTATUS, std::string("develop") );
-	SetValue<int>( MODULE_NUMBER, gameModules_.size() );
+	SetString( PROJECTSTATUS, "develop" );
+	SetValue<int>( MODULE_NUMBER, _modules.size() );
 }
 
 CNrpDevelopGame::CNrpDevelopGame( const std::string& name, CNrpCompany* ptrCompany )
@@ -202,25 +201,28 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
 		 uList[ k ]->IncreaseExperience( techType, (int)growExp );
 	}
 
+	
+	CNrpApplication::Instance().DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
+
 	if( IsReady() )
-		CNrpApplication::Instance().DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
+		CNrpApplication::Instance().DoLuaFunctionsByType( APP_PROJECT_FINISHED, this );
 }
 
 std::string CNrpDevelopGame::Save( const std::string& folderSave )
 {
 	assert( OpFileSystem::IsExist( folderSave ) );
 
-	std::string localFolder = folderSave + GetValue<std::string>( NAME ) + "/";
+	std::string localFolder = OpFileSystem::CheckEndSlash( folderSave + GetString( NAME ) );
 
 	OpFileSystem::CreateDirectory( localFolder );
 
 	std::string fileName = localFolder + "item.devgame";
 	INrpDevelopProject::Save( fileName );
 
-	MODULE_LIST::iterator tIter = gameModules_.begin();
-	for( int i=0; tIter != gameModules_.end(); tIter++, i++ )
+	MODULE_LIST::iterator tIter = _modules.begin();
+	for( int i=0; tIter != _modules.end(); tIter++, i++ )
 	{
-		(*tIter)->Save( localFolder + "modules/" );
+		(*tIter)->Save( localFolder );
 		IniFile::Write( SECTION_MODULES, KEY_MODULE(i), (*tIter)->GetString( NAME ), fileName );
 	}
 
@@ -256,12 +258,12 @@ void CNrpDevelopGame::Load( const std::string& loadFolder )
 
 	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
 	{
-		std::string name = IniFile::Read( "modules", "module" + IntToStr(i), std::string(""), fileName );
+		std::string name = IniFile::Read( SECTION_MODULES, KEY_MODULE(i), std::string(""), fileName );
 		if( !name.empty() )
 		{
 			CNrpProjectModule* tech = new CNrpProjectModule( PROJECT_TYPE( 0 ), this );
-			tech->Load( myFolder + "modules/" + name + ".devmod" );
-			gameModules_.push_back( tech );		
+			tech->Load( myFolder + name + ".devmod" );
+			_modules.push_back( tech );		
 		}
 	}
 
@@ -283,8 +285,8 @@ bool CNrpDevelopGame::IsReady()
 {
 	bool ready = true;
 	float workP = 0;
-	for( MODULE_LIST::iterator pIter = gameModules_.begin(); 
-		 pIter != gameModules_.end(); 
+	for( MODULE_LIST::iterator pIter = _modules.begin(); 
+		 pIter != _modules.end(); 
 		 pIter++)
 	{
 		if( *pIter )
@@ -301,7 +303,7 @@ bool CNrpDevelopGame::IsReady()
 	SetValue<bool>( PROJECTREADY, ready );
 	SetValue<float>( READYWORKPERCENT, workP );
 	if( ready )
-		SetValue<std::string>( PROJECTSTATUS, "produce" );
+		SetString( PROJECTSTATUS, "produce" );
 
 	return ready;
 }
@@ -330,9 +332,9 @@ void CNrpGameProject::UpdateDevelopmentMoney()
 
 CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index )
 {
-	MODULE_LIST::iterator pIter = gameModules_.begin();
+	MODULE_LIST::iterator pIter = _modules.begin();
 	int i=0;
-	for( ; pIter != gameModules_.end(); pIter++ )
+	for( ; pIter != _modules.end(); pIter++ )
 	{
 		 if( (*pIter)->GetValue<int>( TECHGROUP ) == PT_GENRE )
 			 if( i == index )
@@ -346,14 +348,14 @@ CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index )
 
 CNrpProjectModule* CNrpDevelopGame::GetModule( size_t index )
 {
-	return index < gameModules_.size() ? gameModules_[ index ] : NULL; 
+	return index < _modules.size() ? _modules[ index ] : NULL; 
 }
 
 CNrpProjectModule* CNrpDevelopGame::GetModule( const char* name )
 {
-	MODULE_LIST::iterator pIter = gameModules_.begin();
+	MODULE_LIST::iterator pIter = _modules.begin();
 	int i=0;
-	for( ; pIter != gameModules_.end(); pIter++ )
+	for( ; pIter != _modules.end(); pIter++ )
 	{
 		if( (*pIter)->GetString( NAME ) == name )
 			return *pIter;

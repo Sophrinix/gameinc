@@ -38,6 +38,7 @@ public:
 	int SetPrice( lua_State* L );
 	int GetCurrentMonthSales( lua_State* L );
 	int GetCompany( lua_State* L );
+	int GetDescriptionLink( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUAGAME.c_str(); }
 private:

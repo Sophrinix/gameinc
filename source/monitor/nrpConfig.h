@@ -25,12 +25,42 @@
 namespace nrp
 {
 
+class KeyPair
+{
+	KeyPair() {};
+
+	std::string _name, _type, _value;
+public:
+	KeyPair( const std::string& str, 
+			 char delim=':' )
+	{
+		int empPos = str.find( '=' );
+		assert( empPos >= 0 );
+		if( empPos >= 0 )
+		{
+			_value = str.substr( empPos+1, 0xff );
+			_name = str.substr( 0, empPos );
+			_type = "unknown";
+			int delimPos = _name.find( delim );
+			if( delimPos >= 0 )
+			{
+				_type = _name.substr( delimPos + 1, 0xff );
+				_name = _name.substr( 0, delimPos );
+			}
+		}
+	}
+
+	std::string& GetName() { return _name; }
+	std::string& GetValue() { return _value; }
+	std::string& GetType() { return _type; }
+};
+
 void CheckClassesType( const std::string type1, const std::string type2 );
 
 class INrpProperty
 {
 public:
-	virtual std::string GetValueType() = 0;
+	virtual const std::string& GetValueType() = 0;
 	virtual ~INrpProperty()
 	{
 
@@ -52,7 +82,7 @@ public:
 	{ 
 	}
 
-	std::string GetValueType() { return type_; }
+	const std::string& GetValueType() { return type_; }
 
 	ValClass& ToggleValue()
 	{
@@ -82,8 +112,9 @@ private:
 };
 
 class INrpConfig : public INrpObject
-
 {
+	friend class CNrpConfigLooder;
+
 public:
 	INrpConfig( CLASS_NAME className, SYSTEM_NAME sysName ) : INrpObject( className, sysName )
 	{
@@ -111,34 +142,6 @@ public:
 	}
 
 	PropertyArray& GetProperties() { return options_; }
-
-	void EraseValue( std::string name )
-	{
-		std::transform( name.begin(), name.end(), name.begin(), tolower );
-		PropertyArray::iterator pIter = options_.find( name );
-
-		if( pIter == options_.end() )
-		{
-#ifdef _DEBUG
-			Log(HW) << "erase: bad config param " << name << term;
-#endif
-			throw "error"; 
-		}
-		else 
-		{
-			delete pIter->second;
-			options_.erase( pIter );
-		}
-	}
-
-	template< class B > void CreateValue( std::string name, B valuel )
-	{
-		std::transform( name.begin(), name.end(), name.begin(), tolower );
-		if( options_.find( name ) == options_.end() )
-			options_[ name ] = new CNrpProperty<B>( valuel );
-		else
-			SetValue<B>( name, valuel );
-	}
 
 	template< class B > B ToggleValue( std::string name, B defValue )
 	{
@@ -177,7 +180,7 @@ public:
 		return GetValue<std::string>( name );
 	}
 
-	void SetString( std::string name, std::string valuel )
+	void SetString( const std::string& name, const std::string& valuel )
 	{
 		SetValue<std::string>( name, valuel );
 	}
@@ -215,15 +218,18 @@ protected:
 	virtual std::string Save( const std::string& fileName );
 	virtual void Load( const std::string& fileName );
 
-	//! чтение свойства из конфигурационного файла
-	template< class B > B Read_( std::string section, std::string key, B def_value )
+	void EraseValue( std::string name );
+
+	template< class B > void CreateValue( std::string name, B valuel )
 	{
-		B read_value;
-
-		read_value = nrp::IniFile::Read( section, key, def_value, GetString( CONFIG_FILE ) );
-
-		return (B)read_value;
+		std::transform( name.begin(), name.end(), name.begin(), tolower );
+		if( options_.find( name ) == options_.end() )
+			options_[ name ] = new CNrpProperty<B>( valuel );
+		else
+			SetValue<B>( name, valuel );
 	}
+
+
 private:
 	//! определение массива свойств
 	PropertyArray options_;

@@ -63,26 +63,25 @@ nrp::GENRE_TYPE CNrpGameEngine::GetGenreType( int index )
 	return pIter != avgenres_.end() ? pIter->first : GT_UNKNOWN;
 }
 
-void CNrpGameEngine::Save( std::string saveFolder )
+std::string CNrpGameEngine::Save( const std::string& saveFolder )
 {
-	saveFolder = OpFileSystem::CheckEndSlash(saveFolder);
-
 	assert( OpFileSystem::IsExist( saveFolder ) );
-
-	std::string localFolder = OpFileSystem::CheckEndSlash( saveFolder + GetValue<std::string>( NAME ) );
+	std::string localFolder = OpFileSystem::CheckEndSlash( saveFolder) + GetValue<std::string>( INTERNAL_NAME );
 
 	OpFileSystem::CreateDirectory( localFolder );
-	std::string saveFile = localFolder + "item.engine";
+	std::string saveFile = OpFileSystem::CheckEndSlash( localFolder ) + "item.engine";
 
-	DeleteFile( saveFile.c_str() );
+	assert( !OpFileSystem::IsExist( saveFile ) );
 	INrpProject::Save( saveFile );
 
 	GENRE_MAP::iterator pIter = avgenres_.begin();
 	for( int i=0; pIter != avgenres_.end(); pIter++, i++ )
 		IniFile::Write( "avaibleGenre", IntToStr( pIter->first ), IntToStr( pIter->second ), saveFile );
+
+	return localFolder;
 }
 
-void CNrpGameEngine::Load( std::string loadFolder )
+void CNrpGameEngine::Load( const std::string& loadFolder )
 {
 	std::string loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + "item.engine" ;
 	INrpProject::Load( loadFile );

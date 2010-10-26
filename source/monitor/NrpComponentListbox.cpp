@@ -5,6 +5,7 @@
 #include "IUser.h"
 #include "NrpDevelopGame.h"
 #include "NrpTranslate.h"
+#include "NrpGame.h"
 #include <string>
 
 using namespace nrp;
@@ -593,6 +594,8 @@ void CNrpComponentListbox::draw()
 							_DrawAsUser( user, textRect, frameRect, itbncolor, clientClip, bgcolor );
 						else if( CNrpDevelopGame* devGame = dynamic_cast< CNrpDevelopGame* >( pObject ) )
 							_DrawAsGame( devGame, textRect, frameRect, itbncolor, clientClip, bgcolor );
+						else if( CNrpGame* game = dynamic_cast< CNrpGame* >( pObject ) )
+							_DrawAsGame( game, textRect, frameRect, itbncolor, clientClip, bgcolor );
 					}
 					textRect.UpperLeftCorner.X -= ItemsIconWidth+3;
 				}
@@ -611,7 +614,7 @@ void CNrpComponentListbox::draw()
 }
 //////////////////////////////////////////////////////////////////////////
 
-void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti rectangle, 
+void CNrpComponentListbox::_DrawAsGame( INrpConfig* devGame, core::recti rectangle, 
 									    core::recti frameRect, video::SColor color, 
 										core::recti& clipRect, video::SColor bgColor )
 {
@@ -620,12 +623,10 @@ void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti re
 	rectangle.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
-	std::wstring name = StrToWide( translate::GetTranslate( "#STR_INDEVELOP" )  + devGame->GetValue<std::string>( NAME ) );
-
 	core::recti progressRect = frameRect;
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
 
-	std::string pathToImage = devGame->GetValue<std::string>( TEXTURENORMAL );
+	std::string pathToImage = devGame->GetString( TEXTURENORMAL );
 	driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
 			  			  core::recti( 3, 3, rectangle.getHeight(), rectangle.getHeight() - 6 ) + rectangle.UpperLeftCorner,
 						  core::recti( 0, 0, 128, 128 ) );
@@ -638,16 +639,20 @@ void CNrpComponentListbox::_DrawAsGame( CNrpDevelopGame* devGame, core::recti re
 	core::recti famous = fullRectangle + core::position2di( 0, rectangle.getHeight() / 10 ) ;
 	famous.LowerRightCorner.Y = famous.UpperLeftCorner.Y + rectangle.getHeight() / 4;
 	famous.LowerRightCorner.X = famous.UpperLeftCorner.X + static_cast< s32 >( famous.getWidth() * devGame->GetValue<float>( FAMOUS ) );
-
-	//создадим прямоугольник для завершенности игры
-	core::recti finished = famous + core::position2di( 0, rectangle.getHeight() / 10 ) ;
-	finished.LowerRightCorner.X = finished.UpperLeftCorner.X + 
-								  static_cast< s32 >( fullRectangle.getWidth() * devGame->GetValue<float>( READYWORKPERCENT ) );
-
 	driver->draw2DRectangle( 0xff00ff00, famous, &clipRect );
-	driver->draw2DRectangle( 0xff0000ff, finished, &clipRect );
 
-	_font->draw( name.c_str(), frameRect, color, true, true, &clipRect ); 
+	std::string name = devGame->GetString( NAME );
+	if( devGame->GetValue<float>( READYWORKPERCENT ) < 1 )
+	{
+		name = translate::GetTranslate( "#STR_INDEVELOP" ) + name;
+
+		//создадим прямоугольник для завершенности игры
+		core::recti finished = famous + core::position2di( 0, rectangle.getHeight() / 10 ) ;
+		finished.LowerRightCorner.X = finished.UpperLeftCorner.X + static_cast< s32 >( fullRectangle.getWidth() * devGame->GetValue<float>( READYWORKPERCENT ) );
+		driver->draw2DRectangle( 0xff0000ff, finished, &clipRect );
+	}
+
+	_font->draw( StrToWide( name ).c_str(), frameRect, color, true, true, &clipRect ); 
 }
 
 void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle, 

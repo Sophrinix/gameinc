@@ -72,6 +72,7 @@ void CNrpEngine::Run() //создание нерпы
 		if( currentScene_ )
 			currentScene_->OnLeave();
 
+		Logger::Stop();
 		GetVideoDriver()->removeAllTextures();
 		GetSceneManager()->clear();
 		GetGuiEnvironment()->clear();

@@ -56,7 +56,7 @@ bool CNrpLoginScene::OnEvent( const irr::SEvent& event )
 
 		{
 			gui::IGUIElement* elm = CNrpEngine::Instance().GetGuiEnvironment()->getFocus();
-			if( elm == pf )
+			if( elm && elm == pf )
 				elm->OnEvent( event );
 		}
 		break;

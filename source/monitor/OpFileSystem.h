@@ -23,6 +23,7 @@ public:
 	static bool IsFolder( const std::string& pathTo );
 	static std::string GetExtension( const std::string& pathTo );
 	static std::string UpDir( const std::string& pathTo );
+	static std::string RemoveEndSlash( std::string pathTo );
 };
 
 }//end namespace nrp

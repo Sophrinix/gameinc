@@ -44,6 +44,7 @@ Luna< CLuaGame >::RegType CLuaGame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaGame, SetPrice ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetCompany ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, Create ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetDescriptionLink ),
 	{0,0}
 };
 
@@ -388,4 +389,9 @@ int CLuaGame::Create( lua_State* L )
 	return 1;		
 }
 
+int CLuaGame::GetDescriptionLink( lua_State* L )
+{
+	lua_pushstring( L, GetParam_<std::string>( L, "GetDescriptionLink", DESCRIPTIONPATH, "" ).c_str() );
+	return 1;	
+}
 }//namespace nrp

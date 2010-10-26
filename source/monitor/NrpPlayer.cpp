@@ -9,6 +9,11 @@ CNrpPlayer::CNrpPlayer( const std::string& name, CNrpCompany* ptrCmp ) : IUser( 
 	SetValue<std::string>( NAME, name );
 }
 
+CNrpPlayer::CNrpPlayer( const std::string& fileName ) : IUser( CLASS_REALPLAYER, std::string("") )
+{
+	Load( fileName );
+}
+
 CNrpPlayer::~CNrpPlayer(void)
 {
 }

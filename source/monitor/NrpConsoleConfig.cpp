@@ -30,6 +30,8 @@ void CNrpConsoleConfig::_InitializeOptions()
 
 CNrpConsoleConfig::CNrpConsoleConfig(void) : INrpConfig( CLASS_CONSOLECONFIG, CLASS_CONSOLECONFIG )
 {
+	_InitializeOptions();
+
 	Load( "config/console.ini" );	
 }
 

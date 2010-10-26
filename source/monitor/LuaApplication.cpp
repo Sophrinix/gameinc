@@ -538,11 +538,21 @@ int CLuaApplication::GetGamesNumber( lua_State* L )
 int CLuaApplication::GetGame( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetGame need integer parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetGame need integer(string) parameter" );
 
-	int index = lua_tointeger( L, 2 );
 	CNrpGame* game = NULL;
-	IF_OBJECT_NOT_NULL_THEN	game = object_->GetGame( index );
+	if( lua_isnumber( L, 2 ) )
+	{
+		int index = lua_tointeger( L, 2 );
+		assert( index >= 0 );
+		IF_OBJECT_NOT_NULL_THEN	game = object_->GetGame( index );
+	}
+	else if( lua_isstring( L, 2 ) )
+	{
+		const char* name = lua_tostring( L, 2 );
+		assert( name != NULL );
+		IF_OBJECT_NOT_NULL_THEN game = object_->GetGame( name );
+	}
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, game );

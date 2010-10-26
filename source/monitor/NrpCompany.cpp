@@ -152,7 +152,8 @@ std::string CNrpCompany::Save( const std::string& saveFolder )
 	OpFileSystem::CreateDirectory( localFolder );
 
 	std::string saveFile = localFolder + "company.ini";
-	DeleteFile( saveFile.c_str() );
+
+	assert( !OpFileSystem::IsExist( saveFile ) );
 	INrpConfig::Save( saveFile );
 
 	PROJECT_MAP::iterator pIter = _projects.begin();
@@ -226,6 +227,7 @@ void CNrpCompany::Load( const std::string& loadFolder )
 			user->SetValue<PNrpCompany>( PARENTCOMPANY, this );
 		}
 	}
+	SetValue( USERNUMBER, _employers.size() );
 
 	for( int i=0; i < GetValue<int>( TECHNUMBER ); i++ )
 	{

@@ -19,7 +19,7 @@
 namespace nrp
 {
 
-IUser::IUser(const std::string className, const std::string systemName ) : INrpConfig( className, systemName )
+IUser::IUser(const std::string& className, const std::string& systemName ) : INrpConfig( className, systemName )
 {
 	CreateValue<std::string>( NAME, systemName );
 	CreateValue<int>( CODE_SPEED, 0 );
@@ -104,9 +104,9 @@ std::string IUser::Save( const std::string& folderPath )
 	{
 		assert( OpFileSystem::IsExist( folderPath ) );
 
-		std::string fileName = OpFileSystem::CheckEndSlash( folderPath )+ GetValue<std::string>( NAME ) + ".user";
-		DeleteFile( fileName.c_str() );
-
+		std::string fileName = OpFileSystem::CheckEndSlash( folderPath )+ GetString( NAME ) + ".user";
+		assert( !OpFileSystem::IsExist( fileName ) );
+		
 		KNOWLEDGE_MAP::iterator gnrIter = genrePreferences_.begin();
 		for( ; gnrIter != genrePreferences_.end(); gnrIter++ )
 			IniFile::Write( "genrePreference", IntToStr( gnrIter->first ), gnrIter->second, fileName );
@@ -119,10 +119,6 @@ std::string IUser::Save( const std::string& folderPath )
 		for( ; knIter != knowledges_.end(); knIter++ )
 			IniFile::Write( "knowledges", IntToStr( knIter->first ), knIter->second, fileName );
 
-		USERACTION_LIST::iterator uaIter = peopleFeels_.begin();
-		//for( ; uaIter != peopleFeels_.end(); ++uaIter )
-		//	IniFile::Write( "knowledges", uaIter->first, uaIter->second, fileName );
-
 		WORK_LIST::iterator tlIter = works_.begin();
 		for( int i=0; tlIter != works_.end(); tlIter++, i++ )
 		{
@@ -130,15 +126,15 @@ std::string IUser::Save( const std::string& folderPath )
 			{
 				std::string projectName = prjModule->GetValue<INrpProject*>( PARENT )->GetString( NAME );
 				std::string name = prjModule->GetString(NAME);
-				IniFile::Write( SECTION_WORKS, "work_"+IntToStr( i ), "project", fileName );
-				IniFile::Write( SECTION_WORKS, "projectName_" + IntToStr( i ), projectName, fileName );
-				IniFile::Write( SECTION_WORKS, "moduleName_" + IntToStr( i ), name, fileName );
+				IniFile::Write( SECTION_WORKS, KEY_WORK( i ), "project", fileName );
+				IniFile::Write( SECTION_WORKS, KEY_PROJECT( i ), projectName, fileName );
+				IniFile::Write( SECTION_WORKS, KEY_MODULE( i ), name, fileName );
 			}
 			else if( CNrpInvention* invention = dynamic_cast< CNrpInvention* >( *tlIter ) )
 			{
 				std::string name = invention->GetString(NAME);
-				IniFile::Write( SECTION_WORKS, "work_"+IntToStr( i ), "invention", fileName );
-				IniFile::Write( SECTION_WORKS, "inventioName_" + IntToStr( i ), name, fileName );
+				IniFile::Write( SECTION_WORKS, KEY_WORK( i ), "invention", fileName );
+				IniFile::Write( SECTION_WORKS, KEY_INVENTION( i ), name, fileName );
 			}
 		}
 
@@ -164,18 +160,18 @@ void IUser::Load( const std::string& fileName )
 	for( int k=0; k < GetValue<int>( WORKNUMBER ); k++ )
 	{
 		std::string action = "";
-		std::string workType = IniFile::Read( SECTION_WORKS, "work_" + IntToStr( k ), std::string(""), fileName );
+		std::string workType = IniFile::Read( SECTION_WORKS, KEY_WORK( k ), std::string(""), fileName );
 		if( !workType.empty() )
 		{
 			if( workType == "project" )
 			{
-				std::string projectName = IniFile::Read( SECTION_WORKS, "projectName_" + IntToStr( k ), std::string(""), fileName );	
-				std::string moduleName = IniFile::Read( SECTION_WORKS, "moduleName_" + IntToStr( k ), std::string(""), fileName );
+				std::string projectName = IniFile::Read( SECTION_WORKS, KEY_PROJECT( k ), std::string(""), fileName );	
+				std::string moduleName = IniFile::Read( SECTION_WORKS, KEY_MODULE( k ), std::string(""), fileName );
 				action = "autoscript:AddUserToGameProject(\"" + GetString( NAME ) + "\", \"" + projectName + "\", \"" + moduleName + "\")";
 			}
 			else if( workType == "invention" )
 			{
-				std::string inventionName = IniFile::Read( SECTION_WORKS, "inventioName_" + IntToStr( k ), std::string(""), fileName );	
+				std::string inventionName = IniFile::Read( SECTION_WORKS, KEY_INVENTION( k ), std::string(""), fileName );	
 				action = "autoscript:AddUserToInvention(\"" + GetString( NAME ) + "\" , \"" + inventionName + "\")";	
 			}				
 			
@@ -190,10 +186,6 @@ void IUser::Load( const std::string& fileName )
 	NAMEVALUE_MAP::iterator gnrExp = genreExperience_.begin();
 	for( ; gnrExp != genreExperience_.end(); ++gnrExp )
 		IniFile::Write( "genreExperience", gnrExp->first, gnrExp->second, fileName );
-
-	USERACTION_LIST::iterator uaIter = peopleFeels_.begin();
-	//for( ; uaIter != peopleFeels_.end(); ++uaIter )
-	//	IniFile::Write( "knowledges", uaIter->first, uaIter->second, fileName );
 
 	TECH_LIST::iterator tlIter = techWorks_.begin();
 	//for( ; tlIter != techWorks_.end(); ++tlIter )
@@ -244,7 +236,7 @@ void IUser::RemoveWork( IWorkingModule* techWork )
 			return;
 		}
 		
-	std::string text = "Не могу найти компонент для удаления " + techWork->GetValue<std::string>( NAME );
+	std::string text = "Не могу найти компонент для удаления " + techWork->GetString( NAME );
 	Log(HW) << text << term;
 }
 
@@ -258,7 +250,7 @@ IWorkingModule* IUser::GetWork( const std::string& name ) const
 {
 	WORK_LIST::const_iterator tIter = works_.begin();
 	for( ; tIter != works_.end(); tIter++ )
-		if( (*tIter)->GetValue<std::string>( NAME ) == name )
+		if( (*tIter)->GetString( NAME ) == name )
 			return (*tIter);
 
 	return NULL;
@@ -266,7 +258,7 @@ IWorkingModule* IUser::GetWork( const std::string& name ) const
 
 void IUser::BeginNewHour( const SYSTEMTIME& time )
 {
-	if( time.wHour == 9 && GetValue<std::string>( USERSTATE ) == "readyToWork" )
+	if( time.wHour == 9 && GetString( USERSTATE ) == "readyToWork" )
 	{
 		SetValue<std::string>( USERSTATE, "work" );
 	}
@@ -280,10 +272,10 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 
 	if( time.wHour == 18 )
 	{
-		SetValue<std::string>( USERSTATE, "readyToWork" );
+		SetString( USERSTATE, "readyToWork" );
 	}
 
-	if( GetValue<std::string>( USERSTATE ) == "work" )
+	if( GetString( USERSTATE ) == "work" )
 	{
 		if( works_.size() > 0 )
 		{

@@ -40,7 +40,8 @@ class CNrpRelation;
 class IUser : public INrpConfig
 {
 public:
-	IUser(const std::string className, const std::string systemName );
+	IUser(const std::string& className, const std::string& systemName );
+
 	void SetSkill( int typen, int valuel ); 
 	void SetSkill( std::string name, int valuel );
 	int GetSkill( int typen );
@@ -86,7 +87,6 @@ private:
 	KNOWLEDGE_MAP genrePreferences_; /*< предпочтения в жанре, растут рандомно со временем */
 	KNOWLEDGE_MAP genreExperience_;  /*< опыт написания игр, растет по мере выполнения компонентов */
 	KNOWLEDGE_MAP knowledges_;		/*< уровень знания технологий */
-	USERACTION_LIST peopleFeels_; /*< Отношения с окружающими людьми */
 	WORK_LIST works_;
 	MODIFICATOR_LIST modificators_;
 	RELATION_MAP _relations;	

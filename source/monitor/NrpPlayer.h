@@ -11,6 +11,8 @@ class CNrpPlayer : public IUser
 {
 public:
 	CNrpPlayer( const std::string& name, CNrpCompany* ptrCmp );
+	CNrpPlayer( const std::string& fileName );
+
 	~CNrpPlayer(void);
 
 	static std::string ClassName() { return CLASS_REALPLAYER; }

@@ -36,7 +36,7 @@ int CLuaPlant::Load( lua_State* L )
 	
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		object_->Load( SECTION_PROPERTIES, CNrpApplication::Instance().GetString( SAVEDIR_PROFILE ) );
+		object_->Load( CNrpApplication::Instance().GetString( SAVEDIR_PLANT ) );
 	}
 
 	return 1;
@@ -63,8 +63,8 @@ int CLuaPlant::Save( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string savedir = CNrpApplication::Instance().GetString( SAVEDIR_PROFILE );
-		object_->Save( SECTION_PROPERTIES, savedir );
+		std::string savedir = CNrpApplication::Instance().GetString( SAVEDIR_PLANT );
+		object_->Save( savedir );
 	}
 
 	return 1;

@@ -59,7 +59,7 @@ void CNrpGUIEnvironment::LoadFonts_()
 		 cnt++ )
 	{
 		std::string option = "font_" + nrp::IntToStr( (int)cnt );
-		std::string filename = nrp::CNrpHUDConfig::Instance().GetValue<std::string>( option );
+		std::string filename = nrp::CNrpHUDConfig::Instance().GetString( option );
 	
 		IGUIFont* font = _nativeEnv->getFont( filename.c_str() );
 		if ( font )																	//если шрифт подключен	
@@ -70,7 +70,7 @@ void CNrpGUIEnvironment::LoadFonts_()
 	}
 	
 	{
-		std::string filename = nrp::CNrpHUDConfig::Instance().GetValue<std::string>( nrp::FONT_TOOLTIP );
+		std::string filename = nrp::CNrpHUDConfig::Instance().GetString( nrp::FONT_TOOLTIP );
 		IGUIFont* font = _nativeEnv->getFont( filename.c_str() );
 	
 		if( !font )
@@ -191,7 +191,10 @@ void CNrpGUIEnvironment::drawAll()
 {
 	std::vector< IGUIElement* >::iterator pIter = deletionQueue_.begin();
 	for( ; pIter != deletionQueue_.end(); pIter++ )
-		 (*pIter)->remove();
+	{
+		try{ (*pIter)->remove(); }
+		catch(...){}
+	}
 
 	deletionQueue_.clear();
 

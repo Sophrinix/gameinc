@@ -21,7 +21,7 @@ CNrpConsole::CNrpConsole( IGUIEnvironment* env, IGUIElement* parent, s32 id, cor
 							 consoleHistoryIndex_(0),
 							 toggle_visible_(NONE)//! constructor
 {
-	setName( StrToWide( CNrpConsoleConfig::Instance().GetValue<std::string>( CONSOLE_GUINAME ) ).c_str() );
+	setName( StrToWide( CNrpConsoleConfig::Instance().GetString( CONSOLE_GUINAME ) ).c_str() );
 
 	InitializeCriticalSectionAndSpinCount(&cs_dataaccess_, 1000);									//критическая секция для доступа к сообщениям консоли
 	

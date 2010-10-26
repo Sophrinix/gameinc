@@ -54,9 +54,9 @@ class CNrpApplication : public INrpConfig, public ILuaFunctionality
 	typedef std::vector< CNrpGame* > GAMES_LIST;
 	typedef std::vector< CNrpRetailer* > RETAILER_LIST;
 	typedef std::vector< CNrpInvention* > INVENTION_LIST;
+	typedef std::vector< CNrpGameEngine* > GAMEENGINES_LIST;
 
 	typedef std::map< std::string, CNrpGameImageList* > GAMEIMAGES_MAP; 
-	typedef std::map< std::string, CNrpGameEngine* > GAMEENGINES_MAP;
 	typedef std::map< std::string, INrpProject* > PROJECTS_MAP;
 	typedef std::map< std::string, INrpDevelopProject* > DEVPROJECTS_MAP;
 public:
@@ -67,15 +67,15 @@ public:
 	void ResetData();
 
 	void SaveProfile();
-	void LoadProfile( std::string profileName, std::string companyName );
-	void CreateProfile( std::string profileName, std::string companyName );
+	void LoadProfile( const std::string& profileName, const std::string& companyName );
+	void CreateProfile( const std::string& profileName, const std::string& companyName );
 
 	COMPANIES_LIST& GetCompanies();
 	CNrpCompany* GetCompany( std::string companyName ) const;
 	CNrpCompany* GetCompany( int index ) const;
 	int AddCompany( CNrpCompany* company );
 
-	int AddUser( bool player, IUser* user );
+	int AddUser( IUser* user );
 	int RemoveUser( IUser* user );
 	void CreateNewFreeUsers();
 	IUser* GetUser( int index ) const;
@@ -145,7 +145,7 @@ private:
 	DISKMACHINES_LIST diskMachines_;
 	GAMES_LIST games_;
 	RETAILER_LIST retailers_;
-	GAMEENGINES_MAP engines_;
+	GAMEENGINES_LIST engines_;
 	PROJECTS_MAP projects_;
 	DEVPROJECTS_MAP devProjects_;
 
@@ -162,9 +162,9 @@ private:
 	void LoadFreeImageLists_( const std::string& fileName );
 	void UpdateInvention_();
 	void _LoadUsers( const std::string& iniFile );
-	void _CreateDirectoriesMapForSave( const std::string& rootFolder );
 	void _InitialyzeSaveDirectories( const std::string& profileName );
 	void _UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );
+	void _CreateDirectoriesMapForSave();
 };
 
 }//namespace nrp

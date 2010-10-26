@@ -120,8 +120,8 @@ std::string CNrpProjectModule::Save( const std::string& saveFolder )
 	OpFileSystem::CreateDirectory( saveFolder );
 
 	std::string fileName = saveFolder + GetValue<std::string>( NAME ) + ".devmod";
+	assert( !OpFileSystem::IsExist( fileName ) );
 
-	DeleteFile( fileName.c_str() );
 	INrpProject::Save( fileName );
 	SaveRequires_( fileName );
 

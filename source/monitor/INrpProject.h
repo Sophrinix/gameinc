@@ -4,12 +4,6 @@
 namespace nrp
 {
 
-const std::string PRJTYPE_NAME[] = { "unknown", "gameengine", "game", 
-								     "genre", "scenario", "license",
-									 "scripts", "video" };
-
-const std::string GENRE_NAME[] = { "unknown", "skill", "scrolling" };
-
 typedef enum { SKL_UNKNOWN=2000, SKL_VIDEO_TECH, 
 				SKL_CODING, 
 				SKL_SOUND, SKL_TESTING, SKL_DRAWING,
@@ -46,6 +40,7 @@ typedef enum { GT_UNKNOWN=300,
 			   GT_LOGIC,			//27
 			   GT_WARGAME,			//28
 			   GT_CARDGAME,			//29
+			   GT_FOOTBALL,			//30
 			   GT_COUNT  } GENRE_TYPE;
 
 typedef enum { SCRLVL_UNKNOWN=600, SCRLVL_SIMPLE, SCRLVL_COUNT } SCRIPT_LEVEL;

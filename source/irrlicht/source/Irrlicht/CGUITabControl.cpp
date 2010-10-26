@@ -444,7 +444,12 @@ bool CGUITabControl::needScrollControl(s32 startIndex, bool withScrollControl)
 		// get Text
 		const wchar_t* text = 0;
 		if (Tabs[i])
+		{
 			text = Tabs[i]->getText();
+			font = Tabs[ i ]->getRFont();
+			if( !font )
+				font = skin->getFont();
+		}
 
 		// get text length
 		s32 len = calcTabWidth(pos, font, text, false);	// always without withScrollControl here or len would be shortened
@@ -493,7 +498,12 @@ bool CGUITabControl::selectTab(core::position2d<s32> p)
 		// get Text
 		const wchar_t* text = 0;
 		if (Tabs[i])
-			text = Tabs[i]->getText();
+		{
+			text = Tabs[ i ]->getText();
+			font = Tabs[ i ]->getRFont();
+			if( !font )
+				font = skin->getFont();
+		}
 
 		// get text length
 		s32 len = calcTabWidth(pos, font, text, true);
@@ -565,14 +575,16 @@ void CGUITabControl::draw()
 		// get Text
 		const wchar_t* text = 0;
 		if (Tabs[i])
+		{
 			text = Tabs[i]->getText();
+			font = Tabs[i]->getRFont();
+			if( !font )
+				font = skin->getFont();
+
+		}
 
 		// get text length
-		IGUIFont* rfont = Tabs[i]->getRFont();
-		if( rfont == NULL )
-			rfont = font;
-
-		s32 len = calcTabWidth(pos, rfont, text, true);
+		s32 len = calcTabWidth(pos, font, text, true);
 		if ( ScrollControl && pos+len > UpButton->getAbsolutePosition().UpperLeftCorner.X - 2 )
 		{
 			needRightScroll = true;
@@ -597,7 +609,7 @@ void CGUITabControl::draw()
 			skin->draw3DTabButton(this, false, frameRect, &AbsoluteClippingRect, VerticalAlignment);
 
 			// draw text
-			rfont->draw( text, frameRect, Tabs[i]->getTextColor(),
+			font->draw( text, frameRect, Tabs[i]->getTextColor(),
 						true, true, &frameRect);
 		}
 	}
@@ -605,9 +617,9 @@ void CGUITabControl::draw()
 	// draw active tab
 	if (left != 0 && right != 0 && activeTab != 0)
 	{
-		IGUIFont* rfont = activeTab->getRFont();
-		if( rfont == NULL )
-			rfont = font;
+		font = activeTab->getRFont();
+		if( font == NULL )
+			font = skin->getFont();
 
 		// draw upper highlight frame
 		if ( VerticalAlignment == EGUIA_UPPERLEFT )
@@ -619,7 +631,7 @@ void CGUITabControl::draw()
 			skin->draw3DTabButton(this, true, frameRect, &AbsoluteClippingRect, VerticalAlignment);
 
 			// draw text
-			rfont->draw(activeTab->getText(), frameRect, activeTab->getTextColor(),
+			font->draw(activeTab->getText(), frameRect, activeTab->getTextColor(),
 				        true, true, &frameRect);
 
 			tr.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
@@ -642,7 +654,7 @@ void CGUITabControl::draw()
 			skin->draw3DTabButton(this, true, frameRect, &AbsoluteClippingRect, VerticalAlignment);
 
 			// draw text
-			rfont->draw(activeTab->getText(), frameRect, activeTab->getTextColor(),
+			font->draw(activeTab->getText(), frameRect, activeTab->getTextColor(),
 				true, true, &frameRect);
 
 			tr.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;

@@ -40,5 +40,6 @@ OPTION_NAME ADVTECHNUMBER( "advTechNumber" );
 OPTION_NAME WORKNUMBER( "workNumber" );
 OPTION_NAME INTERNAL_NAME( "internalName" );
 OPTION_NAME BOXNUMBER( "boxNumber" );
+OPTION_NAME DESCRIPTIONPATH( "descriptionPath" );
 
 }//end namespace nrp

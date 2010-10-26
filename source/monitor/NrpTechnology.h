@@ -23,7 +23,6 @@ OPTION_NAME ERRORNUMBER( "moduleErrorNumber");
 OPTION_NAME HAVELIDER( "haveLider" );
 OPTION_NAME PRICE( "price" );
 OPTION_NAME BASEFILE( "baseFile" );
-OPTION_NAME DESCRIPTIONPATH( "descriptionPath" );
 OPTION_NAME INTEREST( "interest" );
 OPTION_NAME NEXTTECHNUMBER( "nexttechnumber" );
 OPTION_NAME REQUIRETECH( "requireTech" );
