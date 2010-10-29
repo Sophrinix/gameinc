@@ -22,7 +22,7 @@ function CreateStuffLists()
 									"retailer", "item.retailer" )
 									
 	os.remove( updates.fileScreenshots )
-	applic:CreateDirectorySnapshot( "xtras/Screenshots", updates.fileScreenshots,
+	applic:CreateDirectorySnapshot( "xtras/games", updates.fileScreenshots,
 									"screenshot", "item.desc" )
 									
 	os.remove( updates.fileEngines )

@@ -52,12 +52,12 @@ end
 
 function sworkInventionFinished( ptr )
 	local inv = CLuaTech( ptr )
-	guienv:MessageBox( "Закончена работа над изобретением "..inv:GetName(), false, false, "", "" )
+	pda.Show( "Закончена работа над изобретением "..inv:GetName() )
 end
 
 function sworkPlayerCompanyReadyProject( ptr )
 	local game = CLuaGame( ptr )
-	guienv:MessageBox( "Закончена работа над проектом "..game:GetName(), false, false, "", "" )
+	pda.Show( "Закончена работа над проектом "..game:GetName() )
 end
 
 function sworkMainLoop( ptr )
@@ -101,8 +101,8 @@ function sworkUserMarketUpdated()
 end
 
 function sworkReklameFinished( ptrReklame )
-	local reklame = CLuaReklame( ptrModule )
-	pda.Show( "Завершена работа над модулем "..reklame:GetName() )
+	local reklame = CLuaReklame( ptrReklame )
+	pda.Show( "Закончилась рекламная кампания "..reklame:GetName() )
 end
 
 sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )

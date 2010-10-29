@@ -1,4 +1,5 @@
 [options]
-screenshot0=xtras/Screenshots/1983/bushido/item.desc
-screenshotNumber=2
-screenshot1=xtras/Screenshots/1983/galaxian/item.desc
+screenshot0=xtras/games/1982/BurgerTime/images/item.desc
+screenshotNumber=3
+screenshot1=xtras/games/1983/10_Yard_Fight/images/item.desc
+screenshot2=xtras/games/1983/3_Demon/images/item.desc

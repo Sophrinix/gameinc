@@ -5,6 +5,7 @@ company:string=
 genremodulenumber:int=2
 name:string=SimpleEngine
 internalName:string=simple_engine
+startdate:time=y=1983 m=01 d=01 h=0 mi=0
 parentcompany:unknown=
 quality:int=0
 skillcoding:int=0

@@ -1,4 +1,5 @@
 [options]
-game0=xtras/games/1983/10_Yard_Fight/item.game
-gameNumber=2
-game1=xtras/games/1983/3_Demon/item.game
+game0=xtras/games/1982/BurgerTime/item.game
+gameNumber=3
+game1=xtras/games/1983/10_Yard_Fight/item.game
+game2=xtras/games/1983/3_Demon/item.game

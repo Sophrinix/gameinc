@@ -38,7 +38,4 @@ function Show()
 	button.EqualeTexture( 0, 287, "univer", mainWindow:Self(), -1, "", "./univer.Show()" )
 	--reklame
 	button.EqualeTexture( 0, 94, "reklame", mainWindow:Self(), -1, "", "./reklameManager.Show()" )
-	
-	base.pda.Show( "Это очень длинный текст, который выводится по буквам в многострочном режиме" )
-
 end

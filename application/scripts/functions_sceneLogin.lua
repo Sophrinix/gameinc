@@ -82,6 +82,9 @@ function slogin_ContinueLastGame( ptr )
 	--устанавливаем текущее времся
 	applic:LoadGameTimeFromProfile( applic:GetCurrentProfile() )
 	
+	--загружаем скриншоты для игр
+	applic:LoadScreenshots( updates.fileScreenshots )
+	
 	--загружаем профиль
 	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
 	
@@ -94,12 +97,9 @@ function slogin_ContinueLastGame( ptr )
 	--загружаем аппараты по производству дисков
 	updates.CheckDiskMachines()
 	
-	--загружаем скриншоты для игр
-	updates.CheckScreenshots()
-	
 	--загружаем производство и рекламу
 	plant:Load()
-	
+		
 	--загружаем базовую рекламу
 	localPlantLoadBaseReklame( false )
 	

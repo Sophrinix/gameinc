@@ -1,0 +1,16 @@
+[PROPERTIES]
+name:string=10_yard_fight
+imagesNumber:int=3
+imagesBoxNumber:int=3
+genreModuleNumber:int=2
+[genres]
+genre_0=genre_simulator
+genre_1=genre_football
+[imagesBox]
+boxImage_0=xtras/games/1983/10_yard_fight/images/s01.png
+boxImage_1=xtras/games/1983/10_yard_fight/images/s02.png
+boxImage_2=xtras/games/1983/10_yard_fight/images/s02.png
+[images]
+image_0=xtras/games/1983/10_yard_fight/images/01.png
+image_1=xtras/games/1983/10_yard_fight/images/02.png
+image_2=xtras/games/1983/10_yard_fight/images/03.png

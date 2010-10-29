@@ -166,24 +166,6 @@ function CheckRetailers( ptr )
 	end
 end
 
-function CheckScreenshots( ptr )
-	local iniFile = base.CLuaIniFile( nil, fileImages )
-
-	local maxYear = applic:GetGameTime()
-	
-	local descNumber = iniFile:ReadInteger( maxYear, "screenshotNumber", 0 )
-    local descIniFile = ""
-    applic:ClearImageList()
-	
-	base.LogScript( "Open config file "..fileImages.." with DescriptionNumber="..descNumber )
-	for year=1983, maxYear do
-		for i=1, descNumber do
-			descIniFile = iniFile:ReadString( maxYear, "description"..(i-1), "" ) 
-			applic:LoadImageList( descIniFile )	
-		end
-	end
-end
-
 function CheckNewReklames( showPdaForNewReklame )
 	local iniFile = base.CLuaIniFile( nil, fileReklames )
 	
