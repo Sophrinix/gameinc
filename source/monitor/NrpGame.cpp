@@ -4,7 +4,7 @@
 #include "NrpGameProject.h"
 #include "NrpTechnology.h"
 #include "NrpGameBox.h"
-#include "NrpGameImageList.h"
+#include "NrpScreenshot.h"
 #include "NrpApplication.h"
 #include "NrpDevelopGame.h"
 #include "NrpProjectModule.h"
@@ -47,8 +47,7 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<PNrpGameBox>( GBOX, NULL );
 	CreateValue<float>( FAMOUS, 0 );
 	CreateValue<bool>( GAMEISSALING, false );
-	CreateValue<std::string>( IMAGENAME, "" );
-	CreateValue<CNrpGameImageList*>( GAMEIMAGELIST, NULL );
+	CreateValue<CNrpScreenshot*>( GAMEIMAGELIST, NULL );
 	CreateValue<std::string>( GAMERETAILER, "" );
 	CreateValue<int>( PLATFORMNUMBER, 0 );
 	CreateValue<int>( MODULE_NUMBER, 0 );
@@ -79,17 +78,21 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpCo
 
 	SetValue<int>( GENRE_MODULE_NUMBER, devGame->GetValue<int>( GENRE_MODULE_NUMBER ) );
 	for( int cnt=0; cnt < GetValue<int>( GENRE_MODULE_NUMBER ); cnt++ )
-		 genres_.push_back( devGame->GetGenre( cnt )->GetValue<std::string>( NAME ) );
+	{
+		 CNrpTechnology* genre = devGame->GetGenre( cnt );
+		 if( genre )
+			genres_.push_back( genre->GetString( INTERNAL_NAME ) );
+	}
 
 	SetValue<int>( MODULE_NUMBER, devGame->GetValue<int>( MODULE_NUMBER ) );
 	for( int cnt=0; cnt < GetValue<int>( MODULE_NUMBER ); cnt++ )
-		 techs_.push_back( devGame->GetModule( cnt )->GetString( NAME ) );
+		 techs_.push_back( devGame->GetModule( cnt )->GetString( INTERNAL_NAME ) );
 
-	SetString( IMAGENAME, CNrpApplication::Instance().GetFreeInternalName( this ) );
-	CNrpGameImageList* pgList = CNrpApplication::Instance().GetGameImageList( GetString( IMAGENAME ) );
+	SetString( INTERNAL_NAME, CNrpApplication::Instance().GetFreeInternalName( this ) );
+	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( GetString( INTERNAL_NAME ) );
 	assert( pgList != NULL );
 	if( pgList != NULL )
-		SetValue<CNrpGameImageList*>( GAMEIMAGELIST, new CNrpGameImageList( *pgList ) );
+		SetValue<CNrpScreenshot*>( GAMEIMAGELIST, pgList );
 }
 
 CNrpGame::CNrpGame( const std::string& fileName ) : INrpConfig( CLASS_NRPGAME, fileName )
@@ -120,9 +123,6 @@ std::string CNrpGame::Save( const std::string& saveFolder )
 	{
 		box->Save( localFolder + "box.ini" );
 	}
-
-	if( CNrpGameImageList* pgList = GetValue<CNrpGameImageList*>( GAMEIMAGELIST ) )
-		pgList->Save( localFolder+"imageList.ini" );
 
 	int i=0;
 	for( STRINGS::iterator gIter = techs_.begin(); 
@@ -182,12 +182,10 @@ void CNrpGame::Load( const std::string& loadPath )
 		SetValue<PNrpGameBox>( GBOX, box );
 	}
 
-	std::string imageListIni = loadFolder + "imageList.ini";
-	if( OpFileSystem::IsExist( imageListIni ) )
-	{
-		CNrpGameImageList* pList = new CNrpGameImageList( imageListIni, true );
-		SetValue<CNrpGameImageList*>( GAMEIMAGELIST, pList );
-	}
+	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( GetString( INTERNAL_NAME ) );
+	assert( pgList != NULL );
+	if( pgList != NULL )
+		SetValue<CNrpScreenshot*>( GAMEIMAGELIST, pgList );
 }
 
 float CNrpGame::GetAuthorFamous()
@@ -239,4 +237,12 @@ void CNrpGame::GameBoxSaling( int number )
 	//history_->AddStep( CURRENTTIME, number, price * number );
 }
 
+bool CNrpGame::IsGenreAvaible( const std::string& name )
+{
+	for( size_t k=0; k < genres_.size(); k++ )
+		if( genres_[ k ] == name )
+			return true;
+
+	return false;
+}
 }//namespace nrp

@@ -1,0 +1,123 @@
+#pragma once
+
+#include <assert.h>
+#include "ILuaGuiElement.h"
+
+namespace nrp
+{
+
+#define LUNA_ILUALISTBOX_HEADER(class)	LUNA_ILUAGUIELEMENT_HEADER(class),\
+										LUNA_AUTONAME_FUNCTION(class, SetItemBgColor ),\
+										LUNA_AUTONAME_FUNCTION(class, SetFontFromSize ),\
+										LUNA_AUTONAME_FUNCTION(class, SetItemTextColor ),\
+										LUNA_AUTONAME_FUNCTION(class, GetSelected ),\
+										LUNA_AUTONAME_FUNCTION(class, SetSelected ),\
+										LUNA_AUTONAME_FUNCTION(class, Clear ),\
+										LUNA_AUTONAME_FUNCTION(class, SetItemHeigth )
+
+template< class T >
+class ILuaListBox : public ILuaGuiElement<T>
+{
+public:
+	ILuaListBox(lua_State *L, std::string luaName) : ILuaGuiElement( L, luaName )
+	{
+
+	}
+
+	int SetItemBgColor( lua_State* L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 6, 6, ("Function " + ObjectTypeName() + ":GetSelectedObject need index, color(a,r,g,b) parameter").c_str());
+
+		int index = lua_tointeger( L, 2 );
+		video::SColor color( lua_tointeger( L, 3 ), lua_tointeger( L, 4 ), 
+			lua_tointeger( L, 5 ), lua_tointeger( L, 6 ) );
+
+		IF_OBJECT_NOT_NULL_THEN object_->setItemOverrideColor( index, gui::EGUI_LBC_BACKGROUND, color );
+
+		return 1;
+	}	
+
+	int SetItemHeigth( lua_State* L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetSelected need int parameter").c_str() );
+
+		int height = lua_tointeger( L, 2 );
+		assert( height > 0 && height < 200 );
+
+		IF_OBJECT_NOT_NULL_THEN	object_->setItemHeight( height );			
+
+		return 1;
+	}
+
+
+	int Clear( lua_State* L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":Clear not need any parameter").c_str() );
+
+		IF_OBJECT_NOT_NULL_THEN	object_->clear();			
+
+		return 1;
+	}
+
+	int SetSelected( lua_State *L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetSelected need int parameter").c_str() );
+
+		int selected = lua_tointeger( L, 2 );
+
+		IF_OBJECT_NOT_NULL_THEN	object_->setSelected( selected );			
+
+		return 1;
+	}
+
+	int GetSelected( lua_State *L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":GetSelected not need any parameter").c_str() );
+
+		int selected = -1;
+
+		IF_OBJECT_NOT_NULL_THEN selected = object_->getSelected();
+		lua_pushinteger( L, selected );
+
+		return 1;
+	}
+
+	int SetFontFromSize( lua_State* L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetFontFromSize need size parameter").c_str() );
+
+		int size = lua_tointeger( L, 2 );
+
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( ("font_" + IntToStr( size )).c_str() );
+			object_->setRFont( font );
+		}
+
+		return 1;
+	}
+
+	int SetItemTextColor( lua_State* L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 6, 6, ("Function " + ObjectTypeName() + ":SetTextColor need size parameter").c_str() );
+
+		int index = lua_tointeger( L, 2 );
+		irr::video::SColor color( lua_tointeger( L, 3 ), 
+			lua_tointeger( L, 4 ),
+			lua_tointeger( L, 5 ),
+			lua_tointeger( L, 6 ) );
+
+		IF_OBJECT_NOT_NULL_THEN object_->setItemOverrideColor( index, gui::EGUI_LBC_TEXT, color );
+
+		return 1;
+	}
+};
+
+}//end namespace nrp

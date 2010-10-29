@@ -340,17 +340,21 @@ void CNrpCompany::BeginNewHour( const SYSTEMTIME& time  )
 
 void CNrpCompany::BeginNewDay( const SYSTEMTIME& time )
 {
+	//уведомление о завершении проекта происходит на следующий день после окончания разработки
+	//последнего модуля
 	for( DEVPROJECT_MAP::iterator pIter = _devProjects.begin(); 
 		 pIter != _devProjects.end(); 
 		 pIter++ )
 	{
-		if( pIter->second->ClassName() == CLASS_DEVELOPGAME && pIter->second->GetValue<bool>( PROJECTREADY ) )
+		if( INrpDevelopProject* prj = dynamic_cast< INrpDevelopProject* >( pIter->second ) )
 		{
-			INrpDevelopProject* project = pIter->second;
-			const PNrpGame game = CreateGame(	(CNrpDevelopGame*)project );
-			RemoveDevelopProject( project->GetValue<std::string>( NAME ) );
-			DoLuaFunctionsByType( COMPANY_READY_PROJECT, game );
-			break;
+			if( prj->IsReady() )
+			{
+				INrpDevelopProject* project = pIter->second;
+				const PNrpGame game = CreateGame(	(CNrpDevelopGame*)project );
+				RemoveDevelopProject( project->GetValue<std::string>( NAME ) );
+				CNrpApplication::Instance().DoLuaFunctionsByType( APP_PROJECT_FINISHED, game );
+			}
 		}
 	}
 
@@ -509,7 +513,7 @@ void CNrpCompany::InventionReleased( const CNrpInvention* inv )
 			//переносом опыта...
 			//в любом случае текущие иследования прекращаются...
 			CNrpApplication::Instance().InventionCanceled( *pIter );
-			DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED, *pIter );
+			CNrpApplication::Instance().DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED, *pIter );
 			_inventions.erase( pIter );
 			break;
 		}			

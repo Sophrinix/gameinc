@@ -18,6 +18,7 @@ CNrpProjectModule::CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProje
 	SetValue<int>( TECHTYPE, pTech->GetValue<int>( TECHTYPE ) );
 	SetValue<float>( BASE_CODE, pTech->GetValue<float>( BASE_CODE ) );
 	SetValue<float>( ENGINE_CODE, pTech->GetValue<float>( ENGINE_CODE ) );
+	SetValue<std::string>( INTERNAL_NAME, pTech->GetString( INTERNAL_NAME) );
 	SetValue<std::string>( TEXTURENORMAL, pTech->GetValue<std::string>( TEXTURENORMAL ) );
 	SetValue<int>( LEVEL, pTech->GetValue<int>( LEVEL ) );
 	SetValue<INrpProject*>( PARENT, pProject );

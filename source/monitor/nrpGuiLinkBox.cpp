@@ -20,84 +20,21 @@ CNrpGuiLinkBox::CNrpGuiLinkBox( IGUIEnvironment* environment,
 						  s32 id, 
 						  const core::recti& rectangle, 
 						  bool noclip)
-			: IGUIButton( environment, parent, id, rectangle), pressed_(false),
-			isPushButton_(false), useAlphaChannel_(false), border_(true), isDraggable_( true ),
-			clickTime_(0), spriteBank_(0), overrideFont_(0), image_(0), pressedImage_(0), hoveredImage_(NULL),
-			_defaultImage( NULL )
+			: CNrpButton( environment, parent, id, rectangle), _defaultImage( NULL )
 {
-	pressed_ = false;
-	setNotClipped(noclip);
 	moduleType_ = nrp::PT_UNKNOWN;
 	data_ = NULL;
-
-	// Initialize the sprites.
-	for (u32 i=0; i<EGBS_COUNT; ++i)
-		ButtonSprites[i].Index = -1;
-
-	// This element can be tabbed.
-	setTabStop(true);
-	setTabOrder(-1);
 }
-//////////////////////////////////////////////////////////////////////////
 
 gui::EGUI_ELEMENT_TYPE CNrpGuiLinkBox::getType()
 {
 	return EGUI_ELEMENT_TYPE(EGUIET_GUILINK);
 }
 
-		//! destructor
+//! destructor
 CNrpGuiLinkBox::~CNrpGuiLinkBox()
 {
-	if (overrideFont_)
-		overrideFont_->drop();
-
-	if (image_)
-		image_->drop();
-
-	if (pressedImage_)
-		pressedImage_->drop();
-
-	if( hoveredImage_ )
-		hoveredImage_->drop();
-
-	if (spriteBank_)
-		spriteBank_->drop();
 }
-//////////////////////////////////////////////////////////////////////////
-
-		//! Sets if the button should use the skin to draw its border
-void CNrpGuiLinkBox::setDrawBorder(bool border)
-{
-	border_ = border;
-}
-//////////////////////////////////////////////////////////////////////////
-
-void CNrpGuiLinkBox::setSpriteBank(IGUISpriteBank* sprites)
-{
-	if (sprites)
-		sprites->grab();
-
-	if (spriteBank_)
-		spriteBank_->drop();
-
-	spriteBank_ = sprites;
-}
-//////////////////////////////////////////////////////////////////////////
-
-void CNrpGuiLinkBox::setSprite(EGUI_BUTTON_STATE state, s32 index, video::SColor color, bool loop)
-{
-	if (spriteBank_)
-	{
-		ButtonSprites[(u32)state].Index	= index;
-		ButtonSprites[(u32)state].Color	= color;
-		ButtonSprites[(u32)state].Loop	= loop;
-	}
-	else
-	{
-		ButtonSprites[(u32)state].Index = -1;
-	}
-}
-//////////////////////////////////////////////////////////////////////////
 
 //! called if an event happened.
 bool CNrpGuiLinkBox::OnEvent(const SEvent& event)
@@ -169,7 +106,6 @@ bool CNrpGuiLinkBox::OnEvent(const SEvent& event)
 
 	return Parent ? Parent->OnEvent(event) : false;
 }
-//////////////////////////////////////////////////////////////////////////
 
 bool CNrpGuiLinkBox::ButtonLMouseUp_( const irr::SEvent& event )
 {
@@ -203,7 +139,6 @@ bool CNrpGuiLinkBox::ButtonLMouseUp_( const irr::SEvent& event )
 						  this );
 	return true;
 }
-//////////////////////////////////////////////////////////////////////////
 
 bool CNrpGuiLinkBox::ButtonLMouseDown_( const irr::SEvent& event )
 {
@@ -221,7 +156,6 @@ bool CNrpGuiLinkBox::ButtonLMouseDown_( const irr::SEvent& event )
 	DoLuaFunctionsByType( GUIELEMENT_LMOUSE_DOWN, this );
 	return true;
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! draws the element and its children
 void CNrpGuiLinkBox::draw()
@@ -316,242 +250,6 @@ void CNrpGuiLinkBox::draw()
 	}
 
 	IGUIElement::draw();
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Sets another color for the text.
-void CNrpGuiLinkBox::setOverrideColor(video::SColor color)
-{
-	overrideColor_ = color;
-	overrideColorEnabled_ = true;
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! sets another skin independent font. if this is set to zero, the button uses the font of the skin.
-void CNrpGuiLinkBox::setOverrideFont(IGUIFont* font)
-{
-	if (overrideFont_)
-		overrideFont_->drop();
-
-	overrideFont_ = font;
-
-	if (overrideFont_)
-		overrideFont_->grab();
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Sets an image which should be displayed on the button when it is in normal state. 
-void CNrpGuiLinkBox::setImage(video::ITexture* image)
-{
-	if (image_)
-		image_->drop();
-
-	image_ = image;
-	if (image)
-		imageRect_ = core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize());
-
-	if (image_)
-		image_->grab();
-
-	//if (!PressedImage)
-	//	setPressedImage(image_);
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Sets the image which should be displayed on the button when it is in its normal state.
-void CNrpGuiLinkBox::setImage(video::ITexture* image, const core::rect<s32>& pos)
-{
-	if (image_)
-		image_->drop();
-
-	image_ = image;
-	imageRect_ = pos;
-
-	if (image_)
-		image_->grab();
-
-	//if (!PressedImage)
-	//	setPressedImage(image_, pos);
-}
-
-void CNrpGuiLinkBox::setImage( const char* imagePath )
-{
-	setImage( Environment->getVideoDriver()->getTexture( imagePath ) );
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Sets an image which should be displayed on the button when it is in pressed state. 
-void CNrpGuiLinkBox::setPressedImage(video::ITexture* image)
-{
-	if (pressedImage_)
-		pressedImage_->drop();
-
-	pressedImage_ = image;
-	if (image)
-		pressedImageRect_ = core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize());
-
-	if (pressedImage_)
-		pressedImage_->grab();
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Sets the image which should be displayed on the button when it is in its pressed state.
-void CNrpGuiLinkBox::setPressedImage(video::ITexture* image, const core::rect<s32>& pos)
-{
-	if (pressedImage_)
-		pressedImage_->drop();
-
-	pressedImage_ = image;
-	pressedImageRect_ = pos;
-
-	if (pressedImage_)
-		pressedImage_->grab();
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Sets if the button should behave like a push button. Which means it
-//! can be in two states: Normal or Pressed. With a click on the button,
-//! the user can change the state of the button.
-void CNrpGuiLinkBox::setIsPushButton(bool isPushButton)
-{
-	isPushButton_ = isPushButton;
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Returns if the button is currently pressed
-bool CNrpGuiLinkBox::isPressed() const
-{
-	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
-	return pressed_;
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Sets the pressed state of the button if this is a pushbutton
-void CNrpGuiLinkBox::setPressed(bool pressed)
-{
-	if (pressed_ != pressed)
-	{
-		clickTime_ = GetTickCount();
-		pressed_ = pressed;
-	}
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Returns whether the button is a push button
-bool CNrpGuiLinkBox::isPushButton() const
-{
-	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
-	return isPushButton_;
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Sets if the alpha channel should be used for drawing images on the button (default is false)
-void CNrpGuiLinkBox::setUseAlphaChannel(bool useAlphaChannel)
-{
-	useAlphaChannel_ = useAlphaChannel;
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Returns if the alpha channel should be used for drawing images on the button
-bool CNrpGuiLinkBox::isAlphaChannelUsed() const
-{
-	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
-	return useAlphaChannel_;
-}
-//////////////////////////////////////////////////////////////////////////
-
-bool CNrpGuiLinkBox::isDrawingBorder() const
-{
-	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
-	return border_;
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Writes attributes of the element.
-void CNrpGuiLinkBox::serializeAttributes(io::IAttributes* out, io::SAttributeReadWriteOptions* options=0) const
-{
-	IGUIButton::serializeAttributes(out,options);
-
-	out->addBool	("PushButton",		isPushButton_ );
-	if (isPushButton_)
-		out->addBool("Pressed",		pressed_);
-
-	out->addTexture ("Image",		image_);
-	out->addRect	("ImageRect",		imageRect_);
-	out->addTexture	("PressedImage",	pressedImage_);
-	out->addRect	("PressedImageRect",	pressedImageRect_);
-
-	out->addBool	("Border",		border_);
-	out->addBool	("UseAlphaChannel",	useAlphaChannel_);
-
-	//   out->addString  ("OverrideFont",	OverrideFont);
-}
-//////////////////////////////////////////////////////////////////////////
-
-//! Reads attributes of the element
-void CNrpGuiLinkBox::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options=0)
-{
-	IGUIButton::deserializeAttributes(in,options);
-
-	isPushButton_	= in->getAttributeAsBool("PushButton");
-	pressed_		= isPushButton_ ? in->getAttributeAsBool("Pressed") : false;
-
-	core::rect<s32> rec = in->getAttributeAsRect("ImageRect");
-	if (rec.isValid())
-		setImage( in->getAttributeAsTexture("Image"), rec);
-	else
-		setImage( in->getAttributeAsTexture("Image") );
-
-	rec = in->getAttributeAsRect("PressedImageRect");
-	if (rec.isValid())
-		setPressedImage( in->getAttributeAsTexture("PressedImage"), rec);
-	else
-		setPressedImage( in->getAttributeAsTexture("PressedImage") );
-
-	setDrawBorder(in->getAttributeAsBool("Border"));
-	useAlphaChannel_ = in->getAttributeAsBool("UseAlphaChannel");
-
-	//   setOverrideFont(in->getAttributeAsString("OverrideFont"));
-
-	updateAbsolutePosition();
-}
-//////////////////////////////////////////////////////////////////////////
-
-void CNrpGuiLinkBox::setHoveredImage( irr::video::ITexture* image )
-{
-	if (hoveredImage_)
-		hoveredImage_->drop();
-
-	hoveredImage_ = image;
-	if (image)
-		hoveredImageRect_ = core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize());
-
-	if (hoveredImage_)
-		hoveredImage_->grab();
-}
-//////////////////////////////////////////////////////////////////////////
-
-void CNrpGuiLinkBox::setHoveredImage( irr::video::ITexture* image, const irr::core::rect< irr::s32 >& pos )
-{
-		if (hoveredImage_)
-			hoveredImage_->drop();
-
-		hoveredImage_ = image;
-		hoveredImageRect_ = pos;
-
-		if (hoveredImage_)
-			hoveredImage_->grab();
-}
-
-void CNrpGuiLinkBox::setScaleImage( bool scaleImage/* =true */ )
-{
-	//IGUIButton::setScaleImage( scaleImage );
-}
-
-bool CNrpGuiLinkBox::isScalingImage() const
-{
-	//return IGUIButton::isScalingImage();
-	return false;
 }
 
 void CNrpGuiLinkBox::setRelativePosition( const core::recti& rectangle )

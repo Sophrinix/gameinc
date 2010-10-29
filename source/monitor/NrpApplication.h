@@ -32,6 +32,7 @@ OPTION_NAME PLAYERCOMPANY( "playerCompany" );
 OPTION_NAME MINIMUM_USER_SALARY( "minimumUserSalary" );
 OPTION_NAME PDA( "pda" ); 
 OPTION_NAME SYSTEMINI( "systemIni" );
+OPTION_NAME GAME_TIME( "objectGameTime" );
 
 class CNrpCompany;
 class IUser;
@@ -41,13 +42,15 @@ class CNrpTechnology;
 class CNrpGame;
 class CNrpDiskMachine;
 class CNrpRetailer;
-class CNrpGameImageList;
+class CNrpScreenshot;
 class CNrpGameEngine;
 class CNrpInvention;
 class INrpDevelopProject;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
+	friend class CNrpGameTime;
+
 	typedef std::vector< IUser* > USER_LIST;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
 	typedef std::vector< CNrpDiskMachine* > DISKMACHINES_LIST;
@@ -56,12 +59,11 @@ class CNrpApplication : public INrpConfig, public ILuaFunctionality
 	typedef std::vector< CNrpInvention* > INVENTION_LIST;
 	typedef std::vector< CNrpGameEngine* > GAMEENGINES_LIST;
 
-	typedef std::map< std::string, CNrpGameImageList* > GAMEIMAGES_MAP; 
+	typedef std::map< std::string, CNrpScreenshot* > SCREENSHOTS_MAP; 
 	typedef std::map< std::string, INrpProject* > PROJECTS_MAP;
 	typedef std::map< std::string, INrpDevelopProject* > DEVPROJECTS_MAP;
 public:
 	typedef std::vector< CNrpCompany* > COMPANIES_LIST;
-	typedef enum { SPD_MINUTE=0, SPD_HOUR, SPD_DAY, SPD_MONTH, SPD_COUNT } SPEED;
 	static CNrpApplication& Instance();
 
 	void ResetData();
@@ -88,8 +90,6 @@ public:
 	void AddGameEngine( nrp::CNrpGameEngine* ptrEngine );
 	CNrpGameEngine* GetGameEngine( const std::string& name ) const;
 	void RemoveGameEngine( nrp::CNrpGameEngine* ptrEngine );
-
-	bool UpdateTime();
 
 	CNrpGame* GetGame( const std::string& name );
 	CNrpGame* GetGame( size_t index );
@@ -121,9 +121,8 @@ public:
 	void RemoveRetailer( std::string name );
 
 	std::string GetFreeInternalName( CNrpGame* game );
-	CNrpGameImageList* GetGameImageList( std::string name );
-	void AddGameImageList( CNrpGameImageList* pGList );
-	void ClearImageList();
+	CNrpScreenshot* GetScreenshot( const std::string& name );
+	void LoadScreenshots( const std::string& fileName );
 	float GetGameGenreInterest( CNrpGame* game );
 
 	void AddInvention( const std::string& startTech, CNrpCompany* parentCompany );
@@ -137,7 +136,7 @@ private:
 	~CNrpApplication(void);
 
 	COMPANIES_LIST companies_;
-	GAMEIMAGES_MAP gameImages_;
+	SCREENSHOTS_MAP _screenshots;
 	USER_LIST users_;
 	TECH_LIST technologies_;					//хранит все технологии игрового мира
 	INVENTION_LIST inventions_;
@@ -149,9 +148,6 @@ private:
 	PROJECTS_MAP projects_;
 	DEVPROJECTS_MAP devProjects_;
 
-	SPEED speed_;
-	int lastTimeUpdate_;
-
 	void BeginNewHour_();
 	void BeginNewDay_();
 	void BeginNewMonth_();
@@ -159,7 +155,6 @@ private:
 	void UpdateMarketGames_();
 	int GetFreePlatformNumberForGame_( CNrpGame* game );
 	int GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp );
-	void LoadFreeImageLists_( const std::string& fileName );
 	void UpdateInvention_();
 	void _LoadUsers( const std::string& iniFile );
 	void _InitialyzeSaveDirectories( const std::string& profileName );

@@ -9,7 +9,8 @@
 #include "NrpGameProject.h"
 #include "NrpTechnology.h"
 #include "NrpDiskMachine.h"
-#include "NrpGameImageList.h"
+#include "NrpScreenshot.h"
+#include "NrpGameTime.h"
 
 #include "LuaCompany.h"
 #include "LuaUser.h"
@@ -67,8 +68,7 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGamesNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGame ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameToMarket ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, ClearImageList ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadImageList ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadScreenshots ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetInvention ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateDirectorySnapshot ),
@@ -84,12 +84,11 @@ int CLuaApplication::UpdateGameTime( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:UpdateGameTime need 2 parameter" );
 
-	bool dayChange=false, monthChange=false, yearChange=false;
 	int idDateLabel = lua_tointeger( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		bool needUpdate = object_->UpdateTime();
+		bool needUpdate = object_->GetValue<CNrpGameTime*>( GAME_TIME )->Update();
 
 		wchar_t text[ 32 ] = { 0 };
 		gui::IGUIEnvironment* env = CNrpEngine::Instance().GetGuiEnvironment();
@@ -101,14 +100,6 @@ int CLuaApplication::UpdateGameTime( lua_State* L )
 															   time.wHour, time.wMinute );
 			elm->setText( text );
 		}
-
-		dayChange = lastDay_ != time.wDay;
-		monthChange = lastMonth_ != time.wMonth;
-		yearChange = lastYear_ != time.wYear;
-
-		lastDay_ = time.wDay;
-		lastMonth_ = time.wMonth;
-		lastYear_ = time.wYear;
 	}
 
 	return 1;
@@ -573,35 +564,17 @@ int CLuaApplication::AddGameToMarket( lua_State* L )
 	return 1;	
 }
 
-int CLuaApplication::ClearImageList( lua_State* L )
+int CLuaApplication::LoadScreenshots( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:ClearImageList not need any parameter" );
-
-	IF_OBJECT_NOT_NULL_THEN	object_->ClearImageList();
-
-	return 1;	
-}
-
-int CLuaApplication::LoadImageList( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadImageList need string parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadScreenshots need string parameter" );
 
 	const char* imageListName = lua_tostring( L, 2 );
 	assert( imageListName != NULL );
 	if( imageListName == NULL )
 		return 1;
 
-	IF_OBJECT_NOT_NULL_THEN
-	{
-		if( OpFileSystem::IsExist( imageListName ) )
-		{
-			CNrpGameImageList* pList = new CNrpGameImageList("tmp");
-			pList->Load( std::string(imageListName) + "/item.desc" );
-			object_->AddGameImageList( pList );
-		}
-	}
+	IF_OBJECT_NOT_NULL_THEN object_->LoadScreenshots( imageListName );
 
 	return 1;		
 }

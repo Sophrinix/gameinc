@@ -57,13 +57,8 @@ void OpFileSystem::Remove( const std::string& pathTo )
 
 void OpFileSystem::Move( const std::string& pathOld, const std::string& pathNew )
 {
-	std::string mStr = CNrpApplication::Instance().GetValue<std::string>( WORKDIR ) + pathOld;
-	std::string mStr2 = CNrpApplication::Instance().GetValue<std::string>( WORKDIR ) + pathNew;
-	if( mStr[ mStr.length() -1 ] == '\\' || mStr[ mStr.length() -1 ] == '/' )
-		mStr = mStr.substr( 0, mStr.length() - 1 );
-
-	if( mStr2[ mStr2.length() -1 ] == '\\' || mStr2[ mStr2.length() -1 ] == '/' )
-		mStr2 = mStr2.substr( 0, mStr2.length() - 1 );
+	std::string mStr = RemoveEndSlash( CNrpApplication::Instance().GetString( WORKDIR ) + pathOld );
+	std::string mStr2 = RemoveEndSlash( CNrpApplication::Instance().GetString( WORKDIR ) + pathNew );
 
 	SHFILEOPSTRUCT sh;
 	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );
@@ -87,12 +82,8 @@ void OpFileSystem::Move( const std::string& pathOld, const std::string& pathNew 
 
 void OpFileSystem::Copy( const std::string& pathOld, const std::string& pathNew )
 {
-	std::string mStr = pathOld, mStr2 = pathNew;
-	if( mStr[ mStr.length() -1 ] == '\\' || mStr[ mStr.length() -1 ] == '/' )
-		mStr = mStr.substr( 0, mStr.length() - 1 );
-
-	if( mStr2[ mStr2.length() -1 ] == '\\' || mStr2[ mStr2.length() -1 ] == '/' )
-		mStr2 = mStr2.substr( 0, mStr2.length() - 1 );
+	std::string mStr = RemoveEndSlash( pathOld ), 
+				mStr2 = RemoveEndSlash( pathNew );
 
 	SHFILEOPSTRUCT sh;
 	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );

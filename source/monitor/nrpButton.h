@@ -5,6 +5,11 @@
 namespace irr
 {
 
+namespace video
+{
+	class ITexture;
+}
+
 namespace gui
 {
 
@@ -32,7 +37,7 @@ public:
 	virtual void setOverrideFont( gui::IGUIFont* font=0);
 
 	//! Sets an image which should be displayed on the button when it is in normal state. 
-	virtual void setImage( video::ITexture* image);
+	virtual void setImage( video::ITexture* image );
 	virtual void setImage( video::ITexture* image, const core::recti& pos);
 
 	//! Sets an image which should be displayed on the button when it is in hover state. 
@@ -134,6 +139,7 @@ protected:
 
 	bool ButtonLMouseDown_( const irr::SEvent& event );
 	bool ButtonLMouseUp_( const irr::SEvent& event );
+	void _SwapImage( video::ITexture*& dest, video::ITexture* source, core::recti& dstRect, const core::recti& srcRect );
 };
 
 }//namespace gui

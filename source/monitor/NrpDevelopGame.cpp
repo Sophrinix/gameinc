@@ -201,11 +201,7 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
 		 uList[ k ]->IncreaseExperience( techType, (int)growExp );
 	}
 
-	
 	CNrpApplication::Instance().DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
-
-	if( IsReady() )
-		CNrpApplication::Instance().DoLuaFunctionsByType( APP_PROJECT_FINISHED, this );
 }
 
 std::string CNrpDevelopGame::Save( const std::string& folderSave )

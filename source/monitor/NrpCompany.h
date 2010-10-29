@@ -1,6 +1,5 @@
 #pragma once
 #include "nrpConfig.h"
-#include "LuaFunctionality.h"
 #include <map>
 #include <vector>
 #include <string>
@@ -30,7 +29,7 @@ class CNrpGameProject;
 class CNrpInvention;
 class INrpDevelopProject;
 
-class CNrpCompany : public INrpConfig, public ILuaFunctionality
+class CNrpCompany : public INrpConfig
 {
 public:
 	typedef std::vector< CNrpGameEngine* > ENGINE_LIST;

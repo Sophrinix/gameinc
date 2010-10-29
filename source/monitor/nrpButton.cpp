@@ -36,9 +36,8 @@ CNrpButton::CNrpButton( IGUIEnvironment* environment,
 	setTabStop(true);
 	setTabOrder(-1);
 }
-//////////////////////////////////////////////////////////////////////////
 
-		//! destructor
+//! destructor
 CNrpButton::~CNrpButton()
 {
 	if (overrideFont_)
@@ -56,14 +55,13 @@ CNrpButton::~CNrpButton()
 	if (spriteBank_)
 		spriteBank_->drop();
 }
-//////////////////////////////////////////////////////////////////////////
 
-		//! Sets if the button should use the skin to draw its border
+
+//! Sets if the button should use the skin to draw its border
 void CNrpButton::setDrawBorder(bool border)
 {
 	border_ = border;
 }
-//////////////////////////////////////////////////////////////////////////
 
 void CNrpButton::setSpriteBank(IGUISpriteBank* sprites)
 {
@@ -75,7 +73,6 @@ void CNrpButton::setSpriteBank(IGUISpriteBank* sprites)
 
 	spriteBank_ = sprites;
 }
-//////////////////////////////////////////////////////////////////////////
 
 void CNrpButton::setSprite(EGUI_BUTTON_STATE state, s32 index, video::SColor color, bool loop)
 {
@@ -90,7 +87,6 @@ void CNrpButton::setSprite(EGUI_BUTTON_STATE state, s32 index, video::SColor col
 		ButtonSprites[(u32)state].Index = -1;
 	}
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! called if an event happened.
 bool CNrpButton::OnEvent(const SEvent& event)
@@ -161,7 +157,6 @@ bool CNrpButton::OnEvent(const SEvent& event)
 
 	return Parent ? Parent->OnEvent(event) : false;
 }
-//////////////////////////////////////////////////////////////////////////
 
 bool CNrpButton::ButtonLMouseUp_( const irr::SEvent& event )
 {
@@ -194,7 +189,6 @@ bool CNrpButton::ButtonLMouseUp_( const irr::SEvent& event )
 
 	return true;
 }
-//////////////////////////////////////////////////////////////////////////
 
 bool CNrpButton::ButtonLMouseDown_( const irr::SEvent& event )
 {
@@ -211,7 +205,6 @@ bool CNrpButton::ButtonLMouseDown_( const irr::SEvent& event )
 	Environment->setFocus(this);
 	return true;
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! draws the element and its children
 void CNrpButton::draw()
@@ -309,7 +302,6 @@ void CNrpButton::draw()
 
 	IGUIElement::draw();
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Sets another color for the text.
 void CNrpButton::setOverrideColor(video::SColor color)
@@ -317,7 +309,6 @@ void CNrpButton::setOverrideColor(video::SColor color)
 	overrideColor_ = color;
 	overrideColorEnabled_ = true;
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! sets another skin independent font. if this is set to zero, the button uses the font of the skin.
 void CNrpButton::setOverrideFont(IGUIFont* font)
@@ -330,71 +321,45 @@ void CNrpButton::setOverrideFont(IGUIFont* font)
 	if (overrideFont_)
 		overrideFont_->grab();
 }
-//////////////////////////////////////////////////////////////////////////
+
+void CNrpButton::_SwapImage( video::ITexture*& dest, video::ITexture* source, core::recti& dstRect, const core::recti& srcRect )
+{
+	if( dest )
+		dest->drop();
+	
+	dest = source;
+	dstRect = srcRect;
+		
+	if( dest )
+		dest->grab();
+} 
 
 //! Sets an image which should be displayed on the button when it is in normal state. 
 void CNrpButton::setImage(video::ITexture* image)
 {
-	if (image_)
-		image_->drop();
-
-	image_ = image;
-	if (image)
-		imageRect_ = core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize());
-
-	if (image_)
-		image_->grab();
-
-	//if (!PressedImage)
-	//	setPressedImage(image_);
+	core::recti rectangle = image 
+							? core::recti(core::position2d<s32>(0,0), image->getOriginalSize()) 
+							: core::recti( 0, 0, 0, 0 );
+	_SwapImage( image_, image, imageRect_, rectangle );
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Sets the image which should be displayed on the button when it is in its normal state.
 void CNrpButton::setImage(video::ITexture* image, const core::rect<s32>& pos)
 {
-	if (image_)
-		image_->drop();
-
-	image_ = image;
-	imageRect_ = pos;
-
-	if (image_)
-		image_->grab();
-
-	//if (!PressedImage)
-	//	setPressedImage(image_, pos);
+	_SwapImage( image_, image, imageRect_, pos );
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Sets an image which should be displayed on the button when it is in pressed state. 
 void CNrpButton::setPressedImage(video::ITexture* image)
 {
-	if (pressedImage_)
-		pressedImage_->drop();
-
-	pressedImage_ = image;
-	if (image)
-		pressedImageRect_ = core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize());
-
-	if (pressedImage_)
-		pressedImage_->grab();
+	_SwapImage( pressedImage_, image, pressedImageRect_, core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize() ) );
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Sets the image which should be displayed on the button when it is in its pressed state.
 void CNrpButton::setPressedImage(video::ITexture* image, const core::rect<s32>& pos)
 {
-	if (pressedImage_)
-		pressedImage_->drop();
-
-	pressedImage_ = image;
-	pressedImageRect_ = pos;
-
-	if (pressedImage_)
-		pressedImage_->grab();
+	_SwapImage( pressedImage_, image, pressedImageRect_, pos );
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Sets if the button should behave like a push button. Which means it
 //! can be in two states: Normal or Pressed. With a click on the button,
@@ -403,7 +368,6 @@ void CNrpButton::setIsPushButton(bool isPushButton)
 {
 	isPushButton_ = isPushButton;
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Returns if the button is currently pressed
 bool CNrpButton::isPressed() const
@@ -411,7 +375,6 @@ bool CNrpButton::isPressed() const
 	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
 	return pressed_;
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Sets the pressed state of the button if this is a pushbutton
 void CNrpButton::setPressed(bool pressed)
@@ -422,7 +385,6 @@ void CNrpButton::setPressed(bool pressed)
 		pressed_ = pressed;
 	}
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Returns whether the button is a push button
 bool CNrpButton::isPushButton() const
@@ -430,14 +392,12 @@ bool CNrpButton::isPushButton() const
 	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
 	return isPushButton_;
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Sets if the alpha channel should be used for drawing images on the button (default is false)
 void CNrpButton::setUseAlphaChannel(bool useAlphaChannel)
 {
 	useAlphaChannel_ = useAlphaChannel;
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Returns if the alpha channel should be used for drawing images on the button
 bool CNrpButton::isAlphaChannelUsed() const
@@ -445,14 +405,12 @@ bool CNrpButton::isAlphaChannelUsed() const
 	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
 	return useAlphaChannel_;
 }
-//////////////////////////////////////////////////////////////////////////
 
 bool CNrpButton::isDrawingBorder() const
 {
 	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
 	return border_;
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Writes attributes of the element.
 void CNrpButton::serializeAttributes(io::IAttributes* out, io::SAttributeReadWriteOptions* options=0) const
@@ -473,7 +431,6 @@ void CNrpButton::serializeAttributes(io::IAttributes* out, io::SAttributeReadWri
 
 	//   out->addString  ("OverrideFont",	OverrideFont);
 }
-//////////////////////////////////////////////////////////////////////////
 
 //! Reads attributes of the element
 void CNrpButton::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options=0)
@@ -502,32 +459,15 @@ void CNrpButton::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWr
 
 	updateAbsolutePosition();
 }
-//////////////////////////////////////////////////////////////////////////
 
 void CNrpButton::setHoveredImage( irr::video::ITexture* image )
 {
-	if (hoveredImage_)
-		hoveredImage_->drop();
-
-	hoveredImage_ = image;
-	if (image)
-		hoveredImageRect_ = core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize());
-
-	if (hoveredImage_)
-		hoveredImage_->grab();
+	_SwapImage( hoveredImage_, image, hoveredImageRect_, core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize()) );
 }
-//////////////////////////////////////////////////////////////////////////
 
 void CNrpButton::setHoveredImage( irr::video::ITexture* image, const irr::core::rect< irr::s32 >& pos )
 {
-	if (hoveredImage_)
-		hoveredImage_->drop();
-
-	hoveredImage_ = image;
-	hoveredImageRect_ = pos;
-
-	if (hoveredImage_)
-		hoveredImage_->grab();
+	_SwapImage( hoveredImage_, image, hoveredImageRect_, pos );
 }
 
 void CNrpButton::setScaleImage( bool scaleImage/* =true */ )

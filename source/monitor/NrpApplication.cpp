@@ -16,35 +16,26 @@
 #include "NrpPlant.h"
 #include "NrpGameBox.h"
 #include "NrpRetailer.h"
-#include "NrpGameImageList.h"
+#include "NrpScreenshot.h"
 #include "NrpDevelopGame.h"
 #include "NrpInvention.h"
 #include "NrpActionType.h"
 #include "NrpPda.h"
 #include "NrpHistory.h"
+#include "NrpGameTime.h"
+#include "timeHelpers.h"
 
 #include <io.h>
 #include <errno.h>
 #include <OleAuto.h>
 
 static nrp::CNrpApplication* globalApplication = NULL;
-					 //€нв фев мрт апр май июн июл авг снт окт но€ дек	
-int monthLen[ 12 ] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 namespace nrp
 {
 
-CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appication")
+CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS_NRPAPPLICATION )
 {
-	speed_ = SPD_MINUTE;
-	SYSTEMTIME time;
-	time.wYear = 1983;
-	time.wMonth = 1;
-	time.wDay = 1;
-	time.wHour = 0;
-	time.wMinute = 0;
-	lastTimeUpdate_ = 0;
-
 	CreateValue<PNrpBank>( BANK, NULL );
 	CreateValue<int>( TECHNUMBER, 0 );
 	CreateValue<int>( USERNUMBER, 0 );
@@ -67,7 +58,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<std::string>( PROFILENAME, IniFile::Read( SECTION_OPTIONS, "currentProfile", std::string( "dalerank" ), GetString( SYSTEMINI ) ) );
 	CreateValue<std::string>( PROFILECOMPANY, IniFile::Read( SECTION_OPTIONS, "currentCompany", std::string( "daleteam" ), GetString( SYSTEMINI ) ) );
 
-	CreateValue<SYSTEMTIME>( CURRENTTIME, time );
+	CreateValue<SYSTEMTIME>( CURRENTTIME, SYSTEMTIME() );
 	CreateValue<int>( DISKMACHINENUMBER, 0 );
 	CreateValue<int>( BOXADDONNUMBER, 0 );
 	CreateValue<int>( GAMENUMBER, 0 );
@@ -78,6 +69,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( "CNrpApplication", "Appicat
 	CreateValue<int>( INVENTIONSNUMBER, 0 );
 	CreateValue<int>( MINIMUM_USER_SALARY, 250 );
 	CreateValue<CNrpPda*>( PDA, new CNrpPda() );
+	CreateValue<CNrpGameTime*>( GAME_TIME, new CNrpGameTime( this ) );
 
 	srand( GetTickCount() );
 }
@@ -132,66 +124,6 @@ int CNrpApplication::AddUser( IUser* user )
 	return 1;
 }
 
-bool CNrpApplication::UpdateTime()
-{
-	SYSTEMTIME& time = GetValue<SYSTEMTIME>( CURRENTTIME );
-	time.wDayOfWeek = time.wMilliseconds = time.wSecond = 0;
-	if( GetTickCount() - lastTimeUpdate_ > 100 )
-	{
-		lastTimeUpdate_ = GetTickCount();
-		SPEED spd = speed_;
-		if( spd == SPD_MINUTE )
-		{
-			time.wMinute += 10;
-			if( time.wMinute >= 60  )
-			{
-				 time.wMinute = 0;
-				 spd = SPD_HOUR;
-				 BeginNewHour_();
-			}
-		}
-
-		if( spd == SPD_HOUR )
-		{
-			time.wHour++;
-			if( time.wHour > 18 )
-			{
-				time.wHour = 9;
-				spd = SPD_DAY;
-				DoLuaFunctionsByType( APP_DAY_CHANGE, this );
-				BeginNewDay_();
-			}
-		}
-
-		if( spd == SPD_DAY )
-		{
-			time.wDay++;
-			int monthL = monthLen[ time.wMonth ] + (( time.wMonth == 1 && (time.wYear % 4 == 0)) ? 1 : 0 );
-			if( time.wDay > monthL )
-			{
-				time.wDay = 1;
-			    spd = SPD_MONTH;
-				DoLuaFunctionsByType( APP_MONTH_CHANGE, this );
-				BeginNewMonth_();
-			}
-		}
-
-		if( spd == SPD_MONTH )
-		{
-			time.wMonth++;
-			if( time.wMonth > 12 )
-			{
-				time.wMonth = 1;
-				time.wYear++;
-				DoLuaFunctionsByType( APP_YEAR_CHANGE, this );
-			}
-		}
-
-		return true;
-	}
-
-	return false;
-}
 
 void CNrpApplication::AddProject( INrpProject* project )
 {
@@ -342,19 +274,6 @@ void CNrpApplication::SaveProfile()
 		std::string saveDir = (*gameIter)->Save( GetString( SAVEDIR_GAMES ) );
 		IniFile::Write( SECTION_GAMES, KEY_GAME( i ), saveDir, profileIni );
 	}
-
-	std::string imageListIni = GetString( SAVEDIR_PROFILE ) + "imageList.ini";
-	GAMEIMAGES_MAP::iterator gameListIter = gameImages_.begin();
-	int gli = 0;
-	for( ; gameListIter != gameImages_.end(); gameListIter++ )
-		if( !gameListIter->second->GetValue<bool>( ISUSED ) )
-		{
-			IniFile::Write( "imageList", "imageList_" + IntToStr( gli ), 
-							gameListIter->second->GetString( NAME ), imageListIni );
-			gli++;
-		}
-
-	IniFile::Write( SECTION_PROPERTIES, "ImageListNumber", gli, imageListIni );
 }
 
 void CNrpApplication::_LoadUsers( const std::string& iniFile )
@@ -478,27 +397,21 @@ void CNrpApplication::LoadProfile( const std::string& profileName, const std::st
 	}
 	SetValue<int>( GAMENUMBER, games_.size() );
 
-    LoadFreeImageLists_( GetString( SAVEDIR_PROFILE ) + "imageList.ini" );
 	CNrpScript::Instance().TemporaryScript( AFTER_LOAD_SCRIPT, CNrpScript::SA_EXEC );
 }
 
-void CNrpApplication::LoadFreeImageLists_( const std::string& fileName )
+void CNrpApplication::LoadScreenshots( const std::string& fileName )
 {
-	size_t imageListNumber = IniFile::Read( SECTION_PROPERTIES, "ImageListNumber", (int)0, fileName );
+	size_t imageListNumber = IniFile::Read( SECTION_OPTIONS, "screenshotNumber", (int)0, fileName );
 
-	if( OpFileSystem::IsExist( fileName ) && imageListNumber > 0)
+	if( !OpFileSystem::IsExist( fileName ) )
+		return;
+	
+	for( size_t i=0; i < imageListNumber; i++ )
 	{
-		GAMEIMAGES_MAP::iterator pIter = gameImages_.begin();
-		for( ; pIter != gameImages_.end(); pIter++ )
-			 pIter->second->SetValue<bool>( ISUSED, true );
-
-		for( size_t i=0; i < imageListNumber; i++ )
-		{
-			std::string name = IniFile::Read( SECTION_PROPERTIES,  "imageList_"+IntToStr( i ), std::string(""), fileName );
-			GAMEIMAGES_MAP::iterator findIter = gameImages_.find( name );
-			if( findIter != gameImages_.end() )
-				findIter->second->SetValue<bool>( ISUSED, false );
-		}
+		std::string scrFile = IniFile::Read( SECTION_OPTIONS, "screenShot"+IntToStr( i ), std::string(""), fileName );
+		CNrpScreenshot* ptrScrn = new CNrpScreenshot( scrFile );
+		_screenshots[ ptrScrn->GetString( NAME ) ] = ptrScrn;
 	}
 }
 
@@ -749,14 +662,10 @@ void CNrpApplication::_UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typ
 		}
 
 		//вычисл€ем сколько мес€цев на рынке игра
-		SYSTEMTIME startTime = ptrGame->GetValue<SYSTEMTIME>( STARTDATE );
-		SYSTEMTIME curTime = GetValue<SYSTEMTIME>( CURRENTTIME );
-		double sT, cT;
-		SystemTimeToVariantTime( &startTime, &sT );
-		SystemTimeToVariantTime( &curTime, &cT );
-		int monthInMarket = static_cast< int >( cT - sT ) / 30;
+		int monthInMarket = TimeHelper::GetMonthBetweenDate( ptrGame->GetValue<SYSTEMTIME>( STARTDATE ),
+															 GetValue<SYSTEMTIME>( CURRENTTIME ) ) + 1;
 		//понижаем рейтинг из-за времени на рынке
-		rating *= ( monthInMarket > 10 ? 0.1f : 1.f - log( (float)monthInMarket ) );
+		rating *= 1.f / (monthInMarket > 12 ? 12 :  monthInMarket);
 
 		//результат подсчета рейтинга
 		//todo: надо както обходить рейтинг хитовых игр
@@ -923,59 +832,57 @@ CNrpRetailer* CNrpApplication::GetRetailer( std::string name )
 //получение имени изображени€ с которым будет дальше св€зана игра
 std::string CNrpApplication::GetFreeInternalName( CNrpGame* game )
 {
-	std::vector< CNrpGameImageList* > thisYearAndGenreImgs;
+	std::vector< CNrpScreenshot* > thisYearAndGenreImgs;
 	
-	for( GAMEIMAGES_MAP::iterator pIter = gameImages_.begin();
-		 pIter != gameImages_.end(); 
+	int minimumRating = 1;
+	for( SCREENSHOTS_MAP::iterator pIter = _screenshots.begin();
+		 pIter != _screenshots.end(); 
 		 pIter++ )
-		if( !pIter->second->GetValue<bool>( ISUSED ) && 
-			pIter->second->GetValue<std::string>( GENRETECH ) == game->GetGenreName( 0 ) && 
-			pIter->second->GetValue<int>( YEAR ) == GetValue<SYSTEMTIME>( CURRENTTIME ).wYear )
+	{
+		CNrpGame* alsoMargetGame = GetGame( pIter->second->GetString( NAME ) );
+
+		if( !alsoMargetGame ) 
+		{
+			int year = GetValue<SYSTEMTIME>( CURRENTTIME ).wYear;
+			if( CNrpGameEngine* ge = GetGameEngine( game->GetString( GAME_ENGINE) ) )
+				year = ge->GetValue<SYSTEMTIME>( STARTDATE ).wYear;
+
+			if( !pIter->second->IsMyYear( year ) )
+				continue;
+			
+			int eqRating = pIter->second->GetEqualeRating( game );
+
+			if( !eqRating )
+				continue;
+
+			if( minimumRating > eqRating )
+				thisYearAndGenreImgs.clear();
+
+			minimumRating = eqRating;
 			thisYearAndGenreImgs.push_back( pIter->second );
+		}
+	}
 
 	if( thisYearAndGenreImgs.size() )
 	{
 		int randomIndex = rand() % thisYearAndGenreImgs.size();
-		thisYearAndGenreImgs[ randomIndex ]->SetValue<bool>( ISUSED, true );
-
 		return thisYearAndGenreImgs[ randomIndex ]->GetString( NAME );
 	}
 
+	//!!!!!!!!надо както обработать эту ситуацию!!!!!!!!!!!!!!!!!
+	assert( std::string("No find free name").size() == 0 );
 	return "";
 }
 
-CNrpGameImageList* CNrpApplication::GetGameImageList( std::string name )
+CNrpScreenshot* CNrpApplication::GetScreenshot( const std::string& name )
 {
-	GAMEIMAGES_MAP::iterator pIter = gameImages_.begin();
-	for( ; pIter != gameImages_.end(); pIter++ )
-		if(	pIter->second->GetString( NAME ) == name )
-			return pIter->second;
-	return NULL;
-}
-
-void CNrpApplication::AddGameImageList( CNrpGameImageList* pGList )
-{
-	gameImages_[ pGList->GetString( NAME ) ] = pGList;
-}
-
-void CNrpApplication::ClearImageList()
-{
-	GAMEIMAGES_MAP::iterator pIter = gameImages_.begin();
-	for( ; pIter != gameImages_.end(); pIter++ )
-		delete pIter->second;
-
-	gameImages_.clear();
+	SCREENSHOTS_MAP::iterator pIter = _screenshots.find( name );
+	return pIter != _screenshots.end() ? pIter->second : NULL;
 }
 
 CNrpGame* CNrpApplication::GetGame( const std::string& name )
 {
-	GAMES_LIST::iterator pIter = games_.begin();
-	for( ; pIter != games_.end(); pIter++ )
-		if( (*pIter)->GetString( NAME ) == name ||
-			(*pIter)->GetString( INTERNAL_NAME ) == name )
-			return *pIter;
-
-	return NULL;
+	return _FindByNamesIn< GAMES_LIST, CNrpGame >( games_, name );
 }
 
 CNrpGame* CNrpApplication::GetGame( size_t index )
@@ -1022,7 +929,7 @@ void CNrpApplication::AddDevelopProject( nrp::INrpDevelopProject* project )
 	SetValue<int>( DEVELOPPROJECTS_NUMBER, devProjects_.size() );
 }
 
-INrpDevelopProject* CNrpApplication::GetDevelopProject( const std::string&  name ) const
+INrpDevelopProject* CNrpApplication::GetDevelopProject( const std::string& name ) const
 {
 	DEVPROJECTS_MAP::const_iterator pIter = devProjects_.find( name );
 	if( pIter != devProjects_.end() )

@@ -55,8 +55,7 @@ public:
 	int GetGamesNumber( lua_State* L );
 	int GetGame( lua_State* L );
 	int AddGameToMarket( lua_State* L );
-	int ClearImageList( lua_State* L );
-	int LoadImageList( lua_State* L );
+	int LoadScreenshots( lua_State* L );
 	int GetGameTime( lua_State* L );
 	int GetInvention( lua_State* L );
 	int GetPda( lua_State* L );
@@ -65,7 +64,6 @@ public:
 
 	static const char* ClassName() { return CLASS_CLUAPPLICATION.c_str(); }
 private:
-	int lastDay_, lastMonth_, lastYear_;
 	int AddRemLuaFunction_( lua_State* L, std::string funcName, bool rem );
 };
 

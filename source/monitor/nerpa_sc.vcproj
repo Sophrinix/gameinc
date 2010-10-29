@@ -1015,6 +1015,10 @@
 					Name="GUI"
 					>
 					<File
+						RelativePath=".\ILuaListBox.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaButton.cpp"
 						>
 					</File>
@@ -1625,11 +1629,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NrpGameImageList.cpp"
+				RelativePath=".\NrpGameTime.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NrpGameImageList.h"
+				RelativePath=".\NrpGameTime.h"
 				>
 			</File>
 			<File
@@ -1646,6 +1650,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpPlant.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpScreenshot.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpScreenshot.h"
 				>
 			</File>
 		</Filter>

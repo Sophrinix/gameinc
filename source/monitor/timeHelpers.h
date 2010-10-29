@@ -17,6 +17,12 @@ public:
 		return abs( static_cast< int >( fBegin - fEnd ) );
 	}
 
+	static int GetMonthBetweenDate( SYSTEMTIME& begin, SYSTEMTIME& end )
+	{
+		return GetDaysBetweenDate( begin, end ) / 30;
+	}
+
+
 	static SYSTEMTIME GetDateWithDay( SYSTEMTIME& start, int dayNumber )
 	{
 		double time;

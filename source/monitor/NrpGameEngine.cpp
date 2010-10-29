@@ -27,6 +27,7 @@ void CNrpGameEngine::_InitialyzeOptions()
 	CreateValue<std::string>( COMPANYNAME, "" );
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
 	CreateValue<std::string>( TEXTURENORMAL, "" );
+	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 }
 
 CNrpGameEngine::CNrpGameEngine( const std::string& fileName, bool load )

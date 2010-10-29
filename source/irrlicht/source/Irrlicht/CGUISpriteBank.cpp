@@ -29,7 +29,6 @@ CGUISpriteBank::CGUISpriteBank(IGUIEnvironment* env) :
 	}
 }
 
-
 CGUISpriteBank::~CGUISpriteBank()
 {
 	// drop textures

@@ -28,7 +28,6 @@ OPTION_NAME STARTADVFUNCRATING( "startAdvFuncRating" );
 OPTION_NAME CURRENTADVFUNCRATING( "currentAdvFuncRating" );
 OPTION_NAME GBOX( "box" );
 OPTION_NAME GAMEISSALING( "gameIsSaling" );
-OPTION_NAME IMAGENAME( "imageName" );
 OPTION_NAME GAMEIMAGELIST( "gameImageList" );
 OPTION_NAME VIEWIMAGE( "viewImage" );
 OPTION_NAME GAMERETAILER( "gameRetailer" );
@@ -44,6 +43,8 @@ public:
 
 	std::string GetTechName( size_t index );
 	std::string GetGenreName( size_t index );
+	bool IsGenreAvaible( const std::string& name );
+
 	float GetAuthorFamous();
 
 	CNrpHistory* GetHistory() { return history_; }

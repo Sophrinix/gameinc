@@ -6,7 +6,7 @@
 #include "NrpGameBox.h"
 #include "NrpTechnology.h"
 #include "NrpGameBox.h"
-#include "NrpGameImageList.h"
+#include "NrpScreenshot.h"
 #include "LuaTechnology.h"
 #include "LuaCompany.h"
 #include "NrpHistory.h"
@@ -218,15 +218,15 @@ int CLuaGame::GetImagePath_( lua_State* L, std::string funcName, std::string nam
 	std::string pathTexture = "";
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpGameImageList* imageList = object_->GetValue<CNrpGameImageList*>( GAMEIMAGELIST );
+		CNrpScreenshot* imageList = object_->GetValue<CNrpScreenshot*>( GAMEIMAGELIST );
 		if( imageList )
 		{
 			int maxImage = imageList->GetValue<int>( nameParam );
 			if( maxImage > 0)
 			{
-				std::vector< std::string >& pvm = (nameParam == IMAGESBOXNUMBER) 
-													? imageList->imagesBoxPath 
-													: imageList->imagesPath;
+				const std::vector< std::string >& pvm = (nameParam == IMAGESBOXNUMBER) 
+													? imageList->GetBoxImages() 
+													: imageList->GetImages();
 				pathTexture = pvm[ index < 0 ? (rand() % maxImage) : index ];
 			}
 		}
@@ -248,7 +248,7 @@ template< class R > R CLuaGame::GetImageLisParam_( lua_State* L, std::string fun
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpGameImageList* imageList = object_->GetValue<CNrpGameImageList*>( GAMEIMAGELIST );
+		CNrpScreenshot* imageList = object_->GetValue<CNrpScreenshot*>( GAMEIMAGELIST );
 		if( imageList )
 			defValue = imageList->GetValue<int>( name );
 	}

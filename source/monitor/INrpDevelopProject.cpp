@@ -43,9 +43,10 @@ void INrpDevelopProject::SetDeveloper( IUser* user )
 {
 	for( size_t i=0; i < developers_.size(); i++ )
 		if( developers_[ i ] == user->GetString( NAME ) )
-			return;
+			continue;
 
 	developers_.push_back( user->GetString( NAME ) );
+	SetValue<int>( USERNUMBER, developers_.size() );
 }
 
 void INrpDevelopProject::Load( const std::string& pathTo )

@@ -42,7 +42,6 @@ Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProject ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectByName ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddLuaFunction ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddToPortfelle ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetObjectsInPortfelle ),
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetFromPortfelle ),
@@ -277,20 +276,6 @@ int CLuaCompany::GetProjectByName( lua_State* L )
 	Luna< CLuaGameProject >::constructor( L );
 	return 1;	
 }	
-
-int CLuaCompany::AddLuaFunction( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:AddLuaFunction need int, string parameter" );
-
-	int typen = lua_tointeger( L, 2 );
-	const char* funcName = lua_tostring( L, 3 );
-	assert( funcName != NULL );
-
-	IF_OBJECT_NOT_NULL_THEN	object_->AddLuaFunction( typen, funcName );
-
-	return 1;
-}
 
 int CLuaCompany::AddToPortfelle( lua_State* L )
 {
