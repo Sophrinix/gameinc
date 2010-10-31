@@ -54,3 +54,14 @@ function Stretch( x1, y1, x2, y2, texturePrefix, parentr, idr, textr, actionr )
 	
 	return btn
 end
+
+function StretchOne( x1, y1, x2, y2, pathToTexture, parentr, idr, textr, actionr )
+	local txs = driver:GetTexture( pathToTexture )
+	local txsw, txsh = txs:GetSize()
+	
+	local btn = guienv:AddButton( x1, y1, x2, y2, parentr, idr, textr )
+	btn:SetImage( x, y, txsw, txsh, pathToTexture )
+	btn:SetAction( actionr )
+	
+	return btn
+end

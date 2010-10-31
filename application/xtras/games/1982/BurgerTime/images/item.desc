@@ -7,10 +7,10 @@ genreModuleNumber:int=2
 genre_0=genre_skill
 genre_1=genre_time
 [imagesBox]
-boxImage_0=xtras/games/1983/BurgerTime/images/s01.png
-boxImage_1=xtras/games/1983/BurgerTime/images/s02.png
-boxImage_2=xtras/games/1983/BurgerTime/images/s02.png
+boxImage_0=xtras/games/1982/BurgerTime/images/s01.png
+boxImage_1=xtras/games/1982/BurgerTime/images/s02.png
+boxImage_2=xtras/games/1982/BurgerTime/images/s02.png
 [images]
-image_0=xtras/games/1983/BurgerTime/images/01.png
-image_1=xtras/games/1983/BurgerTime/images/02.png
-image_2=xtras/games/1983/BurgerTime/images/03.png
+image_0=xtras/games/1982/BurgerTime/images/01.png
+image_1=xtras/games/1982/BurgerTime/images/02.png
+image_2=xtras/games/1982/BurgerTime/images/03.png

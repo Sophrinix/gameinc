@@ -4,6 +4,7 @@ module( "gameboxManager" )
 
 local guienv = base.guienv
 local applic = base.applic
+local button = base.button
 local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
 
@@ -21,17 +22,22 @@ local function CreateElementsForGameSelect()
 	local row = 0
 	local columnt = 0
 	local gameWithoutBox = 0
+	local offset = 40
+	local delimiter = 4
 	for i=1, company:GetGameNumber() do
 		local game = company:GetGame( i-1 )
 		if not game:HaveBox() then 
 			row = gameWithoutBox/3
 			columnt = gameWithoutBox%3
 			
-			local btn = guienv:AddButton( scrWidth/3 * columnt, scrHeight/3 * row, 
-										  scrWidth/3 * ( columnt + 1 ), scrHeight/3 * (row+1),
-										  wndGBM:Self(), -1, game:GetName() )
-			btn:SetImage( 0, 0, 0, 0, game:GetScreenshot( -1 ) )				  										
-			btn:SetAction( "./gameboxManager.SetGame()" )			 
+			button.StretchOne( offset + scrWidth/delimiter * columnt, 
+					  		   offset + scrHeight/delimiter * row, 
+					  		   offset + scrWidth/delimiter * (columnt+1), 
+					  		   offset + scrHeight/delimiter * (row+1),
+							   game:GetScreenshot( -1 ), 
+								wndGBM:Self(), 
+								-1, "", "./gameboxManager.SetGame()" )
+		  										
 			gameWithoutBox = gameWithoutBox + 1
 		end
 	end
@@ -44,6 +50,24 @@ local function CreateElementsForGameSelect()
 		image:SetScaleImage( true )
 		image:SetUseAlphaChannel( true )
 	end
+end
+
+function FadeEnterAction()
+	CreateElementsForGameSelect()
+
+	wndGBM:SetVisible( true )
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function FadeExitAction()
+	wndGBM:Remove()
+	wndGBM = nil
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function Hide()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "gameboxManager.FadeExitAction()" )	
 end
 
 function Hide()
@@ -200,17 +224,27 @@ function Show()
 
 	if wndGBM == nil then	
 		wndGBM = guienv:AddWindow( "media/maps/plant_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		wndGBM:SetDraggable( false )
+		wndGBM:GetCloseButton():SetVisible( false )
+		wndGBM:SetVisible( false )
+		
 		wndGBM:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameboxManager.WindowLeftMouseButtonUp()" )
+		
+		--adding closeButton
+		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
+		 			    "button_down", wndGBM:Self(), -1, "",
+						"./gameboxManager.Hide()" )
 	else
 		wndGBM:SetVisible( true )
 	end
 	
-	CreateElementsForGameSelect()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, "gameboxManager.FadeEnterAction()" )
 end
 
 function WindowLeftMouseButtonUp( ptr )
 	guienv:SetDragObject( nil )
-	currentAddon:SetObject( nil )
+	currentAddon = nil
 end
 
 function LinkLeftMouseButtonUp()
