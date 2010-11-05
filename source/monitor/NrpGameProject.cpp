@@ -220,19 +220,19 @@ void CNrpGameProject::Save( std::string folderSave )
 
 	TECH_LIST::iterator tIter = technologies_.begin();
 	for( int i=0; tIter != technologies_.end(); tIter++, i++ )
-		IniFile::Write( ADVTECH, ADVTECH + IntToStr(i), (*tIter)->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( ADVTECH, ADVTECH + conv::ToStr(i), (*tIter)->GetValue<std::string>( NAME ), fileName );
 
 	TECH_LIST::iterator gIter = genres_.begin();
 	for( int i=0; gIter != genres_.end(); gIter++, i++ )
-		IniFile::Write( GENRETECH, GENRETECH + IntToStr(i), (*gIter)->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( GENRETECH, GENRETECH + conv::ToStr(i), (*gIter)->GetValue<std::string>( NAME ), fileName );
 
 	TECH_LIST::iterator vIter = videoTechnologies_.begin();
 	for( int i=0; vIter != videoTechnologies_.end(); vIter++, i++ )
-		IniFile::Write( VIDEOTECH, VIDEOTECH + IntToStr(i), (*vIter)->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( VIDEOTECH, VIDEOTECH + conv::ToStr(i), (*vIter)->GetValue<std::string>( NAME ), fileName );
 
 	TECH_LIST::iterator sIter = soundTechnologies_.begin();
 	for( int i=0; sIter != soundTechnologies_.end(); sIter++, i++ )
-		IniFile::Write( SOUNDTECH, SOUNDTECH + IntToStr(i), (*sIter)->GetValue<std::string>( NAME ), fileName );
+		IniFile::Write( SOUNDTECH, SOUNDTECH + conv::ToStr(i), (*sIter)->GetValue<std::string>( NAME ), fileName );
 
 	if( GetValue<PNrpGameEngine>( GAME_ENGINE ) )
 	{
@@ -291,7 +291,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 
 	for( int i=0; i < GetValue<int>( ADVTECHNUMBER ); ++i )
 	{
-		std::string name = IniFile::Read( ADVTECH, ADVTECH + IntToStr(i), std::string(""), fileName );
+		std::string name = IniFile::Read( ADVTECH, ADVTECH + conv::ToStr(i), std::string(""), fileName );
 		PNrpTechnology tech = CNrpApplication::Instance().GetTechnology( name );
 		if( tech )
 			technologies_.push_back( tech );
@@ -299,7 +299,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 
 	for( int i=0; i < GetValue<int>( GENRE_MODULE_NUMBER ); ++i )
 	{
-		std::string name = IniFile::Read( GENRETECH, GENRETECH + IntToStr(i), std::string(""), fileName );
+		std::string name = IniFile::Read( GENRETECH, GENRETECH + conv::ToStr(i), std::string(""), fileName );
 		PNrpTechnology tech = CNrpApplication::Instance().GetTechnology( name );
 		if( tech )
 		    genres_.push_back( tech );		
@@ -307,7 +307,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 
 	for( int i=0; i < GetValue<int>( VIDEOTECHNUMBER ); ++i )
 	{
-		std::string name = IniFile::Read( VIDEOTECH, VIDEOTECH + IntToStr(i), std::string(""), fileName );
+		std::string name = IniFile::Read( VIDEOTECH, VIDEOTECH + conv::ToStr(i), std::string(""), fileName );
 		PNrpTechnology tech = CNrpApplication::Instance().GetTechnology( name );
 		if( tech )
 			videoTechnologies_.push_back( tech );
@@ -315,7 +315,7 @@ void CNrpGameProject::Load( std::string loadFolder )
 
 	for( int i=0; i < GetValue<int>( SOUNDTECHNUMBER ); ++i )
 	{
-		std::string name = IniFile::Read( SOUNDTECH, SOUNDTECH + IntToStr(i), std::string(""), fileName );
+		std::string name = IniFile::Read( SOUNDTECH, SOUNDTECH + conv::ToStr(i), std::string(""), fileName );
 		PNrpTechnology tech = CNrpApplication::Instance().GetTechnology( name );
 		if( tech )
 			soundTechnologies_.push_back( tech );

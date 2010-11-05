@@ -77,7 +77,7 @@ std::string CNrpGameEngine::Save( const std::string& saveFolder )
 
 	GENRE_MAP::iterator pIter = avgenres_.begin();
 	for( int i=0; pIter != avgenres_.end(); pIter++, i++ )
-		IniFile::Write( "avaibleGenre", IntToStr( pIter->first ), IntToStr( pIter->second ), saveFile );
+		IniFile::Write( "avaibleGenre", conv::ToStr( pIter->first ), conv::ToStr( pIter->second ), saveFile );
 
 	return localFolder;
 }
@@ -97,7 +97,7 @@ void CNrpGameEngine::Load( const std::string& loadFolder )
 		std::string name, valuel;
 		name = readLine.substr( 0, readLine.find( '=' ) );
 		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
-		avgenres_[ GENRE_TYPE( StrToInt( name.c_str() ) ) ] = StrToInt( valuel.c_str() );
+		avgenres_[ GENRE_TYPE( conv::ToInt( name.c_str() ) ) ] = conv::ToInt( valuel.c_str() );
 		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
 		readLine = buffer;
 	}

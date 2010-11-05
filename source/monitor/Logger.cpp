@@ -214,7 +214,7 @@ void Logger::TreatLogEntry(const Log& log)
 	{
 		irr::gui::CNrpConsole* console = CNrpEngine::Instance().GetConsole();
 		if( console )
-			console->AppendMessage( nrp::StrToWide( log.Text.str() ).c_str() );
+			console->AppendMessage( conv::ToWide( log.Text.str() ).c_str() );
 	}
 
 	if( log.Device & NRPETL ) //этот тип надо помещать в список событий

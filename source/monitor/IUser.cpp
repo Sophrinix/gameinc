@@ -109,15 +109,15 @@ std::string IUser::Save( const std::string& folderPath )
 		
 		KNOWLEDGE_MAP::iterator gnrIter = genrePreferences_.begin();
 		for( ; gnrIter != genrePreferences_.end(); gnrIter++ )
-			IniFile::Write( "genrePreference", IntToStr( gnrIter->first ), gnrIter->second, fileName );
+			IniFile::Write( "genrePreference", conv::ToStr( gnrIter->first ), gnrIter->second, fileName );
 		
 		KNOWLEDGE_MAP::iterator gnrExp = genreExperience_.begin();
 		for( ; gnrExp != genreExperience_.end(); gnrExp++ )
-			IniFile::Write( "genreExperience", IntToStr( gnrExp->first ), gnrExp->second, fileName );
+			IniFile::Write( "genreExperience", conv::ToStr( gnrExp->first ), gnrExp->second, fileName );
 
 		KNOWLEDGE_MAP::iterator knIter = knowledges_.begin();
 		for( ; knIter != knowledges_.end(); knIter++ )
-			IniFile::Write( "knowledges", IntToStr( knIter->first ), knIter->second, fileName );
+			IniFile::Write( "knowledges", conv::ToStr( knIter->first ), knIter->second, fileName );
 
 		WORK_LIST::iterator tlIter = works_.begin();
 		for( int i=0; tlIter != works_.end(); tlIter++, i++ )

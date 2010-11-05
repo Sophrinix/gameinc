@@ -106,7 +106,7 @@ std::string CNrpTechnology::Save( const std::string& saveFolder )
 	SaveRequires_( fileName );
 
 	for( size_t pos=0; pos < futureTech_.size(); pos++ )
-		IniFile::Write( SECTION_FUTURE_TECH, "tech_" + IntToStr( pos ), futureTech_[ pos ], fileName );
+		IniFile::Write( SECTION_FUTURE_TECH, KEY_TECH( pos ), futureTech_[ pos ], fileName );
 
 	return fileName;
 }
@@ -120,7 +120,7 @@ void CNrpTechnology::Load( const std::string& fileName )
 
 	if( GetValue<TECH_STATUS>( STATUS ) == TS_READY )
 		for( int cnt=0; cnt < GetValue<int>( NEXTTECHNUMBER ); cnt++ )
-			futureTech_.push_back( IniFile::Read( SECTION_FUTURE_TECH, "tech_"+IntToStr( cnt ), std::string(""), fileName ) );
+			futureTech_.push_back( IniFile::Read( SECTION_FUTURE_TECH, KEY_TECH( cnt ), std::string(""), fileName ) );
 }
 
 float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
@@ -157,10 +157,10 @@ void CNrpTechnology::LoadRequries_( const std::string& fileName )
 void CNrpTechnology::SaveRequires_( const std::string& fileName )
 {
 	for( REQUIRE_MAP::iterator tIter = techRequires_.begin(); tIter != techRequires_.end(); tIter++ )
-		IniFile::Write( SECTION_REQUIRE_TECH, IntToStr( tIter->first ), IntToStr( tIter->second ), fileName );
+		IniFile::Write( SECTION_REQUIRE_TECH, conv::ToStr( tIter->first ), conv::ToStr( tIter->second ), fileName );
 
 	for( REQUIRE_MAP::iterator sIter = skillRequires_.begin(); sIter != skillRequires_.end(); sIter++ )
-		IniFile::Write( SECTION_REQUIRE_SKILL, IntToStr( sIter->first ), IntToStr( sIter->second ), fileName );
+		IniFile::Write( SECTION_REQUIRE_SKILL, conv::ToStr( sIter->first ), conv::ToStr( sIter->second ), fileName );
 }
 
 const std::string CNrpTechnology::GetFutureTech( size_t index )

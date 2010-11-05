@@ -33,7 +33,7 @@ int CLuaListBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 	assert( text != NULL );
 	void* object = lua_touserdata( L, 3 );
 	
-	IF_OBJECT_NOT_NULL_THEN	object_->addItem( StrToWide( text ).c_str(), (u32)object );			
+	IF_OBJECT_NOT_NULL_THEN	object_->addItem( conv::ToWide( text ).c_str(), (u32)object );			
 
 	return 1;
 }

@@ -58,7 +58,7 @@ void CNrpGUIEnvironment::LoadFonts_()
 		 cnt < max_font;
 		 cnt++ )
 	{
-		std::string option = "font_" + nrp::IntToStr( (int)cnt );
+		std::string option = "font_" + nrp::conv::ToStr( (int)cnt );
 		std::string filename = nrp::CNrpHUDConfig::Instance().GetString( option );
 	
 		IGUIFont* font = _nativeEnv->getFont( filename.c_str() );

@@ -33,7 +33,7 @@ int CLuaTab::SetFontFromSize( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( ("font_" + IntToStr( size )).c_str() );
+		irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( ("font_" + conv::ToStr( size )).c_str() );
 		object_->setRFont( font );
 	}
 

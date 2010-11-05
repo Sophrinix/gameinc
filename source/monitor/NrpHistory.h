@@ -14,6 +14,15 @@ class CNrpHistoryStep : public INrpConfig
 	CNrpHistoryStep() : INrpConfig( CLASS_HISTORYSTEP, "" ) {}
 public:
 	CNrpHistoryStep( const SYSTEMTIME& time );
+
+	template< class T >
+	void AddValue( std::string name, T& amount )
+	{
+		if( !IsValueExist( name ) )
+			CreateValue<T>( name, amount );
+		else
+			INrpConfig::AddValue<T>( name, amount );
+	}
 };
 
 class CNrpHistory :	public INrpConfig
@@ -24,6 +33,8 @@ public:
 
 	CNrpHistoryStep* GetStep( const SYSTEMTIME& time, bool aprocimateData );
 	CNrpHistoryStep* GetStep( const SYSTEMTIME& time );
+
+	CNrpHistoryStep* AddStep( SYSTEMTIME& time );
 
 	CNrpHistory();
 	~CNrpHistory(void);

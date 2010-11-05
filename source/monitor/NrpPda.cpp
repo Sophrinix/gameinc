@@ -29,7 +29,7 @@ std::string CNrpPda::Save( const std::string& fileName )
 	LIST_ITEM::iterator pItem = _items.begin();
 	for( int k=0; pItem != _items.end(); pItem++, k++ )
 	{
-		std::string section = "item_"+IntToStr( k );
+		std::string section = KEY_ITEM( k );
 		assert( (*pItem)->GetValue<std::string>( MESSAGE ).size() > 0 );
 		IniFile::Write( section, "message", (*pItem)->GetValue<std::string>( MESSAGE ), fileName );
 		IniFile::Write( section, "time", (*pItem)->GetValue<SYSTEMTIME>( STARTDATE ), fileName );
@@ -48,7 +48,7 @@ void CNrpPda::Load( const std::string& fileName )
 
 	for( int k=0; k < MAXDWORD; k++ )
 	{
-		std::string section = "item_"+IntToStr( k );
+		std::string section = KEY_ITEM( k );
 		std::string mess = IniFile::Read( section, "message", std::string(""), fileName );
 		//читаем до первого пустого сообщения))
 		if( mess.size() > 0 )

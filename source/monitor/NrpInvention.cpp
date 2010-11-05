@@ -198,7 +198,7 @@ std::string CNrpInvention::Save( const std::string& saveFolder, bool k )
 	SaveRequires_( fileName );
 
 	for( size_t pos=0; pos < _users.size(); pos++ )
-		IniFile::Write( SECTIONS_USERS, "user_" + IntToStr( pos ), _users[ pos ]->GetString( NAME ), fileName );
+		IniFile::Write( SECTIONS_USERS, KEY_USER( pos ), _users[ pos ]->GetString( NAME ), fileName );
 
 	return fileName;
 }

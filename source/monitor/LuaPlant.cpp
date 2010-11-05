@@ -141,7 +141,7 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 
 			CNrpReklameWork* rW = object_->GetBaseReklame( name );
 			if( rW != NULL )
-				rW->SetValue<int>( DAYCOST,StrToInt( valuel.c_str() ) );
+				rW->SetValue<int>( DAYCOST, conv::ToInt( valuel.c_str() ) );
 
 			memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
 			readLine = buffer;

@@ -354,6 +354,7 @@ void CNrpCompany::BeginNewDay( const SYSTEMTIME& time )
 				const PNrpGame game = CreateGame(	(CNrpDevelopGame*)project );
 				RemoveDevelopProject( project->GetValue<std::string>( NAME ) );
 				CNrpApplication::Instance().DoLuaFunctionsByType( APP_PROJECT_FINISHED, game );
+				break;
 			}
 		}
 	}

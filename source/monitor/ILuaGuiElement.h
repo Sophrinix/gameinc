@@ -172,7 +172,7 @@ public:
 		IF_OBJECT_NOT_NULL_THEN	
 		{
 			if( text )
-				object_->setText( StrToWide( text ).c_str() );
+				object_->setText( conv::ToWide( text ).c_str() );
 		}
 
 		return 1;
@@ -214,7 +214,7 @@ public:
 		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":GetText not need any parameter").c_str() );
 
 		std::string text("");
-		IF_OBJECT_NOT_NULL_THEN text = WideToStr( object_->getText() );
+		IF_OBJECT_NOT_NULL_THEN text = conv::ToStr( object_->getText() );
 
 		lua_pushstring( L, text.c_str() );
 
@@ -287,7 +287,7 @@ public:
 		const char* name = lua_tostring( L, 2 );
 		assert( name != NULL );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setName( StrToWide( name ).c_str() );
+		IF_OBJECT_NOT_NULL_THEN	object_->setName( conv::ToWide( name ).c_str() );
 
 		return 1;
 	}

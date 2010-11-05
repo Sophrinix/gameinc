@@ -161,12 +161,12 @@ int CLuaGuiEnvironment::AddWindow( lua_State *vm )
 int CLuaGuiEnvironment::AddBlenderAnimator( lua_State *vm )
 {
 	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 5, 5, "Function CLuaGuiEnvironment:AddBlenderAnimator need 7 parameter");
+	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddBlenderAnimator need 7 parameter");
 
 	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 2 );
 	s32 minb = lua_tointeger( vm, 3 );
 	s32 maxb = lua_tointeger( vm, 4 );
-	f32 stepb = (f32)lua_tonumber( vm, 5 );
+	f32 stepb = static_cast< f32 >( lua_tonumber( vm, 5 ));
 	bool visibleOnEnd = lua_toboolean( vm, 6 ) > 0; 
 	bool removeSelf = lua_toboolean( vm, 7 ) > 0;
 	bool removeParent = lua_toboolean( vm, 8 ) > 0;
@@ -264,7 +264,7 @@ int CLuaGuiEnvironment::AddButton( lua_State *vm )
 
 	gui::IGUIElement* elm = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN elm = object_->addButton( rectangle,  parent, id, StrToWide( text ).c_str() );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addButton( rectangle,  parent, id, conv::ToWide( text ).c_str() );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -318,7 +318,7 @@ int CLuaGuiEnvironment::GetElementByName( lua_State* vm )
 
 	gui::IGUIElement* sg = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN sg = object_->getRootGUIElement()->getChildenFromName( StrToWide( name ).c_str(), true );
+	IF_OBJECT_NOT_NULL_THEN sg = object_->getRootGUIElement()->getChildenFromName( conv::ToWide( name ).c_str(), true );
 	lua_pushlightuserdata( vm, (void*)sg );
 
 	return 1;
@@ -419,7 +419,7 @@ int CLuaGuiEnvironment::AddEdit( lua_State* vm )
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = object_->addEditBox( StrToWide( text ).c_str(), rectangle, true, parent, id );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addEditBox( conv::ToWide( text ).c_str(), rectangle, true, parent, id );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -443,7 +443,7 @@ int CLuaGuiEnvironment::AddLabel( lua_State* vm )
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = object_->addStaticText( StrToWide( text ).c_str(), rectangle, false, true, parent, id, false );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addStaticText( conv::ToWide( text ).c_str(), rectangle, false, true, parent, id, false );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -507,7 +507,7 @@ int CLuaGuiEnvironment::AddImage( lua_State* vm )
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = object_->addImage( rectangle, parent, id, StrToWide( text ).c_str() );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addImage( rectangle, parent, id, conv::ToWide( text ).c_str() );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -595,7 +595,7 @@ int CLuaGuiEnvironment::AddTab( lua_State* vm )
 
 	gui::IGUITab* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = parent->addTab( StrToWide( name ).c_str(), id );
+	IF_OBJECT_NOT_NULL_THEN elm = parent->addTab( conv::ToWide( name ).c_str(), id );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -621,7 +621,7 @@ int CLuaGuiEnvironment::AddLinkBox( lua_State* vm )
 	{
 		elm = object_->addLinkBox( parent, iid, rectangle );
 		if( elm )
-			elm->setText( StrToWide( name ).c_str() );
+			elm->setText(conv:: ToWide( name ).c_str() );
 	}
 
 	lua_pop( vm, argc );
@@ -744,7 +744,7 @@ int CLuaGuiEnvironment::MessageBox( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		gui::IGUIWindow* wnd = object_->addMessageBox( StrToWide( text ).c_str(), flags, funcs );
+		gui::IGUIWindow* wnd = object_->addMessageBox( conv::ToWide( text ).c_str(), flags, funcs );
 		if( gui::CNrpWindow* nrpw = dynamic_cast< gui::CNrpWindow* >( wnd ) )
 			nrpw->setModal();
 	}
@@ -778,7 +778,7 @@ int CLuaGuiEnvironment::AddPictureFlow( lua_State* L )
 int CLuaGuiEnvironment::FadeAction( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 4, 4, "Function CLuaGuiEnvironment:FadeOut need int, bool parameter" );
+	luaL_argcheck(L, argc == 4, 4, "Function CLuaGuiEnvironment:FadeAction need int, bool, bool parameter" );
 
 	int time = lua_tointeger( L, 2 );
 	bool inaction = lua_toboolean( L, 3 ) > 0;
@@ -792,7 +792,8 @@ int CLuaGuiEnvironment::FadeAction( lua_State* L )
 
 		if( time == 0 )
 		{
-				object_->addToDeletionQueue( fader );
+				if( fader )
+					object_->addToDeletionQueue( fader );
 				return 1;
 		}
 		else
@@ -880,7 +881,7 @@ int CLuaGuiEnvironment::AddTextRunner( lua_State* vm )
 	assert( text != NULL );
 	gui::IGUIAnimator* anim = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN anim = object_->addTextRunnerAnimator( parent, StrToWide( text ).c_str() );
+	IF_OBJECT_NOT_NULL_THEN anim = object_->addTextRunnerAnimator( parent, conv::ToWide( text ).c_str() );
 
 	lua_pushlightuserdata( vm, (void*)anim );
 

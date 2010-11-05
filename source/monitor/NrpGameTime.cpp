@@ -32,7 +32,7 @@ bool CNrpGameTime::Update()
 	CNrpApplication& app = CNrpApplication::Instance();
 	SYSTEMTIME& time = app.GetValue<SYSTEMTIME>( CURRENTTIME );
 	time.wDayOfWeek = time.wMilliseconds = time.wSecond = 0;
-	if( GetTickCount() - lastTimeUpdate_ > 100 )
+	if( GetTickCount() - lastTimeUpdate_ > app.GetValue<int>( PAUSEBTWSTEP ) )
 	{
 		lastTimeUpdate_ = GetTickCount();
 		SPEED spd = speed_;
@@ -43,7 +43,7 @@ bool CNrpGameTime::Update()
 			{
 				time.wMinute = 0;
 				spd = SPD_HOUR;
-				app.BeginNewHour_();
+				app._BeginNewHour();
 			}
 		}
 
@@ -54,7 +54,7 @@ bool CNrpGameTime::Update()
 			{
 				time.wHour = 9;
 				spd = SPD_DAY;
-				app.BeginNewDay_();
+				app._BeginNewDay();
 				app.DoLuaFunctionsByType( APP_DAY_CHANGE, this );
 			}
 		}
@@ -67,7 +67,7 @@ bool CNrpGameTime::Update()
 			{
 				time.wDay = 1;
 				spd = SPD_MONTH;
-				app.BeginNewMonth_();
+				app._BeginNewMonth();
 				app.DoLuaFunctionsByType( APP_MONTH_CHANGE, this );
 			}
 		}

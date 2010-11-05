@@ -33,6 +33,7 @@ OPTION_NAME MINIMUM_USER_SALARY( "minimumUserSalary" );
 OPTION_NAME PDA( "pda" ); 
 OPTION_NAME SYSTEMINI( "systemIni" );
 OPTION_NAME GAME_TIME( "objectGameTime" );
+OPTION_NAME PAUSEBTWSTEP( "pausebtwstep" );
 
 class CNrpCompany;
 class IUser;
@@ -148,14 +149,15 @@ private:
 	PROJECTS_MAP projects_;
 	DEVPROJECTS_MAP devProjects_;
 
-	void BeginNewHour_();
-	void BeginNewDay_();
-	void BeginNewMonth_();
+	void _BeginNewHour();
+	void _BeginNewDay();
+	void _BeginNewMonth();
 	IUser* CreateRandomUser_( std::string userType );
 	void UpdateMarketGames_();
 	int GetFreePlatformNumberForGame_( CNrpGame* game );
 	int GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp );
 	void UpdateInvention_();
+
 	void _LoadUsers( const std::string& iniFile );
 	void _InitialyzeSaveDirectories( const std::string& profileName );
 	void _UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );

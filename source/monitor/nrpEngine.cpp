@@ -38,9 +38,7 @@ void CNrpEngine::Run() //создание нерпы
 
 		while ( device_->run() )
 		{
-			device_->setWindowCaption(
-				StrToWide( IntToStr( device_->getVideoDriver()->getFPS() ) ).c_str()
-				);
+			device_->setWindowCaption( conv::AnyToWide( device_->getVideoDriver()->getFPS() ).c_str() );
 			try
 			{
 				switch( run_state_ )
@@ -129,7 +127,7 @@ bool CNrpEngine::InitVideo()
 	device_->getVideoDriver()->setTextureCreationFlag( video::ETCF_ALWAYS_32_BIT, true );
 
 	windowHandle_ = 0;
-	windowHandle_ = FindWindow( NULL, nrp::WideToStr( newCaption ).c_str() );							//заменяем обработчик событий
+	windowHandle_ = FindWindow( NULL, conv::ToStr( newCaption ).c_str() );							//заменяем обработчик событий
 	OldWindowProc = (WNDPROC)SetWindowLong( windowHandle_, GWL_WNDPROC, (long)NewWindowProc);
 
 	guienv_ = new gui::CNrpGUIEnvironment( device_->getGUIEnvironment() );

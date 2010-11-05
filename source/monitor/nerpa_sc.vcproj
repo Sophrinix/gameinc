@@ -517,14 +517,6 @@
 			Name="GUI"
 			>
 			<File
-				RelativePath=".\NrpGuiElementDestructor.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpGuiElementDestructor.h"
-				>
-			</File>
-			<File
 				RelativePath=".\nrpGUIEnvironment.cpp"
 				>
 			</File>
@@ -736,6 +728,14 @@
 					</File>
 					<File
 						RelativePath=".\NrpGuiCursorPosAnimator.h"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpGuiElementDestructor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpGuiElementDestructor.h"
 						>
 					</File>
 					<File
@@ -1474,6 +1474,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\director.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\diskManager.lua"
 				>
 			</File>
 			<File

@@ -39,6 +39,7 @@ public:
 public:
 	CNrpGame( const std::string& fileName );
 	~CNrpGame(void);
+
 	CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany );
 
 	std::string GetTechName( size_t index );
@@ -47,7 +48,7 @@ public:
 
 	float GetAuthorFamous();
 
-	CNrpHistory* GetHistory() { return history_; }
+	CNrpHistory* GetHistory();
 	void GameBoxSaling( int number );
 
 	std::string Save( const std::string& saveFolder );
@@ -58,10 +59,10 @@ private:
 	void InitializeOptions_();
 	CNrpGame() : INrpConfig( CLASS_NRPGAME, "" ) {};
 	
-	STRINGS developers_;
-	STRINGS genres_;
-	STRINGS techs_;
-	CNrpHistory*  history_;
+	STRINGS _developers;
+	STRINGS _genres;
+	STRINGS _techs;
+	CNrpHistory*  _history;
 };
 
 typedef CNrpGame* PNrpGame;

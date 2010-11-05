@@ -97,9 +97,11 @@ void CGUIStaticText::draw()
 						font->getDimension(Text.c_str()).Width;
 				}
 
-				font->draw(Text.c_str(), frameRect,
-					OverrideColorEnabled ? OverrideColor : skin->getColor(IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT),
-					HAlign == EGUIA_CENTER, VAlign == EGUIA_CENTER, &AbsoluteClippingRect);
+				video::SColor eColor = OverrideColorEnabled ? OverrideColor : skin->getColor(IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT);
+				eColor.setAlpha( AlphaBlend );
+				font->draw(Text.c_str(), frameRect, eColor,
+						   HAlign == EGUIA_CENTER, VAlign == EGUIA_CENTER, 
+						   &AbsoluteClippingRect);
 			}
 			else
 			{
@@ -126,9 +128,11 @@ void CGUIStaticText::draw()
 							font->getDimension(BrokenText[i].c_str()).Width;
 					}
 
-					font->draw(BrokenText[i].c_str(), r,
-						OverrideColorEnabled ? OverrideColor : skin->getColor(IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT),
-						HAlign == EGUIA_CENTER, false, &AbsoluteClippingRect);
+					video::SColor eColor = OverrideColorEnabled ? OverrideColor : skin->getColor(IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT);
+					eColor.setAlpha( AlphaBlend );
+
+					font->draw(BrokenText[i].c_str(), r, eColor,
+						   	   HAlign == EGUIA_CENTER, false, &AbsoluteClippingRect);
 
 					r.LowerRightCorner.Y += height;
 					r.UpperLeftCorner.Y += height;

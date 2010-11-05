@@ -245,7 +245,7 @@ int CLuaSceneManager::DrawProgress( lua_State* vm )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		scene::CLoadingScreen ld( object_->getVideoDriver(), CNrpEngine::Instance().GetGuiEnvironment()->getFont( "font_14" ) );
-		ld.render( progress, StrToWide( text ? text : "").c_str() );
+		ld.render( progress, conv::ToWide( text ? text : "").c_str() );
 	}
 
 	return 1;
@@ -418,11 +418,11 @@ int CLuaSceneManager::AddTextSceneNode( lua_State* vm )
 	scene::ISceneNode* node = (scene::ISceneNode*)lua_touserdata( vm, 8 );
 	core::vector3df position( (f32)lua_tonumber( vm, 9 ), (f32)lua_tonumber( vm, 10 ), (f32)lua_tonumber( vm, 11 ) );
 	int id = lua_tointeger( vm, 12 );
-	gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( ( "font_" + IntToStr( fontSize ) ).c_str() );
+	gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( ( "font_" + conv::ToStr( fontSize ) ).c_str() );
 
 	scene::ITextSceneNode* textNode = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN textNode = object_->addTextSceneNode( font, StrToWide( text ).c_str(), color, node, position, id );
+	IF_OBJECT_NOT_NULL_THEN textNode = object_->addTextSceneNode( font, conv::ToWide( text ).c_str(), color, node, position, id );
 
 	lua_pushlightuserdata( vm, textNode );
 
@@ -488,7 +488,7 @@ int CLuaSceneManager::GetMarkText( lua_State* L )
 	if( node != NULL )
 		text = ((scene::ITextSceneNode*)node)->getText();
 
-	lua_pushstring( L, WideToStr( text.c_str() ).c_str() );
+	lua_pushstring( L, conv::ToStr( text.c_str() ).c_str() );
 
 	return 1;
 }
@@ -519,12 +519,12 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 		{
 			//и существует привязанный нод, то надо поменять текст у этого нода
 			if( textNode != NULL )
-				reinterpret_cast< scene::ITextSceneNode* >( textNode )->setText( StrToWide( text ).c_str() );
+				reinterpret_cast< scene::ITextSceneNode* >( textNode )->setText( conv::ToWide( text ).c_str() );
 			else
 			{
 				//иначе надо создать новый текстнод и присвоить ему этот текст
 				gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( "font_12" );
-				object_->addTextSceneNode( font, StrToWide( text ).c_str(), 0xff000000, ptrNode, core::vector3df( 0, 0, 0 ) );
+				object_->addTextSceneNode( font, conv::ToWide( text ).c_str(), 0xff000000, ptrNode, core::vector3df( 0, 0, 0 ) );
 			}
 		}
 

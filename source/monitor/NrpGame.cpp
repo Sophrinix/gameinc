@@ -10,6 +10,8 @@
 #include "NrpProjectModule.h"
 #include "IUser.h"
 #include "OpFileSystem.h"
+#include "NrpHistory.h"
+#include "NrpGameEngine.h"
 
 #include <errno.h>
 #include <OleAuto.h>
@@ -20,6 +22,7 @@ namespace nrp
 void CNrpGame::InitializeOptions_()
 {
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
+	CreateValue<std::string>( COMPANYNAME, "" );
 	CreateValue<std::string>( NAME, "" );
 	CreateValue<std::string>( INTERNAL_NAME, "" );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
@@ -55,6 +58,8 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<std::string>( DESCRIPTIONPATH, "" );
 	CreateValue<std::string>( TEXTURENORMAL, "" );
 	CreateValue<float>( READYWORKPERCENT, 1.f );
+	CreateValue<std::string>( VIEWIMAGE, "" );
+	_history = NULL;
 }
 
 CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpConfig( CLASS_NRPGAME, devGame->GetString( NAME ) )
@@ -62,9 +67,10 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpCo
 	InitializeOptions_();
 
 	SetValue<PNrpCompany>( PARENTCOMPANY, ptrCompany );
+	SetString( COMPANYNAME, ptrCompany->GetString( NAME ) );
 	SetString( NAME, devGame->GetString( NAME ) );
 	SetValue<int>( MONEYONDEVELOP, devGame->GetValue<int>( MONEYONDEVELOP ) );
-	INrpProject* ge = devGame->GetValue<INrpProject*>( GAME_ENGINE );
+	CNrpGameEngine* ge = devGame->GetValue<CNrpGameEngine*>( GAME_ENGINE );
 	if( ge )
 		SetString( GAME_ENGINE, ge->GetString( NAME ) );
 
@@ -74,19 +80,19 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpCo
 	SetValue<int>( USERNUMBER, devGame->GetValue<int>( USERNUMBER ) );
 	SetString( PREV_GAME, devGame->GetString( NAME ) ); 
 	
-	developers_ = devGame->GetDevelopers();
+	_developers = devGame->GetDevelopers();
 
 	SetValue<int>( GENRE_MODULE_NUMBER, devGame->GetValue<int>( GENRE_MODULE_NUMBER ) );
 	for( int cnt=0; cnt < GetValue<int>( GENRE_MODULE_NUMBER ); cnt++ )
 	{
 		 CNrpTechnology* genre = devGame->GetGenre( cnt );
 		 if( genre )
-			genres_.push_back( genre->GetString( INTERNAL_NAME ) );
+			_genres.push_back( genre->GetString( INTERNAL_NAME ) );
 	}
 
 	SetValue<int>( MODULE_NUMBER, devGame->GetValue<int>( MODULE_NUMBER ) );
 	for( int cnt=0; cnt < GetValue<int>( MODULE_NUMBER ); cnt++ )
-		 techs_.push_back( devGame->GetModule( cnt )->GetString( INTERNAL_NAME ) );
+		 _techs.push_back( devGame->GetModule( cnt )->GetString( INTERNAL_NAME ) );
 
 	SetString( INTERNAL_NAME, CNrpApplication::Instance().GetFreeInternalName( this ) );
 	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( GetString( INTERNAL_NAME ) );
@@ -125,14 +131,14 @@ std::string CNrpGame::Save( const std::string& saveFolder )
 	}
 
 	int i=0;
-	for( STRINGS::iterator gIter = techs_.begin(); 
-		 gIter != techs_.end(); 
+	for( STRINGS::iterator gIter = _techs.begin(); 
+		 gIter != _techs.end(); 
 		 gIter++, i++ )
 		IniFile::Write( SECTION_TECHS, KEY_TECH(i), *gIter, saveFile );
 
 	i=0;
-	for( STRINGS::iterator gIter = genres_.begin(); 
-		gIter != genres_.end(); 
+	for( STRINGS::iterator gIter = _genres.begin(); 
+		gIter != _genres.end(); 
 		gIter++, i++ )
 		IniFile::Write( SECTION_GENRES, KEY_GENRE(i), *gIter, saveFile );
 
@@ -169,10 +175,10 @@ void CNrpGame::Load( const std::string& loadPath )
 	INrpConfig::Load( loadFile );
 
 	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
-		techs_.push_back( IniFile::Read( SECTION_TECHS, KEY_TECH(i), std::string(""), loadFile ) );
+		_techs.push_back( IniFile::Read( SECTION_TECHS, KEY_TECH(i), std::string(""), loadFile ) );
 
 	for( int i=0; i < GetValue<int>( GENRE_MODULE_NUMBER ); ++i )
-		genres_.push_back( IniFile::Read( SECTION_GENRES, KEY_GENRE(i), std::string(""), loadFile ) );
+		_genres.push_back( IniFile::Read( SECTION_GENRES, KEY_GENRE(i), std::string(""), loadFile ) );
 
 	std::string boxIni = loadFolder + "box.ini";
 	if( OpFileSystem::IsExist( boxIni ) )
@@ -191,8 +197,8 @@ void CNrpGame::Load( const std::string& loadPath )
 float CNrpGame::GetAuthorFamous()
 {
 	float summ = 0.1f;
-	DEVELOPERS_LIST::iterator uIter = developers_.begin();
-	for( ; uIter != developers_.end(); uIter++ )
+	DEVELOPERS_LIST::iterator uIter = _developers.begin();
+	for( ; uIter != _developers.end(); uIter++ )
 	{
 		IUser* user = CNrpApplication::Instance().GetUser( *uIter );
 		if( user )
@@ -206,12 +212,12 @@ float CNrpGame::GetAuthorFamous()
 
 std::string CNrpGame::GetGenreName( size_t index )
 {
-	return index < genres_.size() ? genres_[ index ] : "";
+	return index < _genres.size() ? _genres[ index ] : "";
 }
 
 std::string CNrpGame::GetTechName( size_t index )
 {
-    return index < techs_.size() ? techs_[ index ] : "";
+    return index < _techs.size() ? _techs[ index ] : "";
 }
 
 void CNrpGame::GameBoxSaling( int number )
@@ -239,10 +245,18 @@ void CNrpGame::GameBoxSaling( int number )
 
 bool CNrpGame::IsGenreAvaible( const std::string& name )
 {
-	for( size_t k=0; k < genres_.size(); k++ )
-		if( genres_[ k ] == name )
+	for( size_t k=0; k < _genres.size(); k++ )
+		if( _genres[ k ] == name )
 			return true;
 
 	return false;
+}
+
+CNrpHistory* CNrpGame::GetHistory()
+{
+	if( !_history )
+		_history = new CNrpHistory();
+
+	return _history;
 }
 }//namespace nrp

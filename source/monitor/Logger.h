@@ -96,7 +96,7 @@ struct Log
 
 	template<> Log& operator<< <int>(int t)
 	{
-		Text << nrp::IntToStr(t);
+		Text << conv::ToStr(t);
 		return *this;
 	}
 	// Кто-нибудь знает, зачем переопределять шаблон специально для cch* ?

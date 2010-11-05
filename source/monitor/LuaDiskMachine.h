@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ILuaObject.h"
+#include "ILuaBaseProject.h"
 
 
 namespace nrp
@@ -10,7 +10,7 @@ CLASS_NAME CLASS_LUADISKMACHINE("CLuaDiskMachine");
 
 class CNrpDiskMachine;
 
-class CLuaDiskMachine : public ILuaObject< nrp::CNrpDiskMachine >
+class CLuaDiskMachine : public ILuaBaseProject< nrp::CNrpDiskMachine >
 {
 public:
 	static Luna<CLuaDiskMachine>::RegType methods[];
@@ -21,6 +21,7 @@ public:
 	int Load( lua_State* L );
 	int IsLoaded( lua_State* L );
 	int GetName( lua_State* L );
+	int GetTexture( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUADISKMACHINE.c_str(); }
 };

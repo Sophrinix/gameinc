@@ -15,13 +15,13 @@ using namespace video;
 namespace nrp
 {
 
-CNrpHUDConfig::CNrpHUDConfig() : INrpConfig("CNrpHUDConfig", "hudConfig")
+CNrpHUDConfig::CNrpHUDConfig() : INrpConfig(CLASS_HUDCONFIG, CLASS_HUDCONFIG)
 {		
 	CreateValue<int>( MIN_FONT_SIZE, 8 );
 	CreateValue<int>( MAX_FONT_SIZE, 8 );
 
 	for( int cnt=GetValue<int>(MIN_FONT_SIZE); cnt < GetValue<int>(MAX_FONT_SIZE); cnt++)
-		CreateValue<std::string>( "font_" + nrp::IntToStr(cnt), "" );
+		CreateValue<std::string>( "font_" + conv::ToStr(cnt), "" );
 
 	Load( "config/hud.ini" );
 }

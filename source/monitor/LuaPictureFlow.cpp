@@ -45,9 +45,7 @@ int CLuaPictureFlow::AddItem( lua_State *L )	//добавляет текст в списко отображе
 	assert( text != NULL );
 	void* object = lua_touserdata( L, 4 );
 	
-	IF_OBJECT_NOT_NULL_THEN	object_->addItem( texture, 
-											  StrToWide( text ).c_str(),
-											  object );			
+	IF_OBJECT_NOT_NULL_THEN	object_->addItem( texture, conv::ToWide( text ).c_str(), object );			
 
 	return 1;
 }
@@ -128,7 +126,7 @@ int CLuaPictureFlow::GetSelectedItem( lua_State* L )
 	{
 		int selected = object_->getSelected();
 		if( selected >= 0 )
-			text = WideToStr( object_->getListItem( selected ) );
+			text = conv::ToStr( object_->getListItem( selected ) );
 	}
 
 	lua_pushstring( L, text.c_str() );

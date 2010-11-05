@@ -8,8 +8,8 @@
 #define SECTION_IMAGES "images"
 #define SECTION_BOXIMAGES "imagesBox"
 
-#define KEY_IMAGE(index) ("image_"+IntToStr(index))
-#define KEY_BOX_IMAGE(index) ("boxImage_"+IntToStr(index))
+#define KEY_IMAGE(index) ("image_"+conv::ToStr(index))
+#define KEY_BOX_IMAGE(index) ("boxImage_"+conv::ToStr(index))
 
 namespace nrp
 {
@@ -75,7 +75,7 @@ void CNrpScreenshot::Load( const std::string& fileName )
 void CNrpScreenshot::InitializeOptions_()
 {
 	CreateValue<std::string>( NAME, "" );
-	CreateValue<int>( STARTDATE, 0 );
+	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<int>( IMAGESNUMBER, 0 );
 	CreateValue<int>( IMAGESBOXNUMBER, 0 );
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );

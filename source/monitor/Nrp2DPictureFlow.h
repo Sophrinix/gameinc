@@ -105,7 +105,8 @@ private:
 	void _SendEventSelected( const SEvent& event );
 	void _UpdateImages();
 	void _UpdatePositions();
-
+	core::recti _CorrectRect( video::ITexture* texture, const core::recti& rectangle );
+	void _DrawAny( video::ITexture* txs, const core::recti& rectabgle, video::SColor* colors );
 	s32 _activeIndex;
 	s32 _lastTimeKey;
 	core::array< CNrpImageDescription* > _images;

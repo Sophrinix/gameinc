@@ -16,37 +16,41 @@ CNrpGuiBlendAnimator::CNrpGuiBlendAnimator( IGUIEnvironment* environment,
 											IGUIElement* node, 
 											u32 start, 
 											u32 stop, 
-											f32 step,
+											f32 time,
 											bool visOnStop, 
 											bool remSelf, 
 											bool remParent )
 : IGUIAnimator( environment, node ), 
-  step_( step ), visOnStop_( visOnStop ),
-  remSelf_( remSelf ), remParent_( remParent )
+  _time( time ), _visOnStop( visOnStop ),
+  _remSelf( remSelf ), _remParent( remParent )
 {
-	start_ = min( start, stop );			//выявим границы работы аниматора
-	stop_ = max( start, stop );
-	currentAlpha_ = (f32)start;				//запомним начальное значение прозрачности
+	_start = min( start, stop );			//выявим границы работы аниматора
+	_stop = max( start, stop );
+	_currentAlpha = static_cast< f32 >( start );				//запомним начальное значение прозрачности
+	_step = abs( static_cast<f32>( start-stop ) ) / Environment->getVideoDriver()->getFPS();
+	_step /= (_time/1000.f);
+	_step *= start > stop ? -1 : 1;
 }
 
 void CNrpGuiBlendAnimator::draw()
 {
-	if( currentAlpha_ > start_ && currentAlpha_ < stop_ )  //проверяем границы работы аниматора
-		currentAlpha_ += step_;
+	if( _currentAlpha >= _start && _currentAlpha <= _stop )  //проверяем границы работы аниматора
+		_currentAlpha += _step;
 	else												   //вышли за границы рабоыт
 	{
-		Parent->setVisible( visOnStop_ );				   //установим значение видимости элемента	
+		Parent->setVisible( _visOnStop );				   //установим значение видимости элемента	
 
-		if( remSelf_ )										//удалим аниматор если надо
+		if( _remSelf )										//удалим аниматор если надо
 			dynamic_cast< CNrpGUIEnvironment* >( Environment )->addToDeletionQueue( this );
 	
-		if( remParent_ )									//удалим родителя, если установлен такой флаг
+		if( _remParent )									//удалим родителя, если установлен такой флаг
 			dynamic_cast< CNrpGUIEnvironment* >( Environment )->addToDeletionQueue( Parent );
 
 		return;
 	}
 
-	Parent->setAlphaBlend( (u32)currentAlpha_ );			//установим новое значение прозрачности элемента
+	if( Parent )
+		Parent->setAlphaBlend( static_cast<u32>( _currentAlpha ) );			//установим новое значение прозрачности элемента
 }
 
 }//namespace gui

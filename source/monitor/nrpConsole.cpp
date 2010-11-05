@@ -21,7 +21,7 @@ CNrpConsole::CNrpConsole( IGUIEnvironment* env, IGUIElement* parent, s32 id, cor
 							 consoleHistoryIndex_(0),
 							 toggle_visible_(NONE)//! constructor
 {
-	setName( StrToWide( CNrpConsoleConfig::Instance().GetString( CONSOLE_GUINAME ) ).c_str() );
+	setName( conv::ToWide( CNrpConsoleConfig::Instance().GetString( CONSOLE_GUINAME ) ).c_str() );
 
 	InitializeCriticalSectionAndSpinCount(&cs_dataaccess_, 1000);									//критическая секция для доступа к сообщениям консоли
 	
@@ -51,8 +51,8 @@ void CNrpConsole::SaveCommands_()																	//сохранение введенных комманд
 		for( size_t cnt=0; cnt < console_history_.size(); cnt++ )							//скидываем комманды на диск
 		{
 			IniFile::Write( "commands", 
-							std::string( "type_" ) + IntToStr( cnt ), 
-						    WideToStr( console_history_[ cnt ].c_str() ), 
+							"type_" + conv::ToStr( cnt ), 
+							conv::ToStr( console_history_[ cnt ].c_str() ), 
 						    path ); 
 		}	
 	}
@@ -74,11 +74,11 @@ void CNrpConsole::LoadSaveCommands_()													//загрузка комманд консоли
 	for( size_t cnt=0; cnt < num_com; cnt++ )
 	{
 		std::string strk = IniFile::Read( "commands", 
-										  std::string( "type_" ) + IntToStr( cnt ), 
+										  "type_" + conv::ToStr( cnt ), 
 										  std::string( "null" ), 
 										  path );								//если команды не она будет отображена ка "null"
 
-		console_history_.push_back( StrToWide( strk ).c_str() );
+		console_history_.push_back( conv::ToWide( strk ).c_str() );
 	}	
 }
 //////////////////////////////////////////////////////////////////////////
@@ -220,7 +220,7 @@ void CNrpConsole::draw()
 
 		LeaveCriticalSection( &cs_dataaccess_);
 
-		core::stringw shellText = nrp::StrToWide( conf.GetValue< std::string >( CONSOLE_PROMT ) ).c_str();	//now, render the prompt
+		core::stringw shellText = conv::ToWide( conf.GetString( CONSOLE_PROMT ) ).c_str();	//now, render the prompt
 		shellText += L"$>";
 		size_t textSize = shellText.size();
 		shellText += currentCommand_.c_str();

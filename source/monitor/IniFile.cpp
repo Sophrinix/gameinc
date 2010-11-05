@@ -249,7 +249,7 @@ void IniFile::ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt, std::s
 		name = readLine.substr( 0, readLine.find( '=' ) );
 		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
 		int keey = static_cast< int >( translate::GetNumber( name.c_str() ) );
-		mapt[ keey ] = StrToInt( valuel.c_str() );
+		mapt[ keey ] = conv::ToInt( valuel.c_str() );
 
 		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
 		readLine = buffer;

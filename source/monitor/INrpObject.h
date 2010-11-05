@@ -37,7 +37,7 @@ public:
 			objectName_( objectName ), systemName_( sysName )
 	{
 		if( systemName_.empty() )
-			systemName_ = objectName + "_object" + IntToStr( rand() );
+			systemName_ = objectName + "_object" + conv::ToStr( rand() );
 
 		GInsertObjectToSystemMap( this );
 	}

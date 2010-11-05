@@ -155,10 +155,10 @@ bool IC_Command_INFO::invoke(const array<stringw>& args,
 		GGetListSystemObject( strings );
 
 		for( size_t cnt=0; cnt < strings.size(); cnt++ )
-			 pOutput->AppendMessage( StrToWide( strings[ cnt ] ).c_str() );
+			pOutput->AppendMessage( conv::ToWide( strings[ cnt ] ).c_str() );
 
 
-		pOutput->AppendMessage( StrToWide( "Size of objlist = " + IntToStr( strings.size() ) ).c_str() );
+		pOutput->AppendMessage( conv::ToWide( "Size of objlist = " + conv::ToStr( strings.size() ) ).c_str() );
 
 		return true;
 	}
@@ -201,12 +201,12 @@ bool irr::core::IC_Command_SCRIPT::invoke( const array< stringw >& args, CComman
 	{
 		if( args[ 0 ] == L"-reload" )
 		{
-			nrp::CNrpScript::Instance().DoString( ("package.loaded[ \" " + nrp::WideToStr( args[ 1 ].c_str() ) + " \" ] == false").c_str() );
-			nrp::CNrpScript::Instance().DoString( ("IncludeScript( \" " + nrp::WideToStr( args[ 1 ].c_str() ) + " \" )").c_str() );
+			nrp::CNrpScript::Instance().DoString( ("package.loaded[ \" " + conv::ToStr( args[ 1 ].c_str() ) + " \" ] == false").c_str() );
+			nrp::CNrpScript::Instance().DoString( ("IncludeScript( \" " + conv::ToStr( args[ 1 ].c_str() ) + " \" )").c_str() );
 		}
 		else if( args[ 0 ] == L"-so" )
 		{ 
-			std::string optionName = WideToStr( args[ 1 ].c_str() );
+			std::string optionName = conv::ToStr( args[ 1 ].c_str() );
 			if( args[ 2 ] == L"true" || args[ 2 ] == L"false" )
 			{
 				bool val = (args[ 2 ] == L"true");
@@ -217,9 +217,9 @@ bool irr::core::IC_Command_SCRIPT::invoke( const array< stringw >& args, CComman
 		{
 			nrp::CNrpScript& sc = nrp::CNrpScript::Instance();
 			std::string text = SHOW_CALL_FUNCTION_NAME + std::string( sc.GetValue<bool>( SHOW_CALL_FUNCTION_NAME ) ? "=true" : "=false" );
-			pOutput->AppendMessage( StrToWide( text ).c_str() );
+			pOutput->AppendMessage( conv::ToWide( text ).c_str() );
 			text = LOAD_FUNCTIONS_FILENAME + "=" + sc.GetValue<std::string>( LOAD_FUNCTIONS_FILENAME );
-			pOutput->AppendMessage( StrToWide( text ).c_str() );
+			pOutput->AppendMessage( conv::ToWide( text ).c_str() );
 		}
 	}
 

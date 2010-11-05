@@ -62,6 +62,9 @@ public:
 
 	int CreateDirectorySnapshot( lua_State* L );
 
+	int GetPauseBetweenStep( lua_State* L );
+	int SetPauseBetweenStep( lua_State* L );
+
 	static const char* ClassName() { return CLASS_CLUAPPLICATION.c_str(); }
 private:
 	int AddRemLuaFunction_( lua_State* L, std::string funcName, bool rem );

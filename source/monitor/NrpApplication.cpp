@@ -70,6 +70,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	CreateValue<int>( MINIMUM_USER_SALARY, 250 );
 	CreateValue<CNrpPda*>( PDA, new CNrpPda() );
 	CreateValue<CNrpGameTime*>( GAME_TIME, new CNrpGameTime( this ) );
+	CreateValue<int>( PAUSEBTWSTEP, 100 );
 
 	srand( GetTickCount() );
 }
@@ -409,7 +410,7 @@ void CNrpApplication::LoadScreenshots( const std::string& fileName )
 	
 	for( size_t i=0; i < imageListNumber; i++ )
 	{
-		std::string scrFile = IniFile::Read( SECTION_OPTIONS, "screenShot"+IntToStr( i ), std::string(""), fileName );
+		std::string scrFile = IniFile::Read( SECTION_OPTIONS, KEY_SCREENSHOT( i ), std::string(""), fileName );
 		CNrpScreenshot* ptrScrn = new CNrpScreenshot( scrFile );
 		_screenshots[ ptrScrn->GetString( NAME ) ] = ptrScrn;
 	}
@@ -460,7 +461,7 @@ CNrpGameEngine* CNrpApplication::GetGameEngine( const std::string& name ) const
 	return _FindByNamesIn<GAMEENGINES_LIST, CNrpGameEngine>( engines_, name );
 }
 
-void CNrpApplication::BeginNewDay_()
+void CNrpApplication::_BeginNewDay()
 {
 	COMPANIES_LIST::iterator cIter = companies_.begin();
 	for( ; cIter != companies_.end(); cIter++)
@@ -669,7 +670,7 @@ void CNrpApplication::_UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typ
 
 		//результат подсчета рейтинга
 		//todo: надо както обходить рейтинг хитовых игр
-		ptrGame->GetHistory()->GetStep( GetValue<SYSTEMTIME>( CURRENTTIME ) )->SetValue<int>( CURRENTGAMERATING, rating );
+		ptrGame->GetHistory()->AddStep( GetValue<SYSTEMTIME>( CURRENTTIME ) )->AddValue<int>( CURRENTGAMERATING, rating );
 	}
 }
 
@@ -727,7 +728,7 @@ IUser* CNrpApplication::CreateRandomUser_( std::string userType )
 	return ptrUser;
 }
 
-void CNrpApplication::BeginNewMonth_()
+void CNrpApplication::_BeginNewMonth()
 {
 	//начало мес€ца в компании
 	for( COMPANIES_LIST::iterator cIter = companies_.begin();
@@ -741,7 +742,7 @@ void CNrpApplication::BeginNewMonth_()
 			 UpdateGameRatings( *pIter );
 }
 
-void CNrpApplication::BeginNewHour_()
+void CNrpApplication::_BeginNewHour()
 {
 	COMPANIES_LIST::iterator cIter = companies_.begin();
 	for( ; cIter != companies_.end(); cIter++)

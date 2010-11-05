@@ -20,6 +20,7 @@ Luna< CLuaDiskMachine >::RegType CLuaDiskMachine::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, IsLoaded ),
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Remove ),
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetTexture ),
 	{0,0}
 };
 
@@ -45,7 +46,7 @@ int CLuaDiskMachine::Remove( lua_State* L )
 	return 1;	
 }
 
-CLuaDiskMachine::CLuaDiskMachine( lua_State *L ) : ILuaObject( L, CLASS_LUADISKMACHINE )
+CLuaDiskMachine::CLuaDiskMachine( lua_State *L ) : ILuaBaseProject( L, CLASS_LUADISKMACHINE )
 {
 
 }
@@ -69,7 +70,7 @@ int CLuaDiskMachine::IsLoaded( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaDiskMachine::IsLoaded not need any parameter");
 
 	bool loaded = false; 
-	IF_OBJECT_NOT_NULL_THEN loaded = CNrpApplication::Instance().GetDiskMachine( object_->GetValue<std::string>( NAME ) ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN loaded = CNrpApplication::Instance().GetDiskMachine( object_->GetString( NAME ) ) != NULL;
 
 	lua_pushboolean( L, loaded );
 	return 1;		
@@ -77,14 +78,13 @@ int CLuaDiskMachine::IsLoaded( lua_State* L )
 
 int CLuaDiskMachine::GetName( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaDiskMachine::IsLoaded not need any parameter");
-
-	std::string name = ""; 
-	IF_OBJECT_NOT_NULL_THEN name = object_->GetValue<std::string>( NAME );
-
-	lua_pushstring( L, name.c_str() );
+	lua_pushstring( L, GetParam_<std::string>( L, "GetName", NAME, "" ).c_str() );
 	return 1;		
 }
 
+int CLuaDiskMachine::GetTexture( lua_State* L )
+{
+	lua_pushstring( L, GetParam_<std::string>( L, "GetName", TEXTURENORMAL, "" ).c_str() );
+	return 1;		
+}
 }

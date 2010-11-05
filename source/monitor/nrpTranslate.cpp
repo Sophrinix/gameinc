@@ -52,7 +52,7 @@ double GetNumber( const char* name )
 		return res;
 	}
 	return
-		static_cast< double >( StrToFloat( name ) );
+		static_cast< double >( conv::ToFloat( name ) );
 }
 
 }

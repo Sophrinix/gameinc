@@ -73,6 +73,8 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetInvention ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateDirectorySnapshot ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPda ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPauseBetweenStep ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, SetPauseBetweenStep ),
 	{0,0}
 };
 
@@ -650,5 +652,33 @@ int CLuaApplication::GetPda( lua_State* L )
 	Luna< CLuaPda >::constructor( L );
 
 	return 1;		
+}
+
+int CLuaApplication::GetPauseBetweenStep( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetPauseBetweenStep not need any parameter" );
+
+	int pause = 0;
+	IF_OBJECT_NOT_NULL_THEN pause = object_->GetValue<int>( PAUSEBTWSTEP );
+	
+	lua_pushinteger( L, pause );
+
+	return 1;	
+}
+
+int CLuaApplication::SetPauseBetweenStep( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:SetPauseBetweenStep need integer parameter" );
+
+	int pause = lua_tointeger( L, 2 );
+	assert( pause > 0  );
+	if( pause <= 0 )
+		return 1;
+
+	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( PAUSEBTWSTEP, pause );
+
+	return 1;	
 }
 }//namespace nrp  

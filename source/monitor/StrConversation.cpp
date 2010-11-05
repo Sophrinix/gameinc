@@ -5,62 +5,12 @@
 #include <cwchar>
 
 namespace nrp
-{
+{ 
 
-std::string ExtractFileDir(const std::string& file_name )
+namespace conv
 {
-	char buffer[ MAX_PATH ] = { 0 };										//заполняем массив нулями
-	size_t len = file_name.size();
-	for( size_t i = len; i > 0; i-- )										//просматриваем символы строки с конца
-	{
-		if( file_name[ i ] == '\\' || file_name[ i ] == '/')				//ищем символ начала директории
-		{
-			memcpy( buffer, file_name.c_str(), i );							//копируем строку до этого символа
-			return std::string( buffer );
-		}
-	}
 	
-	return std::string("");														//строка не была найдена	
-}
-//////////////////////////////////////////////////////////////////////////
-
-std::string ExtractFileName( const std::string& file_name)
-{
-	char buffer[ MAX_PATH ] = { 0 };										//заполняем массив нулями
-	size_t len = file_name.size();
-
-	for (size_t i=len; i > 0; i--) 
-	{
-		if( file_name[ i ] == '\\' || file_name[ i ] == '/' )
-		{
-			memcpy ( buffer, &(file_name.c_str()[ i + 1 ]), len-i+1 );
-			return std::string( buffer );
-		}
-	}
-
-	return std::string("");
-}
-//////////////////////////////////////////////////////////////////////////
-
-std::string ExtractFileExt ( const std::string& file_name )
-{
-	char buffer[ MAX_PATH ] = { 0 };										//заполняем массив нулями
-	size_t len = file_name.size();
-
-	for (size_t i = len; i > 0; i--) 
-	{
-		if( file_name[i] == '.' ) 
-		{
-			memcpy ( buffer, &(file_name.c_str()[ i ]), len-i+1);
-			return std::string( buffer );
-		}
-	}
-
-	return std::string("");
-}
-//////////////////////////////////////////////////////////////////////////
-
-void MultiByteToHex( char* ptr_result, char* ptr_str, size_t len )
+void ToHex( char* ptr_result, char* ptr_str, size_t len )
 {	
 	const char hexchar[] = "0123456789abcdef";
 	for( size_t pos=0; pos < len; pos++ )
@@ -72,7 +22,7 @@ void MultiByteToHex( char* ptr_result, char* ptr_str, size_t len )
 }
 //////////////////////////////////////////////////////////////////////////
 
-void HexToMultiByte( char* ptr_result, char* ptr_hex )
+void FromHex( char* ptr_result, char* ptr_hex )
 {
 	size_t len = strlen( ptr_hex );
 	for( size_t pos=0; pos < len; pos+=3 )
@@ -84,7 +34,7 @@ void HexToMultiByte( char* ptr_result, char* ptr_hex )
 }
 //////////////////////////////////////////////////////////////////////////
 
-std::wstring StrToWide(const std::string& str)
+std::wstring ToWide(const std::string& str)
 {
 	int len = str.size() + 2;
 	wchar_t* buf = new wchar_t[ len ];
@@ -100,7 +50,7 @@ std::wstring StrToWide(const std::string& str)
 }
 //////////////////////////////////////////////////////////////////////////
 
-std::string WideToStr(const std::wstring& str)
+std::string ToStr(const std::wstring& str)
 {
 	int len = str.size() + 2;
 	char* buf = new char[len];
@@ -116,21 +66,21 @@ std::string WideToStr(const std::wstring& str)
 	return wstr;
 }
 
-std::string IntToStr( int num )
+std::string ToStr( int num )
 {
 	std::stringstream out;
 	out << num;
 	return out.str();
 }
 
-int WideToInt( const wchar_t* ws )
+int ToInt( const wchar_t* ws )
 {
 	std::wistringstream win(ws);
 	int value;
 	return win >> value ? value : 0;
 }
 
-int StrToInt( const char* s )
+int ToInt( const char* s )
 {
 	std::istringstream sti(s);
 	int result;
@@ -168,14 +118,14 @@ bool IsFloatNumber( const char* s )
 	return true;	
 }
 
-float StrToFloat( const char* s )
+float ToFloat( const char* s )
 {
 	float result( 0 );
 	sscanf_s( s, "%f", &result );
 	return result;
 }
 
-irr::core::vector3df StrToVector3df( const char* s )
+irr::core::vector3df ToVector3df( const char* s )
 {
 	irr::core::vector3df result( 0, 0, 0 );
 
@@ -184,7 +134,7 @@ irr::core::vector3df StrToVector3df( const char* s )
 	return result;
 }
 
-SYSTEMTIME StrToTime( const char* s )
+SYSTEMTIME ToTime( const char* s )
 {
 	SYSTEMTIME time;
 
@@ -196,9 +146,11 @@ SYSTEMTIME StrToTime( const char* s )
 	return time;	
 }
 
-bool StrToBool( const char* s )
+bool ToBool( const char* s )
 {
 	return (_stricmp( s, "true" ) == 0 || _stricmp( s, "1" ) == 0);
 }
+
+} //namespace conv
 
 } //namespace nrp

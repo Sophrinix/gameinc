@@ -7,7 +7,7 @@ namespace irr
 namespace gui
 {
 
-	video::ITexture* CNrp2DPictureFlow::CNrpImageDescription::CreateDownTexture_( video::IVideoDriver* driver, 
+video::ITexture* CNrp2DPictureFlow::CNrpImageDescription::CreateDownTexture_( video::IVideoDriver* driver, 
 																			   video::ITexture* pTxr )
 {
 	video::ITexture* resultt = NULL;
@@ -72,6 +72,24 @@ irr::u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* te
 	return resultt;
 }
 
+core::recti CNrp2DPictureFlow::_CorrectRect( video::ITexture* texture, const core::recti& rectangle )
+{
+	if( texture != NULL )
+	{
+		core::dimension2du txsSize = texture->getSize();
+		f32 koeff = rectangle.getWidth() / static_cast< f32 >( min( txsSize.Width, txsSize.Height ) );
+		core::dimension2du imSize( static_cast< u32 >( txsSize.Width * koeff ),
+								   static_cast< u32 >( txsSize.Height * koeff ) );
+
+		core::recti realRect( rectangle.getCenter().X - imSize.Width / 2, rectangle.getCenter().Y - imSize.Height / 2,
+					          rectangle.getCenter().X + imSize.Width / 2, rectangle.getCenter().Y + imSize.Height / 2 );
+
+		return realRect;
+	}
+	else
+		return rectangle;
+}
+
 void CNrp2DPictureFlow::_UpdateImages()
 {
 	core::recti tmpRect( RelativeRect.getCenter().X - _pictureRect.getWidth()/2, 
@@ -80,7 +98,7 @@ void CNrp2DPictureFlow::_UpdateImages()
 						 RelativeRect.getCenter().Y + _pictureRect.getHeight()/2 );
 
 	if( _activeIndex < (int)_images.size() )
-		_images[ _activeIndex ]->rectangle = tmpRect;
+		_images[ _activeIndex ]->rectangle = _CorrectRect( _images[ _activeIndex ]->GetTexture(), tmpRect );
 
 	s32 offsetx = 0;
 	core::recti lRect = tmpRect;
@@ -89,9 +107,12 @@ void CNrp2DPictureFlow::_UpdateImages()
 		{
 			offsetx += static_cast< s32 >( lRect.getWidth() * (0.7f - (_activeIndex-k)*0.1f) );
 			core::dimension2di sides( 0.7f * lRect.getWidth(), 0.7f * lRect.getHeight() ); 
+			
 			lRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
 				                 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
-			_images[ k ]->rectangle = lRect - core::position2di( offsetx, 0 );
+
+			
+			_images[ k ]->rectangle = _CorrectRect( _images[ k ]->GetTexture(), lRect ) - core::position2di( offsetx, 0 );
 		}
 
 	offsetx = 0;
@@ -102,37 +123,35 @@ void CNrp2DPictureFlow::_UpdateImages()
 		core::dimension2di sides( 0.7f * rRect.getWidth(), 0.7f * rRect.getHeight() ); 
 		rRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
 							 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
-		_images[ k ]->rectangle = rRect + core::position2di( offsetx, 0 );
+	
+		_images[ k ]->rectangle = _CorrectRect( _images[ k ]->GetTexture(), rRect ) + core::position2di( offsetx, 0 );
 	}
+}
+
+void CNrp2DPictureFlow::_DrawAny( video::ITexture* txs, const core::recti& rectabgle, video::SColor* colors )
+{
+	video::IVideoDriver* driver = Environment->getVideoDriver();
+	if( txs )
+		driver->draw2DImage( txs, rectabgle, 
+							 core::recti( core::position2di( 0, 0), txs->getSize() ),
+							 &AbsoluteClippingRect, colors, true );
+	else
+		driver->draw2DRectangle( rectabgle, 
+								 *colors, *(colors+1), *(colors+2), *(colors+3),
+								 &AbsoluteClippingRect );
 }
 
 void CNrp2DPictureFlow::_DrawPairImage( CNrpImageDescription* pDesk )
 {
-	video::IVideoDriver* driver = Environment->getVideoDriver();
 	core::recti rectangle( pDesk->currentRect.UpperLeftCorner.X, pDesk->currentRect.UpperLeftCorner.Y,
 						   pDesk->currentRect.LowerRightCorner.X, pDesk->currentRect.LowerRightCorner.Y );
 
-	if( pDesk->GetTexture() )
-		driver->draw2DImage( pDesk->GetTexture(), rectangle + AbsoluteRect.UpperLeftCorner, 
-			 			 	 core::recti( core::position2di( 0, 0), pDesk->GetTexture()->getSize() ),
-							 &AbsoluteClippingRect, NULL, true );
-	else
-		driver->draw2DRectangle(rectangle + AbsoluteRect.UpperLeftCorner, 
-								0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0,
-								&AbsoluteClippingRect );
+	core::recti rectUp = rectangle;// + AbsoluteRect.UpperLeftCorner;
+	video::SColor colorsA[] = {0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0};
+	_DrawAny( pDesk->GetTexture(), rectUp, colorsA );
 
-	video::SColor colors[] = { 0xC0C0C0C0, 0, 0, 0xC0C0C0C0 };
-	if( pDesk->GetDownTexture() )
-		driver->draw2DImage( pDesk->GetDownTexture(), 
-							rectangle + core::position2di( 0, rectangle.getHeight() ) + AbsoluteRect.UpperLeftCorner, 
-							core::recti( core::position2di( 0, 0), pDesk->GetDownTexture()->getSize() ),
-							&AbsoluteClippingRect, 
-							colors,	true );
-	else
-		driver->draw2DRectangle(rectangle+core::position2di( 0, rectangle.getHeight() ) + AbsoluteRect.UpperLeftCorner, 
-								colors[0], colors[3], colors[1], colors[2],
-								&AbsoluteClippingRect );
-
+	colorsA[ 1 ] = colorsA[ 2 ] = 0;
+	_DrawAny( pDesk->GetDownTexture(), rectUp + core::position2di( 0, rectangle.getHeight()), colorsA );
 }
 
 void CNrp2DPictureFlow::draw()

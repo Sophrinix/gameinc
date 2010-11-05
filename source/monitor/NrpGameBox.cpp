@@ -12,56 +12,74 @@ CNrpGameBox::~CNrpGameBox(void)
 {
 }
 
-CNrpGameBox::ADDON_LIST_ITERATOR CNrpGameBox::FindAddon_( const std::string& name )
+CNrpGameBox::ADDON_LIST_ITERATOR CNrpGameBox::_FindAddon( const std::string& name )
 {
-	ADDON_LIST_ITERATOR aIter = addons_.begin();
+	ADDON_LIST_ITERATOR aIter = _addons.begin();
 
-	for( ; aIter != addons_.end(); aIter++ )
-		if( (*aIter)->GetValue<std::string>(NAME) == name )
+	for( ; aIter != _addons.end(); aIter++ )
+		if( (*aIter)->GetString(NAME) == name )
 			return aIter;
 
-	return addons_.end();
+	return _addons.end();
 }
 
-bool CNrpGameBox::IsMyBoxAddon( std::string name )
+bool CNrpGameBox::IsMyAddon( const std::string& name )
 {
-	return FindAddon_( name ) != addons_.end();
+	return _FindAddon( name ) != _addons.end();
 }
 
-void CNrpGameBox::RemoveMyBoxAddon( std::string name )
+void CNrpGameBox::RemoveAddon( const std::string& name )
 {
-	ADDON_LIST_ITERATOR& pIter = FindAddon_( name );
-	if( pIter != addons_.end() )
+	ADDON_LIST_ITERATOR& pIter = _FindAddon( name );
+	if( pIter != _addons.end() )
 	{
-		addons_.erase( pIter );
-		SetValue<int>( NUMBERADDON, addons_.size() );
+		_addons.erase( pIter );
+		SetValue<int>( NUMBERADDON, _addons.size() );
 		return;
 	}
 
 	Log(HW) << "Не нашел подходящего элемента = " << name << term;
 }
 
-void CNrpGameBox::AddBoxAddon( CNrpTechnology* tech )
+int CNrpGameBox::_GetAddonSumLevel()
 {
+	int ret=0;
+	for( ADDON_LIST::const_iterator pIter=_addons.begin();
+		 pIter != _addons.end(); pIter++ )
+		ret += (*pIter)->GetValue<int>( LEVEL );
+
+	return ret;
+}
+
+bool CNrpGameBox::AddAddon( CNrpBoxAddon* tech )
+{
+	assert( tech != NULL );
 	if( tech == NULL )
 	{
 		Log(HW) << "Нельзя добавить пустой аддон" << term;
-		return;
+		return false;
 	}
-	addons_.push_back( tech );
-	SetValue<int>( NUMBERADDON, addons_.size() );
+
+	if( _GetAddonSumLevel() + tech->GetValue<int>( LEVEL ) < GetValue<int>( LEVEL ) )
+	{
+		_addons.push_back( tech );
+		SetValue<int>( NUMBERADDON, _addons.size() );
+		return true;
+	}
+	
+	return false;
 }
 
-CNrpTechnology* CNrpGameBox::GetAddon( size_t index )
+CNrpBoxAddon* CNrpGameBox::GetAddon( size_t index )
 {
-	return index < addons_.size() ? addons_[ index ] : NULL;
+	return index < _addons.size() ? _addons[ index ] : NULL;
 }
 
 std::string CNrpGameBox::Save( const std::string& fileName )
 {
-	ADDON_LIST_ITERATOR pIter = addons_.begin();
-	for( int k=0; pIter != addons_.end(); pIter++, k++ )
-		IniFile::Write( "addons", "addon_" + IntToStr( k ), (*pIter)->GetValue<std::string>( NAME ), fileName );
+	ADDON_LIST_ITERATOR pIter = _addons.begin();
+	for( int k=0; pIter != _addons.end(); pIter++, k++ )
+		IniFile::Write( SECTION_ADDONS, KEY_ADDON( k ), (*pIter)->GetString( NAME ), fileName );
 
 	INrpConfig::Save( fileName );	
 
@@ -74,20 +92,20 @@ void CNrpGameBox::Load( const std::string& fileName )
 
 	for( int k=0; k < GetValue<int>( NUMBERADDON ); k++ )
 	{
-		std::string addonName = IniFile::Read( "addons", "addon_" + IntToStr( k ), std::string(""), fileName );
+		std::string addonName = IniFile::Read( SECTION_ADDONS, KEY_ADDON( k ), std::string(""), fileName );
 
 		CNrpTechnology* tech = CNrpApplication::Instance().GetBoxAddon( addonName );
 
 		if( tech )
-			AddBoxAddon( tech );
+			AddAddon( tech );
 	}
 }
 
 float CNrpGameBox::GetBoxAddonsPrice()
 {
 	float sum = 0;
-	ADDON_LIST_ITERATOR pIter = addons_.begin();
-	for( ; pIter != addons_.end(); pIter++ )
+	ADDON_LIST_ITERATOR pIter = _addons.begin();
+	for( ; pIter != _addons.end(); pIter++ )
 		sum += (*pIter)->GetValue<float>( PRICE );
 
 	return sum;
@@ -95,7 +113,8 @@ float CNrpGameBox::GetBoxAddonsPrice()
 
 nrp::CNrpGameBox::CNrpGameBox( CNrpGame* ptrGame ) : INrpConfig( CLASS_GAMEBOX, "" )
 {
-	CreateValue<std::string>( NAME, ptrGame->GetValue<std::string>( NAME ) );
+	assert( ptrGame != NULL );
+	CreateValue<std::string>( NAME, ptrGame ? ptrGame->GetString( NAME ) : "" );
 	CreateValue<PNrpGame>( GAME, ptrGame );
 	CreateValue<int>( NUMBERADDON, 0 );
 	CreateValue<int>( LEVEL, 0 );

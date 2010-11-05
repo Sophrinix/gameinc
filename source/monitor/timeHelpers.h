@@ -8,6 +8,14 @@ namespace nrp
 class TimeHelper
 {
 public:
+	static int DateToInt( SYSTEMTIME& date )
+	{
+		double fDate;
+		SystemTimeToVariantTime( &date, &fDate );
+
+		return static_cast< int >( floor( fDate ) );
+	}
+
 	static int GetDaysBetweenDate( SYSTEMTIME& begin, SYSTEMTIME& end )
 	{
 		double fBegin, fEnd;
@@ -21,7 +29,6 @@ public:
 	{
 		return GetDaysBetweenDate( begin, end ) / 30;
 	}
-
 
 	static SYSTEMTIME GetDateWithDay( SYSTEMTIME& start, int dayNumber )
 	{

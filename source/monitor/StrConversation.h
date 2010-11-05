@@ -14,31 +14,22 @@
 
 namespace nrp															
 {
-	std::wstring StrToWide(const std::string& str);
-	std::string WideToStr(const std::wstring& str);
-	std::string ExtractFileDir( const std::string& file_name );				/*
-																			Получение имени папки из полного пути
-																			IN file_name - полный путь для анализа
-																			RESULT имя папки
-																			*/
-	std::string ExtractFileName( const std::string& file_name);						/*
-																			Получает имя файла из полного пути к файлу
-																			IN file_name - полный путь к файлу
-																			RESULT имя файла
-																			*/
-	std::string ExtractFileExt ( const std::string& file_name );					/*
-																			Получает расширение из имени файла
-																			IN file_name - путь к файлу
-																			RESULT строка символов, где будет размещено расширение
-																			*/
-	void MultiByteToHex( char* ptr_result, char* ptr_str, size_t len );
-	void HexToMultiByte( char* ptr_result, char* ptr_hex );
+
+namespace conv
+{
+	std::wstring ToWide(const std::string& str);
 	
-	std::string IntToStr( int num );										//перевод числа в строку
-	int StrToInt( const char* s );											//перевод строки в число
+	void ToHex( char* ptr_result, char* ptr_str, size_t len );
+	void FromHex( char* ptr_result, char* ptr_hex );
+	
+	std::string ToStr( int num );										//перевод числа в строку
+	std::string ToStr( const std::wstring& str );
+
+	int ToInt( const char* s );											//перевод строки в число
+	int ToInt( const wchar_t* ws);
 
 	//представление строки в виде трехмерного вектора
-	irr::core::vector3df StrToVector3df( const char* s );
+	irr::core::vector3df ToVector3df( const char* s );
 	
 	template<typename T> std::wstring AnyToWide( T num )
 	{
@@ -55,12 +46,14 @@ namespace nrp
 	}
 
 	//перевод широкой строки в число
-	int WideToInt(const wchar_t* ws);
+	
 	bool IsNumber( const char* s );
 	bool IsFloatNumber( const char* s );
-	float StrToFloat( const char* s );
-	SYSTEMTIME StrToTime( const char* s );
-	bool StrToBool( const char* s );
+	float ToFloat( const char* s );
+	SYSTEMTIME ToTime( const char* s );
+	bool ToBool( const char* s );
+
+}//end namespace conv
 
 }; //namespace nrp
 

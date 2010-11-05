@@ -66,10 +66,10 @@ void OpFileSystem::Move( const std::string& pathOld, const std::string& pathNew 
 	sh.wFunc  = FO_MOVE;
 
 	char from[ MAX_PATH ] = { 0 };
-	strncpy( from, mStr.c_str(), mStr.length() );
+	strncpy_s( from, MAX_PATH-1, mStr.c_str(), mStr.length() );
 
 	char to[ MAX_PATH ] = { 0 };
-	strncpy( to, mStr2.c_str(), mStr2.length() );
+	strncpy_s( to, MAX_PATH - 1, mStr2.c_str(), mStr2.length() );
 
 	sh.pFrom  = from;
 	sh.pTo    = to;
@@ -90,10 +90,10 @@ void OpFileSystem::Copy( const std::string& pathOld, const std::string& pathNew 
 	sh.hwnd   = CNrpEngine::Instance().GetWindowHandle(); //Äëÿ BCB sh.hwnd=FormX->Handle;
 	sh.wFunc  = FO_COPY;
 	char from[ MAX_PATH ] = { 0 };
-	strncpy( from, mStr.c_str(), mStr.length() );
+	strncpy_s( from, MAX_PATH-1, mStr.c_str(), mStr.length() );
 
 	char to[ MAX_PATH ] = { 0 };
-	strncpy( to, mStr2.c_str(), mStr2.length() );
+	strncpy_s( to, MAX_PATH-1, mStr2.c_str(), mStr2.length() );
 	sh.pFrom  = from;
 	sh.pTo    = to;
 	sh.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;
@@ -127,7 +127,7 @@ void OpFileSystem::CreateDirectorySnapshot( const std::string& directory,
 				{
 					if( _stricmp( itemName.c_str(), fdata.name ) == 0 )
 					{
-						IniFile::Write( "options", templateName + IntToStr( number ), directory+"/"+std::string( fdata.name ), saveFile );
+						IniFile::Write( "options", templateName + conv::ToStr( number ), directory+"/"+std::string( fdata.name ), saveFile );
 						number++;
 						IniFile::Write( "options", templateName + "Number", number, saveFile );
 					}

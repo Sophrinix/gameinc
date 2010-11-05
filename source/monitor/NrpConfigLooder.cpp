@@ -112,7 +112,7 @@ void CNrpConfigLooder::_ReadFloat( KeyPair* p )
 
 void CNrpConfigLooder::_ReadBool( KeyPair* p )
 {
-	_config->CreateValue<bool>( p->GetName(), StrToBool( p->GetValue().c_str() ) );
+	_config->CreateValue<bool>( p->GetName(), conv::ToBool( p->GetValue().c_str() ) );
 }
 
 void CNrpConfigLooder::_ReadString( KeyPair* p )
@@ -122,7 +122,7 @@ void CNrpConfigLooder::_ReadString( KeyPair* p )
 
 void CNrpConfigLooder::_ReadTime( KeyPair* p )
 {
-	_config->CreateValue<SYSTEMTIME>( p->GetName(), StrToTime( p->GetValue().c_str()) );
+	_config->CreateValue<SYSTEMTIME>( p->GetName(), conv::ToTime( p->GetValue().c_str()) );
 }
 
 void CNrpConfigLooder::_ReadUser( KeyPair* p )

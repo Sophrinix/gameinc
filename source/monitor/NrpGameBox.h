@@ -6,6 +6,8 @@ namespace nrp
 class CNrpGame;
 class CNrpTechnology;
 
+typedef CNrpTechnology CNrpBoxAddon;
+
 CLASS_NAME CLASS_GAMEBOX( "CNrpGameBox" );
 
 OPTION_NAME GAME( "game" );
@@ -15,10 +17,10 @@ class CNrpGameBox : public INrpConfig
 {
 public:
 	CNrpGameBox( CNrpGame* ptrGame );
-	bool IsMyBoxAddon( std::string name );
-	void RemoveMyBoxAddon( std::string name );
-	void AddBoxAddon( CNrpTechnology* tech );
-	CNrpTechnology* GetAddon( size_t index );
+	bool IsMyAddon( const std::string& name );
+	void RemoveAddon( const std::string& name );
+	bool AddAddon( CNrpBoxAddon* tech );
+	CNrpBoxAddon* GetAddon( size_t index );
 	float GetBoxAddonsPrice();
 
 	~CNrpGameBox(void);
@@ -27,11 +29,12 @@ public:
 
 	static std::string ClassName() { return CLASS_GAMEBOX; }
 private:
-	typedef std::vector< CNrpTechnology* > ADDON_LIST;
+	typedef std::vector< CNrpBoxAddon* > ADDON_LIST;
 	typedef ADDON_LIST::iterator ADDON_LIST_ITERATOR;
 
-	ADDON_LIST_ITERATOR FindAddon_( const std::string& name );
-	ADDON_LIST addons_;
+	ADDON_LIST_ITERATOR _FindAddon( const std::string& name );
+	int _GetAddonSumLevel();
+	ADDON_LIST _addons;
 };
 
 typedef CNrpGameBox* PNrpGameBox;

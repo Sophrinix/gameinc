@@ -91,7 +91,7 @@ int CLuaTable::AddColumn( lua_State *L )
 	assert( text != NULL );
 	int index = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->addColumn( StrToWide( text ).c_str(), index );
+	IF_OBJECT_NOT_NULL_THEN object_->addColumn( conv::ToWide( text ).c_str(), index );
 
 	return 1;	
 }
@@ -123,7 +123,7 @@ int CLuaTable::SetCellText( lua_State *L )
 	color += (lua_tointeger( L, 7 ) << 8);
 	color += lua_tointeger( L, 8 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setCellText( aRow, aCol, StrToWide( text ).c_str(), video::SColor( color ) );
+	IF_OBJECT_NOT_NULL_THEN	object_->setCellText( aRow, aCol, conv::ToWide( text ).c_str(), video::SColor( color ) );
 
 	return 1;
 }

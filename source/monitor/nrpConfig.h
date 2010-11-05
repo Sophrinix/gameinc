@@ -229,6 +229,11 @@ protected:
 			SetValue<B>( name, valuel );
 	}
 
+	bool IsValueExist( std::string name )
+	{
+		std::transform( name.begin(), name.end(), name.begin(), tolower );
+		return ( options_.find( name ) != options_.end() );
+	}
 
 private:
 	//! определение массива свойств

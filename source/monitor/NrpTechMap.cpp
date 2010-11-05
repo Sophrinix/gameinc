@@ -937,7 +937,7 @@ void CNrpTechMap::draw()
 					if( ptrTech->GetValue<TECH_STATUS>( STATUS ) == TS_INDEVELOP )
 					{
 						text += "\n(";
-						text += core::stringw( IntToStr( static_cast<int>( ptrTech->GetValue<float>( READYWORKPERCENT )) ).c_str() );
+						text += core::stringw( conv::ToStr( static_cast<int>( ptrTech->GetValue<float>( READYWORKPERCENT )) ).c_str() );
 						text += ")";
 					}
 				}
@@ -1321,12 +1321,12 @@ void CNrpTechMap::AssignTechMapToTable_( const ATECH_ARRAY& pArray )
 
 			Cell& cell = Rows[ pTech->GetCell().Y ].Items[ pTech->GetCell().X ];
 			cell.assignTech = pTech;
-			cell.Text = core::stringw( "???" ) + StrToWide( cell.assignTech->GetName() ).c_str();
+			cell.Text = core::stringw( "???" ) + conv::ToWide( cell.assignTech->GetName() ).c_str();
 
 			if( pTech->GetTechnology() )
 			{
-				std::string name = pTech->GetTechnology()->GetValue<std::string>( NAME );
-				cell.Text = StrToWide( name ).c_str();
+				std::string name = pTech->GetTechnology()->GetString( NAME );
+				cell.Text = conv::ToWide( name ).c_str();
 
 				AssignTechMapToTable_( pTech->GetChilds() );
 			}

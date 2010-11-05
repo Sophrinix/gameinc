@@ -12,6 +12,7 @@ CNrpDiskMachine::CNrpDiskMachine(void) : INrpConfig( CLASS_DISKMACHINE, "" )
 	CreateValue<int>( DISKPERHOUR, 0 );
 	CreateValue<int>( PRICEPERHOUR, 0 );
 	CreateValue<int>( RENTPRICE, 0 );
+	CreateValue<std::string>( TEXTURENORMAL, "" );
 }
 
 CNrpDiskMachine::~CNrpDiskMachine(void)

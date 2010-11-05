@@ -482,7 +482,7 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
 	float percent = tech->GetValue<float>( READYWORKPERCENT );
-	std::wstring name = StrToWide( tech->GetString( NAME ) );
+	std::wstring name = conv::ToWide( tech->GetString( NAME ) );
 
 	swprintf( tmpstr, 127, L"%s (%d %%)", name.c_str(), (int)(percent * 100) );
 	core::recti progressRect = frameRect;
@@ -652,7 +652,7 @@ void CNrpComponentListbox::_DrawAsGame( INrpConfig* devGame, core::recti rectang
 		driver->draw2DRectangle( 0xff0000ff, finished, &clipRect );
 	}
 
-	_font->draw( StrToWide( name ).c_str(), frameRect, color, true, true, &clipRect ); 
+	_font->draw( conv::ToWide( name ).c_str(), frameRect, color, true, true, &clipRect ); 
 }
 
 void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle, 
@@ -666,7 +666,7 @@ void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle,
 	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
 	int expr = user->GetValue<int>( EXPERIENCE );
-	std::wstring name = StrToWide( user->GetValue<std::string>( NAME ) );
+	std::wstring name = conv::ToWide( user->GetString( NAME ) );
 
 	swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), expr );
 	core::recti progressRect = frameRect;

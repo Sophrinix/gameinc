@@ -9,7 +9,7 @@ using namespace core;
 
 std::ostream& operator<<( std::ostream& os, const std::wstring& ws)
 {
-	return (os << nrp::WideToStr(ws));
+	return (os << nrp::conv::ToStr(ws));
 }
 //=====================================================================================
 

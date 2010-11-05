@@ -75,7 +75,7 @@ int CLuaGame::IsMyBoxAddon( lua_State* L )
 	{
 		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
 		if( box != NULL )
-			isMyBox = box->IsMyBoxAddon( name );
+			isMyBox = box->IsMyAddon( name );
 
 	}
 	lua_pushboolean( L, isMyBox );
@@ -93,8 +93,7 @@ int CLuaGame::RemoveBoxAddon( lua_State* L )
 	{
 		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
 		if( box != NULL )
-			box->RemoveMyBoxAddon( name );
-
+			box->RemoveAddon( name );
 	}
 	return 1;	
 }
@@ -104,16 +103,19 @@ int CLuaGame::AddBoxAddon( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:AddBoxAddon need CNrpTechnology parameter" );
 
-	PNrpTechnology tech = (PNrpTechnology)lua_touserdata( L, 2 );
-	assert( tech != NULL );
+	CNrpBoxAddon* addon = (CNrpBoxAddon*)lua_touserdata( L, 2 );
+	assert( addon != NULL );
+
+	bool ret=false;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
 		assert( box != NULL );
 		if( box != NULL )
-			box->AddBoxAddon( tech );
-
+			ret = box->AddAddon( addon );
 	}
+
+	lua_pushboolean( L, ret );
 	return 1;	
 }
 

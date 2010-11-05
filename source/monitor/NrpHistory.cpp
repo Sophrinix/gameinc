@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "NrpHistory.h"
+#include "timeHelpers.h"
 
 namespace nrp
 {
@@ -33,6 +34,21 @@ void CNrpHistory::Load( const std::string& fileName )
 
 }
 
+CNrpHistoryStep* CNrpHistory::AddStep( SYSTEMTIME& time )
+{
+	int ret = TimeHelper::DateToInt( time );
+
+	SALE_HISTORY_MAP::const_iterator pIter = _steps.find( ret );
+	
+	if( pIter == _steps.end() )
+	{
+		CNrpHistoryStep* step = new CNrpHistoryStep( time );
+		_steps[ ret ] = step;
+		return step;
+	}
+	else
+		return pIter->second;
+}
 
 CNrpHistoryStep::CNrpHistoryStep( const SYSTEMTIME& time ) : INrpConfig( CLASS_HISTORYSTEP, "" )
 {
