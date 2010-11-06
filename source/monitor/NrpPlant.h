@@ -8,20 +8,24 @@ namespace nrp
 CLASS_NAME CLASS_NRPPLANT( "CNrpPlant" );
 class CNrpPlantWork;
 class CNrpReklameWork;
+class CNrpDiskMachine;
 
 OPTION_NAME BASEREKLAMENUMBER( "baseReklameNumber" );
 OPTION_NAME REKLAMENUMBER( "reklameNumber" );
+OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
 
 class CNrpPlant : public INrpConfig
 {
 	typedef std::vector< CNrpPlantWork* > WORK_LIST;
 	typedef std::vector< CNrpReklameWork* > REKLAME_LIST;
+	typedef std::vector< CNrpDiskMachine* > DISKMACHINES_LIST;
 	CNrpPlant(void);
 	~CNrpPlant(void);
 
-	WORK_LIST works_;
+	WORK_LIST _works;
 	REKLAME_LIST baseReklame_;
-	REKLAME_LIST reklameWorks_;
+	DISKMACHINES_LIST diskMachines_;
+	REKLAME_LIST _reklameWorks;
 public:
 	static CNrpPlant& Instance();
 
@@ -41,6 +45,10 @@ public:
 	CNrpPlantWork* GetWork( int index );
 	CNrpPlantWork* GetWork( std::string name );
 	void RemoveWork( CNrpPlantWork* work );
+
+	CNrpDiskMachine* GetDiskMachine( const std::string& name );
+	CNrpDiskMachine* GetDiskMachine( size_t index );
+	void AddDiskMachine( CNrpDiskMachine* pDm );
 
 	void BeginNewDay( );
 

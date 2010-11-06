@@ -6,6 +6,8 @@
 #include "NrpPlant.h"
 #include "LuaReklame.h" 
 #include "NrpApplication.h"
+#include "LuaDiskMachine.h"
+#include "NrpDiskMachine.h"
 
 namespace nrp
 {
@@ -23,6 +25,9 @@ Luna< CLuaPlant >::RegType CLuaPlant::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetReklame ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklame ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklameNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadDiskMachine ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetDiskMachine ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetDiskMachineNumber ),
 	{0,0}
 };
 
@@ -40,6 +45,46 @@ int CLuaPlant::Load( lua_State* L )
 	}
 
 	return 1;
+}
+
+int CLuaPlant::GetDiskMachine( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant:GetDiskMachine need integer parameter" );
+
+	int dmNumber = lua_tointeger( L, 2 );
+	CNrpDiskMachine* dm = NULL;
+	IF_OBJECT_NOT_NULL_THEN	dm = object_->GetDiskMachine( dmNumber );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, dm );
+	Luna< CLuaDiskMachine >::constructor( L );
+
+	return 1;	
+}
+
+int CLuaPlant::GetDiskMachineNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetDiskMachineNumber", DISKMACHINENUMBER, 0 ) );
+	return 1;
+}
+
+int CLuaPlant::LoadDiskMachine( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant:LoadDiskMachine need string parameter" );
+
+	const char* dmIniFile = lua_tostring( L, 2 );
+	assert( dmIniFile != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		CNrpDiskMachine* dm = new CNrpDiskMachine();
+		dm->Load( dmIniFile );
+		object_->AddDiskMachine( dm );
+	}
+
+	return 1;		
 }
 
 int CLuaPlant::AddProduceWork( lua_State* L )

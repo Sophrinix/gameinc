@@ -30,8 +30,7 @@ SECTION_NAME SECTION_ADDONS( "addons" );
 #define KEY_INVENTION( index ) "invention_" + conv::ToStr( index )
 #define KEY_TECH( index ) "tech_" + conv::ToStr( index )
 #define KEY_GENRE( index ) "genre_" + conv::ToStr( index )
-#define KEY_WORK( index ) "work_" + conv::ToStr( index )
-#define KEY_REKLAME( index ) "reklame_" + conv::ToStr( index )
+
 #define KEY_PROJECT( index ) "project_" + conv::ToStr( index )
 #define KEY_ENGINE( index ) "engine_" + conv::ToStr( index )
 #define KEY_GAME( index ) "game_" + conv::ToStr( index )
@@ -41,5 +40,8 @@ SECTION_NAME SECTION_ADDONS( "addons" );
 #define KEY_SCREENSHOT(index) "screenShot" + conv::ToStr(index)
 #define KEY_ITEM(index) "item_"+conv::ToStr(index)
 #define KEY_ADDON(index) "addon_" + conv::ToStr( index )
+
+std::string CreateKeyWork( int index );
+std::string CreateKeyReklame( int index );
 
 }//end namespace nrp

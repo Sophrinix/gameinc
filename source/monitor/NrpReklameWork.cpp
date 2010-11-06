@@ -113,7 +113,10 @@ void CNrpReklameWork::BeginNewDay()
 
 std::string CNrpReklameWork::Save( const std::string& saveFolder )
 {
-	std::string fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + "reklame." + GetString( TECHTYPE );
+	assert( OpFileSystem::IsExist( saveFolder ) );
+	//должно получиться что-то вроде Компания_Продукт.Тип
+	std::string fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + GetString( COMPANYNAME ) + "_";
+	fileName += (GetString( GAMENAME ) + "." + GetString( TECHTYPE ));
 	INrpConfig::Save( fileName );
 
 	return fileName;

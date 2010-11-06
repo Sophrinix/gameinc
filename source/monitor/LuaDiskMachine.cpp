@@ -2,6 +2,7 @@
 #include "LuaDiskMachine.h"
 #include "NrpDiskMachine.h"
 #include "NrpApplication.h"
+#include "NrpPlant.h"
 #include <assert.h>
 
 using namespace irr;
@@ -21,6 +22,11 @@ Luna< CLuaDiskMachine >::RegType CLuaDiskMachine::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Remove ),
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetDiscount ),
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetLineDiscount ),
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, SetDiscount ),
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetMaxDiscount ),
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetDiskProduced ),
 	{0,0}
 };
 
@@ -59,7 +65,7 @@ int CLuaDiskMachine::Load( lua_State* L )
 	const char* fileName = lua_tostring( L, 2 );
 	assert( fileName != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->Load( SECTION_OPTIONS, fileName );
+	IF_OBJECT_NOT_NULL_THEN object_->Load( fileName );
 
 	return 1;	
 }
@@ -70,7 +76,7 @@ int CLuaDiskMachine::IsLoaded( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaDiskMachine::IsLoaded not need any parameter");
 
 	bool loaded = false; 
-	IF_OBJECT_NOT_NULL_THEN loaded = CNrpApplication::Instance().GetDiskMachine( object_->GetString( NAME ) ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN loaded = CNrpPlant::Instance().GetDiskMachine( object_->GetString( NAME ) ) != NULL;
 
 	lua_pushboolean( L, loaded );
 	return 1;		
@@ -86,5 +92,45 @@ int CLuaDiskMachine::GetTexture( lua_State* L )
 {
 	lua_pushstring( L, GetParam_<std::string>( L, "GetName", TEXTURENORMAL, "" ).c_str() );
 	return 1;		
+}
+
+int CLuaDiskMachine::GetDiscount( lua_State* L )
+{
+	lua_pushnumber( L, GetParam_<float>( L, "GetDiscount", DISCOUNT, 0 ) );
+	return 1;	
+}
+
+int CLuaDiskMachine::GetLineDiscount( lua_State* L )
+{
+	lua_pushnumber( L, GetParam_<float>( L, "GetLineDiscount", LINEDISCOUNT, 0 ) );
+	return 1;
+}
+
+int CLuaDiskMachine::SetDiscount( lua_State* L )
+{
+	return SetParam_<float, LUA_NUMBER>( L, "SetDiscount", DISCOUNT, lua_tonumber );	
+}
+
+int CLuaDiskMachine::GetDiskProduced( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaDiskMachine:GetDiskProduced need companyName parameter" );
+
+	const char* company = lua_tostring( L, 2 );
+	assert( company != NULL );
+
+	int ret = 0;
+	IF_OBJECT_NOT_NULL_THEN ret = object_->IsValueExist( DISKPRODUCED + company ) 
+									? object_->GetValue<int>( DISKPRODUCED + company )
+									: 0 ;
+
+	lua_pushinteger( L, ret );
+	return 1;	
+}
+
+int CLuaDiskMachine::GetMaxDiscount( lua_State* L )
+{
+	lua_pushnumber( L, GetParam_<float>( L, "GetDiscount", MAXDISCOUNT, 0 ) );
+	return 1;	
 }
 }

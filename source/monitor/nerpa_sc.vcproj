@@ -383,6 +383,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\sectionNames.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SectionNames.h"
 				>
 			</File>
@@ -1641,22 +1645,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NrpPda.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpPda.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpPlant.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpPlant.h"
-				>
-			</File>
-			<File
 				RelativePath=".\NrpScreenshot.cpp"
 				>
 			</File>
@@ -1664,6 +1652,66 @@
 				RelativePath=".\NrpScreenshot.h"
 				>
 			</File>
+			<Filter
+				Name="plant"
+				>
+				<File
+					RelativePath=".\NrpDiskMachine.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpDiskMachine.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpPlant.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpPlant.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpPlantWork.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpPlantWork.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="pda"
+				>
+				<File
+					RelativePath=".\NrpPda.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpPda.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="game"
+				>
+				<File
+					RelativePath=".\NrpGame.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpGame.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpGameBox.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpGameBox.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="HtmlEngine"
@@ -1781,55 +1829,7 @@
 			Name="Project"
 			>
 			<File
-				RelativePath=".\INrpDevelopProject.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\INrpDevelopProject.h"
-				>
-			</File>
-			<File
-				RelativePath=".\INrpProject.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\INrpProject.h"
-				>
-			</File>
-			<File
 				RelativePath=".\IWorkingModule.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpDevelopGame.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpDevelopGame.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpDiskMachine.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpDiskMachine.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpGame.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpGame.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpGameBox.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpGameBox.h"
 				>
 			</File>
 			<File
@@ -1857,14 +1857,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NrpInvention.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpInvention.h"
-				>
-			</File>
-			<File
 				RelativePath=".\NrpLicense.cpp"
 				>
 			</File>
@@ -1873,27 +1865,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NrpPlantWork.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpPlantWork.h"
-				>
-			</File>
-			<File
 				RelativePath=".\NrpProjectModule.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\NrpProjectModule.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpReklameWork.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpReklameWork.h"
 				>
 			</File>
 			<File
@@ -1912,14 +1888,70 @@
 				RelativePath=".\NrpScenario.h"
 				>
 			</File>
-			<File
-				RelativePath=".\NrpTechnology.cpp"
+			<Filter
+				Name="develop"
 				>
-			</File>
-			<File
-				RelativePath=".\NrpTechnology.h"
+				<File
+					RelativePath=".\NrpDevelopGame.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpDevelopGame.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="base"
 				>
-			</File>
+				<File
+					RelativePath=".\INrpDevelopProject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\INrpDevelopProject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\INrpProject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\INrpProject.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="reklame"
+				>
+				<File
+					RelativePath=".\NrpReklameWork.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpReklameWork.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="sience"
+				>
+				<File
+					RelativePath=".\NrpInvention.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpInvention.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpTechnology.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpTechnology.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

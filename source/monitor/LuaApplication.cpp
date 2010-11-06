@@ -8,7 +8,6 @@
 #include "NrpBank.h"
 #include "NrpGameProject.h"
 #include "NrpTechnology.h"
-#include "NrpDiskMachine.h"
 #include "NrpScreenshot.h"
 #include "NrpGameTime.h"
 
@@ -17,7 +16,6 @@
 #include "LuaBank.h"
 #include "LuaTechnology.h"
 #include "LuaInvention.h"
-#include "LuaDiskMachine.h"
 #include "LuaPda.h"
 #include "LuaGame.h"
 #include "OpFileSystem.h"
@@ -60,9 +58,6 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameBoxAddon ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameBoxAddon ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameTimeFromProfile ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadDiskMachine ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetDiskMachineNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetDiskMachine ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, SaveBoxAddonsPrice ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadBoxAddonsPrice ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGamesNumber ),
@@ -403,12 +398,14 @@ int CLuaApplication::LoadGameBoxAddon( lua_State* L )
 	const char* techIniFile = lua_tostring( L, 2 );
 	assert( techIniFile != NULL );
 
+	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		CNrpTechnology* tech = new CNrpTechnology( techIniFile );
-		object_->AddBoxAddon( tech );
+		ret = object_->AddBoxAddon( tech );
 	}
 
+	lua_pushboolean( L, ret );
 	return 1;	
 }
 
@@ -439,52 +436,6 @@ int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 		
 		object_->SetValue<SYSTEMTIME>( CURRENTTIME, IniFile::Read( SECTION_PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME(), pathToFile ) );
 	}
-
-	return 1;	
-}
-
-int CLuaApplication::LoadDiskMachine( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadDiskMachine need string parameter" );
-
-	const char* dmIniFile = lua_tostring( L, 2 );
-	assert( dmIniFile != NULL );
-
-	IF_OBJECT_NOT_NULL_THEN
-	{
-		CNrpDiskMachine* dm = new CNrpDiskMachine();
-		dm->Load( SECTION_OPTIONS, dmIniFile );
-		object_->AddDiskMachine( dm );
-	}
-
-	return 1;		
-}
-
-int CLuaApplication::GetDiskMachineNumber( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetDiskMachineNumber not need any parameter" );
-
-	int dmNumber = 0;
-	IF_OBJECT_NOT_NULL_THEN	dmNumber = object_->GetValue<int>( DISKMACHINENUMBER );
-
-	lua_pushinteger( L, dmNumber );
-	return 1;
-}
-
-int CLuaApplication::GetDiskMachine( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetDiskMachine need integer parameter" );
-
-	int dmNumber = lua_tointeger( L, 2 );
-	CNrpDiskMachine* dm = NULL;
-	IF_OBJECT_NOT_NULL_THEN	dm = object_->GetDiskMachine( dmNumber );
-
-	lua_pop( L, argc );
-	lua_pushlightuserdata( L, dm );
-	Luna< CLuaDiskMachine >::constructor( L );
 
 	return 1;	
 }

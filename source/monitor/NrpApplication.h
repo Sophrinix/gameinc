@@ -25,7 +25,6 @@ OPTION_NAME SAVEINI_PROFILE( "saveIniProfile" );
 OPTION_NAME SAVEDIR_PROFILE( "saveDirProfile" );
 OPTION_NAME SAVEDIR_TECHS( "saveDirTechs" );
 OPTION_NAME CURRENTTIME( "currentTime" );
-OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
 OPTION_NAME BOXADDONNUMBER( "boxAdonNumber" );
 OPTION_NAME MARKETGAMENUMBER( "marketGameNumber" );
 OPTION_NAME PLAYERCOMPANY( "playerCompany" );
@@ -54,7 +53,6 @@ class CNrpApplication : public INrpConfig, public ILuaFunctionality
 
 	typedef std::vector< IUser* > USER_LIST;
 	typedef std::vector< CNrpTechnology* > TECH_LIST;
-	typedef std::vector< CNrpDiskMachine* > DISKMACHINES_LIST;
 	typedef std::vector< CNrpGame* > GAMES_LIST;
 	typedef std::vector< CNrpRetailer* > RETAILER_LIST;
 	typedef std::vector< CNrpInvention* > INVENTION_LIST;
@@ -109,17 +107,13 @@ public:
 	void UpdateGameRatings( CNrpGame* ptrGame, bool firstTime=false );
 
 	CNrpTechnology* GetBoxAddon( size_t index ) { return index < boxAddons_.size() ? boxAddons_[ index ] : NULL; }
-	CNrpTechnology* GetBoxAddon( std::string name );
-	void AddBoxAddon( CNrpTechnology* tech );
+	CNrpTechnology* GetBoxAddon( const std::string& name );
+	bool AddBoxAddon( CNrpTechnology* tech );
 
 	void AddGameToMarket( CNrpGame* game );
 
-	CNrpDiskMachine* GetDiskMachine( std::string name );
-	CNrpDiskMachine* GetDiskMachine( size_t index );
-	void AddDiskMachine( CNrpDiskMachine* pDm );
-
-	CNrpRetailer* GetRetailer( std::string name );
-	void RemoveRetailer( std::string name );
+	CNrpRetailer* GetRetailer( const std::string& name );
+	void RemoveRetailer( const std::string& name );
 
 	std::string GetFreeInternalName( CNrpGame* game );
 	CNrpScreenshot* GetScreenshot( const std::string& name );
@@ -142,7 +136,6 @@ private:
 	TECH_LIST technologies_;					//хранит все технологии игрового мира
 	INVENTION_LIST inventions_;
 	TECH_LIST boxAddons_;
-	DISKMACHINES_LIST diskMachines_;
 	GAMES_LIST games_;
 	RETAILER_LIST retailers_;
 	GAMEENGINES_LIST engines_;

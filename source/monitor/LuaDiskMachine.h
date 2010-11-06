@@ -22,6 +22,12 @@ public:
 	int IsLoaded( lua_State* L );
 	int GetName( lua_State* L );
 	int GetTexture( lua_State* L );
+	int ChangeDiscount( lua_State* L );
+	int GetDiscount( lua_State* L );
+	int SetDiscount( lua_State* L );
+	int GetMaxDiscount( lua_State* L );
+	int GetDiskProduced( lua_State* L );
+	int GetLineDiscount( lua_State* L );
 
 	static const char* ClassName() { return CLASS_LUADISKMACHINE.c_str(); }
 };

@@ -59,7 +59,6 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	CreateValue<std::string>( PROFILECOMPANY, IniFile::Read( SECTION_OPTIONS, "currentCompany", std::string( "daleteam" ), GetString( SYSTEMINI ) ) );
 
 	CreateValue<SYSTEMTIME>( CURRENTTIME, SYSTEMTIME() );
-	CreateValue<int>( DISKMACHINENUMBER, 0 );
 	CreateValue<int>( BOXADDONNUMBER, 0 );
 	CreateValue<int>( GAMENUMBER, 0 );
 	CreateValue<int>( ENGINES_NUMBER, 0 );
@@ -749,41 +748,27 @@ void CNrpApplication::_BeginNewHour()
 		(*cIter)->BeginNewHour( GetValue<SYSTEMTIME>( CURRENTTIME ));
 }
 
-void CNrpApplication::AddBoxAddon( CNrpTechnology* tech )
+bool CNrpApplication::AddBoxAddon( CNrpTechnology* tech )
 {
-	boxAddons_.push_back( tech );
-	SetValue<int>( BOXADDONNUMBER, boxAddons_.size() );
+	if( GetBoxAddon( tech->GetString( NAME ) ) == NULL  )
+	{
+		boxAddons_.push_back( tech );
+		SetValue<int>( BOXADDONNUMBER, boxAddons_.size() );
+		return true;
+	}
+
+	return false;
 }
 
-CNrpTechnology* CNrpApplication::GetBoxAddon( std::string name )
+CNrpTechnology* CNrpApplication::GetBoxAddon( const std::string& name )
 {
 	TECH_LIST::iterator tIter = boxAddons_.begin();
 	for( ; tIter != boxAddons_.end(); tIter++)
-		if( (*tIter)->GetString( NAME ) == name )
+		if( (*tIter)->GetString( NAME ) == name || 
+			(*tIter)->GetString( INTERNAL_NAME ) == name )
 		return *tIter;
 
 	return NULL;	
-}
-
-CNrpDiskMachine* CNrpApplication::GetDiskMachine( std::string name )
-{
-	DISKMACHINES_LIST::iterator dIter = diskMachines_.begin();
-	for( ; dIter != diskMachines_.end(); dIter++)
-		if( (*dIter)->GetString( NAME ) == name )
-			return *dIter;
-
-	return NULL;		
-}
-
-CNrpDiskMachine* CNrpApplication::GetDiskMachine( size_t index )
-{
-	return index < diskMachines_.size() ? diskMachines_[ index ] : NULL;
-}
-
-void CNrpApplication::AddDiskMachine( CNrpDiskMachine* pDm )
-{
-	diskMachines_.push_back( pDm );
-	SetValue<int>( DISKMACHINENUMBER, diskMachines_.size() );
 }
 
 void CNrpApplication::AddGameToMarket( CNrpGame* game )
@@ -825,7 +810,7 @@ float CNrpApplication::GetGameGenreInterest( CNrpGame* game )
 	return (summ + game->GetValue<int>( CURRENTGAMERATING ) / 1000.f );
 }
 
-CNrpRetailer* CNrpApplication::GetRetailer( std::string name )
+CNrpRetailer* CNrpApplication::GetRetailer( const std::string& name )
 {
 	return NULL;
 }

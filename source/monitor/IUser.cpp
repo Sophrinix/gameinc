@@ -126,14 +126,14 @@ std::string IUser::Save( const std::string& folderPath )
 			{
 				std::string projectName = prjModule->GetValue<INrpProject*>( PARENT )->GetString( NAME );
 				std::string name = prjModule->GetString(NAME);
-				IniFile::Write( SECTION_WORKS, KEY_WORK( i ), "project", fileName );
+				IniFile::Write( SECTION_WORKS, CreateKeyWork( i ), "project", fileName );
 				IniFile::Write( SECTION_WORKS, KEY_PROJECT( i ), projectName, fileName );
 				IniFile::Write( SECTION_WORKS, KEY_MODULE( i ), name, fileName );
 			}
 			else if( CNrpInvention* invention = dynamic_cast< CNrpInvention* >( *tlIter ) )
 			{
 				std::string name = invention->GetString(NAME);
-				IniFile::Write( SECTION_WORKS, KEY_WORK( i ), "invention", fileName );
+				IniFile::Write( SECTION_WORKS, CreateKeyWork( i ), "invention", fileName );
 				IniFile::Write( SECTION_WORKS, KEY_INVENTION( i ), name, fileName );
 			}
 		}
@@ -160,7 +160,7 @@ void IUser::Load( const std::string& fileName )
 	for( int k=0; k < GetValue<int>( WORKNUMBER ); k++ )
 	{
 		std::string action = "";
-		std::string workType = IniFile::Read( SECTION_WORKS, KEY_WORK( k ), std::string(""), fileName );
+		std::string workType = IniFile::Read( SECTION_WORKS, CreateKeyWork( k ), std::string(""), fileName );
 		if( !workType.empty() )
 		{
 			if( workType == "project" )

@@ -26,14 +26,14 @@ public:
 	CNrpPlantWork( const CNrpPlantWork& p );
 	~CNrpPlantWork(void);
 
-	template<class R > void SetValue( std::string name, R valuel )
+	template< class R > void SetValue( std::string name, R valuel )
 	{
 		INrpConfig::SetValue<R>( name, valuel );
 		CalcParams_();
 	}
 
-	std::string Save( const std::string& fileName );
-	void Load( const std::string& fileName );
+	virtual std::string Save( const std::string& folder );
+	virtual void Load( const std::string& fileName );
 	void BeginNewDay();
 
 	static std::string ClassName() { return CLASS_NRPPLANTWORK; }
