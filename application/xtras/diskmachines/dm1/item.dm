@@ -5,3 +5,7 @@ endDate:time=y=1999 m=01 d=01 h=00 mi=0 s=0
 diskperhour:int=20
 priceperhour:int=300
 rentprice:int=8000
+maxdiscount:float=0.2
+linediscount:float=0.005
+reject:float=2.0
+texturenormal:string=xtras/diskmachines/dm1/image.png

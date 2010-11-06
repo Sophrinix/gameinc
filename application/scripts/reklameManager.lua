@@ -115,7 +115,7 @@ function ShowCampaniesManager()
 	if #reklames == 0 then localCreateReklames() end
 		
 	--блок рекламы на листовках
-	picflowReklames = guienv:AddPictureFlow( 60, 10, scrWidth - 10, scrHeight / 3, -1, campaniesWindow:Self() )
+	picflowReklames = guienv:AddPictureFlow( 60, 60, scrWidth - 10, 60 + scrHeight / 3, -1, campaniesWindow:Self() )
 	picflowReklames:SetPictureRect( 0, 0, scrHeight / 3 - 40, scrHeight / 3 - 40 )
 	picflowReklames:SetDrawBorder( false )
 

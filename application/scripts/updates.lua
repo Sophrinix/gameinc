@@ -95,11 +95,11 @@ function CheckGameBoxAddons( showPdaForNewPAddon )
 		--проверяем попадание врмененного интервала аддона в текущее время
 		if addonStartTime <= curTime then
 			--попрoбуем загрузить новую аддон
-			applic:LoadGameBoxAddon( tmpAddonIni )
+			local mayShow = applic:LoadGameBoxAddon( tmpAddonIni )
 			
 			--надо показать игроку что появился новый аддон
-			if showPdaForNewPAddon then
-				base.pda.Show( "На рынке появилась новая платформа "..addonName )
+			if mayShow and showPdaForNewPAddon then
+				base.pda.Show( "На рынке появилась новое дополнение "..addonName )
 			end 
 		end
 	end --for
@@ -126,7 +126,7 @@ function CheckDiskMachines( showPdaForNewDm )
 		--проверяем попадание врмененного интервала аддона в текущее время
 		if dmStartTime <= curTime then
 			--попрoбуем загрузить новую аддон
-			applic:LoadDiskMachine( dmIniFile )
+			plant:LoadDiskMachine( dmIniFile )
 			
 			--надо показать игроку что появился новый аддон
 			if showPdaForNewDm then

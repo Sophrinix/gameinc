@@ -1,1 +1,1 @@
-[properties]name:string=Плакатquality:int=10startdate:time=y=1980 m=01 d=01 h=0 mi=0enddate:time=y=2010 m=00 d=00 h=0 mi=0 s=0level:int=3price:float=0.4
+[properties]name:string=Плакатquality:int=10startdate:time=y=1980 m=01 d=01 h=0 mi=0enddate:time=y=2010 m=00 d=00 h=0 mi=0 s=0level:int=5price:float=0.4internalname:string=boxaddon_placat

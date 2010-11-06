@@ -21,6 +21,7 @@ IncludeScript("gameprojectManager")
 IncludeScript("monitor")
 IncludeScript("pda")
 IncludeScript("journals")
+IncludeScript("diskManager")
 --------------------------------------------
 
 --создание рабочей сцены 

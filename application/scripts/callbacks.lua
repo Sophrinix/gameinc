@@ -64,17 +64,6 @@ function sworkMainLoop( ptr )
 	applic:UpdateGameTime( ID_DATETIME_LABEL )	
 end
 
-function sworkSelectObjectOnOfficeScene( ptr )
-	local node = CLuaSceneNode( ptr )
-	local nodeName = node:GetName()
-	
-	
-	if nodeName == "inventionManagerNode" then
-		sworkCreateWindowCompanyInventionManager()
-		return 0
-	end
-end
-
 function sworkApplicationClose( ptr )
 	NrpApplicationSave()
 	applic:SaveBoxAddonsPrice()
@@ -105,8 +94,33 @@ function sworkReklameFinished( ptrReklame )
 	pda.Show( "Закончилась рекламная кампания "..reklame:GetName() )
 end
 
+function sworkKeyboardEvent( ptr )
+	local event = CLuaEvent( ptr )
+	local charInput = event:GetChar()
+	local keyDown = event:IsKeyDown()
+	if  keyDown and charInput == "+" then
+		local spd = applic:GetPauseBetweenStep()
+		if spd > 100 then
+			applic:SetPauseBetweenStep( spd - 100 )
+			local lb = guienv:AddLabel( "Скорость игры "..spd, scrWidth / 2 - 100, scrHeight / 2 - 50, 
+										 scrWidth / 2 + 100, scrHeight / 2 + 50, -1, guienv:GetRootGUIElement() )
+			guienv:AddBlenderAnimator( lb:Self(), 255, 10, 2000, false, false, true )
+		end 
+	elseif  keyDown and charInput == "-" then
+		local spd = applic:GetPauseBetweenStep()
+		if spd < 1000 then
+			applic:SetPauseBetweenStep( spd + 100 )
+			local lb = guienv:AddLabel( "Скорость игры "..spd, scrWidth / 2 - 100, scrHeight / 2 - 50, 
+					  					scrWidth / 2 + 100, scrHeight / 2 + 50, -1, guienv:GetRootGUIElement() )
+			guienv:AddBlenderAnimator( lb:Self(), 255, 10, 2000, false, false, true )
+		end 
+	end
+end
+
 sceneManager:AddSceneFunction( SCENE_AFTER_END, "sworkMainLoop" )
 sceneManager:AddSceneFunction( SCENE_AFTER_RENDER, "sworkDrawOnTopWindows" )
+sceneManager:AddSceneFunction( SCENE_KEY_INPUT_EVENT, "sworkKeyboardEvent" )
+
 applic:AddLuaFunction( APP_DAY_CHANGE, "sworkAppDayChange" )
 applic:AddLuaFunction( APP_MONTH_CHANGE, "sworkAppMonthChange" )
 applic:AddLuaFunction( APP_YEAR_CHANGE, "sworkAppYearChange" )
