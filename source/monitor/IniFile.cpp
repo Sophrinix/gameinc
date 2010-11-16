@@ -2,197 +2,142 @@
 #include <stdio.h>
 #include <sstream>
 #include "IniFile.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "NrpTranslate.h"
 
 namespace nrp
 {
 
-BOOL IniFile::Write( const std::string& section, 
-						   const std::string& key, 
-						   const int& amount, 
-						   const std::string& file_name )
+IniFile::IniFile( const NrpText& fileName )
 {
-	char buf[ MAX_PATH ];
+	_fileName = fileName;
+}
 
-	_itoa_s( amount, buf, 10 );
-	return WritePrivateProfileStringA( section.c_str(), 
-									   key.c_str(), 
-									   buf, 
-									   file_name.c_str() );
+bool IniFile::Set( const NrpText& section, 
+						   const NrpText& key, 
+						   int amount )
+{
+	return WritePrivateProfileStringW( section.ToWide(), key.ToWide(), NrpText( amount ).ToWide(), _fileName.ToWide() ) == TRUE;
 }
 //////////////////////////////////////////////////////////////////////////
 
-std::string IniFile::Read( const std::string& section, 
-								 const std::string& key, 
-								 const std::string& def_str, 
-								 const std::string& file_name )
+NrpText IniFile::Get( const NrpText& section, const NrpText& key, const NrpText& def_str )
 {
-	char buf[ MAX_PATH ];
+	wchar_t buf[ MAX_PATH ];
 
-	GetPrivateProfileStringA( section.c_str(),
-							  key.c_str(), 
-							  def_str.c_str(), 
+	GetPrivateProfileStringW( section.ToWide(),
+							  key.ToWide(), 
+							  def_str.ToWide(), 
 							  buf, 
 							  MAX_PATH, 
-							  file_name.c_str() );
+							  _fileName.ToWide() );
 
-	return std::string( buf );
+	return NrpText( buf );
 }
 //////////////////////////////////////////////////////////////////////////
 
-int IniFile::Read( const std::string& section, 
-						 const std::string& key, 
-						 const int& def_value, 
-						 const std::string& file_name )
+int IniFile::Get( const NrpText& section, 
+						 const NrpText& key, 
+						 int def_value)
 {
-	return GetPrivateProfileIntA( section.c_str(),
-							 	  key.c_str(), 
+	return GetPrivateProfileIntW( section.ToWide(),
+							 	  key.ToWide(), 
 								  def_value,
-								  file_name.c_str() );
+								  _fileName.ToWide() );
 }
 //////////////////////////////////////////////////////////////////////////
 
-irr::core::dimension2di IniFile::Read( const std::string& section, 
-										     const std::string& key, 
-											 const irr::core::dimension2di& def_value, 
-											 const std::string& file_name )
+irr::core::dimension2di IniFile::Get( const NrpText& section, 
+										     const NrpText& key, 
+											 const irr::core::dimension2di& def_value)
 {
-	irr::core::dimension2di result( def_value );
-
-	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
-	if( str_pars != "novalue" )
-		sscanf_s( str_pars.c_str(), "%d,%d", &def_value.Width, &def_value.Height );
-
-	return result;
+	return Get( section, key, NrpText( def_value ) ).ToDim2di();
 }
 //////////////////////////////////////////////////////////////////////////
 
-irr::core::dimension2df IniFile::Read( const std::string& section, 
-											 const std::string& key, 
-											 const irr::core::dimension2df& def_value, 
-											 const std::string& file_name )
+irr::core::dimension2df IniFile::Get( const NrpText& section, 
+											 const NrpText& key, 
+											 const irr::core::dimension2df& def_value )
 {
-	irr::core::dimension2df result( def_value );
-
-	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
-	if( str_pars != "novalue" )
-		sscanf_s( str_pars.c_str(), "%f,%f", &result.Width, &result.Height );
-
-	return result;
+	return Get( section, key, NrpText( def_value ) ).ToDim2df();
 }
 //////////////////////////////////////////////////////////////////////////
 
-irr::core::vector3df IniFile::Read( const std::string& section, 
-										  const std::string& key, 
-										  const irr::core::vector3df& def_value, 
-										  const std::string& file_name )
+irr::core::vector3df IniFile::Get( const NrpText& section, 
+										  const NrpText& key, 
+										  const irr::core::vector3df& def_value )
 {
-	irr::core::vector3df result( def_value );
-
-	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
-	if( str_pars != "novalue" )
-		sscanf_s( str_pars.c_str(), "%f,%f,%f", &result.X, &result.Y, &result.Z );
-
-	return result;
+	return Get( section, key, NrpText( def_value ) ).ToVector3df();
 }
 //////////////////////////////////////////////////////////////////////////
 
-irr::core::recti IniFile::Read( const std::string& section,
-									  const std::string& key,
-									  const irr::core::recti& def_value,
-									  const std::string& file_name )
+irr::core::recti IniFile::Get( const NrpText& section,
+									  const NrpText& key,
+									  const irr::core::recti& def_value )
 {
-	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
-
-	irr::core::recti rct( def_value );
-	if( str_pars != "novalue" )
-	sscanf_s( str_pars.c_str(), "%d,%d,%d,%d", &rct.UpperLeftCorner.X, &rct.UpperLeftCorner.Y, 
-												&rct.LowerRightCorner.X, &rct.LowerRightCorner.Y  );
-
-	return rct;
+	return Get( section, key, NrpText( def_value ) ).ToRect();
 }
 //////////////////////////////////////////////////////////////////////////
 
-void IniFile::Write(const std::string& section, 
-						  const std::string& key, 
-						  const irr::core::recti& value, 
-						  const std::string& file_name)
+bool IniFile::Set(const NrpText& section, 
+						  const NrpText& key, 
+						  const irr::core::recti& value)
 {
-	std::ostringstream rectStrStream;
-	rectStrStream << value.UpperLeftCorner.X << ", " << value.UpperLeftCorner.Y << ", " << value.LowerRightCorner.X << ", " << value.LowerRightCorner.Y;
-	
-	IniFile::Write(section, key, rectStrStream.str(), file_name);
+	return Set( section, key, NrpText( value ) );
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void IniFile::Write( const std::string& section, 
-						   const std::string& key,
-						   const std::string& str_value, 
-						   const std::string& file_name )
+bool IniFile::Set( const NrpText& section, 
+						   const NrpText& key,
+						   const NrpText& str_value )
 {
-	WritePrivateProfileStringA( section.c_str(),
-							    key.c_str(),
-							    str_value.c_str(),
-							    file_name.c_str() );
+	return WritePrivateProfileStringW( section.ToWide(),
+							    key.ToWide(),
+							    str_value.ToWide(),
+							    _fileName.ToWide() ) == TRUE;
 }
 //////////////////////////////////////////////////////////////////////////
 
-float IniFile::Read( const std::string& section,
-						   const std::string& key, 
-						   const float& def_value, 
-						   const std::string& file_name )
+float IniFile::Get( const NrpText& section,
+					const NrpText& key, 
+					float def_value )
 {
-	std::string str_pars = Read( section, key, std::string( "novalue" ), file_name );
-
-	float result = def_value;
-	if( str_pars != "novalue" )
-	    sscanf_s( str_pars.c_str(), "%f", &result );
-
-	return result;
+	return Get( section, key, NrpText( def_value ) ).ToFloat();
 }
 //////////////////////////////////////////////////////////////////////////
 
-irr::core::dimension2du IniFile::Read( const std::string& section, 
-											 const std::string& key, 
-											 const irr::core::dimension2du& def_value, 
-											 const std::string& file_name )
+irr::core::dimension2du IniFile::Get( const NrpText& section, 
+											 const NrpText& key, 
+											 const irr::core::dimension2du& def_value )
 {
-	irr::core::dimension2du result( def_value );
-
-	std::string str_pars = Read( section, key, std::string( "0,0" ), file_name );
-	sscanf_s( str_pars.c_str(), "%d,%d", &result.Width, &result.Height );
-
-	return result;
+	return Get( section, key, NrpText( def_value ) ).ToDim2du();
 }
 //////////////////////////////////////////////////////////////////////////
 
-bool IniFile::Read( const std::string& section, 
-						  const std::string& key, 
-						  const bool& def_value, 
-						  const std::string& file_name )
+bool IniFile::Get( const NrpText& section, 
+						  const NrpText& key, 
+						  bool def_value )
 {
-	std::string result = Read( section, key, std::string( "null" ), file_name );
+	NrpText result = Get( section, key, NrpText( "null" ) );
 
-	if( result == "0" || result == "false" )
+	if( result == L"0" || result == L"false" )
 		return false;
 
-	if( result == "1" || result == "true" )
+	if( result == L"1" || result == L"true" )
 		return true;
 
 	return def_value;
 }
 
-SYSTEMTIME IniFile::Read( const std::string& section, 
-							const std::string& key, 
-							const SYSTEMTIME& def_value, 
-							const std::string& fileName )
+SYSTEMTIME IniFile::Get( const NrpText& section, 
+							const NrpText& key, 
+							const SYSTEMTIME& def_value )
 {
 	SYSTEMTIME result( def_value );
 
-	std::string str_pars = Read( section, key, std::string( "y=0 m=0 d=0 h=0 mi=0 s=0" ), fileName );
-	sscanf_s( str_pars.c_str(), "y=%04d m=%02d d=%02d h=%02d mi=%02d s=%02d", 
+	NrpText str_pars = Get( section, key, NrpText( L"y=0 m=0 d=0 h=0 mi=0 s=0" ) );
+	swscanf_s( str_pars.c_str(), L"y=%04d m=%02d d=%02d h=%02d mi=%02d s=%02d", 
 								&result.wYear, &result.wMonth, &result.wDay,
 								&result.wHour, &result.wMinute, &result.wSecond );
 	result.wSecond = 0;
@@ -202,58 +147,71 @@ SYSTEMTIME IniFile::Read( const std::string& section,
 }
 //////////////////////////////////////////////////////////////////////////
 
-void IniFile::Write( const std::string& section, 
-						   const std::string& key, 
-						   const irr::core::vector3df& amount, 
-						   const std::string& file_name )
+bool IniFile::Set( const NrpText& section, 
+						   const NrpText& key, 
+						   const irr::core::vector3df& amount )
 {
-	char str[ MAX_PATH ];
+	wchar_t str[ MAX_PATH ];
 
-	sprintf_s( str, "%.3f, %.3f, %.3f", amount.X, amount.Y, amount.Z );
+	swprintf_s( str, MAX_PATH, L"%.3f, %.3f, %.3f", amount.X, amount.Y, amount.Z );
 
-	Write( section, key, str, file_name );
+	return Set( section, key, str );
 }
 
-void IniFile::Write( const std::string& section, 
-						   const std::string& key, 
-						   const SYSTEMTIME& amount, 
-						   const std::string& fileName )
+bool IniFile::Set( const NrpText& section, 
+						   const NrpText& key, 
+						   const SYSTEMTIME& amount )
 {
-	char str[ MAX_PATH ];
+	wchar_t str[ MAX_PATH ];
 
-	sprintf_s( str, "y=%04d m=%02d d=%02d h=%02d mi=%02d s=0", 
+	swprintf_s( str, MAX_PATH, L"y=%04d m=%02d d=%02d h=%02d mi=%02d s=0", 
 					amount.wYear, amount.wMonth, amount.wDay,
 					amount.wHour, amount.wMinute );
 
-	Write( section, key, str, fileName );
+	return Set( section, key, str );
 }
 
-void IniFile::Write( const std::string& section, const std::string& key, const float& valuel, const std::string& file_name )
+bool IniFile::Set( const NrpText& section, const NrpText& key, float valuel )
 {
-	std::ostringstream rectStrStream;
-	rectStrStream << valuel;
-
-	IniFile::Write(section, key, rectStrStream.str(), file_name);
+	return IniFile::Set(section, key, NrpText( valuel ) );
 }
 
-void IniFile::ReadValueList_( std::string sectionName, REQUIRE_MAP& mapt, std::string fileName )
+void IniFile::Get( const NrpText& sectionName, REQUIRE_MAP& mapt )
 {
-	char buffer[ 32000 ];
+	wchar_t buffer[ 32000 ];
 	memset( buffer, 0, 32000 );
-	GetPrivateProfileSection( sectionName.c_str(), buffer, 32000, fileName.c_str() );
+	GetPrivateProfileSectionW( sectionName.c_str(), buffer, 32000, _fileName.c_str() );
 
-	std::string readLine = buffer;
-	while( readLine != "" )
+	NrpText readLine = buffer;
+	while( readLine.size() )
 	{
-		std::string name, valuel;
-		name = readLine.substr( 0, readLine.find( '=' ) );
-		valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
-		int keey = static_cast< int >( translate::GetNumber( name.c_str() ) );
-		mapt[ keey ] = conv::ToInt( valuel.c_str() );
+		NrpText name, valuel;
+		name = readLine.subString( 0, readLine.findFirst( L'=' ) );
+		valuel = readLine.subString( readLine.findFirst( L'=' ) + 1, 0xff );
+		int keey = static_cast< int >( translate::GetNumber( name ) );
+		mapt[ keey ] = valuel.ToInt();
 
-		memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
+		memcpy( buffer, buffer + wcslen(buffer) + 1, 32000 );  
 		readLine = buffer;
 	}
+}
+
+void IniFile::Get( const NrpText& section, NrpText (*func)(int), u32 maxNum, STRINGS& art )
+{
+	for( u32 i=0; i < maxNum; i++ )
+		art.push_back( Get( section, func( i ), NrpText() ) );
+}
+
+void IniFile::Set( const NrpText& section, NrpText (*func)( int), const STRINGS& art )
+{
+	for( u32 i=0; i < art.size(); i++ )
+		Set( section, func( i ), art[ i ] );
+}
+
+void IniFile::Set( const NrpText& section, const REQUIRE_MAP& rmap )
+{
+	for( REQUIRE_MAP::Iterator tIter = const_cast< REQUIRE_MAP& >( rmap ).getIterator(); !tIter.atEnd() ; tIter++ )
+		 Set( section, NrpText( tIter->getKey() ), NrpText( tIter->getValue() ) );
 }
 
 } //namespace nrp

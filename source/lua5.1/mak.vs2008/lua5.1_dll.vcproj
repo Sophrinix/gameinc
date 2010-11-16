@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="lua"
 	ProjectGUID="{7243E30E-52D9-384A-91A2-C8783F1F808B}"
 	RootNamespace="lua5.1_dll"
@@ -21,7 +21,7 @@
 			OutputDirectory="obj/LuaDebug"
 			IntermediateDirectory="obj/LuaDebug"
 			ConfigurationType="2"
-			CharacterSet="2"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

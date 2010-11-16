@@ -1,16 +1,16 @@
 #include "StdAfx.h"
 #include <IVideoDriver.h>
-#include <string>
 #include "LuaScrollBar.h"
 #include "NrpMiniMap.h"
 #include "nrpEngine.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "NrpScrollBar.h"
 
 using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUASCROLLBAR( "CLuaScrollBar" );
 
 Luna< CLuaScrollBar >::RegType CLuaScrollBar::methods[] = 
 {
@@ -135,4 +135,8 @@ int CLuaScrollBar::SetSliderTexture( lua_State* L )
 	return 1;
 }
 
+const char* CLuaScrollBar::ClassName()
+{
+	return ( CLASS_LUASCROLLBAR );
+}
 }

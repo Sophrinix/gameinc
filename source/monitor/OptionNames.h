@@ -1,11 +1,9 @@
 #pragma once
-#include <string>
+#include "NrpText.h"
 
 namespace nrp
 {
 	
-typedef const std::string OPTION_NAME;
-
 OPTION_NAME BALANCE("balance");
 OPTION_NAME NAME("name");
 OPTION_NAME QUALITY( "quality" );

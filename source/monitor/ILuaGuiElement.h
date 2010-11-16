@@ -2,7 +2,7 @@
 
 #include <assert.h>
 #include "ILuaObject.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "nrpGUIEnvironment.h"
 #include "nrpEngine.h"
 
@@ -36,7 +36,7 @@ namespace nrp
 template< class T > class ILuaGuiElement : public ILuaObject< T >
 {
 public:
-	ILuaGuiElement(lua_State *L, std::string luaName) : ILuaObject( L, luaName )
+	ILuaGuiElement(lua_State *L, NrpText luaName) : ILuaObject( L, luaName )
 	{
 
 	}
@@ -44,7 +44,7 @@ public:
 	int GetChildCount( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":GetChildCount not need parameter").c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetChildCount not need parameter" ) ) );
 
 		int ret = 0;
 		IF_OBJECT_NOT_NULL_THEN ret = object_->getChildren().size();
@@ -56,7 +56,7 @@ public:
 	int GetChild( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":GetChild need index parameter").c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":GetChild need index parameter" ) ) );
 
 		u32 index = static_cast< u32 >( lua_tointeger( L, 2 ));
 
@@ -77,7 +77,7 @@ public:
 	int SetFont( lua_State* L )
 	{	
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetFont need fontName parameter").c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetFont need fontName parameter" ) ) );
 		const char* fontName = lua_tostring( L, 2 );
 		assert( fontName != NULL );
 
@@ -93,7 +93,7 @@ public:
 	int RemoveChilds( lua_State* L )
 	{	
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":RemoveChilds not need parameter").c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":RemoveChilds not need parameter" ) ) );
 
 		gui::CNrpGUIEnvironment* guienv = dynamic_cast< gui::CNrpGUIEnvironment* >( CNrpEngine::Instance().GetGuiEnvironment() ); 
 		IF_OBJECT_NOT_NULL_THEN 
@@ -111,7 +111,7 @@ public:
 	int GetParent( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":GetParent not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetParent not need any parameter" ) ) );
 
 		void* parent = NULL;
 
@@ -124,7 +124,7 @@ public:
 	int GetRelativePosition( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":GetPosition not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetPosition not need any parameter" ) ) );
 
 		core::position2di pos( 0, 0 );
 
@@ -138,7 +138,7 @@ public:
 	int GetID( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":GetID not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetID not need any parameter" ) ) );
 
 		int id = 0;
 
@@ -151,7 +151,7 @@ public:
 	int IsEnabled( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":IsEnabled not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":IsEnabled not need any parameter" ) ) );
 
 		bool enabled = false;
 
@@ -164,16 +164,11 @@ public:
 	int SetText( lua_State *L )									//устанавливает новый текст
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetText need string parameter").c_str());
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetText need string parameter" ) ) );
 
-		const char* text = lua_tostring( L, 2 );
-		assert( text != NULL );
+		NrpText text( lua_tostring( L, 2 ) );
 
-		IF_OBJECT_NOT_NULL_THEN	
-		{
-			if( text )
-				object_->setText( conv::ToWide( text ).c_str() );
-		}
+		IF_OBJECT_NOT_NULL_THEN	object_->setText( text.ToWide() );
 
 		return 1;
 	}
@@ -181,9 +176,9 @@ public:
 	int GetTypeName( lua_State *L )	
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":GetTypeName not need any parameter").c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetTypeName not need any parameter" ) ) );
 
-		std::string typen("");
+		NrpText typen("");
 		IF_OBJECT_NOT_NULL_THEN 
 		{
 			if( object_->getType() < gui::EGUIET_COUNT )
@@ -192,7 +187,7 @@ public:
 				typen = "";
 		}
 
-		lua_pushstring( L, typen.c_str() );
+		lua_pushstring( L, typen );
 
 		return 1;
 	}
@@ -200,7 +195,7 @@ public:
 	int SetEnabled( lua_State *L )	
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetEnabled need boolean parameter").c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetEnabled need boolean parameter" ) ) );
 
 		bool enabled = lua_toboolean( L, 2 ) > 0;
 		IF_OBJECT_NOT_NULL_THEN object_->setEnabled( enabled );
@@ -211,12 +206,12 @@ public:
 	int GetText( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":GetText not need any parameter").c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetText not need any parameter" ) ) );
 
-		std::string text("");
-		IF_OBJECT_NOT_NULL_THEN text = conv::ToStr( object_->getText() );
+		NrpText text("");
+		IF_OBJECT_NOT_NULL_THEN text = object_->getText();
 
-		lua_pushstring( L, text.c_str() );
+		lua_pushstring( L, text );
 
 		return 1;
 	}
@@ -224,7 +219,7 @@ public:
 	int GetSize( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":GetSize not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetSize not need any parameter" ) ) );
 
 		core::recti rectangle; 
 		IF_OBJECT_NOT_NULL_THEN	rectangle = object_->getAbsolutePosition();
@@ -241,7 +236,7 @@ public:
 	int MoveRelative( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 3, 3, ( "Function " + ObjectTypeName() + ":MoveRelative need 2 parameter" ).c_str() );
+		luaL_argcheck(L, argc == 3, 3, _ErrStr( NrpText( ":MoveRelative need 2 parameter" ) ) );
 
 		core::position2di offset;
 		offset.X = lua_tointeger( L, 2 );
@@ -257,7 +252,7 @@ public:
 	int SetVisible(lua_State *L)							//установка видимости
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ( "Function " + ObjectTypeName() + "::SetVisible need bool parameter" ).c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( "::SetVisible need bool parameter" ) ) );
 
 		bool visible = lua_toboolean( L, 2 ) > 0;						//принимает булевое значение в качестве луа-параметра
 
@@ -269,7 +264,7 @@ public:
 	int GetVisible(lua_State *L)							//получение видимости
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + "::self not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( "::self not need any parameter" ) ) );
 
 		bool visible = false;
 		IF_OBJECT_NOT_NULL_THEN visible = object_->isVisible();
@@ -282,12 +277,11 @@ public:
 	int SetName( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ( "Function " + ObjectTypeName() + ":SetName need string parameter " ).c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetName need string parameter " ) ) );
 
-		const char* name = lua_tostring( L, 2 );
-		assert( name != NULL );
+		NrpText name( lua_tostring( L, 2 ) );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setName( conv::ToWide( name ).c_str() );
+		IF_OBJECT_NOT_NULL_THEN	object_->setName( name.ToWide() );
 
 		return 1;
 	}
@@ -295,7 +289,7 @@ public:
 	int SetAlpha( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ( "Function " + ObjectTypeName() + "SetAlpha need int parameter " ).c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetAlpha need int parameter " ) ) );
 
 		int alpha = lua_tointeger( L, 2 );
 		IF_OBJECT_NOT_NULL_THEN	object_->setAlphaBlend( alpha);
@@ -306,7 +300,7 @@ public:
 	int GetAlpha( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":GetAlpha not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetAlpha not need any parameter" ) ) );
 
 		int alpha = 0;
 		IF_OBJECT_NOT_NULL_THEN alpha = object_->getAlphaBlend();
@@ -319,7 +313,7 @@ public:
 	int Remove( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":Remove not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":Remove not need any parameter" ) ) );
 
 		IF_OBJECT_NOT_NULL_THEN
 		{
@@ -344,7 +338,7 @@ public:
 	int SetPosition( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 3, 3, ( "Function " + ObjectTypeName() + ":SetPosition need 2 parameter" ).c_str() );
+		luaL_argcheck(L, argc == 3, 3, _ErrStr( NrpText( ":SetPosition need 2 parameter" ) ) );
 
 		core::position2di newPos;
 		newPos.X = lua_tointeger( L, 2 );
@@ -364,7 +358,7 @@ public:
 	int SetRect( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 5, 5, ( "Function " + ObjectTypeName() + ":SetRect need 2 parameter" ).c_str() );
+		luaL_argcheck(L, argc == 5, 5, _ErrStr( NrpText(  ":SetRect need 2 parameter" ) ) );
 
 		core::recti newRect;
 		newRect.UpperLeftCorner.X = lua_tointeger( L, 2 );

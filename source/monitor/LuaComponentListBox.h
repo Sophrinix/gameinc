@@ -12,8 +12,6 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_COMPONENTLISTBOX( "CLuaComponentListBox" );
-
 class CLuaComponentListBox : public ILuaListBox<irr::gui::CNrpComponentListbox>
 {
 public:
@@ -23,8 +21,7 @@ public:
 	
 	int AddItem( lua_State *L );
 	int GetSelectedObject( lua_State* L );
-
-	static const char* ClassName() { return CLASS_COMPONENTLISTBOX.c_str(); }
+	static const char* ClassName();
 };
 
 }//namespace nrp

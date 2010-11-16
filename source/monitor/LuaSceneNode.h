@@ -12,16 +12,14 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUASCENENODE( "CLuaSceneNode" );
 
 class CLuaSceneNode : public ILuaSceneNode< irr::scene::ISceneNode >
 {
 public:
 	static Luna<CLuaSceneNode>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaSceneNode(lua_State *L);		
-						
-	static const char* ClassName() { return CLASS_LUASCENENODE.c_str(); }
 private:
 	irr::scene::ISceneNode* GetTextSceneNode_();
 	bool IsChildOfCurrentScene_();

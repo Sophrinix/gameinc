@@ -13,6 +13,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_DEVELOPMODULE( "CLuaDevelopModule" );
 
 Luna< CLuaDevelopModule >::RegType CLuaDevelopModule::methods[] =			//реализуемы методы
 {
@@ -100,7 +101,7 @@ int CLuaDevelopModule::GetLevel( lua_State* L )
 
 int CLuaDevelopModule::GetTexture( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "CLuaDevelopModule", TEXTURENORMAL, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "CLuaDevelopModule", TEXTURENORMAL, "" ) );
 	return 1;
 }
 
@@ -119,4 +120,8 @@ int CLuaDevelopModule::GetParent( lua_State* L )
 	return 1;
 }
 
+const char* CLuaDevelopModule::ClassName()
+{
+	return ( CLASS_DEVELOPMODULE );
+}
 }//namespace nrp

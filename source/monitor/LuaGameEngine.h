@@ -5,12 +5,12 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAGAMEENGINE( "CLuaGameEngine" );
 
 class CLuaGameEngine : public ILuaProject<nrp::CNrpGameEngine>
 {
 public:
 	static Luna<CLuaGameEngine>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaGameEngine(lua_State *L);		
 	int AddGenre( lua_State* L );
@@ -22,8 +22,6 @@ public:
 	int Create( lua_State* L );
 	int GetTexture( lua_State* L );
 	int Load( lua_State* L );
-
-	static const char* ClassName() { return CLASS_LUAGAMEENGINE.c_str(); }
 };
 
 }//namespace nrp

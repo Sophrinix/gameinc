@@ -10,6 +10,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAPLANTWORK("CLuaPlantWork");
 
 Luna< CLuaPlantWork >::RegType CLuaPlantWork::methods[] = 
 {
@@ -253,5 +254,10 @@ int CLuaPlantWork::GetDiskInDay( lua_State* L )
 
 	lua_pushinteger( L, nDisk ); 
 	return 1;	
+}
+
+const char* CLuaPlantWork::ClassName()
+{
+	return ( CLASS_LUAPLANTWORK );
 }
 }

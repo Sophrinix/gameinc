@@ -9,6 +9,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LINKBOX( "CLuaLinkBox" );
 
 Luna< CLuaLinkBox >::RegType CLuaLinkBox::methods[] =			//реализуемы методы
 {
@@ -37,10 +38,10 @@ int CLuaLinkBox::AddLuaFunction( lua_State *L )									//устанавливает имя ново
 	return AddRemLuaFunction_( L, "AddLuaFunction", true );
 }
 
-int CLuaLinkBox::AddRemLuaFunction_( lua_State* L, std::string funcName, bool add )
+int CLuaLinkBox::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool add )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, ("Function CLuaLinkBox:" + funcName + " need 2 parameter").c_str() );
+	luaL_argcheck(L, argc == 3, 3, _ErrStr( ( NrpText(":") + funcName + " need 2 parameter" ) ) );
 
 	int id = lua_tointeger( L, 2 );
 	const char* fName = lua_tostring( L, 3 );
@@ -175,15 +176,15 @@ int CLuaLinkBox::GetTexture( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaLinkBox::GetTexture not need parameter");
 
-	core::stringc textureName = "";
+	NrpText textureName = "";
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		if( object_->getImage() )
-			textureName = object_->getImage()->getName().getPath();
+			textureName = object_->getImage()->getName().getPath().c_str();
 	}
 
-	lua_pushstring( L, textureName.c_str() );
+	lua_pushstring( L, textureName );
 
 	return 1;		
 }
@@ -202,6 +203,11 @@ int CLuaLinkBox::SetDefaultTexture( lua_State* L )
 	}
 
 	return 1;	
+}
+
+const char* CLuaLinkBox::ClassName()
+{
+	return ( CLASS_LINKBOX );
 }
 
 }//namespace nrp

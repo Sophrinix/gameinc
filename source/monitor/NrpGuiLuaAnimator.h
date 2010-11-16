@@ -10,12 +10,12 @@ namespace gui
 class CNrpGuiLuaAnimator : public IGUIAnimator
 {
 public:
-	CNrpGuiLuaAnimator( IGUIEnvironment* environment, IGUIElement* node, const core::stringc& funcName );
+	CNrpGuiLuaAnimator( IGUIEnvironment* environment, IGUIElement* node, const nrp::NrpText& funcName );
 	~CNrpGuiLuaAnimator(void);
 
 	virtual void draw();
 private:
-	core::stringc funcName_;
+	nrp::NrpText funcName_;
 };
 
 }//namspace gui

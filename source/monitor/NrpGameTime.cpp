@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "NrpGameTime.h"
 #include "NrpApplication.h"
+#include "irrlicht.h"
 
 //янв фев мрт апр май июн июл авг снт окт ноя дек	
 static int monthLen[ 13 ] = { 0, 31,  28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };

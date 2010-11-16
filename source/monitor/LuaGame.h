@@ -4,14 +4,13 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAGAME( "CLuaGame" );
-
 class CNrpGame;
 
 class CLuaGame : public ILuaBaseProject<nrp::CNrpGame>
 {
 public:
 	static Luna<CLuaGame>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaGame(lua_State *L);		
 	int Create( lua_State* L );
@@ -39,15 +38,11 @@ public:
 	int GetCurrentMonthSales( lua_State* L );
 	int GetCompany( lua_State* L );
 	int GetDescriptionLink( lua_State* L );
-
-	static const char* ClassName() { return CLASS_LUAGAME.c_str(); }
 private:
 	template< class R > R GetImageLisParam_( lua_State* L, 
-		                                     std::string funcName, 
-											 std::string name, R defValue );
-	int GetImagePath_( lua_State* L, 
-					   std::string funcName, 
-					   std::string nameParam );
+		                                     const NrpText& funcName, 
+											 OPTION_NAME& name, R defValue );
+	int GetImagePath_( lua_State* L, const NrpText& funcName, OPTION_NAME& nameParam );
 };
 
 }//namespace nrp

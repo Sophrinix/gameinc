@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "nrpScene.h"
 #include <irrlicht.h>
 
@@ -19,7 +18,7 @@ public:
 	virtual void OnUpdate();
 	virtual void OnEnter();
 	virtual void OnLeave();
-	virtual void SetOption( const core::stringc& name, bool amount ) {}
+	virtual void SetOption( const nrp::NrpText& name, bool amount ) {}
 	virtual scene::ISceneNode* GetSelectedNode() { return NULL; }
 	virtual core::vector3df GetCurrentWorldPosition() { return core::vector3df(0, 0, 0); }
 
@@ -27,14 +26,14 @@ private:
 	typedef enum { BTN_OK=1, BTN_EXIT, BTN_COUNT } BTN_NAME;
 
 	// stuff added by d.a.
-	irr::scene::IAnimatedMesh *someMesh_; 
-	irr::scene::ISceneNode *waterNode_, *lightNode_;
-	irr::scene::ICameraSceneNode * camera_;
-	irr::gui::IGUIInOutFader* fader_;
-	irr::gui::IGUIImage* mainLogo_;
-	irr::gui::IGUIImage* companyBar_;
-	irr::video::ITexture* nerpaLogoTexture_;
-	irr::video::ITexture* companyBarTexture_;	
+	IAnimatedMesh *someMesh_; 
+	ISceneNode *waterNode_, *lightNode_;
+	ICameraSceneNode * camera_;
+	gui::IGUIInOutFader* fader_;
+	gui::IGUIImage* mainLogo_;
+	gui::IGUIImage* companyBar_;
+	video::ITexture* nerpaLogoTexture_;
+	video::ITexture* companyBarTexture_;	
 	// end of stuff
 	const int SCENE_ID;
 

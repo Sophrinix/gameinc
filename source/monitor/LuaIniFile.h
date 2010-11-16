@@ -9,21 +9,21 @@ namespace nrp
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAINIFILE( "CLuaIniFile" );
 
 class CLuaIniFile : public ILuaObject<nrp::IniFile>
 {
-	std::string fileName_;
+	IniFile* _ini;
 public:
 	static Luna<CLuaIniFile>::RegType methods[];				//методы обертки
 
-	CLuaIniFile(lua_State *L);		
+	CLuaIniFile(lua_State *L);	
+	~CLuaIniFile();
 	int ReadInteger( lua_State* L );
 	int ReadString( lua_State* L );
 	int ReadFloat( lua_State* L );
 	int ReadTime( lua_State* L );
 
-	static const char* ClassName() { return CLASS_LUAINIFILE.c_str(); }
+	static const char* ClassName();
 };
 
 }//namespace nrp

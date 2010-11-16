@@ -1,20 +1,17 @@
 #pragma once
 #include "IUser.h"
-#include <string>
 
 namespace nrp
 {
 
-CLASS_NAME CLASS_AIUSER( "CNrpAiUser" );	
-
 class CNrpAiUser : public IUser
 {
 public:
-	CNrpAiUser( const std::string& name, CNrpCompany* ptrCmp );
-	CNrpAiUser( const std::string& fileName );
+	CNrpAiUser( const NrpText& name, CNrpCompany* ptrCmp );
+	CNrpAiUser( const NrpText& fileName );
 	~CNrpAiUser(void);	
 
-	static std::string ClassName() { return CLASS_AIUSER; } 
+	static NrpText ClassName(); 
 };
 
 }//namespace nrp

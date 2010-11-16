@@ -12,6 +12,7 @@ using namespace irr::core;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUABROWSER( "CLuaBrowser" );
 
 Luna< CLuaBrowser >::RegType CLuaBrowser::methods[] =			//реализуемы методы
 {
@@ -47,19 +48,19 @@ int CLuaBrowser::Navigate( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaBrowser::Navigate need string parameter");
 
-	const char* pathto = lua_tostring( L, 2 );
-	assert( pathto != NULL );
-	if( pathto == NULL )
+	NrpText pathto = lua_tostring( L, 2 );
+	if( !pathto.size() )
 		return 1;
 	
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		std::string advpath = pathto;
+		NrpText advpath = pathto;
 		//если путь относительный надо его привести к абсолютному... иначи геко споткнется
 		//и не сможет обработать страницу
-		if( advpath.find( ':' ) == -1 )
-			advpath = CNrpApplication::Instance().GetValue<std::string>( WORKDIR ) + advpath;
-		object_->Navigate( "file://" + advpath );
+		if( advpath.findFirst( L':' ) == -1 )
+			advpath = CNrpApplication::Instance().GetString( WORKDIR ) + advpath;
+
+		object_->Navigate( NrpText("file://") + advpath );
 	}
 
 	return 1;	
@@ -104,4 +105,10 @@ int CLuaBrowser::GetWindow( lua_State *L )
 	lua_pushlightuserdata( L, wnd );
 	return 1;	
 }
+
+const char* CLuaBrowser::ClassName()
+{
+	return ( CLASS_LUABROWSER );
+}
+
 }//namespace nrp

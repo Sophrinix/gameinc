@@ -10,65 +10,36 @@
 *********************************************************************/
 #pragma once
 
-#include <map>
-#include <string>
+#include <irrMap.h>
+#include <irrString.h>
 #include <typeinfo.h>
 #include <stdio.h>
-#include <algorithm>
 #include <assert.h>
 
 #include "INrpObject.h"
-#include "IniFile.h"
 #include "SectionNames.h"
 #include "OptionNames.h"
+#include "nrptext.h"
+
+using namespace irr;
 
 namespace nrp
 {
 
-class KeyPair
-{
-	KeyPair() {};
-
-	std::string _name, _type, _value;
-public:
-	KeyPair( const std::string& str, 
-			 char delim=':' )
-	{
-		int empPos = str.find( '=' );
-		assert( empPos >= 0 );
-		if( empPos >= 0 )
-		{
-			_value = str.substr( empPos+1, 0xff );
-			_name = str.substr( 0, empPos );
-			_type = "unknown";
-			int delimPos = _name.find( delim );
-			if( delimPos >= 0 )
-			{
-				_type = _name.substr( delimPos + 1, 0xff );
-				_name = _name.substr( 0, delimPos );
-			}
-		}
-	}
-
-	std::string& GetName() { return _name; }
-	std::string& GetValue() { return _value; }
-	std::string& GetType() { return _type; }
-};
-
-void CheckClassesType( const std::string type1, const std::string type2 );
+void CheckClassesType( const NrpText& type1, const NrpText& type2 );
 
 class INrpProperty
 {
 public:
-	virtual const std::string& GetValueType() = 0;
+	virtual const NrpText& GetValueType() = 0;
 	virtual ~INrpProperty()
 	{
 
 	}
 };
-typedef std::map< OPTION_NAME, INrpProperty* > PropertyArray;
 
-template< class ValClass > class CNrpProperty : public INrpProperty
+template< class ValClass > 
+class CNrpProperty : public INrpProperty
 {
 	friend class INrpConfig;
 public:
@@ -82,7 +53,7 @@ public:
 	{ 
 	}
 
-	const std::string& GetValueType() { return type_; }
+	const NrpText& GetValueType() { return type_; }
 
 	ValClass& ToggleValue()
 	{
@@ -104,18 +75,51 @@ public:
 	}
 
 private:
-	std::string type_;
+	NrpText type_;
 	ValClass value_;
 
 	CNrpProperty() {};
 	CNrpProperty( CNrpProperty& ) {};
 };
 
+typedef core::map< OPTION_NAME, INrpProperty* > PropertyArray;
+
 class INrpConfig : public INrpObject
 {
 	friend class CNrpConfigLooder;
 
 public:
+
+	template< class ValueType >
+	class ConfigAccess
+	{
+		// Let map be the only one who can instantiate this class.
+		friend class INrpConfig;
+
+	public:
+
+		// Assignment operator. Handles the myTree["Foo"] = 32; situation
+		void operator=(const ValueType& value)
+		{
+			// Just use the Set method, it handles already exist/not exist situation
+			_config.SetValue( value );
+		}
+
+		// ValueType operator
+		operator ValueType()
+		{
+			return _config.GetValue();
+		}
+
+	private:
+
+		ConfigAccess(CNrpProperty<ValueType>& conf) : _config(conf) {}
+
+		ConfigAccess();
+
+		CNrpProperty<ValueType>& _config;
+	}; // AccessClass
+
 	INrpConfig( CLASS_NAME className, SYSTEM_NAME sysName ) : INrpObject( className, sysName )
 	{
 
@@ -123,121 +127,134 @@ public:
 
 	virtual ~INrpConfig() 
 	{
-		PropertyArray::iterator pIter = options_.begin();
-		for( ; pIter != options_.end(); pIter++ )
-			delete pIter->second;
+		PropertyArray::Iterator pIter = _options.getIterator();
+		for( ; pIter.atEnd(); pIter++ )
+			delete pIter->getValue();
 
-		options_.clear();
+		_options.clear();
 	}
 
-	template< class T > bool IsValueTypeA( std::string name )
+	template< class T > bool IsValueTypeA( const NrpText& name )
 	{
-		std::transform( name.begin(), name.end(), name.begin(), tolower );
-		PropertyArray::iterator pIter = options_.find( name );
+		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
 
-		if( pIter == options_.end() )
-			return typeid( T ).name() == pIter->second->GetValueType();
+		if( !pIter.atEnd() )
+			return ( pIter->getValue()->GetValueType() == typeid( T ).name() );
 
 		return false;
 	}
 
-	PropertyArray& GetProperties() { return options_; }
+	PropertyArray& GetProperties() { return _options; }
 
-	template< class B > B ToggleValue( std::string name, B defValue )
+	template< class B > B ToggleValue( const NrpText& name, B defValue )
 	{
-		std::transform( name.begin(), name.end(), name.begin(), tolower );
-		PropertyArray::iterator pIter = options_.find( name );
-		if( pIter == options_.end() )
+		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
+		if( pIter.atEnd() )
 		{
 			CreateValue<B>( name, defValue );
 			return defValue;
 		}
 		else
-			((CNrpProperty<B>*)pIter->second)->ToggleValue();
+			((CNrpProperty<B>*)pIter->getValue())->ToggleValue();
 
-		return ((CNrpProperty<B>*)pIter->second)->GetValue();
+		return ((CNrpProperty<B>*)pIter->getValue())->GetValue();
 	}
 
 	//! получение свойства объекта
-	template< class B > B& GetValue( std::string name ) const
+	template< class B > B& GetValue( const NrpText& name ) const
 	{
-		std::transform( name.begin(), name.end(), name.begin(), tolower );
-		PropertyArray::const_iterator pIter = options_.find( name );
+		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
 		
-		if( pIter == options_.end() )
+		if( pIter.atEnd() )
 		{
 #ifdef _DEBUG
-			Log(HW) << "read: bad config param " << name << term;
+			Log(HW) << L"read: bad config param " << name << term;
 #endif
 			throw "error"; 
 		}
 		else 
-			return ((CNrpProperty<B>*)pIter->second)->GetValue();
+			return ((CNrpProperty<B>*)pIter->getValue())->GetValue();
 	}
 
-	std::string GetString( const std::string& name )
+/*
+	template< class B > 
+	CNrpProperty<B> operator[]( OPTION_NAME name )
 	{
-		return GetValue<std::string>( name );
-	}
-
-	void SetString( const std::string& name, const std::string& valuel )
-	{
-		SetValue<std::string>( name, valuel );
-	}
-
-	template< class B > B& AddValue( std::string name, B valuel ) const
-	{
-		std::transform( name.begin(), name.end(), name.begin(), tolower );
-		PropertyArray::const_iterator pIter = options_.find( name );
-		if( pIter == options_.end() )
+		name.make_lower();
+		PropertyArray::Iterator pIter = _options.find( name );
+		
+		if( pIter.atEnd() )
 		{
 #ifdef _DEBUG
-			Log(HW) << "add: bad config param " << name << term;
+			Log(HW) << L"read: bad config param " << name.c_str() << term;
 #endif
 			throw "error"; 
 		}
 		else 
-			return ((CNrpProperty<B>*)pIter->second)->AddValue( valuel );
+			return ConfigAccess((CNrpProperty<B>*)pIter->getValue());
+	}
+*/
+
+	NrpText& GetString( const NrpText& name )
+	{
+		return GetValue<NrpText>( name );
 	}
 
-	template< class B > void SetValue( std::string name, B valuel ) 
+	void SetString( const NrpText& name, const NrpText& valuel )
+	{
+		SetValue<NrpText>( name, valuel );
+	}
+
+	template< class B > B& AddValue( const NrpText& name, B valuel ) const
+	{
+		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
+		if( pIter.atEnd() )
+		{
+#ifdef _DEBUG
+			Log(HW) << L"add: bad config param " << name << term;
+#endif
+			throw "error"; 
+		}
+		else 
+			return ((CNrpProperty<B>*)pIter->getValue())->AddValue( valuel );
+	}
+
+	template< class B > void SetValue( const NrpText& name, B valuel ) 
 	{ 
-		std::transform( name.begin(), name.end(), name.begin(), tolower );
-		PropertyArray::iterator pIter = options_.find( name );
-		if( pIter == options_.end() )
+		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
+		if( pIter.atEnd() )
 		{
 #ifdef _DEBUG
-			Log(HW) << "write: bad config param " << ObjectTypeName() << ":" << name << term;
+			Log(HW) << L"write: bad config param " << ObjectTypeName() << L":" << name << term;
 #endif
 		}
 		else 
-			((CNrpProperty<B>*)pIter->second)->SetValue( valuel );
+			((CNrpProperty<B>*)pIter->getValue())->SetValue( valuel );
+	}
+
+	bool IsValueExist( NrpText name )
+	{
+		return ( _options.find( name.ToLower() ) != NULL );
 	}
 
 protected:
-	virtual std::string Save( const std::string& fileName );
-	virtual void Load( const std::string& fileName );
+	virtual NrpText Save( const NrpText& fileName );
+	virtual void Load( const NrpText& fileName );
 
-	void EraseValue( std::string name );
+	void EraseValue( NrpText name );
 
-	template< class B > void CreateValue( std::string name, B valuel )
+	template< class B > void CreateValue( const NrpText& name, B valuel )
 	{
-		std::transform( name.begin(), name.end(), name.begin(), tolower );
-		if( options_.find( name ) == options_.end() )
-			options_[ name ] = new CNrpProperty<B>( valuel );
+		NrpText fName = name.ToLower();
+		if( _options.find( fName ) == NULL )
+			_options[ fName ] = new CNrpProperty<B>( valuel );
 		else
-			SetValue<B>( name, valuel );
-	}
-
-	bool IsValueExist( std::string name )
-	{
-		std::transform( name.begin(), name.end(), name.begin(), tolower );
-		return ( options_.find( name ) != options_.end() );
+			SetValue<B>( fName, valuel );
 	}
 
 private:
 	//! определение массива свойств
-	PropertyArray options_;
+	PropertyArray _options;
 };
 
 } //namespace nrp

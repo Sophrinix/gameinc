@@ -3,14 +3,19 @@
 #include "INrpObject.h"
 #include "Logger.h"
 
+
+#include <irrMap.h>
+//*! определение типа карты системное_имя<->указатель на элемент
+typedef irr::core::map< SYSTEM_NAME, nrp::INrpObject* > NrpSystemMap; 
+
 //массив указателей на объекты
 static NrpSystemMap GSystemObjectsMap;	
 
 void GInsertObjectToSystemMap( nrp::INrpObject* obj )
 {
-	NrpSystemMap::iterator pIter = GSystemObjectsMap.find( obj->SystemName() );
+	NrpSystemMap::Iterator pIter = GSystemObjectsMap.find( obj->SystemName() );
 
-	if( pIter != GSystemObjectsMap.end() )
+	if( !pIter.atEnd() )
 	{
 		nrp::Log(nrp::HW) << "ERROR: SystemMap duplicate object" << obj->ObjectTypeName() << obj->SystemName();
 	}
@@ -21,21 +26,21 @@ void GInsertObjectToSystemMap( nrp::INrpObject* obj )
 
 void GRemoveObjectFromSystemMap( nrp::INrpObject* obj )
 {
-	NrpSystemMap::iterator pIter = GSystemObjectsMap.find( obj->SystemName() );
+	NrpSystemMap::Iterator pIter = GSystemObjectsMap.find( obj->SystemName() );
 
-	if( pIter == GSystemObjectsMap.end() )
+	if( pIter.atEnd() )
 	{
 		nrp::Log(nrp::HW) << "ERROR: SystemMap remove unlinked object: name " << obj->SystemName();
 	}
 	else
-		GSystemObjectsMap.erase( pIter );
+		GSystemObjectsMap.remove( obj->SystemName() );
 }
 
 
-void GGetListSystemObject( std::vector< std::string >& stringArray )
+/*void GGetListSystemObject( std::vector< stringw >& stringArray )
 {
 	NrpSystemMap::iterator pIter = GSystemObjectsMap.begin();
 
 	for( ; pIter != GSystemObjectsMap.end(); ++pIter )
 		stringArray.push_back( (*pIter).second->ObjectTypeName() + ":" + (*pIter).first );
-}
+}*/

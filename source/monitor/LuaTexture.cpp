@@ -7,6 +7,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATEXTURE( "CLuaTexture" );
 
 Luna< CLuaTexture >::RegType CLuaTexture::methods[] = 
 {
@@ -74,5 +75,10 @@ int CLuaTexture::Drop( lua_State *L )
 	IF_OBJECT_NOT_NULL_THEN object_->drop();
 
 	return 1;
+}
+
+const char* CLuaTexture::ClassName()
+{
+	return ( CLASS_LUATEXTURE );
 }
 }

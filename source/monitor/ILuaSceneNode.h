@@ -2,7 +2,7 @@
 #include <assert.h>
 
 #include "ILuaObject.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 
 namespace nrp
 {
@@ -25,7 +25,7 @@ namespace nrp
 template< class T > class ILuaSceneNode : public ILuaObject< T >
 {
 public:
-	ILuaSceneNode(lua_State *L, std::string luaName) : ILuaObject( L, luaName )
+	ILuaSceneNode(lua_State *L, stringw luaName) : ILuaObject( L, luaName )
 	{
 
 	}
@@ -35,32 +35,32 @@ public:
 	int GetTypeName( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":GetTypeName not need parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( ":GetTypeName not need parameter" ) );
 
-		std::string text;
+		NrpText text;
 		IF_OBJECT_NOT_NULL_THEN
 		{
 			switch( object_->getType() )
 			{
-			case scene::ESNT_TERRAIN:	text = "Terrain";	break;
-			case scene::ESNT_MESH:		text = "Mesh";		break;		
-			case scene::ESNT_SONAR:		text = "Sonar";		break;
-			case scene::ESNT_TARGET:	text = "Target";	break;
-			case scene::ESNT_CUBE:		text = "Cube";		break;
-			case scene::ESNT_REGION:	text = "Region";	break;
+			case scene::ESNT_TERRAIN:	text = L"Terrain";	break;
+			case scene::ESNT_MESH:		text = L"Mesh";		break;		
+			case scene::ESNT_SONAR:		text = L"Sonar";	break;
+			case scene::ESNT_TARGET:	text = L"Target";	break;
+			case scene::ESNT_CUBE:		text = L"Cube";		break;
+			case scene::ESNT_REGION:	text = L"Region";	break;
 
 			default: text = "Unknown";
 			}
 		}
 
-		lua_pushstring( L, text.c_str() );
+		lua_pushstring( L, text );
 		return 1;		
 	}
 
 	int SetMaterialTexture( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 3, 3, ("Function "+ ObjectTypeName() + ":SetMaterialTexture need 2 parameter").c_str() );
+		luaL_argcheck(L, argc == 3, 3, _ErrStr(":SetMaterialTexture need 2 parameter") );
 
 		int level = lua_tointeger( L, 2 );
 		const char* fileTexture = lua_tostring( L, 3 );						//принимает булевое значение в качестве луа-параметра
@@ -74,7 +74,7 @@ public:
 	int SetMaterialFlag( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 3, 3, ("Function " + ObjectTypeName() + ":SetMaterialFlag need 2 parameter").c_str() );
+		luaL_argcheck(L, argc == 3, 3, _ErrStr(":SetMaterialFlag need 2 parameter") );
 
 		video::E_MATERIAL_FLAG flagName = (video::E_MATERIAL_FLAG)lua_tointeger( L, 2 );						//принимает булевое значение в качестве луа-параметра
 		bool flagValue = lua_toboolean( L, 3 ) > 0;
@@ -87,7 +87,7 @@ public:
 	int SetTriangleSelector( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetTriangleSelector need ITriangleSelector parameter").c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr(":SetTriangleSelector need ITriangleSelector parameter") );
 
 		scene::ITriangleSelector* selector = (scene::ITriangleSelector*)lua_touserdata( L, 2 );
 
@@ -103,14 +103,15 @@ public:
 	int GetName( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":GetName not need parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr(":GetName not need parameter" ) );
 
-		std::string name = "";
+		NrpText name = "";
 	
 		IF_OBJECT_NOT_NULL_THEN 
 			if( IsChildOfCurrentScene_() )
 				name = object_->getName();
-		lua_pushstring( L, name.c_str() );									
+
+		lua_pushstring( L, name );									
 
 		return 1;		
 	}
@@ -118,7 +119,7 @@ public:
 	int SetName( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ( "Function " + ObjectTypeName() + ":SetName need string parameter" ).c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr(":SetName need string parameter" ) );
 
 		const char* name = lua_tostring( L, 2 );						
 		assert( name != NULL );
@@ -131,7 +132,7 @@ public:
 	int Remove( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":Remove not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( ":Remove not need any parameter" ) );
 
 		IF_OBJECT_NOT_NULL_THEN	object_->remove();
 
@@ -141,7 +142,7 @@ public:
 	int GetVisible( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":GetVisible not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( ":GetVisible not need any parameter" ) );
 
 		bool visible = false;
 		IF_OBJECT_NOT_NULL_THEN visible = object_->isVisible();
@@ -153,7 +154,7 @@ public:
 	int SetVisible( lua_State *L )							//изменение видимости
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ( "Function " + ObjectTypeName() + ":setVisible need bool parameter" ).c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr(":setVisible need bool parameter" ) );
 
 		bool visible = lua_toboolean( L, 2 ) > 0;						//принимает булевое значение в качестве луа-параметра
 
@@ -165,7 +166,7 @@ public:
 	int GetPosition( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ( "Function " + ObjectTypeName() + ":GetPosition not need any parameter" ).c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr(":GetPosition not need any parameter" ) );
 
 		core::vector3df pos;
 		IF_OBJECT_NOT_NULL_THEN pos = object_->getPosition();
@@ -180,7 +181,7 @@ public:
 	{
 		core::vector3df rot;
 		int argc = lua_gettop(L);
-		luaL_argcheck( L, argc == 4, 4, ( "Function " + ObjectTypeName() + ":setRotation need three parameter" ).c_str() );
+		luaL_argcheck( L, argc == 4, 4, _ErrStr(":setRotation need three parameter" ) );
 
 		rot.X = (float)lua_tonumber( L, 2 );
 		rot.Y = (float)lua_tonumber( L, 3 );
@@ -194,7 +195,7 @@ public:
 	{
 		core::vector3df scale;
 		int argc = lua_gettop(L);
-		luaL_argcheck( L, argc == 4, 4, ( "Function " + ObjectTypeName() + ":setScale need three parameter" ).c_str() );
+		luaL_argcheck( L, argc == 4, 4, _ErrStr(":setScale need three parameter" ));
 
 		scale.X = (float)lua_tonumber( L, 2 );
 		scale.Y = (float)lua_tonumber( L, 3 );
@@ -208,7 +209,7 @@ public:
 	{
 		core::vector3df pos;
 		int argc = lua_gettop(L);
-		luaL_argcheck( L, argc == 4, 4, ( "Function " + ObjectTypeName() + ":setPosition need three parameter" ).c_str() );
+		luaL_argcheck( L, argc == 4, 4, _ErrStr(":setPosition need three parameter" ) );
 
 		pos.X = (float)lua_tonumber( L, 2 );
 		pos.Y = (float)lua_tonumber( L, 3 );

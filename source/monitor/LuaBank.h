@@ -9,12 +9,12 @@ namespace nrp
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUABANK( "CLuaBank" );
 
 class CLuaBank : public ILuaProject<nrp::CNrpBank>
 {
 public:
 	static Luna<CLuaBank>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaBank(lua_State *L);		
 	int GetMaxCompanyLoan( lua_State* L );
@@ -27,9 +27,8 @@ public:
 	int GetLoanMonthToEnd( lua_State* L );
 	int CreateLoan( lua_State* L );
 
-	static const char* ClassName() { return CLASS_LUABANK.c_str(); }
 private:
-	template< class T > T GetLoanParam_( lua_State* L, std::string funcName, std::string name, T defValue );
+	template< class T > T GetLoanParam_( lua_State* L, NrpText& funcName, OPTION_NAME& name, T defValue );
 };
 
 }//namespace nrp

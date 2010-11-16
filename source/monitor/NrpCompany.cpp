@@ -9,17 +9,19 @@
 #include "NrpDevelopGame.h"
 #include "NrpInvention.h"
 #include "OpFileSystem.h"
+#include "IniFile.h"
 
 #include <errno.h>
 #include <assert.h>
 
 namespace nrp
 {
+CLASS_NAME CLASS_NRPCOMPANY( "CNrpCompany" );
 
 void CNrpCompany::_InitialyzeOptions()
 {
 	CreateValue<int>( BALANCE, 100000 );
-	CreateValue<std::string>( NAME, "" );
+	CreateValue<NrpText>( NAME, "" );
 	CreateValue<PUser>( CEO, NULL );
 	CreateValue<int>( ENGINES_NUMBER, 0 );
 	CreateValue<int>( TECHNUMBER, 0 );
@@ -32,7 +34,7 @@ void CNrpCompany::_InitialyzeOptions()
 	CreateValue<int>( INVENTIONSNUMBER, 0 );
 }
 
-CNrpCompany::CNrpCompany( const std::string& name, IUser* ceo ) : INrpConfig( CLASS_NRPCOMPANY, name)
+CNrpCompany::CNrpCompany( const NrpText& name, IUser* ceo ) : INrpConfig( CLASS_NRPCOMPANY, name)
 {
 	_InitialyzeOptions();
 
@@ -40,7 +42,7 @@ CNrpCompany::CNrpCompany( const std::string& name, IUser* ceo ) : INrpConfig( CL
 	SetValue<PUser>( CEO, ceo );
 }
 
-CNrpCompany::CNrpCompany( const std::string& fileName ) : INrpConfig( CLASS_NRPCOMPANY, fileName )
+CNrpCompany::CNrpCompany( const NrpText& fileName ) : INrpConfig( CLASS_NRPCOMPANY, fileName )
 {
 	_InitialyzeOptions();
 
@@ -56,15 +58,9 @@ CNrpGameEngine* CNrpCompany::GetGameEngine( int index ) const
 	return index < (int)_engines.size() ? _engines[ index ] : NULL;
 }
 
-CNrpGameEngine* CNrpCompany::GetGameEngine( const std::string& name ) const
+CNrpGameEngine* CNrpCompany::GetGameEngine( const NrpText& name ) const
 {
-	ENGINE_LIST::const_iterator eIter = _engines.begin();
-
-	for( ; eIter != _engines.end(); eIter++ )
-		if( (*eIter)->GetString( NAME ) == name )
-			return *eIter;
-
-	return NULL;
+	return FindByNameAndIntName< ENGINES, CNrpGameEngine>( _engines, name );
 }
 
 void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
@@ -77,27 +73,14 @@ void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 	ptrEng->SetValue<PNrpCompany>( PARENTCOMPANY, this );
 }
 
-CNrpTechnology* CNrpCompany::GetTechnology( int index ) const
+CNrpTechnology* CNrpCompany::GetTechnology( u32 index ) const
 {
-	int tSize = (int)_technologies.size();
-
-	assert( index >= tSize );
-	if( index >= tSize )
-		return NULL;
-
-	TECH_MAP::const_iterator tech = _technologies.begin();
-	for( int k=0; k < index; index++ ) tech++;
-
-	return (*tech).second;
+	return index < _technologies.size() ? _technologies[ index ] : NULL;
 }
 
-CNrpTechnology* CNrpCompany::GetTechnology( const std::string& name ) const
+CNrpTechnology* CNrpCompany::GetTechnology( const NrpText& name ) const
 {
-	TECH_MAP::const_iterator pIter = _technologies.find( name );
-	if( pIter != _technologies.end() )
-		return pIter->second;
-
-	return NULL;
+	return FindByNameAndIntName< TECHS, CNrpTechnology>( _technologies, name );
 }
 
 void CNrpCompany::AddProject( INrpProject* ptrProject )
@@ -107,16 +90,17 @@ void CNrpCompany::AddProject( INrpProject* ptrProject )
 	if( ptrProject == NULL )
 		return;
 
-	if( _projects.find( ptrProject->GetString( NAME ) ) == _projects.end() )
-		_projects[ ptrProject->GetString( NAME ) ] = ptrProject;
-
-	SetValue<int>( PROJECTNUMBER, _projects.size() );
-	ptrProject->SetString( COMPANYNAME, this->GetString( NAME ) );
+	if( FindByNameAndIntName< PROJECTS, INrpProject >( _projects, NAME ) == NULL )
+	{
+		_projects.push_back( ptrProject );
+		SetValue<int>( PROJECTNUMBER, _projects.size() );
+		ptrProject->SetString( COMPANYNAME, this->GetString( NAME ) );
+	}
 }
 
 void CNrpCompany::AddUser( IUser* user )
 {
-	if( !GetUser( user->GetValue<std::string>( NAME ) ) )
+	if( !GetUser( user->GetValue<NrpText>( NAME ) ) )
 	{
 		_employers.push_back( user );
 		user->SetValue<int>( SALARY, user->GetValue<int>( WANTMONEY ) );
@@ -131,205 +115,143 @@ IUser* CNrpCompany::GetUser( int index ) const
 	return index < (int)_employers.size() ? _employers[ index ] : NULL;
 }
 
-IUser* CNrpCompany::GetUser( const std::string& name ) const
+IUser* CNrpCompany::GetUser( const NrpText& name ) const
 {
-	USER_LIST::const_iterator uIter = _employers.begin();
-	for( ; uIter != _employers.end(); uIter++ )
-		if( (*uIter)->GetString( NAME ) == name )
-			return *uIter;
-
-	return NULL;
+	return FindByName< USERS, IUser >( _employers, name );
 }
 
-std::string CNrpCompany::Save( const std::string& saveFolder )
+NrpText CNrpCompany::Save( const NrpText& saveFolder )
 {
 	//переданная директория должна существовать
 	assert( OpFileSystem::IsExist( saveFolder ) );
 
-	std::string localFolder = OpFileSystem::CheckEndSlash( saveFolder + GetString( NAME ) );
+	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder + GetString( NAME ) );
 
 	//если нет директории в которую надо сохранять данные
 	OpFileSystem::CreateDirectory( localFolder );
 
-	std::string saveFile = localFolder + "company.ini";
+	NrpText saveFile = localFolder + "company.ini";
 
 	assert( !OpFileSystem::IsExist( saveFile ) );
 	INrpConfig::Save( saveFile );
 
-	PROJECT_MAP::iterator pIter = _projects.begin();
-	for( int i=0; pIter != _projects.end(); pIter++, i++ )
-		IniFile::Write( SECTION_PROJECTS, KEY_PROJECT( i ), pIter->second->GetString( NAME ), saveFile );
+	IniFile rv( saveFile );
 
-	DEVPROJECT_MAP::iterator rIter = _devProjects.begin();
-	for( int i=0; rIter != _devProjects.end(); rIter++, i++ )
-		IniFile::Write( SECTION_DEVPROJECTS, KEY_PROJECT(i), rIter->second->GetString( NAME ), saveFile );
-
-	ENGINE_LIST::iterator eIter = _engines.begin();
-	for( int i=0; eIter != _engines.end(); eIter++, i++ )
-		IniFile::Write( SECTION_ENGINES, KEY_ENGINE(i), (*eIter)->GetString( NAME ), saveFile );
-
-	TECH_MAP::iterator tIter = _technologies.begin();
-	for( int i=0; tIter != _technologies.end(); tIter++, i++ )
-		IniFile::Write( SECTION_TECHS, KEY_TECH(i), tIter->second->GetString( NAME ), saveFile );
-
-	GAME_MAP::iterator gIter = _games.begin();
-	for( int i=0; gIter != _games.end(); gIter++, i++ )
-		IniFile::Write( SECTION_GAMES, KEY_GAME(i), gIter->second->GetString( NAME ), saveFile );
-
-	USER_LIST::iterator uIter = _employers.begin();
-	for( int i=0; uIter != _employers.end(); uIter++, i++ )
-		IniFile::Write( SECTION_USERS, KEY_USER(i), (*uIter)->GetString( NAME ), saveFile );
-
-	OBJECT_LIST::iterator oIter = _portfelle.begin();
-	for( int i=0; oIter != _portfelle.end(); oIter++, i++ )
-	{
-		IniFile::Write( SECTION_PORTFELLE, KEY_TYPE( i ), (*oIter)->ObjectTypeName(), saveFile ); 
-		IniFile::Write( SECTION_PORTFELLE, KEY_MODULE( i ), (*oIter)->GetString( NAME ), saveFile );
-	}
-
-	INVENTION_LIST::iterator invIter = _inventions.begin();
-	for( int i=0; invIter != _inventions.end(); invIter++, i++ )
-		IniFile::Write( SECTION_INVENTIONS, KEY_INVENTION( i ), (*invIter)->GetString( NAME ), saveFile );
+	rv.SetArray( SECTION_PROJECTS,		_projects,		CreateKeyItem, NAME, true );
+	rv.SetArray( SECTION_DEVPROJECTS,	_devProjects,	CreateKeyItem, NAME, true );
+	rv.SetArray( SECTION_ENGINES,		_engines,		CreateKeyItem, INTERNAL_NAME, true );
+	rv.SetArray( SECTION_TECHS,			_technologies,	CreateKeyItem, INTERNAL_NAME, true );
+	rv.SetArray( SECTION_GAMES,			_games,			CreateKeyItem, INTERNAL_NAME );
+	rv.SetArray( SECTION_USERS,			_employers,		CreateKeyItem, NAME, true );
+	rv.SetArray( SECTION_PORTFELLE,		_portfelle,		CreateKeyItem, NAME, true );
+	rv.SetArray( SECTION_INVENTIONS,	_inventions,	CreateKeyItem, NAME, true );
 
 	return saveFile;
 }
 
-void CNrpCompany::Load( const std::string& loadFolder )
+void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, const NrpText& condition )
+{
+	IniFile rv( fileName );
+	CNrpApplication& app = CNrpApplication::Instance();
+
+	for( int i=0; i < GetValue<int>( condition ); i++ )
+	{
+		NrpText type = rv.Get( section, CreateKeyType(i), NrpText() );
+		NrpText rName = rv.Get( section, CreateKeyItem(i), NrpText() );
+
+		INrpConfig* conf = NULL;
+		if( type == CNrpGameEngine::ClassName() )
+		{
+			if( CNrpGameEngine* rr = app.GetGameEngine( rName ) )
+				_engines.push_back( rr );
+		}
+		else if( type == IUser::ClassName() )
+		{
+			if( IUser* rr = app.GetUser( rName ) )
+				_employers.push_back( rr );
+		}
+		else if( type == CNrpTechnology::ClassName() )
+		{
+			if( CNrpTechnology* rr = app.GetTechnology( rName ) )
+				_technologies.push_back( rr );
+		}
+		else if( type == CNrpGame::ClassName() )
+		{
+			if( CNrpGame* rr = app.GetGame( rName ) )
+				_games.push_back( rr );
+		}
+		else if( type == CNrpInvention::ClassName() )
+		{
+			if( CNrpInvention* rr = app.GetInvention( rName, GetString( NAME ) ) )
+				AddInvention( rr );
+		}
+		/*else if( type == INrpProject::ClassName() )
+		{
+			if( conf = app.GetGame( rName ) )
+				_games.push_back( conf );
+		}*/
+		/*else if( type == ::ClassName() )
+		{
+			if( conf = app.GetGame( rName ) )
+				_games.push_back( conf );
+		}*/
+
+		assert( conf );
+		if( conf ) conf->SetValue<PNrpCompany>( PARENTCOMPANY, this );
+
+	}
+	
+	//SetValue( condition, arrayT.size() );
+}
+
+void CNrpCompany::Load( const NrpText& loadFolder )
 {
 	assert( OpFileSystem::IsExist( loadFolder ) );
 
-	std::string loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + "company.ini";
+	NrpText loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + "company.ini";
 	INrpConfig::Load( loadFile );
 
 	PUser ceo = GetValue<PUser>( CEO );
 	if( ceo )
 	    ceo->SetValue<PNrpCompany>( PARENTCOMPANY, this );
 
-	for( int i=0; i < GetValue<int>( ENGINES_NUMBER ); i++ )
-	{
-		std::string engineName = IniFile::Read( SECTION_ENGINES, KEY_ENGINE(i), std::string(""), loadFile );
-		CNrpGameEngine* ge = CNrpApplication::Instance().GetGameEngine( engineName );
-		if( ge )
-		{
-			_engines.push_back( ge );
-			ge->SetValue<PNrpCompany>( PARENTCOMPANY, this );
-		}
-	}
+	_LoadArray( SECTION_ENGINES, loadFile, ENGINES_NUMBER );
+	_LoadArray( SECTION_USERS, loadFile, USERNUMBER );
+	_LoadArray( SECTION_TECHS, loadFile, TECHNUMBER );
+	_LoadArray( SECTION_GAMES, loadFile, GAMENUMBER );
+	_LoadArray( SECTION_INVENTIONS, loadFile, INVENTIONSNUMBER );
+	//_LoadArray( SECTION_PROJECTS, loadFile, PROJECTNUMBER );
+	//_LoadArray( SECTION_DEVPROJECTS, loadFile, DEVELOPPROJECTS_NUMBER );
 
-	for( int i=0; i < GetValue<int>( USERNUMBER ); i++ )
-	{
-		std::string name = IniFile::Read( SECTION_USERS, KEY_USER(i), std::string(""), loadFile );
-		PUser user = CNrpApplication::Instance().GetUser( name );
-		assert( user != NULL );
-		if( user )
-		{
-			_employers.push_back( user );
-			user->SetValue<PNrpCompany>( PARENTCOMPANY, this );
-		}
-	}
-	SetValue( USERNUMBER, _employers.size() );
-
-	for( int i=0; i < GetValue<int>( TECHNUMBER ); i++ )
-	{
-		std::string techName = IniFile::Read( SECTION_TECHS, KEY_TECH(i), std::string(""), loadFile );
-		CNrpTechnology* tech = CNrpApplication::Instance().GetTechnology( techName );
-		assert( tech != NULL );
-		if( tech )
-		{
-			_technologies[ techName ] = tech;
-			tech->SetValue<PNrpCompany>( PARENTCOMPANY, this );
-		}
-	}
-
-	for( int i=0; i < GetValue<int>( GAMENUMBER ); i++ )
-	{
-		std::string gameName = IniFile::Read( SECTION_GAMES, KEY_GAME(i), std::string(""), loadFile );
-		CNrpGame* game = CNrpApplication::Instance().GetGame( gameName );
-		if( game )
-		{
-			_games[ gameName ] = game;
-			game->SetValue<PNrpCompany>( PARENTCOMPANY, this );
-		}
-	}
-
-	for( int i=0; i < GetValue<int>( PROJECTNUMBER ); i++ )
-	{
-		std::string prjName = IniFile::Read( SECTION_PROJECTS, KEY_PROJECT(i), std::string(""), loadFile );
-		CNrpGameProject* prj = dynamic_cast< CNrpGameProject* >( CNrpApplication::Instance().GetProject( prjName ) );
-		if( prj )
-		{
-			_projects[ prjName ] = prj;
-			prj->SetValue<PNrpCompany>( PARENTCOMPANY, this );
-		}
-	}
-
-	for( int i=0; i < GetValue<int>( DEVELOPPROJECTS_NUMBER ); i++ )
-	{
-		std::string prjName = IniFile::Read( SECTION_DEVPROJECTS, KEY_PROJECT(i), std::string(""), loadFile );
-		INrpDevelopProject* prj = CNrpApplication::Instance().GetDevelopProject( prjName );
-		if( prj )
-		{
-			_devProjects[ prjName ] = prj;
-			prj->SetValue<PNrpCompany>( PARENTCOMPANY, this );
-		}
-	}
+	IniFile rv( loadFile );
 
 	for( int k=0; k < GetValue<int>( OBJECTSINPORTFELLE ); k++ )
 	{
-		std::string typeName = IniFile::Read( SECTION_PORTFELLE, KEY_TYPE( k ), std::string(""), loadFile );
-		std::string prjName = IniFile::Read( SECTION_PORTFELLE, KEY_MODULE( k ), std::string( "" ), loadFile );
-		if( typeName == CLASS_DEVELOPGAME )
+		NrpText typeName = rv.Get( SECTION_PORTFELLE, CreateKeyType( k ), NrpText() );
+		NrpText prjName = rv.Get( SECTION_PORTFELLE, CreateKeyModule( k ), NrpText() );
+		if( typeName == CNrpDevelopGame::ClassName() )
 			AddToPortfelle( GetDevelopProject( prjName ) );
 	}
-
-	for( int k=0; k < GetValue<int>( INVENTIONSNUMBER ); k++ )
-	{
-		std::string name = IniFile::Read( SECTION_INVENTIONS, KEY_INVENTION( k ), std::string(""), loadFile );
-		CNrpInvention* invention = CNrpApplication::Instance().GetInvention( name, GetString( NAME ) );
-		if( invention )
-		{
-			AddInvention( invention );
-			invention->SetValue<PNrpCompany>( PARENTCOMPANY, this );
-		}
-	}
 }
 
-CNrpGame* CNrpCompany::GetGame( const std::string& gameName ) const 
+CNrpGame* CNrpCompany::GetGame( const NrpText& gameName ) const 
 {
-	GAME_MAP::const_iterator gIter = _games.find( gameName );
-	return gIter != _games.end() ? gIter->second : NULL;
+	return FindByNameAndIntName< GAMES, CNrpGame >( _games, gameName );
 }
 
-CNrpGame* CNrpCompany::GetGame( size_t index ) const
+CNrpGame* CNrpCompany::GetGame( u32 index ) const
 {
-	assert( index < _games.size() );
-	if( index < _games.size() )
-	{
-		GAME_MAP::const_iterator gIter = _games.begin();
-		for( size_t k=0; k != index; k++ ) gIter++;
-		return gIter->second;
-	}
-
-	return NULL;
+	return index < _games.size() ? _games[ index ] : NULL;
 }
 
-INrpProject* CNrpCompany::GetProject( const std::string& name ) const
+INrpProject* CNrpCompany::GetProject( const NrpText& name ) const
 {
-	PROJECT_MAP::const_iterator pIter = _projects.find( name );
-	return pIter != _projects.end() ? pIter->second : NULL;
+	return FindByNameAndIntName< PROJECTS, INrpProject >( _projects, name );
 }
 
 INrpProject* CNrpCompany::GetProject( size_t index ) const
 {
-	assert( index < _projects.size() );
-	if( index < _projects.size() )
-	{
-		PROJECT_MAP::const_iterator pIter = _projects.begin();
-		for( size_t k=0; k != index; k++ ) pIter++;
-		return pIter->second;
-	}
-
-	return NULL;
+	return index < _projects.size() ? _projects[ index ] : NULL;
 }
 
 void CNrpCompany::BeginNewHour( const SYSTEMTIME& time  )
@@ -342,17 +264,15 @@ void CNrpCompany::BeginNewDay( const SYSTEMTIME& time )
 {
 	//уведомление о завершении проекта происходит на следующий день после окончания разработки
 	//последнего модуля
-	for( DEVPROJECT_MAP::iterator pIter = _devProjects.begin(); 
-		 pIter != _devProjects.end(); 
-		 pIter++ )
+	for( u32 i = 0; i < _devProjects.size(); i++ ) 
 	{
-		if( INrpDevelopProject* prj = dynamic_cast< INrpDevelopProject* >( pIter->second ) )
+		if( CNrpDevelopGame* prj = dynamic_cast< CNrpDevelopGame* >( _devProjects[ i ] ) )
 		{
 			if( prj->IsReady() )
 			{
-				INrpDevelopProject* project = pIter->second;
+				INrpDevelopProject* project = _devProjects[ i ];
 				const PNrpGame game = CreateGame(	(CNrpDevelopGame*)project );
-				RemoveDevelopProject( project->GetValue<std::string>( NAME ) );
+				RemoveDevelopProject( project->GetValue<NrpText>( NAME ) );
 				CNrpApplication::Instance().DoLuaFunctionsByType( APP_PROJECT_FINISHED, game );
 				break;
 			}
@@ -384,29 +304,19 @@ CNrpGame* CNrpCompany::CreateGame( CNrpDevelopGame* devGame )
 	CNrpApplication::Instance().UpdateGameRatings( ptrGame, true );
 	RemoveFromPortfelle( devGame );
 
-	_games[ ptrGame->GetValue<std::string>( NAME ) ] = ptrGame;
+	_games.push_back( ptrGame );
 	SetValue<int>( GAMENUMBER, _games.size() );
 
 	return ptrGame;
 }
 
-void CNrpCompany::RemoveProject( const std::string& name )
+void CNrpCompany::RemoveProject( const NrpText& name )
 {
-	PROJECT_MAP::iterator pIter = _projects.find( name );
-	if( pIter != _projects.end() ) 
-		_projects.erase( pIter );
+	for( u32 i=0; i < _projects.size(); i++ ) 
+		if( _projects[ i ]->Equale( name ) )
+			_projects.erase( i );
 
 	SetValue<int>( PROJECTNUMBER, _projects.size() );
-}
-
-void CNrpCompany::_UpdateGameProjectState()
-{
-	PROJECT_MAP::iterator pIter = _projects.begin();
-	for( ; pIter != _projects.end(); pIter++ ) 
-	{
-		if( CNrpGameProject* prj = dynamic_cast< CNrpGameProject* >( pIter->second ) )
-			prj->UpdateDevelopmentMoney();
-	}
 }
 
 void CNrpCompany::BeginNewMonth( const SYSTEMTIME& time )
@@ -437,33 +347,22 @@ void CNrpCompany::AddDevelopProject( INrpDevelopProject* ptrDevProject )
 	if( ptrDevProject == NULL )
 		return;
 
-	if( _devProjects.find( ptrDevProject->GetString( NAME ) ) == _devProjects.end() )
-		_devProjects[ ptrDevProject->GetString( NAME ) ] = ptrDevProject;
+	if( FindByNameAndIntName< DEVPROJECTS, INrpDevelopProject >( _devProjects, ptrDevProject->GetString( NAME ) ) )
+		_devProjects.push_back( ptrDevProject );
 
 	SetValue<int>( DEVELOPPROJECTS_NUMBER, _devProjects.size() );
 	ptrDevProject->SetString( COMPANYNAME, GetString( NAME ) );
 }
 
-INrpDevelopProject* CNrpCompany::GetDevelopProject( const std::string& name ) const
+INrpDevelopProject* CNrpCompany::GetDevelopProject( const NrpText& name ) const
 {
-	DEVPROJECT_MAP::const_iterator pIter = _devProjects.find( name );
-	if( pIter != _devProjects.end() )
-		return pIter->second;
-
-	return NULL;
+	return FindByNameAndIntName<DEVPROJECTS, INrpDevelopProject>( _devProjects, name );
 }
 
-INrpDevelopProject* CNrpCompany::GetDevelopProject( size_t index ) const
+INrpDevelopProject* CNrpCompany::GetDevelopProject( u32 index ) const
 {
 	assert( index < _devProjects.size() );
-	if( index < _devProjects.size() )
-	{
-		DEVPROJECT_MAP::const_iterator pIter = _devProjects.begin();
-		for( size_t k=0; k != index; k++ ) pIter++;
-		return pIter->second;
-	}
-
-	return NULL;
+	return index < _devProjects.size() ? _devProjects[ index ] : NULL;	
 }
 
 CNrpInvention* CNrpCompany::GetInvention( int index )
@@ -472,11 +371,11 @@ CNrpInvention* CNrpCompany::GetInvention( int index )
 	return index < (int)_inventions.size() ? _inventions[ index ] : NULL;	
 }
 
-void CNrpCompany::RemoveDevelopProject( const std::string& name )
+void CNrpCompany::RemoveDevelopProject( const NrpText& name )
 {
-	DEVPROJECT_MAP::iterator pIter = _devProjects.find( name );
-	if( pIter != _devProjects.end() ) 
-		_devProjects.erase( pIter );
+	for( u32 i=0; i < _devProjects.size(); i++ ) 
+		if( _devProjects[ i ]->Equale( name ) )
+			_devProjects.erase( i );
 
 	SetValue<int>( DEVELOPPROJECTS_NUMBER, _devProjects.size() );
 	CNrpApplication::Instance().RemoveDevelopProject( name );
@@ -484,38 +383,38 @@ void CNrpCompany::RemoveDevelopProject( const std::string& name )
 
 void CNrpCompany::RemoveFromPortfelle( const INrpConfig* ptrObject )
 {
-	OBJECT_LIST::iterator iter = _portfelle.begin();
-	for( ; iter != _portfelle.end(); iter++ )
-	if( *iter == ptrObject )
-	{
-		_portfelle.erase( iter );
-		break;
-	}
+	for( u32 i=0; i < _portfelle.size(); i++ ) 
+		if( _portfelle[ i ] == ptrObject )
+			_portfelle.erase( i );
+
+	SetValue<int>( OBJECTSINPORTFELLE, _portfelle.size() );
 }
 
 void CNrpCompany::AddInvention( CNrpInvention* const inv )
 {
 	assert( inv != NULL );
 
-	_inventions.push_back( inv );
-	SetValue<int>( INVENTIONSNUMBER, _inventions.size() );
+	if( inv && FindByNameAndIntName<INVENTIONS, CNrpInvention>( _inventions, inv->GetString( NAME ) ) == NULL )
+	{
+		_inventions.push_back( inv );
+		SetValue<int>( INVENTIONSNUMBER, _inventions.size() );
+	}
 }
 
 void CNrpCompany::InventionReleased( const CNrpInvention* inv )
 {
-	INVENTION_LIST::iterator pIter = _inventions.begin();
-	std::string name = inv->GetValue<std::string>( NAME );
-	for( ; pIter != _inventions.end(); pIter++ )
+	NrpText name = static_cast< CNrpInvention >( *inv ).GetString( NAME );
+	for( u32 p=0; p < _inventions.size(); p++ )
 	{
-		if( (*pIter)->GetValue<std::string>( NAME ) == name )
+		if( _inventions[ p ]->Equale( name, GetString( name ) ) )
 		{
 			//надо что-то делать с похожей технологией... либо развивать следующий уровень,
 			//либо прекращать разработки и переводить людей на другой проект с частичным
 			//переносом опыта...
 			//в любом случае текущие иследования прекращаются...
-			CNrpApplication::Instance().InventionCanceled( *pIter );
-			CNrpApplication::Instance().DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED, *pIter );
-			_inventions.erase( pIter );
+			CNrpApplication::Instance().InventionCanceled(  _inventions[ p ] );
+			CNrpApplication::Instance().DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED,  _inventions[ p ] );
+			_inventions.erase( p );
 			break;
 		}			
 	}
@@ -523,42 +422,38 @@ void CNrpCompany::InventionReleased( const CNrpInvention* inv )
 
 void CNrpCompany::AddTechnology( CNrpTechnology* tech )
 {
-	_technologies[ tech->GetValue<std::string>( NAME ) ] = tech;
+	if( FindByNameAndIntName< TECHS, CNrpTechnology>( _technologies, tech->GetString( NAME ) )== NULL )
+	{
+		_technologies.push_back( tech );
+		SetValue<int>( TECHNUMBER, _technologies.size() );
+	}
 }
 
 void CNrpCompany::RemoveInvention( CNrpInvention* inv )
 {
-	INVENTION_LIST::iterator pIter = _inventions.begin();
-	for( ; pIter != _inventions.end(); pIter++ )
-		if( *pIter == inv )
+	for( u32 i=0; i < _inventions.size(); i++ )
+		if( _inventions[ i ] == inv )
 		{
-			_inventions.erase( pIter );
+			_inventions.erase( i );
 			break;
 		}
 
-	USER_LIST::iterator uIter = _employers.begin();
-	for( ; uIter != _employers.end(); uIter++ )
-		(*uIter)->RemoveWork( inv );
+	for( u32 i=0; i < _employers.size(); i++ )
+		_employers[ i ]->RemoveWork( inv );
 }
 
-CNrpInvention* CNrpCompany::GetInvention( const std::string& name )
+CNrpInvention* CNrpCompany::GetInvention( const NrpText& name )
 {
-	INVENTION_LIST::iterator pIter = _inventions.begin();
-	for( ; pIter != _inventions.end(); pIter++ )
-		if( (*pIter)->GetValue<std::string>( NAME ) == name )
-			return *pIter;
-
-	return NULL;
+	return FindByNameAndIntName< INVENTIONS, CNrpInvention>( _inventions, name );
 }
 
-void CNrpCompany::RemoveUser( const std::string& name )
+void CNrpCompany::RemoveUser( const NrpText& name )
 {
-	USER_LIST::iterator uIter = _employers.begin();
-	for( ; uIter != _employers.end(); uIter++ )
-		if( (*uIter)->GetValue<std::string>( NAME ) == name )
+	for( u32 i=0; i < _employers.size(); i++ )
+		if( _employers[ i ]->Equale( name ) )
 		{
-			IUser* user = *uIter;
-			_employers.erase( uIter );
+			IUser* user = _employers[ i ];
+			_employers.erase( i );
 
 			user->SetValue<int>( WANTMONEY, static_cast< int >( user->GetValue<int>( SALARY ) * 1.5 ) );
 			user->SetValue<PNrpCompany>( PARENTCOMPANY, NULL );
@@ -567,4 +462,10 @@ void CNrpCompany::RemoveUser( const std::string& name )
 			break;
 		}
 }
+
+NrpText CNrpCompany::ClassName()
+{
+	return CLASS_NRPCOMPANY;
+}
+
 }//namespace nrp

@@ -4,9 +4,10 @@
 namespace nrp
 {
 	
-INrpProject::INrpProject( const std::string& className, const std::string& systemName ) : INrpConfig( className, systemName )
+INrpProject::INrpProject( const NrpText& className, const NrpText& systemName ) : INrpConfig( className, systemName )
 {
-	CreateValue<std::string>( NAME, "defaultName" );
+	CreateValue<NrpText>( NAME, systemName );
+	CreateValue<NrpText>( INTERNAL_NAME, systemName );
 	CreateValue<int>( BALANCE, 0 );
 	CreateValue<PROJECT_TYPE>( TECHTYPE, PT_UNKNOWN );
 }
@@ -15,9 +16,14 @@ INrpProject::~INrpProject(void)
 {
 }
 
-std::string INrpProject::Save( const std::string& fileName )
+NrpText INrpProject::Save( const NrpText& fileName )
 {
 	return INrpConfig::Save( fileName );
+}
+
+bool INrpProject::Equale( const NrpText& name )
+{
+	return (GetString( NAME ) == name) || (GetString( INTERNAL_NAME ) == name);
 }
 
 }//namespace nrp

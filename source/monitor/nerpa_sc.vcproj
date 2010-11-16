@@ -343,6 +343,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\nrpArrays.h"
+				>
+			</File>
+			<File
 				RelativePath=".\nrpConfig.cpp"
 				>
 			</File>
@@ -356,6 +360,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpConfigLooder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpText.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpText.h"
 				>
 			</File>
 			<File
@@ -388,14 +400,6 @@
 			</File>
 			<File
 				RelativePath=".\SectionNames.h"
-				>
-			</File>
-			<File
-				RelativePath=".\StrConversation.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\StrConversation.h"
 				>
 			</File>
 			<File
@@ -1562,6 +1566,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\localization\russian.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\saleManager.lua"
 				>
 			</File>
 			<File

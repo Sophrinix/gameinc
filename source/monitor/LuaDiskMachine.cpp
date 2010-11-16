@@ -9,6 +9,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUADISKMACHINE("CLuaDiskMachine");
 
 Luna< CLuaDiskMachine >::RegType CLuaDiskMachine::methods[] = 
 {
@@ -84,13 +85,13 @@ int CLuaDiskMachine::IsLoaded( lua_State* L )
 
 int CLuaDiskMachine::GetName( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetName", NAME, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetName", NAME, "" ) );
 	return 1;		
 }
 
 int CLuaDiskMachine::GetTexture( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetName", TEXTURENORMAL, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetName", TEXTURENORMAL, "" ) );
 	return 1;		
 }
 
@@ -132,5 +133,10 @@ int CLuaDiskMachine::GetMaxDiscount( lua_State* L )
 {
 	lua_pushnumber( L, GetParam_<float>( L, "GetDiscount", MAXDISCOUNT, 0 ) );
 	return 1;	
+}
+
+const char* CLuaDiskMachine::ClassName()
+{
+	return ( CLASS_LUADISKMACHINE );
 }
 }

@@ -21,7 +21,7 @@ CLoadingScreen::CLoadingScreen( video::IVideoDriver* driver, gui::IGUIFont* font
 }
 //////////////////////////////////////////////////////////////////////////
 
-void CLoadingScreen::render( int progress, const core::stringw& text  )
+void CLoadingScreen::render( int progress, const nrp::NrpText& text  )
 {
 	core::dimension2du sizer = _driver->getScreenSize();
 
@@ -45,7 +45,7 @@ void CLoadingScreen::render( int progress, const core::stringw& text  )
 	_driver->draw2DRectangle( video::SColor( 0xffffffff ), rect_fill );
 
 	if( _font )
-		_font->draw( text.c_str(), rect_fill - core::position2di( 0, rect_fill.getHeight() ), video::SColor( 0xffffffff ), true, true, NULL );
+		_font->draw( const_cast< NrpText& >( text ), rect_fill - core::position2di( 0, rect_fill.getHeight() ), video::SColor( 0xffffffff ), true, true, NULL );
 
 	_driver->endScene();
 }

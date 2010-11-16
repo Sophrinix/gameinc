@@ -11,12 +11,12 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUASCROLLBAR( "CLuaScrollBar" );
 
 class CLuaScrollBar : public ILuaGuiElement< irr::gui::CNrpScrollBar >
 {
 public:
 	static Luna<CLuaScrollBar>::RegType methods[];
+	static const char* ClassName();
 
 	CLuaScrollBar(lua_State *L);
 	int SetTexture( lua_State *L );
@@ -27,8 +27,6 @@ public:
 	int GetDownButton( lua_State* L );
 	int SetSliderTexture( lua_State* L );
 	int GetPos( lua_State* L );
-
-	static const char* ClassName() { return CLASS_LUASCROLLBAR.c_str(); }
 };
 
 }//namespace nrp

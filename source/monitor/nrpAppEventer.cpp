@@ -17,6 +17,8 @@
 using namespace irr;
 using namespace nrp;
 
+const nrp::CLASS_NAME CLASS_EVENTRECEIVER( "CNrpAppEventer" );
+
 CNrpAppEventer::CNrpAppEventer( CNrpEngine* ptr_app ) : INrpObject( "CNrpAppEventer", "appEventer" )  /*конструктор */
 {
 	ptr_app_ = ptr_app;
@@ -80,4 +82,9 @@ bool CNrpAppEventer::OnEvent( const SEvent& event )
 	}	
 
 	return false;
+}
+
+nrp::NrpText CNrpAppEventer::ClassName()
+{
+	return CLASS_EVENTRECEIVER;
 }

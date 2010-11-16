@@ -2,7 +2,7 @@
 #include "nrpGUIEnvironment.h"
 #include "nrpHUDConfig.h"
 #include "SkinLoader.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "NrpWindow.h"
 #include "NrpGuiBlendAnimator.h"
 #include "NrpScrollBar.h"
@@ -22,7 +22,6 @@
 #include "NrpGuiTextRunnerAnimator.h"
 
 #include <stdexcept>
-#include <string>
 
 namespace irr
 {
@@ -58,10 +57,10 @@ void CNrpGUIEnvironment::LoadFonts_()
 		 cnt < max_font;
 		 cnt++ )
 	{
-		std::string option = "font_" + nrp::conv::ToStr( (int)cnt );
-		std::string filename = nrp::CNrpHUDConfig::Instance().GetString( option );
+		NrpText option = NrpText("font_") + NrpText( static_cast< int >( cnt ) );
+		NrpText filename = nrp::CNrpHUDConfig::Instance().GetString( option );
 	
-		IGUIFont* font = _nativeEnv->getFont( filename.c_str() );
+		IGUIFont* font = _nativeEnv->getFont( filename );
 		if ( font )																	//если шрифт подключен	
 		{	
 			fonts_[ option ] = font;
@@ -70,8 +69,8 @@ void CNrpGUIEnvironment::LoadFonts_()
 	}
 	
 	{
-		std::string filename = nrp::CNrpHUDConfig::Instance().GetString( nrp::FONT_TOOLTIP );
-		IGUIFont* font = _nativeEnv->getFont( filename.c_str() );
+		NrpText filename = nrp::CNrpHUDConfig::Instance().GetString( nrp::FONT_TOOLTIP );
+		IGUIFont* font = _nativeEnv->getFont( filename );
 	
 		if( !font )
 			font = _nativeEnv->getBuiltInFont();
@@ -80,8 +79,8 @@ void CNrpGUIEnvironment::LoadFonts_()
 	}
 
 	{
-		std::string filename = nrp::CNrpHUDConfig::Instance().GetValue<std::string>( nrp::FONT_SIMPLE );
-		IGUIFont* font = _nativeEnv->getFont( filename.c_str() );
+		NrpText filename = nrp::CNrpHUDConfig::Instance().GetString( nrp::FONT_SIMPLE );
+		IGUIFont* font = _nativeEnv->getFont( filename );
 
 		if( !font )
 			font = _nativeEnv->getBuiltInFont();
@@ -189,14 +188,14 @@ irr::gui::IGUIElement* CNrpGUIEnvironment::getRootGUIElement()
 
 void CNrpGUIEnvironment::drawAll()
 {
-	std::vector< IGUIElement* >::iterator pIter = deletionQueue_.begin();
-	for( ; pIter != deletionQueue_.end(); pIter++ )
+	core::list< IGUIElement* >::Iterator pIter = _deletionQueue.begin();
+	for( ; pIter != _deletionQueue.end(); pIter++ )
 	{
 		try{ (*pIter)->remove(); }
 		catch(...){}
 	}
 
-	deletionQueue_.clear();
+	_deletionQueue.clear();
 
 	_nativeEnv->drawAll();
 }
@@ -347,12 +346,12 @@ irr::gui::IGUIImage* CNrpGUIEnvironment::addImage(  irr::video::ITexture* image,
 
 irr::gui::IGUIFont* CNrpGUIEnvironment::getFont( const io::path& font_name )
 {
-	std::map< std::string, gui::IGUIFont* >::iterator pIter;
+	core::map< stringw, gui::IGUIFont* >::Iterator pIter;
 		
 	pIter = fonts_.find( font_name.c_str() );
 
-	if( pIter != fonts_.end() )
-		return pIter->second;
+	if( !pIter.atEnd() )
+		return pIter->getValue();
 	
 	return _nativeEnv->getFont( font_name );
 }
@@ -584,7 +583,7 @@ gui::IGUIAnimator* CNrpGUIEnvironment::addBlendAnimator( IGUIElement* parent, u3
 	return anim;
 }
 
-gui::IGUIAnimator* CNrpGUIEnvironment::addLuaAnimator( IGUIElement* parent, const core::stringc& funcName )
+gui::IGUIAnimator* CNrpGUIEnvironment::addLuaAnimator( IGUIElement* parent, const nrp::NrpText& funcName )
 {
 	IGUIAnimator* anim = new CNrpGuiLuaAnimator( this, parent, funcName );
 
@@ -621,12 +620,12 @@ gui::IGUIAnimator* CNrpGUIEnvironment::addMoveAnimator( IGUIElement* parent, cor
 
 void CNrpGUIEnvironment::addToDeletionQueue( IGUIElement* ptrElement )
 {
-	std::vector< IGUIElement* >::iterator pIter = deletionQueue_.begin();
-	for( ; pIter != deletionQueue_.end(); pIter++ )
+	core::list< IGUIElement* >::Iterator pIter = _deletionQueue.begin();
+	for( ; pIter != _deletionQueue.end(); pIter++ )
 		if( (*pIter) == ptrElement )
 			return;
 
-	deletionQueue_.push_back( ptrElement );
+	_deletionQueue.push_back( ptrElement );
 }
 
 gui::IGUIAnimator* CNrpGUIEnvironment::addHoveredAnimator( IGUIElement* parent, u32 min, u32 max, u32 step, bool visOnStop, bool remSelf, bool remParent )

@@ -1,6 +1,7 @@
 #pragma once
 #include <irrlicht.h>
 #include <llmozlib2.h>
+#include "NrpText.h"
 
 namespace irr
 {
@@ -46,7 +47,7 @@ public:
 	//*! Функция вызывается, когда пользователь перешел по неправильносй ссылке... например http://dosomething
 	void onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventIn );
 	//*! Указание движку перейти по заданной ссылке
-	void Navigate( const std::string& url );
+	void Navigate( const NrpText& url );
 	//*! Передача в веб-движок события ЛКМ
 	void MouseDown( size_t x, size_t y );
 	//*! Передача в веб движок события ЛКМ
@@ -56,7 +57,7 @@ public:
 	void KeyPress( int key );
 	void MouseMoved( size_t x, size_t y );
 
-	static std::string ClassName() { return "CHtmlEngine"; }
+	static NrpText ClassName() { return "CHtmlEngine"; }
 private:
 
 	HTMLEngine();
@@ -66,7 +67,7 @@ private:
 	irr::video::ITexture* pageTexture_;
 	int browserWindowId_;
 	size_t browserRasterSize_;
-	size_t lastTimeUpdate_;
+	size_t _lastTimeUpdate;
 	irr::gui::CNrpBrowserWindow* browserWindow_;
 
 	bool dataUpdated_;

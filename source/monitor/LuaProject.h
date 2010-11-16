@@ -9,15 +9,14 @@ namespace nrp
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAPROJECT( "CLuaProject" );
 
 class CLuaProject : public ILuaProject<nrp::INrpProject>
 {
 public:
 	static Luna<CLuaProject>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaProject(lua_State *L);	
-	static const char* ClassName() { return CLASS_LUAPROJECT.c_str(); }
 };
 
 }//namespace nrp

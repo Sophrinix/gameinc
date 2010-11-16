@@ -8,6 +8,7 @@ static nrp::CNrpBank* globalBankPointer=NULL;
 
 namespace nrp
 {
+CLASS_NAME CLASS_BANK( "CNrpBank" );
 
 CNrpBank::CNrpBank(void) : INrpConfig( CLASS_BANK, "systemBank" )
 {
@@ -19,17 +20,15 @@ CNrpBank::~CNrpBank(void)
 {
 }
 
-size_t CNrpBank::GetMaxCompanyLoan( std::string companyName )
+size_t CNrpBank::GetMaxCompanyLoan( const NrpText& companyName )
 {
-	LOAN_LIST::iterator pIter = loans_.begin();
-
 	size_t dolg = 0;
 	size_t result = 0;
 
-	for( ; pIter != loans_.end(); pIter++ )
+	for( u32 i=0; i < _loans.size(); i++ )
 	{
-		if( (*pIter)->GetValue<std::string>( COMPANYNAME ) == companyName )
-			dolg += (*pIter)->GetValue<int>( MONEY ); 
+		if( _loans[ i ]->GetString( COMPANYNAME ) == companyName )
+			dolg += _loans[ i ]->GetValue<int>( MONEY ); 
 	}
 
 	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( companyName );
@@ -48,18 +47,16 @@ CNrpBank& CNrpBank::Instance()
 	return *globalBankPointer;
 }
 
-CNrpLoan* CNrpBank::FindLoadByID( size_t id )
+CNrpLoan* CNrpBank::FindLoadByID( u32 id )
 {
-	LOAN_LIST::iterator pIter = loans_.begin();
-
-	for( ; pIter != loans_.end(); pIter++ )
-		if( (*pIter)->GetValue<int>( ID ) == id )
-			return (*pIter);
+	for( u32 i=0; i < _loans.size(); i++ )
+		if( _loans[ i ]->GetValue<int>( ID ) == id )
+			return _loans[ i ];
 
 	return NULL;
 }
 
-void CNrpBank::CreateLoan( std::string name, int money, int percent, int month )
+void CNrpBank::CreateLoan( const NrpText& name, int money, int percent, int month )
 {
 	CNrpLoan* loan = new CNrpLoan( loanId_++ );
 	SYSTEMTIME endtime, time = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
@@ -73,12 +70,18 @@ void CNrpBank::CreateLoan( std::string name, int money, int percent, int month )
 	loan->SetValue<int>( MONTHLEFT, month );
 	loan->SetValue<SYSTEMTIME>( ENDDATE, endtime );
 	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( name );
-	loan->SetValue<std::string>( COMPANYNAME, cmp->GetValue<std::string>( NAME ) );
+	loan->SetString( COMPANYNAME, cmp->GetString( NAME ) );
 
-	loans_.push_back( loan );
+	_loans.push_back( loan );
 	cmp->AddValue<int>( BALANCE, money );
 
-	int lNum = loans_.size();
+	int lNum = _loans.size();
 	SetValue<int>( LOANNUMBER, lNum ); 
 }
+
+NrpText CNrpBank::ClassName()
+{
+	return CLASS_BANK;
+}
+
 }//namespace nrp

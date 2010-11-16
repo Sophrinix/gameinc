@@ -3,17 +3,15 @@
 #include <windows.h>
 #include "Logger.h"
 #include "IniFile.h"
-#include <string>
 #include <cstdarg>
 #include <lua.hpp>
 #include "IniFile.h"
 #include "Logger.h"
 #include "nrpConsole.h"
 #include "nrpEngine.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "nrpScene.h"
 #include <irrlicht.h>
-using std::string;
 
 // √лобальный (дл€ этого модул€) хэндл базы данных. ¬ынести его в определение
 // класса Logger не представл€етс€ возможным, так как дл€ этого придетс€ в Logger.h
@@ -158,8 +156,8 @@ bool Logger::Run()
 
 			if ( queue_.size() )
 			{
-				workEntry = queue_.back();
-				queue_.pop_back();
+				workEntry = *queue_.getLast();
+				queue_.erase( queue_.getLast() );
 				hasEntries = true;
 			}
 
@@ -201,12 +199,12 @@ void Logger::TreatLogEntry(const Log& log)
 	{
 		// переносим текст из std::stirng в массив чаров (чтобы избежать глюка)
 		const int FULL_TEXT_BUF_LEN = 8192;
-		char logText[ FULL_TEXT_BUF_LEN ] = { 0 };
-		strncpy_s(logText, log.Text.str().c_str(), min(FULL_TEXT_BUF_LEN, log.Text.str().size()));
+		wchar_t logText[ FULL_TEXT_BUF_LEN ] = { 0 };
+		wcsncpy_s(logText, log.Text.str().c_str(), min(FULL_TEXT_BUF_LEN, log.Text.str().size()));
 
 #ifdef _DEBUG
-		OutputDebugString( logText );
-		OutputDebugString( "\n" );
+		OutputDebugStringW( logText );
+		OutputDebugStringW( L"\n" );
 #endif
 	}
 
@@ -214,7 +212,7 @@ void Logger::TreatLogEntry(const Log& log)
 	{
 		irr::gui::CNrpConsole* console = CNrpEngine::Instance().GetConsole();
 		if( console )
-			console->AppendMessage( conv::ToWide( log.Text.str() ).c_str() );
+			console->AppendMessage( log.Text.str().c_str() );
 	}
 
 	if( log.Device & NRPETL ) //этот тип надо помещать в список событий

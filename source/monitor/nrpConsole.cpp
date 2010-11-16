@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "nrpConsole.h"
 #include "nrpConsoleCmds.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "nrpVideoConfig.h"
 #include "IniFile.h"
 #include "NrpConsoleConfig.h"
@@ -21,13 +21,13 @@ CNrpConsole::CNrpConsole( IGUIEnvironment* env, IGUIElement* parent, s32 id, cor
 							 consoleHistoryIndex_(0),
 							 toggle_visible_(NONE)//! constructor
 {
-	setName( conv::ToWide( CNrpConsoleConfig::Instance().GetString( CONSOLE_GUINAME ) ).c_str() );
+	setName( CNrpConsoleConfig::Instance().GetString( CONSOLE_GUINAME ).ToWide() );
 
 	InitializeCriticalSectionAndSpinCount(&cs_dataaccess_, 1000);									//критическая секция для доступа к сообщениям консоли
 	
 	CalculateConsoleRect( env->getVideoDriver()->getScreenSize() );										//calculate the console rectangle
 
-	AppendMessage( core::stringw( L"NerpaConsole initialized" ) );								//append a message
+	AppendMessage( NrpText( L"NerpaConsole initialized" ) );								//append a message
 
 	ResizeMessages();														//resize message array
 
@@ -42,18 +42,16 @@ CNrpConsole::CNrpConsole( IGUIEnvironment* env, IGUIElement* parent, s32 id, cor
 void CNrpConsole::SaveCommands_()																	//сохранение введенных комманд
 {					
 	//при выходе из программы
-	std::string path = CNrpConsoleConfig::Instance().GetValue<std::string>( CONSOLE_COMMANDS_FILE );							//путь к файлу		
+	NrpText path = CNrpConsoleConfig::Instance().GetString( CONSOLE_COMMANDS_FILE );							//путь к файлу		
 
 	try
 	{
-		IniFile::Write( "commands", "number_commands", (int)console_history_.size(), path );	//сколько команд будет записано
+		IniFile sv( path );
+		sv.Set( "commands", "number_commands", (int)console_history_.size() );	//сколько команд будет записано
 
-		for( size_t cnt=0; cnt < console_history_.size(); cnt++ )							//скидываем комманды на диск
+		for( u32 cnt=0; cnt < console_history_.size(); cnt++ )							//скидываем комманды на диск
 		{
-			IniFile::Write( "commands", 
-							"type_" + conv::ToStr( cnt ), 
-							conv::ToStr( console_history_[ cnt ].c_str() ), 
-						    path ); 
+			sv.Set( "commands", NrpText("type_") + (int)cnt, NrpText( console_history_[ cnt ] ) ); 
 		}	
 	}
 	catch(...)
@@ -67,18 +65,16 @@ void CNrpConsole::SaveCommands_()																	//сохранение введенных комманд
 
 void CNrpConsole::LoadSaveCommands_()													//загрузка комманд консоли
 {
-	std::string path = CNrpConsoleConfig::Instance().GetValue<std::string>( CONSOLE_COMMANDS_FILE );
+	NrpText path = CNrpConsoleConfig::Instance().GetString( CONSOLE_COMMANDS_FILE );
 
-	size_t num_com = IniFile::Read( "commands", "number_commands", (int)0, path );
+	IniFile sv( path );
+	int num_com = sv.Get( "commands", "number_commands", (int)0 );
 
-	for( size_t cnt=0; cnt < num_com; cnt++ )
+	for( int cnt=0; cnt < num_com; cnt++ )
 	{
-		std::string strk = IniFile::Read( "commands", 
-										  "type_" + conv::ToStr( cnt ), 
-										  std::string( "null" ), 
-										  path );								//если команды не она будет отображена ка "null"
+		NrpText strk = sv.Get( "commands", NrpText("type_") + NrpText( cnt ), NrpText( "null" ) );								//если команды не она будет отображена ка "null"
 
-		console_history_.push_back( conv::ToWide( strk ).c_str() );
+		console_history_.push_back( strk );
 	}	
 }
 //////////////////////////////////////////////////////////////////////////
@@ -112,9 +108,7 @@ void CNrpConsole::ResizeMessages()											//! resize the message count
 	{
 		u32 messageCount = console_messages_.size();	
 		if(messageCount > maxLines)											//остальные удаляем
-		{
-			console_messages_.erase( console_messages_.begin() + 0, console_messages_.begin() + (messageCount - maxLines) );
-		}
+			console_history_.erase( 0, messageCount - maxLines );
 	}
 }
 //////////////////////////////////////////////////////////////////////////
@@ -155,7 +149,7 @@ void CNrpConsole::draw()
 {
 	video::IVideoDriver *driver = Environment->getVideoDriver();
 	CNrpConsoleConfig& conf = CNrpConsoleConfig::Instance();
-	gui::IGUIFont* font = Environment->getFont( conf.GetValue<std::string>( CONSOLE_FONTNAME ).c_str() );
+	gui::IGUIFont* font = Environment->getFont( conf.GetValue<NrpText>( CONSOLE_FONTNAME ).c_str() );
 
 	if( IsVisible )															// render only if the console is visible
 	{
@@ -220,10 +214,10 @@ void CNrpConsole::draw()
 
 		LeaveCriticalSection( &cs_dataaccess_);
 
-		core::stringw shellText = conv::ToWide( conf.GetString( CONSOLE_PROMT ) ).c_str();	//now, render the prompt
-		shellText += L"$>";
+		NrpText shellText = conf.GetString( CONSOLE_PROMT );	//now, render the prompt
+		shellText.append( L"$>" );
 		size_t textSize = shellText.size();
-		shellText += currentCommand_.c_str();
+		shellText.append( currentCommand_ );
 		
 		font->draw(   shellText.c_str(),
 			          shellRect,
@@ -242,7 +236,6 @@ void CNrpConsole::draw()
 
 	IGUIElement::draw();
 }
-//////////////////////////////////////////////////////////////////////////
 
 void CNrpConsole::ResolveCommand_()											//обработчик кнопки Enter
 {
@@ -311,9 +304,7 @@ void CNrpConsole::InputChar_( wchar_t key_char, bool shift_down )		//обработка н
 		core::stringw astr = buf;
 		
 		if(shift_down)
-		{
 			astr.make_upper();
-		}
 		
 		currentCommand_ = currentCommand_.subString( 0, cursorPos_-1 ) + astr + currentCommand_.subString( cursorPos_-1, 0xff );
 		cursorPos_++;
@@ -400,7 +391,7 @@ void CNrpConsole::HandleCommandString( const core::stringw& wstr)						//! handl
 		}
 		catch (Glukensoft::NerpaScriptError& e)
 		{
-			AppendMessage( stringw( e.what() ) );												//add to console
+			AppendMessage( NrpText( e.what() ) );												//add to console
 		}
 		catch (...)
 		{
@@ -417,9 +408,7 @@ void CNrpConsole::AddToHistory( const core::stringw& wstr)								//! add to his
 			return;
  
 	if( console_history_.size() >= (size_t)CNrpConsoleConfig::Instance().GetValue<int>( CONSOLE_HISTORY_SIZE ) )
-	{
-		console_history_.erase( console_history_.begin() + 0 );
-	}
+		console_history_.erase( 0 );
 
 	console_history_.push_back( wstr.c_str() );
 }
@@ -502,7 +491,7 @@ void CNrpConsole::CalculatePrintRects( core::recti& textRect, core::recti& shell
 bool CNrpConsole::CalculateLimits(u32& maxLines, u32& lineHeight,s32& fontHeight)
 {
 	CNrpConsoleConfig& conf = CNrpConsoleConfig::Instance();
-	gui::IGUIFont* font = Environment->getFont( conf.GetValue<std::string>( CONSOLE_FONTNAME ).c_str() );
+	gui::IGUIFont* font = Environment->getFont( conf.GetValue<NrpText>( CONSOLE_FONTNAME ).c_str() );
 	u32 consoleHeight = AbsoluteRect.getHeight();
 
 	if(font != 0 && consoleHeight > 0)

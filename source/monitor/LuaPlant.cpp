@@ -8,9 +8,11 @@
 #include "NrpApplication.h"
 #include "LuaDiskMachine.h"
 #include "NrpDiskMachine.h"
+#include "IniFile.h"
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAPLANT( "CLuaPlant" );
 
 Luna< CLuaPlant >::RegType CLuaPlant::methods[] =			//реализуемы методы
 {
@@ -108,7 +110,7 @@ int CLuaPlant::Save( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string savedir = CNrpApplication::Instance().GetString( SAVEDIR_PLANT );
+		NrpText savedir = CNrpApplication::Instance().GetString( SAVEDIR_PLANT );
 		object_->Save( savedir );
 	}
 
@@ -148,12 +150,14 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string savedir = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
-		std::string reklamePrice = savedir+profileName+"/reklameprice.ini";
+		NrpText savedir = CNrpApplication::Instance().GetString( SAVEDIR );
+		NrpText reklamePrice = savedir+profileName+"/reklameprice.ini";
+
+		IniFile sv( reklamePrice );
 		for( int k=0; k < object_->GetValue<int>( BASEREKLAMENUMBER ); k++ )
 		{
 			CNrpReklameWork* rW = object_->GetBaseReklame( k );
-			IniFile::Write( SECTION_PROPERTIES, rW->GetString( TECHTYPE ), rW->GetValue<int>( DAYCOST ), reklamePrice );
+			sv.Set( SECTION_PROPERTIES, rW->GetString( TECHTYPE ), rW->GetValue<int>( DAYCOST ) );
 		}
 	}
 
@@ -170,25 +174,26 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string savedir = CNrpApplication::Instance().GetString( SAVEDIR );
-		std::string reklamePrice = savedir+profileName+"/reklameprice.ini";
+		NrpText savedir = CNrpApplication::Instance().GetString( SAVEDIR );
+		NrpText reklamePrice = savedir+profileName+"/reklameprice.ini";
 
-		char buffer[ 32000 ];
+		wchar_t buffer[ 32000 ];
 		memset( buffer, 0, 32000 );
-		GetPrivateProfileSection( SECTION_PROPERTIES.c_str(), buffer, 32000, reklamePrice.c_str() );
+		GetPrivateProfileSectionW( SECTION_PROPERTIES.c_str(), buffer, 32000, reklamePrice.c_str() );
 
-		std::string readLine = buffer;
-		while( readLine != "" )
+		NrpText readLine = buffer;
+		while( readLine.size() )
 		{
-			std::string name, valuel;
-			name = readLine.substr( 0, readLine.find( '=' ) );
-			valuel = readLine.substr( readLine.find( '=' ) + 1, 0xff );
+			NrpText name, valuel;
+			int pos = readLine.findFirst( L'=' );
+			name = readLine.subString( 0, pos );
+			valuel = readLine.subString( pos + 1, 0xff );
 
 			CNrpReklameWork* rW = object_->GetBaseReklame( name );
 			if( rW != NULL )
-				rW->SetValue<int>( DAYCOST, conv::ToInt( valuel.c_str() ) );
+				rW->SetValue<int>( DAYCOST, valuel.ToInt() );
 
-			memcpy( buffer, buffer + strlen(buffer) + 1, 32000 );  
+			memcpy( buffer, buffer + wcslen(buffer) + 1, 32000 );  
 			readLine = buffer;
 		}
 	}
@@ -250,6 +255,11 @@ int CLuaPlant::GetBaseReklame( lua_State* L )
 	lua_pushlightuserdata( L, ret );
 	Luna< CLuaReklame >::constructor( L );
 	return 1;
+}
+
+const char* CLuaPlant::ClassName()
+{
+	return ( CLASS_LUAPLANT );
 }
 
 }//namespace nrp

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "nrpLoginScene.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "nrpEngine.h"
 #include "nrpButton.h"
 #include "nrpScript.h"
@@ -27,7 +27,7 @@ bool CNrpLoginScene::OnEvent( const irr::SEvent& event )
 		{
 			gui::CNrpButton* btn = (gui::CNrpButton*)event.GUIEvent.Caller;
 
-			if( btn->getOnClickAction() != 0 )
+			if( btn->getOnClickAction().size() )
 			{
 				nrp::CNrpScript::Instance().CallFunction( btn->getOnClickAction(), btn );
 				return true;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <irrlicht.h>
-#include <string>
 #include <map>
 
 #include "nrpScene.h"
@@ -47,7 +46,7 @@ private:
 	void RenderScene_();
 	bool IsObjectChildOfScene_( scene::ISceneNode* node );
 
-	std::map< core::stringc, bool > options_;
+	core::map< nrp::NrpText, bool > _options;
 public:
 	CNrpMainScene();								
 	~CNrpMainScene(void);
@@ -56,7 +55,7 @@ public:
 	void OnUpdate();							//функция отрисовки мира
 	void OnEnter();							//создание сцены
 	void OnLeave();
-	void SetOption( const core::stringc& name, bool amount );
+	void SetOption( const nrp::NrpText& name, bool amount );
 
 	scene::ISceneNode* GetSelectedNode() { return selectedNode_; }
 	void SetSelectedNode( scene::ISceneNode* node ) { selectedNode_ = node; }

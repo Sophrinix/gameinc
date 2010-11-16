@@ -7,6 +7,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUABANK( "CLuaBank" );
 
 Luna< CLuaBank >::RegType CLuaBank::methods[] =			//реализуемы методы
 {
@@ -73,23 +74,23 @@ int CLuaBank::GetLoanCompanyName( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank:GetLoanCompanyName need int parameter");
 
 	int id = lua_tointeger( L, 2 );
-	std::string name = "";
+	NrpText name( "" );
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		CNrpLoan* loan = object_->FindLoadByID( id );
 		if( loan )
-			name = loan->GetValue<std::string>( COMPANYNAME );
+			name = loan->GetString( COMPANYNAME );
 	}
 
-	lua_pushstring( L, name.c_str() );
+	lua_pushstring( L, name );
 
 	return 1;
 }
 
-template< class T > T CLuaBank::GetLoanParam_( lua_State* L, std::string funcName, std::string name, T defValue )
+template< class T > T CLuaBank::GetLoanParam_( lua_State* L, NrpText& funcName, OPTION_NAME& name, T defValue )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, ("Function CLuaBank:" + funcName + " need int parameter").c_str() );
+	luaL_argcheck(L, argc == 2, 2, _ErrStr(funcName + " need int parameter") );
 
 	int id = lua_tointeger( L, 2 );
 	T paramd;
@@ -105,27 +106,27 @@ template< class T > T CLuaBank::GetLoanParam_( lua_State* L, std::string funcNam
 
 int CLuaBank::GetLoanStartSumm( lua_State* L )
 {
-	lua_pushinteger( L, GetLoanParam_<int>( L, "GetLoanStartSumm", STARTMONEY, 0 ));
+	lua_pushinteger( L, GetLoanParam_<int>( L, NrpText("GetLoanStartSumm"), STARTMONEY, 0 ));
 	return 1;
 }
 
 int CLuaBank::GetLoanMoneyToClose( lua_State* L )
 {
-	lua_pushinteger( L, GetLoanParam_<int>( L, "GetLoanMoneyToClose", MONEY, 0 ));
+	lua_pushinteger( L, GetLoanParam_<int>( L, NrpText("GetLoanMoneyToClose"), MONEY, 0 ));
 	return 1;
 }
 
 int CLuaBank::GetLoanMoneyPerMonth( lua_State* L )
 {
-	int moneyLeftpay = GetLoanParam_<int>( L, "GetLoanMoneyPerMonth", MONEY, 0 );
-	int monthLeft = GetLoanParam_<int>( L, "GetLoanMoneyPerMonth", MONTHLEFT, 0 );
+	int moneyLeftpay = GetLoanParam_<int>( L, NrpText("GetLoanMoneyPerMonth"), MONEY, 0 );
+	int monthLeft = GetLoanParam_<int>( L, NrpText("GetLoanMoneyPerMonth"), MONTHLEFT, 0 );
 	lua_pushnumber( L, moneyLeftpay / (float)monthLeft );
 	return 1;
 }
 
 int CLuaBank::GetLoanMonthToEnd( lua_State* L )
 {
-	lua_pushinteger( L, GetLoanParam_<int>( L, "GetLoanMonthToEnd", MONTHLEFT, 0 ) );
+	lua_pushinteger( L, GetLoanParam_<int>( L, NrpText("GetLoanMonthToEnd"), MONTHLEFT, 0 ) );
 	return 1;
 }
 
@@ -143,5 +144,10 @@ int CLuaBank::CreateLoan( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	object_->CreateLoan( name, money, percent, month );
 
 	return 1;
+}
+
+const char* CLuaBank::ClassName()
+{
+	return ( CLASS_LUABANK );
 }
 }//namespace nrp

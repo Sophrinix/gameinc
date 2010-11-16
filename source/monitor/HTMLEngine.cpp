@@ -5,11 +5,10 @@
 #include "nrpScript.h"
 
 #include <cassert>
-#include <string>
 //*! создаем один экземпл€р класса дл€ работы
 static nrp::HTMLEngine* HTMLRenderer = 0;
 
-const std::string CARET_RESPONSE( "\n" );
+const NrpText CARET_RESPONSE( "\n" );
 #define NRP_NOFOLLOW_SCHEME "nrpscript://"
 
 using namespace irr;
@@ -32,17 +31,17 @@ HTMLEngine::HTMLEngine()
 
 	irr::video::IVideoDriver *driver = CNrpEngine::Instance().GetVideoDriver();
 	//мозлибе дл€ работы нужно знать, где хран€тс€ конфииг веб-движка
-	std::string profileBaseDir = std::string(__argv[0]).substr(0, std::string( __argv[0]).find_last_of("\\/"));
+	NrpText profileBaseDir = NrpText(__argv[0]).subString(0, NrpText( __argv[0]).findLastChar( L"\\/", profileBaseDir.size() ));
 	HWND w = (HWND)driver->getExposedVideoData().OpenGLWin32.HWnd;
 	llmozlib_ = LLMozLib::getInstance();
 	//стартуем веб-движок
-	bool k = llmozlib_->init(profileBaseDir, profileBaseDir, profileBaseDir, reinterpret_cast<void*>(w));	
+	bool k = llmozlib_->init( profileBaseDir, profileBaseDir, profileBaseDir, reinterpret_cast<void*>(w));	
 
 	browserWindow_ = NULL;
 	dataUpdated_ = false;
 	//врем€ последнего обращени€ надо дл€ уменьшени€ нагрузки на проц, 
 	//чтобы не копировать страницу п€ть раз впустую
-	lastTimeUpdate_ = GetTickCount();
+	_lastTimeUpdate = GetTickCount();
 	_noFollowLinkExec = false;
 	_firstMessage = false;
 }
@@ -88,7 +87,7 @@ gui::CNrpBrowserWindow& HTMLEngine::GetBrowserWindow(irr::core::dimension2du siz
 
 void HTMLEngine::Update()
 {
-	if( !dataUpdated_ && GetTickCount() - lastTimeUpdate_ < 50 )
+	if( !dataUpdated_ && GetTickCount() - _lastTimeUpdate < 50 )
 		return;
 
 	const unsigned char* pixels = llmozlib_->grabBrowserWindow( browserWindowId_ );
@@ -114,7 +113,7 @@ void HTMLEngine::Update()
 	}
 
 	dataUpdated_ = false;
-	lastTimeUpdate_ = GetTickCount();
+	_lastTimeUpdate = GetTickCount();
 }
 
 void HTMLEngine::onPageChanged( const LLEmbeddedBrowserWindowEvent& eventIn )
@@ -122,10 +121,10 @@ void HTMLEngine::onPageChanged( const LLEmbeddedBrowserWindowEvent& eventIn )
 	dataUpdated_ = true;
 }
 
-void HTMLEngine::Navigate( const std::string& url )
+void HTMLEngine::Navigate( const NrpText& url )
 {
 	Log( SCRIPT ) << "Navigate to " << url << term;
-	llmozlib_->navigateTo(browserWindowId_, url);
+	llmozlib_->navigateTo( browserWindowId_, const_cast< NrpText& >( url ).ToStr() );
 }
 
 void HTMLEngine::MouseDown( size_t x, size_t y )
@@ -163,7 +162,7 @@ void HTMLEngine::onNavigateBegin( const LLEmbeddedBrowserWindowEvent& eventIn )
 	if( _firstMessage )
 	{
 #ifdef _DEBUG
-		Log( SCRIPT ) << "Event: begin navigation to " << eventIn.getEventUri() << term;
+		Log( SCRIPT ) << "Event: begin navigation to " << eventIn.getEventUri().c_str() << term;
 #endif
 		_firstMessage = false;
 	}
@@ -176,7 +175,7 @@ void HTMLEngine::onNavigateComplete( const LLEmbeddedBrowserWindowEvent& eventIn
 	if( _firstMessage )
 	{
 #ifdef _DEBUG
-		Log( SCRIPT ) << "Event: end navigation to " << eventIn.getEventUri() 
+		Log( SCRIPT ) << "Event: end navigation to " << eventIn.getEventUri().c_str() 
 					  << " with response status of " << eventIn.getIntValue() << term;
 #endif
 		_firstMessage = false;
@@ -203,7 +202,7 @@ void HTMLEngine::onStatusTextChange( const LLEmbeddedBrowserWindowEvent& eventIn
 	if( _firstMessage )
 	{
 #ifdef _DEBUG
-		Log( SCRIPT ) << "Event: status updated to " << eventIn.getStringValue() << term;
+		Log( SCRIPT ) << "Event: status updated to " << eventIn.getStringValue().c_str() << term;
 #endif
 		_firstMessage = false;
 	}
@@ -216,7 +215,7 @@ void HTMLEngine::onLocationChange( const LLEmbeddedBrowserWindowEvent& eventIn )
 	if( _firstMessage )
 	{
 #ifdef _DEBUG
-		Log( SCRIPT ) << "Event: location changed to " << eventIn.getEventUri() << term;
+		Log( SCRIPT ) << "Event: location changed to " << eventIn.getEventUri().c_str() << term;
 #endif
 		_firstMessage = false;
 	}
@@ -229,7 +228,7 @@ void HTMLEngine::onClickLinkHref( const LLEmbeddedBrowserWindowEvent& eventIn )
 	if( _firstMessage )
 	{
 #ifdef _DEBUG
-		Log( SCRIPT ) << "Event: clicked on link to " << eventIn.getStringValue() << term;
+		Log( SCRIPT ) << "Event: clicked on link to " << eventIn.getStringValue().c_str() << term;
 #endif
 		llmozlib_->navigateTo(browserWindowId_, eventIn.getStringValue());
 		_firstMessage = false;
@@ -238,28 +237,27 @@ void HTMLEngine::onClickLinkHref( const LLEmbeddedBrowserWindowEvent& eventIn )
 		_firstMessage = true;
 }
 
-std::string DecodeUrl( std::string url )
+NrpText DecodeUrl( const NrpText& url )
 {
-	int startpos = 0;
-	for( size_t pos=0; pos < url.size(); pos++, startpos++ )
-		if( url[ pos ] != '%' )
-			url[ startpos ] = url[ pos ];
+	NrpText decodeStr;
+	for( u32 pos=0; pos < url.size(); pos++ )
+		if( url[ pos ] != L'%' )
+			decodeStr.append( url[ pos ] ); 
 		else
 		{
-			url[ startpos ] = (( url[ pos+1 ] - 0x30 ) << 4) + ( url[ pos + 2 ] - 0x30 );
+			decodeStr.append( (( url[ pos+1 ] - 0x30 ) << 4) + ( url[ pos + 2 ] - 0x30 ) );
 			pos += 2;
 		}
 
-	url.resize( startpos );
-	return url;
+	return decodeStr;
 }
 
 void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
 	if( _noFollowLinkExec )
 	{
-		std::string action = eventIn.getStringValue();
-		action = DecodeUrl( action.substr( strlen( NRP_NOFOLLOW_SCHEME ), action.size() ) );
+		NrpText action = eventIn.getStringValue().c_str();
+		action = DecodeUrl( action.subString( strlen( NRP_NOFOLLOW_SCHEME ), action.size() ) );
 		
 		nrp::CNrpScript::Instance().SetSender( NULL );
 		CNrpScript::Instance().DoString( action.c_str() );
@@ -269,7 +267,7 @@ void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventI
 		_noFollowLinkExec = true;
 
 #ifdef _DEBUG
-	Log( SCRIPT ) << "Event: clicked on nofollow link to " << eventIn.getStringValue() << term;
+	Log( SCRIPT ) << "Event: clicked on nofollow link to " << eventIn.getStringValue().c_str() << term;
 #endif
 }
 }

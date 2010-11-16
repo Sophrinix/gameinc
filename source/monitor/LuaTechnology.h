@@ -9,12 +9,12 @@ namespace nrp
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUATECH( "CLuaTech" );
 
 class CLuaTechnology : public ILuaProject<nrp::CNrpTechnology>
 {
 public:
 	static Luna<CLuaTechnology>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaTechnology(lua_State *L);		
 	int SetTechType( lua_State* L );
@@ -42,8 +42,6 @@ public:
 	int GetCompany( lua_State* L );
 	int SetCompany( lua_State* L );
 	int GetInternalName( lua_State* L );
-
-	static const char* ClassName() { return CLASS_LUATECH.c_str(); }	
 };
 
 }//namespace nrp

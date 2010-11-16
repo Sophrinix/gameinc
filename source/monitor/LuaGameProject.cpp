@@ -14,6 +14,7 @@
 										
 namespace nrp
 {
+CLASS_NAME CLASS_LUAGMEPROJECT( "CLuaGameProject" );
 
 Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы методы
 {
@@ -171,9 +172,10 @@ int CLuaGameProject::SetSoundQuality( lua_State* L )
 int CLuaGameProject::GetSoundTechNumber( lua_State* L )
 { lua_pushinteger( L, GetParam_<int>( L, "GetSoundTechNumber", SOUNDTECHNUMBER, NULL )); return 1; }
 
-int CLuaGameProject::_TechLuaInitialize( lua_State* L, std::string funcName, std::string paramName )
+int CLuaGameProject::_TechLuaInitialize( lua_State* L, const NrpText& funcName, OPTION_NAME& paramName )
 {
 	PNrpTechnology tech = GetParam_<PNrpTechnology>( L, funcName, paramName, NULL );
+
 	lua_pop( L, lua_gettop( L ) );
 	lua_pushlightuserdata( L, tech); 
 	Luna< CLuaTechnology >::constructor( L );
@@ -277,10 +279,10 @@ int CLuaGameProject::HaveScenario( lua_State* L )
 	return 1;
 }
 
-int CLuaGameProject::SetNamedTech_( lua_State* L, std::string funcName, const std::string paramName )
+int CLuaGameProject::SetNamedTech_( lua_State* L, const NrpText& funcName, const NrpText& paramName )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, ("Function CLuaGameProject:" + funcName + " need PNrpTechnology parameter").c_str() );
+	luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + " need PNrpTechnology parameter") );
 	PNrpTechnology tech = (PNrpTechnology)lua_touserdata( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
@@ -308,11 +310,11 @@ int CLuaGameProject::IsTechInclude( lua_State* L )
 
 template< class T >
 int CLuaGameProject::SetNumericalTech_( lua_State* L, 
-										std::string funcName, 
+										const NrpText& funcName, 
 										void (T::*Method)( CNrpTechnology* tehc, int index) )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, ("Function CLuaGameProject:" + funcName + " need CNrpTechnology parameter").c_str() );
+	luaL_argcheck(L, argc == 3, 3, _ErrStr( NrpText(":") + funcName + " need CNrpTechnology parameter") );
 
 	PNrpTechnology ptrTech = (PNrpTechnology)lua_touserdata( L, 2 );
 	int number = lua_tointeger( L, 3 );
@@ -345,13 +347,12 @@ int CLuaGameProject::TogglePlatform( lua_State* L )
 	return ToggleParam_( L, "TogglePlatform", "platform_" );
 }
 
-int CLuaGameProject::ToggleParam_( lua_State* L, std::string funcName, std::string prefix )
+int CLuaGameProject::ToggleParam_( lua_State* L, const NrpText& funcName, const NrpText& prefix )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, ("Function CLuaGameProject:" + funcName + " need string parameter").c_str() );
+	luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + " need string parameter") );
 
-	const char* str = lua_tostring( L, 2 );
-	assert( str != NULL );
+	NrpText str( lua_tostring( L, 2 ) );
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
@@ -361,13 +362,12 @@ int CLuaGameProject::ToggleParam_( lua_State* L, std::string funcName, std::stri
 	return 1;	
 }
 
-int CLuaGameProject::IsParamAvaible_( lua_State* L, std::string funcName, std::string prefix )
+int CLuaGameProject::IsParamAvaible_( lua_State* L, const NrpText& funcName, const NrpText& prefix )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, ("Function CLuaGameProject:" + funcName + " need string parameter").c_str() );
+	luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + " need string parameter") );
 
-	const char* str = lua_tostring( L, 2 );
-	assert( str != NULL );
+	NrpText str( lua_tostring( L, 2 ) );
 	bool isAvaible = false;
 
 	IF_OBJECT_NOT_NULL_THEN
@@ -394,13 +394,18 @@ int CLuaGameProject::Remove( lua_State* L )
 	return 1;	
 }
 
+const char* CLuaGameProject::ClassName()
+{
+	return ( CLASS_LUAGMEPROJECT );
+}
+
 template< class T >
 int nrp::CLuaGameProject::GetNumericalTech_( lua_State* L, 
-											 std::string funcName, 
+											 const NrpText& funcName, 
 											 CNrpTechnology* (T::*Method)( int index ) )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, ("Function CLuaGameProject:" + funcName + " need CNrpTechnology, int parameter").c_str() );
+	luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + " need CNrpTechnology, int parameter") );
 
 	int idx = lua_tointeger( L, 2 );
 	CNrpTechnology* tech = NULL;

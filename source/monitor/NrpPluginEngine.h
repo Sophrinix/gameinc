@@ -1,8 +1,7 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <map>
+#include <irrArray.h>
+#include <irrMap.h>
 
 namespace nrp
 {
@@ -15,17 +14,17 @@ class CNrpPluginEngine
 public:
 	static CNrpPluginEngine& Instance();
 
-	std::vector< std::string > FindLibraries( std::string pluginFolder );
-	void RegisterLibraries( std::vector< std::string >& paths );
-	HMODULE GetLibrary( std::string name );	
+	core::array< NrpText > FindLibraries( const NrpText& pluginFolder );
+	void RegisterLibraries( core::array< NrpText >& paths );
+	HMODULE GetLibrary( const NrpText& name );	
 
 private:
 	CNrpPluginEngine(void);
 	~CNrpPluginEngine(void);
 
-	void RegisterLibrary_( std::string pathToDLL );
+	void RegisterLibrary_( const NrpText& pathToDLL );
 
-	std::map< std::string, HMODULE > plugins_;
+	core::map< NrpText, HMODULE > plugins_;
 };
 
 }//namespace plugin

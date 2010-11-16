@@ -1,12 +1,9 @@
 #pragma once
 #include "INrpProject.h"
-#include <vector>
+#include "nrpArrays.h"
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_GAMEPROJECT( "CNrpGameProject" );
-
 OPTION_NAME VIDEOTECH( "videoTech" );
 OPTION_NAME ADVTECH( "advtech" );
 OPTION_NAME SOUNDTECH( "soundTech" );
@@ -38,13 +35,12 @@ class CNrpTechnology;
 class CNrpProjectModule;
 class IUser;
 class CNrpCompany;
-
-typedef std::vector< CNrpTechnology* > TECH_LIST;
+class IniFile;
 
 class CNrpGameProject : public INrpProject
 {
 public:
-	CNrpGameProject( std::string name, CNrpCompany* ptrCompany );
+	CNrpGameProject( const NrpText& name, CNrpCompany* ptrCompany );
 	~CNrpGameProject(void);
 
 	void SetGameEngine( CNrpGameEngine* gameEng );
@@ -58,30 +54,30 @@ public:
 	CNrpTechnology* GetTechnology( int index );
 	void SetSoundTech( CNrpTechnology* ptrTech, int index );
 	CNrpTechnology* GetSoundTech( int index );
-	void Save( std::string folderSave );
-	void Load( std::string loadFolder );
+	NrpText Save( const NrpText& folderSave );
+	void Load( const NrpText& loadFolder );
 
-	void UpdateDevelopmentMoney();
 	void CalculateCodeVolume();
 
-	const TECH_LIST& GetTechList() { return technologies_; }
-	const TECH_LIST& GetGenreList() { return genres_; }
-	const TECH_LIST& GetVideoTechList() { return videoTechnologies_; }
-	const TECH_LIST& GetSoundTechList() { return soundTechnologies_; }
+	const TECHS& GetTechList() { return _technologies; }
+	const TECHS& GetGenreList() { return _genres; }
+	const TECHS& GetVideoTechList() { return _video; }
+	const TECHS& GetSoundTechList() { return _sound; }
 
-	static std::string ClassName() { return CLASS_GAMEPROJECT; }
-	virtual std::string ObjectTypeName() { return CLASS_GAMEPROJECT; }
+	static NrpText ClassName();
 private:
-	void InitializeOptions_( std::string name );
+	void _InitializeOptions( const NrpText& name );
 	CNrpGameProject( CNrpGameProject& ptr );
-	TECH_LIST technologies_;
-	TECH_LIST genres_;
-	TECH_LIST videoTechnologies_;
-	TECH_LIST soundTechnologies_;
+	TECHS _technologies;
+	TECHS _genres;
+	TECHS _video;
+	TECHS _sound;
 
-	void SetTech_( CNrpTechnology* ptrTech, int index, TECH_LIST& listd, OPTION_NAME optname );
-	void FindPlaformsAndLanguages_();
-	void GetAllTech_( TECH_LIST& techList );
+	void _SetTech( CNrpTechnology* ptrTech, int index, TECHS& listd, OPTION_NAME optname );
+	void _FindPlaformsAndLanguages();
+	void _GetAllTech( TECHS& techList );
+	void _SaveTech( const OPTION_NAME& name, const NrpText& saveFolder, IniFile* ini );
+	void _LoadTechs( const SECTION_NAME& section, NrpText (*func)(int index), int maxVal, TECHS& arr, IniFile* ini );
 };
 
 typedef CNrpGameProject* PNrpGameProject;

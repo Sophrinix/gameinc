@@ -9,7 +9,6 @@ namespace nrp
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUABROWSER( "CLuaBrowser" );
 
 class CLuaBrowser : public ILuaProject<nrp::HTMLEngine>
 {
@@ -23,7 +22,7 @@ public:
 	int GetWindow( lua_State *L );
 	int Move( lua_State *L );
 
-	static const char* ClassName() { return CLASS_LUABROWSER.c_str(); }
+	static const char* ClassName();
 };
 
 }//namespace nrp

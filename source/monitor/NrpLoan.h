@@ -3,8 +3,6 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_LOAN( "CNrpLoan" );
-
 OPTION_NAME YEARPERCENT( "percentInYear");
 OPTION_NAME MONEY( "money" );
 OPTION_NAME STARTMONEY( "startMoney" );
@@ -20,7 +18,7 @@ public:
 	CNrpLoan( int id );
 	~CNrpLoan(void);
 
-	static std::string ClassName() { return CLASS_LOAN; }
+	static NrpText ClassName();
 };
 
 }//namespace nrp

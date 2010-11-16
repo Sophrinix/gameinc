@@ -101,7 +101,7 @@ public:
 	virtual bool isScalingImage() const;
 
 	virtual void setOnClickAction( const char* funcname ) { onClickAction_ = funcname; }
-	virtual const char* getOnClickAction() { return onClickAction_.c_str(); }
+	virtual nrp::NrpText& getOnClickAction() { return onClickAction_; }
 protected:
 
 	struct ButtonSprite
@@ -122,7 +122,7 @@ protected:
 	gui::IGUISpriteBank* spriteBank_;
 	gui::IGUIFont* overrideFont_;
 
-	core::stringc onClickAction_;
+	nrp::NrpText onClickAction_;
 
 	ButtonSprite ButtonSprites[ irr::gui::EGBS_COUNT ];
 

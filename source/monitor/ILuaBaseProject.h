@@ -11,40 +11,40 @@ template< class T > class ILuaBaseProject : public ILuaObject< T >
 {
 public:
 
-	ILuaBaseProject(lua_State *L, std::string luaName) : ILuaObject( L, luaName )
+	ILuaBaseProject(lua_State *L, stringw luaName) : ILuaObject( L, luaName )
 	{
 
 	}
 
 	virtual ~ILuaBaseProject(void) {};
 protected:
-	int SetParam_( lua_State* L, std::string funcName, std::string paramName )
+	int SetParam_( lua_State* L, const NrpText& funcName, const NrpText& paramName )
 	{
 		int argc = lua_gettop( L );
-		luaL_argcheck( L, argc == 2, 2, ("Function " + ObjectTypeName() + ":" + funcName + "need int parameter").c_str() );
+		luaL_argcheck( L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + "need int parameter") );
 
-		const char* tmpValue = lua_tostring( L, 2 );
-		assert( tmpValue != NULL );
-		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<std::string>( paramName, tmpValue );
+		NrpText tmpValue( lua_tostring( L, 2 ) );
+
+		IF_OBJECT_NOT_NULL_THEN	object_->SetString( paramName, tmpValue );
 		return 1;
 	}
 
-	template< class RTYPE, class RETTYPE > int SetParam_( lua_State* L, std::string funcName, 
-		std::string paramName, 
+	template< class RTYPE, class RETTYPE > int SetParam_( lua_State* L, const NrpText&  funcName, 
+		const NrpText&  paramName, 
 		RETTYPE (*lua_function)(lua_State*,int) )
 	{
 		int argc = lua_gettop( L );
-		luaL_argcheck( L, argc == 2, 2, ("Function " + ObjectTypeName() + ":" + funcName + "need int parameter").c_str() );
+		luaL_argcheck( L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + "need int parameter") );
 		RTYPE lvalue = (RTYPE)lua_function( L, 2 );
 
 		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<RTYPE>( paramName, lvalue );
 		return 1;
 	}
 
-	template< class T > T GetParam_( lua_State* L, std::string funcName, std::string paramName, T defValue )
+	template< class T > T GetParam_( lua_State* L, const NrpText& funcName, const NrpText& paramName, T defValue )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":" + funcName + " not need parameter").c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText(":") + funcName + " not need parameter" ) );
 
 		IF_OBJECT_NOT_NULL_THEN	defValue = object_->GetValue<T>( paramName );
 		return defValue;

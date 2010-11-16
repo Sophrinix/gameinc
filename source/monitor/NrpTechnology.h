@@ -1,16 +1,11 @@
 #pragma once
 #include "INrpProject.h"
-#include <map>
-#include <string>
+#include "nrpArrays.h"
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_TECHNOLOGY( "CNrpTechnology" );
-
-typedef std::map< int, int > REQUIRE_MAP;
 typedef enum { TS_UNKNOWN=0, TS_READY, TS_INDEVELOP, TS_PROJECT, TS_COUNT } TECH_STATUS;
-const std::string TECH_STATUS_NAME[TS_COUNT] = { "unknown", "ready", "indevelop", "project" };
+const NrpText TECH_STATUS_NAME[TS_COUNT] = { "unknown", "ready", "indevelop", "project" };
 
 class IUser;
 class CNrpCompany;
@@ -31,9 +26,9 @@ OPTION_NAME STATUS( "status" );
 class CNrpTechnology : public INrpProject
 {
 public:
-	CNrpTechnology( PROJECT_TYPE typen, const CLASS_NAME className=CLASS_TECHNOLOGY );
+	CNrpTechnology( PROJECT_TYPE typen, const CLASS_NAME& className );
 	CNrpTechnology( CNrpInvention* invention );
-	CNrpTechnology( const std::string& fileTech );
+	CNrpTechnology( const NrpText& fileTech );
 	~CNrpTechnology(void);
 
 	void SetEngineTechRequire( int tech_type, int valuel );
@@ -42,29 +37,28 @@ public:
 	int GetEngineTechRequire( int tech_type );
 	int GetEployerSkillRequire( int skil_require );
 
-	const std::string GetFutureTech( size_t index );
-	void AddFutureTech( const std::string& techName );
+	const NrpText GetFutureTech( size_t index );
+	void AddFutureTech( const NrpText& techName );
 
 	float GetEmployerPosibility( IUser* ptrUser );
 
-	std::string Save( const std::string& saveFolder );
-	void Load( const std::string& fileName );
+	NrpText Save( const NrpText& saveFolder );
+	void Load( const NrpText& fileName );
 
-	const REQUIRE_MAP& GetTechRequires() { return techRequires_; }
-	const REQUIRE_MAP& GetSkillRequires() { return skillRequires_; }
+	const REQUIRE_MAP& GetTechRequires() { return _techRequires; }
+	const REQUIRE_MAP& GetSkillRequires() { return _skillRequires; }
 
-	static std::string ClassName() { return CLASS_TECHNOLOGY; }
+	static NrpText ClassName();
 protected:
 	CNrpTechnology( CLASS_NAME className, PROJECT_TYPE typen );
 	CNrpTechnology();
+	CNrpTechnology( const CNrpTechnology& p );
 
-	void InitializeOptions_();
-	void SaveRequires_( const std::string& fileName );
-	void LoadRequries_( const std::string& fileName );
+	void _InitializeOptions();
 
-	REQUIRE_MAP techRequires_;
-	REQUIRE_MAP skillRequires_;
-	std::vector< std::string > futureTech_;
+	REQUIRE_MAP _techRequires;
+	REQUIRE_MAP _skillRequires;
+	STRINGS _futureTech;
 }; 
 
 typedef CNrpTechnology* PNrpTechnology;

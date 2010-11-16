@@ -6,12 +6,13 @@
 #include "nrpEngine.h"
 #include "Nrp2DPictureFlow.h"
 #include "nrpGUIEnvironment.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 
 using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAPICTUREFLOW( "CLuaPictureFlow" );
 
 Luna< CLuaPictureFlow >::RegType CLuaPictureFlow::methods[] =			//реализуемы методы
 {
@@ -36,16 +37,16 @@ int CLuaPictureFlow::AddItem( lua_State *L )	//добавляет текст в списко отображе
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 4, 4, "Function CLuaPictureFlow::AddItem need 2 parameter");
 
-	video::ITexture* texture = NULL;
-	const char* texturePath = lua_tostring( L, 2 );
-	if( texturePath )
-		texture = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturePath );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		NrpText texturePath( lua_tostring( L, 2 ) );
+		video::ITexture* texture = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturePath );
 
-	const char* text = lua_tostring( L, 3 ); 
-	assert( text != NULL );
-	void* object = lua_touserdata( L, 4 );
+		NrpText text( lua_tostring( L, 3 ) ); 
+		void* object = lua_touserdata( L, 4 );
 	
-	IF_OBJECT_NOT_NULL_THEN	object_->addItem( texture, conv::ToWide( text ).c_str(), object );			
+		object_->addItem( texture, text.ToWide(), object );			
+	}
 
 	return 1;
 }
@@ -120,16 +121,16 @@ int CLuaPictureFlow::GetSelectedItem( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPictureFlow::GetSelectedObject not need any parameter");
 
-	std::string text = "";
+	NrpText text( "" );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		int selected = object_->getSelected();
 		if( selected >= 0 )
-			text = conv::ToStr( object_->getListItem( selected ) );
+			text = object_->getListItem( selected );
 	}
 
-	lua_pushstring( L, text.c_str() );
+	lua_pushstring( L, text );
 	return 1;
 }
 
@@ -145,4 +146,8 @@ int CLuaPictureFlow::SetDrawBorder( lua_State* L )
 	return 1;
 }
 
+const char* CLuaPictureFlow::ClassName()
+{
+	return ( CLASS_LUAPICTUREFLOW );
+}
 }//namespace nrp

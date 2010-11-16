@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "nrpConsoleCommand.h"
 #include "nrpConsoleCmds.h"
-#include "StrConversation.h"
+#include "nrptext.h"
 #include "nrpScript.h"
 
 using namespace irr;
@@ -22,7 +22,7 @@ bool IC_Command_ECHO::invoke(const array<stringw>& args, CCommandDispatcher* pDi
 {
 	if(args.size() > 0)
 	{
-		stringw wstr = L"";
+		NrpText wstr = L"";
 		for(u32 i = 0; i < args.size(); i++)
 		{
 			wstr += args[i];
@@ -54,7 +54,7 @@ bool IC_Command_HELP::invoke(const array<stringw>& args, CCommandDispatcher* pDi
 	}
 	else
 	{
-		stringw  wstr = args[0];
+		NrpText  wstr = args[0];
 		for(u32 i = 1; i < args.size(); i++)
 		{
 			wstr += L" ";
@@ -67,7 +67,7 @@ bool IC_Command_HELP::invoke(const array<stringw>& args, CCommandDispatcher* pDi
 		}
 		else
 		{
-			stringw msg = "Комманда не обнаружена ";
+			NrpText msg = "Комманда не обнаружена ";
 			msg+= wstr;
 			pOutput->AppendMessage( msg );
 		}
@@ -151,14 +151,14 @@ bool IC_Command_INFO::invoke(const array<stringw>& args,
 
 	if( args[ 0 ] == L"-objlist" )
 	{
-		std::vector< std::string > strings;
-		GGetListSystemObject( strings );
+		core::array< NrpText > strings;
+		//GGetListSystemObject( strings );
 
 		for( size_t cnt=0; cnt < strings.size(); cnt++ )
-			pOutput->AppendMessage( conv::ToWide( strings[ cnt ] ).c_str() );
+			pOutput->AppendMessage( strings[ cnt ] );
 
 
-		pOutput->AppendMessage( conv::ToWide( "Size of objlist = " + conv::ToStr( strings.size() ) ).c_str() );
+		pOutput->AppendMessage( stringw( "Size of objlist = " ) + stringw( strings.size() ) );
 
 		return true;
 	}
@@ -201,25 +201,23 @@ bool irr::core::IC_Command_SCRIPT::invoke( const array< stringw >& args, CComman
 	{
 		if( args[ 0 ] == L"-reload" )
 		{
-			nrp::CNrpScript::Instance().DoString( ("package.loaded[ \" " + conv::ToStr( args[ 1 ].c_str() ) + " \" ] == false").c_str() );
-			nrp::CNrpScript::Instance().DoString( ("IncludeScript( \" " + conv::ToStr( args[ 1 ].c_str() ) + " \" )").c_str() );
+			NrpText remover( "package.loaded[ \" " );
+			remover.append( args[ 1 ] );
+			remover.append( " \" ] == false" );
+			nrp::CNrpScript::Instance().DoString( remover );
+
+			NrpText adder( "IncludeScript( \" " );
+			adder.append( args[ 1 ] );
+			adder.append( " \" )" );
+			nrp::CNrpScript::Instance().DoString( adder );
 		}
 		else if( args[ 0 ] == L"-so" )
 		{ 
-			std::string optionName = conv::ToStr( args[ 1 ].c_str() );
 			if( args[ 2 ] == L"true" || args[ 2 ] == L"false" )
 			{
 				bool val = (args[ 2 ] == L"true");
-				nrp::CNrpScript::Instance().SetValue<bool>( optionName, val );
+				nrp::CNrpScript::Instance().SetValue<bool>( args[ 1 ], val );
 			}
-		}
-		else if( args[ 0 ] == L"-show" )
-		{
-			nrp::CNrpScript& sc = nrp::CNrpScript::Instance();
-			std::string text = SHOW_CALL_FUNCTION_NAME + std::string( sc.GetValue<bool>( SHOW_CALL_FUNCTION_NAME ) ? "=true" : "=false" );
-			pOutput->AppendMessage( conv::ToWide( text ).c_str() );
-			text = LOAD_FUNCTIONS_FILENAME + "=" + sc.GetValue<std::string>( LOAD_FUNCTIONS_FILENAME );
-			pOutput->AppendMessage( conv::ToWide( text ).c_str() );
 		}
 	}
 

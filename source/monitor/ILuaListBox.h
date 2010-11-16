@@ -19,7 +19,7 @@ template< class T >
 class ILuaListBox : public ILuaGuiElement<T>
 {
 public:
-	ILuaListBox(lua_State *L, std::string luaName) : ILuaGuiElement( L, luaName )
+	ILuaListBox(lua_State *L, const NrpText& luaName) : ILuaGuiElement( L, luaName )
 	{
 
 	}
@@ -27,7 +27,7 @@ public:
 	int SetItemBgColor( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 6, 6, ("Function " + ObjectTypeName() + ":GetSelectedObject need index, color(a,r,g,b) parameter").c_str());
+		luaL_argcheck(L, argc == 6, 6, _ErrStr( NrpText(":GetSelectedObject need index, color(a,r,g,b) parameter") ) );
 
 		int index = lua_tointeger( L, 2 );
 		video::SColor color( lua_tointeger( L, 3 ), lua_tointeger( L, 4 ), 
@@ -41,7 +41,7 @@ public:
 	int SetItemHeigth( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetSelected need int parameter").c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":SetSelected need int parameter") ) );
 
 		int height = lua_tointeger( L, 2 );
 		assert( height > 0 && height < 200 );
@@ -55,7 +55,7 @@ public:
 	int Clear( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":Clear not need any parameter").c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText(":Clear not need any parameter" ) ) );
 
 		IF_OBJECT_NOT_NULL_THEN	object_->clear();			
 
@@ -65,7 +65,7 @@ public:
 	int SetSelected( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetSelected need int parameter").c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetSelected need int parameter" ) ) );
 
 		int selected = lua_tointeger( L, 2 );
 
@@ -77,7 +77,7 @@ public:
 	int GetSelected( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, ("Function " + ObjectTypeName() + ":GetSelected not need any parameter").c_str() );
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetSelected not need any parameter" ) ) );
 
 		int selected = -1;
 
@@ -90,13 +90,13 @@ public:
 	int SetFontFromSize( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetFontFromSize need size parameter").c_str() );
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetFontFromSize need size parameter" ) ) );
 
 		int size = lua_tointeger( L, 2 );
 
 		IF_OBJECT_NOT_NULL_THEN 
 		{
-			irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( ("font_" + conv::ToStr( size )).c_str() );
+			irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( NrpText("font_") + NrpText( size ) );
 			object_->setRFont( font );
 		}
 
@@ -106,7 +106,7 @@ public:
 	int SetItemTextColor( lua_State* L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 6, 6, ("Function " + ObjectTypeName() + ":SetTextColor need size parameter").c_str() );
+		luaL_argcheck(L, argc == 6, 6, _ErrStr( NrpText( ":SetTextColor need size parameter") ) );
 
 		int index = lua_tointeger( L, 2 );
 		irr::video::SColor color( lua_tointeger( L, 3 ), 

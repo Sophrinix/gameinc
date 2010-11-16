@@ -64,9 +64,10 @@ using irr::io::IFileSystem;
 namespace nrp
 {
 
-CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
+CLASS_NAME CLASS_NRPSCRIPT( "CNrpScript" );
+CNrpScript::CNrpScript() : INrpConfig( CLASS_NRPSCRIPT, CLASS_NRPSCRIPT ), vm_(0)
 {
-	CreateValue<std::string>( LOAD_FUNCTIONS_FILENAME, "" );
+	CreateValue<NrpText>( LOAD_FUNCTIONS_FILENAME, "" );
 	CreateValue<bool>( SHOW_CALL_FUNCTION_NAME, true );
 
 	// NULL если была ошибка аллокации памяти
@@ -148,8 +149,6 @@ CNrpScript::CNrpScript() : INrpConfig( "CNrpScript", "nrpScript" ), vm_(0)
 		lua_register( vm_, "NrpGetTranslate", ApplicationGetTranslate ),
 		
 		lua_register( vm_, "NrpGetSender", ApplicationGetSender ),
-
-		lua_register( vm_, "GetTickCount", ApplicationGetTickCount ),
 
 		RegisterLuaClasses_();
 	}
@@ -233,11 +232,11 @@ CNrpScript::~CNrpScript()
 
 }
 
-void CNrpScript::LoadFile( const char* fileName )
+void CNrpScript::LoadFile( const NrpText& fileName )
 {
-	std::string fn( fileName );
-	SetValue<std::string>( LOAD_FUNCTIONS_FILENAME, fn );
-	if (luaL_loadfile(vm_, fileName ) != 0)
+	SetString( LOAD_FUNCTIONS_FILENAME, fileName );
+
+	if ( luaL_loadfile( vm_, const_cast< NrpText& >( fileName ) ) != 0)
 	{
 		// Вытаскиваем сообщение об ошибке
 		const char* errMsg = lua_tostring(vm_, -1);
@@ -252,25 +251,25 @@ void CNrpScript::LoadFile( const char* fileName )
 		lua_pcall( vm_, 0, LUA_MULTRET, 0 );
 }
 
-void CNrpScript::DoFile( const char* fileName )
+void CNrpScript::DoFile( const NrpText& fileName )
 {
 	// !0 в случае ошибки в скрипте
-	if (luaL_dofile(vm_, fileName) != 0)
+	if (luaL_dofile(vm_, const_cast< NrpText& >( fileName ) ) != 0)
 	{
 		// Вытаскиваем сообщение об ошибке
 		const char* errMsg = lua_tostring(vm_, -1);
 		// убрать из стека сообщение об ошибке
 		lua_pop(vm_, -1);
 		if( errMsg )
-			Log(SCRIPT, FATAL)  << "Неизвестная ошибка скрипта \"" + std::string( fileName ) << term;
+			Log(SCRIPT, FATAL)  << "Неизвестная ошибка скрипта \"" << fileName << term;
 		else
 			Log(SCRIPT, FATAL)  << errMsg  << term;
 	}
 }
 
-void CNrpScript::DoString( const char* s )
+void CNrpScript::DoString( const NrpText& s )
 {
-	if (luaL_dostring(vm_, s) != 0)
+	if (luaL_dostring(vm_, const_cast< NrpText& >( s ) ) != 0)
 	{
 		// Вытаскиваем сообщение об ошибке
 		const char* errMsg = lua_tostring(vm_, -1);
@@ -288,9 +287,9 @@ CNrpScript& CNrpScript::Instance()
 	return *global_script_engine; 
 }
 
-void CNrpScript::CallFunction( const char* funcName, void* userData )
+void CNrpScript::CallFunction( const NrpText& funcName, void* userData )
 {
-	lua_getfield( vm_, LUA_GLOBALSINDEX, funcName );
+	lua_getfield( vm_, LUA_GLOBALSINDEX, const_cast< NrpText& >( funcName ) );
 	lua_pushlightuserdata( vm_, userData );
 
 	if( lua_pcall( vm_, 1, LUA_MULTRET, 0 ) != 0 )
@@ -304,33 +303,39 @@ void CNrpScript::CallFunction( const char* funcName, void* userData )
 	}
 }
 
-void CNrpScript::TemporaryScript( const std::string& fileName, SCRIPT_ACTION action )
+void CNrpScript::TemporaryScript( const NrpText& fileName, SCRIPT_ACTION action )
 {
 	switch( action )
 	{
 	case SA_CREATE:
 		{
-			std::string fn = "tmp/" + fileName + ".lua";
-			IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn.c_str() );
+			NrpText fn = NrpText("tmp/") + fileName + ".lua";
+			IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn );
 			file->drop();	
 		}
 	break;
 
 	case SA_EXEC:
 		{
-			std::string fn = "tmp/" + fileName + ".lua";
-			DoFile( fn.c_str() );
+			NrpText fn = NrpText("tmp/") + fileName + ".lua";
+			DoFile( fn );
 		}
 	}
 }
 
-void CNrpScript::AddActionToTemporaryScript( const std::string& fileName, const std::string& action )
+void CNrpScript::AddActionToTemporaryScript( const NrpText& fileName, const NrpText& action )
 {
-	std::string fn = "tmp/" + fileName + ".lua";
-	IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn.c_str(), true );
+	NrpText fn = NrpText("tmp/") + fileName + ".lua";
+	IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn, true );
 	file->write( action.c_str(), action.size() );
-	std::string endline = "\n";
+	
+	stringw endline = "\n";
 	file->write( endline.c_str(), endline.size() );
 	file->drop();		
+}
+
+NrpText CNrpScript::ClassName()
+{
+	return CLASS_NRPSCRIPT;
 }
 }//namespace nrp

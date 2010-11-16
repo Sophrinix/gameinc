@@ -1,12 +1,15 @@
 #pragma once
 
-#include <map>
+#include <irrMap.h>
+
+using irr::core::map;
 
 namespace nrp
 {
 
 class INrpConfig;
 class KeyPair;
+class IniFile;
 class INrpProperty;
 
 class CNrpConfigLooder
@@ -15,19 +18,17 @@ public:
 	CNrpConfigLooder(INrpConfig* ptrConfig);
 	~CNrpConfigLooder(void);
 
-	void Save( const std::string& fileName );
-	void Load( const std::string& fileName );
+	void Save( const NrpText& fileName );
+	void Load( const NrpText& fileName );
 
 private:
 	CNrpConfigLooder(void);
 	
-
 	typedef void (CNrpConfigLooder::*SomeReader)( KeyPair* );
-	typedef void (CNrpConfigLooder::*SomeWriter)( const INrpProperty*, const std::string&, 
-												  const std::string& );
+	typedef void (CNrpConfigLooder::*SomeWriter)( const INrpProperty*, const NrpText&, IniFile* );
 
-	typedef std::map< std::string, SomeReader > READERS_MAP;
-	typedef std::map< std::string, SomeWriter > WRITERS_MAP;
+	typedef map< NrpText, SomeReader > READERS_MAP;
+	typedef map< NrpText, SomeWriter > WRITERS_MAP;
 
 	READERS_MAP _readers;
 	WRITERS_MAP _writers;
@@ -41,14 +42,16 @@ private:
 	void _ReadUser( KeyPair* p );
 	void _ReadTime( KeyPair* p );
 	void _ReadString( KeyPair* p );
+	void _ReadTechnology( KeyPair* p );
 
-	void _WriteInt( const INrpProperty*, const std::string&, const std::string& );
-	void _WriteString( const INrpProperty*, const std::string&, const std::string& );
-	void _WriteBool( const INrpProperty*, const std::string& , const std::string&  );
-	void _WriteTime( const INrpProperty*, const std::string& , const std::string&  );
-	void _WriteFloat( const INrpProperty*, const std::string& , const std::string&  );
-	void _WriteUser( const INrpProperty*, const std::string& , const std::string&  );
-	void _WriteUnknown( const INrpProperty*,  const std::string& , const std::string&  );
+	void _WriteInt( const INrpProperty*, const NrpText&, IniFile* );
+	void _WriteString( const INrpProperty*, const NrpText&, IniFile* );
+	void _WriteBool( const INrpProperty*, const NrpText& , IniFile*  );
+	void _WriteTime( const INrpProperty*, const NrpText& , IniFile*  );
+	void _WriteFloat( const INrpProperty*, const NrpText&, IniFile* );
+	void _WriteUser( const INrpProperty*, const NrpText& , IniFile*  );
+	void _WriteUnknown( const INrpProperty*,  const NrpText& , IniFile*  );
+	void _WriteTechnology( const INrpProperty*, const NrpText&, IniFile* );
 	INrpConfig* _config;
 };
 }//end namespace nrp

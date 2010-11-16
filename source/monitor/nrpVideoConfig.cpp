@@ -12,6 +12,7 @@ using namespace video;
 
 namespace nrp
 {
+CLASS_NAME CLASS_VIDEOCONFIG( "CNrpVideoConfig" );
 
 CNrpVideoConfig::CNrpVideoConfig() : INrpConfig( CLASS_VIDEOCONFIG, CLASS_VIDEOCONFIG) 
 {		
@@ -31,4 +32,8 @@ CNrpVideoConfig& CNrpVideoConfig::Instance()
 	return *globalVideoConfigInstance;
 }
 
+NrpText CNrpVideoConfig::ClassName()
+{
+	return CLASS_VIDEOCONFIG;
+}
 }//namespace nrp

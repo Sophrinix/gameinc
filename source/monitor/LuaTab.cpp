@@ -1,9 +1,8 @@
 #include "StdAfx.h"
 #include <IVideoDriver.h>
-#include <string>
 #include <IGUITabControl.h>
 #include "nrpEngine.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "nrpGUIEnvironment.h"
 #include "LuaTab.h"
 
@@ -11,6 +10,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATAB( "CLuaTab" );
 
 Luna< CLuaTab >::RegType CLuaTab::methods[] = 
 {
@@ -33,7 +33,7 @@ int CLuaTab::SetFontFromSize( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( ("font_" + conv::ToStr( size )).c_str() );
+		irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( NrpText("font_") + NrpText( size ) );
 		object_->setRFont( font );
 	}
 
@@ -53,5 +53,10 @@ int CLuaTab::SetTextColor( lua_State *L )
 	IF_OBJECT_NOT_NULL_THEN object_->setTextColor( color );
 
 	return 1;
+}
+
+const char* CLuaTab::ClassName()
+{
+	return ( CLASS_LUATAB );
 }
 }//namespace nrp

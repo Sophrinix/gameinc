@@ -1,6 +1,7 @@
 #ifndef NERPA_VERSION_H
 #define NERPA_VERSION_H
-#include <string>
+#include "NrpText.h"
+
 namespace nrp
 {
 
@@ -9,12 +10,11 @@ class nrpVersion
 public:
 	nrpVersion();
 	~nrpVersion();
-	std::wstring ProductName();
-	std::wstring ProductVersion();
+
+	const NrpText& ProductVersion();
 private:
-	char* versionInfoBuf_;
-	std::wstring productName_;
-	std::wstring productVersion_;
+	char* _versionInfoBuf;
+	NrpText _productVersion;
 };
 
 } //namespace nrp

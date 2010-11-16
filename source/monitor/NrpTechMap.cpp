@@ -2,7 +2,6 @@
 #include "NrpTechMap.h"
 #include "NrpTechnology.h"
 
-#include <irrlicht.h>
 #include <assert.h>
 
 #define ARROW_PAD 15
@@ -11,6 +10,7 @@ using namespace nrp;
 
 namespace irr
 {
+
 namespace gui
 {
 
@@ -924,20 +924,20 @@ void CNrpTechMap::draw()
 					driver->draw2DRectangle(skin->getColor(EGDC_HIGH_LIGHT), textRect, &clientClip);
 
 				Cell& cell = Rows[ i ].Items[ j ];
-				core::stringw text = cell.BrokenText;
+				NrpText text = cell.BrokenText;
 				video::ITexture* txs = NULL;
 				int minSize = min( textRect.getWidth(), textRect.getHeight() );
 				core::dimension2di txsSize( minSize, minSize );
 				if( cell.assignTech != NULL && cell.assignTech->GetTechnology() )
 				{
 					CNrpTechnology* ptrTech = cell.assignTech->GetTechnology();
-					txs = driver->getTexture( ptrTech->GetValue<std::string>( TEXTURENORMAL ).c_str() );
+					txs = driver->getTexture( ptrTech->GetString( TEXTURENORMAL ) );
 					txsSize = txs->getOriginalSize();
 					// draw item text
 					if( ptrTech->GetValue<TECH_STATUS>( STATUS ) == TS_INDEVELOP )
 					{
 						text += "\n(";
-						text += core::stringw( conv::ToStr( static_cast<int>( ptrTech->GetValue<float>( READYWORKPERCENT )) ).c_str() );
+						text += static_cast<int>( ptrTech->GetValue<float>( READYWORKPERCENT ));
 						text += ")";
 					}
 				}
@@ -1321,12 +1321,11 @@ void CNrpTechMap::AssignTechMapToTable_( const ATECH_ARRAY& pArray )
 
 			Cell& cell = Rows[ pTech->GetCell().Y ].Items[ pTech->GetCell().X ];
 			cell.assignTech = pTech;
-			cell.Text = core::stringw( "???" ) + conv::ToWide( cell.assignTech->GetName() ).c_str();
+			cell.Text = core::stringw( "???" ) + cell.assignTech->GetName();
 
 			if( pTech->GetTechnology() )
 			{
-				std::string name = pTech->GetTechnology()->GetString( NAME );
-				cell.Text = conv::ToWide( name ).c_str();
+				cell.Text = pTech->GetTechnology()->GetString( NAME );
 
 				AssignTechMapToTable_( pTech->GetChilds() );
 			}
@@ -1357,7 +1356,7 @@ void CNrpTechMap::RelocateTable_()
 	setColumnWidth( itemSize );
 }
 
-std::string CNrpTechMap::GetSelectedObjectName()
+core::stringw CNrpTechMap::GetSelectedObjectName()
 {
 	return Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetName();
 }

@@ -1,10 +1,9 @@
 #pragma once
-#include <string>
 
 namespace nrp
 {
 
-typedef const std::string ELEMENT_ALIGN;
+typedef const NrpText ELEMENT_ALIGN;
 
 ELEMENT_ALIGN ALIGN_TOP( "top" );
 ELEMENT_ALIGN ALIGN_BOTTOM( "bottom" );

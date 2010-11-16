@@ -4,18 +4,15 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAGAMEBOX( "CLuaGameBox" );
-
 class CNrpGameBox;
 
 class CLuaGameBox : public ILuaObject<nrp::CNrpGameBox>
 {
 public:
 	static Luna<CLuaGameBox>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaGameBox(lua_State *L);		
-																//нажатии на эту кнопку
-	static const char* ClassName() { return CLASS_LUAGAMEBOX.c_str(); }
 };
 
 }//namespace nrp

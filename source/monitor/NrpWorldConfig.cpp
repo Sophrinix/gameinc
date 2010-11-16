@@ -6,6 +6,7 @@ static nrp::CNrpWorldConfig * globalTerrainConfigInstance = 0;
 
 namespace nrp 
 {
+CLASS_NAME CLASS_WORLDCONFIG( "CNrpWorldConfig" );
 
 CNrpWorldConfig::CNrpWorldConfig(void) : INrpConfig( CLASS_WORLDCONFIG, CLASS_WORLDCONFIG )
 {
@@ -25,4 +26,8 @@ CNrpWorldConfig& CNrpWorldConfig::Instance()
 	return *globalTerrainConfigInstance;
 }
 
+NrpText CNrpWorldConfig::ClassName()
+{
+	return CLASS_WORLDCONFIG;
+}
 }//namespace nrp

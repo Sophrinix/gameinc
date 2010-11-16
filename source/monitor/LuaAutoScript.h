@@ -1,9 +1,11 @@
 #pragma once
 #include <lua.hpp>
 #include <luna.h>
+#include "ILuaObject.h"
 
 namespace nrp
 {
+
 class CLuaAutoScript
 {
 public:
@@ -14,7 +16,7 @@ public:
 	int AddGameEngineToCompany( lua_State* L );
 	int AddUserToGameProject( lua_State* L );
 
-	static const char* ClassName() { return "CLuaAutoScript"; }
+	static const char* ClassName();
 };
 
 }//namespace nrp

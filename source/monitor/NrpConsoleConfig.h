@@ -3,9 +3,6 @@
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_CONSOLECONFIG( "CNrpConsoleConfig" );
-
 OPTION_NAME CONSOLE_INIT_KEY( "initKey" );
 OPTION_NAME CONSOLE_RELATIVE_SIZE( "relativeSize" );
 OPTION_NAME CONSOLE_LINE_SPACING( "lineSpacing" );
@@ -30,7 +27,7 @@ private:
 	void _InitializeOptions();
 public:
 	static CNrpConsoleConfig& Instance();
-	static std::string ClassName() { return CLASS_CONSOLECONFIG; }	
+	static NrpText ClassName();	
 };
 
 } //namespace nrp

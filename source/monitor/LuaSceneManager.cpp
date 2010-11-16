@@ -16,6 +16,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUASCENEMANAGER( "CLuaSceneManager" );
 
 Luna< CLuaSceneManager >::RegType CLuaSceneManager::methods[] = 
 {
@@ -240,12 +241,12 @@ int CLuaSceneManager::DrawProgress( lua_State* vm )
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:DrawProgress need one parameter ");
 
 	int progress = lua_tointeger(vm, 2);	
-	const char* text = lua_tostring( vm, 3 );
+	NrpText text( lua_tostring( vm, 3 ) );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		scene::CLoadingScreen ld( object_->getVideoDriver(), CNrpEngine::Instance().GetGuiEnvironment()->getFont( "font_14" ) );
-		ld.render( progress, conv::ToWide( text ? text : "").c_str() );
+		ld.render( progress, text.ToWide() );
 	}
 
 	return 1;
@@ -411,18 +412,16 @@ int CLuaSceneManager::AddTextSceneNode( lua_State* vm )
 	luaL_argcheck(vm, argc == 12, 12, "Function CLuaSceneManager:AddTextSceneNode need 12 parameter ");
 
 	int fontSize = lua_tointeger( vm, 2 );
-	const char* text = lua_tostring( vm, 3 ); 
-	assert( text != NULL );
-
+	NrpText text( lua_tostring( vm, 3 ) ); 
 	video::SColor color( lua_tointeger( vm, 4 ), lua_tointeger( vm, 5 ), lua_tointeger( vm, 6 ), lua_tointeger( vm, 7 ) );
 	scene::ISceneNode* node = (scene::ISceneNode*)lua_touserdata( vm, 8 );
 	core::vector3df position( (f32)lua_tonumber( vm, 9 ), (f32)lua_tonumber( vm, 10 ), (f32)lua_tonumber( vm, 11 ) );
 	int id = lua_tointeger( vm, 12 );
-	gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( ( "font_" + conv::ToStr( fontSize ) ).c_str() );
+	gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( NrpText( "font_" ) + NrpText( fontSize ) );
 
 	scene::ITextSceneNode* textNode = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN textNode = object_->addTextSceneNode( font, conv::ToWide( text ).c_str(), color, node, position, id );
+	IF_OBJECT_NOT_NULL_THEN textNode = object_->addTextSceneNode( font, text.ToWide(), color, node, position, id );
 
 	lua_pushlightuserdata( vm, textNode );
 
@@ -482,13 +481,13 @@ int CLuaSceneManager::GetMarkText( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaSceneNode::GetMarkText not need any parameter");
 
 	scene::ISceneNode* ptrNode = (scene::ISceneNode*)lua_touserdata( L, 2 );
-	core::stringw text("");
+	NrpText text("");
 
 	scene::ISceneNode* node = GetTextSceneNode_( ptrNode );
 	if( node != NULL )
 		text = ((scene::ITextSceneNode*)node)->getText();
 
-	lua_pushstring( L, conv::ToStr( text.c_str() ).c_str() );
+	lua_pushstring( L, text );
 
 	return 1;
 }
@@ -499,16 +498,17 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaSceneManager::SetMarkText need string parameter");
 
 	scene::ISceneNode* ptrNode = (scene::ISceneNode*)lua_touserdata( L, 2 );
-	const char* text = lua_tostring( L, 3 );
-	assert( text != NULL && ptrNode != NULL );
-	if( text == NULL || ptrNode == NULL )
+	NrpText text( lua_tostring( L, 3 ) );
+	assert( ptrNode != NULL );
+	
+	if( ptrNode == NULL )
 		return 1;
 	
 	scene::ISceneNode* textNode = GetTextSceneNode_( ptrNode );
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		//при существующем ноде прислали пустую строку ( надо удалить текстнод из отрисовки )
-		if( text && textNode != NULL )
+		if( text.size() && textNode != NULL )
 		{
 			object_->addToDeletionQueue( textNode );
 			return 1;
@@ -519,12 +519,12 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 		{
 			//и существует привязанный нод, то надо поменять текст у этого нода
 			if( textNode != NULL )
-				reinterpret_cast< scene::ITextSceneNode* >( textNode )->setText( conv::ToWide( text ).c_str() );
+				reinterpret_cast< scene::ITextSceneNode* >( textNode )->setText( text.ToWide() );
 			else
 			{
 				//иначе надо создать новый текстнод и присвоить ему этот текст
 				gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( "font_12" );
-				object_->addTextSceneNode( font, conv::ToWide( text ).c_str(), 0xff000000, ptrNode, core::vector3df( 0, 0, 0 ) );
+				object_->addTextSceneNode( font, text.ToWide(), 0xff000000, ptrNode, core::vector3df( 0, 0, 0 ) );
 			}
 		}
 
@@ -628,5 +628,10 @@ int CLuaSceneManager::RemoveAllNodes( lua_State* L )
 	}
 
 	return 2;		
+}
+
+const char* CLuaSceneManager::ClassName()
+{
+	return ( CLASS_LUASCENEMANAGER );
 }
 }//namespace nrp

@@ -5,12 +5,13 @@
 #include "LuaListBox.h"
 #include "nrpEngine.h"
 #include "nrpGUIEnvironment.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 
 using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUALISTBOX( "CLuaListBox" );
 
 Luna< CLuaListBox >::RegType CLuaListBox::methods[] =			//реализуемы методы
 {
@@ -29,11 +30,10 @@ int CLuaListBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaListBox::AddItem need 2 parameter");
 
-	const char* text = lua_tostring( L, 2 );
-	assert( text != NULL );
+	NrpText text( lua_tostring( L, 2 ) );
 	void* object = lua_touserdata( L, 3 );
 	
-	IF_OBJECT_NOT_NULL_THEN	object_->addItem( conv::ToWide( text ).c_str(), (u32)object );			
+	IF_OBJECT_NOT_NULL_THEN	object_->addItem( text.ToWide(), (u32)object );			
 
 	return 1;
 }
@@ -56,4 +56,8 @@ int CLuaListBox::GetSelectedObject( lua_State* L )
 	return 1;
 }
 
+const char* CLuaListBox::ClassName()
+{
+	return ( CLASS_LUALISTBOX );
+}
 }//namespace nrp

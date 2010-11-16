@@ -7,6 +7,7 @@
 #include "NrpDiskMachine.h"
 #include "NrpReklameWork.h"
 #include "OpFileSystem.h"
+#include "IniFile.h"
 
 #include <assert.h>
 
@@ -14,18 +15,21 @@ static nrp::CNrpPlant* _GlobalObjectPlant_ = NULL;
 
 namespace nrp
 {
+CLASS_NAME CLASS_NRPPLANT( "CNrpPlant" );
 
 template< class R >
-int _SaveWorks( R& arrayt, int startNum, std::string (*func)(int), const std::string& fileName, const std::string saveFolder )
+int _SaveWorks( R& arrayt, int startNum, NrpText (*func)(int), const NrpText& fileName, const NrpText saveFolder )
 {
-	R::iterator wIter = arrayt.begin();
-	for( ; wIter != arrayt.end(); wIter++ )
+	IniFile sv( fileName );
+
+	for( u32 i=0; i < arrayt.size(); i++ )
 	{
-		std::string myFolder = OpFileSystem::CheckEndSlash( saveFolder ) + func( startNum );
+		NrpText myFolder = OpFileSystem::CheckEndSlash( saveFolder ) + func( startNum );
 		OpFileSystem::CreateDirectory( myFolder );
-		std::string workFile = (*wIter)->Save( myFolder );
-		IniFile::Write( SECTION_WORKS, KEY_TYPE( startNum ), (*wIter)->ObjectTypeName(), fileName );
-		IniFile::Write( SECTION_WORKS, CreateKeyWork( startNum ), workFile, fileName );
+		NrpText workFile = arrayt[ i ]->Save( myFolder );
+
+		sv.Set( SECTION_WORKS, CreateKeyType( startNum ), arrayt[ i ]->ObjectTypeName() );
+		sv.Set( SECTION_WORKS, CreateKeyWork( startNum ), workFile );
 		startNum++;
 	}
 
@@ -44,12 +48,12 @@ CNrpPlant::~CNrpPlant(void)
 {
 }
 
-std::string CNrpPlant::Save( const std::string& saveFolder )
+NrpText CNrpPlant::Save( const NrpText& saveFolder )
 {
 	assert( OpFileSystem::IsExist( saveFolder ) );
 
-	std::string myFolder = OpFileSystem::CheckEndSlash( saveFolder );
-	std::string fileName = myFolder + "plant.ini";
+	NrpText myFolder = OpFileSystem::CheckEndSlash( saveFolder );
+	NrpText fileName = myFolder + "plant.ini";
 	INrpConfig::Save( fileName );
 
 	int lastNumber = _SaveWorks( _works, 0, CreateKeyWork, fileName, myFolder );
@@ -58,18 +62,19 @@ std::string CNrpPlant::Save( const std::string& saveFolder )
 	return fileName;
 }
 
-void CNrpPlant::Load( const std::string& saveFolder )
+void CNrpPlant::Load( const NrpText& saveFolder )
 {
-	std::string fileName = OpFileSystem::CheckEndSlash( saveFolder ) + "plant.ini";
+	NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + "plant.ini";
 	assert( OpFileSystem::IsExist( fileName ) );
 
 	INrpConfig::Load( fileName );
+	IniFile rv( fileName );
 
 	int maxNumber = GetValue<int>( WORKNUMBER ) + GetValue<int>( REKLAMENUMBER );
 	for( int k=0; k < maxNumber; k++ )
 	{
-		std::string type = IniFile::Read( SECTION_WORKS, KEY_TYPE( k ), std::string(""), fileName );
-		std::string saveFile = IniFile::Read( SECTION_WORKS, CreateKeyWork( k ), std::string(""), fileName );
+		NrpText type = rv.Get( SECTION_WORKS, CreateKeyType( k ), NrpText("") );
+		NrpText saveFile = rv.Get( SECTION_WORKS, CreateKeyWork( k ), NrpText("") );
 		
 		if( OpFileSystem::IsExist( saveFile ) )
 		{
@@ -96,13 +101,13 @@ void CNrpPlant::AddWork( CNrpPlantWork* work )
 void CNrpPlant::BeginNewDay()
 {
 	//обработаем все задания по дискам на сегодня
-	for( int k=0; k < (int)_works.size(); k++ )
+	for( u32 k=0; k < _works.size(); k++ )
 	{
 		 _works[ k ]->BeginNewDay();
 		 if( _works[ k ]->GetValue<bool>( FINISHED ) )
 		 { //если это задание закончилось
 			 delete _works[ k ];
-			 _works.erase( _works.begin() + k );
+			 _works.erase( k );
 			 //удалим его из списка
 			 k--;
 		 }
@@ -120,7 +125,7 @@ void CNrpPlant::BeginNewDay()
 			CNrpApplication::Instance().DoLuaFunctionsByType( APP_REKLAME_FINISHED, _reklameWorks[ k ] );
 			delete _reklameWorks[ k ];
 			//если кончился, то надо удалить его из списка активных заданий
-			_reklameWorks.erase( _reklameWorks.begin() + k );
+			_reklameWorks.erase( k );
 			k--;
 		}
 	}
@@ -128,9 +133,9 @@ void CNrpPlant::BeginNewDay()
 	SetValue<int>( REKLAMENUMBER, _reklameWorks.size() );
 }
 
-CNrpReklameWork* CNrpPlant::CreateReklame( const std::string& type, 
-										   const std::string& gameName, 
-										   const std::string& company )
+CNrpReklameWork* CNrpPlant::CreateReklame( const NrpText& type, 
+										   const NrpText& gameName, 
+										   const NrpText& company )
 {
 	CNrpReklameWork* baseWork = GetBaseReklame( type );
 	if( baseWork != NULL )
@@ -164,14 +169,13 @@ bool CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
 	return ret;
 }
 
-CNrpReklameWork* CNrpPlant::GetBaseReklame( const std::string& name )
+CNrpReklameWork* CNrpPlant::GetBaseReklame( const NrpText& name )
 {
 	assert( name.size() != 0 );
 
-	REKLAME_LIST::iterator pIter = baseReklame_.begin();
-	for( ; pIter != baseReklame_.end(); pIter++ ) 
-		if( (*pIter)->GetString( TECHTYPE ) == name )
-			return *pIter;
+	for( u32 i=0; i < baseReklame_.size(); i++ ) 
+		if( baseReklame_[ i ]->GetString( TECHTYPE ) == name )
+			return baseReklame_[ i ];
 
 	return NULL;
 }
@@ -191,14 +195,12 @@ void CNrpPlant::AddReklame( CNrpReklameWork* reklame )
 	SetValue<int>( REKLAMENUMBER, _reklameWorks.size() );
 }
 
-CNrpReklameWork* CNrpPlant::GetReklame( const std::string& type, 
-										const std::string& gameName )
+CNrpReklameWork* CNrpPlant::GetReklame( const NrpText& type, 
+										const NrpText& gameName )
 {
-	REKLAME_LIST::iterator pIter = _reklameWorks.begin();
-	for( ; pIter != _reklameWorks.end(); pIter++ ) 
-		if( (*pIter)->GetString( TECHTYPE ) == type &&
-			(*pIter)->GetString( GAMENAME ) == gameName )
-			return *pIter;
+	for( u32 i=0; i < _reklameWorks.size(); i++ ) 
+		if( _reklameWorks[ i ]->Equale( type, gameName ) )
+			return _reklameWorks[ i ];
 
 	return NULL;
 }
@@ -219,12 +221,11 @@ CNrpPlant& nrp::CNrpPlant::Instance()
 	return *_GlobalObjectPlant_;
 }
 
-CNrpDiskMachine* CNrpPlant::GetDiskMachine( const std::string& name )
+CNrpDiskMachine* CNrpPlant::GetDiskMachine( const NrpText& name )
 {
-	DISKMACHINES_LIST::iterator dIter = diskMachines_.begin();
-	for( ; dIter != diskMachines_.end(); dIter++)
-		if( (*dIter)->GetString( NAME ) == name )
-			return *dIter;
+	for( u32 i=0; i < diskMachines_.size(); i++)
+		if( diskMachines_[ i ]->GetString( NAME ) == name )
+			return diskMachines_[ i ];
 
 	return NULL;		
 }
@@ -238,6 +239,11 @@ void CNrpPlant::AddDiskMachine( CNrpDiskMachine* pDm )
 {
 	diskMachines_.push_back( pDm );
 	SetValue<int>( DISKMACHINENUMBER, diskMachines_.size() );
+}
+
+NrpText CNrpPlant::ClassName()
+{
+	return CLASS_NRPPLANT;
 }
 
 }//end namespace nrp

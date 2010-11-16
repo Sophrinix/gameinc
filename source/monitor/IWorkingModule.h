@@ -7,20 +7,20 @@ namespace nrp
 class IWorkingModule : public CNrpTechnology
 {
 public:
-	IWorkingModule( PROJECT_TYPE type, const CLASS_NAME className )
+	IWorkingModule( PROJECT_TYPE type, CLASS_NAME className )
 		: CNrpTechnology( type, className )
 	{
-		CNrpTechnology::InitializeOptions_();
+		CNrpTechnology::_InitializeOptions();
 
 		CreateValue<float>( READYWORKPERCENT, 0 );
 	}
 
 	virtual void Update( IUser* ptrUser ) = 0;
 	virtual int AddUser( IUser* ptrUser ) = 0;
-	virtual int RemoveUser( const std::string& userName ) = 0;
+	virtual int RemoveUser( const NrpText& userName ) = 0;
 
-	virtual void Save( std::string saveFolder ) {}
-	virtual void Load( std::string fileName ) {}
+	virtual NrpText Save( const NrpText& saveFolder ) { return ""; }
+	virtual void Load( const NrpText& fileName ) {}
 
 	virtual ~IWorkingModule() {};
 private:

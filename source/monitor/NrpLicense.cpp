@@ -3,24 +3,30 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LICENSE( "CNrpLicense" );
 
-CNrpLicense::CNrpLicense(std::string name) : INrpProject( "CNrpLicense", "" )
+CNrpLicense::CNrpLicense( const NrpText& name) : INrpProject( CLASS_LICENSE, "" )
 {
-	CreateValue<std::string>( NAME, name );
+	CreateValue<NrpText>( NAME, name );
 }
 
 CNrpLicense::~CNrpLicense(void)
 {
 }
 
-void CNrpLicense::Load( const std::string& pathTo )
+void CNrpLicense::Load( const NrpText& pathTo )
 {
 
 }
 
-std::string CNrpLicense::Save( const std::string& pathTo )
+NrpText CNrpLicense::Save( const NrpText& pathTo )
 {
 	return INrpProject::Save( pathTo );
+}
+
+NrpText CNrpLicense::ClassName()
+{
+	return CLASS_LICENSE;
 }
 
 }//namespace nrp

@@ -69,10 +69,10 @@ void CNrpMainScene::RenderScene_()										//рендеринг сцены
 {
 	CNrpEngine& v_eng = CNrpEngine::Instance();
 
-	if( options_[ "render3d" ] )
+	if( _options[ "render3d" ] )
 		v_eng.GetSceneManager()->drawAll();								    //отрисовка общей графики
 
-	if( options_[ "renderGui" ] )
+	if( _options[ "renderGui" ] )
 		v_eng.GetGuiEnvironment()->drawAll();								//рисуем интерфейс пользователя
 }
 
@@ -115,7 +115,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 					gui::CNrpButton* btn = dynamic_cast< gui::CNrpButton* >( event.GUIEvent.Caller );
 					assert( btn != NULL );
 					//пытаемся его обработать
-					if( btn->getOnClickAction() != 0 )
+					if( btn->getOnClickAction().size() )
 					{
 						nrp::CNrpScript::Instance().SetSender( btn );
 						const char* dd = btn->getOnClickAction();
@@ -132,7 +132,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 				{
 					gui::CNrpScrollBar* scr = (gui::CNrpScrollBar*)event.GUIEvent.Caller;
 					//и к этому скроллбару повесили функцию луа
-					if( scr->getAction() != 0 )
+					if( scr->getAction().size() )
 					{	//попытаемся её выполнить
 						nrp::CNrpScript::Instance().CallFunction( scr->getAction(), scr );
 						return true;
@@ -197,8 +197,8 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 
 void CNrpMainScene::OnEnter()
 {
-	 options_[ "render3d" ] = true;
-	 options_[ "renderGui" ] = true;
+	 _options[ "render3d" ] = true;
+	 _options[ "renderGui" ] = true;
 }
 
 //один кадр сцены
@@ -256,7 +256,7 @@ void CNrpMainScene::OnUpdate()
 		//вызываем событие луа после завершения рендера сцены
 		DoLuaFunctionsByType<void>( SCENE_AFTER_END );
 	
-		if( mouseSceneBLeftEvent_ && (GetTickCount() - lastTimeNodeSelect_ > 200) )
+		if( mouseSceneBLeftEvent_ && ( GetTickCount() - lastTimeNodeSelect_ > 200) )
 		{
 			DoLuaFunctionsByType( twinLeftMouseClick_ ? SCENE_LMOUSE_DOUBLE_CLICK : SCENE_LMOUSE_LEFT_UP, selectedNode_ );
 			mouseSceneBLeftEvent_ = false;
@@ -286,9 +286,9 @@ void CNrpMainScene::OnLeave()
 {
 }
 
-void CNrpMainScene::SetOption( const core::stringc& name, bool amount )
+void CNrpMainScene::SetOption( const nrp::NrpText& name, bool amount )
 {
-	options_[ name ] = amount;
+	_options[ name ] = amount;
 }
 
 core::vector3df CNrpMainScene::GetCurrentWorldPosition()

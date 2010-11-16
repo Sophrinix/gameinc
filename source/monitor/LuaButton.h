@@ -24,9 +24,6 @@ namespace irr
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_LUABUTTON( "CLuaButton" );
-
 class CLuaButton : public ILuaGuiElement<irr::gui::IGUIButton>
 {
 public:
@@ -37,11 +34,11 @@ public:
 	int SetHoveredImage( lua_State *L );					//привязка к текстуре в ховеред состоянии
 	int SetPressedImage( lua_State *L );					//привязка к текстуре в нажатом состоянии
 	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при 
+	static const char* ClassName();
 																//нажатии на эту кнопку
-	static const char* ClassName() { return CLASS_LUABUTTON.c_str(); }
 private:
 	typedef enum { TI_IMAGE=0, TI_HOVER, TI_PRESSED } TYPE_IMAGE;
-	int SetImage_( lua_State* L, std::string funcName, TYPE_IMAGE typeimg );
+	int SetImage_( lua_State* L, const NrpText& funcName, TYPE_IMAGE typeimg );
 };
 
 }//namespace nrp

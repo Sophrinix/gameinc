@@ -10,23 +10,23 @@ CConfigReader::CConfigReader()
 }
 //////////////////////////////////////////////////////////////////////
 
-CConfigReader::CConfigReader( const char* filename )
+CConfigReader::CConfigReader( const stringw& filename )
 {
     Load( filename );														//инициализируем данные
 																				//из файла
 }
 //////////////////////////////////////////////////////////////////////
 
-CConfigReader::CConfigReader( std::istream& stream )
+CConfigReader::CConfigReader( std::wistream& stream )
 {
     Load( stream );														//из потока
 }
 //////////////////////////////////////////////////////////////////////
 
 //! Loads a config file from a stream.
-bool CConfigReader::Load( std::istream& stream )
+bool CConfigReader::Load( std::wistream& stream )
 {
-    char c;
+    wchar_t c;
     while ( stream.get(c).good() )
     {
         Text += c;
@@ -34,14 +34,14 @@ bool CConfigReader::Load( std::istream& stream )
     
     TextPtr = Text.c_str();
     
-    return ( Text != "" );
+    return ( Text != L"" );
 }
 //////////////////////////////////////////////////////////////////////
 
 //! Loads a config file
-bool CConfigReader::Load( const char* filename ) 
+bool CConfigReader::Load( const stringw& filename ) 
 {
-    std::ifstream stream ( filename, std::ios::in );
+    std::wifstream stream ( filename.c_str(), std::ios::in );
     
     bool success = Load( stream );
     
@@ -78,25 +78,25 @@ bool CConfigReader::Next()
     configValue_ = "";
     configName_ = "";
     
-    const char* &c = TextPtr; // Called 'c' for convenience. It is a reference to TextPtr.
+    const wchar_t* &c = TextPtr; // Called 'c' for convenience. It is a reference to TextPtr.
     
     do  // Do-while-loop takes care of syntax errors.
     {   // Incomplete assignments will cause the loop to start over, while correct syntax will end it after first iteration.
         
         // Find the beginning of an assignment.
-        while ( *c == ' ' || *c == '\n' || *c == '\r' || *c == '\t' || *c == '#' )
+        while ( *c == L' ' || *c == L'\n' || *c == L'\r' || *c == L'\t' || *c == L'#' )
         {
             // Skip whitespace
-            while ( *c == ' ' || *c == '\n' || *c == '\r' || *c == '\t' )
+            while ( *c == L' ' || *c == L'\n' || *c == L'\r' || *c == L'\t' )
             {
                 c++;
             }
             
             // Skip comments
-            if ( *c == '#' )
+            if ( *c == L'#' )
             {
                 // Move to end of line
-                while ( *c != 0 && *c != '\n' && *c != '\r' )
+                while ( *c != 0 && *c != L'\n' && *c != L'\r' )
                     c++;
             }
         }
@@ -106,49 +106,49 @@ bool CConfigReader::Next()
             return false;
         
         // Pick up the name
-        while ( *c != 0 && *c != ' ' && *c != '\t' && *c != '\n' && *c != '\r' && *c != '=' )
+        while ( *c != 0 && *c != L' ' && *c != L'\t' && *c != L'\n' && *c != L'\r' && *c != L'=' )
         {
             configName_ += *c;
             c++;
         }
         
         // Find the equal sign
-        while ( *c != 0 && *c != '=' && *c != '\n' && *c != '\r' )
+        while ( *c != 0 && *c != L'=' && *c != L'\n' && *c != L'\r' )
         {
             c++;
         }
     
         // End of do-while-loop;
         // In case of an incomplete assignment, this will make sure we ignore it and keep moving rather than just return false.
-    } while ( *c == 0 || *c == '\n' || *c == '\r' );
+    } while ( *c == 0 || *c == L'\n' || *c == L'\r' );
     
     // Go past the '=' sign
     c++;
     
     // Skip the whitespace between '=' and the value.
-    while ( *c == ' ' || *c == '\t' )
+    while ( *c == L' ' || *c == L'\t' )
     {
         c++;
     }
     
-    std::string tmp = "";
+    stringw tmp = L"";
     
     // Pick up value
-    while ( *c != 0 && *c != '\n' && *c != '\r' && *c != '#' )  // Stop at end of line, end of file, or beginning of a comment
+    while ( *c != 0 && *c != L'\n' && *c != L'\r' && *c != L'#' )  // Stop at end of line, end of file, or beginning of a comment
     {
-        if ( *c == ' ' || *c == '\t' )
+        if ( *c == L' ' || *c == L'\t' )
         {
-            tmp = "";
+            tmp = L"";
             
             // We don't want trailing spaces, so parse spaces until we know if they should be included or not
-            while ( *c == ' ' || *c == '\t' )
+            while ( *c == L' ' || *c == L'\t' )
             {
                 tmp += *c;
                 c++;
             }
             
             // Did we NOT reach the end of line?
-            if ( *c != 0 && *c != '\n' && *c != '\r' && *c != '#' )
+            if ( *c != 0 && *c != L'\n' && *c != L'\r' && *c != L'#' )
                 configValue_ += tmp; // There is more text, so we include all the whitespace
             
             // Continue parsing, or break if end of line was reached
@@ -163,13 +163,13 @@ bool CConfigReader::Next()
 }
 
 //! Returns the value of the assignment.
-const char* CConfigReader::GetValue() const
+const stringw& CConfigReader::GetValue() const
 {
-    return configValue_.c_str();
+    return configValue_;
 }
 
 //! Returns the name of the variable that has been assigned.
-const char* CConfigReader::GetName() const
+const stringw& CConfigReader::GetName() const
 {
-    return configName_.c_str();
+    return configName_;
 }

@@ -7,6 +7,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAGAMEENGINE( "CLuaGameEngine" );
 
 Luna< CLuaGameEngine >::RegType CLuaGameEngine::methods[] =			//реализуемы методы
 {
@@ -99,13 +100,13 @@ int CLuaGameEngine::SetCodeVolume( lua_State *L )
 
 int CLuaGameEngine::GetName( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetName", NAME, "").c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetName", NAME, "") );
 	return 1;
 }
 
 int CLuaGameEngine::GetTexture( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetTexture", TEXTURENORMAL, "").c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "") );
 	return 1;
 }
 
@@ -115,4 +116,8 @@ int CLuaGameEngine::GetAdvancedTechNumber( lua_State* L )
 	return 1;
 }
 
+const char* CLuaGameEngine::ClassName()
+{
+	return ( CLASS_LUAGAMEENGINE );
+}
 }//namespace nrp

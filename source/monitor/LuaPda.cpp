@@ -5,6 +5,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAPDA( "CLuaPda" );
 
 Luna< CLuaPda >::RegType CLuaPda::methods[] = 
 {
@@ -28,10 +29,10 @@ int CLuaPda::GetMessage( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPda::GetMessage not need parameter");
 
-	std::string ret = "0:0_error";
-	IF_OBJECT_NOT_NULL_THEN ret = object_->Current().GetValue<std::string>( MESSAGE );
+	NrpText ret = "0:0_error";
+	IF_OBJECT_NOT_NULL_THEN ret = const_cast< CPdaItem& >( object_->Current() ).GetString( MESSAGE );
 
-	lua_pushstring( L, ret.c_str() );
+	lua_pushstring( L, ret );
 	return 1;
 }
 
@@ -60,7 +61,7 @@ int CLuaPda::GetTimeStr( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPda::GetMessage not need parameter");
 
-	std::string ret = "0:0_error";
+	NrpText ret = "0:0_error";
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		SYSTEMTIME time = object_->Current().GetValue<SYSTEMTIME>( STARTDATE );
@@ -69,7 +70,7 @@ int CLuaPda::GetTimeStr( lua_State* L )
 		ret = dd;
 	}
 
-	lua_pushstring( L, ret.c_str() );
+	lua_pushstring( L, ret );
 	return 1;
 }
 
@@ -78,18 +79,13 @@ int CLuaPda::AddMessage( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaPda::AddMessage need message, action parameter");
 
-	const char* message = lua_tostring( L, 2 );
-	const char* action = lua_tostring( L, 3 );
-
-	assert( action != NULL && message != NULL );
+	NrpText message = lua_tostring( L, 2 );
+	NrpText action = lua_tostring( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( action != NULL && message != NULL )
-		{
-			SYSTEMTIME time = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
-			object_->AddItem( message, action, time );
-		}
+		SYSTEMTIME time = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
+		object_->AddItem( message, action, time );
 	}
 
 	return 1;
@@ -102,9 +98,10 @@ int CLuaPda::Save( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		std::string saveFile = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
-		saveFile += CNrpApplication::Instance().GetValue<std::string>( PROFILENAME );
+		NrpText saveFile = CNrpApplication::Instance().GetString( SAVEDIR );
+		saveFile += CNrpApplication::Instance().GetString( PROFILENAME );
 		saveFile += "/pda.ini";
+
 		object_->Save( saveFile );
 	}
 
@@ -118,13 +115,18 @@ int CLuaPda::Load( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string saveFile = CNrpApplication::Instance().GetValue<std::string>( SAVEDIR );
-		saveFile += CNrpApplication::Instance().GetValue<std::string>( PROFILENAME );
+		NrpText saveFile = CNrpApplication::Instance().GetString( SAVEDIR );
+		saveFile += CNrpApplication::Instance().GetString( PROFILENAME );
 		saveFile += "/pda.ini";
 		object_->Load( saveFile );
 	}
 
 	return 1;
+}
+
+const char* CLuaPda::ClassName()
+{
+	return ( CLASS_LUAPDA );
 }
 
 }//namespace nrp

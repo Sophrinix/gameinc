@@ -1,13 +1,10 @@
 #pragma once
 #include "nrpConfig.h"
 #include "LuaFunctionality.h"
-#include <vector>
+#include "nrpArrays.h"
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_NRPAPPLICATION( "CNrpApplication" );
-
 OPTION_NAME BANK( "bank" );
 OPTION_NAME PROFILENAME( "profileName" );
 OPTION_NAME PROFILECOMPANY( "profileCompany" );
@@ -34,15 +31,12 @@ OPTION_NAME SYSTEMINI( "systemIni" );
 OPTION_NAME GAME_TIME( "objectGameTime" );
 OPTION_NAME PAUSEBTWSTEP( "pausebtwstep" );
 
-class CNrpCompany;
 class IUser;
 class INrpProject;
 class CNrpGameEngine;
 class CNrpTechnology;
 class CNrpGame;
 class CNrpDiskMachine;
-class CNrpRetailer;
-class CNrpScreenshot;
 class CNrpGameEngine;
 class CNrpInvention;
 class INrpDevelopProject;
@@ -50,56 +44,44 @@ class INrpDevelopProject;
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
 	friend class CNrpGameTime;
-
-	typedef std::vector< IUser* > USER_LIST;
-	typedef std::vector< CNrpTechnology* > TECH_LIST;
-	typedef std::vector< CNrpGame* > GAMES_LIST;
-	typedef std::vector< CNrpRetailer* > RETAILER_LIST;
-	typedef std::vector< CNrpInvention* > INVENTION_LIST;
-	typedef std::vector< CNrpGameEngine* > GAMEENGINES_LIST;
-
-	typedef std::map< std::string, CNrpScreenshot* > SCREENSHOTS_MAP; 
-	typedef std::map< std::string, INrpProject* > PROJECTS_MAP;
-	typedef std::map< std::string, INrpDevelopProject* > DEVPROJECTS_MAP;
 public:
-	typedef std::vector< CNrpCompany* > COMPANIES_LIST;
 	static CNrpApplication& Instance();
 
 	void ResetData();
 
-	void SaveProfile();
-	void LoadProfile( const std::string& profileName, const std::string& companyName );
-	void CreateProfile( const std::string& profileName, const std::string& companyName );
+	void Save();
+	void Load( const NrpText& profileName, const NrpText& companyName );
+	void CreateProfile( const NrpText& profileName, const NrpText& companyName );
 
-	COMPANIES_LIST& GetCompanies();
-	CNrpCompany* GetCompany( std::string companyName ) const;
-	CNrpCompany* GetCompany( int index ) const;
+	COMPANIES& GetCompanies();
+	CNrpCompany* GetCompany( const NrpText& companyName );
+	CNrpCompany* GetCompany( u32 index );
 	int AddCompany( CNrpCompany* company );
 
 	int AddUser( IUser* user );
 	int RemoveUser( IUser* user );
 	void CreateNewFreeUsers();
-	IUser* GetUser( int index ) const;
-	IUser* GetUser( const std::string& name ) const;
+	IUser* GetUser( u32 index );
+	IUser* GetUser( const NrpText& name );
 
 	void AddDevelopProject( INrpDevelopProject* project );
-	void RemoveDevelopProject( const std::string& name );
-	INrpDevelopProject* GetDevelopProject( const std::string& name ) const; 
+	void RemoveDevelopProject( const NrpText& name );
+	INrpDevelopProject* GetDevelopProject( const NrpText& name ); 
 
 	void AddGameEngine( nrp::CNrpGameEngine* ptrEngine );
-	CNrpGameEngine* GetGameEngine( const std::string& name ) const;
+	CNrpGameEngine* GetGameEngine( const NrpText& name );
 	void RemoveGameEngine( nrp::CNrpGameEngine* ptrEngine );
 
-	CNrpGame* GetGame( const std::string& name );
-	CNrpGame* GetGame( size_t index );
+	CNrpGame* GetGame( const NrpText& name );
+	CNrpGame* GetGame( u32 index );
 	void AddGame( CNrpGame* ptrGame );
 
 	void AddProject( nrp::INrpProject* project );
-	INrpProject* GetProject( const std::string& name );
+	INrpProject* GetProject( const NrpText& name );
 
-	int GetTechsNumber() const { return technologies_.size(); }
-	CNrpTechnology* GetTechnology( int index ) const;
-	CNrpTechnology* GetTechnology( const std::string& name ) const;
+	int GetTechsNumber() { return technologies_.size(); }
+	CNrpTechnology* GetTechnology( int index );
+	CNrpTechnology* GetTechnology( const NrpText& name );
 
 	void AddTechnology( CNrpTechnology* ptrTech );
 	void RemoveTechnology( CNrpTechnology* ptrTech );
@@ -107,52 +89,51 @@ public:
 	void UpdateGameRatings( CNrpGame* ptrGame, bool firstTime=false );
 
 	CNrpTechnology* GetBoxAddon( size_t index ) { return index < boxAddons_.size() ? boxAddons_[ index ] : NULL; }
-	CNrpTechnology* GetBoxAddon( const std::string& name );
+	CNrpTechnology* GetBoxAddon( const NrpText& name );
 	bool AddBoxAddon( CNrpTechnology* tech );
 
 	void AddGameToMarket( CNrpGame* game );
 
-	CNrpRetailer* GetRetailer( const std::string& name );
-	void RemoveRetailer( const std::string& name );
+	CNrpRetailer* GetRetailer( const NrpText& name );
+	void RemoveRetailer( const NrpText& name );
 
-	std::string GetFreeInternalName( CNrpGame* game );
-	CNrpScreenshot* GetScreenshot( const std::string& name );
-	void LoadScreenshots( const std::string& fileName );
+	NrpText GetFreeInternalName( CNrpGame* game );
+	CNrpScreenshot* GetScreenshot( const NrpText& name );
+	void LoadScreenshots( const NrpText& fileName );
 	float GetGameGenreInterest( CNrpGame* game );
 
-	void AddInvention( const std::string& startTech, CNrpCompany* parentCompany );
+	void AddInvention( const NrpText& startTech, CNrpCompany* parentCompany );
 	void InventionFinished( CNrpInvention* ptrInvention );
 	void InventionCanceled( CNrpInvention* ptrInvention );
-	CNrpInvention* GetInvention( std::string name, std::string companyName );
-
-	static std::string ClassName() { return CLASS_NRPAPPLICATION; }
+	CNrpInvention* GetInvention( const NrpText& name, const NrpText& companyName );
+	static NrpText ClassName();
 private:
 	CNrpApplication(void);
 	~CNrpApplication(void);
 
-	COMPANIES_LIST companies_;
-	SCREENSHOTS_MAP _screenshots;
-	USER_LIST users_;
-	TECH_LIST technologies_;					//хранит все технологии игрового мира
-	INVENTION_LIST inventions_;
-	TECH_LIST boxAddons_;
-	GAMES_LIST games_;
-	RETAILER_LIST retailers_;
-	GAMEENGINES_LIST engines_;
-	PROJECTS_MAP projects_;
-	DEVPROJECTS_MAP devProjects_;
+	COMPANIES _companies;
+	SCREENSHOTS _screenshots;
+	USERS users_;
+	TECHS technologies_;					//хранит все технологии игрового мира
+	INVENTIONS inventions_;
+	TECHS boxAddons_;
+	GAMES games_;
+	RETAILERS retailers_;
+	ENGINES engines_;
+	PROJECTS _projects;
+	DEVPROJECTS _devProjects;
 
 	void _BeginNewHour();
 	void _BeginNewDay();
 	void _BeginNewMonth();
-	IUser* CreateRandomUser_( std::string userType );
+	IUser* CreateRandomUser_( NrpText userType );
 	void UpdateMarketGames_();
 	int GetFreePlatformNumberForGame_( CNrpGame* game );
-	int GetSalesNumber_( CNrpGame* game, CNrpCompany* cmp );
+	int GetSalesNumber_( CNrpGame* game );
 	void UpdateInvention_();
 
-	void _LoadUsers( const std::string& iniFile );
-	void _InitialyzeSaveDirectories( const std::string& profileName );
+	void _LoadUsers( const NrpText& iniFile );
+	void _InitialyzeSaveDirectories( const NrpText& profileName );
 	void _UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );
 	void _CreateDirectoriesMapForSave();
 };

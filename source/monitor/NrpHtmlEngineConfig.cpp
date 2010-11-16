@@ -5,6 +5,7 @@ static nrp::CNrpHtmlEngineConfig * globalHtmlConfigInstance = 0;
 
 namespace nrp
 {
+CLASS_NAME CLASS_HTMLENGCONFIG( "CNrpHtmlEngineConfig" );
 
 CNrpHtmlEngineConfig::CNrpHtmlEngineConfig(void) : INrpConfig( CLASS_HTMLENGCONFIG, CLASS_HTMLENGCONFIG )
 {
@@ -17,6 +18,11 @@ CNrpHtmlEngineConfig& CNrpHtmlEngineConfig::Instance()
 		globalHtmlConfigInstance = new CNrpHtmlEngineConfig();
 
 	return *globalHtmlConfigInstance;
+}
+
+NrpText CNrpHtmlEngineConfig::ClassName()
+{
+	return CLASS_HTMLENGCONFIG;
 }
 
 }//namespace nrp

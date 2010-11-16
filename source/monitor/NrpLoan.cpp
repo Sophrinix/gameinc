@@ -4,10 +4,12 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LOAN( "CNrpLoan" );
+
 	
-CNrpLoan::CNrpLoan( int id ) : INrpConfig( "CNrpLoan", "" )
+CNrpLoan::CNrpLoan( int id ) : INrpConfig( CLASS_LOAN, "" )
 {
-	CreateValue<std::string>( COMPANYNAME, "" );
+	CreateValue<NrpText>( COMPANYNAME, "" );
 	CreateValue<float>( YEARPERCENT, 0 );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
@@ -22,6 +24,11 @@ CNrpLoan::CNrpLoan( int id ) : INrpConfig( "CNrpLoan", "" )
 
 CNrpLoan::~CNrpLoan(void)
 {
+}
+
+NrpText CNrpLoan::ClassName()
+{
+	return CLASS_LOAN;
 }
 
 }//namespace nrp

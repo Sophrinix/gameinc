@@ -11,8 +11,6 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUACONSOLE( "CLuaConsole" );
-
 class CLuaConsole : public ILuaGuiElement<irr::gui::CNrpConsole>
 {
 public:
@@ -22,7 +20,7 @@ public:
 	int ToggleVisible( lua_State *L );
 	int Draw( lua_State* L );
 
-	static const char* ClassName() { return CLASS_LUACONSOLE.c_str(); }
+	static const char* ClassName();
 };
 
 }//namespace nrp

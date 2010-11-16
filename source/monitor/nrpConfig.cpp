@@ -1,39 +1,35 @@
 #include "stdafx.h"
 #include "nrpConfig.h"
 #include "NrpTranslate.h"
-#include "IUser.h"
-//#include "NrpApplication.h"
-#include "OpFileSystem.h"
 #include "NrpConfigLooder.h"
 
 namespace nrp
 {
 
-void CheckClassesType( const std::string type1, const std::string type2 )
+void CheckClassesType( const NrpText& type1, const NrpText& type2 )
 {
 	if( type1 != type2 ) 
-		Log(HW) << "warning: request type " << type2 << " but native typename is " << type1 << term;
+		Log(HW) << L"warning: request type " << type2 << L" but native typename is " << type1 << term;
 }
 
-void INrpConfig::Load( const std::string& fileName )
+void INrpConfig::Load( const NrpText& fileName )
 {
-	CNrpConfigLooder p = CNrpConfigLooder( this );
+	CNrpConfigLooder p( this );
 	p.Load( fileName );
 }
 
-std::string INrpConfig::Save( const std::string& fileName )
+NrpText INrpConfig::Save( const NrpText& fileName )
 {
-	CNrpConfigLooder p = CNrpConfigLooder( this );
+	CNrpConfigLooder p( this );
 	p.Save( fileName );
 	return fileName;
 }
 
-void INrpConfig::EraseValue( std::string name )
+void INrpConfig::EraseValue( NrpText name )
 {
-	std::transform( name.begin(), name.end(), name.begin(), tolower );
-	PropertyArray::iterator pIter = options_.find( name );
+	PropertyArray::Iterator pIter = _options.find( name.ToLower() );
 
-	if( pIter == options_.end() )
+	if( pIter.atEnd() )
 	{
 #ifdef _DEBUG
 		Log(HW) << "erase: bad config param " << name << term;
@@ -42,8 +38,8 @@ void INrpConfig::EraseValue( std::string name )
 	}
 	else 
 	{
-		delete pIter->second;
-		options_.erase( pIter );
+		delete pIter->getValue();
+		_options.remove( name );
 	}
 }
 

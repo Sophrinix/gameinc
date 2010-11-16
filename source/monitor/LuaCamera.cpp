@@ -8,6 +8,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACAMERA( "CLuaCamera" );
 
 Luna< CLuaCamera >::RegType CLuaCamera::methods[] = 
 {
@@ -199,4 +200,8 @@ int CLuaCamera::AddTerrain( lua_State* L )
 	return 1;
 }
 
+const char* CLuaCamera::ClassName()
+{
+	return ( CLASS_LUACAMERA );
+}
 }

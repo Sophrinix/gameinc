@@ -9,8 +9,7 @@
 #pragma once
 
 #include <irrlicht.h>
-#include <map>
-#include <vector>
+#include "NrpText.h"
 class CImageGUISkin;
 
 namespace irr
@@ -29,7 +28,7 @@ class CNrpGUIEnvironment : public irr::gui::IGUIEnvironment
 public:
 	CNrpGUIEnvironment( gui::IGUIEnvironment* native_gui );
 	~CNrpGUIEnvironment();
-	IGUIComboBox* addComboBox(const core::rect< irr::s32 >& rectangle,
+	IGUIComboBox* addComboBox(const core::recti& rectangle,
 									gui::IGUIElement* parent=0, 
 									s32 id=-1);
 
@@ -146,7 +145,7 @@ public:
 
 	gui::IGUIAnimator* addMoveAnimator( IGUIElement* parent, core::position2di stopPos, u32 step, 
 										bool visibleOnStop, bool removeOnStop, bool removeParentOnStop );
-	gui::IGUIAnimator* addLuaAnimator( IGUIElement* parent, const core::stringc& funcName );
+	gui::IGUIAnimator* addLuaAnimator( IGUIElement* parent, const nrp::NrpText& funcName );
 
 	gui::IGUIAnimator* addTextTimeAnimator( IGUIElement* parent );
 
@@ -245,13 +244,11 @@ public:
 	virtual void readGUIElement(io::IXMLReader* reader, IGUIElement* node);
 	virtual void addToDeletionQueue( IGUIElement* ptrElement );
 	virtual void RemoveAnimators( IGUIElement* elm );
-
-
 private:
 	IGUIEnvironment* _nativeEnv;									//указатель на простую фабрику элементов
-	std::map< std::string, gui::IGUIFont* > fonts_;												//основной шрифт
+	core::map< stringw, gui::IGUIFont* > fonts_;												//основной шрифт
 
-	std::vector< IGUIElement* > deletionQueue_;
+	core::list< IGUIElement* > _deletionQueue;
 
 	IGUIElement* dragObject_;
 	core::position2di dragObjBeginPos_;

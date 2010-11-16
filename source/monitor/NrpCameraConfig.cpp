@@ -8,6 +8,7 @@ static nrp::CNrpCameraConfig * globalCameraConfigInstance = 0;
 
 namespace nrp
 {
+CLASS_NAME CLASS_CAMERACONFIG( "CNrpCameraConfig" );
 
 CNrpCameraConfig::CNrpCameraConfig(void) : INrpConfig( "CNrpCameraConfig", "cameraConfig")
 {
@@ -26,6 +27,10 @@ CNrpCameraConfig& CNrpCameraConfig::Instance()
 	return *globalCameraConfigInstance;
 }
 
+NrpText CNrpCameraConfig::ClassName()
+{
+	return CLASS_CAMERACONFIG;
+}
 /*
 CreateValue<float>( CAMERA_ROTATE_SPEED, Read_<float>( SECTION_NAME, CAMERA_ROTATE_SPEED, 0 ) );
 CreateValue<float>( CAMERA_ZOOM_SPEED, Read_<float>( SECTION_NAME, CAMERA_ZOOM_SPEED, 0 ) );

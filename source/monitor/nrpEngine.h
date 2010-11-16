@@ -3,7 +3,7 @@
 
 #include "INrpObject.h"
 #include <map>
-#include <string>
+
 
 class CNrpAppEventer;
 
@@ -37,7 +37,6 @@ namespace irr
 namespace nrp
 {
 	class INrpConfig;
-	CLASS_NAME CLASS_NRPENGINE( "CNrpEngine" );
 }
 
 class CNrpEngine : public nrp::INrpObject
@@ -65,16 +64,14 @@ public:
 	irr::io::IFileSystem*  GetFileSystem();
 	irr::gui::CNrpConsole* GetConsole() { return console_; }
 	irr::IrrlichtDevice* GetDevice();
+
 	HWND GetWindowHandle() { return windowHandle_; }
-	void AddScene( const std::string& name, const std::string& fileName )
-	{
-		scenes_[ name ] = fileName;
-	}
+	void AddScene( const stringw& name, const stringw& fileName );
 
 	// by d.a, для управления объектами на сцене
 	irr::scene::INrpScene* GetCurrentScene() const;
 
-	static std::string ClassName() { return nrp::CLASS_NRPENGINE; }
+	static NrpText ClassName();
 private:
 	// закрыл конструкторы (синглетон-акцесс)
 	CNrpEngine();
@@ -82,7 +79,7 @@ private:
 	CNrpEngine& operator=(CNrpEngine&); // не реализован
 	
 	void CreateScreenShot_();
-	void ActivateScene_( std::string name );
+	void ActivateScene_( stringw name );
 
 	irr::IrrlichtDevice* device_;											//устройство видео вывода 
 	irr::scene::INrpScene* currentScene_;
@@ -91,12 +88,12 @@ private:
 	bool engine_started_, terminated_;
 	HWND windowHandle_;
 	RUNNING_STATUS run_state_;
-	std::string next_scene_;
+	stringw next_scene_;
 	irr::gui::IGUIEnvironment* guienv_;
 	irr::gui::CNrpConsole* console_;
 
-	std::map< std::string, nrp::INrpConfig* > config_;
-	std::map< std::string, std::string > scenes_;
+	std::map< stringw, nrp::INrpConfig* > config_;
+	std::map< stringw, stringw > scenes_;
 };
 
 #endif /* CNRP_APPLICATION_H_ */

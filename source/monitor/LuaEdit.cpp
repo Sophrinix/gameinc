@@ -9,6 +9,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAEDIT( "CLuaEdit" );
 
 Luna< CLuaEdit >::RegType CLuaEdit::methods[] =			//реализуемы методы
 {
@@ -46,4 +47,8 @@ int CLuaEdit::SetPasswordBox( lua_State* L )
 	return 1;
 }
 
+const char* CLuaEdit::ClassName()
+{
+	return ( CLASS_LUAEDIT );
+}
 }//namespace nrp

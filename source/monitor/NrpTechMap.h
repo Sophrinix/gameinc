@@ -1,7 +1,6 @@
 #pragma once
 
-#include "IGUITable.h"
-#include "irrArray.h"
+#include <irrlicht.h>
 #include "LuaFunctionality.h"
 
 namespace nrp
@@ -23,7 +22,7 @@ class AssignTech
 {
 public:
 
-	AssignTech( AssignTech* parent, nrp::CNrpTechnology* self, const std::string& name )
+	AssignTech( AssignTech* parent, nrp::CNrpTechnology* self, const core::stringw& name )
 	{
 		parent_ = parent;
 		data_ = self;
@@ -35,7 +34,7 @@ public:
 		return parent_;
 	}
 
-	void AddChild( nrp::CNrpTechnology* tech, const std::string& name )
+	void AddChild( nrp::CNrpTechnology* tech, const core::stringw& name )
 	{
 		techs_.push_back( new AssignTech( this, tech, name ) );
 	}
@@ -44,7 +43,7 @@ public:
 	
 	const ATECH_ARRAY& GetChilds() { return techs_; }
 
-	const std::string& GetName() { return name_; }
+	const core::stringw& GetName() { return name_; }
 
 	bool FindTech( nrp::CNrpTechnology* pTech )
 	{
@@ -78,7 +77,7 @@ private:
 	AssignTech* parent_;
 	nrp::CNrpTechnology* data_;
 	core::position2di cell_;
-	std::string name_;
+	core::stringw name_;
 };
 
 class CNrpTechMap : public IGUITable, public ILuaFunctionality
@@ -126,7 +125,7 @@ public:
 
 	//! Get the flags, as defined in EGUI_TABLE_DRAW_FLAGS, which influence the layout
 	virtual s32 getDrawFlags() const;
-	std::string GetSelectedObjectName();
+	core::stringw GetSelectedObjectName();
 	nrp::CNrpTechnology* GetSelectedObject();
 
 	//! Writes attributes of the object.

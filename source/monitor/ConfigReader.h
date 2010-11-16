@@ -1,7 +1,6 @@
 #ifndef _C_CONFIG_READER_H_
 #define _C_CONFIG_READER_H_
 
-#include <string>
 #include <fstream>
 
 namespace irr
@@ -21,18 +20,18 @@ public:
     CConfigReader();
     
     //! Creates a config reader, reading from a file. The reader does not keep the file open, it buffers it all.
-    CConfigReader( const char* filename );
+    CConfigReader( const stringw& filename );
     
     //! Creates a config reader, reading from a stream.
     //! The config reader no longer needs the stream when this constructor returns, so you can safely close it right after.
-    CConfigReader( std::istream& stream );
+    CConfigReader( std::wistream& stream );
     
     //! Loads a config file from a stream. 
     //! The config reader no longer needs the stream when this method returns, so you can safely close it right after.
-    bool Load( std::istream& stream );
+    bool Load( std::wistream& stream );
     
     //! Loads a config file
-    bool Load( const char* filename );
+    bool Load( const stringw& filename );
 
     //! Loads a config file from an irrlicht read file.
     bool Load( io::IReadFile* file );
@@ -41,17 +40,17 @@ public:
     bool Next();
     
     //! Returns the value of the assignment.
-    const char* GetValue() const;
+    const stringw& GetValue() const;
     
     //! Returns the name of the variable that has been assigned.
-    const char* GetName() const;
+    const stringw& GetName() const;
     
 private:
-    std::string Text;
-    const char* TextPtr;    // 'TextPtr' points to a char inside 'Text'.
+    stringw Text;
+    const wchar_t* TextPtr;    // 'TextPtr' points to a char inside 'Text'.
     
-    std::string configValue_;
-    std::string configName_;
+    stringw configValue_;
+    stringw configName_;
 };
 
 #endif

@@ -9,6 +9,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAIMAGE("CLuaImage");
 
 Luna< CLuaImage >::RegType CLuaImage::methods[] =			//реализуемыe методы
 {
@@ -62,5 +63,10 @@ int CLuaImage::SetUseAlphaChannel( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	object_->setUseAlphaChannel( useAlpha );
 
 	return 1;
+}
+
+const char* CLuaImage::ClassName()
+{
+	return ( CLASS_LUAIMAGE );
 }
 }//namespace nrp

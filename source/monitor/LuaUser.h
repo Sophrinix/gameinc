@@ -8,12 +8,12 @@ namespace nrp
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAUSER( "CLuaUser" );
 
 class CLuaUser : public ILuaObject<nrp::IUser>
 {
 public:
 	static Luna<CLuaUser>::RegType methods[];
+	static const char* ClassName();
 
 	CLuaUser(lua_State *L);
 
@@ -36,8 +36,6 @@ public:
 	int Create( lua_State* L );
 	int GetTexture( lua_State* L );
 	int GetRelation( lua_State* L );
-
-	static const char* ClassName() { return CLASS_LUAUSER.c_str(); }
 };
 
 }//namespace nrp

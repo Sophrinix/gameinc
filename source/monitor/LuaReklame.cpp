@@ -8,6 +8,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAREKLAME( "CLuaReklame" );
 
 Luna< CLuaReklame >::RegType CLuaReklame::methods[] =			//реализуемы методы
 {
@@ -91,12 +92,17 @@ int CLuaReklame::SetReklameObject( lua_State* L )
 int CLuaReklame::GetQuality( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetQuality", QUALITY, 0 ) ); return 1; }
 int CLuaReklame::GetLevel( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) ); return 1; }
 int CLuaReklame::GetNumberDay( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetNumberDay", NUMBERDAY, 0 ) ); return 1; }
-int CLuaReklame::GetTypeName( lua_State* L ) { lua_pushstring( L, GetParam_<std::string>( L, "GetTypeName", TECHTYPE, "" ).c_str() ); return 1; }
+int CLuaReklame::GetTypeName( lua_State* L ) { lua_pushstring( L, GetParam_<NrpText>( L, "GetTypeName", TECHTYPE, "" ) ); return 1; }
 int CLuaReklame::SetNumberDay( lua_State* L ) {	SetParam_<int, lua_Integer>( L, "SetNumberDay", NUMBERDAY, lua_tointeger );	return 1; }
-int CLuaReklame::GetTexture( lua_State* L ) { lua_pushstring( L, GetParam_<std::string>( L, "GetTexture", TEXTURENORMAL, "" ).c_str() ); return 1; }
+int CLuaReklame::GetTexture( lua_State* L ) { lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "" ) ); return 1; }
 int CLuaReklame::GetPrice( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetPrice", BALANCE, 0 ) ); return 1; }
 int CLuaReklame::GetDayCost( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetDayCost", DAYCOST, 0 ) );return 1; }
 int CLuaReklame::GetFamous( lua_State* L ) { lua_pushinteger( L, static_cast< int >( GetParam_<float>( L, "GetDayCost", MAXQUALITY, 0 ) * 100 ) ); return 1; }
 int CLuaReklame::SetCompanyName( lua_State* L ) {	SetParam_( L, "SetCompany", COMPANYNAME ); return 1; }
-int CLuaReklame::GetCompanyName( lua_State* L ) { lua_pushstring( L, GetParam_<std::string>( L, "GetCompanyName", COMPANYNAME, "" ).c_str() ); return 1; }
+int CLuaReklame::GetCompanyName( lua_State* L ) { lua_pushstring( L, GetParam_<NrpText>( L, "GetCompanyName", COMPANYNAME, "" ) ); return 1; }
+
+const char* CLuaReklame::ClassName()
+{
+	return ( CLASS_LUAREKLAME );
+}
 }//namespace nrp

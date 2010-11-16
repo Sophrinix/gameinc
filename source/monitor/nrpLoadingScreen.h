@@ -1,4 +1,5 @@
 #pragma once
+#include "NrpText.h"
 class CVideoOptions;
 
 namespace irr
@@ -13,9 +14,9 @@ public:
 	CLoadingScreen( video::IVideoDriver* driver, gui::IGUIFont* font );
 	~CLoadingScreen(void);
 
-	void render( int progress, const core::stringw& text );
+	void render( int progress, const nrp::NrpText& text );
 private:
-	core::stringc background_,
+	nrp::NrpText background_,
 				  loading_bar_,
 				  fillbar_;
 

@@ -2,7 +2,7 @@
 
 #include "nrpMessageSink.h"
 #include "nrpConsoleUtils.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 
 namespace irr
 {

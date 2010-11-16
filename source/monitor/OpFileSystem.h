@@ -1,29 +1,28 @@
 #pragma once
-#include <string>
+#include "NrpText.h"
 
 namespace nrp
 {
-
 class OpFileSystem
 {
 	OpFileSystem(void);
 	~OpFileSystem(void);
 public:
-	static void Remove( const std::string& pathTo );
-	static void Copy( const std::string& pathOld, const std::string& pathNew );
-	static void Move( const std::string& pathOld, const std::string& pathNew );
-	static void CreateDirectorySnapshot( const std::string& directory,
-										 const std::string& saveFile, 
-										 const std::string& templateName,
-										 const std::string& itemName );
-	static std::string CheckEndSlash( std::string pathTo );
+	static void Remove( const NrpText& pathTo );
+	static void Copy( const NrpText& pathOld, const NrpText& pathNew );
+	static void Move( const NrpText& pathOld, const NrpText& pathNew );
+	static void CreateDirectorySnapshot( const NrpText& directory,
+										 const NrpText& saveFile, 
+										 const NrpText& templateName,
+										 const NrpText& itemName );
+	static NrpText CheckEndSlash( NrpText pathTo );
 
-	static void CreateDirectory( std::string pathTo );
-	static bool IsExist( const std::string& pathTo );
-	static bool IsFolder( const std::string& pathTo );
-	static std::string GetExtension( const std::string& pathTo );
-	static std::string UpDir( const std::string& pathTo );
-	static std::string RemoveEndSlash( std::string pathTo );
+	static void CreateDirectory( NrpText pathTo );
+	static bool IsExist( const NrpText& pathTo );
+	static bool IsFolder( const NrpText& pathTo );
+	static NrpText GetExtension( const NrpText& pathTo );
+	static NrpText UpDir( const NrpText& pathTo );
+	static NrpText RemoveEndSlash( NrpText pathTo );
 };
 
 }//end namespace nrp

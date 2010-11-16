@@ -3,19 +3,25 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_REALPLAYER("RealPlayer");
 
-CNrpPlayer::CNrpPlayer( const std::string& name, CNrpCompany* ptrCmp ) : IUser( CLASS_REALPLAYER, name )
+CNrpPlayer::CNrpPlayer( const NrpText& name, CNrpCompany* ptrCmp ) : IUser( CLASS_REALPLAYER, name )
 {
-	SetValue<std::string>( NAME, name );
+	SetString( NAME, name );
 }
 
-CNrpPlayer::CNrpPlayer( const std::string& fileName ) : IUser( CLASS_REALPLAYER, std::string("") )
+CNrpPlayer::CNrpPlayer( const NrpText& fileName ) : IUser( CLASS_REALPLAYER, NrpText("") )
 {
 	Load( fileName );
 }
 
 CNrpPlayer::~CNrpPlayer(void)
 {
+}
+
+NrpText CNrpPlayer::ClassName()
+{
+	return CLASS_REALPLAYER;
 }
 
 }//namespace nrp

@@ -1,7 +1,6 @@
 #pragma once
 #include "nrpChartObject.h"
 #include <vector>
-#include <string>
 
 namespace irr
 {

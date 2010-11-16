@@ -6,13 +6,12 @@
 #include "NrpDevelopGame.h"
 #include "NrpTranslate.h"
 #include "NrpGame.h"
-#include <string>
 
 using namespace nrp;
 
 namespace irr
 {
-	
+
 namespace gui
 {
 
@@ -481,16 +480,13 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 	rectangle.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
-	float percent = tech->GetValue<float>( READYWORKPERCENT );
-	std::wstring name = conv::ToWide( tech->GetString( NAME ) );
-
-	swprintf( tmpstr, 127, L"%s (%d %%)", name.c_str(), (int)(percent * 100) );
 	core::recti progressRect = frameRect;
+	float percent = tech->GetValue<float>( READYWORKPERCENT );
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
 	driver->draw2DRectangle( progressRect, bgColor, bgColor, bgColor, bgColor, &clipRect );
 
-	std::string pathToImage = tech->GetString( TEXTURENORMAL );
-	video::ITexture* txs = driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() );
+	NrpText pathToImage = tech->GetString( TEXTURENORMAL );
+	video::ITexture* txs = driver->getTexture( pathToImage.size() ? pathToImage.c_str() : L"media/particle.bmp"  );
 	if( txs )
 	{
 		f32 koeff = txs ? (rectangle.getHeight() / static_cast< float >( txs->getSize().Height ) ) : 1;
@@ -502,6 +498,10 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 							 core::recti( core::position2di( 0, 0 ), txs->getSize() ), &clipRect );
 	}
 
+
+	NrpText name = tech->GetString( NAME );
+
+	swprintf( tmpstr, 127, L"%s (%d %%)", name.c_str(), (int)(percent * 100) );
 	_font->draw( tmpstr, rectangle, color, false, true, &clipRect );
 }
 
@@ -626,8 +626,8 @@ void CNrpComponentListbox::_DrawAsGame( INrpConfig* devGame, core::recti rectang
 	core::recti progressRect = frameRect;
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
 
-	std::string pathToImage = devGame->GetString( TEXTURENORMAL );
-	driver->draw2DImage( driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() ), 
+	NrpText pathToImage = devGame->GetString( TEXTURENORMAL );
+	driver->draw2DImage( driver->getTexture( pathToImage.size() ? pathToImage.c_str() : L"media/particle.bmp" ), 
 			  			  core::recti( 3, 3, rectangle.getHeight(), rectangle.getHeight() - 6 ) + rectangle.UpperLeftCorner,
 						  core::recti( 0, 0, 128, 128 ) );
 
@@ -641,7 +641,7 @@ void CNrpComponentListbox::_DrawAsGame( INrpConfig* devGame, core::recti rectang
 	famous.LowerRightCorner.X = famous.UpperLeftCorner.X + static_cast< s32 >( famous.getWidth() * devGame->GetValue<float>( FAMOUS ) );
 	driver->draw2DRectangle( 0xff00ff00, famous, &clipRect );
 
-	std::string name = devGame->GetString( NAME );
+	NrpText name = devGame->GetString( NAME );
 	if( devGame->GetValue<float>( READYWORKPERCENT ) < 1 )
 	{
 		name = translate::GetTranslate( "#STR_INDEVELOP" ) + name;
@@ -652,30 +652,28 @@ void CNrpComponentListbox::_DrawAsGame( INrpConfig* devGame, core::recti rectang
 		driver->draw2DRectangle( 0xff0000ff, finished, &clipRect );
 	}
 
-	_font->draw( conv::ToWide( name ).c_str(), frameRect, color, true, true, &clipRect ); 
+	_font->draw( name, frameRect, color, true, true, &clipRect ); 
 }
 
 void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle, 
 									    core::recti frameRect, video::SColor color, 
 									    core::recti& clipRect, video::SColor bgColor )
 {
-	wchar_t tmpstr[ 128 ];
+
 	video::IVideoDriver* driver = Environment->getVideoDriver();
 
 	rectangle.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
 	int expr = user->GetValue<int>( EXPERIENCE );
-	std::wstring name = conv::ToWide( user->GetString( NAME ) );
-
-	swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), expr );
+	NrpText name = user->GetString( NAME );
 	core::recti progressRect = frameRect;
 	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * 1 );
 
 	driver->draw2DRectangle( frameRect, bgColor, bgColor, bgColor, bgColor, &clipRect );
 
-	std::string pathToImage = user->GetValue<std::string>( TEXTURENORMAL );
-	video::ITexture* txs = driver->getTexture( pathToImage.empty() ? "media/particle.bmp" : pathToImage.c_str() );
+	NrpText pathToImage = user->GetString( TEXTURENORMAL );
+	video::ITexture* txs = driver->getTexture( pathToImage.size() ? pathToImage.c_str() : L"media/particle.bmp" );
 	f32 koeff = txs ? (rectangle.getHeight() / static_cast< float >( txs->getSize().Height ) ) : 1;
 	core::dimension2du imSize( static_cast< u32 >( txs->getSize().Width * koeff ),
 							   static_cast< u32 >( txs->getSize().Height * koeff ) );
@@ -684,6 +682,8 @@ void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle,
 		core::recti( core::position2di( 0, 0 ), imSize ) + rectangle.UpperLeftCorner,
 		core::recti( core::position2di( 0, 0 ), txs->getSize() ), &clipRect );
 
+	wchar_t tmpstr[ 128 ];
+	swprintf( tmpstr, 127, L"%s  (%d %%)", name.c_str(), expr );
 	_font->draw( tmpstr, rectangle + core::position2di( rectangle.getHeight() + 6, 0 ), color, false, true, &clipRect ); 
 }
 

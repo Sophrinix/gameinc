@@ -15,6 +15,7 @@
 #include "NrpApplication.h"
 #include "NrpBank.h"
 #include "nrpPlant.h"
+#include "OpFileSystem.h"
 
 using namespace nrp;
 using namespace plugin;
@@ -31,14 +32,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	application.SetValue<PNrpBank>( BANK, &CNrpBank::Instance() );
 
 #ifdef _DEBUG
-	std::string mypath = __argv[ 0 ];
-	mypath = mypath.erase( mypath.rfind( '\\'), 0xff );
-	mypath = mypath.erase( mypath.rfind( '\\')+1, 0xff );
-	application.SetValue<std::string>( WORKDIR, mypath );
+	application.SetString( WORKDIR, OpFileSystem::UpDir( OpFileSystem::UpDir( __argv[ 0 ] ) ) );
 #else
-	std::string mypath = __argv[ 0 ];
-	mypath = mypath.erase( mypath.rfind( '\\')+1, 0xff );
-	application.SetValue<std::string>( WORKDIR, mypath );
+	application.SetValue<stringw>( WORKDIR, OpFileSystem::UpDir( __argv[ 0 ] ) );
 #endif
 
 	CNrpPluginEngine& p_engine = CNrpPluginEngine::Instance();

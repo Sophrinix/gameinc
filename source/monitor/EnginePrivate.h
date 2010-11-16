@@ -8,22 +8,14 @@
 			размещаютс€ и удал€ютс€ из него.
 *********************************************************************/
 #pragma once
-#include <map>
-#include <vector>
 
 namespace nrp
 {
 	class INrpObject;
 }
 
-//*! определение типа карты системное_им€<->указатель на элемент
-typedef std::map< SYSTEM_NAME, nrp::INrpObject* > NrpSystemMap; 
-
 //*! добавление указател€ на объект в массив
 void GInsertObjectToSystemMap( nrp::INrpObject* obj );
 
 //*! удаление указател€ на объект из массива
 void GRemoveObjectFromSystemMap(  nrp::INrpObject* obj );
-
-//*! вывод списка размещенных обхектов
-void GGetListSystemObject( std::vector< std::string >& stringArray );

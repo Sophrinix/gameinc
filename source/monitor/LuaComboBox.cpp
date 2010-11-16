@@ -5,12 +5,13 @@
 #include "LuaComboBox.h"
 #include "nrpEngine.h"
 #include "nrpGUIEnvironment.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 
 using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACOMBOBOX( "CLuaComboBox" );
 
 Luna< CLuaComboBox >::RegType CLuaComboBox::methods[] =			//реализуемы методы
 {
@@ -35,7 +36,7 @@ int CLuaComboBox::SetImage( lua_State *L )							//получает имя файла с текстуро
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 6, 6, "Function CLuaComboBox::setImage need 5 parameter");
 
-	/*std::string texturepath = lua_tostring( L, 6 );
+	/*NrpText texturepath = lua_tostring( L, 6 );
 	core::recti rectangle;
 	rectangle.UpperLeftCorner.X = lua_tointeger( L, 2 );
 	rectangle.UpperLeftCorner.Y = lua_tointeger( L, 3 );
@@ -63,11 +64,10 @@ int CLuaComboBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaComboBox::AddItem need 2 parameter");
 
-	const char* text = lua_tostring( L, 2 );
-	assert( text != NULL );
+	NrpText text( lua_tostring( L, 2 ) );
 	void* object = lua_touserdata( L, 3 );
 	
-	IF_OBJECT_NOT_NULL_THEN	object_->addItem( conv::ToWide( text ).c_str(), (u32)object );			
+	IF_OBJECT_NOT_NULL_THEN	object_->addItem( text.ToWide(), (u32)object );			
 
 	return 1;
 }
@@ -123,5 +123,10 @@ int CLuaComboBox::GetSelectedObject( lua_State *L )
 	lua_pushlightuserdata( L, ptrData );
 
 	return 1;
+}
+
+const char* CLuaComboBox::ClassName()
+{
+	return ( CLASS_LUACOMBOBOX );
 }
 }//namespace nrp

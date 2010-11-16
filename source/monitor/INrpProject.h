@@ -68,9 +68,11 @@ class INrpProject : public INrpConfig
 	INrpProject() : INrpConfig( "error", "error" ) {}
 
 public:
-	INrpProject( const std::string& className, const std::string& systemName);
+	INrpProject( const NrpText& className, const NrpText& systemName);
 
-	virtual std::string Save( const std::string& fileName );
+	virtual NrpText Save( const NrpText& fileName );
+
+	bool Equale( const NrpText& name );
 	~INrpProject(void);
 };
 

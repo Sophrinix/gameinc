@@ -12,7 +12,7 @@ CNrpGuiLuaAnimator::~CNrpGuiLuaAnimator(void)
 {
 }
 
-CNrpGuiLuaAnimator::CNrpGuiLuaAnimator( IGUIEnvironment* environment, IGUIElement* node, const core::stringc& funcName )
+CNrpGuiLuaAnimator::CNrpGuiLuaAnimator( IGUIEnvironment* environment, IGUIElement* node, const NrpText& funcName )
 	: IGUIAnimator( environment, node )
 {
 	funcName_ = funcName;

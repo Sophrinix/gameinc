@@ -1,8 +1,8 @@
 #pragma once
 #include <sstream>
-#include <deque>
+#include <irrList.h>
 #include <windows.h>
-#include "StrConversation.h"
+#include "NrpText.h"
 
 namespace nrp 
 {
@@ -94,9 +94,15 @@ struct Log
 		return *this;
 	}
 
+	template<> Log& operator<< <NrpText>(NrpText t)
+	{
+		Text << t.ToWide();
+		return *this;
+	}
+
 	template<> Log& operator<< <int>(int t)
 	{
-		Text << conv::ToStr(t);
+		Text << NrpText(t);
 		return *this;
 	}
 	// Кто-нибудь знает, зачем переопределять шаблон специально для cch* ?
@@ -123,7 +129,7 @@ struct Log
 	// Устройства(о), на который будет отправлено сообщение
 	int Device;
 	
-	std::stringstream Text;
+	std::wstringstream Text;
 
 	SYSTEMTIME createTime;			//время возникновения сообщения
 };
@@ -154,7 +160,7 @@ private:
 	~Logger();
 	bool ok_;
 	// Динамическая очередь элементов.
-	std::deque<Log> queue_;
+	irr::core::list<Log> queue_;
 	// Критическая секция на добавление (и извлечение) элементов из очереди.
 	CRITICAL_SECTION enqueueCS_;
 	// Ссылка на поток (требуется его сохранение для корректного завершения)

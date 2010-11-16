@@ -7,6 +7,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAPROJECT( "CLuaProject" );
 
 Luna< CLuaProject >::RegType CLuaProject::methods[] =			//реализуемы методы
 {
@@ -18,4 +19,8 @@ Luna< CLuaProject >::RegType CLuaProject::methods[] =			//реализуемы методы
 CLuaProject::CLuaProject(lua_State *L)	: ILuaProject(L, "CLuaProject")							//конструктор
 {}
 
+const char* CLuaProject::ClassName()
+{
+	return ( CLASS_LUAPROJECT );
+}
 }//namespace nrp

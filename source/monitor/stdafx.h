@@ -21,15 +21,17 @@
 
 #include "Logger.h"
 #include "NrpActionType.h"
-#include <irrTypes.h>
+#include "NrpText.h"
 
-typedef std::string SYSTEM_NAME;
-typedef std::string CONFIG_TYPE;
+#include <irrTypes.h>
 
 typedef enum { GRT_GENERAL=0, GRT_VIDEO, 
 			   GRT_SOUND, GRT_ADVFUNC, 
 			   GRT_GENRE, 
 			   GRT_COUNT } GAME_RATING_TYPE;
+
+typedef nrp::NrpText SYSTEM_NAME;
+typedef nrp::NrpText CONFIG_TYPE;
 
 namespace irr
 {
@@ -42,5 +44,3 @@ namespace irr
 }
 
 #define AFTER_LOAD_SCRIPT "AfterLoadAction"
-
-bool operator <(SYSTEMTIME const &t1, SYSTEMTIME const &t2);

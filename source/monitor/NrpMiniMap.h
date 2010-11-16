@@ -22,7 +22,7 @@ public:
 	void draw();
 	bool OnEvent( const SEvent& event );
 	f32  GetAngleOffset() { return offsetAngle_; }
-	void SetOnRotateAction( const core::stringc& funcName )
+	void SetOnRotateAction( const NrpText& funcName )
 	{
 		onRotateAction_ = funcName;
 	}
@@ -35,7 +35,7 @@ private:
 	void SetupQuadMesh_(scene::SMeshBuffer& mesh, const f32 width);
 	f32 CNrpMiniMap::GetCurrentAngle_( const core::position2di& mPos );
 
-	core::stringc onRotateAction_; 
+	NrpText onRotateAction_; 
 };
 
 }//namespace gui

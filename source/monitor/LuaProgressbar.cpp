@@ -10,6 +10,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAPROGRESBAR( "CLuaProgressBar" );
 
 Luna< CLuaProgressBar >::RegType CLuaProgressBar::methods[] =			//реализуемы методы
 {
@@ -68,5 +69,10 @@ int CLuaProgressBar::SetFillImage( lua_State* L )
 	}
 
 	return 1;	
+}
+
+const char* CLuaProgressBar::ClassName()
+{
+	return ( CLASS_LUAPROGRESBAR );
 }
 }//namespace nrp

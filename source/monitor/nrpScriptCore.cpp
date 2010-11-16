@@ -13,7 +13,7 @@
 #include "nrpScriptCore.h"
 #include "nrpTerrainMaterial.h"
 #include "nrpGUIEnvironment.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "nrpScene.h"
 #include "NrpPluginEngine.h"
 #include "NrpApplication.h"
@@ -106,7 +106,7 @@ int SocketClose( lua_State *vm )
 	return 1;
 }
 
-void PrintCmdHelp(std::string cmd, std::string help)
+void PrintCmdHelp(stringw cmd, stringw help)
 {
 	//InfoLog(gfx) << all << "*\t\t" << cmd << term;
 	//InfoLog(gfx) << all << "\t\t\t\t" << help  << term;
@@ -306,10 +306,9 @@ int LoadPlugins( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 1, 1, "Function NrpLoadPlugins need 1 parameter");
 
-	const char* folderName = lua_tostring( vm, 1 );
-	assert( folderName != NULL );
+	NrpText folderName( lua_tostring( vm, 1 ) );
 
-	std::vector< std::string > paths = plugin::CNrpPluginEngine::Instance().FindLibraries( folderName );
+	core::array< NrpText > paths = plugin::CNrpPluginEngine::Instance().FindLibraries( folderName );
 	plugin::CNrpPluginEngine::Instance().RegisterLibraries( paths );
 
 	return 1;
@@ -330,7 +329,7 @@ int ApplicationSave( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 0, 0, "Function ApplicationClose not need any parameter");
 
-	CNrpApplication::Instance().SaveProfile();
+	CNrpApplication::Instance().Save();
 
 	return 1;
 }
@@ -369,16 +368,6 @@ int ApplicationGetTranslate( lua_State* vm )
 
 	lua_pushstring( vm, resultt );
 	return 1;
-}
-
-int ApplicationGetTickCount( lua_State* vm )
-{
-	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 0, 0, "Function GetTickCount not need any parameter");
-
-	lua_pushinteger( vm, GetTickCount() );
-
-	return 1;	
 }
 
 int ApplicationGetSender( lua_State* vm )

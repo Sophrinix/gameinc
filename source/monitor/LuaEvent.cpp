@@ -1,13 +1,13 @@
 #include "StdAfx.h"
-#include <string>
 #include "LuaEvent.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include <IEventReceiver.h>
 
 using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAEVENT( "CLuaEvent" );
 
 Luna< CLuaEvent >::RegType CLuaEvent::methods[] = 
 {
@@ -42,9 +42,9 @@ int CLuaEvent::GetLogText( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaEvent:GetLogText not need any parameter");
 
-	std::string text;
-	IF_OBJECT_NOT_NULL_THEN text = ((Log*)object_->UserEvent.UserData2)->Text.str();
-	lua_pushstring( L, text.c_str() );
+	NrpText text;
+	IF_OBJECT_NOT_NULL_THEN text = ((Log*)object_->UserEvent.UserData2)->Text.str().c_str();
+	lua_pushstring( L, text );
 
 	return 1;
 }
@@ -101,5 +101,10 @@ int CLuaEvent::GetGuiCaller( lua_State* L )
 	lua_pushlightuserdata( L, caller );
 
 	return 1;
+}
+
+const char* CLuaEvent::ClassName()
+{
+	return ( CLASS_LUAEVENT );
 }
 }//namespace nrp

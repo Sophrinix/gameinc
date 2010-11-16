@@ -17,7 +17,7 @@ template< class T > class ILuaProject : public ILuaBaseProject< T >
 {
 public:
 
-	ILuaProject(lua_State *L, std::string luaName) : ILuaBaseProject( L, luaName )
+	ILuaProject(lua_State *L, stringw luaName) : ILuaBaseProject( L, luaName )
 	{
 
 	}
@@ -39,19 +39,19 @@ protected:
 
 	int GetName( lua_State* vm )
 	{
-		lua_pushstring( vm, GetParam_<std::string>( vm, "GetName", NAME, "" ).c_str() );
+		lua_pushstring( vm, GetParam_<NrpText>( vm, "GetName", NAME, "" ) );
 		return 1;
 	}
 
 	int SetName( lua_State* vm )
 	{
 		int argc = lua_gettop(vm);
-		luaL_argcheck(vm, argc == 2, 2, ("Function " + ObjectTypeName() + ":SetName need string parameter").c_str() );
+		luaL_argcheck(vm, argc == 2, 2, _ErrStr(":SetName need string parameter") );
 
 		const char* name = lua_tostring( vm, 2 );
 		assert( name != NULL );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<std::string>( NAME, name );
+		IF_OBJECT_NOT_NULL_THEN	object_->SetString( NAME, name );
 
 		return 1;
 	}

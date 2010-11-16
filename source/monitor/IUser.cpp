@@ -11,6 +11,8 @@
 #include "nrpScript.h"
 #include "NrpRelation.h"
 #include "OpFileSystem.h"
+#include "NrpUserModificator.h"
+#include "timeHelpers.h"
 
 #include <io.h>
 #include <errno.h>
@@ -18,13 +20,16 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_USER( "IUser" );
 
-IUser::IUser(const std::string& className, const std::string& systemName ) : INrpConfig( className, systemName )
+IUser::IUser(const NrpText& className, const NrpText& systemName ) : INrpConfig( className, systemName )
 {
-	CreateValue<std::string>( NAME, systemName );
+	assert( !systemName.size() );
+	CreateValue<NrpText>( NAME, systemName );
 	CreateValue<int>( CODE_SPEED, 0 );
 	CreateValue<int>( CODE_QUALITY, 0 );
 	CreateValue<int>( KNOWLEDGE_LEVEL, 0 );
+	CreateValue<NrpText>( INTERNAL_NAME, systemName );
 	CreateValue<int>( TALANT, 0 );
 	CreateValue<int>( STAMINA, 0 );
 	CreateValue<int>( MOOD, 0 );
@@ -36,12 +41,12 @@ IUser::IUser(const std::string& className, const std::string& systemName ) : INr
 	CreateValue<int>( WANTMONEY, 0 );
 	CreateValue<int>( CONTRACTMONEY, 0 );
 	CreateValue<int>( WORKNUMBER, 0 );
-	CreateValue<std::string>( USERSTATE, "readyToWork" );
-	CreateValue<std::string>( ROOMSTATE, "unknown" );
+	CreateValue<NrpText>( USERSTATE, "readyToWork" );
+	CreateValue<NrpText>( ROOMSTATE, "unknown" );
 	CreateValue<int>( HANGRY, 100 );
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
 	CreateValue<int>( EXPERIENCE, 0 );
-	CreateValue<std::string>( TEXTURENORMAL, "" );
+	CreateValue<NrpText>( TEXTURENORMAL, "" );
 }
 
 IUser::~IUser(void)
@@ -55,7 +60,7 @@ void IUser::SetSkill( int typen, int valuel )
 	CalculateWantSalary_();
 }
 
-void IUser::SetSkill( std::string name, int valuel )
+void IUser::SetSkill( const NrpText& name, int valuel )
 {
 	SetValue<int>( name, valuel );
 
@@ -64,12 +69,12 @@ void IUser::SetSkill( std::string name, int valuel )
 
 void IUser::CalculateWantSalary_()
 {
-	KNOWLEDGE_MAP::iterator pIter = knowledges_.begin();
+	KNOWLEDGE_MAP::Iterator pIter = knowledges_.getIterator();
 	float sum = 0;
 	float cash = 500;
-	for( ; pIter != knowledges_.end(); pIter++)
+	for( ; !pIter.atEnd(); pIter++)
 	{
-		 sum += pIter->second * cash / 100;
+		 sum += pIter->getValue() * cash / 100;
 		 cash *= (cash > 100 ? 0.9f : 1);
 	}
 
@@ -83,10 +88,10 @@ void IUser::CalculateWantSalary_()
 void IUser::CalculateKnowledgeLevel_()
 {
 	int sum = 0;
-	KNOWLEDGE_MAP::iterator pIter = knowledges_.begin();
-	for( ; pIter != knowledges_.end(); pIter++)
+	KNOWLEDGE_MAP::Iterator pIter = knowledges_.getIterator();
+	for( ; !pIter.atEnd(); pIter++)
 	{
-				sum += pIter->second;
+				sum += pIter->getValue();
 				sum /= 2;
 	}
 	
@@ -95,46 +100,47 @@ void IUser::CalculateKnowledgeLevel_()
 
 int IUser::GetSkill( int typen )
 {
-	return knowledges_.find( typen ) != knowledges_.end() ? knowledges_[ typen ] : 0;
+	return knowledges_.find( typen ) != NULL ? knowledges_[ typen ] : 0;
 }
 
-std::string IUser::Save( const std::string& folderPath )
+NrpText IUser::Save( const NrpText& folderPath )
 {
 	try
 	{
 		assert( OpFileSystem::IsExist( folderPath ) );
 
-		std::string fileName = OpFileSystem::CheckEndSlash( folderPath )+ GetString( NAME ) + ".user";
+		NrpText fileName = OpFileSystem::CheckEndSlash( folderPath )+ GetString( NAME ) + ".user";
 		assert( !OpFileSystem::IsExist( fileName ) );
 		
-		KNOWLEDGE_MAP::iterator gnrIter = genrePreferences_.begin();
-		for( ; gnrIter != genrePreferences_.end(); gnrIter++ )
-			IniFile::Write( "genrePreference", conv::ToStr( gnrIter->first ), gnrIter->second, fileName );
+		IniFile sv( fileName );
+
+		KNOWLEDGE_MAP::Iterator gnrIter = genrePreferences_.getIterator();
+		for( ; !gnrIter.atEnd(); gnrIter++ )
+			sv.Set( "genrePreference", gnrIter->getKey(), gnrIter->getValue() );
 		
-		KNOWLEDGE_MAP::iterator gnrExp = genreExperience_.begin();
-		for( ; gnrExp != genreExperience_.end(); gnrExp++ )
-			IniFile::Write( "genreExperience", conv::ToStr( gnrExp->first ), gnrExp->second, fileName );
+		KNOWLEDGE_MAP::Iterator gnrExp = genreExperience_.getIterator();
+		for( ; !gnrExp.atEnd(); gnrExp++ )
+			sv.Set( "genreExperience", gnrExp->getKey(), gnrExp->getValue() );
 
-		KNOWLEDGE_MAP::iterator knIter = knowledges_.begin();
-		for( ; knIter != knowledges_.end(); knIter++ )
-			IniFile::Write( "knowledges", conv::ToStr( knIter->first ), knIter->second, fileName );
+		KNOWLEDGE_MAP::Iterator knIter = knowledges_.getIterator();
+		for( ; !knIter.atEnd(); knIter++ )
+			sv.Set( "knowledges", knIter->getKey(), knIter->getValue() );
 
-		WORK_LIST::iterator tlIter = works_.begin();
-		for( int i=0; tlIter != works_.end(); tlIter++, i++ )
+		for( u32 i=0; i < works_.size(); i++ )
 		{
-			if( CNrpProjectModule* prjModule = dynamic_cast< CNrpProjectModule* >( *tlIter )  )
+			if( CNrpProjectModule* prjModule = dynamic_cast< CNrpProjectModule* >( works_[ i ] )  )
 			{
-				std::string projectName = prjModule->GetValue<INrpProject*>( PARENT )->GetString( NAME );
-				std::string name = prjModule->GetString(NAME);
-				IniFile::Write( SECTION_WORKS, CreateKeyWork( i ), "project", fileName );
-				IniFile::Write( SECTION_WORKS, KEY_PROJECT( i ), projectName, fileName );
-				IniFile::Write( SECTION_WORKS, KEY_MODULE( i ), name, fileName );
+				NrpText projectName = prjModule->GetValue<INrpProject*>( PARENT )->GetString( NAME );
+				NrpText name = prjModule->GetString(NAME);
+				sv.Set( SECTION_WORKS, CreateKeyWork( i ), "project" );
+				sv.Set( SECTION_WORKS, CreateKeyProject( i ), projectName );
+				sv.Set( SECTION_WORKS, CreateKeyModule( i ), name );
 			}
-			else if( CNrpInvention* invention = dynamic_cast< CNrpInvention* >( *tlIter ) )
+			else if( CNrpInvention* invention = dynamic_cast< CNrpInvention* >( works_[ i ] ) )
 			{
-				std::string name = invention->GetString(NAME);
-				IniFile::Write( SECTION_WORKS, CreateKeyWork( i ), "invention", fileName );
-				IniFile::Write( SECTION_WORKS, KEY_INVENTION( i ), name, fileName );
+				NrpText name = invention->GetString(NAME);
+				sv.Set( SECTION_WORKS, CreateKeyWork( i ), "invention" );
+				sv.Set( SECTION_WORKS, CreateKeyInvention( i ), name );
 			}
 		}
 
@@ -148,31 +154,32 @@ std::string IUser::Save( const std::string& folderPath )
 	}
 }
 
-void IUser::Load( const std::string& fileName )
+void IUser::Load( const NrpText& fileName )
 {
 	assert( OpFileSystem::IsExist( fileName ) );
 
 	INrpConfig::Load( fileName );
 	assert( GetString( NAME ).size() > 0 );
 
-	IniFile::ReadValueList_( "knowledges", knowledges_, fileName );
+	IniFile rv( fileName );
+	rv.Get( "knowledges", knowledges_ );
 
 	for( int k=0; k < GetValue<int>( WORKNUMBER ); k++ )
 	{
-		std::string action = "";
-		std::string workType = IniFile::Read( SECTION_WORKS, CreateKeyWork( k ), std::string(""), fileName );
-		if( !workType.empty() )
+		NrpText action = "";
+		NrpText workType = rv.Get( SECTION_WORKS, CreateKeyWork( k ), NrpText("") );
+		if( workType.size() )
 		{
-			if( workType == "project" )
+			if( workType.equals_ignore_case( "project" ) )
 			{
-				std::string projectName = IniFile::Read( SECTION_WORKS, KEY_PROJECT( k ), std::string(""), fileName );	
-				std::string moduleName = IniFile::Read( SECTION_WORKS, KEY_MODULE( k ), std::string(""), fileName );
-				action = "autoscript:AddUserToGameProject(\"" + GetString( NAME ) + "\", \"" + projectName + "\", \"" + moduleName + "\")";
+				NrpText projectName = rv.Get( SECTION_WORKS, CreateKeyProject( k ), NrpText("") );	
+				NrpText moduleName = rv.Get( SECTION_WORKS, CreateKeyModule( k ), NrpText("") );
+				action = NrpText( "autoscript:AddUserToGameProject(\"" ) + GetString( NAME ) + "\", \"" + projectName + "\", \"" + moduleName + "\")";
 			}
-			else if( workType == "invention" )
+			else if( workType.equals_ignore_case( "invention" ) )
 			{
-				std::string inventionName = IniFile::Read( SECTION_WORKS, KEY_INVENTION( k ), std::string(""), fileName );	
-				action = "autoscript:AddUserToInvention(\"" + GetString( NAME ) + "\" , \"" + inventionName + "\")";	
+				NrpText inventionName = rv.Get( SECTION_WORKS, CreateKeyInvention( k ), NrpText("") );	
+				action = NrpText( "autoscript:AddUserToInvention(\"" ) + GetString( NAME ) + "\" , \"" + inventionName + "\")";	
 			}				
 			
 			CNrpScript::Instance().AddActionToTemporaryScript( AFTER_LOAD_SCRIPT, action );
@@ -198,8 +205,8 @@ void IUser::Load( const std::string& fileName )
 		if( prop->GetValueType() == typeid( int ).name() )
 			IniFile::Write( PROPERTIES, paIter->first, ((CNrpProperty<int>*)prop)->GetValue(), fileName );
 
-		if( prop->GetValueType() == typeid( std::string ).name() )
-			IniFile::Write( PROPERTIES, paIter->first, ((CNrpProperty<std::string>*)prop)->GetValue(), fileName );
+		if( prop->GetValueType() == typeid( NrpText ).name() )
+			IniFile::Write( PROPERTIES, paIter->first, ((CNrpProperty<NrpText>*)prop)->GetValue(), fileName );
 	}*/
 }
 
@@ -207,10 +214,10 @@ void IUser::AddWork( IWorkingModule* module, bool toFront )
 {
 	assert( module != NULL );
 
-	if( GetWork( module->GetValue<std::string>( NAME ) ) == NULL )
+	if( GetWork( module->GetValue<NrpText>( NAME ) ) == NULL )
 	{
 		if( toFront )
-			works_.insert( works_.begin(), module );
+			works_.insert( module, 0 );
 		else
 			works_.push_back( module );
 
@@ -226,41 +233,39 @@ void IUser::RemoveWork( IWorkingModule* techWork )
 	if( techWork == NULL )
 		return;
 
-	WORK_LIST::iterator tIter = works_.begin();
-	for( ; tIter != works_.end(); tIter++ )
-		if( (*tIter) == techWork )
+	for( u32 i=0; i < works_.size(); i++ )
+		if( works_[ i ] == techWork )
 		{
-			techWork->RemoveUser( GetValue<std::string>( NAME ) );
-			works_.erase( tIter );
+			techWork->RemoveUser( GetString( NAME ) );
+			works_.erase( i );
 			SetValue<int>( WORKNUMBER, works_.size() );
 			return;
 		}
 		
-	std::string text = "Не могу найти компонент для удаления " + techWork->GetString( NAME );
+	NrpText text = NrpText( "Не могу найти компонент для удаления " ) + techWork->GetString( NAME );
 	Log(HW) << text << term;
 }
 
-IWorkingModule* IUser::GetWork( int index ) const
+IWorkingModule* IUser::GetWork( u32 index ) const
 {
-	assert( index >= 0 && index < (int)works_.size() );
-	return ( index >= 0 && index < (int)works_.size()) ? works_[ index ] : NULL;
+	assert( index < works_.size() );
+	return ( index < works_.size()) ? works_[ index ] : NULL;
 }
 
-IWorkingModule* IUser::GetWork( const std::string& name ) const
+IWorkingModule* IUser::GetWork( const NrpText& name ) const
 {
-	WORK_LIST::const_iterator tIter = works_.begin();
-	for( ; tIter != works_.end(); tIter++ )
-		if( (*tIter)->GetString( NAME ) == name )
-			return (*tIter);
+	for( u32 i=0; i < works_.size(); i++ )
+		if( works_[ i ]->GetString( NAME ) == name )
+			return works_[ i ];
 
 	return NULL;
 }
 
 void IUser::BeginNewHour( const SYSTEMTIME& time )
 {
-	if( time.wHour == 9 && GetString( USERSTATE ) == "readyToWork" )
+	if( time.wHour == 9 && GetString( USERSTATE ).equals_ignore_case( "readyToWork" ) )
 	{
-		SetValue<std::string>( USERSTATE, "work" );
+		SetValue<NrpText>( USERSTATE, "work" );
 	}
 
 	if(	AddValue<int>( HANGRY, -15 ) < 30 )
@@ -275,7 +280,7 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 		SetString( USERSTATE, "readyToWork" );
 	}
 
-	if( GetString( USERSTATE ) == "work" )
+	if( GetString( USERSTATE ).equals_ignore_case( "work" ) )
 	{
 		if( works_.size() > 0 )
 		{
@@ -290,14 +295,14 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 
 int IUser::GetGenreExperience( int typen )
 {
-	KNOWLEDGE_MAP::iterator kIter = genreExperience_.find( typen );
-	return kIter != genreExperience_.end() ? kIter->second : 0;
+	KNOWLEDGE_MAP::Node* kIter = genreExperience_.find( typen );
+	return kIter != NULL ? kIter->getValue() : 0;
 }
 
 int IUser::GetGenrePreferences( int typen )
 {
-	KNOWLEDGE_MAP::iterator kIter = genrePreferences_.find( typen );
-	return kIter != genrePreferences_.end() ? kIter->second : 0;
+	KNOWLEDGE_MAP::Node* kIter = genrePreferences_.find( typen );
+	return kIter != NULL ? kIter->getValue() : 0;
 }
 
 void IUser::SetGenreExperience( int typen, int valuel )
@@ -313,10 +318,10 @@ void IUser::SetGenrePreferences( int typen, int valuel )
 void IUser::RemoveOldModificators_( const SYSTEMTIME& time )
 {
 	for( size_t cnt=0; cnt < modificators_.size(); cnt++ )
-		if( modificators_[ cnt ]->GetTime() < time )
+		if( TimeHelper::TimeCmp( time, modificators_[ cnt ]->GetTime() ) == -1  )
 		{
 			delete modificators_[ cnt ];
-			modificators_.erase( modificators_.begin() + cnt );
+			modificators_.erase( cnt );
 			cnt--;
 		}
 }
@@ -334,10 +339,7 @@ void IUser::AddModificator( IModificator* ptrModificator )
 
 void IUser::IncreaseExperience( int techGroup, int grow )
 {
-	if( genreExperience_.find( techGroup ) != genreExperience_.end() )
-		genreExperience_[ techGroup ] += grow;
-	else 
-		genreExperience_[ techGroup ] = grow;
+	genreExperience_[ techGroup ] = (genreExperience_.find( techGroup ) != NULL ? genreExperience_[ techGroup ] : 0) + grow;
 }
 
 void IUser::CheckModificators_()
@@ -353,12 +355,21 @@ void IUser::CheckModificators_()
 	*/
 }
 
-CNrpRelation* IUser::GetRelation( const std::string& name )
+CNrpRelation* IUser::GetRelation( const NrpText& name )
 {
-	RELATION_MAP::iterator rIter = _relations.find( name );
-	if( rIter == _relations.end() )
+	if( _relations.find( name ) == NULL )
 		_relations[ name ] = new CNrpRelation( name, 0 );
+	
 	return  _relations[ name ];
 }
 
+bool IUser::Equale( const NrpText& name )
+{
+	return GetString( NAME ) == name;
+}
+
+NrpText IUser::ClassName()
+{
+	return CLASS_USER;
+}
 }//namespace nrp

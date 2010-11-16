@@ -4,13 +4,10 @@
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_CAMERACONFIG( "CNrpCameraConfig" );
-
-const std::string CAMERA_ROTATE_SPEED( "rotateSpeed" );
-const std::string CAMERA_ZOOM_SPEED( "zoomSpeed" );
-const std::string CAMERA_TRANSLATION_SPEED( "translationSpeed" );
-const std::string CAMERA_FARVALUE( "farValue" );
+const NrpText CAMERA_ROTATE_SPEED( "rotateSpeed" );
+const NrpText CAMERA_ZOOM_SPEED( "zoomSpeed" );
+const NrpText CAMERA_TRANSLATION_SPEED( "translationSpeed" );
+const NrpText CAMERA_FARVALUE( "farValue" );
 
 class CNrpCameraConfig : public INrpConfig
 {
@@ -18,7 +15,7 @@ private:
 	CNrpCameraConfig();
 	~CNrpCameraConfig(void);
 
-	static std::string ClassName() { return CLASS_CAMERACONFIG; }
+	static NrpText ClassName();
 
 public:
 	static CNrpCameraConfig& Instance();

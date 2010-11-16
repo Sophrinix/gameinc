@@ -5,8 +5,6 @@
 
 class CNrpEngine;
 
-nrp::CLASS_NAME CLASS_EVENTRECEIVER( "CNrpAppEventer" );
-
 class CNrpAppEventer : public irr::IEventReceiver, public nrp::INrpObject
 {
 public:
@@ -14,7 +12,7 @@ public:
 
 	CNrpAppEventer( CNrpEngine* ptr_app );					//конструктор;
 
-	static std::string ClassName() { return CLASS_EVENTRECEIVER; }
+	static nrp::NrpText ClassName();
 private:
 	CNrpEngine* ptr_app_;
 };

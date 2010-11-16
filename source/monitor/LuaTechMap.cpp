@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "LuaTechMap.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "NrpTechMap.h"
 #include <irrlicht.h>
 #include "NrpTechnology.h"
@@ -9,6 +9,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATECHMAP( "CLuaTechMap" );
 
 Luna< CLuaTechMap >::RegType CLuaTechMap::methods[] =			//реализуемы методы
 {
@@ -136,10 +137,10 @@ int CLuaTechMap::GetSelectedObjectName( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObjectName not need parameter");
 
-	std::string name = "";
+	NrpText name;
 	IF_OBJECT_NOT_NULL_THEN name = object_->GetSelectedObjectName();
 
-	lua_pushstring( L, name.c_str() );
+	lua_pushstring( L, name );
 	return 1;
 }
 
@@ -154,4 +155,8 @@ int CLuaTechMap::SetDrawBack( lua_State* L )
 	return 1;
 }
 
+const char* CLuaTechMap::ClassName()
+{
+	return ( CLASS_LUATECHMAP );
+}
 }//namespace nrp

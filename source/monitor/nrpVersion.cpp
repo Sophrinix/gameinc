@@ -7,60 +7,43 @@
 namespace nrp
 {
 
-nrpVersion::nrpVersion() : versionInfoBuf_(0)
+nrpVersion::nrpVersion() : _versionInfoBuf(0)
 {
 	DWORD someHandle = 0;
-	if (size_t sz = GetFileVersionInfoSize(__argv[0], &someHandle))
+	if (size_t sz = GetFileVersionInfoSize( __argv[0], &someHandle))
 	{
-		versionInfoBuf_ = new char[ sz ];
-		if (!GetFileVersionInfo(__argv[0], someHandle, sz, versionInfoBuf_))
+		_versionInfoBuf = new char[ sz ];
+		if (!GetFileVersionInfo(__argv[0], someHandle, sz, _versionInfoBuf))
 		{
 			//ErrLog(gfx) << "Не удалось загрузить информацию о версии ПО" << term;
-			delete [] versionInfoBuf_;
-			versionInfoBuf_ = 0;
+			delete [] _versionInfoBuf;
+			_versionInfoBuf = 0;
 		}
 	}
 }
 
 nrpVersion::~nrpVersion()
 {
-	delete [] versionInfoBuf_;
+	delete [] _versionInfoBuf;
 }
 
-std::wstring nrpVersion::ProductName()
-{
-	if (!versionInfoBuf_)
-		return std::wstring(L"");
+const NrpText& nrpVersion::ProductVersion()
+{	
+	_productVersion = L"";
+	if (!_versionInfoBuf)
+		return _productVersion;
 
 	VS_FIXEDFILEINFO *fileInfo = 0;
 	size_t length = 0;
-	if (VerQueryValue(versionInfoBuf_, "\\", reinterpret_cast<LPVOID*>(&fileInfo), &length))
+	if (VerQueryValue(_versionInfoBuf, "\\", reinterpret_cast<LPVOID*>(&fileInfo), &length))
 	{
 		std::wstringstream stream;
 		stream << HIBYTE(fileInfo->dwFileVersionMS) << "." << LOBYTE(fileInfo->dwFileVersionMS) 
 			<< "." << HIBYTE(fileInfo->dwProductVersionLS) << "." << LOBYTE(fileInfo->dwProductVersionLS);
-		return stream.str();
+
+		_productVersion = stream.str().c_str();
 	}
-	else
-		return std::wstring(L"");
+	
+	return _productVersion;
 }
-
-std::wstring nrpVersion::ProductVersion()
-{
-	if (!versionInfoBuf_)
-		return std::wstring(L"");
-
-	VS_FIXEDFILEINFO *fileInfo = 0;
-	size_t length = 0;
-	if (VerQueryValue(versionInfoBuf_, "\\", reinterpret_cast<LPVOID*>(&fileInfo), &length))
-	{
-		std::wstringstream stream;
-		stream << HIBYTE(fileInfo->dwFileVersionMS) << "." << LOBYTE(fileInfo->dwFileVersionMS) 
-			<< "." << HIBYTE(fileInfo->dwProductVersionLS) << "." << LOBYTE(fileInfo->dwProductVersionLS);
-		return stream.str();
-	}
-	else
-		return std::wstring(L"");
-}
-
 } //namespace nrp

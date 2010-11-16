@@ -12,7 +12,6 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAIMAGE("CLuaImage");
 //! Luа-обертка для работы с CGUIImage
 /*!
 	Параметры комманд даны с lua-синтаксисом,
@@ -38,8 +37,14 @@ public:
 	int SetImage( lua_State *L );
 	int SetScaleImage( lua_State *L );
 	int SetUseAlphaChannel( lua_State* L );
-								
-	static const char* ClassName() { return CLASS_LUAIMAGE.c_str(); }
+	//************************************
+	// Method:    ClassName
+	// FullName:  nrp::CLuaImage::ClassName
+	// Access:    public static 
+	// Returns:   const char*
+	// Qualifier:
+	//************************************
+	static const char* ClassName();							
 };
 
 }//namespace nrp

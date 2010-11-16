@@ -8,6 +8,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUADEVPROJECT( "CLuaDevelopProject" );
 
 Luna< CLuaDevelopProject >::RegType CLuaDevelopProject::methods[] =			//реализуемы методы
 {
@@ -47,5 +48,10 @@ int CLuaDevelopProject::GetFamous( lua_State* L )
 {
 	lua_pushinteger( L, static_cast< int >( GetParam_<float>( L, "GetFamous", FAMOUS, 0 ) * 100 ) );
 	return 1;
+}
+
+const char* CLuaDevelopProject::ClassName()
+{
+	return ( CLASS_LUADEVPROJECT );
 }
 }//namespace nrp

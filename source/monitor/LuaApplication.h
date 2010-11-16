@@ -10,12 +10,12 @@ namespace nrp
 
 namespace nrp
 {
-CLASS_NAME CLASS_CLUAPPLICATION( "CLuaApplication" );
 
 class CLuaApplication : public ILuaProject<nrp::CNrpApplication>
 {
 public:
 	static Luna<CLuaApplication>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaApplication(lua_State *L);		
 
@@ -61,10 +61,8 @@ public:
 
 	int GetPauseBetweenStep( lua_State* L );
 	int SetPauseBetweenStep( lua_State* L );
-
-	static const char* ClassName() { return CLASS_CLUAPPLICATION.c_str(); }
 private:
-	int AddRemLuaFunction_( lua_State* L, std::string funcName, bool rem );
+	int AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool rem );
 };
 
 }//namespace nrp

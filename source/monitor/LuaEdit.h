@@ -13,8 +13,6 @@ namespace irr
 namespace nrp
 {
 
-CLASS_NAME CLASS_LUAEDIT( "CLuaEdit" );
-
 class CLuaEdit : public ILuaGuiElement<irr::gui::IGUIEditBox>
 {
 public:
@@ -24,8 +22,7 @@ public:
 																//нажатии на эту кнопку
 	int SetOverrideColor( lua_State* L );
 	int SetPasswordBox( lua_State* L );
-
-	static const char* ClassName() { return CLASS_LUAEDIT.c_str(); }
+	static const char* ClassName();
 };
 
 }//namespace nrp

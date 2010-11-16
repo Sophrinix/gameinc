@@ -12,17 +12,14 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_LINKBOX( "CLuaLinkBox" );
 
 class CLuaLinkBox : public ILuaGuiElement<irr::gui::CNrpGuiLinkBox>
 {
 public:
 	static Luna<CLuaLinkBox>::RegType methods[];				//методы обертки
-
+	static const char* ClassName();
 	CLuaLinkBox(lua_State *L);		
 																//нажатии на эту кнопку
-	static const char* ClassName() { return CLASS_LINKBOX.c_str(); }
-
 	int AddLuaFunction( lua_State* L );
 	int RemoveLuaFunction( lua_State* L );
 	int SetModuleType( lua_State* L );
@@ -38,7 +35,7 @@ public:
 
 private:
 	typedef enum { TI_IMAGE=0, TI_HOVER, TI_PRESSED } TYPE_IMAGE;
-	int AddRemLuaFunction_( lua_State* L, std::string funcName, bool add );
+	int AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool add );
 };
 
 }//namespace nrp

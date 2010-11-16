@@ -1,11 +1,11 @@
-#pragma once
+#ifndef NRP_USER_H
+#define NRP_USER_H
+
 #include "nrpConfig.h"
-#include "NrpUserModificator.h"
+#include "nrpArrays.h"
 
 namespace nrp
 {
-CLASS_NAME CLASS_USER( "IUser" );
-
 OPTION_NAME CODE_SPEED( "codeSpeed" ); /*< How many string code may write developer in day */
 OPTION_NAME CODE_QUALITY( "codeQuality" );/*< What quality we have on game end.Percent */
 OPTION_NAME KNOWLEDGE_LEVEL( "knowledgeLevel" );/*< Уровень знаний. От этого параметра зависит скорость роста скорости написания кода*/
@@ -40,10 +40,10 @@ class CNrpRelation;
 class IUser : public INrpConfig
 {
 public:
-	IUser(const std::string& className, const std::string& systemName );
+	IUser(const NrpText& className, const NrpText& systemName );
 
 	void SetSkill( int typen, int valuel ); 
-	void SetSkill( std::string name, int valuel );
+	void SetSkill( const NrpText& name, int valuel );
 	int GetSkill( int typen );
 	
 	int GetGenreExperience( int typen );
@@ -55,8 +55,8 @@ public:
 	
 	void AddWork( IWorkingModule* techWork, bool toFront=false );
 
-	IWorkingModule* GetWork( int index ) const;
-	IWorkingModule* GetWork( const std::string& name ) const;
+	IWorkingModule* GetWork( u32 index ) const;
+	IWorkingModule* GetWork( const NrpText& name ) const;
 	void RemoveWork( IWorkingModule* techWork );
 
 	void AddModificator( IModificator* ptrModificator );
@@ -64,13 +64,15 @@ public:
 	void BeginNewHour( const SYSTEMTIME& time );
 	void BeginNewDay( const SYSTEMTIME& time );
 
-	CNrpRelation* GetRelation( const std::string& name );
+	CNrpRelation* GetRelation( const NrpText& name );
 
 	~IUser(void);
-	std::string Save( const std::string& folderPath );
-	void Load( const std::string& fileName );
+	NrpText Save( const NrpText& folderPath );
+	void Load( const NrpText& fileName );
 
-	static std::string ClassName() { return CLASS_USER; }
+	bool Equale( const NrpText& name );
+
+	static NrpText ClassName();
 
 private:         			
 	void CalculateWantSalary_();
@@ -78,20 +80,17 @@ private:
 
 	void RemoveOldModificators_( const SYSTEMTIME& time );
 	void CheckModificators_();
-	typedef std::map< int, int > KNOWLEDGE_MAP;
-	typedef std::vector< IWorkingModule* > WORK_LIST;
-	typedef std::vector< IUserAction* > USERACTION_LIST;
-	typedef std::vector< IModificator* > MODIFICATOR_LIST;
-	typedef std::map< std::string, CNrpRelation* > RELATION_MAP;
 
 	KNOWLEDGE_MAP genrePreferences_; /*< предпочтения в жанре, растут рандомно со временем */
 	KNOWLEDGE_MAP genreExperience_;  /*< опыт написания игр, растет по мере выполнения компонентов */
 	KNOWLEDGE_MAP knowledges_;		/*< уровень знания технологий */
-	WORK_LIST works_;
-	MODIFICATOR_LIST modificators_;
+	WORKS works_;
+	MODIFICATORS modificators_;
 	RELATION_MAP _relations;	
 };
 
 typedef IUser* PUser;
 
 }//namespace nrp
+
+#endif

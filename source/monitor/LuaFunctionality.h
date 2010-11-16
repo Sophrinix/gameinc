@@ -9,9 +9,11 @@
 				и удаление луа-линков, выполнение луа-линков
 *********************************************************************/
 #pragma once
-#include <string>
-#include <vector>
+#include <irrlicht.h>
 #include "nrpScript.h"
+#include "nrpText.h"
+
+using irr::core::list;
 
 class ILuaFunctionality
 {
@@ -19,23 +21,23 @@ protected:
 	typedef struct SFunctionLink
 	{ 
 		int actionType;
-		std::string funcName;
+		nrp::NrpText funcName;
 
-		SFunctionLink( int aType, const std::string& fName )
+		SFunctionLink( int aType, const nrp::NrpText& fName )
 		{
 			actionType = aType;
 			funcName = fName;
 		}
 	} *PFunctionLink;
 
-	typedef std::vector< PFunctionLink > FunctionArray;
+	typedef list< PFunctionLink > FunctionArray;
 	FunctionArray luaFunctions_;
 
 public:
 	ILuaFunctionality(void) {};
 	virtual	~ILuaFunctionality(void) 
 	{
-		FunctionArray::iterator& pIter = luaFunctions_.begin();
+		FunctionArray::Iterator& pIter = luaFunctions_.begin();
 
 		if( pIter != luaFunctions_.end() )
 		{
@@ -47,9 +49,9 @@ public:
 	};
 
 
-	FunctionArray::iterator FindLuaFunction( const int actionType, const std::string& funcName )
+	FunctionArray::Iterator FindLuaFunction( const int actionType, const nrp::NrpText& funcName )
 	{
-		FunctionArray::iterator pIter = luaFunctions_.begin();
+		FunctionArray::Iterator pIter = luaFunctions_.begin();
 
 		for(; pIter != luaFunctions_.end(); pIter++ )				//пробежимся по списку подключенных функций
 		{
@@ -63,7 +65,7 @@ public:
 	/*
 	Добавление пользовательской функции 
 	*/
-	virtual void AddLuaFunction( const int actionType, const std::string& funcName ) 
+	virtual void AddLuaFunction( const int actionType, const nrp::NrpText& funcName ) 
 	{
 		assert( actionType != 0 );
 		if( FindLuaFunction(actionType, funcName) != luaFunctions_.end() )
@@ -75,9 +77,9 @@ public:
 	/*
 	Удаление пользовательской функции из списка
 	*/
-	virtual void RemoveLuaFunction( const int actionType, const std::string& funcName ) 
+	virtual void RemoveLuaFunction( const int actionType, const nrp::NrpText& funcName ) 
 	{
-		FunctionArray::iterator& pIter = FindLuaFunction( actionType, funcName );
+		FunctionArray::Iterator& pIter = FindLuaFunction( actionType, funcName );
 
 		if( pIter != luaFunctions_.end() )
 		{
@@ -91,27 +93,23 @@ public:
 	{
 		try
 		{
-			for( size_t cnt=0; cnt < luaFunctions_.size(); cnt++ )
+			for( FunctionArray::Iterator pIter=luaFunctions_.begin(); 
+				 pIter != luaFunctions_.end(); pIter++ )
 			{
-				PFunctionLink pLink = luaFunctions_[ cnt ];
-				if( pLink->actionType == funcType )
+				if( (*pIter)->actionType == funcType )
 				{
 					nrp::CNrpScript::Instance().SetSender( (void*)param );
-					const char* tmp = pLink->funcName.c_str();
+					const wchar_t* tmp = (*pIter)->funcName.ToWide();
 
-					if( *tmp == '.' && *(tmp+1) == '/')
+					if( *tmp == L'.' && *(tmp+1) == L'/')
 						nrp::CNrpScript::Instance().DoString( tmp+2 );
 					else
 						nrp::CNrpScript::Instance().CallFunction( tmp, (void*)param );
 
 				}
 			}
-
 		}
 		catch(...)
-		{
-
-		}
+		{}
 	}
-
 };

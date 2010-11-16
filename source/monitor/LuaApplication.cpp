@@ -19,6 +19,7 @@
 #include "LuaPda.h"
 #include "LuaGame.h"
 #include "OpFileSystem.h"
+#include "IniFile.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -27,6 +28,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_CLUAPPLICATION( "CLuaApplication" );
 
 Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы методы
 {
@@ -120,10 +122,10 @@ int CLuaApplication::GetPlayerCompany( lua_State* L )
 	return 1;
 }
 
-int CLuaApplication::AddRemLuaFunction_( lua_State* L, std::string funcName,  bool rem )
+int CLuaApplication::AddRemLuaFunction_( lua_State* L, const NrpText& funcName,  bool rem )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, ("Function CLuaApplication:" + funcName + " need string parameter").c_str() );
+	luaL_argcheck(L, argc == 3, 3, _ErrStr(funcName + " need string parameter") );
 
 	int typea = lua_tointeger( L, 2 );
 	const char* fName = lua_tostring( L, 3 );
@@ -136,7 +138,7 @@ int CLuaApplication::AddRemLuaFunction_( lua_State* L, std::string funcName,  bo
 	}
 
 #ifdef _DEBUG
-	Log(HW) << "Object:" << std::string(rem ? "remove" : "added") << (int)object_ << fName << term;
+	Log(HW) << "Object:" << NrpText(rem ? "remove" : "added") << (int)object_ << fName << term;
 #endif
 
 	return 1;
@@ -174,8 +176,7 @@ int CLuaApplication::GetTech( lua_State* L )
 		}
 		else if( lua_isstring( L, 2 ) > 0 )
 		{
-			const char* name = lua_tostring( L, 2 );
-			assert( name != NULL );
+			NrpText name( lua_tostring( L, 2 ) );
 			tech = object_->GetTechnology( name );	
 		}
 	}
@@ -234,7 +235,7 @@ int CLuaApplication::GetUserByName( lua_State* L )
 		for( int k = 0; k < userNum; k++ )
 		{
 			IUser* ptrUser = object_->GetUser( k );
-			if( ptrUser->GetValue<std::string>( NAME ) == std::string( userName ) )
+			if( ptrUser->GetString( NAME ).equals_ignore_case( userName ) )
 			{
 				user = ptrUser;
 				break;
@@ -260,13 +261,13 @@ int CLuaApplication::RemoveUser( lua_State* L )
 
 int CLuaApplication::GetCurrentProfile( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetCurrentProfile", PROFILENAME, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetCurrentProfile", PROFILENAME, "" ) );
 	return 1;
 }
 
 int CLuaApplication::GetCurrentProfileCompany( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetCurrentProfileCompany", PROFILECOMPANY, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetCurrentProfileCompany", PROFILECOMPANY, "" ) );
 	return 1;
 }
 
@@ -275,10 +276,8 @@ int CLuaApplication::CreateProfile( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaApplication:CreateProfile need string,string parameters" );
 
-	const char* userName = lua_tostring( L, 2 );
-	assert( userName != NULL );
-	const char* companyName = lua_tostring( L, 3 );
-	assert( companyName != NULL );
+	NrpText userName( lua_tostring( L, 2 ) );
+	NrpText companyName( lua_tostring( L, 3 ) );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->CreateProfile( userName, companyName );
 	return 1;	
@@ -298,12 +297,10 @@ int CLuaApplication::LoadProfile( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaApplication:LoadProfile need string,string parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
-	const char* company = lua_tostring( L, 3 );
-	assert( company != NULL );
+	NrpText name( lua_tostring( L, 2 ) );
+	NrpText company( lua_tostring( L, 3 ) );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->LoadProfile( name, company );
+	IF_OBJECT_NOT_NULL_THEN	object_->Load( name, company );
 
 	return 1;	
 }
@@ -351,8 +348,7 @@ int CLuaApplication::GetCompanyByName( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetUser need string parameter" );
 
-	const char* cmpName = lua_tostring( L, 2 );
-	assert( cmpName != NULL );
+	NrpText cmpName( lua_tostring( L, 2 ) );
 	CNrpCompany* ptrCompany = NULL;
 
 	IF_OBJECT_NOT_NULL_THEN	ptrCompany = object_->GetCompany( cmpName );
@@ -395,8 +391,7 @@ int CLuaApplication::LoadGameBoxAddon( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadGameBoxAddon need string parameter" );
 
-	const char* techIniFile = lua_tostring( L, 2 );
-	assert( techIniFile != NULL );
+	NrpText techIniFile( lua_tostring( L, 2 ) );
 
 	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN
@@ -427,14 +422,14 @@ int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadGameTimeFromProfile need profileName parameter" );
 
-	const char* profileName = lua_tostring( L, 2 );
-	assert( profileName != NULL );
+	NrpText profileName( lua_tostring( L, 2 ));
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		std::string pathToFile = object_->GetValue<std::string>( SAVEDIR ) + profileName + "/profile.ini";
+		NrpText pathToFile = object_->GetString( SAVEDIR ) + profileName + "/profile.ini";
 		
-		object_->SetValue<SYSTEMTIME>( CURRENTTIME, IniFile::Read( SECTION_PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME(), pathToFile ) );
+		IniFile rv( pathToFile );
+		object_->SetValue<SYSTEMTIME>( CURRENTTIME, rv.Get( SECTION_PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME() ) );
 	}
 
 	return 1;	
@@ -445,12 +440,13 @@ int CLuaApplication::LoadBoxAddonsPrice( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:LoadBoxAddonsPrice not need any parameter" );
 
-	std::string boxAddonsIni = object_->GetValue<std::string>( SAVEDIR ) + 
-								object_->GetValue<std::string>(PROFILENAME)+ "/boxaddons.ini";
+	NrpText boxAddonsIni = object_->GetString( SAVEDIR ) + object_->GetString(PROFILENAME)+ "/boxaddons.ini";
+	IniFile rv( boxAddonsIni );
+
 	for( int k=0; k < object_->GetValue<int>( BOXADDONNUMBER ); k++ )
 	{
 		CNrpTechnology* tech = object_->GetBoxAddon( k );
-		float price = IniFile::Read( "prices", tech->GetValue<std::string>( NAME ), tech->GetValue<float>( PRICE ), boxAddonsIni );
+		float price = rv.Get( "prices", tech->GetString( NAME ), tech->GetValue<float>( PRICE ) );
 		tech->SetValue( PRICE, price );
 	}
 
@@ -462,12 +458,12 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:SaveBoxAddonsPrice not need any parameter" );
 
-	std::string boxAddonsIni = object_->GetValue<std::string>( SAVEDIR ) +
-								object_->GetValue<std::string>(PROFILENAME)+ "/boxaddons.ini";
+	NrpText boxAddonsIni = object_->GetString( SAVEDIR ) + object_->GetString(PROFILENAME)+ "/boxaddons.ini";
+	IniFile sv( boxAddonsIni );
 	for( int k=0; k < object_->GetValue<int>( BOXADDONNUMBER ); k++ )
 	{
 		CNrpTechnology* tech = object_->GetBoxAddon( k );
-		IniFile::Write( "prices", tech->GetValue<std::string>( NAME ), tech->GetValue<float>( PRICE ), boxAddonsIni );
+		sv.Set( "prices", tech->GetString( NAME ), tech->GetValue<float>( PRICE ) );
 	}
 
 	return 1;
@@ -522,9 +518,8 @@ int CLuaApplication::LoadScreenshots( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadScreenshots need string parameter" );
 
-	const char* imageListName = lua_tostring( L, 2 );
-	assert( imageListName != NULL );
-	if( imageListName == NULL )
+	NrpText imageListName( lua_tostring( L, 2 ) );
+	if( !imageListName.size() )
 		return 1;
 
 	IF_OBJECT_NOT_NULL_THEN object_->LoadScreenshots( imageListName );
@@ -554,15 +549,11 @@ int CLuaApplication::GetInvention( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaApplication:GetInvention need invention name, company name parameters" );
 
-	const char* inventionName = lua_tostring( L, 2 );
-	const char* companyName = lua_tostring( L, 3 );
+	NrpText inventionName( lua_tostring( L, 2 ) );
+	NrpText companyName( lua_tostring( L, 3 ) );
 	CNrpInvention* inv = NULL;
 
-	assert( inventionName != NULL && companyName != NULL );
-	if( inventionName != NULL && companyName != NULL )
-	{
-		IF_OBJECT_NOT_NULL_THEN inv = object_->GetInvention( inventionName, companyName );
-	}
+	IF_OBJECT_NOT_NULL_THEN inv = object_->GetInvention( inventionName, companyName );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, inv );
@@ -575,18 +566,12 @@ int CLuaApplication::CreateDirectorySnapshot( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 5, 5, "Function CLuaApplication:CreateDirectorySnapshot need directory, saveFile, itemName, itemTemplate in parameters" );
 
-	const char* directory = lua_tostring( L, 2 );
-	const char* saveFile = lua_tostring( L, 3 );
-	const char* itemTemplate  = lua_tostring( L, 4 );
-	const char* itemName = lua_tostring( L, 5 );
+	NrpText directory( lua_tostring( L, 2 ) );
+	NrpText saveFile( lua_tostring( L, 3 ) );
+	NrpText itemTemplate( lua_tostring( L, 4 ) );
+	NrpText itemName( lua_tostring( L, 5 ) );
 
-	assert( directory != NULL && saveFile != NULL && itemName != NULL && itemTemplate != NULL );
-	if( directory != NULL && saveFile != NULL && 
-		itemName != NULL && itemTemplate != NULL )
-	{
-		OpFileSystem::CreateDirectorySnapshot( directory, saveFile, itemTemplate, itemName );
-	}
-
+	OpFileSystem::CreateDirectorySnapshot( directory, saveFile, itemTemplate, itemName );
 	return 1;
 }
 
@@ -631,5 +616,10 @@ int CLuaApplication::SetPauseBetweenStep( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( PAUSEBTWSTEP, pause );
 
 	return 1;	
+}
+
+const char* CLuaApplication::ClassName()
+{
+	return ( CLASS_CLUAPPLICATION );
 }
 }//namespace nrp  

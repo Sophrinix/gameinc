@@ -25,7 +25,7 @@ public:
 	virtual void OnUpdate() = 0;
 	virtual void OnEnter() = 0;
 	virtual void OnLeave() = 0;
-	virtual void SetOption( const core::stringc& name, bool amount ) = 0; 
+	virtual void SetOption( const nrp::NrpText& name, bool amount ) = 0; 
 	virtual scene::ISceneNode* GetSelectedNode() = 0;
 	virtual void SetSelectedNode( scene::ISceneNode* node ) {}
 	virtual core::vector3df GetCurrentWorldPosition() = 0;

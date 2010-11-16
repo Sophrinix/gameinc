@@ -13,7 +13,7 @@ CNrpTimer::~CNrpTimer(void)
 {
 }
 
-CNrpTimer::CNrpTimer( IGUIEnvironment* environment, IGUIElement* node, size_t time, core::stringc action )
+CNrpTimer::CNrpTimer( IGUIEnvironment* environment, IGUIElement* node, size_t time, const NrpText& action )
 	: IGUIAnimator( environment, node )
 {
 	_time = time > 0 ? time : 0;

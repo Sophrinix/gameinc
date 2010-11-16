@@ -3,9 +3,6 @@
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_DISKMACHINE( "CNrpDiskMachine" );
-
 OPTION_NAME DISKPERHOUR( "diskPerHour" );
 OPTION_NAME PRICEPERHOUR( "pricePerHour" );
 OPTION_NAME DISCOUNT( "discount" );
@@ -20,10 +17,10 @@ public:
 	CNrpDiskMachine(void);
 	~CNrpDiskMachine(void);
 
-	void Load( const std::string& fileName );
-	void AddProducedDisk( const std::string& companyName, int valuel );
+	void Load( const NrpText& fileName );
+	void AddProducedDisk( const NrpText& companyName, int valuel );
 
-	static std::string ClassName() { return CLASS_DISKMACHINE; }
+	static NrpText ClassName();
 };
 
 typedef CNrpDiskMachine* PNrpDiskMachine;

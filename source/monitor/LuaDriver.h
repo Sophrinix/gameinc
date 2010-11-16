@@ -12,8 +12,6 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUADRIVER( "CLuaDriver" );
-
 //! Lua-обертка для работы с видеодрайвером
 /*!
 	Параметры комманд даны с lua-синтаксисом,
@@ -23,6 +21,7 @@ class CLuaDriver : public ILuaObject<irr::video::IVideoDriver>
 {
 public:
 	static Luna<CLuaDriver>::RegType methods[];
+	static const char* ClassName();
 
 	//! Конструктор
 	/*!
@@ -56,8 +55,6 @@ public:
 	int AddRenderTargetTexture( lua_State* L );
 
 	int SetRenderTarget( lua_State* L );
-
-	static const char* ClassName() { return CLASS_LUADRIVER.c_str(); }
 };
 
 }//namespace nrp

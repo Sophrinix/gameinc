@@ -78,8 +78,6 @@ extern "C"
 
 	int ApplicationGetSender( lua_State* vm );
 
-	int ApplicationGetTickCount( lua_State* vm );
-
 	// типа справка
 	int Help(lua_State *vm);
 };

@@ -9,6 +9,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUALABEL( "CLuaLabel" );
 
 Luna< CLuaLabel >::RegType CLuaLabel::methods[] =			//реализуемы методы
 {
@@ -65,5 +66,10 @@ int CLuaLabel::SetTextAlignment( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	object_->setTextAlignment( gui::EGUI_ALIGNMENT(hAl), gui::EGUI_ALIGNMENT(vAl) );
 
 	return 1;
+}
+
+const char* CLuaLabel::ClassName()
+{
+	return ( CLASS_LUALABEL );
 }
 }//namespace nrp

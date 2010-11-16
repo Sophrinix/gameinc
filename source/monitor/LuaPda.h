@@ -3,14 +3,13 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAPDA( "CLuaPda" );
-
 class CNrpPda;
 
 class CLuaPda : public ILuaObject<CNrpPda>
 {
 public:
 	static Luna<CLuaPda>::RegType methods[];
+	static const char* ClassName();
 
 	CLuaPda(lua_State *L);
 	int GetMessage( lua_State* L );
@@ -20,8 +19,6 @@ public:
 	int AddMessage( lua_State* L );
 	int Save( lua_State* L );
 	int Load( lua_State* L );
-
-	static const char* ClassName() { return CLASS_LUAPDA.c_str(); }
 };
 
 }//namespace nrp

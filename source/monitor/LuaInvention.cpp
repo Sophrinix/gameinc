@@ -12,6 +12,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAINVENTION( "CLuaInvention" );
 
 Luna< CLuaInvention >::RegType CLuaInvention::methods[] =			//реализуемы методы
 {
@@ -98,7 +99,7 @@ int CLuaInvention::Load( lua_State* L )
 
 int CLuaInvention::GetTexture( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetTexture", TEXTURENORMAL, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "" ) );
 	return 1;
 }
 
@@ -110,7 +111,7 @@ int CLuaInvention::GetStatus( lua_State* L )
 
 int CLuaInvention::GetDescriptionLink( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetDescriptionLink", DESCRIPTIONPATH, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetDescriptionLink", DESCRIPTIONPATH, "" ) );
 	return 1;
 }
 
@@ -233,7 +234,7 @@ int CLuaInvention::GetCompany( lua_State* L )
 
 int CLuaInvention::GetInternalName( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetInternalName", INTERNAL_NAME, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetInternalName", INTERNAL_NAME, "" ) );
 	return 1;
 }
 
@@ -253,4 +254,8 @@ int CLuaInvention::ClearMonthPay( lua_State* L )
 	return 1;
 }
 
+const char* CLuaInvention::ClassName()
+{
+	return ( CLASS_LUAINVENTION );
+}
 }//namespace nrp

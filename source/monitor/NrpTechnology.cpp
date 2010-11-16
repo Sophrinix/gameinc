@@ -12,51 +12,57 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_TECHNOLOGY( "CNrpTechnology" );
 
-CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen, CLASS_NAME className ) : INrpProject( className, "" )
+CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen, const CLASS_NAME& className ) : INrpProject( className.size() ? className : CLASS_TECHNOLOGY, "" )
 {
-	InitializeOptions_();
+	assert( className.size() );
+	_InitializeOptions();
 
 	SetValue<int>( TECHGROUP, typen );
 }
 
 CNrpTechnology::CNrpTechnology( CNrpInvention* invention ) : INrpProject( CLASS_TECHNOLOGY, "" )
 {
-	InitializeOptions_();
+	_InitializeOptions();
 
 	SetValue<TECH_STATUS>( STATUS, TS_READY );
-	Load( invention->GetValue<std::string>( BASEFILE ) );
+	Load( invention->GetString( BASEFILE ) );
 	SetValue<PNrpCompany>( PARENTCOMPANY, invention->GetValue<PNrpCompany>( PARENTCOMPANY ) );
 	SetValue<SYSTEMTIME>( STARTDATE, invention->GetValue<SYSTEMTIME>( ENDDATE ) );
 }
 
-CNrpTechnology::CNrpTechnology( const std::string& fileTech ) : INrpProject( CLASS_TECHNOLOGY, "" )
+CNrpTechnology::CNrpTechnology( const NrpText& fileTech ) : INrpProject( CLASS_TECHNOLOGY, "" )
 {
-	InitializeOptions_();
+	_InitializeOptions();
 
 	Load( fileTech );
 }
 
-void CNrpTechnology::InitializeOptions_()
+CNrpTechnology::CNrpTechnology( const CNrpTechnology& p ) : INrpProject( CLASS_TECHNOLOGY, "" )
 {
-	CreateValue<std::string>( NAME, "" );
-	CreateValue<std::string>( INTERNAL_NAME, "" );
+
+}
+void CNrpTechnology::_InitializeOptions()
+{
+	CreateValue<NrpText>( NAME, "" );
+	CreateValue<NrpText>( INTERNAL_NAME, "" );
 	CreateValue<int>( TECHGROUP, 0 );
 	CreateValue<int>( TECHTYPE, 0 );
 	CreateValue<float>( BASE_CODE, 0 );
 	CreateValue<float>( ENGINE_CODE, 0 );
 	CreateValue<int>( LEVEL, 0 );
-	CreateValue<std::string>( COMPANYNAME, "" );
+	CreateValue<NrpText>( COMPANYNAME, "" );
 	CreateValue<int>( QUALITY, 100 );
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
-	CreateValue<std::string>( PARENT, "" );
-	CreateValue<std::string>( BASEFILE, "" );
+	CreateValue<NrpText>( PARENT, "" );
+	CreateValue<NrpText>( BASEFILE, "" );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
 	CreateValue<float>( PRICE, 0 );
-	CreateValue<std::string>( TEXTURENORMAL, "" );
-	CreateValue<std::string>( TEXTUREHOVER, "" );
-	CreateValue<std::string>( DESCRIPTIONPATH, "" );
+	CreateValue<NrpText>( TEXTURENORMAL, "" );
+	CreateValue<NrpText>( TEXTUREHOVER, "" );
+	CreateValue<NrpText>( DESCRIPTIONPATH, "" );
 	CreateValue<float>( INTEREST, 1 );
 	CreateValue<TECH_STATUS>( STATUS, TS_UNKNOWN );
 
@@ -70,57 +76,52 @@ CNrpTechnology::~CNrpTechnology(void)
 
 void CNrpTechnology::SetEngineTechRequire( int tech_type, int valuel )
 {
-	techRequires_[ tech_type ] = valuel;
+	_techRequires[ tech_type ] = valuel;
 }
 
 void CNrpTechnology::SetEmployerSkillRequire( int skill_type, int valuel )
 {
-	skillRequires_[ skill_type ] = valuel;
+	_skillRequires[ skill_type ] = valuel;
 }
 
 int CNrpTechnology::GetEngineTechRequire( int tech_type )
 {
-	if( techRequires_.find( tech_type ) == techRequires_.end() )
-		return 0;
-
-	return techRequires_[ tech_type ];
+	REQUIRE_MAP::Node* node = _techRequires.find( tech_type );
+	return node ? node->getValue() : 0;
 }
 
 int CNrpTechnology::GetEployerSkillRequire( int skil_require )
 {
-	if( skillRequires_.find( skil_require ) == skillRequires_.end() )
-		return 0;
-
-	return skillRequires_[ skil_require ];
+	REQUIRE_MAP::Node* node = _skillRequires.find( skil_require );
+	return node ? node->getValue() : 0;
 }
 
-std::string CNrpTechnology::Save( const std::string& saveFolder )
+NrpText CNrpTechnology::Save( const NrpText& saveFolder )
 {
 	OpFileSystem::CreateDirectory( saveFolder );
 
-	std::string fileName = saveFolder + GetValue<std::string>( INTERNAL_NAME ) + ".tech";
+	NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + GetString( INTERNAL_NAME ) + ".tech";
 	//не должно быть файла с такимже именем в директории
 	assert( !OpFileSystem::IsExist( fileName ) );
 
-	INrpProject::Save( fileName );
-	SaveRequires_( fileName );
+	IniFile sv( fileName );
+	sv.Set( SECTION_FUTURE_TECH, CreateKeyTech, _futureTech );
+	sv.Set( SECTION_REQUIRE_TECH, _techRequires );
+	sv.Set( SECTION_REQUIRE_SKILL, _skillRequires );
 
-	for( size_t pos=0; pos < futureTech_.size(); pos++ )
-		IniFile::Write( SECTION_FUTURE_TECH, KEY_TECH( pos ), futureTech_[ pos ], fileName );
-
-	return fileName;
+	return INrpProject::Save( fileName );
 }
 
-void CNrpTechnology::Load( const std::string& fileName )
+void CNrpTechnology::Load( const NrpText& fileName )
 {
-
 	INrpProject::Load( fileName );
-	SetValue<std::string>( BASEFILE, fileName );
-	LoadRequries_( fileName );
+	SetString( BASEFILE, fileName );
+	IniFile rv( fileName );
+	rv.Get( SECTION_REQUIRE_TECH, _techRequires );
+	rv.Get( SECTION_REQUIRE_SKILL, _skillRequires );
 
 	if( GetValue<TECH_STATUS>( STATUS ) == TS_READY )
-		for( int cnt=0; cnt < GetValue<int>( NEXTTECHNUMBER ); cnt++ )
-			futureTech_.push_back( IniFile::Read( SECTION_FUTURE_TECH, KEY_TECH( cnt ), std::string(""), fileName ) );
+		rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, GetValue<int>( NEXTTECHNUMBER ), _futureTech );
 }
 
 float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
@@ -131,14 +132,14 @@ float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
 	int minSkill = 40;
 	int minSkillName = 0;
 	float posibility = 0;
-	REQUIRE_MAP::iterator sIter = skillRequires_.begin();
-	for( ; sIter != skillRequires_.end(); sIter++ )
+	REQUIRE_MAP::Iterator sIter = _skillRequires.getIterator();
+	for( ; !sIter.atEnd(); sIter++ )
 	{
-		int skillValue = ptrUser->GetSkill( sIter->first );
+		int skillValue = ptrUser->GetSkill( sIter->getKey() );
 		if( skillValue < minSkill )
 		{
 			minSkill = skillValue;
-			minSkillName = sIter->first;
+			minSkillName = sIter->getKey();
 		}
 
 		posibility += ( skillValue > 100 ? 100 : skillValue ) / 100.f;
@@ -148,28 +149,18 @@ float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
 	return posibility;
 }
 
-void CNrpTechnology::LoadRequries_( const std::string& fileName )
+const NrpText CNrpTechnology::GetFutureTech( size_t index )
 {
-	IniFile::ReadValueList_( SECTION_REQUIRE_TECH, techRequires_, fileName );
-	IniFile::ReadValueList_( SECTION_REQUIRE_SKILL, skillRequires_, fileName );
+	return index < _futureTech.size() ? _futureTech[ index ] : "";
 }
 
-void CNrpTechnology::SaveRequires_( const std::string& fileName )
+void CNrpTechnology::AddFutureTech( const NrpText& name )
 {
-	for( REQUIRE_MAP::iterator tIter = techRequires_.begin(); tIter != techRequires_.end(); tIter++ )
-		IniFile::Write( SECTION_REQUIRE_TECH, conv::ToStr( tIter->first ), conv::ToStr( tIter->second ), fileName );
-
-	for( REQUIRE_MAP::iterator sIter = skillRequires_.begin(); sIter != skillRequires_.end(); sIter++ )
-		IniFile::Write( SECTION_REQUIRE_SKILL, conv::ToStr( sIter->first ), conv::ToStr( sIter->second ), fileName );
+	_futureTech.push_back( name );
 }
 
-const std::string CNrpTechnology::GetFutureTech( size_t index )
+NrpText CNrpTechnology::ClassName()
 {
-	return index < futureTech_.size() ? futureTech_[ index ] : "";
-}
-
-void CNrpTechnology::AddFutureTech( const std::string& name )
-{
-	futureTech_.push_back( name );
+	return CLASS_TECHNOLOGY;
 }
 }//namespace nrp

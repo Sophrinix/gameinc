@@ -14,9 +14,8 @@ video::ITexture* CNrp2DPictureFlow::CNrpImageDescription::CreateDownTexture_( vi
 
 	if( pTxr != NULL )
 	{
-		std::string name = core::stringc( pTxr->getName() ).c_str();
-		name += "toDown";
-		resultt = driver->addTexture( pTxr->getSize(), name.c_str(), pTxr->getColorFormat() );
+		NrpText name = NrpText( pTxr->getName().getPath().c_str() ) + NrpText( "toDown" );
+		resultt = driver->addTexture( pTxr->getSize(), name, pTxr->getColorFormat() );
 
 		u32* pTxrData = (u32*)pTxr->lock();
 		u32* resultTxrData = (u32*)resultt->lock();

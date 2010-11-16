@@ -1,15 +1,15 @@
 #include "StdAfx.h"
 #include <IVideoDriver.h>
-#include <string>
 #include "LuaConsole.h"
 #include "nrpConsole.h"
 #include "nrpEngine.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 
 using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACONSOLE( "CLuaConsole" );
 
 Luna< CLuaConsole >::RegType CLuaConsole::methods[] = 
 {
@@ -46,5 +46,10 @@ int CLuaConsole::Draw( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN object_->draw();
 
 	return 1;
+}
+
+const char* CLuaConsole::ClassName()
+{
+	return ( CLASS_LUACONSOLE );
 }
 }//namespace nrp

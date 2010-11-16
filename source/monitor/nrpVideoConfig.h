@@ -3,13 +3,10 @@
 #include "nrpConfig.h"
 
 #include <vector>
-#include <string>
 //////////////////////////////////////////////////////////////////////////
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_VIDEOCONFIG( "CNrpVideoConfig" );
 
 OPTION_NAME FULLSCREEN("fullScreen");
 OPTION_NAME USE_SHADOWS("useShadows");
@@ -20,7 +17,7 @@ class CNrpVideoConfig : public INrpConfig
 {
 private:
 	CNrpVideoConfig();
-	static std::string ClassName() { return CLASS_VIDEOCONFIG; }
+	static NrpText ClassName();
 
 public:
 	static CNrpVideoConfig& Instance();

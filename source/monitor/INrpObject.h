@@ -9,19 +9,19 @@
 *********************************************************************/
 #pragma once
 
-#include <string>
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "EnginePrivate.h"
 
 namespace nrp
 {
 
-typedef const std::string CLASS_NAME; 
+typedef NrpText CLASS_NAME; 
 
 class INrpObject
 {
 private:
-	SYSTEM_NAME systemName_, objectName_;
+	SYSTEM_NAME systemName_;
+	CLASS_NAME objectName_;
 
 	INrpObject(void)
 	{
@@ -30,14 +30,14 @@ private:
 public:
 	//уникальное имя объекта в массиве
 	SYSTEM_NAME SystemName() { return systemName_; }
-	const std::string& ObjectTypeName() { return objectName_; }
+	CLASS_NAME& ObjectTypeName() { return objectName_; }
 
 	//размещение объекта в массиве
 	INrpObject( CLASS_NAME objectName, SYSTEM_NAME sysName ):
 			objectName_( objectName ), systemName_( sysName )
 	{
-		if( systemName_.empty() )
-			systemName_ = objectName + "_object" + conv::ToStr( rand() );
+		if( !systemName_.size() )
+			systemName_ = objectName + NrpText("_object") + NrpText( rand() );
 
 		GInsertObjectToSystemMap( this );
 	}

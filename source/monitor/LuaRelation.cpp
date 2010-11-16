@@ -3,6 +3,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_RELATION( "CLuaRelation" );
 
 Luna< CLuaRelation >::RegType CLuaRelation::methods[] = 
 {
@@ -28,7 +29,7 @@ int CLuaRelation::SetValue( lua_State *L )
 		if( lua_isnumber( L, 3 ) )
 			object_->SetValue( name, static_cast< float >( lua_tonumber( L, 3 ) ) );
 		else if( lua_isstring( L, 3 ) )
-			object_->SetValue( name, std::string( lua_tostring( L, 3 ) ) );
+			object_->SetValue( name, NrpText( lua_tostring( L, 3 ) ) );
 		else
 			assert( "unsupport type" );
 	}
@@ -46,8 +47,8 @@ int CLuaRelation::GetValue( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( object_->IsValueTypeA<std::string>( name ) )
-			lua_pushstring( L, object_->GetValue<std::string>( name ).c_str() );
+		if( object_->IsValueTypeA<NrpText>( name ) )
+			lua_pushstring( L, object_->GetString( name ) );
 		else if( object_->IsValueTypeA< float >( name ) )
 			lua_pushnumber( L, object_->GetValue<float>( name ) );
 		else if( object_->IsValueTypeA< int >( name ) )
@@ -57,5 +58,10 @@ int CLuaRelation::GetValue( lua_State *L )
 	}
 
 	return 1;
+}
+
+const char* CLuaRelation::ClassName()
+{
+	return ( CLASS_RELATION );
 }
 }//namespace nrp

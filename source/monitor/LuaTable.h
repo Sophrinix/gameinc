@@ -12,12 +12,11 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUATABLE( "CLuaTable" );
-
 class CLuaTable : public ILuaGuiElement<irr::gui::IGUITable>
 {
 public:
 	static Luna<CLuaTable>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaTable(lua_State *L);									
 	int SetImage( lua_State *L );							//привязка к текстуре в обычном состоянии
@@ -31,8 +30,6 @@ public:
 	int GetColumnCount( lua_State *L );
 	int RemoveColumn( lua_State *L );
 	int ClearRows( lua_State* L);
-
-	static const char* ClassName() { return CLASS_LUATABLE.c_str(); }
 };
 
 }//namespace nrp

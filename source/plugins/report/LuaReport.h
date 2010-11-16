@@ -1,6 +1,6 @@
 #pragma once
 #include <luna.h>
-#include <string>
+#include <irrString.h>
 
 class CLuaReport
 {
@@ -37,7 +37,7 @@ public:
 
 	~CLuaReport(void);
 
-	static const char* StaticGetLuaName() { return "CLuaReport"; }
+	static irr::core::stringw ClassName() { return "CLuaReport"; }
 private:
 	CLuaReport(void) {}
 

@@ -41,7 +41,7 @@ void CChartGrid::Draw()
 		return;
 
 	const int sz = tickPos_.size();
-	list<int>::const_iterator iter = tickPos_.begin();
+	core::list<int>::ConstIterator iter = tickPos_.begin();
 	int ActuPosition = 0;
 	core::position2di startPos, endPos;
 

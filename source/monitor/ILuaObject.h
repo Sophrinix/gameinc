@@ -2,13 +2,12 @@
 
 #include <lua.hpp>
 #include <luna.h>
-#include <string>
-#include "INrpObject.h"
 #include <rect.h>
 #include <assert.h>
 
-#define FUNC_NOT_NEED_PARAM (std::string( "Function " ) + ObjectTypeName() + std::string( ":Self not need any parameter" )).c_str()
-#define ASSIGN_EMPTY_OBJECT (std::string( "Assign empty object in " ) + ObjectTypeName() ).c_str()
+#include "INrpObject.h"
+#include "nrptext.h"
+
 #define IF_OBJECT_NOT_NULL_THEN if( object_ == NULL ) DebugReport( __FILE__, __LINE__, "Access null object" ); else
 
 #define LUNA_ILUAOBJECT_HEADER(class) LUNA_AUTONAME_FUNCTION(class,	SetObject),\
@@ -26,7 +25,7 @@ private:
 protected:
 	ObjectType* object_;
 
-	irr::core::recti ReadRect_( lua_State* vm, size_t startParam )
+	irr::core::recti _ReadRect( lua_State* vm, size_t startParam )
 	{
 		irr::core::recti rectangle( 0, 0, 0, 0 );
 
@@ -37,15 +36,30 @@ protected:
 
 		return rectangle;
 	}
+
+	const char* _ErrStr( const char* str )
+	{
+		return NrpText( ObjectTypeName() + NrpText( str ) ).ToStr();
+	}
+
+	const char* _ErrEmptyObject()
+	{
+		return NrpText( NrpText( "Assign empty object in " ) + ObjectTypeName() ).ToStr();
+	}
+
+	const char* _ErrNotNeedParam() 
+	{ 
+		return NrpText( ObjectTypeName() + NrpText( ":Self not need any parameter" ) ).ToStr();
+	}
 	
 public:
 	
-	ILuaObject(lua_State *L, std::string className) : INrpObject( className, "" ) 
+	ILuaObject(lua_State *L, stringw ClassName) : INrpObject( ClassName, "" ) 
 	{
 		object_ = (ObjectType*)lua_touserdata(L, 1);
 
 		if( object_ == NULL )
-			DebugReport( __FILE__, __LINE__, ASSIGN_EMPTY_OBJECT );
+			DebugReport( __FILE__, __LINE__, _ErrEmptyObject() );
 	}
 
 	virtual int SetObject(lua_State *L)
@@ -53,7 +67,7 @@ public:
 		object_ = (ObjectType*)lua_touserdata(L, 2);
 
 		if( object_ == NULL )
-			DebugReport( __FILE__, __LINE__, ASSIGN_EMPTY_OBJECT );
+			DebugReport( __FILE__, __LINE__, _ErrEmptyObject() );
 
 		return 1;
 	}
@@ -61,7 +75,7 @@ public:
 	virtual int Self( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, FUNC_NOT_NEED_PARAM );
+		luaL_argcheck(L, argc == 1, 1, _ErrNotNeedParam() );
 
 		lua_pushlightuserdata( L, (void*)object_ );
 
@@ -71,7 +85,7 @@ public:
 	virtual int Empty( lua_State *L )
 	{
 		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, FUNC_NOT_NEED_PARAM );
+		luaL_argcheck(L, argc == 1, 1, _ErrNotNeedParam() );
 
 		lua_pushinteger( L, object_ == NULL ? 1 : 0 );
 

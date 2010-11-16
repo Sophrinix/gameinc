@@ -3,24 +3,30 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_SCENARIO( "CNrpScenario" );
 
-CNrpScenario::CNrpScenario( std::string name ) : INrpProject( CLASS_SCENARIO, "" )
+CNrpScenario::CNrpScenario( const NrpText& name ) : INrpProject( CLASS_SCENARIO, "" )
 {
-	CreateValue<std::string>( NAME, name );
+	CreateValue<NrpText>( NAME, name );
 }
 
 CNrpScenario::~CNrpScenario(void)
 {
 }
 
-std::string CNrpScenario::Save( const std::string& pathTo )
+NrpText CNrpScenario::Save( const NrpText& pathTo )
 {
 	return INrpProject::Save( pathTo );
 }
 
-void CNrpScenario::Load( const std::string& pathTo )
+void CNrpScenario::Load( const NrpText& pathTo )
 {
 
+}
+
+NrpText CNrpScenario::ClassName()
+{
+	return CLASS_SCENARIO;
 }
 
 }//namespace nrp

@@ -10,12 +10,11 @@ namespace nrp
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAGMEPROJECT( "CLuaGameProject" );
-
 class CLuaGameProject : public ILuaProject<nrp::CNrpGameProject>
 {
 public:
 	static Luna<CLuaGameProject>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaGameProject(lua_State *L);		
 	int SetGameEngine( lua_State* L);
@@ -64,22 +63,21 @@ public:
 	int GetCrossPlatformCode( lua_State* L );
 	int Create( lua_State* L );
 	int Remove( lua_State* L );
-																
-	static const char* ClassName() { return CLASS_LUAGMEPROJECT.c_str(); }
+															
 private:
-	int SetNamedTech_( lua_State* L, std::string funcName, const std::string paramName );
+	int SetNamedTech_( lua_State* L, const NrpText& funcName, const NrpText& paramName );
 	
 	template< class T > int SetNumericalTech_( lua_State* L,
-											   std::string funcName, 
+											   const NrpText& funcName, 
 											   void (T::*Method)( CNrpTechnology* tehc, int index) );
 
 	template< class T > int GetNumericalTech_( lua_State* L,
-											   std::string funcName, 
+											   const NrpText& funcName, 
 											   CNrpTechnology* (T::*Method)( int index) );
 
-	int IsParamAvaible_( lua_State* L, std::string funcName, std::string prefix );
-	int ToggleParam_( lua_State* L, std::string funcName, std::string prefix );
-	int _TechLuaInitialize( lua_State* L, std::string funcName, std::string paramName );
+	int IsParamAvaible_( lua_State* L, const NrpText& funcName, const NrpText& prefix );
+	int ToggleParam_( lua_State* L, const NrpText& funcName, const NrpText& prefix );
+	int _TechLuaInitialize( lua_State* L, const NrpText& funcName, OPTION_NAME& paramName );
 };
 
 }//namespace nrp

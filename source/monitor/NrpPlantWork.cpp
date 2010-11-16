@@ -10,8 +10,9 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_NRPPLANTWORK( "CNrpPlantWork" );
 
-CNrpPlantWork::CNrpPlantWork( const std::string& companyName ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
+CNrpPlantWork::CNrpPlantWork( const NrpText& companyName ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
 {
 	InitializeOptions_();
 	SetString( NAME, companyName );
@@ -23,7 +24,7 @@ CNrpPlantWork::~CNrpPlantWork(void)
 
 void CNrpPlantWork::InitializeOptions_()
 {
-	CreateValue<std::string>( NAME, "" );
+	CreateValue<NrpText>( NAME, "" );
 	CreateValue<PNrpDiskMachine>( PRODUCETYPE, NULL );
 	CreateValue<int>( NUMBERMACHINE, 0 );
 	CreateValue<int>( NUMBERDAY, 0 );
@@ -31,9 +32,9 @@ void CNrpPlantWork::InitializeOptions_()
 	CreateValue<float>( DISKPRICE, 0 );
 	CreateValue<int>( FINALPRICE, 0 );
 	CreateValue<PNrpGame>( PARENT, NULL );
-	CreateValue<std::string>( COMPANYNAME, "" );
-	CreateValue<std::string>( GAMENAME, "" );
-	CreateValue<std::string>( DISKMACHINENAME, "" );
+	CreateValue<NrpText>( COMPANYNAME, "" );
+	CreateValue<NrpText>( GAMENAME, "" );
+	CreateValue<NrpText>( DISKMACHINENAME, "" );
 	CreateValue<int>( DISKINDAY, 0 );
 	CreateValue<int>( LEFTPRODUCEDISK, 0 );
 	CreateValue<int>( DAYCOST, 0 );
@@ -44,7 +45,7 @@ void CNrpPlantWork::InitializeOptions_()
 CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
 {
 	InitializeOptions_();
-	SetString( NAME, p.GetValue<std::string>( NAME ) );
+	SetString( NAME, p.GetValue<NrpText>( NAME ) );
 	SetValue<PNrpDiskMachine>( PRODUCETYPE,  p.GetValue<PNrpDiskMachine>( PRODUCETYPE ) );
 	SetValue<int>( NUMBERMACHINE, p.GetValue<int>( NUMBERMACHINE ) );
 	SetValue<int>( NUMBERDAY, p.GetValue<int>( NUMBERDAY ) );
@@ -52,21 +53,21 @@ CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPL
 	SetValue<float>( DISKPRICE, p.GetValue<float>( DISKPRICE ) );
 	SetValue<int>( FINALPRICE, p.GetValue<int>( FINALPRICE ) );
 	SetValue<PNrpGame>( PARENT, p.GetValue<PNrpGame>( PARENT ) );
-	SetString( COMPANYNAME, p.GetValue<std::string>( COMPANYNAME ) );
-	SetString( GAMENAME, p.GetValue<std::string>( GAMENAME ) );
-	SetString( DISKMACHINENAME, p.GetValue<std::string>( DISKMACHINENAME ) );
+	SetString( COMPANYNAME, p.GetValue<NrpText>( COMPANYNAME ) );
+	SetString( GAMENAME, p.GetValue<NrpText>( GAMENAME ) );
+	SetString( DISKMACHINENAME, p.GetValue<NrpText>( DISKMACHINENAME ) );
 	SetValue<int>( DISKINDAY, p.GetValue<int>( DISKINDAY ) );
 	SetValue<int>( LEFTPRODUCEDISK, p.GetValue<int>( LEFTPRODUCEDISK ) );
 	SetValue<int>( DAYCOST, p.GetValue<int>( DAYCOST ) );
 }
 
-CNrpPlantWork::CNrpPlantWork( const std::string& fileName, bool load ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
+CNrpPlantWork::CNrpPlantWork( const NrpText& fileName, bool load ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
 {
 	InitializeOptions_();
 	Load( fileName );
 }
 
-void CNrpPlantWork::Load( const std::string& fileName )
+void CNrpPlantWork::Load( const NrpText& fileName )
 {
 	INrpConfig::Load( fileName );
 	CNrpGame* pGame = CNrpApplication::Instance().GetGame( GetString( GAMENAME ) );
@@ -110,10 +111,10 @@ void CNrpPlantWork::CalcParams_()
 	}
 }
 
-std::string CNrpPlantWork::Save( const std::string& folder )
+NrpText CNrpPlantWork::Save( const NrpText& folder )
 {
 	assert( OpFileSystem::IsExist( folder ) );
-	std::string saveFile = OpFileSystem::CheckEndSlash( folder ) + GetString( NAME ) + ".work";
+	NrpText saveFile = OpFileSystem::CheckEndSlash( folder ) + GetString( NAME ) + ".work";
 	return INrpConfig::Save( saveFile );
 }
 
@@ -147,4 +148,10 @@ void CNrpPlantWork::BeginNewDay()
 		}
 	}
 }
+
+NrpText CNrpPlantWork::ClassName()
+{
+	return CLASS_NRPPLANTWORK;
+}
+
 }//end namespace nrp 

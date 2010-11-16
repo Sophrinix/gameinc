@@ -1,8 +1,7 @@
 #include "StdAfx.h"
-#include <string>
 #include <assert.h>
 #include "LuaUser.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "IUser.h"
 #include "NrpPlayer.h"
 #include "NrpApplication.h"
@@ -17,6 +16,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAUSER( "CLuaUser" );
 
 Luna< CLuaUser >::RegType CLuaUser::methods[] = 
 {
@@ -51,26 +51,22 @@ int CLuaUser::Create( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaUser:Create need 2 parameter" );
 
-	const char* userType = lua_tostring( L, 2 );
-	assert( userType != NULL );
+	NrpText userType( lua_tostring( L, 2 ) );
+	NrpText name( lua_tostring( L, 3 ) );
 
-	const char* name = lua_tostring( L, 3 );
-	assert( name != NULL );
-
-	if( strcmp( userType, "RealPlayer" ) == 0 )
+	if( userType == CNrpPlayer::ClassName() )
 	{
 		object_ = new CNrpPlayer( name, NULL );
 		CNrpApplication::Instance().AddUser( object_ );
 	}
-	else if( strcmp( userType, "AIPlayer" ) == 0 )
+	else if( userType == CNrpAiUser::ClassName() )
 	{
 		object_ = new CNrpAiUser( name, NULL );
 		CNrpApplication::Instance().AddUser( object_ );
 	}
 	else 
 	{
-		object_ = new IUser( std::string(userType), std::string(name) );
-		object_->SetValue<std::string>( NAME, name );
+		object_ = new IUser( userType, name );
 		CNrpApplication::Instance().AddUser( object_ );
 	}
 
@@ -106,11 +102,11 @@ int CLuaUser::GetTypeName( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetTypeName not need parameter" );
 	
-	std::string name = "";
+	NrpText name;
 
 	IF_OBJECT_NOT_NULL_THEN name = object_->ObjectTypeName();
 
-	lua_pushstring( L, name.c_str() );
+	lua_pushstring( L, name );
 	return 1;	
 }
 
@@ -134,12 +130,10 @@ int CLuaUser::IsTypeAs( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:IsTypeAs need string parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name( lua_tostring( L, 2 ) );
 	bool result = false;
 
-	std::string tname = object_->ObjectTypeName();
-	IF_OBJECT_NOT_NULL_THEN result = ( tname == std::string(name));
+	IF_OBJECT_NOT_NULL_THEN result = ( object_->ObjectTypeName() == name );
 
 	lua_pushboolean( L, result );
 	return 1;	
@@ -150,11 +144,11 @@ int CLuaUser::GetName( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetName not need parameter" );
 
-	std::string name = "";
+	NrpText name;
 
-	IF_OBJECT_NOT_NULL_THEN name = object_->GetValue<std::string>( NAME );
+	IF_OBJECT_NOT_NULL_THEN name = object_->GetValue<NrpText>( NAME );
 
-	lua_pushstring( L, name.c_str() );
+	lua_pushstring( L, name );
 	return 1;	
 }
 
@@ -163,8 +157,7 @@ int CLuaUser::SetParam( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaUser:SetParam need string, int parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name( lua_tostring( L, 2 ) );
 	int valuel = lua_tointeger( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->SetSkill( name, valuel );
@@ -256,10 +249,10 @@ int CLuaUser::GetTexture( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetTexture not need any parameter" );
 
-	std::string pathName = "";
-	IF_OBJECT_NOT_NULL_THEN pathName = object_->GetValue<std::string>( TEXTURENORMAL );
+	NrpText pathName = "";
+	IF_OBJECT_NOT_NULL_THEN pathName = object_->GetString( TEXTURENORMAL );
 
-	lua_pushstring( L, pathName.c_str() );
+	lua_pushstring( L, pathName );
 	return 1;		
 }
 
@@ -280,10 +273,9 @@ int CLuaUser::GetRelation( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetRelation need name of relation parameter" );
 
-	const char* name = lua_tostring(L, 2 );
+	NrpText name( lua_tostring(L, 2 ) );
 	CNrpRelation* ret = 0;
 
-	assert( name != NULL );
 	IF_OBJECT_NOT_NULL_THEN ret = object_->GetRelation( name );
 
 	lua_pop( L, argc );
@@ -330,5 +322,10 @@ int CLuaUser::AddParam( lua_State* L )
 	}
 
 	return 1;	
+}
+
+const char* CLuaUser::ClassName()
+{
+	return ( CLASS_LUAUSER );
 }
 }//namespace nrp

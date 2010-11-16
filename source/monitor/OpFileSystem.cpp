@@ -19,57 +19,57 @@ OpFileSystem::~OpFileSystem(void)
 {
 }
 
-void OpFileSystem::Remove( const std::string& pathTo )
+void OpFileSystem::Remove( const NrpText& pathTo )
 {
 	if( !IsFolder( pathTo ) ) //файл можно удалить сразу
-		DeleteFile( pathTo.c_str() );
+		DeleteFileW( pathTo.ToWide() );
 	else
 	{
-		std::string mStr = CheckEndSlash( pathTo );
-		_finddata_t fdata;	
+		NrpText mStr = CheckEndSlash( pathTo );
+		_wfinddata_t fdata;	
 		intptr_t hFile;
 
 		assert( IsExist( mStr ) );
 		if( IsExist( mStr ) )
 		{
-			hFile = _findfirst( (mStr+"\\*.*").c_str(), &fdata);
+			hFile = _wfindfirst( ( mStr+ NrpText("\\*.*") ).ToWide(), &fdata);
 			while( hFile > 0 )
 			{
-				if ( !( strcmp( fdata.name, ".") == 0 || strcmp( fdata.name, ".." ) == 0 ) )// это удалять не надо
+				if ( !( wcscmp( fdata.name, L".") == 0 || wcscmp( fdata.name, L".." ) == 0 ) )// это удалять не надо
 					if ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ))// найдена папка
 					{
-						Remove( mStr + "/" + std::string( fdata.name ) );
+						Remove( CheckEndSlash( mStr ) + NrpText( fdata.name ) );
 					}
 					else// иначе найден файл
 					{
-						DeleteFile( ( CheckEndSlash( mStr ) + std::string( fdata.name )).c_str() );
+						DeleteFileW( ( CheckEndSlash( mStr ) + fdata.name ).ToWide() );
 					}
 
-					if( _findnext( hFile, &fdata) != 0 )
+					if( _wfindnext( hFile, &fdata) != 0 )
 						break;
 			}
 		}
 
 		_findclose( hFile );
-		RemoveDirectory( mStr.c_str() );
+		RemoveDirectoryW( mStr.ToWide() );
 	}
 }
 
-void OpFileSystem::Move( const std::string& pathOld, const std::string& pathNew )
+void OpFileSystem::Move( const NrpText& pathOld, const NrpText& pathNew )
 {
-	std::string mStr = RemoveEndSlash( CNrpApplication::Instance().GetString( WORKDIR ) + pathOld );
-	std::string mStr2 = RemoveEndSlash( CNrpApplication::Instance().GetString( WORKDIR ) + pathNew );
+	NrpText mStr = RemoveEndSlash( CNrpApplication::Instance().GetString( WORKDIR ) + pathOld );
+	NrpText mStr2 = RemoveEndSlash( CNrpApplication::Instance().GetString( WORKDIR ) + pathNew );
 
-	SHFILEOPSTRUCT sh;
+	SHFILEOPSTRUCTW sh;
 	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );
 	sh.hwnd   = CNrpEngine::Instance().GetWindowHandle(); //Для BCB sh.hwnd=FormX->Handle;
 	sh.wFunc  = FO_MOVE;
 
-	char from[ MAX_PATH ] = { 0 };
-	strncpy_s( from, MAX_PATH-1, mStr.c_str(), mStr.length() );
+	wchar_t from[ MAX_PATH ] = { 0 };
+	wcsncpy_s( from, MAX_PATH-1, mStr.ToWide(), mStr.size() );
 
-	char to[ MAX_PATH ] = { 0 };
-	strncpy_s( to, MAX_PATH - 1, mStr2.c_str(), mStr2.length() );
+	wchar_t to[ MAX_PATH ] = { 0 };
+	wcsncpy_s( to, MAX_PATH - 1, mStr2.ToWide(), mStr2.size() );
 
 	sh.pFrom  = from;
 	sh.pTo    = to;
@@ -77,63 +77,65 @@ void OpFileSystem::Move( const std::string& pathOld, const std::string& pathNew 
 	sh.hNameMappings = 0;
 	sh.lpszProgressTitle = NULL;
 
-	SHFileOperation (&sh);
+	SHFileOperationW(&sh);
 }
 
-void OpFileSystem::Copy( const std::string& pathOld, const std::string& pathNew )
+void OpFileSystem::Copy( const NrpText& pathOld, const NrpText& pathNew )
 {
-	std::string mStr = RemoveEndSlash( pathOld ), 
+	NrpText mStr = RemoveEndSlash( pathOld ), 
 				mStr2 = RemoveEndSlash( pathNew );
 
-	SHFILEOPSTRUCT sh;
+	SHFILEOPSTRUCTW sh;
 	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );
 	sh.hwnd   = CNrpEngine::Instance().GetWindowHandle(); //Для BCB sh.hwnd=FormX->Handle;
 	sh.wFunc  = FO_COPY;
-	char from[ MAX_PATH ] = { 0 };
-	strncpy_s( from, MAX_PATH-1, mStr.c_str(), mStr.length() );
+	wchar_t from[ MAX_PATH ] = { 0 };
+	wcsncpy_s( from, MAX_PATH-1, mStr.ToWide(), mStr.size() );
 
-	char to[ MAX_PATH ] = { 0 };
-	strncpy_s( to, MAX_PATH-1, mStr2.c_str(), mStr2.length() );
+	wchar_t to[ MAX_PATH ] = { 0 };
+	wcsncpy_s( to, MAX_PATH-1, mStr2.ToWide(), mStr2.size() );
 	sh.pFrom  = from;
 	sh.pTo    = to;
 	sh.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;
 	sh.hNameMappings = 0;
 	sh.lpszProgressTitle = NULL;
 
-	SHFileOperation (&sh);
+	SHFileOperationW(&sh);
 }
 
-void OpFileSystem::CreateDirectorySnapshot( const std::string& directory,
-											const std::string& saveFile, 
-											const std::string& templateName,
-											const std::string& itemName )
+void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory,
+											const NrpText& saveFile, 
+											const NrpText& templateName,
+											const NrpText& itemName )
 {
-	int number= IniFile::Read( "options", templateName + "Number", (int)0, saveFile );
-	_finddata_t fdata;	
+	std::auto_ptr<IniFile> ini( new IniFile( saveFile ) );
+
+	int number= ini->Get( "options", templateName + L"Number", (int)0 );
+	_wfinddata_t fdata;	
 	intptr_t hFile;
 
 	assert( directory.size() );
 	if( directory.size() )
 	{
-		hFile = _findfirst( (directory+"\\*.*").c_str(), &fdata);
+		hFile = _wfindfirst( directory + L"\\*.*", &fdata);
 		while( hFile )
 		{
-			if ( !( strcmp( fdata.name, ".") == 0 || strcmp( fdata.name, ".." ) == 0 ) )// это удалять не надо
+			if ( !( wcscmp( fdata.name, L".") == 0 || wcscmp( fdata.name, L".." ) == 0 ) )// это удалять не надо
 				if ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ))// найдена папка
 				{
-					CreateDirectorySnapshot( directory + "/" + std::string( fdata.name ), saveFile, templateName, itemName );
+					CreateDirectorySnapshot( CheckEndSlash( directory ) + NrpText( fdata.name ), saveFile, templateName, itemName );
 				}
 				else// иначе найден файл
 				{
-					if( _stricmp( itemName.c_str(), fdata.name ) == 0 )
+					if( _wcsicmp( itemName.ToWide(), fdata.name ) == 0 )
 					{
-						IniFile::Write( "options", templateName + conv::ToStr( number ), directory+"/"+std::string( fdata.name ), saveFile );
+						ini->Get( L"options", templateName + number, CheckEndSlash( directory )+ fdata.name );
 						number++;
-						IniFile::Write( "options", templateName + "Number", number, saveFile );
+						ini->Get( L"options", templateName + L"Number", number );
 					}
 				}
 			
-			if( _findnext( hFile, &fdata) != 0 )
+			if( _wfindnext( hFile, &fdata) != 0 )
 				break;
 		}
 	}
@@ -141,36 +143,36 @@ void OpFileSystem::CreateDirectorySnapshot( const std::string& directory,
 	_findclose( hFile );
 }
 
-std::string OpFileSystem::CheckEndSlash( std::string pathTo )
+NrpText OpFileSystem::CheckEndSlash( NrpText pathTo )
 {
-	char endsym = pathTo[ pathTo.length() - 1 ];
-	if( endsym != '/' && endsym != '\\' )
-		pathTo += "/";
+	wchar_t endsym = pathTo[ pathTo.size() - 1 ];
+	if( endsym != L'/' && endsym != L'\\' )
+		pathTo += L"/";
 
 	return pathTo;
 }
 
-std::string OpFileSystem::RemoveEndSlash( std::string pathTo )
+NrpText OpFileSystem::RemoveEndSlash( NrpText pathTo )
 {
-	char endsym = pathTo[ pathTo.length() - 1 ];
-	if( endsym == '/' || endsym == '\\' )
-		pathTo.erase( pathTo.end()-1 );
+	wchar_t endsym = pathTo[ pathTo.size() - 1 ];
+	if( endsym == L'/' || endsym == L'\\' )
+		pathTo.erase( pathTo.size()-1 );
 
 	return pathTo;
 }
 
-void OpFileSystem::CreateDirectory( std::string pathTo )
+void OpFileSystem::CreateDirectory( NrpText pathTo )
 {
 	pathTo = CheckEndSlash( pathTo );
-	if( _access( pathTo.c_str(), 0 ) == -1 )
-		::CreateDirectory( pathTo.c_str(), NULL );
+	if( IsExist( pathTo ) )
+		::CreateDirectoryW( pathTo, NULL );
 
-	assert( _access( pathTo.c_str(), 0 ) != -1 );
+	assert( IsExist( pathTo ) );
 }
 
-bool OpFileSystem::IsExist( const std::string& pathTo )
+bool OpFileSystem::IsExist( const NrpText& pathTo )
 {
-	bool ex = (_access( pathTo.c_str(), 0 ) != -1);
+	bool ex = ( _waccess( pathTo.ToWide(), 0 ) != -1);
 
 #ifdef _DEBUG
 	if( ! ex )
@@ -179,16 +181,16 @@ bool OpFileSystem::IsExist( const std::string& pathTo )
 	return ex;
 }
 
-bool OpFileSystem::IsFolder( const std::string& pathTo )
+bool OpFileSystem::IsFolder( const NrpText& pathTo )
 {
-	std::string myPath = RemoveEndSlash( pathTo );
+	NrpText myPath = RemoveEndSlash( pathTo );
 	assert( IsExist( myPath ) );
 	
-	_finddata_t fdata;	
+	_wfinddata_t fdata;	
 	intptr_t hFile;
 
-	hFile = _findfirst( myPath.c_str(), &fdata);
-	if( hFile )
+	hFile = _wfindfirst( myPath, &fdata);
+	if( hFile != -1 )
 	{
 		return ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ));// это папка
 	}
@@ -196,30 +198,30 @@ bool OpFileSystem::IsFolder( const std::string& pathTo )
 	return false;
 }
 
-std::string OpFileSystem::GetExtension( const std::string& pathTo )
+NrpText OpFileSystem::GetExtension( const NrpText& pathTo )
 {
 	assert( !IsFolder( pathTo ) );
-	int index = pathTo.find_last_of( '.' );
+	int index = pathTo.findLast( L'.' );
 	if( index >= 0 )
-	    return pathTo.substr( index, 0xff );
+	    return pathTo.subString( index, 0xff );
 
 	return "";
 }
 
-std::string OpFileSystem::UpDir( const std::string& pathTo )
+NrpText OpFileSystem::UpDir( const NrpText& pathTo )
 {
 	assert( IsExist( pathTo ) );
-	if( pathTo.empty() )
+	if( !pathTo.size() )
 		return "";
 
-	std::string pathToAny = CheckEndSlash( pathTo );
-	pathToAny.erase( pathToAny.end()-1 );
-	int index = pathTo.find_last_of( '\\' );
+	NrpText pathToAny = CheckEndSlash( pathTo );
+	pathToAny.erase( pathToAny.size()-1 );
+	int index = pathTo.findLast( L'\\' );
 	if( index < 0 )
-		index = pathTo.find_last_of( '/' );
+		index = pathTo.findLast( L'/' );
 
 	if( index >=0 )
-		return pathTo.substr( 0, index+1 );
+		return pathTo.subString( 0, index+1 );
 
 	assert( IsExist( pathTo ) );
 	return "";

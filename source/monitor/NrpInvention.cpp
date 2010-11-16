@@ -5,12 +5,13 @@
 #include "IUser.h"
 #include "timeHelpers.h"
 #include "OpFileSystem.h"
+#include "IniFile.h"
 
 #include <OleAuto.h>
 
-
 namespace nrp
 {
+CLASS_NAME CLASS_INVENTION( "CNrpInvention" );
 
 int CNrpInvention::_GetRealPrice( CNrpTechnology* tech )
 {
@@ -36,18 +37,18 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp )
 	{
 		SetValue<int>( REALPRICE, _GetRealPrice( pTech ) );
 		SetValue<PNrpCompany>( PARENTCOMPANY, pCmp );
-		SetValue<std::string>( COMPANYNAME, pCmp->GetValue<std::string>( NAME ) );
+		SetValue<NrpText>( COMPANYNAME, pCmp->GetValue<NrpText>( NAME ) );
 		SetValue<TECH_STATUS>( STATUS, TS_INDEVELOP );
-		SetValue<std::string>( NAME, pTech->GetValue<std::string>( NAME ) );
-		SetValue<std::string>( INTERNAL_NAME, pTech->GetValue<std::string>( INTERNAL_NAME ) );
+		SetValue<NrpText>( NAME, pTech->GetValue<NrpText>( NAME ) );
+		SetValue<NrpText>( INTERNAL_NAME, pTech->GetValue<NrpText>( INTERNAL_NAME ) );
 		SetValue<int>( TECHGROUP, pTech->GetValue<int>( TECHGROUP ) );
 		SetValue<PROJECT_TYPE>( TECHTYPE, pTech->GetValue<PROJECT_TYPE>( TECHTYPE ) );
 		SetValue<float>( BASE_CODE, pTech->GetValue<float>( BASE_CODE ) );
 		SetValue<float>( ENGINE_CODE, pTech->GetValue<float>( ENGINE_CODE ) );
-		SetValue<std::string>( TEXTURENORMAL, pTech->GetValue<std::string>( TEXTURENORMAL ) );
+		SetValue<NrpText>( TEXTURENORMAL, pTech->GetValue<NrpText>( TEXTURENORMAL ) );
 		SetValue<int>( LEVEL, pTech->GetValue<int>( LEVEL ) );
 		SetValue<int>( QUALITY, pTech->GetValue<int>( QUALITY ) );
-		SetValue<std::string>( BASEFILE, pTech->GetValue<std::string>( BASEFILE ) );
+		SetValue<NrpText>( BASEFILE, pTech->GetValue<NrpText>( BASEFILE ) );
 		SetValue<SYSTEMTIME>( USERSTARTDATE, CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ) );
 
 		SYSTEMTIME time;
@@ -55,12 +56,12 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp )
 		CreateValue<SYSTEMTIME>( PROGNOSEDATEFINISH, time );
 		CheckParams();
 
-		techRequires_ = pTech->GetTechRequires();
-		skillRequires_ = pTech->GetSkillRequires();
+		CopyMapTo( _techRequires, pTech->GetTechRequires() );
+		CopyMapTo( _skillRequires,  pTech->GetSkillRequires() );
 	}
 }
 
-CNrpInvention::CNrpInvention( const std::string& fileName ) 
+CNrpInvention::CNrpInvention( const NrpText& fileName ) 
 			  : IWorkingModule( PROJECT_TYPE(0), CLASS_INVENTION )
 {
 	InitializeOptions_();
@@ -75,7 +76,7 @@ void CNrpInvention::InitializeOptions_()
 	CreateValue<int>( DAYLEFT, 0 );
 	CreateValue<int>( INVENTIONSPEED, 0 );
 	CreateValue<int>( USERNUMBER, 0 );
-	CreateValue<std::string>( COMPANYNAME, "" );
+	CreateValue<NrpText>( COMPANYNAME, "" );
 	CreateValue<SYSTEMTIME>( USERSTARTDATE, SYSTEMTIME() );
 	CreateValue<int>( MONEY_TODECREASE, 0 );
 }
@@ -112,9 +113,10 @@ void CNrpInvention::Update( IUser* ptrUser )
 	if( GetValue<int>( PASSEDPRICE ) < GetValue<int>( REALPRICE ) )
 	{
 		int reqSkill = 0;
-		REQUIRE_MAP::iterator sIter = skillRequires_.begin();
-		for( ; sIter != skillRequires_.end(); sIter++ )
-			reqSkill += ptrUser->GetSkill( sIter->first );
+		REQUIRE_MAP::Iterator sIter = _skillRequires.getIterator();
+		
+		for( ; !sIter.atEnd(); sIter++ )
+			reqSkill += ptrUser->GetSkill( sIter->getKey() );
 
 		float genreSkill = ptrUser->GetGenreExperience( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
 
@@ -140,7 +142,7 @@ void CNrpInvention::Update( IUser* ptrUser )
 	}
 }
 
-IUser* CNrpInvention::GetUser( size_t index )
+IUser* CNrpInvention::GetUser( u32 index )
 {
 	assert( index < _users.size() );
 	return index < _users.size() ? _users[ index ] : NULL;
@@ -148,9 +150,8 @@ IUser* CNrpInvention::GetUser( size_t index )
 
 int CNrpInvention::AddUser( IUser* user )
 {
-	USERS_LIST::iterator pIter = _users.begin();
-	for( ; pIter != _users.end(); pIter++ )
-		if( *pIter == user )
+	for( u32 i=0; i < _users.size(); i++ )
+		if( _users[ i ] == user )
 			return 1;
 	
 	_users.push_back( user );
@@ -159,47 +160,57 @@ int CNrpInvention::AddUser( IUser* user )
 	return 0;
 }
 
-int CNrpInvention::RemoveUser( const std::string& userName )
+int CNrpInvention::RemoveUser( const NrpText& userName )
 {
-	USERS_LIST::iterator pIter = _users.begin();
-	for( ; pIter != _users.end(); pIter++ )
-		if( (*pIter)->GetValue<std::string>( NAME ) == userName )
-		{
-			_users.erase( pIter );
-			return 0;
-		}
+	for( u32 i=0; i < _users.size(); i++ )
+		if( _users[ i ]->Equale( userName ) )
+			_users.erase( i );
 
 	return 1;
 }
 
-void CNrpInvention::Load( std::string fileName )
+void CNrpInvention::Load( const NrpText& fileName )
 {
 	INrpProject::Load( fileName );
-	LoadRequries_( fileName );
+	IniFile rv( fileName );
+
+	rv.Get( SECTION_REQUIRE_TECH, _techRequires );
+	rv.Get( SECTION_REQUIRE_SKILL, _skillRequires );
 }
 
-std::string CNrpInvention::_GetFileName()
+NrpText CNrpInvention::_GetFileName()
 {
 	return GetString( INTERNAL_NAME ) + ".invent";
 }
 
-std::string CNrpInvention::Save( const std::string& saveFolder, bool k )
+NrpText CNrpInvention::Save( const NrpText& saveFolder, bool k )
 {
-	std::string myFolder = OpFileSystem::CheckEndSlash( saveFolder );
+	NrpText myFolder = OpFileSystem::CheckEndSlash( saveFolder );
 
 	OpFileSystem::CreateDirectory( myFolder );
 
-	std::string fileName = myFolder + _GetFileName();
+	NrpText fileName = myFolder + _GetFileName();
 
 	assert( !OpFileSystem::IsExist( fileName ) );
 	INrpProject::Save( fileName );
-
+	IniFile sv( fileName );
 	assert( OpFileSystem::IsExist( fileName ) ); 
-	SaveRequires_( fileName );
-
-	for( size_t pos=0; pos < _users.size(); pos++ )
-		IniFile::Write( SECTIONS_USERS, KEY_USER( pos ), _users[ pos ]->GetString( NAME ), fileName );
+	
+	sv.Set( SECTION_REQUIRE_TECH, _techRequires );
+	sv.Set( SECTION_REQUIRE_SKILL, _skillRequires );
+	sv.SetArray< USERS >( SECTION_USERS, _users, CreateKeyUser, NAME, false );
 
 	return fileName;
 }
+
+bool CNrpInvention::Equale( const NrpText& name, const NrpText& company )
+{
+	return ( GetString( NAME ) == name || GetString( INTERNAL_NAME ) == name ) && ( GetString( COMPANYNAME ) == company );
+}
+
+NrpText CNrpInvention::ClassName()
+{
+	return CLASS_INVENTION;
+}
+
 }//end namespace nrp

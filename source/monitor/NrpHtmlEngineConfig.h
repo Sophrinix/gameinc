@@ -3,8 +3,6 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_HTMLENGCONFIG( "CNrpHtmlEngineConfig" );
-
 class CNrpHtmlEngineConfig : public INrpConfig
 {
 private:
@@ -12,7 +10,7 @@ private:
 
 public:
 	static CNrpHtmlEngineConfig& Instance();
-	static std::string ClassName() { return CLASS_HTMLENGCONFIG; }
+	static NrpText ClassName();
 };
 
 }//namespace nrp

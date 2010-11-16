@@ -6,11 +6,12 @@
 #include "nrpChartCtrl.h"
 #include "nrpChartAxis.h"
 #include "nrpChartSerie.h"
-#include "StrConversation.h"
+#include "Nrptext.h"
 using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACHART( "CLuaChart" );
 
 Luna< CLuaChart >::RegType CLuaChart::methods[] =			//реализуемы методы
 {
@@ -91,7 +92,7 @@ int CLuaChart::UpdateData( lua_State *L )			//обновление графиков
 	size_t serieNumber = (size_t)lua_tointeger( L, 2 );
 	void* buffer = lua_touserdata( L, 3 );
 	int lenght = lua_tointeger( L, 4 );
-	std::string dataType = lua_tostring( L, 5 );
+	NrpText dataType = lua_tostring( L, 5 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -136,5 +137,10 @@ int CLuaChart::SetOffsetPoints( lua_State *L )
 
 
 	return 1;
+}
+
+const char* CLuaChart::ClassName()
+{
+	return 	( CLASS_LUACHART );
 }
 }//namespace nrp

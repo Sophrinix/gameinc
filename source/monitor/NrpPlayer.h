@@ -3,19 +3,17 @@
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_REALPLAYER("RealPlayer");
 class CNrpCompany;
 
 class CNrpPlayer : public IUser
 {
 public:
-	CNrpPlayer( const std::string& name, CNrpCompany* ptrCmp );
-	CNrpPlayer( const std::string& fileName );
+	CNrpPlayer( const NrpText& name, CNrpCompany* ptrCmp );
+	CNrpPlayer( const NrpText& fileName );
 
 	~CNrpPlayer(void);
 
-	static std::string ClassName() { return CLASS_REALPLAYER; }
+	static NrpText ClassName();
 private:
 	CNrpCompany* company_;
 };

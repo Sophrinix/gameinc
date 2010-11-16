@@ -1,8 +1,11 @@
 #include "StdAfx.h"
 #include "nrpPda.h"
+#include "IniFile.h"
 
 namespace nrp
 {
+CLASS_NAME CLASS_PDAITEM( "CPdaItem" );
+CLASS_NAME CLASS_CNRPPDA( "CNrpPda" );
 
 CNrpPda::CNrpPda() : INrpConfig( CLASS_CNRPPDA, "" )
 {
@@ -17,52 +20,53 @@ CNrpPda::~CNrpPda()
 
 void CNrpPda::Clear()
 {
-	LIST_ITEM::iterator pItem = _items.begin();
-	for( ; pItem != _items.end(); pItem++ )
-		delete *pItem;
+	for( u32 i=0; i < _items.size(); i++ )
+		delete _items[ i ];
 
 	_items.clear();
 }
 
-std::string CNrpPda::Save( const std::string& fileName )
+NrpText CNrpPda::Save( const NrpText& fileName )
 {
-	LIST_ITEM::iterator pItem = _items.begin();
-	for( int k=0; pItem != _items.end(); pItem++, k++ )
+	IniFile sv( fileName );
+	for( u32 k=0; k < _items.size(); k++ )
 	{
-		std::string section = KEY_ITEM( k );
-		assert( (*pItem)->GetValue<std::string>( MESSAGE ).size() > 0 );
-		IniFile::Write( section, "message", (*pItem)->GetValue<std::string>( MESSAGE ), fileName );
-		IniFile::Write( section, "time", (*pItem)->GetValue<SYSTEMTIME>( STARTDATE ), fileName );
-		IniFile::Write( section, "action", (*pItem)->GetValue<std::string>( ACTION ), fileName );
+		CPdaItem* item = _items[ k ];
+		NrpText section = CreateKeyItem( k );
+		assert( item->GetValue<NrpText>( MESSAGE ).size() > 0 );
+		sv.Set( section, "message", item->GetValue<NrpText>( MESSAGE ) );
+		sv.Set( section, "time", item->GetValue<SYSTEMTIME>( STARTDATE ) );
+		sv.Set( section, "action", item->GetValue<NrpText>( ACTION ) );
 	}	
 
 	return fileName;
 }
 
-void CNrpPda::Load( const std::string& fileName )
+void CNrpPda::Load( const NrpText& fileName )
 {
 	Clear();
 
 	SYSTEMTIME timeDef;
 	memset( &timeDef, 0, sizeof( SYSTEMTIME ) );
+	IniFile rv( fileName );
 
 	for( int k=0; k < MAXDWORD; k++ )
 	{
-		std::string section = KEY_ITEM( k );
-		std::string mess = IniFile::Read( section, "message", std::string(""), fileName );
+		NrpText section = CreateKeyItem( k );
+		NrpText mess = rv.Get( section, "message", NrpText("") );
 		//читаем до первого пустого сообщения))
 		if( mess.size() > 0 )
 		{
 			AddItem( mess, 
-					IniFile::Read( section, "action", std::string(""), fileName ),
-					IniFile::Read( section, "time", timeDef, fileName ) );
+					rv.Get( section, "action", NrpText("") ),
+					rv.Get( section, "time", timeDef ) );
 		}
 		else 
 			break;
 	}
 }
 
-void CNrpPda::AddItem( const std::string message, const std::string& action, const SYSTEMTIME& lTime )
+void CNrpPda::AddItem( const NrpText message, const NrpText& action, const SYSTEMTIME& lTime )
 {
 	_items.push_back( new CPdaItem( message, action, lTime ) );
 	
@@ -92,4 +96,30 @@ const CPdaItem& CNrpPda::Current()
 
 	return valid ? *_items[ _currentIndex ] : CPdaItem( "", "", SYSTEMTIME() );
 }
+
+NrpText CNrpPda::ClassName()
+{
+	return CLASS_CNRPPDA;
+}
+
+
+NrpText CPdaItem::ClassName()
+{
+	return CLASS_PDAITEM;
+}
+
+CPdaItem::CPdaItem( const NrpText& m, const NrpText& a, const SYSTEMTIME& t ) : INrpConfig( CLASS_PDAITEM, "" )
+{
+	assert( m.size() > 0 && a.size() > 0 );
+
+	CreateValue<NrpText>( MESSAGE, m );
+	CreateValue<NrpText>( ACTION, a);
+	CreateValue<SYSTEMTIME>( STARTDATE, t );
+}
+
+CPdaItem::CPdaItem() : INrpConfig( CLASS_PDAITEM, "" )
+{
+
+}
+
 }//end namespace nrp

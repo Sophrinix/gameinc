@@ -1,4 +1,5 @@
 #pragma once
+#include "nrpText.h"
 
 namespace nrp
 {
@@ -6,8 +7,8 @@ namespace nrp
 namespace translate
 {
 
-const char* GetTranslate( const char* name );
-double GetNumber( const char* name );
+NrpText GetTranslate( const NrpText& name );
+double GetNumber( const NrpText& name );
 
 }//end namespace translate
 

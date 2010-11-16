@@ -3,18 +3,16 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_SCENARIO( "CNrpScenario" );
-
 class CNrpScenario : public INrpProject
 {
 public:
-	CNrpScenario( std::string name );
+	CNrpScenario( const NrpText& name );
 	~CNrpScenario(void);
 
-	std::string Save( const std::string& pathTo );
-	void Load( const std::string& pathTo );
+	NrpText Save( const NrpText& pathTo );
+	void Load( const NrpText& pathTo );
 
-	static std::string ClassName() { return CLASS_SCENARIO; }
+	static NrpText ClassName();
 };
 
 typedef CNrpScenario* PNrpScenario;

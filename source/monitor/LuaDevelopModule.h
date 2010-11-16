@@ -10,12 +10,11 @@ namespace nrp
 namespace nrp
 {
 
-CLASS_NAME CLASS_DEVELOPMODULE( "CLuaDevelopModule" );
-
 class CLuaDevelopModule : public ILuaProject<nrp::CNrpProjectModule>
 {
 public:
 	static Luna<CLuaDevelopModule>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaDevelopModule(lua_State *L);		
 	int GetLevel( lua_State* L );
@@ -26,8 +25,6 @@ public:
 	int Remove( lua_State* L );
 	int GetTexture( lua_State* L );
 	int GetParent( lua_State* L );
-
-	static const char* ClassName() { return CLASS_DEVELOPMODULE.c_str(); }	
 };
 
 }//namespace nrp

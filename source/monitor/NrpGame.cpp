@@ -12,19 +12,21 @@
 #include "OpFileSystem.h"
 #include "NrpHistory.h"
 #include "NrpGameEngine.h"
+#include "IniFile.h"
 
 #include <errno.h>
 #include <OleAuto.h>
 
 namespace nrp
 {
+CLASS_NAME CLASS_NRPGAME( "CNrpGame" );
 	
 void CNrpGame::InitializeOptions_()
 {
 	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
-	CreateValue<std::string>( COMPANYNAME, "" );
-	CreateValue<std::string>( NAME, "" );
-	CreateValue<std::string>( INTERNAL_NAME, "" );
+	CreateValue<NrpText>( COMPANYNAME, "" );
+	CreateValue<NrpText>( NAME, "" );
+	CreateValue<NrpText>( INTERNAL_NAME, "" );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
 	CreateValue<int>( MONEYONDEVELOP, 0 );
@@ -44,21 +46,21 @@ void CNrpGame::InitializeOptions_()
 	CreateValue<int>( CURRENTSOUNDRATING, 0 );
 	CreateValue<int>( LOCALIZATIONRATING, 0 );
 	CreateValue<int>( CURRENTBUGRATING, 0 );	
-	CreateValue<std::string>( GAME_ENGINE, "" );
-	CreateValue<std::string>( PREV_GAME, "" );
+	CreateValue<NrpText>( GAME_ENGINE, "" );
+	CreateValue<NrpText>( PREV_GAME, "" );
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
 	CreateValue<PNrpGameBox>( GBOX, NULL );
 	CreateValue<float>( FAMOUS, 0 );
 	CreateValue<bool>( GAMEISSALING, false );
 	CreateValue<CNrpScreenshot*>( GAMEIMAGELIST, NULL );
-	CreateValue<std::string>( GAMERETAILER, "" );
+	CreateValue<NrpText>( GAMERETAILER, "" );
 	CreateValue<int>( PLATFORMNUMBER, 0 );
 	CreateValue<int>( MODULE_NUMBER, 0 );
 	CreateValue<int>( USERNUMBER, 0 );
-	CreateValue<std::string>( DESCRIPTIONPATH, "" );
-	CreateValue<std::string>( TEXTURENORMAL, "" );
+	CreateValue<NrpText>( DESCRIPTIONPATH, "" );
+	CreateValue<NrpText>( TEXTURENORMAL, "" );
 	CreateValue<float>( READYWORKPERCENT, 1.f );
-	CreateValue<std::string>( VIEWIMAGE, "" );
+	CreateValue<NrpText>( VIEWIMAGE, "" );
 	_history = NULL;
 }
 
@@ -101,17 +103,22 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpCo
 		SetValue<CNrpScreenshot*>( GAMEIMAGELIST, pgList );
 }
 
-CNrpGame::CNrpGame( const std::string& fileName ) : INrpConfig( CLASS_NRPGAME, fileName )
+CNrpGame::CNrpGame( const NrpText& fileName ) : INrpConfig( CLASS_NRPGAME, fileName )
 {
 	InitializeOptions_();
 	Load( fileName );
+}
+
+CNrpGame::CNrpGame() : INrpConfig( CLASS_NRPGAME, "" )
+{
+
 }
 
 CNrpGame::~CNrpGame(void)
 {
 }
 
-std::string CNrpGame::Save( const std::string& saveFolder )
+NrpText CNrpGame::Save( const NrpText& saveFolder )
 {
 	bool upDirExist = OpFileSystem::IsExist( saveFolder );
 	assert( upDirExist );
@@ -119,8 +126,8 @@ std::string CNrpGame::Save( const std::string& saveFolder )
 	if( !upDirExist )
 		return "";
 	
-	std::string localFolder = OpFileSystem::CheckEndSlash( OpFileSystem::CheckEndSlash( saveFolder ) + GetString( NAME ) );
-	std::string saveFile = localFolder + "item.game";
+	NrpText localFolder = OpFileSystem::CheckEndSlash( OpFileSystem::CheckEndSlash( saveFolder ) + GetString( NAME ) );
+	NrpText saveFile = localFolder + "item.game";
 
 	OpFileSystem::CreateDirectory( localFolder );
 	INrpConfig::Save( saveFile );
@@ -130,22 +137,17 @@ std::string CNrpGame::Save( const std::string& saveFolder )
 		box->Save( localFolder + "box.ini" );
 	}
 
-	int i=0;
-	for( STRINGS::iterator gIter = _techs.begin(); 
-		 gIter != _techs.end(); 
-		 gIter++, i++ )
-		IniFile::Write( SECTION_TECHS, KEY_TECH(i), *gIter, saveFile );
+	IniFile sv( saveFile );
+	for( u32 i=0; i < _techs.size(); i++ )
+		 sv.Set( SECTION_TECHS, CreateKeyTech(i), _techs[ i ] );
 
-	i=0;
-	for( STRINGS::iterator gIter = _genres.begin(); 
-		gIter != _genres.end(); 
-		gIter++, i++ )
-		IniFile::Write( SECTION_GENRES, KEY_GENRE(i), *gIter, saveFile );
+	for( u32 i=0; i < _genres.size(); i++ )
+		sv.Set( SECTION_GENRES, CreateKeyGenre(i),_genres[ i ] );
 
 	return localFolder;
 }
 
-void CNrpGame::Load( const std::string& loadPath )
+void CNrpGame::Load( const NrpText& loadPath )
 {
 	bool mayLoad = OpFileSystem::IsExist( loadPath );
 	assert( mayLoad );
@@ -153,7 +155,7 @@ void CNrpGame::Load( const std::string& loadPath )
 	if( !mayLoad )
 		return;
 
-	std::string loadFolder, loadFile ;
+	NrpText loadFolder, loadFile ;
 	if( OpFileSystem::IsFolder( loadPath ) )
 	{
 		loadFolder = loadPath; 
@@ -162,8 +164,8 @@ void CNrpGame::Load( const std::string& loadPath )
 	}
 	else 
 	{
-		assert( OpFileSystem::GetExtension( loadPath ) == ".game" );
-		if( OpFileSystem::GetExtension( loadPath ) == ".game" )
+		assert( OpFileSystem::GetExtension( loadPath ).equals_ignore_case( ".game" ) );
+		if( OpFileSystem::GetExtension( loadPath ).equals_ignore_case( ".game" ) )
 		{
 			loadFile = loadPath;
 			loadFolder = OpFileSystem::UpDir( loadPath );
@@ -173,14 +175,14 @@ void CNrpGame::Load( const std::string& loadPath )
 	}
 
 	INrpConfig::Load( loadFile );
-
+	IniFile rv( loadFile );
 	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
-		_techs.push_back( IniFile::Read( SECTION_TECHS, KEY_TECH(i), std::string(""), loadFile ) );
+		_techs.push_back( rv.Get( SECTION_TECHS, CreateKeyTech(i), NrpText("") ) );
 
 	for( int i=0; i < GetValue<int>( GENRE_MODULE_NUMBER ); ++i )
-		_genres.push_back( IniFile::Read( SECTION_GENRES, KEY_GENRE(i), std::string(""), loadFile ) );
+		_genres.push_back( rv.Get( SECTION_GENRES, CreateKeyGenre(i), NrpText("") ) );
 
-	std::string boxIni = loadFolder + "box.ini";
+	NrpText boxIni = loadFolder + "box.ini";
 	if( OpFileSystem::IsExist( boxIni ) )
 	{
 		PNrpGameBox box = new CNrpGameBox( this );
@@ -197,10 +199,9 @@ void CNrpGame::Load( const std::string& loadPath )
 float CNrpGame::GetAuthorFamous()
 {
 	float summ = 0.1f;
-	DEVELOPERS_LIST::iterator uIter = _developers.begin();
-	for( ; uIter != _developers.end(); uIter++ )
+	for( u32 i=0; i < _developers.size(); i++ )
 	{
-		IUser* user = CNrpApplication::Instance().GetUser( *uIter );
+		IUser* user = CNrpApplication::Instance().GetUser( _developers[ i ] );
 		if( user )
 		{
 			summ += user->GetValue<float>( FAMOUS );
@@ -210,12 +211,12 @@ float CNrpGame::GetAuthorFamous()
 	return summ;
 }
 
-std::string CNrpGame::GetGenreName( size_t index )
+NrpText CNrpGame::GetGenreName( size_t index )
 {
 	return index < _genres.size() ? _genres[ index ] : "";
 }
 
-std::string CNrpGame::GetTechName( size_t index )
+NrpText CNrpGame::GetTechName( size_t index )
 {
     return index < _techs.size() ? _techs[ index ] : "";
 }
@@ -243,7 +244,7 @@ void CNrpGame::GameBoxSaling( int number )
 	//history_->AddStep( CURRENTTIME, number, price * number );
 }
 
-bool CNrpGame::IsGenreAvaible( const std::string& name )
+bool CNrpGame::IsGenreAvaible( const NrpText& name )
 {
 	for( size_t k=0; k < _genres.size(); k++ )
 		if( _genres[ k ] == name )
@@ -259,4 +260,10 @@ CNrpHistory* CNrpGame::GetHistory()
 
 	return _history;
 }
+
+NrpText CNrpGame::ClassName()
+{
+	return CLASS_NRPGAME;
+}
+
 }//namespace nrp

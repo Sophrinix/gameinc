@@ -3,13 +3,14 @@
 
 #include "LuaWindow.h"
 #include "NrpWindow.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "LuaButton.h"
 
 using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAWINDOW( "CLuaWindow" );
 
 Luna< CLuaWindow >::RegType CLuaWindow::methods[] = 
 {
@@ -104,4 +105,8 @@ int CLuaWindow::Draw( lua_State* L )
 	return 1;
 }
 
+const char* CLuaWindow::ClassName()
+{
+	return CLASS_LUAWINDOW;
+}
 }//namespace nrp

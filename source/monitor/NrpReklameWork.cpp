@@ -7,10 +7,11 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_REKLAMEWORK( "CNrpReklameWork" );
 
-CNrpReklameWork::CNrpReklameWork( const std::string& typeName, 
-								  const std::string& gameName )
-				:INrpConfig( CLASS_REKLAMEWORK, "" )
+CNrpReklameWork::CNrpReklameWork( const NrpText& typeName, 
+								  const NrpText& gameName )
+				: INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
 	SetValue( TECHTYPE, typeName );
@@ -21,17 +22,17 @@ void CNrpReklameWork::InitializeOptions_()
 {
 	CreateValue<int>( NUMBERDAY, 0 );
 	CreateValue<int>( LEVEL, 0 );
-	CreateValue<std::string>( NAME, "" );
-	CreateValue<std::string>( TECHTYPE, "" );
+	CreateValue<NrpText>( NAME, "" );
+	CreateValue<NrpText>( TECHTYPE, "" );
 	CreateValue<int>( DAYCOST, 0 );
 	CreateValue<float>( QUALITY, 0 );
 	CreateValue<float>( MAXQUALITY, 0 );
-	CreateValue<std::string>( GAMENAME, "" );
+	CreateValue<NrpText>( GAMENAME, "" );
 	CreateValue<bool>( FINISHED, false );
-	CreateValue<std::string>( TEXTURENORMAL, "" );
+	CreateValue<NrpText>( TEXTURENORMAL, "" );
 	CreateValue<int>( BALANCE, 0 );
-	CreateValue<std::string>( COMPANYNAME, "" );
-	CreateValue<std::string>( TYPEOBJECT, "" );
+	CreateValue<NrpText>( COMPANYNAME, "" );
+	CreateValue<NrpText>( TYPEOBJECT, "" );
 
 	SYSTEMTIME rt;
 	memset( &rt, 0, sizeof( rt ) );
@@ -43,7 +44,7 @@ CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLA
 	InitializeOptions_();
 	SetValue<int>( NUMBERDAY, p.GetValue<int>( NUMBERDAY ) );
 	SetValue<int>( LEVEL, p.GetValue<int>( LEVEL ) );
-	SetValue<std::string>( NAME, p.GetValue<std::string>( NAME ) );
+	SetString( NAME, p.GetString( NAME ) );
 	SetValue<int>( DAYCOST, p.GetValue<int>( DAYCOST ) );
 	SetValue<float>( QUALITY, p.GetValue<float>( QUALITY ) );
 	SetValue<float>( MAXQUALITY, p.GetValue<float>( MAXQUALITY ) );
@@ -53,10 +54,10 @@ CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLA
 	SetString( COMPANYNAME, p.GetString( COMPANYNAME ) );
 	
 	//надо проверять корректность загруженных данных
-	assert( !GetString( GAMENAME ).empty() );
+	assert( GetString( GAMENAME ).size() );
 }
 
-CNrpReklameWork::CNrpReklameWork( const std::string& fileName ) : INrpConfig( CLASS_REKLAMEWORK, "" )
+CNrpReklameWork::CNrpReklameWork( const NrpText& fileName ) : INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
 	Load( fileName );
@@ -66,7 +67,7 @@ CNrpReklameWork::~CNrpReklameWork(void)
 {
 }
 
-void CNrpReklameWork::Load( const std::string& fileName )
+void CNrpReklameWork::Load( const NrpText& fileName )
 {
 	INrpConfig::Load( fileName );
 }
@@ -79,12 +80,12 @@ void CNrpReklameWork::Update( const CNrpReklameWork* p )
 
 void CNrpReklameWork::BeginNewDay()
 {
-	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( GetValue<std::string>( COMPANYNAME ) );
+	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( GetString( COMPANYNAME ) );
 	assert( cmp != NULL );
 
 	if( cmp != NULL )
 	{
-		const std::string name = GetValue<std::string>( GAMENAME );
+		NrpText name = GetString( GAMENAME );
 		//сначала попробуем получить указатель на существующую игру
 		INrpConfig* game = reinterpret_cast< INrpConfig* >( cmp->GetGame( name ) );
 
@@ -111,14 +112,25 @@ void CNrpReklameWork::BeginNewDay()
 	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) == 0 );
 }
 
-std::string CNrpReklameWork::Save( const std::string& saveFolder )
+NrpText CNrpReklameWork::Save( const NrpText& saveFolder )
 {
 	assert( OpFileSystem::IsExist( saveFolder ) );
 	//должно получиться что-то вроде Компания_Продукт.Тип
-	std::string fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + GetString( COMPANYNAME ) + "_";
+	NrpText fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + GetString( COMPANYNAME ) + "_";
 	fileName += (GetString( GAMENAME ) + "." + GetString( TECHTYPE ));
 	INrpConfig::Save( fileName );
 
 	return fileName;
 }
+
+bool CNrpReklameWork::Equale( const NrpText& type, const NrpText& gName )
+{
+	return ( GetString( TECHTYPE ) == type && GetString( GAMENAME ) == gName );
+}
+
+NrpText CNrpReklameWork::ClassName()
+{
+	return CLASS_REKLAMEWORK;
+}
+
 }//end namespace nrp

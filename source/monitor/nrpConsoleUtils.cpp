@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "nrpConsoleUtils.h"
 
 using namespace irr;
@@ -7,10 +7,10 @@ using namespace core;
 
 //=====================================================================================
 
-std::ostream& operator<<( std::ostream& os, const std::wstring& ws)
+/*std::ostream& operator<<( std::ostream& os, const std::wstring& ws)
 {
 	return (os << nrp::conv::ToStr(ws));
-}
+}*/
 //=====================================================================================
 
 CNrpConsoleError::CNrpConsoleError(const irr::core::stringw str, const irr::s32 code) : errorMessage(str), errorCode(code)

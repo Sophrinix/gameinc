@@ -3,17 +3,15 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_LICENSE( "CNrpLicense" );
-
 class CNrpLicense : public INrpProject
 {
 public:
-	CNrpLicense(std::string name);
+	CNrpLicense(const NrpText& name);
 	~CNrpLicense(void);
-	std::string Save( const std::string& pathTo );
-	void Load( const std::string& pathTo );
+	NrpText Save( const NrpText& pathTo );
+	void Load( const NrpText& pathTo );
 
-	static std::string ClassName() { return CLASS_LICENSE; }
+	static NrpText ClassName();
 };
 
 typedef CNrpLicense* PNrpLicense;

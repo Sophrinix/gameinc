@@ -7,7 +7,7 @@
 #include "NrpGuiTimeDestructor.h"
 #include "NrpGuiLigthing.h"
 #include "NrpMiniMap.h"
-#include "StrConversation.h"
+#include "Nrptext.h"
 #include "nrpGlobalMap.h"
 #include "nrpChartCtrl.h"
 #include "nrpGuiLinkBox.h"
@@ -31,6 +31,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAGUI( "CLuaGuiEnvironment" );
 
 Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] = 
 {
@@ -81,13 +82,13 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	{0,0}
 };
 
-CLuaGuiEnvironment::CLuaGuiEnvironment(lua_State *L) : ILuaObject(L, "CLuaGuiEnvironment")
+CLuaGuiEnvironment::CLuaGuiEnvironment(lua_State *L) : ILuaObject(L, CLASS_LUAGUI )
 {}
 
 int CLuaGuiEnvironment::RemoveAnimators( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, ("Function " + ObjectTypeName() + ":RemoveAnimators not need any parameter").c_str() );
+	luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":RemoveAnimators not need any parameter") ) );
 
 	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( L, 2 );
 
@@ -99,9 +100,9 @@ int CLuaGuiEnvironment::RemoveAnimators( lua_State* L )
 int CLuaGuiEnvironment::AddTable( lua_State *vm )
 {
 	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 7, 7, "Function  CLuaGuiEnvironment:AddTable need 7 parameter");
+	luaL_argcheck(vm, argc == 7, 7, _ErrStr(":AddTable need 7 parameter") );
 
-	core::recti rectangle = ReadRect_( vm, 2 );
+	core::recti rectangle = _ReadRect( vm, 2 );
 
 	s32 id = lua_tointeger( vm, 6 );
 	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 7 );
@@ -119,7 +120,7 @@ int CLuaGuiEnvironment::AddTable( lua_State *vm )
 int CLuaGuiEnvironment::GetRootGUIElement( lua_State *vm )
 {
 	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 1, 1, "Function CLuaSceneManager:GetRootGUIElement not need any parameter");
+	luaL_argcheck(vm, argc == 1, 1, _ErrStr( ":GetRootGUIElement not need any parameter") );
 
 	gui::IGUIElement* elm = NULL;
 
@@ -136,7 +137,7 @@ int CLuaGuiEnvironment::AddWindow( lua_State *vm )
 
 	const char* textureName = lua_tostring( vm, 2 );
 	assert( textureName != NULL );
-	core::recti rectangle = ReadRect_( vm, 3 );
+	core::recti rectangle = _ReadRect( vm, 3 );
 	s32 id = lua_tointeger( vm, 7 );
 	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 8 );
 
@@ -204,8 +205,8 @@ int CLuaGuiEnvironment::AddRectAnimator( lua_State *vm )
 
 	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 2 );
 	core::recti minr, maxr;
-	minr = ReadRect_( vm, 3 );
-	maxr = ReadRect_( vm, 7 );
+	minr = _ReadRect( vm, 3 );
+	maxr = _ReadRect( vm, 7 );
 	s32 step = lua_tointeger( vm, 11 );
 
 	gui::IGUIAnimator* anim = NULL; 
@@ -236,7 +237,7 @@ int CLuaGuiEnvironment::AddMiniMap( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 7, 7, "Function CLuaGuiEnvironment:AddMiniMap need 6 parameter");
 
-	core::recti rectangle = ReadRect_( vm, 2 );
+	core::recti rectangle = _ReadRect( vm, 2 );
 
 	s32 id = lua_tointeger( vm, 6 );
 	scene::ISceneNode* parentNode = (scene::ISceneNode*)lua_touserdata( vm, 7 );
@@ -255,16 +256,15 @@ int CLuaGuiEnvironment::AddButton( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddButton need 7 parameter");
 
-	core::recti rectangle = ReadRect_( vm, 2 );
+	core::recti rectangle = _ReadRect( vm, 2 );
 
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 6 );
 	s32 id = lua_tointeger( vm, 7 );
-	const char* text = lua_tostring( vm, 8 );
-	assert( text != NULL );
+	NrpText text( lua_tostring( vm, 8 ) );
 
 	gui::IGUIElement* elm = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN elm = object_->addButton( rectangle,  parent, id, conv::ToWide( text ).c_str() );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addButton( rectangle,  parent, id, text.ToWide() );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -279,7 +279,7 @@ int CLuaGuiEnvironment::AddScrollBar( lua_State *vm )
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddScrollBar need 7 parameter");
 
 	bool gorizontal = lua_toboolean( vm, 2 ) > 0;
-	core::recti rectangle = ReadRect_( vm, 3 );
+	core::recti rectangle = _ReadRect( vm, 3 );
 
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 7 );
 	s32 id = lua_tointeger( vm, 8 );
@@ -313,14 +313,12 @@ int CLuaGuiEnvironment::GetElementByName( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 2, 2, "Function CLuaSceneManager:GetElementByName need one parameter string ");
 
-	const char* name = lua_tostring(vm, 2);	
-	assert( name != NULL );
-
-	gui::IGUIElement* sg = NULL;
+	NrpText name( lua_tostring(vm, 2) );	
 	
-	IF_OBJECT_NOT_NULL_THEN sg = object_->getRootGUIElement()->getChildenFromName( conv::ToWide( name ).c_str(), true );
+	gui::IGUIElement* sg = NULL;	
+	IF_OBJECT_NOT_NULL_THEN sg = object_->getRootGUIElement()->getChildenFromName( name.ToWide(), true );
+	
 	lua_pushlightuserdata( vm, (void*)sg );
-
 	return 1;
 }
 
@@ -329,7 +327,7 @@ int CLuaGuiEnvironment::AddCircleScrollBar( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 7, 7, "Function CLuaSceneManager:GetElementByID need 6 parameter ");
 
-	core::recti rectangle = ReadRect_( vm, 2 );
+	core::recti rectangle = _ReadRect( vm, 2 );
 
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 6 );
 	s32 id = lua_tointeger( vm, 7 );
@@ -348,7 +346,7 @@ int CLuaGuiEnvironment::AddGlobalMap( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 6, 6, "Function CLuaSceneManager:GetElementByID need 5 parameter ");
 
-	core::recti rectangle = ReadRect_( vm, 2 );
+	core::recti rectangle = _ReadRect( vm, 2 );
 
 	s32 id = lua_tointeger( vm, 6 );
 
@@ -366,7 +364,7 @@ int CLuaGuiEnvironment::AddChart( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 7, 7, "Function CLuaSceneManager:AddChart need 6 parameter ");
 
-	core::recti rectangle = ReadRect_( vm, 2 );
+	core::recti rectangle = _ReadRect( vm, 2 );
 
 	s32 id = lua_tointeger( vm, 6 );
 	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( vm, 7 );
@@ -388,7 +386,7 @@ int CLuaGuiEnvironment::AddComboBox( lua_State* vm )
 	const char* texturepath = lua_tostring( vm, 2 );
 	assert( texturepath != NULL );
 
-	core::recti rectangle = ReadRect_( vm, 3 );
+	core::recti rectangle = _ReadRect( vm, 3 );
 
 	s32 id = lua_tointeger( vm, 7 );
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 8 );	
@@ -409,17 +407,16 @@ int CLuaGuiEnvironment::AddEdit( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddEdit need 7 parameter");
 
-	const char* text = lua_tostring( vm, 2 );
-	assert( text != NULL );
+	NrpText text( lua_tostring( vm, 2 ) );
 
-	core::recti rectangle = ReadRect_( vm, 3 );
+	core::recti rectangle = _ReadRect( vm, 3 );
 
 	s32 id = lua_tointeger( vm, 7 );
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 8 );	
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = object_->addEditBox( conv::ToWide( text ).c_str(), rectangle, true, parent, id );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addEditBox( text.ToWide(), rectangle, true, parent, id );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -433,17 +430,16 @@ int CLuaGuiEnvironment::AddLabel( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddLabel need 7 parameter");
 
-	const char* text = lua_tostring( vm, 2 );
-	assert( text != NULL );
+	NrpText text( lua_tostring( vm, 2 ) );
 
-	core::recti rectangle = ReadRect_( vm, 3 );
+	core::recti rectangle = _ReadRect( vm, 3 );
 
 	s32 id = lua_tointeger( vm, 7 );
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 8 );	
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = object_->addStaticText( conv::ToWide( text ).c_str(), rectangle, false, true, parent, id, false );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addStaticText( text.ToWide(), rectangle, false, true, parent, id, false );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -497,17 +493,16 @@ int CLuaGuiEnvironment::AddImage( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddImage need 7 parameter");
 
-	core::recti rectangle = ReadRect_( vm, 2 );
+	core::recti rectangle = _ReadRect( vm, 2 );
 	
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 6 );	
 
 	s32 id = lua_tointeger( vm, 7 );
-	const char* text = lua_tostring( vm, 8 );
-	assert( text != NULL );
+	NrpText text( lua_tostring( vm, 8 ) );
 
 	gui::IGUIElement* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = object_->addImage( rectangle, parent, id, conv::ToWide( text ).c_str() );
+	IF_OBJECT_NOT_NULL_THEN elm = object_->addImage( rectangle, parent, id, text.ToWide() );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -551,7 +546,7 @@ int CLuaGuiEnvironment::AddProgressBar( lua_State* vm )
 	luaL_argcheck(vm, argc == 7, 7, "Function CLuaGuiEnvironment:AddProgressBar need 6 parameter");
 
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 2 );	
-	core::recti rectangle = ReadRect_( vm, 3 );
+	core::recti rectangle = _ReadRect( vm, 3 );
 	s32 iid = lua_tointeger( vm, 7 );
 
 	gui::IGUIElement* elm = NULL;
@@ -570,7 +565,7 @@ int CLuaGuiEnvironment::AddTabControl( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 7, 7, "Function CLuaGuiEnvironment:AddTabControl need 6 parameter");
 
-	core::recti rectangle = ReadRect_( vm, 2 );
+	core::recti rectangle = _ReadRect( vm, 2 );
 	s32 iid = lua_tointeger( vm, 6 );
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 7 );	
 	
@@ -589,13 +584,12 @@ int CLuaGuiEnvironment::AddTab( lua_State* vm )
 	luaL_argcheck(vm, argc == 4, 4, "Function CLuaGuiEnvironment:AddTab need 3 parameter");
 
 	gui::IGUITabControl* parent = (gui::IGUITabControl*)lua_touserdata( vm, 2 );	
-	const char* name = lua_tostring( vm, 3 );
-	assert( name != NULL );
+	NrpText name( lua_tostring( vm, 3 ) ); 
 	int id = lua_tointeger( vm, 4 );
 
 	gui::IGUITab* elm = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN elm = parent->addTab( conv::ToWide( name ).c_str(), id );
+	IF_OBJECT_NOT_NULL_THEN elm = parent->addTab( name.ToWide(), id );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
@@ -609,9 +603,8 @@ int CLuaGuiEnvironment::AddLinkBox( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddLinkModule need 7 parameter");
 
-	const char* name = lua_tostring( vm, 2 );
-	assert( name != NULL );
-	core::recti rectangle = ReadRect_( vm, 3 );
+	NrpText name( lua_tostring( vm, 2 ) );
+	core::recti rectangle = _ReadRect( vm, 3 );
 	s32 iid = lua_tointeger( vm, 7 );
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 8 );	
 
@@ -621,7 +614,7 @@ int CLuaGuiEnvironment::AddLinkBox( lua_State* vm )
 	{
 		elm = object_->addLinkBox( parent, iid, rectangle );
 		if( elm )
-			elm->setText(conv:: ToWide( name ).c_str() );
+			elm->setText( name.ToWide() );
 	}
 
 	lua_pop( vm, argc );
@@ -691,7 +684,7 @@ int CLuaGuiEnvironment::AddComponentListBox( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 7, 7, "Function CLuaSceneManager:AddComponentList need 7 parameter");
 
-	core::recti rectangle = ReadRect_( L, 2 );
+	core::recti rectangle = _ReadRect( L, 2 );
 	s32 iid = lua_tointeger( L, 6 );
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( L, 7 );	
 
@@ -711,7 +704,7 @@ int CLuaGuiEnvironment::AddListBox( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 7, 7, "Function CLuaSceneManager:AddComponentList need 7 parameter");
 
-	core::recti rectangle = ReadRect_( L, 2 );
+	core::recti rectangle = _ReadRect( L, 2 );
 	s32 iid = lua_tointeger( L, 6 );
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( L, 7 );	
 
@@ -732,8 +725,7 @@ int CLuaGuiEnvironment::MessageBox( lua_State* L )
 	core::array< const char* > funcs; 
 	luaL_argcheck(L, argc == 6, 6, "Function CLuaSceneManager:MessageBox need 6 parameter");
 
-	const char* text = lua_tostring( L, 2 );
-	assert( text != NULL );
+	NrpText text( lua_tostring( L, 2 ) );
 	bool btnYesVisible = lua_toboolean( L, 3 )>0;
 	bool btnNoVisible = lua_toboolean( L, 4 )>0;
 
@@ -744,7 +736,7 @@ int CLuaGuiEnvironment::MessageBox( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		gui::IGUIWindow* wnd = object_->addMessageBox( conv::ToWide( text ).c_str(), flags, funcs );
+		gui::IGUIWindow* wnd = object_->addMessageBox( text.ToWide(), flags, funcs );
 		if( gui::CNrpWindow* nrpw = dynamic_cast< gui::CNrpWindow* >( wnd ) )
 			nrpw->setModal();
 	}
@@ -757,7 +749,7 @@ int CLuaGuiEnvironment::AddPictureFlow( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 7, 7, "Function CLuaSceneManager:AddPictureFlow need 6 parameter");
 
-	core::recti rectangle = ReadRect_( L, 2 );
+	core::recti rectangle = _ReadRect( L, 2 );
 	s32 iid = lua_tointeger( L, 6 );
 	u32 minside = min( rectangle.getWidth(), rectangle.getHeight() );
 	core::recti pictureRect( core::position2di( 0, 0 ), core::dimension2du( minside, minside ) );
@@ -818,7 +810,7 @@ int CLuaGuiEnvironment::AddTechMap( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 7, 7, "Function  CLuaGuiEnvironment:AddTechMap need 7 parameter");
 
-	core::recti rectangle = ReadRect_( vm, 2 );
+	core::recti rectangle = _ReadRect( vm, 2 );
 
 	s32 id = lua_tointeger( vm, 6 );
 	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 7 );
@@ -857,8 +849,7 @@ int CLuaGuiEnvironment::AddTimer( lua_State* L )
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaGuiEnvironment:FadeOut need int, bool parameter" );
 
 	int time = lua_tointeger( L, 2 );
-	const char* action = lua_tostring( L, 3 );
-	assert( action != NULL );
+	NrpText action( lua_tostring( L, 3 ) );
 
 	gui::CNrpTimer* timer = NULL;
 	IF_OBJECT_NOT_NULL_THEN 
@@ -876,12 +867,11 @@ int CLuaGuiEnvironment::AddTextRunner( lua_State* vm )
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaGuiEnvironment:AddTextRunner need 2 parameter");
 
 	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 2 );
-	const char* text = lua_tostring( vm, 3 );
+	NrpText text( lua_tostring( vm, 3 ) );
 
-	assert( text != NULL );
 	gui::IGUIAnimator* anim = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN anim = object_->addTextRunnerAnimator( parent, conv::ToWide( text ).c_str() );
+	IF_OBJECT_NOT_NULL_THEN anim = object_->addTextRunnerAnimator( parent, text.ToWide() );
 
 	lua_pushlightuserdata( vm, (void*)anim );
 
@@ -895,10 +885,8 @@ int CLuaGuiEnvironment::AddLigthing( lua_State* L )
 
 	gui::IGUIElement* p1 = (gui::IGUIElement*)lua_touserdata( L, 2 );
 	gui::IGUIElement* p2 = (gui::IGUIElement*)lua_touserdata( L, 3 );
-	const char* textureName = lua_tostring( L, 4 );
+	NrpText textureName( lua_tostring( L, 4 ) );
 	int timeToDeath = lua_tointeger( L, 5 );
-
-	assert( textureName != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
@@ -911,4 +899,8 @@ int CLuaGuiEnvironment::AddLigthing( lua_State* L )
 	return 1;
 }
 
+const char* CLuaGuiEnvironment::ClassName()
+{
+	return ( CLASS_LUAGUI );
+}
 }//namespace nrp

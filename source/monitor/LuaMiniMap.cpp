@@ -1,15 +1,15 @@
 #include "StdAfx.h"
 #include <IVideoDriver.h>
-#include <string>
 #include "LuaMiniMap.h"
 #include "NrpMiniMap.h"
 #include "nrpEngine.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 
 using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAMINIMAP( "CLuaMiniMap" );
 
 Luna< CLuaMiniMap >::RegType CLuaMiniMap::methods[] = 
 {
@@ -63,4 +63,8 @@ int CLuaMiniMap::SetOnRotateAction( lua_State *L )
 	return 1;
 }
 
+const char* CLuaMiniMap::ClassName()
+{
+	return ( CLASS_LUAMINIMAP );
+}
 }//namespace nrp

@@ -1,10 +1,9 @@
 #pragma once
 #include "nrpConfig.h"
+#include <irrArray.h>
 
 namespace nrp
 {
-CLASS_NAME CLASS_NRPGAME( "CNrpGame" );
-
 class CNrpGameProject;
 class CNrpCompany;
 class CNrpDevelopGame;
@@ -35,29 +34,29 @@ OPTION_NAME GAMERETAILER( "gameRetailer" );
 class CNrpGame : public INrpConfig
 {
 public:
-	typedef std::vector< std::string > STRINGS;
+	typedef irr::core::array< NrpText > STRINGS;
 public:
-	CNrpGame( const std::string& fileName );
+	CNrpGame( const NrpText& fileName );
 	~CNrpGame(void);
 
 	CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany );
 
-	std::string GetTechName( size_t index );
-	std::string GetGenreName( size_t index );
-	bool IsGenreAvaible( const std::string& name );
+	NrpText GetTechName( size_t index );
+	NrpText GetGenreName( size_t index );
+	bool IsGenreAvaible( const NrpText& name );
 
 	float GetAuthorFamous();
 
 	CNrpHistory* GetHistory();
 	void GameBoxSaling( int number );
 
-	std::string Save( const std::string& saveFolder );
-	void Load( const std::string& loadFolder );
+	NrpText Save( const NrpText& saveFolder );
+	void Load( const NrpText& loadFolder );
 
-	static std::string ClassName() { return CLASS_NRPGAME; }
+	static NrpText ClassName();
 private:
 	void InitializeOptions_();
-	CNrpGame() : INrpConfig( CLASS_NRPGAME, "" ) {};
+	CNrpGame();;
 	
 	STRINGS _developers;
 	STRINGS _genres;

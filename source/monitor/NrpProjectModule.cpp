@@ -2,30 +2,33 @@
 #include "NrpProjectModule.h"
 #include "IUser.h"
 #include "INrpDevelopProject.h"
-#include <assert.h>
 #include "OpFileSystem.h"
+#include "IniFile.h"
+
+#include <assert.h>
 
 namespace nrp
 {
+CLASS_NAME CLASS_PROJECTMODULE( "CNrpProjectModule" );
 
 CNrpProjectModule::CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProject )
 	: IWorkingModule( pTech->GetValue<PROJECT_TYPE>( TECHGROUP ), CLASS_PROJECTMODULE )
 {
 	InitializeOptions_();
 
-	SetValue<std::string>( NAME, pTech->GetValue<std::string>( NAME ) );
+	SetValue<NrpText>( NAME, pTech->GetString( NAME ) );
 	SetValue<int>( TECHGROUP, pTech->GetValue<int>( TECHGROUP ) );
 	SetValue<int>( TECHTYPE, pTech->GetValue<int>( TECHTYPE ) );
 	SetValue<float>( BASE_CODE, pTech->GetValue<float>( BASE_CODE ) );
 	SetValue<float>( ENGINE_CODE, pTech->GetValue<float>( ENGINE_CODE ) );
-	SetValue<std::string>( INTERNAL_NAME, pTech->GetString( INTERNAL_NAME) );
-	SetValue<std::string>( TEXTURENORMAL, pTech->GetValue<std::string>( TEXTURENORMAL ) );
+	SetValue<NrpText>( INTERNAL_NAME, pTech->GetString( INTERNAL_NAME) );
+	SetValue<NrpText>( TEXTURENORMAL, pTech->GetString( TEXTURENORMAL ) );
 	SetValue<int>( LEVEL, pTech->GetValue<int>( LEVEL ) );
 	SetValue<INrpProject*>( PARENT, pProject );
 	SetValue<int>( QUALITY, pTech->GetValue<int>( QUALITY ) );
 
-	techRequires_ = pTech->GetTechRequires();
-	skillRequires_ = pTech->GetSkillRequires();
+	CopyMapTo( _techRequires, pTech->GetTechRequires() );
+	CopyMapTo( _skillRequires, pTech->GetSkillRequires() );
 }
 
 CNrpProjectModule::CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject* pProject )
@@ -36,13 +39,18 @@ CNrpProjectModule::CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject* pPr
 	SetValue<INrpDevelopProject*>( PARENT, pProject );
 }
 
+CNrpProjectModule::CNrpProjectModule() : IWorkingModule( PROJECT_TYPE(0), CLASS_PROJECTMODULE )
+{
+
+}
+
 CNrpProjectModule::~CNrpProjectModule(void)
 {
 }
 
 void CNrpProjectModule::InitializeOptions_()
 {
-	CNrpTechnology::InitializeOptions_();
+	CNrpTechnology::_InitializeOptions();
 
 	CreateValue<IUser*>( LASTWORKER, NULL );
 	CreateValue<IUser*>( COMPONENTLIDER, NULL );
@@ -73,10 +81,10 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 	if( GetValue<int>( CODEPASSED ) < GetValue<int>( CODEVOLUME) )
 	{
 		int reqSkill = 0;
-		REQUIRE_MAP::iterator sIter = skillRequires_.begin();
+		REQUIRE_MAP::Iterator sIter = _skillRequires.getIterator();
 		float teamKoeff = _GetWorkKoeffForUser( ptrUser );
-		for( ; sIter != skillRequires_.end(); sIter++ )
-			reqSkill += ptrUser->GetSkill( sIter->first );
+		for( ; !sIter.atEnd(); sIter++ )
+			reqSkill += ptrUser->GetSkill( sIter->getKey() );
 
 		if( reqSkill < 10 )
 			reqSkill = 10;
@@ -116,36 +124,47 @@ float CNrpProjectModule::_GetWorkKoeffForUser( IUser* ptrUser )
 	return teamKoef[ _users.size() >= 9 ? 9 : _users.size() ];
 }
 
-std::string CNrpProjectModule::Save( const std::string& saveFolder )
+NrpText CNrpProjectModule::Save( const NrpText& saveFolder )
 {
 	OpFileSystem::CreateDirectory( saveFolder );
 
-	std::string fileName = saveFolder + GetValue<std::string>( NAME ) + ".devmod";
+	NrpText fileName = saveFolder + GetString( NAME ) + ".devmod";
 	assert( !OpFileSystem::IsExist( fileName ) );
 
 	INrpProject::Save( fileName );
-	SaveRequires_( fileName );
+	IniFile sv( fileName );
+
+	sv.Set( SECTION_REQUIRE_TECH, _techRequires );
+	sv.Set( SECTION_REQUIRE_SKILL, _skillRequires );
 
 	return saveFolder;
 }
 
-void CNrpProjectModule::Load( const std::string& fileName )
+void CNrpProjectModule::Load( const NrpText& fileName )
 {
 	assert( OpFileSystem::IsExist( fileName ) );
 		
 	INrpProject::Load( fileName );
-	LoadRequries_( fileName );
+	IniFile rv( fileName );
+	rv.Get( SECTION_REQUIRE_TECH, _techRequires );
+	rv.Get( SECTION_REQUIRE_SKILL, _skillRequires );
 }
 
-int CNrpProjectModule::RemoveUser( const std::string& userName )
+int CNrpProjectModule::RemoveUser( const NrpText& userName )
 {
-	for( USER_LIST::iterator pIter=_users.begin(); pIter != _users.end(); pIter++ )
-		if( (*pIter)->GetValue<std::string>( NAME ) == userName )
+	for( u32 i=0; i < _users.size(); i++ )
+		if( _users[ i ]->Equale( userName ) )
 		{
-			_users.erase( pIter );
+			_users.erase( i );
 			return 1;
 		}
 
 	return 0;
 }
+
+NrpText CNrpProjectModule::ClassName()
+{
+	return CLASS_PROJECTMODULE;
+}
+
 }//end namespace nrp

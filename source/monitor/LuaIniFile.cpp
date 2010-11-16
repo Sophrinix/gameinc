@@ -5,6 +5,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAINIFILE( "CLuaIniFile" );
 
 Luna< CLuaIniFile >::RegType CLuaIniFile::methods[] =			//реализуемы методы
 {
@@ -17,14 +18,16 @@ Luna< CLuaIniFile >::RegType CLuaIniFile::methods[] =			//реализуемы методы
 	{0,0}
 };
 
-CLuaIniFile::CLuaIniFile(lua_State *L)	: ILuaObject(L, "CLuaIniFile")	//конструктор
+CLuaIniFile::CLuaIniFile(lua_State *L)	: ILuaObject(L, CLASS_LUAINIFILE)	//конструктор
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaIniFile::CLuaIniFile need nil, string parameter");
 
 	const char* fn = lua_tostring( L, 2 );
 	assert( fn != NULL );
-	fileName_ = fn;
+
+	if( !_ini )
+		_ini = new IniFile( fn );
 }
 
 int CLuaIniFile::ReadInteger( lua_State* L )
@@ -37,7 +40,8 @@ int CLuaIniFile::ReadInteger( lua_State* L )
 	int defaultValue = lua_tointeger( L, 4 );
 	assert( section != NULL || key == NULL );
 	int resultt = 0;
-	resultt = IniFile::Read( section, key, (int)defaultValue, fileName_ );
+
+	resultt = _ini->Get( section, key, (int)defaultValue );
 
 	lua_pushinteger( L, resultt );
 
@@ -49,15 +53,13 @@ int CLuaIniFile::ReadString( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 4, 4, "Function CLuaIniFile::ReadString need string parameter");
 
-	const char* section = lua_tostring( L, 2 );
-	const char* key = lua_tostring( L, 3 );
-	const char* defaultValue = lua_tostring( L, 4 );
-	assert( section != NULL || key == NULL );
-	std::string resultt;
-	resultt = IniFile::Read( section, key, (std::string)defaultValue, fileName_ );
+	NrpText section = lua_tostring( L, 2 );
+	NrpText key = lua_tostring( L, 3 );
+	NrpText defaultValue = lua_tostring( L, 4 );
+	NrpText resultt;
+	resultt = _ini->Get( section, key, defaultValue );
 
-	lua_pushstring( L, resultt.c_str() );
-
+	lua_pushstring( L, resultt );
 	return 1;
 }
 
@@ -66,15 +68,14 @@ int CLuaIniFile::ReadFloat( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 4, 4, "Function CLuaIniFile::ReadFloat need string parameter");
 
-	const char* section = lua_tostring( L, 2 );
-	const char* key = lua_tostring( L, 3 );
+	NrpText section = lua_tostring( L, 2 );
+	NrpText key = lua_tostring( L, 3 );
 	float defaultValue = (float)lua_tonumber( L, 4 );
-	assert( section != NULL || key == NULL );
+
 	float resultt = 0;
-	resultt = IniFile::Read( section, key, defaultValue, fileName_ );
+	resultt = _ini->Get( section, key, defaultValue );
 
 	lua_pushnumber( L, resultt );
-
 	return 1;
 }
 
@@ -83,14 +84,13 @@ int CLuaIniFile::ReadTime( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaIniFile::ReadFloat need string parameter");
 
-	const char* section = lua_tostring( L, 2 );
-	const char* key = lua_tostring( L, 3 );
+	NrpText section = lua_tostring( L, 2 );
+	NrpText key = lua_tostring( L, 3 );
 
 	SYSTEMTIME time;
 	memset( &time, 0, sizeof( SYSTEMTIME ) );
-	assert( section != NULL || key == NULL );
 
-	time = IniFile::Read( section, key, time, fileName_ );
+	time = _ini->Get( section, key, time );
 
 	assert( time.wYear > 0 && time.wMonth > 0 && time.wMonth <= 12 && 
 			time.wDay > 0 && time.wDay <= 31 );
@@ -104,5 +104,14 @@ int CLuaIniFile::ReadTime( lua_State* L )
 	return 5;
 }
 
+CLuaIniFile::~CLuaIniFile()
+{
+	delete _ini;
+}
+
+const char* CLuaIniFile::ClassName()
+{
+	return ( CLASS_LUAINIFILE );
+}
 
 }//namespace nrp

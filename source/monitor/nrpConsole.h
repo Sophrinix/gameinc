@@ -4,8 +4,6 @@
 #include "nrpCommandDispatcher.h"
 #include "nrpMessageSink.h"
 #include "nrpConsoleUtils.h"
-#include <vector>
-#include <string>
 #include <irrlicht.h>
 
 namespace irr
@@ -48,9 +46,10 @@ private:
 	void MoveCursor_( bool leftStep );
 	
 	CRITICAL_SECTION cs_dataaccess_;	
+	typedef core::array< core::stringw > STRINGS;
 
-	std::vector< core::stringw > console_messages_;								//что выводится на консоль		
-	std::vector< core::stringw > console_history_;								//история комманд
+	STRINGS console_messages_;								//что выводится на консоль		
+	STRINGS console_history_;								//история комманд
 	u32 consoleHistoryIndex_;
 
 	typedef enum { NONE=0, UPLIGTH, DOWNLIGTH } TOGGLE_TYPE;

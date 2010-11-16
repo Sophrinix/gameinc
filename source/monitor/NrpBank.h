@@ -1,31 +1,28 @@
 #pragma once
 #include "nrpConfig.h"
-#include <vector>
+#include "nrpArrays.h"
 
 namespace nrp
 {
-CLASS_NAME CLASS_BANK( "CNrpBank" );
-
 OPTION_NAME LOANNUMBER( "loanNumber" );
 class CNrpLoan;
 	
 class CNrpBank : public INrpConfig
 {
-	typedef std::vector< CNrpLoan* > LOAN_LIST;
 public:
 	static CNrpBank& Instance();
 
-	CNrpLoan* GetLoan( size_t index ) { return loans_.at( index ); }
-	size_t GetMaxCompanyLoan( std::string companyName );
-	CNrpLoan* FindLoadByID( size_t id );
-	void CreateLoan( std::string name, int money, int percent, int month );
+	CNrpLoan* GetLoan( u32 index ) { return _loans[ index ]; }
+	size_t GetMaxCompanyLoan( const NrpText& companyName );
+	CNrpLoan* FindLoadByID( u32 id );
+	void CreateLoan( const NrpText& name, int money, int percent, int month );
 
-	static std::string ClassName() { return CLASS_BANK; }
+	static NrpText ClassName();
 private:
 	CNrpBank(void);
 	~CNrpBank(void);
 
-	LOAN_LIST loans_;
+	LOANS _loans;
 	int loanId_;
 };
 

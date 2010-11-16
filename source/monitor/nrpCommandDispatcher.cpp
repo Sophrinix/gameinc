@@ -4,7 +4,7 @@
 #include "nrpConsoleCommand.h"
 #include "nrpMessageSink.h"
 #include "nrpConsoleUtils.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include <exception>
 
 namespace irr
@@ -31,7 +31,7 @@ void CCommandDispatcher::RegisterCommand(CNrpConsoleCommand* cmd)
 {
 	if(cmd)
 	{
-		stringw name = cmd->GetName();
+		NrpText name = cmd->GetName();
 		
 		if( !hasCommand(name) )
 		{
@@ -39,10 +39,8 @@ void CCommandDispatcher::RegisterCommand(CNrpConsoleCommand* cmd)
 		}
 		else
 		{
-			stringw wstr = L"Command ";
-			wstr += name;
-			wstr += L" is already registered";
-			throw CNrpConsoleError(wstr);
+			NrpText wstr = NrpText("Command ") + name + " is already registered";
+			throw CNrpConsoleError( wstr );
 		}
 	}
 }

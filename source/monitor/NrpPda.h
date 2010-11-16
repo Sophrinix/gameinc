@@ -4,30 +4,17 @@
 
 namespace nrp
 {
-
 OPTION_NAME MESSAGE( "message" );
 OPTION_NAME ACTION( "action" );
-
-CLASS_NAME CLASS_PDAITEM( "CPdaItem" );
-CLASS_NAME CLASS_CNRPPDA( "CNrpPda" );
 
 class CPdaItem : public INrpConfig
 {
 public:
-	CPdaItem( const std::string& m, 
-		const std::string& a, 
-		const SYSTEMTIME& t ) : INrpConfig( CLASS_PDAITEM, "" )
-	{
-		assert( m.size() > 0 && a.size() > 0 );
+	CPdaItem( const NrpText& m, const NrpText& a, const SYSTEMTIME& t );
 
-		CreateValue<std::string>( MESSAGE, m );
-		CreateValue<std::string>( ACTION, a);
-		CreateValue<SYSTEMTIME>( STARTDATE, t );
-	}
-
-	static std::string ClassName() { return CLASS_PDAITEM; }
+	static NrpText ClassName();
 private:
-	CPdaItem() : INrpConfig( CLASS_PDAITEM, "" ) {}
+	CPdaItem();
 };
 
 class CNrpPda : INrpConfig
@@ -36,20 +23,20 @@ public:
 	CNrpPda();
 	~CNrpPda();
 
-	std::string Save( const std::string& fileName );
-	void Load( const std::string& fileName );
+	NrpText Save( const NrpText& fileName );
+	void Load( const NrpText& fileName );
 
-	void AddItem( const std::string message, const std::string& action, const SYSTEMTIME& lTime );
+	void AddItem( const NrpText message, const NrpText& action, const SYSTEMTIME& lTime );
 	const CPdaItem& Next();
 	const CPdaItem& Prev();
 	const CPdaItem& Current();
 	void Clear();
 
-	static std::string ClassName() { return CLASS_CNRPPDA; }
+	static NrpText ClassName();
 private:
 
 	void _ClearOldItems();
-	typedef std::vector< CPdaItem* > LIST_ITEM;
+	typedef core::array< CPdaItem* > LIST_ITEM;
 	LIST_ITEM _items;
 	int _currentIndex;
 };

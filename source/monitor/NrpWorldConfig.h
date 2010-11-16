@@ -1,16 +1,12 @@
 #pragma once
-#include <string>
 #include "nrpconfig.h"
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_WORLDCONFIG( "CNrpWorldConfig" );
-
-const std::string WORLD_REAL_SIZE( "worldSize" );
-const std::string WORLD_MINEDGE( "minEdge" );
-const std::string WORLD_MAXEDGE( "maxEdge" );
-const std::string WORLD_WIDTH_COEFF( "widthCoeff" );
+OPTION_NAME WORLD_REAL_SIZE( "worldSize" );
+OPTION_NAME WORLD_MINEDGE( "minEdge" );
+OPTION_NAME WORLD_MAXEDGE( "maxEdge" );
+OPTION_NAME WORLD_WIDTH_COEFF( "widthCoeff" );
 
 class CNrpWorldConfig : public INrpConfig
 {
@@ -19,7 +15,7 @@ private:
 public:
 	static CNrpWorldConfig& Instance();
 
-	static std::string ClassName() { return CLASS_WORLDCONFIG; }
+	static NrpText ClassName();
 };
 
 }//namespace nrp

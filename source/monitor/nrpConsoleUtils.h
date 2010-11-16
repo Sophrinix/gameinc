@@ -4,7 +4,6 @@
 #include <irrString.h>
 #include <irrArray.h>
 #include <ostream>
-#include <string>
 //=====================================================================================
 //! a basic error class
 class CNrpConsoleError
@@ -51,7 +50,7 @@ private:
 };
 //=====================================================================================
 //! overloaded operator for inserting a wide string to the stl ostream
-inline std::ostream& operator<<(std::ostream& os, const std::string& s)
+inline std::ostream& operator<<(std::ostream& os, const stringw& s)
 {
 	return (os << s.c_str());
 }

@@ -12,7 +12,6 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAWINDOW( "CLuaWindow" );
 
 class CLuaWindow : public ILuaGuiElement<irr::gui::CNrpWindow>
 {
@@ -27,7 +26,7 @@ public:
 	int RemoveLuaFunction( lua_State* L );
 	int Draw( lua_State* L );
 
-	static const char* ClassName() { return CLASS_LUAWINDOW.c_str(); }
+	static const char* ClassName();
 };
 
 }//namespace nrp;

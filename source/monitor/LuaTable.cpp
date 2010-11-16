@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "LuaTable.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 #include "nrpEngine.h"
 #include <irrlicht.h>
 
@@ -8,6 +8,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATABLE( "CLuaTable" );
 
 Luna< CLuaTable >::RegType CLuaTable::methods[] =			//реализуемы методы
 {
@@ -87,11 +88,10 @@ int CLuaTable::AddColumn( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaButton::AddColumn need 2 parameter");
 
-	const char* text = lua_tostring( L, 2 );
-	assert( text != NULL );
+	NrpText text( lua_tostring( L, 2 ) );
 	int index = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->addColumn( conv::ToWide( text ).c_str(), index );
+	IF_OBJECT_NOT_NULL_THEN object_->addColumn( text.ToWide(), index );
 
 	return 1;	
 }
@@ -116,14 +116,11 @@ int CLuaTable::SetCellText( lua_State *L )
 
 	int aRow = lua_tointeger( L, 2 );
 	int aCol = lua_tointeger( L, 3 );
-	const char* text = lua_tostring( L, 4 );
-	assert( text != NULL );
-	int color = (lua_tointeger( L, 5 ) << 24);
-	color += (lua_tointeger( L, 6 ) << 16);
-	color += (lua_tointeger( L, 7 ) << 8);
-	color += lua_tointeger( L, 8 );
+	NrpText text( lua_tostring( L, 4 ) );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setCellText( aRow, aCol, conv::ToWide( text ).c_str(), video::SColor( color ) );
+	video::SColor color( lua_tointeger( L, 5 ), lua_tointeger( L, 6 ), lua_tointeger( L, 7 ), lua_tointeger( L, 8 ) );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->setCellText( aRow, aCol, text.ToWide(), video::SColor( color ) );
 
 	return 1;
 }
@@ -184,5 +181,10 @@ int CLuaTable::ClearRows( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN  object_->clearRows();
 
 	return 1;	
+}
+
+const char* CLuaTable::ClassName()
+{
+	return ( CLASS_LUATABLE );
 }
 }//namespace nrp

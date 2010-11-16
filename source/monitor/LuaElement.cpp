@@ -9,6 +9,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAELEMENT( "CLuaElement" );
 
 Luna< CLuaElement >::RegType CLuaElement::methods[] =			//реализуемы методы
 {
@@ -21,4 +22,8 @@ Luna< CLuaElement >::RegType CLuaElement::methods[] =			//реализуемы методы
 CLuaElement::CLuaElement(lua_State *L)	: ILuaGuiElement(L, "CLuaElement")							//конструктор
 {}
 
+const char* CLuaElement::ClassName()
+{
+	return ( CLASS_LUAELEMENT );
+}
 }//namespace nrp

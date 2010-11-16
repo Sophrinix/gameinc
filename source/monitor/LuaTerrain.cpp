@@ -7,6 +7,8 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATERRAIN( "CLuaTerrain" );
+
 Luna< CLuaTerrain >::RegType CLuaTerrain::methods[] = 
 {
 	LUNA_ILUASCENENODE_HEADER( CLuaTerrain ),
@@ -71,4 +73,8 @@ int CLuaTerrain::SetMaterialType( lua_State *L )
 	return 1;
 }
 
+const char* CLuaTerrain::ClassName()
+{
+	return ( CLASS_LUATERRAIN );
+}	
 }//namespace nrp

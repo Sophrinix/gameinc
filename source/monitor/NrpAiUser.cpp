@@ -3,19 +3,25 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_AIUSER( "CNrpAiUser" );	
 
-CNrpAiUser::CNrpAiUser( const std::string& name, CNrpCompany* ptrCmp ) : IUser( CLASS_AIUSER, name )
+CNrpAiUser::CNrpAiUser( const NrpText& name, CNrpCompany* ptrCmp ) : IUser( CLASS_AIUSER, name )
 {
-	SetValue< std::string >( NAME, name );
+	SetValue< NrpText >( NAME, name );
 }
 
-CNrpAiUser::CNrpAiUser( const std::string& fileName ) : IUser( CLASS_AIUSER, "" )
+CNrpAiUser::CNrpAiUser( const NrpText& fileName ) : IUser( CLASS_AIUSER, "" )
 {
 	Load( fileName );
 }
 
 CNrpAiUser::~CNrpAiUser(void)
 {
+}
+
+NrpText CNrpAiUser::ClassName()
+{
+	return CLASS_AIUSER;
 }
 
 }//namespace nrp

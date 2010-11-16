@@ -4,8 +4,6 @@
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_LUAPLANT( "CLuaPlant" );
 class CNrpPlant;
 
 class CLuaPlant : public ILuaBaseProject<CNrpPlant>
@@ -28,7 +26,7 @@ public:
 	int GetDiskMachineNumber( lua_State* L );
 	int GetDiskMachine( lua_State* L );
 																//нажатии на эту кнопку
-	static const char* ClassName() { return CLASS_LUAPLANT.c_str(); }
+	static const char* ClassName();
 };
 
 }//namespace nrp

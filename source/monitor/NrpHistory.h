@@ -3,20 +3,16 @@
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_NRPHISTORY( "CNrpHistory" );
-CLASS_NAME CLASS_HISTORYSTEP( "CNrpHistoryStep" );
-
 OPTION_NAME HISTORY_SIZE( "historySize" );
 
 class CNrpHistoryStep : public INrpConfig
 {
-	CNrpHistoryStep() : INrpConfig( CLASS_HISTORYSTEP, "" ) {}
+	CNrpHistoryStep();
 public:
 	CNrpHistoryStep( const SYSTEMTIME& time );
 
 	template< class T >
-	void AddValue( std::string name, T& amount )
+	void AddValue( NrpText name, T& amount )
 	{
 		if( !IsValueExist( name ) )
 			CreateValue<T>( name, amount );
@@ -28,8 +24,8 @@ public:
 class CNrpHistory :	public INrpConfig
 {
 public:
-	std::string Save( const std::string& fileName );
-	void Load( const std::string& fileName );
+	NrpText Save( const NrpText& fileName );
+	void Load( const NrpText& fileName );
 
 	CNrpHistoryStep* GetStep( const SYSTEMTIME& time, bool aprocimateData );
 	CNrpHistoryStep* GetStep( const SYSTEMTIME& time );
@@ -40,7 +36,7 @@ public:
 	~CNrpHistory(void);
 private:
 
-	typedef std::map< int, CNrpHistoryStep* > SALE_HISTORY_MAP;
+	typedef core::map< int, CNrpHistoryStep* > SALE_HISTORY_MAP;
 	SALE_HISTORY_MAP _steps;
 };
 

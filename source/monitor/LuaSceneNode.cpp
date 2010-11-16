@@ -8,6 +8,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUASCENENODE( "CLuaSceneNode" );
 
 Luna< CLuaSceneNode >::RegType CLuaSceneNode::methods[] =			//реализуемы методы
 {
@@ -34,4 +35,8 @@ bool CLuaSceneNode::IsChildOfCurrentScene_()
 	return false;
 }
 
+const char* CLuaSceneNode::ClassName()
+{
+	return ( CLASS_LUASCENENODE );
+}
 }//namespace nrp

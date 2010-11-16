@@ -12,7 +12,6 @@ namespace irr
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUAGUI( "CLuaGuiEnvironment" );
 //! Класс-обертка фабрики пользовательского интерфейса
 /*!
 	Имена луа-функции совпадают с именами методов класса
@@ -88,8 +87,7 @@ public:
 	int AddTextRunner( lua_State* vm );
 	int BringToFront( lua_State* L );
 	int AddLigthing( lua_State* L );
-	
-	static const char* ClassName() { return CLASS_LUAGUI.c_str(); }	
+	static const char* ClassName();
 };
 
 }//namespace nrp

@@ -3,9 +3,10 @@
 #include "nrpScene.h"
 #include "nrpVideoConfig.h"
 #include "nrpVersion.h"
-#include "StrConversation.h"
-#include "nrpLoginScene.h"
+#include "NrpText.h"
+#include "nrpText.h"
 #include "nrpMainScene.h"
+#include "nrpLoginScene.h"
 #include "nrpAppEventer.h"
 #include "nrpGUIEnvironment.h"
 #include "nrpConsole.h"
@@ -21,6 +22,8 @@ static CNrpEngine * global_app_instance = 0;
 
 #define NOT_EVENTRECEIVER NULL
 //////////////////////////////////////////////////////////////////////////
+
+nrp::CLASS_NAME CLASS_NRPENGINE( "CNrpEngine" );
 
 
 void CNrpEngine::Run() //создание нерпы
@@ -38,7 +41,7 @@ void CNrpEngine::Run() //создание нерпы
 
 		while ( device_->run() )
 		{
-			device_->setWindowCaption( conv::AnyToWide( device_->getVideoDriver()->getFPS() ).c_str() );
+			device_->setWindowCaption( stringw( device_->getVideoDriver()->getFPS() ).c_str() );
 			try
 			{
 				switch( run_state_ )
@@ -122,13 +125,13 @@ bool CNrpEngine::InitVideo()
 
 	nrpVersion verInfo;
 
-	std::wstring newCaption = L"GameInc " + verInfo.ProductVersion();
-	device_->setWindowCaption( newCaption.c_str() );
+	NrpText newCaption = NrpText(L"GameInc ") + verInfo.ProductVersion();
+	device_->setWindowCaption( newCaption.ToWide() );
 	device_->getVideoDriver()->setTextureCreationFlag( video::ETCF_ALWAYS_32_BIT, true );
 
 	windowHandle_ = 0;
-	windowHandle_ = FindWindow( NULL, conv::ToStr( newCaption ).c_str() );							//заменяем обработчик событий
-	OldWindowProc = (WNDPROC)SetWindowLong( windowHandle_, GWL_WNDPROC, (long)NewWindowProc);
+	windowHandle_ = FindWindowW( NULL, newCaption.ToWide() );							//заменяем обработчик событий
+	OldWindowProc = (WNDPROC)SetWindowLongW( windowHandle_, GWL_WNDPROC, (long)NewWindowProc);
 
 	guienv_ = new gui::CNrpGUIEnvironment( device_->getGUIEnvironment() );
 
@@ -141,9 +144,9 @@ bool CNrpEngine::InitVideo()
 }
 //////////////////////////////////////////////////////////////////////////
 
-void CNrpEngine::ActivateScene_( std::string name )
+void CNrpEngine::ActivateScene_( stringw name )
 {
-	std::map< std::string, std::string >::iterator pIter = scenes_.begin();
+	std::map< stringw, stringw >::iterator pIter = scenes_.begin();
 
 	for(; pIter != scenes_.end(); pIter++ )
 		if( (*pIter).first == name )
@@ -284,4 +287,13 @@ irr::io::IFileSystem* CNrpEngine::GetFileSystem()
 {
 	return device_->getFileSystem();
 }
-//////////////////////////////////////////////////////////////////////////
+
+void CNrpEngine::AddScene( const stringw& name, const stringw& fileName )
+{
+	scenes_[ name ] = fileName;
+}
+
+NrpText CNrpEngine::ClassName()
+{
+	return CLASS_NRPENGINE;
+}

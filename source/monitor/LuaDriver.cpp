@@ -9,6 +9,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUADRIVER( "CLuaDriver" );
 
 Luna< CLuaDriver >::RegType CLuaDriver::methods[] = 
 {
@@ -129,4 +130,8 @@ int CLuaDriver::SetRenderTarget( lua_State* L )
 	return 1;
 }
 
+const char* CLuaDriver::ClassName()
+{
+	return ( CLASS_LUADRIVER );
+}
 }

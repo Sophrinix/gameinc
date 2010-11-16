@@ -2,8 +2,6 @@
 
 #include "ILuaGuiElement.h"
 
-const std::string CLASS_LUAPICTUREFLOW( "CLuaPictureFlow" );
-
 namespace irr
 {
 	namespace gui
@@ -19,6 +17,7 @@ class CLuaPictureFlow : public ILuaGuiElement<irr::gui::CNrp2DPictureFlow>
 {
 public:
 	static Luna<CLuaPictureFlow>::RegType methods[];				//методы обертки
+	static const char* ClassName();
 
 	CLuaPictureFlow(lua_State *L);		
 	
@@ -30,8 +29,6 @@ public:
 	int SetPictureRect( lua_State* L );
 	int SetDrawBorder( lua_State* L );
 	int Clear( lua_State* L );
-
-	static const char* ClassName() { return CLASS_LUAPICTUREFLOW.c_str(); }
 };
 
 }//namespace nrp

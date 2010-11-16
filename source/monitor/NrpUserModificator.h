@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 
 namespace nrp
 {
@@ -9,7 +8,7 @@ class IUser;
 class IModificator
 {
 public:
-	virtual std::string& GetName() = 0;
+	virtual NrpText& GetName() = 0;
 	virtual SYSTEMTIME& GetTime() = 0;
 };
 
@@ -17,7 +16,7 @@ template< class ValClass > class CNrpUserModificator : public IModificator
 {
 public:
 	CNrpUserModificator( IUser* ptrUser, SYSTEMTIME time, 
-						 std::string paramName, bool absolute, 
+						 NrpText paramName, bool absolute, 
 						 ValClass offset )
 	{
 		offset_ = offset;
@@ -27,7 +26,7 @@ public:
 		absolute_ = absolute;
 	}
 
-	std::string& GetName() { return paramName_; }
+	NrpText& GetName() { return paramName_; }
 	ValClass& GetValue() { return offset_; }
 	SYSTEMTIME& GetTime() { return endTime_; }
 
@@ -35,7 +34,7 @@ private:
 	ValClass offset_;
 	SYSTEMTIME endTime_;
 	IUser* ptrUser_;
-	std::string paramName_;
+	NrpText paramName_;
 	bool absolute_;
 };
 

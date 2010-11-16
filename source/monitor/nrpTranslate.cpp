@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "NrpTranslate.h"
 #include "nrpScript.h"
-#include "StrConversation.h"
+#include "nrptext.h"
 #include "lua.hpp"
 
 #include <assert.h>
@@ -12,20 +12,22 @@ namespace nrp
 namespace translate
 {
 
-const char* GetTranslate( const char* name )
+NrpText GetTranslate( const NrpText& name )
 {
-	if( *name == '#' )
+	NrpText tmp = name;
+	const char* dd = tmp;
+	if( *dd == '#' )
 	{
 		lua_State* L = CNrpScript::Instance().GetVirtualMachine();
 	
-		lua_getglobal( L, name+1);
+		lua_getglobal( L, dd+1);
 
-		const char* res = NULL;
+		NrpText res = NULL;
 		
 		if( lua_isstring( L, -1 ) )
 			res = lua_tostring( L, -1 );
 		else 
-			res = name+1;
+			res = dd+1;
 
 		lua_pop( L, 1 );
 		return res;
@@ -34,13 +36,15 @@ const char* GetTranslate( const char* name )
 		return name;
 }
 
-double GetNumber( const char* name )
+double GetNumber( const NrpText& name )
 {
-	if( *name == '#')
+	NrpText tmp = name;
+	const char* dd = tmp;
+	if( *dd == '#')
 	{
 		lua_State* L = CNrpScript::Instance().GetVirtualMachine();
 
-		lua_getglobal( L, name+1 );
+		lua_getglobal( L, dd+1 );
 
 		double res = 0;
 		if( lua_isnumber( L, -1 ) )
@@ -52,7 +56,7 @@ double GetNumber( const char* name )
 		return res;
 	}
 	return
-		static_cast< double >( conv::ToFloat( name ) );
+		static_cast< double >( static_cast< NrpText >( name ).ToFloat() );
 }
 
 }

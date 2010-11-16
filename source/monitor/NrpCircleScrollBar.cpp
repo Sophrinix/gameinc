@@ -2,7 +2,7 @@
 #include "NrpCircleScrollBar.h"
 #include "nrpScript.h"
 #include "NrpRotatableImage.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 
 #include <irrlicht.h>
 
@@ -166,8 +166,8 @@ void CNrpCircleScrollBar::draw()
 	IGUIElement::draw();
 
 #ifdef _DEBUG
-	std::string text = nrp::conv::ToStr( (s32)aPos );
-	Environment->getSkin()->getFont()->draw( nrp::conv::ToWide( text ).c_str(), 
+	core::stringw text( (s32)aPos );
+	Environment->getSkin()->getFont()->draw( text, 
 											 core::recti( 0, 0, 100, 25 ) + AbsoluteRect.UpperLeftCorner,
 											 video::SColor( 0xff, 0, 0, 0 ) );
 #endif

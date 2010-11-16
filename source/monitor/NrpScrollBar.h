@@ -68,11 +68,11 @@ public:
 	virtual gui::IGUIButton* getDownButton() { return DownButton; }
 
 	//! sets the onChangedAction
-	virtual void setAction( const char* funcName ) { onChangedAction_ = funcName; }
+	virtual void setAction( const nrp::NrpText& funcName ) { onChangedAction_ = funcName; }
 
 	virtual void setSliderTexture( video::ITexture* texture );
 
-	virtual const char* getAction() { return onChangedAction_.c_str(); }
+	virtual const nrp::NrpText& getAction() { return onChangedAction_; }
 
 	//! updates the rectangle
 	virtual void updateAbsolutePosition();
@@ -109,7 +109,7 @@ protected:
 	video::ITexture* texture_;
 	video::ITexture* sliderTexture_;
 	core::recti textureRect_, sliderTextureRect_;
-	core::stringc onChangedAction_;
+	nrp::NrpText onChangedAction_;
 
 	f32 range () const { return (f32) ( Max - Min ); }
 };

@@ -18,6 +18,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUACOMPANY( "CLuaCompany" );
 
 Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
 {
@@ -100,7 +101,7 @@ int CLuaCompany::SetCEO( lua_State* L )
 
 int CLuaCompany::GetName( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetName", NAME, "" ).c_str() ); 
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetName", NAME, "" ) ); 
 	return 1;
 }
 
@@ -267,7 +268,7 @@ int CLuaCompany::GetProjectByName( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need int parameter" );
 
-	std::string name = lua_tostring( L, 2 );
+	NrpText name( lua_tostring( L, 2 ) );
 	INrpProject* prj = NULL;
 	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetProject( name );
 
@@ -396,4 +397,8 @@ int CLuaCompany::AddBalance( lua_State* L )
 	return 1;		
 }
 
+const char* CLuaCompany::ClassName()
+{
+	return ( CLASS_LUACOMPANY );
+}
 }//namespace nrp

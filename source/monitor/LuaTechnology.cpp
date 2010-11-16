@@ -13,6 +13,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUATECH( "CLuaTech" );
 
 Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы методы
 {
@@ -139,7 +140,7 @@ int CLuaTechnology::HaveLider( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::HaveLider not need parameter");
 
 	bool haveUser = false; 
-	IF_OBJECT_NOT_NULL_THEN	haveUser = !object_->GetValue<std::string>( COMPONENTLIDER ).empty();
+	IF_OBJECT_NOT_NULL_THEN	haveUser = object_->GetString( COMPONENTLIDER ).size() > 0;
 	lua_pushboolean( L, haveUser );
 	return 1;	
 }
@@ -163,8 +164,7 @@ int CLuaTechnology::Load( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::Load not need parameter");
 
-	const char* iniFile = lua_tostring( L, 2 );
-	assert( iniFile != NULL );
+	NrpText iniFile( lua_tostring( L, 2 ) );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->Load( iniFile );
 	return 1;	
@@ -182,7 +182,7 @@ int CLuaTechnology::IsLoaded( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::IsLoaded not need any parameter");
 
 	bool loaded = false; 
-	IF_OBJECT_NOT_NULL_THEN loaded = CNrpApplication::Instance().GetBoxAddon( object_->GetValue<std::string>( NAME ) ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN loaded = CNrpApplication::Instance().GetBoxAddon( object_->GetValue<stringw>( NAME ) ) != NULL;
 
 	lua_pushboolean( L, loaded );
 	return 1;			
@@ -190,7 +190,7 @@ int CLuaTechnology::IsLoaded( lua_State* L )
 
 int CLuaTechnology::GetTexture( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetTexture", TEXTURENORMAL, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "" ) );
 	return 1;
 }
 
@@ -212,13 +212,13 @@ int CLuaTechnology::GetFutureTechInternalName( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::GetFutureTech need index parameter");
 
 	int index = lua_tointeger( L, 2 );
-	std::string name = "";
+	NrpText name;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		name = object_->GetFutureTech( index );
 	}
 
-	lua_pushstring( L, name.c_str() );
+	lua_pushstring( L, name );
 	return 1;	
 }
 
@@ -235,7 +235,7 @@ int CLuaTechnology::GetStatus( lua_State* L )
 
 int CLuaTechnology::GetDescriptionLink( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetDescriptionLink", DESCRIPTIONPATH, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetDescriptionLink", DESCRIPTIONPATH, "" ) );
 	return 1;
 }
 
@@ -261,8 +261,12 @@ int CLuaTechnology::SetCompany( lua_State* L )
 
 int CLuaTechnology::GetInternalName( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<std::string>( L, "GetInternalName", INTERNAL_NAME, "" ).c_str() );
+	lua_pushstring( L, GetParam_<NrpText>( L, "GetInternalName", INTERNAL_NAME, "" ) );
 	return 1;
 }
 
+const char* CLuaTechnology::ClassName()
+{
+	return ( CLASS_LUATECH );
+}
 }//namespace nrp

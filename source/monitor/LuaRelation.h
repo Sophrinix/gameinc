@@ -4,18 +4,16 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_RELATION( "CLuaRelation" );
 
 class CLuaRelation : public ILuaObject<nrp::CNrpRelation>
 {
 public:
 	static Luna<CLuaRelation>::RegType methods[];
+	static const char* ClassName();
 
 	CLuaRelation(lua_State *L);
 	int SetValue( lua_State *L );
 	int GetValue( lua_State *L );
-
-	static const char* ClassName() { return CLASS_RELATION.c_str(); }
 };
 
 }//namespace nrp

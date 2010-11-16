@@ -1,7 +1,6 @@
 #pragma once
 
 #include "nrpChartObject.h"
-#include <list>
 
 namespace irr
 {
@@ -24,7 +23,7 @@ private:
 	void AddTick(int position);
 	void ClearTicks();
 
-	std::list<int> tickPos_;
+	core::list<int> tickPos_;
 	bool           horizontal_;
 };
 

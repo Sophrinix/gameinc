@@ -5,14 +5,9 @@
 #include "nrpConfig.h"
 #include "NrpGame.h"
 
-#define SECTION_IMAGES "images"
-#define SECTION_BOXIMAGES "imagesBox"
-
-#define KEY_IMAGE(index) ("image_"+conv::ToStr(index))
-#define KEY_BOX_IMAGE(index) ("boxImage_"+conv::ToStr(index))
-
 namespace nrp
 {
+CLASS_NAME CLASS_IMAGEGAMELIST( "CNrpGameImageList" );
 
 CNrpScreenshot::CNrpScreenshot(void) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
 {
@@ -22,7 +17,7 @@ CNrpScreenshot::CNrpScreenshot(void) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
 CNrpScreenshot::CNrpScreenshot( const CNrpScreenshot& a ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
 {
 	InitializeOptions_();
-	SetValue<std::string>( NAME, a.GetValue<std::string>( NAME ) );
+	SetValue<NrpText>( NAME, a.GetValue<NrpText>( NAME ) );
 
 	_imagesPath = a._imagesPath;
 	_imagesBoxPath = a._imagesBoxPath;
@@ -30,7 +25,7 @@ CNrpScreenshot::CNrpScreenshot( const CNrpScreenshot& a ) : INrpConfig( CLASS_IM
 	SetValue<int>( IMAGESBOXNUMBER, _imagesBoxPath.size() );
 }
 
-CNrpScreenshot::CNrpScreenshot( const std::string& fileName ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
+CNrpScreenshot::CNrpScreenshot( const NrpText& fileName ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
 {
 	InitializeOptions_();
 	Load( fileName );
@@ -48,37 +43,41 @@ bool CNrpScreenshot::IsMyYear( int year )
 int CNrpScreenshot::GetEqualeRating( CNrpGame* game )
 {
 	int equale = 0;
-	for( STRING_LIST::const_iterator pIter=_genres.begin();
-		 pIter != _genres.end(); 
-		 pIter++ )
+	for( u32 i=0; i < _genres.size(); i++ )
 	{
-		equale += game->IsGenreAvaible( *pIter ) ? 1 : 0;
+		equale += game->IsGenreAvaible( _genres[ i ] ) ? 1 : 0;
 	}
 
 	return ( equale * 100 / _genres.size() );
 }
 
-void CNrpScreenshot::Load( const std::string& fileName )
+void CNrpScreenshot::Load( const NrpText& fileName )
 {
 	INrpConfig::Load( fileName );
+	IniFile rv( fileName );
 
 	for( int k=0; k < GetValue<int>( IMAGESNUMBER ); k++ )
-		_imagesPath.push_back( IniFile::Read( SECTION_IMAGES, KEY_IMAGE(k), std::string(""), fileName ) );
+		_imagesPath.push_back( rv.Get( SECTION_IMAGES, CreateKeyImage(k), NrpText("") ) );
 
 	for( int k=0; k < GetValue<int>( IMAGESBOXNUMBER ); k++ )
-		_imagesBoxPath.push_back( IniFile::Read( SECTION_BOXIMAGES, KEY_BOX_IMAGE(k), std::string(""), fileName ) );
+		_imagesBoxPath.push_back( rv.Get( SECTION_BOXIMAGES, CreateKeyBoxImage(k), NrpText("") ) );
 
 	for( int i=0; i < GetValue<int>( GENRE_MODULE_NUMBER ); ++i )
-		_genres.push_back( IniFile::Read( SECTION_GENRES, KEY_GENRE(i), std::string(""), fileName ) );
+		_genres.push_back( rv.Get( SECTION_GENRES, CreateKeyGenre(i), NrpText("") ) );
 }
 
 void CNrpScreenshot::InitializeOptions_()
 {
-	CreateValue<std::string>( NAME, "" );
+	CreateValue<NrpText>( NAME, "" );
 	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	CreateValue<int>( IMAGESNUMBER, 0 );
 	CreateValue<int>( IMAGESBOXNUMBER, 0 );
 	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
+}
+
+NrpText CNrpScreenshot::ClassName()
+{
+	return CLASS_IMAGEGAMELIST;
 }
 
 }//end namespace nrp

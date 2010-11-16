@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include <irrlicht.h>
 #include "nrpHUDConfig.h"
-#include "StrConversation.h"
+#include "NrpText.h"
 //////////////////////////////////////////////////////////////////////////
 
 static nrp::CNrpHUDConfig * global_hud_config_instance = 0;
@@ -14,6 +14,7 @@ using namespace video;
 
 namespace nrp
 {
+CLASS_NAME CLASS_HUDCONFIG( "CNrpHUDConfig" );
 
 CNrpHUDConfig::CNrpHUDConfig() : INrpConfig(CLASS_HUDCONFIG, CLASS_HUDCONFIG)
 {		
@@ -21,7 +22,7 @@ CNrpHUDConfig::CNrpHUDConfig() : INrpConfig(CLASS_HUDCONFIG, CLASS_HUDCONFIG)
 	CreateValue<int>( MAX_FONT_SIZE, 8 );
 
 	for( int cnt=GetValue<int>(MIN_FONT_SIZE); cnt < GetValue<int>(MAX_FONT_SIZE); cnt++)
-		CreateValue<std::string>( "font_" + conv::ToStr(cnt), "" );
+		CreateValue<NrpText>( NrpText("font_") + NrpText(cnt), "" );
 
 	Load( "config/hud.ini" );
 }
@@ -35,4 +36,8 @@ CNrpHUDConfig& CNrpHUDConfig::Instance()
 	return *global_hud_config_instance;
 }
 
+NrpText CNrpHUDConfig::ClassName()
+{
+	return CLASS_HUDCONFIG;
+}
 } //namespace nrp

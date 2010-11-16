@@ -1,12 +1,9 @@
 #pragma once
 #include "IWorkingModule.h"
+#include "nrpArrays.h"
 
 namespace nrp
 {
-
-CLASS_NAME CLASS_INVENTION( "CNrpInvention" );
-
-OPTION_NAME SECTIONS_USERS( "users" );
 
 OPTION_NAME REALPRICE( "realprice" );
 OPTION_NAME PASSEDPRICE( "passedprice" );
@@ -21,30 +18,28 @@ class CNrpInvention : public IWorkingModule
 {
 public:
 	CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp );
-	CNrpInvention( const std::string& fileName );
+	CNrpInvention( const NrpText& fileName );
 	virtual ~CNrpInvention(void);
+
+	bool Equale( const NrpText& name, const NrpText& company );
 
 	virtual void Update( IUser* ptrUser );
 	void CheckParams();
-	IUser* GetUser( size_t index );
+	IUser* GetUser( u32 index );
 	int AddUser( IUser* user );
-	int RemoveUser( const std::string& userName );
+	int RemoveUser( const NrpText& userName );
 
-	std::string Save( const std::string& saveFolder, bool k );
-	void Load( std::string fileName );
+	NrpText Save( const NrpText& saveFolder, bool k );
+	void Load( const NrpText& fileName );
 
-	static std::string ClassName() { return CLASS_INVENTION; }
+	static NrpText ClassName();
 private:
 	int _GetRealPrice( CNrpTechnology* tech );
 	
-	//deperecated 
-	void Save( std::string saveFolder ) {};
-	//
-
 	void InitializeOptions_();
-	std::string _GetFileName();
-	typedef std::vector< IUser* > USERS_LIST;
-	USERS_LIST _users;
+	NrpText _GetFileName();
+
+	USERS _users;
 };
 
 }//end namespace nrp

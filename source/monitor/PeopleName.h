@@ -1,7 +1,8 @@
 #pragma once
-#include <string>
+#include "NrpText.h"
+
 const size_t PEOPLE_NAME_COUNT = 102;
-std::string GlobalPeopleName[PEOPLE_NAME_COUNT] =
+nrp::NrpText GlobalPeopleName[PEOPLE_NAME_COUNT] =
 {
 	"Andrew", "Anthony", "Alexander", "Austin", "Aidan", "Angel",
 	"Aaron",  "Adam",	 "Aiden",	"Adrian", "Alex", "Ashton",
@@ -23,7 +24,7 @@ std::string GlobalPeopleName[PEOPLE_NAME_COUNT] =
 };
 
 const size_t PEOPLE_SURNAME_COUNT = 252;
-std::string GlobalPeopleSurname[PEOPLE_SURNAME_COUNT] = 
+nrp::NrpText GlobalPeopleSurname[PEOPLE_SURNAME_COUNT] = 
 {
 	"Abramson", "Hoggarth", "Adamson", "Holiday", "Adderiy", "Holmes", 
 	"Addington", "Howard", 	"Adrian", "Jacobson", "Albertson", "James",	

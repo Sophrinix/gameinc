@@ -11,6 +11,7 @@
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUAAUTOSCRIPT( "CLuaAutoScript" );
 
 Luna< CLuaAutoScript >::RegType CLuaAutoScript::methods[] = 
 {
@@ -82,6 +83,11 @@ int CLuaAutoScript::AddGameEngineToCompany( lua_State* L )
 	cmp->AddGameEngine( engine );
 
 	return 1;	
+}
+
+const char* CLuaAutoScript::ClassName()
+{
+	return ( CLASS_LUAAUTOSCRIPT );
 }
 
 }

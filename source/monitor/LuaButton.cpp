@@ -13,6 +13,7 @@ using namespace irr;
 
 namespace nrp
 {
+CLASS_NAME CLASS_LUABUTTON( "CLuaButton" );
 
 Luna< CLuaButton >::RegType CLuaButton::methods[] =			//реализуемы методы
 {
@@ -24,6 +25,11 @@ Luna< CLuaButton >::RegType CLuaButton::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaButton, SetAction ),
 	{0,0}
 };
+
+const char* CLuaButton::ClassName()
+{
+	return 	( CLASS_LUABUTTON );
+}
 
 CLuaButton::CLuaButton(lua_State *L)	: ILuaGuiElement(L, CLASS_LUABUTTON )							//конструктор
 {}
@@ -59,18 +65,18 @@ int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функ
 	return 1;
 }
 
-int CLuaButton::SetImage_( lua_State* L, std::string funcName, TYPE_IMAGE typeimg )
+int CLuaButton::SetImage_( lua_State* L, const NrpText& funcName, TYPE_IMAGE typeimg )
 {
 	int argc = lua_gettop(L);
 	//начинаем со второго параметра, ибо первым идет таблица с функциями	
-	luaL_argcheck(L, argc == 6, 6, ("Function CLuaButton:" + funcName + " need string, rectangle parameter").c_str() ); 
+	luaL_argcheck(L, argc == 6, 6, _ErrStr( funcName + " need string, rectangle parameter" ) ); 
 
 	core::recti rectangle;
 	const char* texturepath = lua_tostring( L, 6 );
 	assert( texturepath != NULL );
 	video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath );
 
-	rectangle = ReadRect_( L, 2 );
+	rectangle = _ReadRect( L, 2 );
 	if( rectangle == core::recti( 0, 0, 0, 0) && ( txs != NULL ) )
 		rectangle = core::recti( 0, 0, txs->getSize().Width, txs->getSize().Height );
 

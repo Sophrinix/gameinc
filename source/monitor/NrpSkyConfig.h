@@ -3,15 +3,14 @@
 
 namespace nrp
 {
-const std::string SKY_TEXTURE("texture");
-CLASS_NAME CLASS_SKYCONFIG( "CNrpSkyConfig" );
+OPTION_NAME SKY_TEXTURE("texture");
 
 class CNrpSkyConfig : public INrpConfig
 {
 private:
 	CNrpSkyConfig();
 
-	static std::string ClassName() { return CLASS_SKYCONFIG; }
+	static NrpText ClassName();
 
 public:
 	static CNrpSkyConfig& Instance();

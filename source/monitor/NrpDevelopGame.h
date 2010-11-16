@@ -1,11 +1,9 @@
 #pragma once
 #include "INrpDevelopProject.h"
+#include "nrpArrays.h"
 
 namespace nrp
 {
-CLASS_NAME CLASS_DEVELOPGAME("CNrpDevelopGame");
-
-
 class CNrpProjectModule;
 class CNrpGameProject;
 class CNrpCompany;
@@ -14,32 +12,33 @@ class CNrpLicense;
 
 class CNrpDevelopGame : public INrpDevelopProject
 {
-	typedef std::vector< CNrpProjectModule* > MODULE_LIST;
-	CNrpDevelopGame() : INrpDevelopProject( CLASS_DEVELOPGAME, "" ) {}; 
+	CNrpDevelopGame();
 
 public:
-	CNrpDevelopGame( const std::string& name, CNrpCompany* ptrCompany );
+	CNrpDevelopGame( const NrpText& name, CNrpCompany* ptrCompany );
 	CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCompany );
-	CNrpDevelopGame( const std::string& fileName );
+	CNrpDevelopGame( const NrpText& fileName );
 
-	std::string Save( const std::string& folderSave );
-	void Load( const std::string& loadFolder );
-	CNrpProjectModule* GetGenre( size_t index );
-	CNrpProjectModule* GetModule( size_t index );
-	CNrpProjectModule* GetModule( const char* name );
+	NrpText Save( const NrpText& folderSave );
+	void Load( const NrpText& loadFolder );
+	CNrpProjectModule* GetGenre( u32 index );
+	CNrpProjectModule* GetModule( u32 index );
+	CNrpProjectModule* GetModule( const NrpText& name );
 
 	void CalculateCodeVolume();
 	bool IsReady();
 
 	~CNrpDevelopGame(void);
 
-	static std::string ClassName() { return CLASS_DEVELOPGAME; }
+	static NrpText ClassName();
 private:
-	MODULE_LIST _modules;
+	MODULES _modules;
 
-	void InitializeOptions_( const std::string& name );
+	void _InitializeOptions( const NrpText& name );
 	void ModuleFinished( CNrpProjectModule* module );
-	void FindPlaformsAndLanguages_();
+	void _FindPlaformsAndLanguages();
+	void _AddModulesFrom( const TECHS& arrtech, int baseCode );
+	void _AddModulesFrom( const CNrpTechnology* tech, int baseCode );
 };
 
 }//end namespace nrp
