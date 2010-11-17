@@ -78,8 +78,7 @@ public:
 	{	
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetFont need fontName parameter" ) ) );
-		const char* fontName = lua_tostring( L, 2 );
-		assert( fontName != NULL );
+		NrpText fontName = lua_tostring( L, 2 );
 
 		IF_OBJECT_NOT_NULL_THEN 
 		{

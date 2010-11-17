@@ -5,11 +5,11 @@ static nrp::CNrpSkyConfig * globalSkyConfigInstance = 0;
 
 namespace nrp
 {
-CLASS_NAME CLASS_SKYCONFIG( "CNrpSkyConfig" );
+CLASS_NAME CLASS_SKYCONFIG( L"CNrpSkyConfig" );
 
 CNrpSkyConfig::CNrpSkyConfig(void) : INrpConfig( CLASS_SKYCONFIG, CLASS_SKYCONFIG )
 {
-	CreateValue<NrpText>( SKY_TEXTURE, "" );
+	Push<NrpText>( SKY_TEXTURE, "" );
 
 	Load( "config/sky.ini" );
 }

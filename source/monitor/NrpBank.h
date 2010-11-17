@@ -4,7 +4,7 @@
 
 namespace nrp
 {
-OPTION_NAME LOANNUMBER( "loanNumber" );
+OPTION_NAME LOANNUMBER( L"loanNumber" );
 class CNrpLoan;
 	
 class CNrpBank : public INrpConfig

@@ -24,29 +24,29 @@ CLASS_NAME CLASS_USER( "IUser" );
 
 IUser::IUser(const NrpText& className, const NrpText& systemName ) : INrpConfig( className, systemName )
 {
-	assert( !systemName.size() );
-	CreateValue<NrpText>( NAME, systemName );
-	CreateValue<int>( CODE_SPEED, 0 );
-	CreateValue<int>( CODE_QUALITY, 0 );
-	CreateValue<int>( KNOWLEDGE_LEVEL, 0 );
-	CreateValue<NrpText>( INTERNAL_NAME, systemName );
-	CreateValue<int>( TALANT, 0 );
-	CreateValue<int>( STAMINA, 0 );
-	CreateValue<int>( MOOD, 0 );
-	CreateValue<int>( POPULARITY, 0 );
-	CreateValue<int>( SALARY, 0 );
-	CreateValue<int>( STABILITY, 0 );
-	CreateValue<int>( BALANCE, 0 );
-	CreateValue<int>( CHARACTER, 0 );
-	CreateValue<int>( WANTMONEY, 0 );
-	CreateValue<int>( CONTRACTMONEY, 0 );
-	CreateValue<int>( WORKNUMBER, 0 );
-	CreateValue<NrpText>( USERSTATE, "readyToWork" );
-	CreateValue<NrpText>( ROOMSTATE, "unknown" );
-	CreateValue<int>( HANGRY, 100 );
-	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
-	CreateValue<int>( EXPERIENCE, 0 );
-	CreateValue<NrpText>( TEXTURENORMAL, "" );
+	assert( systemName.size() );
+	Push<NrpText>( NAME, systemName );
+	Push<int>( CODE_SPEED, 0 );
+	Push<int>( CODE_QUALITY, 0 );
+	Push<int>( KNOWLEDGE_LEVEL, 0 );
+	Push<NrpText>( INTERNAL_NAME, systemName );
+	Push<int>( TALANT, 0 );
+	Push<int>( STAMINA, 0 );
+	Push<int>( MOOD, 0 );
+	Push<int>( POPULARITY, 0 );
+	Push<int>( SALARY, 0 );
+	Push<int>( STABILITY, 0 );
+	Push<int>( BALANCE, 0 );
+	Push<int>( CHARACTER, 0 );
+	Push<int>( WANTMONEY, 0 );
+	Push<int>( CONTRACTMONEY, 0 );
+	Push<int>( WORKNUMBER, 0 );
+	Push<NrpText>( USERSTATE, "readyToWork" );
+	Push<NrpText>( ROOMSTATE, "unknown" );
+	Push<int>( HANGRY, 100 );
+	Push<PNrpCompany>( PARENTCOMPANY, NULL );
+	Push<int>( EXPERIENCE, 0 );
+	Push<NrpText>( TEXTURENORMAL, "" );
 }
 
 IUser::~IUser(void)

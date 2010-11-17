@@ -3,7 +3,7 @@
 
 namespace nrp
 {
-OPTION_NAME SKY_TEXTURE("texture");
+OPTION_NAME SKY_TEXTURE(L"texture");
 
 class CNrpSkyConfig : public INrpConfig
 {

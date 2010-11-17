@@ -48,8 +48,7 @@ int CLuaDriver::GetTexture( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaDriver:GetTexture need string parameter");
 
-	const char* fileName = lua_tostring( L, 2 );
-	assert( fileName != NULL );
+	NrpText fileName = lua_tostring( L, 2 );
 
 	video::ITexture* txs = NULL;
 	IF_OBJECT_NOT_NULL_THEN txs = object_->getTexture( fileName );
@@ -68,8 +67,7 @@ int CLuaDriver::AddTexture( lua_State *L )
 
 	u32 width = (u32)lua_tointeger( L, 2 );
 	u32 height = (u32)lua_tointeger( L, 3 );
-	const char* fileName = lua_tostring( L, 4 );
-	assert( fileName != NULL );
+	NrpText fileName = lua_tostring( L, 4 );
 
 	video::ITexture* txs = NULL;
 	IF_OBJECT_NOT_NULL_THEN txs = object_->addTexture( core::dimension2du( width, height ), fileName );
@@ -83,8 +81,7 @@ int CLuaDriver::RemoveTexture( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaDriver:RemoveTexture need string parameter");
 
-	const char* fileName = lua_tostring( L, 2 );
-	assert( fileName != NULL );
+	NrpText fileName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
@@ -102,8 +99,7 @@ int CLuaDriver::AddRenderTargetTexture( lua_State* L )
 
 	u32 width = (u32)lua_tointeger( L, 2 );
 	u32 height = (u32)lua_tointeger( L, 3 );
-	const char* fileName = lua_tostring( L, 4 );
-	assert( fileName != NULL );
+	NrpText fileName = lua_tostring( L, 4 );
 
 	video::ITexture* txs = NULL;
 	IF_OBJECT_NOT_NULL_THEN txs = object_->addRenderTargetTexture( core::dimension2du( width, height ), fileName, video::ECF_A8R8G8B8 );

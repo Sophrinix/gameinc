@@ -193,6 +193,7 @@ irr::core::IC_Command_SCRIPT::~IC_Command_SCRIPT() {}
 
 bool irr::core::IC_Command_SCRIPT::invoke( const array< stringw >& args, CCommandDispatcher* pDispatcher, CMessageSink* pOutput )
 {
+	nrp::CNrpScript& script = nrp::CNrpScript::Instance();
 	if(args.size() == 0)
 	{
 		
@@ -204,19 +205,19 @@ bool irr::core::IC_Command_SCRIPT::invoke( const array< stringw >& args, CComman
 			NrpText remover( "package.loaded[ \" " );
 			remover.append( args[ 1 ] );
 			remover.append( " \" ] == false" );
-			nrp::CNrpScript::Instance().DoString( remover );
+			script.DoString( remover );
 
 			NrpText adder( "IncludeScript( \" " );
 			adder.append( args[ 1 ] );
 			adder.append( " \" )" );
-			nrp::CNrpScript::Instance().DoString( adder );
+			script.DoString( adder );
 		}
 		else if( args[ 0 ] == L"-so" )
 		{ 
 			if( args[ 2 ] == L"true" || args[ 2 ] == L"false" )
 			{
 				bool val = (args[ 2 ] == L"true");
-				nrp::CNrpScript::Instance().SetValue<bool>( args[ 1 ], val );
+				script[ args[ 1 ] ] = val;
 			}
 		}
 	}

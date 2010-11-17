@@ -135,8 +135,8 @@ int CLuaGuiEnvironment::AddWindow( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddWindow need 7 parameter");
 
-	const char* textureName = lua_tostring( vm, 2 );
-	assert( textureName != NULL );
+	NrpText textureName = lua_tostring( vm, 2 );
+
 	core::recti rectangle = _ReadRect( vm, 3 );
 	s32 id = lua_tointeger( vm, 7 );
 	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 8 );
@@ -224,8 +224,7 @@ int CLuaGuiEnvironment::AddLuaAnimator( lua_State *vm )
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaGuiEnvironment:AddLuaAnimator need 2 parameter");
 
 	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 2 );
-	const char* funcName = lua_tostring( vm, 3 );
-	assert( funcName != NULL );
+	NrpText funcName = lua_tostring( vm, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->addLuaAnimator( parentElem, funcName );
 
@@ -383,8 +382,7 @@ int CLuaGuiEnvironment::AddComboBox( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddComboBox need 7 parameter");
 
-	const char* texturepath = lua_tostring( vm, 2 );
-	assert( texturepath != NULL );
+	NrpText texturepath = lua_tostring( vm, 2 );
 
 	core::recti rectangle = _ReadRect( vm, 3 );
 

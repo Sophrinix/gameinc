@@ -57,8 +57,9 @@ void OpFileSystem::Remove( const NrpText& pathTo )
 
 void OpFileSystem::Move( const NrpText& pathOld, const NrpText& pathNew )
 {
-	NrpText mStr = RemoveEndSlash( CNrpApplication::Instance().GetString( WORKDIR ) + pathOld );
-	NrpText mStr2 = RemoveEndSlash( CNrpApplication::Instance().GetString( WORKDIR ) + pathNew );
+	NrpText workDir = CNrpApplication::Instance()[ WORKDIR ].As<NrpText>();
+	NrpText mStr = RemoveEndSlash( workDir + pathOld );
+	NrpText mStr2 = RemoveEndSlash( workDir + pathNew );
 
 	SHFILEOPSTRUCTW sh;
 	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );
@@ -83,7 +84,7 @@ void OpFileSystem::Move( const NrpText& pathOld, const NrpText& pathNew )
 void OpFileSystem::Copy( const NrpText& pathOld, const NrpText& pathNew )
 {
 	NrpText mStr = RemoveEndSlash( pathOld ), 
-				mStr2 = RemoveEndSlash( pathNew );
+			mStr2 = RemoveEndSlash( pathNew );
 
 	SHFILEOPSTRUCTW sh;
 	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );

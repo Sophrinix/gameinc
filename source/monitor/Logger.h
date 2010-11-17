@@ -109,7 +109,7 @@ struct Log
 	// (А иначе не работает запись типа Log() << mysql_info() << term; )
 	template<> Log& operator<< <const char*>(const char* t) 
 	{		
-		Text << (t ? t : "(null)") << " ";
+		Text << NrpText(t ? t : "(null)") << " ";
 		return *this;
 	}	
 	// Перегруженный метод, для того чтобы Log знал, когда следует задампить себя в базу.

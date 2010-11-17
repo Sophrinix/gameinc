@@ -33,8 +33,7 @@ int CLuaGameEngine::Create( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameEngine:Create need string parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
 
 	object_ = new CNrpGameEngine( name );
 	CNrpApplication::Instance().AddGameEngine( object_ );
@@ -48,8 +47,7 @@ int CLuaGameEngine::Load( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameEngine:Load need string parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->Load( name );
 
@@ -75,7 +73,7 @@ int CLuaGameEngine::SetGenreModuleNumber( lua_State* L )
 
 	int genreNumber = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN  object_->SetValue<int>( GENRE_MODULE_NUMBER, genreNumber );
+	IF_OBJECT_NOT_NULL_THEN  (*object_)[ GENRE_MODULE_NUMBER ] = genreNumber;
 
 	return 1;
 }
@@ -93,7 +91,7 @@ int CLuaGameEngine::SetCodeVolume( lua_State *L )
 
 	int volCode = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN  object_->SetValue<int>( CODEVOLUME, volCode );
+	IF_OBJECT_NOT_NULL_THEN  (*object_)[ CODEVOLUME ] = volCode;
 
 	return 1;
 }

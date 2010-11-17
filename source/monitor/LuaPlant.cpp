@@ -76,8 +76,7 @@ int CLuaPlant::LoadDiskMachine( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant:LoadDiskMachine need string parameter" );
 
-	const char* dmIniFile = lua_tostring( L, 2 );
-	assert( dmIniFile != NULL );
+	NrpText dmIniFile = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -122,9 +121,8 @@ int CLuaPlant::LoadBaseReklame( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaPlant::LoadBaseReklame need reklameName, saveFilePath parameter");
 
-	const char* reklameName = lua_tostring( L, 2 );
-	const char* fileName = lua_tostring( L, 3 );
-	assert( fileName != NULL );
+	NrpText reklameName = lua_tostring( L, 2 );
+	NrpText fileName = lua_tostring( L, 3 );
 
 	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN
@@ -145,8 +143,7 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::SaveReklamePrice need string parameter");
 
-	const char* profileName = lua_tostring( L, 2 );
-	assert( profileName != NULL );
+	NrpText profileName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -169,8 +166,7 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::LoadReklamePrice need string parameter");
 
-	const char* profileName = lua_tostring( L, 2 );
-	assert( profileName != NULL );
+	NrpText profileName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -218,11 +214,10 @@ int CLuaPlant::GetReklame( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaPlant::GetReklame need string parameter");
 
-	const char* typeName = lua_tostring( L, 2 );
-	const char* game = lua_tostring( L, 3 );
-	assert( typeName && game );
+	NrpText typeName = lua_tostring( L, 2 );
+	NrpText game = lua_tostring( L, 3 );
 
-	if( !typeName || !game ) 
+	if( !typeName.size() || !game.size() ) 
 		return 1;
 
 	CNrpReklameWork* r = NULL;

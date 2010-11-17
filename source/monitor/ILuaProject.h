@@ -48,10 +48,8 @@ protected:
 		int argc = lua_gettop(vm);
 		luaL_argcheck(vm, argc == 2, 2, _ErrStr(":SetName need string parameter") );
 
-		const char* name = lua_tostring( vm, 2 );
-		assert( name != NULL );
-
-		IF_OBJECT_NOT_NULL_THEN	object_->SetString( NAME, name );
+		NrpText name = lua_tostring( vm, 2 );
+		IF_OBJECT_NOT_NULL_THEN	(*object_)[ NAME ] = name;
 
 		return 1;
 	}

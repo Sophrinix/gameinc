@@ -32,9 +32,9 @@ int CLuaAutoScript::AddUserToGameProject( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 4, 4, "Function CLuaAutoScript:AddUserToGameProject need userName, devName, devModule params" );
 
-	const char* userName = lua_tostring( L, 2 );
-	const char* projectName = lua_tostring( L, 3 );
-	const char* moduleName = lua_tostring( L, 4 );
+	NrpText userName = lua_tostring( L, 2 );
+	NrpText projectName = lua_tostring( L, 3 );
+	NrpText moduleName = lua_tostring( L, 4 );
 	assert( userName != NULL && projectName != NULL && moduleName != NULL );
 
 	if( IUser* user = CNrpApplication::Instance().GetUser( userName ) )
@@ -53,9 +53,8 @@ int CLuaAutoScript::AddUserToInvention( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaAutoScript:AddUserToInvention need userName, inventionName params" );
 
-	const char* userName = lua_tostring( L, 2 );
-	const char* inventionName = lua_tostring( L, 3 );
-	assert( userName != NULL && inventionName != NULL );
+	NrpText userName = lua_tostring( L, 2 );
+	NrpText inventionName = lua_tostring( L, 3 );
 
 	if( IUser* user = CNrpApplication::Instance().GetUser( userName ) )
 		if( PNrpCompany cmp = user->GetValue<PNrpCompany>( PARENTCOMPANY ) )
@@ -72,9 +71,8 @@ int CLuaAutoScript::AddGameEngineToCompany( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaAutoScript:AddGameEngineToCompany need engineName, companyName params" );
 
-	const char* engineName = lua_tostring( L, 2 );
-	const char* companyName = lua_tostring( L, 3 );
-	assert( engineName != NULL && companyName != NULL );
+	NrpText engineName = lua_tostring( L, 2 );
+	NrpText companyName = lua_tostring( L, 3 );
 
 	CNrpGameEngine* engine = CNrpApplication::Instance().GetGameEngine( engineName );
 	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( companyName );

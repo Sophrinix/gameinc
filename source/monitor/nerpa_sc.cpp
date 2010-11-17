@@ -29,10 +29,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	Log(LOG) << "Система логов запущена!" << term;
 	CNrpEngine& v_engine = CNrpEngine::Instance();
 	CNrpApplication& application = CNrpApplication::Instance();
-	application.SetValue<PNrpBank>( BANK, &CNrpBank::Instance() );
+	application[ BANK ] = &CNrpBank::Instance();
 
 #ifdef _DEBUG
-	application.SetString( WORKDIR, OpFileSystem::UpDir( OpFileSystem::UpDir( __argv[ 0 ] ) ) );
+	application[ WORKDIR ] = OpFileSystem::UpDir( OpFileSystem::UpDir( __argv[ 0 ] ) );
 #else
 	application.SetValue<stringw>( WORKDIR, OpFileSystem::UpDir( __argv[ 0 ] ) );
 #endif

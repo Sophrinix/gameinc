@@ -67,8 +67,8 @@ namespace nrp
 CLASS_NAME CLASS_NRPSCRIPT( "CNrpScript" );
 CNrpScript::CNrpScript() : INrpConfig( CLASS_NRPSCRIPT, CLASS_NRPSCRIPT ), vm_(0)
 {
-	CreateValue<NrpText>( LOAD_FUNCTIONS_FILENAME, "" );
-	CreateValue<bool>( SHOW_CALL_FUNCTION_NAME, true );
+	Push<NrpText>( LOAD_FUNCTIONS_FILENAME, "" );
+	Push<bool>( SHOW_CALL_FUNCTION_NAME, true );
 
 	// NULL если была ошибка аллокации памяти
 	if (!(vm_ = luaL_newstate()))
@@ -239,10 +239,10 @@ void CNrpScript::LoadFile( const NrpText& fileName )
 	if ( luaL_loadfile( vm_, const_cast< NrpText& >( fileName ) ) != 0)
 	{
 		// Вытаскиваем сообщение об ошибке
-		const char* errMsg = lua_tostring(vm_, -1);
+		NrpText errMsg = lua_tostring(vm_, -1);
 		// убрать из стека сообщение об ошибке
 		lua_pop(vm_, -1);
-		if (errMsg)
+		if (errMsg.size())
 			Log(SCRIPT, FATAL)  << errMsg  << term;
 		else
 			Log(SCRIPT, FATAL)  << "Неизвестная ошибка скрипта \"" << fileName << "\"" << term;
@@ -257,10 +257,10 @@ void CNrpScript::DoFile( const NrpText& fileName )
 	if (luaL_dofile(vm_, const_cast< NrpText& >( fileName ) ) != 0)
 	{
 		// Вытаскиваем сообщение об ошибке
-		const char* errMsg = lua_tostring(vm_, -1);
+		NrpText errMsg = lua_tostring(vm_, -1);
 		// убрать из стека сообщение об ошибке
 		lua_pop(vm_, -1);
-		if( errMsg )
+		if( errMsg.size() )
 			Log(SCRIPT, FATAL)  << "Неизвестная ошибка скрипта \"" << fileName << term;
 		else
 			Log(SCRIPT, FATAL)  << errMsg  << term;
@@ -272,7 +272,7 @@ void CNrpScript::DoString( const NrpText& s )
 	if (luaL_dostring(vm_, const_cast< NrpText& >( s ) ) != 0)
 	{
 		// Вытаскиваем сообщение об ошибке
-		const char* errMsg = lua_tostring(vm_, -1);
+		NrpText errMsg = lua_tostring(vm_, -1);
 		// убрать из стека сообщение об ошибке
 		lua_pop(vm_, -1);
 		Log(SCRIPT, FATAL) << errMsg << term;
@@ -295,8 +295,7 @@ void CNrpScript::CallFunction( const NrpText& funcName, void* userData )
 	if( lua_pcall( vm_, 1, LUA_MULTRET, 0 ) != 0 )
 	{
 		// Вытаскиваем сообщение об ошибке
-		const char* errMsg = lua_tostring(vm_, -1);
-		assert( errMsg != NULL );
+		NrpText errMsg = lua_tostring(vm_, -1);
 
 		lua_pop(vm_, -1);
 		Log(SCRIPT, FATAL) << errMsg << term;

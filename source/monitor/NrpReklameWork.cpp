@@ -20,23 +20,23 @@ CNrpReklameWork::CNrpReklameWork( const NrpText& typeName,
 
 void CNrpReklameWork::InitializeOptions_()
 {
-	CreateValue<int>( NUMBERDAY, 0 );
-	CreateValue<int>( LEVEL, 0 );
-	CreateValue<NrpText>( NAME, "" );
-	CreateValue<NrpText>( TECHTYPE, "" );
-	CreateValue<int>( DAYCOST, 0 );
-	CreateValue<float>( QUALITY, 0 );
-	CreateValue<float>( MAXQUALITY, 0 );
-	CreateValue<NrpText>( GAMENAME, "" );
-	CreateValue<bool>( FINISHED, false );
-	CreateValue<NrpText>( TEXTURENORMAL, "" );
-	CreateValue<int>( BALANCE, 0 );
-	CreateValue<NrpText>( COMPANYNAME, "" );
-	CreateValue<NrpText>( TYPEOBJECT, "" );
+	Push<int>( NUMBERDAY, 0 );
+	Push<int>( LEVEL, 0 );
+	Push<NrpText>( NAME, "" );
+	Push<NrpText>( TECHTYPE, "" );
+	Push<int>( DAYCOST, 0 );
+	Push<float>( QUALITY, 0 );
+	Push<float>( MAXQUALITY, 0 );
+	Push<NrpText>( GAMENAME, "" );
+	Push<bool>( FINISHED, false );
+	Push<NrpText>( TEXTURENORMAL, "" );
+	Push<int>( BALANCE, 0 );
+	Push<NrpText>( COMPANYNAME, "" );
+	Push<NrpText>( TYPEOBJECT, "" );
 
 	SYSTEMTIME rt;
 	memset( &rt, 0, sizeof( rt ) );
-	CreateValue<SYSTEMTIME>( STARTDATE, rt );
+	Push<SYSTEMTIME>( STARTDATE, rt );
 }
 
 CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )

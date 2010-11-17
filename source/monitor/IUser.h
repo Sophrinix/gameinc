@@ -6,29 +6,29 @@
 
 namespace nrp
 {
-OPTION_NAME CODE_SPEED( "codeSpeed" ); /*< How many string code may write developer in day */
-OPTION_NAME CODE_QUALITY( "codeQuality" );/*< What quality we have on game end.Percent */
-OPTION_NAME KNOWLEDGE_LEVEL( "knowledgeLevel" );/*< Уровень знаний. От этого параметра зависит скорость роста скорости написания кода*/
-OPTION_NAME TALANT( "talant" ); /*< Талант. от этого параметра зависит скорость роста качества кода*/
-OPTION_NAME STAMINA( "stamina" );/*< Усталость. При значении ниже 90% умножается на codeSpeed_, для получения конечного значения */
-OPTION_NAME MAXMOOD( "maxMood" );/*! Максимальный уровень настроения, рассчитывается в начале дня */
-OPTION_NAME MOOD( "mood" );/*< Настроение. При низком настроении может уволиться */
-OPTION_NAME POPULARITY( "popularity" );/*< изветность разработчика */
-OPTION_NAME SALARY( "salary" );/*< зарплата разработчика*/
-OPTION_NAME WANTMONEY( "wantMoney" ); /*! Зарплата, которой будет доволен работник */
-OPTION_NAME STABILITY("stability");/*< скорость падения усталости */
-OPTION_NAME CHARACTER( "character" ); /*< характер персонажа */
-OPTION_NAME CONTRACTMONEY( "contractMoney" ); /*! стартовая сумма при подписании контракта*/
-OPTION_NAME MAXSUPPORTUSER( "maxSupportUser" ); /*! количество людей, которым может управлять чел*/
-OPTION_NAME INVENTIONABILITY( "inventionAbility" ); /*! способность к изобретениям*/
-OPTION_NAME USERSTATE( "userState" ); /*! Состояние пользователя "работа", "отдых" */
-OPTION_NAME ROOMSTATE( "roomState" ); /*! Комната, в которой находится человек */
-OPTION_NAME MAXHOLIDAY( "maxHoliday" );	 /*! Максимальное количество дней отпуска для этого человека */
-OPTION_NAME CURRENTHOLIDAY( "currentHoliday" ); /*! Количество отгулянных дней отпуска */
-OPTION_NAME HANGRY( "hangry" ); /*! Чуство голода*/
-OPTION_NAME COLLECTIVINTEGRATION( "collectivintegration" ); /*! Умение работать в коллективе*/
-OPTION_NAME TIMEMANAGMENT( "timeManagment" ); /*!  Управление временем, от этого параметра зависит реальное время потраченное на разарботку */
-OPTION_NAME EXPERIENCE( "experience" );
+OPTION_NAME CODE_SPEED( L"codeSpeed" ); /*< How many string code may write developer in day */
+OPTION_NAME CODE_QUALITY( L"codeQuality" );/*< What quality we have on game end.Percent */
+OPTION_NAME KNOWLEDGE_LEVEL( L"knowledgeLevel" );/*< Уровень знаний. От этого параметра зависит скорость роста скорости написания кода*/
+OPTION_NAME TALANT( L"talant" ); /*< Талант. от этого параметра зависит скорость роста качества кода*/
+OPTION_NAME STAMINA( L"stamina" );/*< Усталость. При значении ниже 90% умножается на codeSpeed_, для получения конечного значения */
+OPTION_NAME MAXMOOD( L"maxMood" );/*! Максимальный уровень настроения, рассчитывается в начале дня */
+OPTION_NAME MOOD( L"mood" );/*< Настроение. При низком настроении может уволиться */
+OPTION_NAME POPULARITY( L"popularity" );/*< изветность разработчика */
+OPTION_NAME SALARY( L"salary" );/*< зарплата разработчика*/
+OPTION_NAME WANTMONEY( L"wantMoney" ); /*! Зарплата, которой будет доволен работник */
+OPTION_NAME STABILITY( L"stability");/*< скорость падения усталости */
+OPTION_NAME CHARACTER( L"character" ); /*< характер персонажа */
+OPTION_NAME CONTRACTMONEY( L"contractMoney" ); /*! стартовая сумма при подписании контракта*/
+OPTION_NAME MAXSUPPORTUSER( L"maxSupportUser" ); /*! количество людей, которым может управлять чел*/
+OPTION_NAME INVENTIONABILITY( L"inventionAbility" ); /*! способность к изобретениям*/
+OPTION_NAME USERSTATE( L"userState" ); /*! Состояние пользователя "работа", "отдых" */
+OPTION_NAME ROOMSTATE( L"roomState" ); /*! Комната, в которой находится человек */
+OPTION_NAME MAXHOLIDAY( L"maxHoliday" );	 /*! Максимальное количество дней отпуска для этого человека */
+OPTION_NAME CURRENTHOLIDAY( L"currentHoliday" ); /*! Количество отгулянных дней отпуска */
+OPTION_NAME HANGRY( L"hangry" ); /*! Чуство голода*/
+OPTION_NAME COLLECTIVINTEGRATION( L"collectivintegration" ); /*! Умение работать в коллективе*/
+OPTION_NAME TIMEMANAGMENT( L"timeManagment" ); /*!  Управление временем, от этого параметра зависит реальное время потраченное на разарботку */
+OPTION_NAME EXPERIENCE( L"experience" );
 
 class IUserAction;
 class CNrpTechnology; 

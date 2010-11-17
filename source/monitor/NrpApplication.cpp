@@ -38,42 +38,42 @@ CLASS_NAME CLASS_NRPAPPLICATION( "CNrpApplication" );
 
 CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS_NRPAPPLICATION )
 {
-	CreateValue<PNrpBank>( BANK, NULL );
-	CreateValue<int>( TECHNUMBER, 0 );
-	CreateValue<int>( USERNUMBER, 0 );
-	CreateValue<int>( COMPANIESNUMBER, 0 );
+	Push<PNrpBank>( BANK, NULL );
+	Push<int>( TECHNUMBER, 0 );
+	Push<int>( USERNUMBER, 0 );
+	Push<int>( COMPANIESNUMBER, 0 );
 
-	CreateValue<NrpText>( WORKDIR, "" );
-	CreateValue<NrpText>( SAVEDIR, "save/" );
-	CreateValue<NrpText>( SAVEDIR_INVENTIONS, "" );
-	CreateValue<NrpText>( SAVEDIR_COMPANIES, "" );
-	CreateValue<NrpText>( SAVEDIR_DEVPR, "" );
-	CreateValue<NrpText>( SAVEDIR_GAMES, "" );
-	CreateValue<NrpText>( SAVEDIR_PROJECTS, "" );
-	CreateValue<NrpText>( SAVEDIR_ENGINES, "" );
-	CreateValue<NrpText>( SAVEDIR_USERS, "" );
-	CreateValue<NrpText>( SAVEDIR_PLANT, "" );
-	CreateValue<NrpText>( SAVEINI_PROFILE, "" );
-	CreateValue<NrpText>( SAVEDIR_PROFILE, "" );
-	CreateValue<NrpText>( SAVEDIR_TECHS, "" );
-	CreateValue<NrpText>( SYSTEMINI, "config/system.ini" );
+	Push<NrpText>( WORKDIR, "" );
+	Push<NrpText>( SAVEDIR, "save/" );
+	Push<NrpText>( SAVEDIR_INVENTIONS, "" );
+	Push<NrpText>( SAVEDIR_COMPANIES, "" );
+	Push<NrpText>( SAVEDIR_DEVPR, "" );
+	Push<NrpText>( SAVEDIR_GAMES, "" );
+	Push<NrpText>( SAVEDIR_PROJECTS, "" );
+	Push<NrpText>( SAVEDIR_ENGINES, "" );
+	Push<NrpText>( SAVEDIR_USERS, "" );
+	Push<NrpText>( SAVEDIR_PLANT, "" );
+	Push<NrpText>( SAVEINI_PROFILE, "" );
+	Push<NrpText>( SAVEDIR_PROFILE, "" );
+	Push<NrpText>( SAVEDIR_TECHS, "" );
+	Push<NrpText>( SYSTEMINI, "config/system.ini" );
 
 	IniFile rv( GetString( SYSTEMINI ) );
-	CreateValue<NrpText>( PROFILENAME, rv.Get( SECTION_OPTIONS, "currentProfile", NrpText( "dalerank" ) ) );
-	CreateValue<NrpText>( PROFILECOMPANY, rv.Get( SECTION_OPTIONS, "currentCompany", NrpText( "daleteam" ) ) );
+	Push<NrpText>( PROFILENAME, rv.Get( SECTION_OPTIONS, "currentProfile", NrpText( "dalerank" ) ) );
+	Push<NrpText>( PROFILECOMPANY, rv.Get( SECTION_OPTIONS, "currentCompany", NrpText( "daleteam" ) ) );
 
-	CreateValue<SYSTEMTIME>( CURRENTTIME, SYSTEMTIME() );
-	CreateValue<int>( BOXADDONNUMBER, 0 );
-	CreateValue<int>( GAMENUMBER, 0 );
-	CreateValue<int>( ENGINES_NUMBER, 0 );
-	CreateValue<int>( DEVELOPPROJECTS_NUMBER, 0 );
-	CreateValue<int>( PROJECTNUMBER, 0 );
-	CreateValue<PNrpCompany>( PLAYERCOMPANY, NULL );
-	CreateValue<int>( INVENTIONSNUMBER, 0 );
-	CreateValue<int>( MINIMUM_USER_SALARY, 250 );
-	CreateValue<CNrpPda*>( PDA, new CNrpPda() );
-	CreateValue<CNrpGameTime*>( GAME_TIME, new CNrpGameTime( this ) );
-	CreateValue<int>( PAUSEBTWSTEP, 100 );
+	Push<SYSTEMTIME>( CURRENTTIME, SYSTEMTIME() );
+	Push<int>( BOXADDONNUMBER, 0 );
+	Push<int>( GAMENUMBER, 0 );
+	Push<int>( ENGINES_NUMBER, 0 );
+	Push<int>( DEVELOPPROJECTS_NUMBER, 0 );
+	Push<int>( PROJECTNUMBER, 0 );
+	Push<PNrpCompany>( PLAYERCOMPANY, NULL );
+	Push<int>( INVENTIONSNUMBER, 0 );
+	Push<int>( MINIMUM_USER_SALARY, 250 );
+	Push<CNrpPda*>( PDA, new CNrpPda() );
+	Push<CNrpGameTime*>( GAME_TIME, new CNrpGameTime( this ) );
+	Push<int>( PAUSEBTWSTEP, 100 );
 
 	srand( GetTickCount() );
 }

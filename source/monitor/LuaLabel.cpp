@@ -29,7 +29,7 @@ int CLuaLabel::SetOverrideFont( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaLabel::SetOverrideFont need fontName parameter");
 
-	const char* fontName = lua_tostring( L, 2 );
+	NrpText fontName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{

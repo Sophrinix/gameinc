@@ -68,11 +68,11 @@ void CNrpScreenshot::Load( const NrpText& fileName )
 
 void CNrpScreenshot::InitializeOptions_()
 {
-	CreateValue<NrpText>( NAME, "" );
-	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
-	CreateValue<int>( IMAGESNUMBER, 0 );
-	CreateValue<int>( IMAGESBOXNUMBER, 0 );
-	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
+	Push<NrpText>( NAME, "" );
+	Push<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	Push<int>( IMAGESNUMBER, 0 );
+	Push<int>( IMAGESBOXNUMBER, 0 );
+	Push<int>( GENRE_MODULE_NUMBER, 0 );
 }
 
 NrpText CNrpScreenshot::ClassName()

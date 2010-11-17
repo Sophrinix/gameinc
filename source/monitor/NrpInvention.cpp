@@ -53,7 +53,7 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp )
 
 		SYSTEMTIME time;
 		memset( &time, 0, sizeof(SYSTEMTIME) );
-		CreateValue<SYSTEMTIME>( PROGNOSEDATEFINISH, time );
+		Push<SYSTEMTIME>( PROGNOSEDATEFINISH, time );
 		CheckParams();
 
 		CopyMapTo( _techRequires, pTech->GetTechRequires() );
@@ -70,15 +70,15 @@ CNrpInvention::CNrpInvention( const NrpText& fileName )
 
 void CNrpInvention::InitializeOptions_()
 {
-	CreateValue<int>( REALPRICE, 0 );
-	CreateValue<int>( PASSEDPRICE, 0 );
-	CreateValue<int>( INVESTIMENT, 1000 );
-	CreateValue<int>( DAYLEFT, 0 );
-	CreateValue<int>( INVENTIONSPEED, 0 );
-	CreateValue<int>( USERNUMBER, 0 );
-	CreateValue<NrpText>( COMPANYNAME, "" );
-	CreateValue<SYSTEMTIME>( USERSTARTDATE, SYSTEMTIME() );
-	CreateValue<int>( MONEY_TODECREASE, 0 );
+	Push<int>( REALPRICE, 0 );
+	Push<int>( PASSEDPRICE, 0 );
+	Push<int>( INVESTIMENT, 1000 );
+	Push<int>( DAYLEFT, 0 );
+	Push<int>( INVENTIONSPEED, 0 );
+	Push<int>( USERNUMBER, 0 );
+	Push<NrpText>( COMPANYNAME, "" );
+	Push<SYSTEMTIME>( USERSTARTDATE, SYSTEMTIME() );
+	Push<int>( MONEY_TODECREASE, 0 );
 }
 
 void CNrpInvention::CheckParams()

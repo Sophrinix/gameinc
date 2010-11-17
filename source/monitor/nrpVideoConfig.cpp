@@ -12,14 +12,14 @@ using namespace video;
 
 namespace nrp
 {
-CLASS_NAME CLASS_VIDEOCONFIG( "CNrpVideoConfig" );
+CLASS_NAME CLASS_VIDEOCONFIG( L"CNrpVideoConfig" );
 
 CNrpVideoConfig::CNrpVideoConfig() : INrpConfig( CLASS_VIDEOCONFIG, CLASS_VIDEOCONFIG) 
 {		
-	CreateValue<dimension2du>( SCREEN_SIZE, dimension2du( 1024, 660 ) );//высота экрана
-	CreateValue<bool>( FULLSCREEN, false );		//полноэкранный режим
-	CreateValue<bool>( USE_SHADOWS, false );		//отображение теней
-	CreateValue<bool>( VSYNC, false );	//вертикальная синх.
+	Push<dimension2du>( SCREEN_SIZE, dimension2du( 1024, 660 ) );//высота экрана
+	Push<bool>( FULLSCREEN, false );		//полноэкранный режим
+	Push<bool>( USE_SHADOWS, false );		//отображение теней
+	Push<bool>( VSYNC, false );	//вертикальная синх.
 
 	Load( "config/video.ini" );
 }

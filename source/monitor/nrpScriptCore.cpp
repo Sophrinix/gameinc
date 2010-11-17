@@ -126,18 +126,13 @@ int CreateTerrainShader( lua_State *vm )
 	scene::ISceneManager* smgr = CNrpEngine::Instance().GetSceneManager();
 	video::IVideoDriver* driver = smgr->getVideoDriver();
 
-	const char* vertexFilename = lua_tostring(vm, 1);
-	assert( vertexFilename != NULL );
-	const char* vertexFuncname = lua_tostring(vm, 2);	
-	assert( vertexFuncname != NULL );
-	const char* fragFilename = lua_tostring(vm, 3);	
-	assert( fragFilename != NULL );
-	const char* fragFuncname = lua_tostring(vm, 4);	
-	assert( fragFuncname != NULL );
+	NrpText vertexFilename = lua_tostring(vm, 1);
+	NrpText vertexFuncname = lua_tostring(vm, 2);	
+	NrpText fragFilename = lua_tostring(vm, 3);	
+	NrpText fragFuncname = lua_tostring(vm, 4);	
 
 	scene::ISceneNode* terrain = (scene::ITerrainSceneNode*)lua_touserdata(vm, 5);
-	const char* seaFloorFilename = lua_tostring(vm, 6);	
-	assert( seaFloorFilename != NULL );
+	NrpText seaFloorFilename = lua_tostring(vm, 6);	
 	float waterPosY = (float)lua_tonumber( vm, 7 );
 
 	video::CNrpTerrainMaterial* terra_shader = new video::CNrpTerrainMaterial( CNrpEngine::Instance().GetDevice(), 
@@ -184,11 +179,11 @@ int ScriptLog( lua_State *vm )
 	myLog.Sev = (SeverityLevel)lua_tointeger(vm, -1);
 	lua_pop(vm, 1);
 
-	const char* msgText1 = lua_tostring(vm, 2);
+	NrpText msgText1 = lua_tostring(vm, 2);
 
 	for (int nArg = 2; nArg <= argc; nArg ++)
 	{		
-		const char* param = lua_tostring(vm, nArg);
+		NrpText param = lua_tostring(vm, nArg);
 		myLog << param;
 	}
 	myLog << term;
@@ -244,10 +239,8 @@ int AddScene( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 2, 2, "Function AddScene need 2 parameter");
 
-	const char* name = lua_tostring( vm, 1 );
-	assert( name != NULL );
-	const char* fileName = lua_tostring( vm, 2 );
-	assert( fileName != NULL );
+	NrpText name = lua_tostring( vm, 1 );
+	NrpText fileName = lua_tostring( vm, 2 );
 
 	CNrpEngine::Instance().AddScene( name, fileName );
 
@@ -259,10 +252,9 @@ int SetNextScene( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 1, 1, "Function SetNextScene need 1 parameter");
 
-	const char* name = lua_tostring( vm, 1 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( vm, 1 );
 
-	CNrpEngine::Instance().SetStatus( CNrpEngine::LOAD_SCENE, (void*)name );
+	CNrpEngine::Instance().SetStatus( CNrpEngine::LOAD_SCENE, (void*)name.ToStr() );
 
 	return 1;
 }
@@ -292,8 +284,7 @@ int SetSceneOption( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 2, 2, "Function AddScene need 2 parameter");
 
-	const char* name = lua_tostring( vm, 1 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( vm, 1 );
 	bool amount = lua_tointeger( vm, 2 ) > 0;
 
 	CNrpEngine::Instance().GetCurrentScene()->SetOption( name, amount );
@@ -361,8 +352,7 @@ int ApplicationGetTranslate( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 1, 1, "Function LoadLanguageFile need string parameter");
 
-	const char* name = lua_tostring( vm, 1 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( vm, 1 );
 
 	const char* resultt = translate::GetTranslate( name );
 

@@ -128,8 +128,7 @@ int CLuaApplication::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, 
 	luaL_argcheck(L, argc == 3, 3, _ErrStr(funcName + " need string parameter") );
 
 	int typea = lua_tointeger( L, 2 );
-	const char* fName = lua_tostring( L, 3 );
-	assert( fName != NULL );
+	NrpText fName = lua_tostring( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -226,8 +225,8 @@ int CLuaApplication::GetUserByName( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetUserByName need string parameter" );
 
-	const char* userName = lua_tostring( L, 2 );
-	assert( userName != NULL );
+	NrpText userName = lua_tostring( L, 2 );
+
 	IUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -489,8 +488,7 @@ int CLuaApplication::GetGame( lua_State* L )
 	}
 	else if( lua_isstring( L, 2 ) )
 	{
-		const char* name = lua_tostring( L, 2 );
-		assert( name != NULL );
+		NrpText name = lua_tostring( L, 2 );
 		IF_OBJECT_NOT_NULL_THEN game = object_->GetGame( name );
 	}
 

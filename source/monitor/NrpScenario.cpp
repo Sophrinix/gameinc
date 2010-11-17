@@ -7,7 +7,7 @@ CLASS_NAME CLASS_SCENARIO( "CNrpScenario" );
 
 CNrpScenario::CNrpScenario( const NrpText& name ) : INrpProject( CLASS_SCENARIO, "" )
 {
-	CreateValue<NrpText>( NAME, name );
+	Push<NrpText>( NAME, name );
 }
 
 CNrpScenario::~CNrpScenario(void)

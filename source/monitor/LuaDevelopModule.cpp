@@ -44,11 +44,10 @@ int CLuaDevelopModule::GetOptionAsInt( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaDevelopModule::GetOptionAsInt need int parameter");
 
-	const char* opName = lua_tostring( L, 2 );
-	assert( opName != NULL );
+	NrpText opName = lua_tostring( L, 2 );
 
 	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( opName );
+	IF_OBJECT_NOT_NULL_THEN	result = (*object_)[ opName ];
 	lua_pushinteger( L, result );
 	return 1;	
 }
@@ -59,7 +58,7 @@ int CLuaDevelopModule::HaveLider( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::HaveLider not need parameter");
 
 	bool haveUser = false; 
-	IF_OBJECT_NOT_NULL_THEN	haveUser = object_->GetValue<PUser>( COMPONENTLIDER ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN	haveUser = (*object_)[ COMPONENTLIDER ].As<PUser>() != NULL;
 	lua_pushboolean( L, haveUser );
 	return 1;	
 }
@@ -111,7 +110,7 @@ int CLuaDevelopModule::GetParent( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaDevelopModule:GetParent not need parameter");
 
 	INrpDevelopProject* prj = NULL;
-	IF_OBJECT_NOT_NULL_THEN prj = object_->GetValue<INrpDevelopProject*>( PARENT );
+	IF_OBJECT_NOT_NULL_THEN prj = (*object_)[ PARENT ].As<INrpDevelopProject*>();
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );

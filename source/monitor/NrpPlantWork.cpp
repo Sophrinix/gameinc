@@ -24,22 +24,22 @@ CNrpPlantWork::~CNrpPlantWork(void)
 
 void CNrpPlantWork::InitializeOptions_()
 {
-	CreateValue<NrpText>( NAME, "" );
-	CreateValue<PNrpDiskMachine>( PRODUCETYPE, NULL );
-	CreateValue<int>( NUMBERMACHINE, 0 );
-	CreateValue<int>( NUMBERDAY, 0 );
-	CreateValue<int>( DISKNUMBER, 0 );
-	CreateValue<float>( DISKPRICE, 0 );
-	CreateValue<int>( FINALPRICE, 0 );
-	CreateValue<PNrpGame>( PARENT, NULL );
-	CreateValue<NrpText>( COMPANYNAME, "" );
-	CreateValue<NrpText>( GAMENAME, "" );
-	CreateValue<NrpText>( DISKMACHINENAME, "" );
-	CreateValue<int>( DISKINDAY, 0 );
-	CreateValue<int>( LEFTPRODUCEDISK, 0 );
-	CreateValue<int>( DAYCOST, 0 );
-	CreateValue<bool>( FINISHED, false );
-	CreateValue<int>( RENTPRICE, 0 );
+	Push<NrpText>( NAME, "" );
+	Push<PNrpDiskMachine>( PRODUCETYPE, NULL );
+	Push<int>( NUMBERMACHINE, 0 );
+	Push<int>( NUMBERDAY, 0 );
+	Push<int>( DISKNUMBER, 0 );
+	Push<float>( DISKPRICE, 0 );
+	Push<int>( FINALPRICE, 0 );
+	Push<PNrpGame>( PARENT, NULL );
+	Push<NrpText>( COMPANYNAME, "" );
+	Push<NrpText>( GAMENAME, "" );
+	Push<NrpText>( DISKMACHINENAME, "" );
+	Push<int>( DISKINDAY, 0 );
+	Push<int>( LEFTPRODUCEDISK, 0 );
+	Push<int>( DAYCOST, 0 );
+	Push<bool>( FINISHED, false );
+	Push<int>( RENTPRICE, 0 );
 }
 
 CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPLANTWORK, "" )

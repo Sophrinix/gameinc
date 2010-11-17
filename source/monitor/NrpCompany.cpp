@@ -20,18 +20,18 @@ CLASS_NAME CLASS_NRPCOMPANY( "CNrpCompany" );
 
 void CNrpCompany::_InitialyzeOptions()
 {
-	CreateValue<int>( BALANCE, 100000 );
-	CreateValue<NrpText>( NAME, "" );
-	CreateValue<PUser>( CEO, NULL );
-	CreateValue<int>( ENGINES_NUMBER, 0 );
-	CreateValue<int>( TECHNUMBER, 0 );
-	CreateValue<int>( USERNUMBER, 0 );
-	CreateValue<int>( PROJECTNUMBER, 0 );
-	CreateValue<int>( GAMENUMBER, 0 );
-	CreateValue<int>( OBJECTSINPORTFELLE, 0 );
-	CreateValue<int>( DEVELOPPROJECTS_NUMBER, 0 );
-	CreateValue<float>( FAMOUS, 0.1f );
-	CreateValue<int>( INVENTIONSNUMBER, 0 );
+	Push<int>( BALANCE, 100000 );
+	Push<NrpText>( NAME, "" );
+	Push<PUser>( CEO, NULL );
+	Push<int>( ENGINES_NUMBER, 0 );
+	Push<int>( TECHNUMBER, 0 );
+	Push<int>( USERNUMBER, 0 );
+	Push<int>( PROJECTNUMBER, 0 );
+	Push<int>( GAMENUMBER, 0 );
+	Push<int>( OBJECTSINPORTFELLE, 0 );
+	Push<int>( DEVELOPPROJECTS_NUMBER, 0 );
+	Push<float>( FAMOUS, 0.1f );
+	Push<int>( INVENTIONSNUMBER, 0 );
 }
 
 CNrpCompany::CNrpCompany( const NrpText& name, IUser* ceo ) : INrpConfig( CLASS_NRPCOMPANY, name)
@@ -65,12 +65,14 @@ CNrpGameEngine* CNrpCompany::GetGameEngine( const NrpText& name ) const
 
 void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 {
+	assert( ptrEng );
 	if( ptrEng != NULL )
+	{
 		_engines.push_back( ptrEng );
-
-	SetValue<int>( ENGINES_NUMBER, _engines.size() );
-	ptrEng->SetString( COMPANYNAME, this->GetString( NAME ) );
-	ptrEng->SetValue<PNrpCompany>( PARENTCOMPANY, this );
+		SetValue<int>( ENGINES_NUMBER, _engines.size() );
+		ptrEng->SetString( COMPANYNAME, this->GetString( NAME ) );
+		ptrEng->SetValue<PNrpCompany>( PARENTCOMPANY, this );
+	}
 }
 
 CNrpTechnology* CNrpCompany::GetTechnology( u32 index ) const
@@ -100,7 +102,8 @@ void CNrpCompany::AddProject( INrpProject* ptrProject )
 
 void CNrpCompany::AddUser( IUser* user )
 {
-	if( !GetUser( user->GetValue<NrpText>( NAME ) ) )
+	assert( user );
+	if( user && !GetUser( user->GetValue<NrpText>( NAME ) ) )
 	{
 		_employers.push_back( user );
 		user->SetValue<int>( SALARY, user->GetValue<int>( WANTMONEY ) );
@@ -154,7 +157,8 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 	IniFile rv( fileName );
 	CNrpApplication& app = CNrpApplication::Instance();
 
-	for( int i=0; i < GetValue<int>( condition ); i++ )
+	int maxCond = GetValue<int>( condition );
+	for( int i=0; i < maxCond; i++ )
 	{
 		NrpText type = rv.Get( section, CreateKeyType(i), NrpText() );
 		NrpText rName = rv.Get( section, CreateKeyItem(i), NrpText() );
@@ -162,28 +166,23 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		INrpConfig* conf = NULL;
 		if( type == CNrpGameEngine::ClassName() )
 		{
-			if( CNrpGameEngine* rr = app.GetGameEngine( rName ) )
-				_engines.push_back( rr );
+			AddGameEngine( app.GetGameEngine( rName ) );
 		}
 		else if( type == IUser::ClassName() )
 		{
-			if( IUser* rr = app.GetUser( rName ) )
-				_employers.push_back( rr );
+			AddUser( app.GetUser( rName ) );
 		}
 		else if( type == CNrpTechnology::ClassName() )
 		{
-			if( CNrpTechnology* rr = app.GetTechnology( rName ) )
-				_technologies.push_back( rr );
+			AddTechnology( app.GetTechnology( rName ) );
 		}
 		else if( type == CNrpGame::ClassName() )
 		{
-			if( CNrpGame* rr = app.GetGame( rName ) )
-				_games.push_back( rr );
+			AddGame( app.GetGame( rName ) );
 		}
 		else if( type == CNrpInvention::ClassName() )
 		{
-			if( CNrpInvention* rr = app.GetInvention( rName, GetString( NAME ) ) )
-				AddInvention( rr );
+			AddInvention( app.GetInvention( rName, GetString( NAME ) ) );
 		}
 		/*else if( type == INrpProject::ClassName() )
 		{
@@ -195,10 +194,6 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 			if( conf = app.GetGame( rName ) )
 				_games.push_back( conf );
 		}*/
-
-		assert( conf );
-		if( conf ) conf->SetValue<PNrpCompany>( PARENTCOMPANY, this );
-
 	}
 	
 	//SetValue( condition, arrayT.size() );
@@ -294,6 +289,15 @@ void CNrpCompany::_PaySalaries()
 		_employers[ cnt ]->AddValue<int>( BALANCE, salary );
 	}
 	AddValue<int>( BALANCE, workersSalary );
+}
+
+void CNrpCompany::AddGame( CNrpGame* game )
+{
+	if( game && FindByNameAndIntName< GAMES, CNrpGame >( _games, game->GetString( NAME ) ) == NULL )
+	{
+		_games.push_back( game );
+		SetValue<int>( GAMENUMBER, _games.size() );
+	}
 }
 
 CNrpGame* CNrpCompany::CreateGame( CNrpDevelopGame* devGame )
@@ -422,7 +426,8 @@ void CNrpCompany::InventionReleased( const CNrpInvention* inv )
 
 void CNrpCompany::AddTechnology( CNrpTechnology* tech )
 {
-	if( FindByNameAndIntName< TECHS, CNrpTechnology>( _technologies, tech->GetString( NAME ) )== NULL )
+	assert( tech );
+	if( tech && FindByNameAndIntName< TECHS, CNrpTechnology>( _technologies, tech->GetString( NAME ) )== NULL )
 	{
 		_technologies.push_back( tech );
 		SetValue<int>( TECHNUMBER, _technologies.size() );

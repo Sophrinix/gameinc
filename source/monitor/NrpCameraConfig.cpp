@@ -8,9 +8,9 @@ static nrp::CNrpCameraConfig * globalCameraConfigInstance = 0;
 
 namespace nrp
 {
-CLASS_NAME CLASS_CAMERACONFIG( "CNrpCameraConfig" );
+CLASS_NAME CLASS_CAMERACONFIG( L"CNrpCameraConfig" );
 
-CNrpCameraConfig::CNrpCameraConfig(void) : INrpConfig( "CNrpCameraConfig", "cameraConfig")
+CNrpCameraConfig::CNrpCameraConfig(void) : INrpConfig( CLASS_CAMERACONFIG, CLASS_CAMERACONFIG)
 {
 	Load( "config/camera.ini" );
 }

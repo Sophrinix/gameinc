@@ -5,7 +5,7 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_INRPDEVELOPPROJECT( "INrpDevelopProject" );
+CLASS_NAME CLASS_INRPDEVELOPPROJECT( L"INrpDevelopProject" );
 
 INrpDevelopProject::INrpDevelopProject(void) : INrpProject( CLASS_INRPDEVELOPPROJECT, "" )
 {
@@ -33,13 +33,13 @@ NrpText INrpDevelopProject::Save( const NrpText& amount )
 
 void INrpDevelopProject::InitializeOptions_()
 {
-	CreateValue<NrpText>( COMPANYNAME, "" );
-	CreateValue<int>( MODULE_NUMBER, 0 );
-	CreateValue<float>( READYWORKPERCENT, 0 );
-	CreateValue<bool>( PROJECTREADY, false );
-	CreateValue<int>( TECHTYPE, 0 );
-	CreateValue<NrpText>( TEXTURENORMAL, "" );
-	CreateValue<float>( FAMOUS, 0.f );
+	Push<NrpText>( COMPANYNAME, "" );
+	Push<int>( MODULE_NUMBER, 0 );
+	Push<float>( READYWORKPERCENT, 0 );
+	Push<bool>( PROJECTREADY, false );
+	Push<int>( TECHTYPE, 0 );
+	Push<NrpText>( TEXTURENORMAL, "" );
+	Push<float>( FAMOUS, 0.f );
 }
 
 void INrpDevelopProject::SetDeveloper( IUser* user )

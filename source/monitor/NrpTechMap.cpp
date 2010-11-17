@@ -930,14 +930,14 @@ void CNrpTechMap::draw()
 				core::dimension2di txsSize( minSize, minSize );
 				if( cell.assignTech != NULL && cell.assignTech->GetTechnology() )
 				{
-					CNrpTechnology* ptrTech = cell.assignTech->GetTechnology();
-					txs = driver->getTexture( ptrTech->GetString( TEXTURENORMAL ) );
+					const CNrpTechnology& refTech = *(cell.assignTech->GetTechnology());
+					txs = driver->getTexture( refTech[ TEXTURENORMAL ].As<NrpText>() );
 					txsSize = txs->getOriginalSize();
 					// draw item text
-					if( ptrTech->GetValue<TECH_STATUS>( STATUS ) == TS_INDEVELOP )
+					if( TS_INDEVELOP == refTech[ STATUS ].As<TECH_STATUS>() )
 					{
 						text += "\n(";
-						text += static_cast<int>( ptrTech->GetValue<float>( READYWORKPERCENT ));
+						text += static_cast<int>( refTech[ READYWORKPERCENT ].As<float>() );
 						text += ")";
 					}
 				}
@@ -983,13 +983,13 @@ void CNrpTechMap::draw()
 
 				if ((s32)i == _selected.Y && j == _selected.X )
 				{
-					font->draw( text.c_str(), textRect, 
+					font->draw( text.ToWide(), textRect, 
 						skin->getColor(IsEnabled ? EGDC_HIGH_LIGHT_TEXT : EGDC_GRAY_TEXT), 
 						true, true, &clientClip);
 				}
 				else
 				{
-					font->draw( text.c_str(), textRect, 
+					font->draw( text.ToWide(), textRect, 
 						IsEnabled ? Rows[i].Items[j].Color : skin->getColor(EGDC_GRAY_TEXT), 
 						true, true, &clientClip);
 				}
@@ -1288,7 +1288,7 @@ void CNrpTechMap::AddTechnology( CNrpTechnology* parent, CNrpTechnology* child )
 	RelocateTable_();
 }
 
-void CNrpTechMap::AddTechnology( nrp::CNrpTechnology* parent, const char* internalName )
+void CNrpTechMap::AddTechnology( nrp::CNrpTechnology* parent, const NrpText& internalName )
 {
 	AssignTech* rAssign = NULL;
 
@@ -1323,9 +1323,9 @@ void CNrpTechMap::AssignTechMapToTable_( const ATECH_ARRAY& pArray )
 			cell.assignTech = pTech;
 			cell.Text = core::stringw( "???" ) + cell.assignTech->GetName();
 
-			if( pTech->GetTechnology() )
+			if( CNrpTechnology* rechnology = pTech->GetTechnology() )
 			{
-				cell.Text = pTech->GetTechnology()->GetString( NAME );
+				cell.Text = rechnology->Get( NAME ).As<NrpText>();
 
 				AssignTechMapToTable_( pTech->GetChilds() );
 			}
@@ -1339,7 +1339,7 @@ void CNrpTechMap::RelocateTable_()
 	for( size_t pos=0; pos < techMap_.size(); pos++ )
 	{
 		 ypos = techMap_[ pos ]->RootCell( 0, ypos );
-		 ypos += !(techMap_[ pos ]->GetTechnology()->GetValue<int>( NEXTTECHNUMBER ));
+		 ypos += !(techMap_[ pos ]->GetTechnology()->Get( NEXTTECHNUMBER ));
 	}
 
 	clear();
@@ -1370,7 +1370,7 @@ int CNrpTechMap::GetSelectedObjectType()
 {
 	CNrpTechnology* tech = Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology();
 	
-	return ( tech == NULL ? TS_PROJECT : tech->GetValue<TECH_STATUS>( STATUS ) );
+	return ( tech == NULL ? TS_PROJECT : tech->Get( STATUS ).As<TECH_STATUS>() );
 }
 
 } // end namespace gui

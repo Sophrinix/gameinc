@@ -40,7 +40,7 @@ core::array< NrpText > CNrpPluginEngine::FindLibraries( const NrpText& pluginFol
 		return libraries_;
 
 	WIN32_FIND_DATAW findData;
-	HANDLE findFile = FindFirstFileW( pluginPath.c_str(), &findData );
+	HANDLE findFile = FindFirstFileW( pluginPath.ToWide(), &findData );
 
 	if( findFile==INVALID_HANDLE_VALUE) return libraries_;
 
@@ -72,7 +72,7 @@ void CNrpPluginEngine::RegisterLibraries(core::array< NrpText >& paths )
 
 void CNrpPluginEngine::RegisterLibrary_( const NrpText& pathToDLL )
 {
-	HMODULE handleLib = LoadLibraryW( pathToDLL.c_str() ); 
+	HMODULE handleLib = LoadLibraryW( pathToDLL.ToWide() ); 
 
 	if( handleLib == NULL)
 	{
@@ -97,10 +97,10 @@ void CNrpPluginEngine::RegisterLibrary_( const NrpText& pathToDLL )
 
 		plugins_[ libraryName ] = handleLib;
 
-		Log( PLUGIN, FATAL ) << "Загружен плагин " << libraryName << term;
+		Log( PLUGIN, FATAL ) << L"Загружен плагин " << libraryName << term;
 	}
 	else
-		Log( PLUGIN, FATAL ) << "Неправильная версия плагина " << pathToDLL.c_str() << term;
+		Log( PLUGIN, FATAL ) << L"Неправильная версия плагина " << pathToDLL << term;
 }
 
 HMODULE CNrpPluginEngine::GetLibrary( const NrpText& name )

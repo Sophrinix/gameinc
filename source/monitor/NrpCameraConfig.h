@@ -4,10 +4,10 @@
 
 namespace nrp
 {
-const NrpText CAMERA_ROTATE_SPEED( "rotateSpeed" );
-const NrpText CAMERA_ZOOM_SPEED( "zoomSpeed" );
-const NrpText CAMERA_TRANSLATION_SPEED( "translationSpeed" );
-const NrpText CAMERA_FARVALUE( "farValue" );
+const NrpText CAMERA_ROTATE_SPEED( L"rotateSpeed" );
+const NrpText CAMERA_ZOOM_SPEED( L"zoomSpeed" );
+const NrpText CAMERA_TRANSLATION_SPEED( L"translationSpeed" );
+const NrpText CAMERA_FARVALUE( L"farValue" );
 
 class CNrpCameraConfig : public INrpConfig
 {

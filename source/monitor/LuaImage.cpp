@@ -29,12 +29,11 @@ int CLuaImage::SetImage( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaImage::SetImage need ITexture* parameter");
 
-	const char* pathToTexture = lua_tostring( L, 2 );
-	assert( pathToTexture != NULL );
+	NrpText pathToTexture = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( pathToTexture )
+		if( pathToTexture.size() )
 			object_->setImage( CNrpEngine::Instance().GetVideoDriver()->getTexture( pathToTexture ) );
 	}
 

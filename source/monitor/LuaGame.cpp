@@ -69,12 +69,12 @@ int CLuaGame::IsMyBoxAddon( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:IsMyBoxAddon need string parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
+
 	bool isMyBox = false;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		PNrpGameBox box = (*object_)[ GBOX ].As<PNrpGameBox>();
 		if( box != NULL )
 			isMyBox = box->IsMyAddon( name );
 
@@ -88,11 +88,11 @@ int CLuaGame::RemoveBoxAddon( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:RemoveBoxAddon need string parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
+
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		PNrpGameBox box = (*object_)[ GBOX ].As<PNrpGameBox>();
 		if( box != NULL )
 			box->RemoveAddon( name );
 	}
@@ -110,7 +110,7 @@ int CLuaGame::AddBoxAddon( lua_State* L )
 	bool ret=false;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		PNrpGameBox box = (*object_)[ GBOX ].As<PNrpGameBox>();
 		assert( box != NULL );
 		if( box != NULL )
 			ret = box->AddAddon( addon );
@@ -128,9 +128,9 @@ int CLuaGame::GetBoxAddonsNumber( lua_State* L )
 	int addonNumber = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		PNrpGameBox box = (*object_)[ GBOX ].As<PNrpGameBox>();
 		if( box != NULL)
-			addonNumber = box->GetValue<int>( NUMBERADDON );
+			addonNumber = (*box)[ NUMBERADDON ];
 	}
 
 	lua_pushinteger( L, addonNumber );
@@ -147,8 +147,8 @@ int CLuaGame::CreateBox( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		PNrpGameBox box = new CNrpGameBox( object_ );
-		box->SetValue<int>( LEVEL, boxLevel );
-		object_->SetValue<PNrpGameBox>( GBOX, box );
+		(*box)[ LEVEL ] = boxLevel;
+		(*object_)[ GBOX ] = box ;
 	}
 	return 1;		
 }
@@ -160,8 +160,8 @@ int CLuaGame::RemoveBox( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
-		object_->SetValue<PNrpGameBox>( GBOX, NULL );
+		PNrpGameBox box = (*object_)[ GBOX ].As<PNrpGameBox>();
+		(*object_)[ GBOX ] = NULL;
 		delete box;
 	}
 
@@ -176,9 +176,9 @@ int CLuaGame::GetBoxLevel( lua_State* L )
 	int boxLevel = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		PNrpGameBox box = (*object_)[ GBOX ].As<PNrpGameBox>();
 		if( box != NULL )
-			boxLevel = box->GetValue<int>( LEVEL );
+			boxLevel = (*box)[ LEVEL ];
 	}
 
 	lua_pushinteger( L, boxLevel );
@@ -194,7 +194,7 @@ int CLuaGame::GetBoxAddon( lua_State* L )
 	CNrpTechnology* tech = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		PNrpGameBox box = (*object_)[ GBOX ].As<PNrpGameBox>();
 		if( box )
 			tech = box->GetAddon( index );
 	}
@@ -221,10 +221,10 @@ int CLuaGame::GetImagePath_( lua_State* L, const NrpText& funcName, OPTION_NAME&
 	NrpText pathTexture;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpScreenshot* imageList = object_->GetValue<CNrpScreenshot*>( GAMEIMAGELIST );
+		CNrpScreenshot* imageList = (*object_)[ GAMEIMAGELIST ].As<CNrpScreenshot*>();
 		if( imageList )
 		{
-			int maxImage = imageList->GetValue<int>( nameParam );
+			int maxImage = (*imageList)[ nameParam ];
 			if( maxImage > 0)
 			{
 				const CNrpScreenshot::STRING_LIST& pvm = (nameParam == IMAGESBOXNUMBER) 
@@ -251,9 +251,9 @@ template< class R > R CLuaGame::GetImageLisParam_( lua_State* L, const NrpText& 
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpScreenshot* imageList = object_->GetValue<CNrpScreenshot*>( GAMEIMAGELIST );
+		CNrpScreenshot* imageList = (*object_)[ GAMEIMAGELIST ].As<CNrpScreenshot*>();
 		if( imageList )
-			defValue = imageList->GetValue<int>( name );
+			defValue = (*imageList)[ name ];
 	}
 
 	return defValue;
@@ -294,7 +294,7 @@ int CLuaGame::GetCurrentMonthSales( lua_State* L )
 
 	int lastMonthSales = 0;
 	IF_OBJECT_NOT_NULL_THEN
-		if( object_->GetHistory()->GetValue<int>( HISTORY_SIZE ) > 0 )
+		if( (int)(*object_->GetHistory())[ HISTORY_SIZE ] > 0 )
 		{
 			//CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
 			//pIter--;
@@ -312,7 +312,7 @@ int CLuaGame::GetLastMonthSales( lua_State* L )
 
 	int lastMonthSales = 0;
 	IF_OBJECT_NOT_NULL_THEN
-		if( object_->GetHistory()->GetValue<int>( HISTORY_SIZE ) > 0 )
+		if( (int)(*object_->GetHistory())[ HISTORY_SIZE ] > 0 )
 		{
 			//CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
 			//pIter--; pIter--;
@@ -337,10 +337,10 @@ int CLuaGame::GetPrice( lua_State* L )
 	int price = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+			PNrpGameBox box = (*object_)[ GBOX ].As<PNrpGameBox>();
 		assert( box != NULL );
 		if( box != NULL )
-			price = box->GetValue<int>( PRICE );
+			price = (*box)[ PRICE ];
 	}
 
 	lua_pushinteger( L, price );
@@ -356,10 +356,10 @@ int CLuaGame::SetPrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = object_->GetValue<PNrpGameBox>( GBOX );
+		PNrpGameBox box = (*object_)[ GBOX ].As<PNrpGameBox>();
 		assert( box != NULL );
 		if( box )
-			box->SetValue<int>( PRICE, newPrice );
+			(*box)[ PRICE ] = newPrice;
 	}
 	return 1;		
 }
@@ -370,7 +370,7 @@ int CLuaGame::GetCompany( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetCompany not need any parameter" );
 
 	CNrpCompany* cmp = NULL;
-	IF_OBJECT_NOT_NULL_THEN cmp = object_->GetValue<CNrpCompany*>( PARENTCOMPANY );
+	IF_OBJECT_NOT_NULL_THEN cmp = (*object_)[ PARENTCOMPANY ].As<CNrpCompany*>();
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, cmp );
@@ -383,8 +383,7 @@ int CLuaGame::Create( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:Create need string parameter" );
 
-	const char* fileName = lua_tostring( L, 2 );
-	assert( fileName != NULL );
+	NrpText fileName = lua_tostring( L, 2 );
 
 	if( fileName != NULL )
 		object_ = new CNrpGame( fileName  );

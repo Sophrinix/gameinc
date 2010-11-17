@@ -93,7 +93,7 @@ public:
 
 	//! Added technology to map
 	virtual void AddTechnology( nrp::CNrpTechnology* parent, nrp::CNrpTechnology* child );
-	virtual void AddTechnology( nrp::CNrpTechnology* parent, const char* internalName );
+	virtual void AddTechnology( nrp::CNrpTechnology* parent, const NrpText& internalName );
 
 	//! set a column width
 	virtual void setColumnWidth(u32 width);

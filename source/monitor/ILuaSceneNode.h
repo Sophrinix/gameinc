@@ -63,8 +63,7 @@ public:
 		luaL_argcheck(L, argc == 3, 3, _ErrStr(":SetMaterialTexture need 2 parameter") );
 
 		int level = lua_tointeger( L, 2 );
-		const char* fileTexture = lua_tostring( L, 3 );						//принимает булевое значение в качестве луа-параметра
-		assert( fileTexture != NULL );
+		NrpText fileTexture = lua_tostring( L, 3 );						//принимает булевое значение в качестве луа-параметра
 
 		IF_OBJECT_NOT_NULL_THEN	object_->setMaterialTexture( level, object_->getSceneManager()->getVideoDriver()->getTexture( fileTexture ) );									
 
@@ -121,10 +120,9 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 2, 2, _ErrStr(":SetName need string parameter" ) );
 
-		const char* name = lua_tostring( L, 2 );						
-		assert( name != NULL );
+		NrpText name = lua_tostring( L, 2 );						
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setName( name );									
+		IF_OBJECT_NOT_NULL_THEN	object_->setName( name.ToStr() );									
 
 		return 1;	
 	}

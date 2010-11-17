@@ -13,9 +13,9 @@ static NrpSystemMap GSystemObjectsMap;
 
 void GInsertObjectToSystemMap( nrp::INrpObject* obj )
 {
-	NrpSystemMap::Iterator pIter = GSystemObjectsMap.find( obj->SystemName() );
+	NrpSystemMap::Node* pIter = GSystemObjectsMap.find( obj->SystemName() );
 
-	if( !pIter.atEnd() )
+	if( !pIter )
 	{
 		nrp::Log(nrp::HW) << "ERROR: SystemMap duplicate object" << obj->ObjectTypeName() << obj->SystemName();
 	}
@@ -26,9 +26,9 @@ void GInsertObjectToSystemMap( nrp::INrpObject* obj )
 
 void GRemoveObjectFromSystemMap( nrp::INrpObject* obj )
 {
-	NrpSystemMap::Iterator pIter = GSystemObjectsMap.find( obj->SystemName() );
+	NrpSystemMap::Node* pIter = GSystemObjectsMap.find( obj->SystemName() );
 
-	if( pIter.atEnd() )
+	if( !pIter )
 	{
 		nrp::Log(nrp::HW) << "ERROR: SystemMap remove unlinked object: name " << obj->SystemName();
 	}

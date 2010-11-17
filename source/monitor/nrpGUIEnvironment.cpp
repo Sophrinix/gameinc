@@ -51,25 +51,20 @@ bool CNrpGUIEnvironment::CreateSkin_()
 
 void CNrpGUIEnvironment::LoadFonts_()
 {
-	int min_font = nrp::CNrpHUDConfig::Instance().GetValue<int>( nrp::MIN_FONT_SIZE );
-	size_t max_font = nrp::CNrpHUDConfig::Instance().GetValue<int>( nrp::MAX_FONT_SIZE );
-	for( size_t cnt=min_font; 
-		 cnt < max_font;
-		 cnt++ )
+	for( int cnt=0; ; cnt++ )
 	{
-		NrpText option = NrpText("font_") + NrpText( static_cast< int >( cnt ) );
-		NrpText filename = nrp::CNrpHUDConfig::Instance().GetString( option );
+		NrpText option = NrpText( "font_" ) + NrpText( cnt );
+		if( !nrp::CNrpHUDConfig::Instance().IsExist( option ) )
+			break;
+
+		NrpText filename = nrp::CNrpHUDConfig::Instance()[ option ];
 	
 		IGUIFont* font = _nativeEnv->getFont( filename );
-		if ( font )																	//если шрифт подключен	
-		{	
-			fonts_[ option ] = font;
-			//adv_skin->setColor( EGDC_ACTIVE_CAPTION, video::SColor( 0xff, 0, 0, 0 ) );
-		}
+		fonts_[ option ] = font ? font : _nativeEnv->getBuiltInFont();
 	}
 	
 	{
-		NrpText filename = nrp::CNrpHUDConfig::Instance().GetString( nrp::FONT_TOOLTIP );
+		NrpText filename = nrp::CNrpHUDConfig::Instance()[ nrp::FONT_TOOLTIP ];
 		IGUIFont* font = _nativeEnv->getFont( filename );
 	
 		if( !font )
@@ -79,7 +74,7 @@ void CNrpGUIEnvironment::LoadFonts_()
 	}
 
 	{
-		NrpText filename = nrp::CNrpHUDConfig::Instance().GetString( nrp::FONT_SIMPLE );
+		NrpText filename = nrp::CNrpHUDConfig::Instance()[ nrp::FONT_SIMPLE ];
 		IGUIFont* font = _nativeEnv->getFont( filename );
 
 		if( !font )
@@ -277,7 +272,7 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 	if( flags & gui::EMBF_NO )
 	{
 		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"No", 0 );
-		btn->setOnClickAction( funcNames[ 1 ] );
+		btn->setOnClickAction( NrpText( funcNames[ 1 ] ) );
 	}
 
 	if( flags == 0 )
@@ -285,7 +280,7 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 		CNrpButton* btn = (CNrpButton*)addButton( core::recti( rectangle.getWidth() / 3, rectangle.getHeight() - 50,
 												        	   rectangle.getWidth() * 2 / 3, rectangle.getHeight() - 20 ),
 												  wnd, -1, L"OK", 0 );
-		btn->setOnClickAction( funcNames[ 0 ] );
+		btn->setOnClickAction( NrpText( funcNames[ 0 ] ) );
 	}
 
 	return wnd;
@@ -346,14 +341,8 @@ irr::gui::IGUIImage* CNrpGUIEnvironment::addImage(  irr::video::ITexture* image,
 
 irr::gui::IGUIFont* CNrpGUIEnvironment::getFont( const io::path& font_name )
 {
-	core::map< stringw, gui::IGUIFont* >::Iterator pIter;
-		
-	pIter = fonts_.find( font_name.c_str() );
-
-	if( !pIter.atEnd() )
-		return pIter->getValue();
-	
-	return _nativeEnv->getFont( font_name );
+	core::map< stringw, gui::IGUIFont* >::Node* pIter = fonts_.find( font_name.c_str() );
+	return pIter ? pIter->getValue() : _nativeEnv->getFont( font_name );
 }
 //////////////////////////////////////////////////////////////////////////
 

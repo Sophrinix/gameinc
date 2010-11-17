@@ -10,7 +10,7 @@
 namespace nrp
 { 
 
-NrpText::NrpText() : stringw("")
+NrpText::NrpText() : stringw(L"")
 {
 	_append = "";
 }
@@ -50,34 +50,34 @@ NrpText::NrpText( const char* str ) : stringw(L"")
 
 NrpText::NrpText( const core::recti& rectangle ) : stringw(L"")
 {
-	append(  rectangle.UpperLeftCorner.X ); append( "," );
-	append(  rectangle.UpperLeftCorner.Y ); append( "," );
-	append(  rectangle.LowerRightCorner.X ); append( "," );
+	append(  rectangle.UpperLeftCorner.X ); append( L"," );
+	append(  rectangle.UpperLeftCorner.Y ); append( L"," );
+	append(  rectangle.LowerRightCorner.X ); append( L"," );
 	append(  rectangle.LowerRightCorner.Y ); 
 }
 
 NrpText::NrpText( const dimension2di& dim ) : stringw(L"")
 {
-	append(  dim.Width ); append( "," );
+	append(  dim.Width ); append( L"," );
 	append(  dim.Height );
 }
 
-NrpText::NrpText( const dimension2df& dim ) : stringw("")
+NrpText::NrpText( const dimension2df& dim ) : stringw(L"")
 {
-	*this += dim.Width; append( "," );
+	*this += dim.Width; append( L"," );
 	*this += dim.Height;
 }
 
-NrpText::NrpText( const dimension2du& dim ) : stringw("")
+NrpText::NrpText( const dimension2du& dim ) : stringw(L"")
 {
-	append(  dim.Width ); append( "," );
+	append(  dim.Width ); append( L"," );
 	append(  dim.Height );
 }
 
-NrpText::NrpText( const vector3df& vec ) : stringw("")
+NrpText::NrpText( const vector3df& vec ) : stringw(L"")
 {
-	*this += vec.X; append( "," );
-	*this += vec.Y; append( "," );
+	*this += vec.X; append( L"," );
+	*this += vec.Y; append( L"," );
 	*this += vec.Z; 
 }
 
@@ -109,12 +109,17 @@ NrpText::NrpText( const stringw& str ) : stringw( str )
 void NrpText::_FromStr( const char* str )
 {
 	assert( str != NULL );
-	int len = strlen( str ) + 2;
-	std::auto_ptr<wchar_t> buf( new wchar_t[ len ] );
-	MultiByteToWideChar( CP_ACP, 0, str, len-1, buf.get(), len-1);
+	if( str )
+	{
+		int len = strlen( str ) + 2;
+		std::auto_ptr<wchar_t> buf( new wchar_t[ len ] );
+		MultiByteToWideChar( CP_ACP, 0, str, len-1, buf.get(), len-1);
 
-	buf.get()[ len - 2 ] = 0;
-	stringw::operator=( buf.get() );
+		buf.get()[ len - 2 ] = 0;	
+		stringw::operator=( buf.get() );
+	}
+	else
+		stringw::operator=( L"" );
 }
 
 const char* NrpText::ToStr()
@@ -153,7 +158,7 @@ bool NrpText::IsFloat()
 	for( size_t pos=0; pos < size(); pos++ )
 		if( ( core::isdigit( stringw::operator[]( pos ) ) || stringw::operator[]( pos ) == '.' ) && pointNum < 2 )
 		{
-			if( stringw::operator[]( pos ) == '.' )
+			if( stringw::operator[]( pos ) == L'.' )
 				pointNum++;
 		}
 		else
@@ -292,5 +297,15 @@ NrpText NrpText::operator+( const NrpText& a ) const
 NrpText NrpText::operator+( int amount ) const
 {
 	return stringw(*this) + stringw(amount);
+}
+
+bool NrpText::operator==( const NrpText& a ) const
+{
+	return stringw(*this) == stringw(a);
+}
+
+bool NrpText::operator==( const wchar_t* a ) const
+{
+	return stringw(*this) == stringw(a);
 }
 } //namespace nrp

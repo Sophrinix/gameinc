@@ -115,9 +115,8 @@ int CLuaUser::GetParam( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetParam need string parameter" );
 
-	const char* name = lua_tostring( L, 2 );
+	NrpText name = lua_tostring( L, 2 );
 	int valuel = 0;
-	assert( name != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValue<int>( name );
 
@@ -183,8 +182,7 @@ int CLuaUser::Save( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetName need string parameter" );
 
-	const char* fileName = lua_tostring( L, 2 );
-	assert( fileName != NULL );
+	NrpText fileName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->Save( fileName );
 
@@ -312,10 +310,9 @@ int CLuaUser::AddParam( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaUser:AddParam need integer parameter" );
 
-	const char* name = lua_tostring( L, 2 );
+	NrpText name = lua_tostring( L, 2 );
 	int addvalue = lua_tointeger( L, 3 );
 
-	assert( name != NULL );
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		object_->AddValue<int>( name, addvalue );

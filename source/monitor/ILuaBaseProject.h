@@ -25,7 +25,7 @@ protected:
 
 		NrpText tmpValue( lua_tostring( L, 2 ) );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->SetString( paramName, tmpValue );
+		IF_OBJECT_NOT_NULL_THEN	(*object_)[ paramName ] = tmpValue;
 		return 1;
 	}
 
@@ -37,7 +37,7 @@ protected:
 		luaL_argcheck( L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + "need int parameter") );
 		RTYPE lvalue = (RTYPE)lua_function( L, 2 );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->SetValue<RTYPE>( paramName, lvalue );
+		IF_OBJECT_NOT_NULL_THEN	(*object_)[ paramName ] = lvalue;
 		return 1;
 	}
 
@@ -46,7 +46,7 @@ protected:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText(":") + funcName + " not need parameter" ) );
 
-		IF_OBJECT_NOT_NULL_THEN	defValue = object_->GetValue<T>( paramName );
+		IF_OBJECT_NOT_NULL_THEN	defValue = (*object_)[ paramName ].As<T>();
 		return defValue;
 	}
 

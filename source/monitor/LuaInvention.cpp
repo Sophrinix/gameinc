@@ -90,8 +90,7 @@ int CLuaInvention::Load( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaInvention::Load not need parameter");
 
-	const char* iniFile = lua_tostring( L, 2 );
-	assert( iniFile != NULL );
+	NrpText iniFile = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->Load( iniFile );
 	return 1;	

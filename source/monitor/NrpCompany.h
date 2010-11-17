@@ -52,6 +52,7 @@ public:
 	IUser* GetUser( int index ) const;
 	IUser* GetUser( const NrpText& name ) const;
 	
+	void AddGame( CNrpGame* game );
 	CNrpGame* GetGame( const NrpText& gameName ) const;
 	CNrpGame* GetGame( size_t index ) const;
 	CNrpGame* CreateGame( CNrpDevelopGame* ptrProject );

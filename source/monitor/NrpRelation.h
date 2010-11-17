@@ -13,11 +13,11 @@ class CNrpRelation : public INrpConfig
 public:
 	CNrpRelation( const NrpText& name, int valuel ) : INrpConfig( "CNrpRelation", "" )
 	{
-		CreateValue<NrpText>( NAME, name );
-		CreateValue<int>( REL_VALUE, valuel );
+		Push<NrpText>( NAME, name );
+		Push<int>( REL_VALUE, valuel );
 		SYSTEMTIME time;
 		GetLocalTime( &time );
-		CreateValue<SYSTEMTIME>( REL_TIME, time );
+		Push<SYSTEMTIME>( REL_TIME, time );
 	}
 
 	static NrpText ClassName();

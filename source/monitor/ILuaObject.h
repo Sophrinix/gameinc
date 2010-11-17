@@ -54,7 +54,7 @@ protected:
 	
 public:
 	
-	ILuaObject(lua_State *L, stringw ClassName) : INrpObject( ClassName, "" ) 
+	ILuaObject(lua_State *L, const NrpText& ClassName) : INrpObject( ClassName, "" ) 
 	{
 		object_ = (ObjectType*)lua_touserdata(L, 1);
 
@@ -92,7 +92,7 @@ public:
 		return 1;
 	}
 
-	virtual int DebugReport( const char* fileName, const int lineNumber, const char* text )
+	virtual int DebugReport( const NrpText& fileName, const int lineNumber, const NrpText& text )
 	{
 #ifdef _DEBUG
 		Log(HW) << fileName << ":" << lineNumber << " Error" << text;

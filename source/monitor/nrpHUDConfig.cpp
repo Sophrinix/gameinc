@@ -14,17 +14,11 @@ using namespace video;
 
 namespace nrp
 {
-CLASS_NAME CLASS_HUDCONFIG( "CNrpHUDConfig" );
+CLASS_NAME CLASS_HUDCONFIG( L"CNrpHUDConfig" );
 
 CNrpHUDConfig::CNrpHUDConfig() : INrpConfig(CLASS_HUDCONFIG, CLASS_HUDCONFIG)
 {		
-	CreateValue<int>( MIN_FONT_SIZE, 8 );
-	CreateValue<int>( MAX_FONT_SIZE, 8 );
-
-	for( int cnt=GetValue<int>(MIN_FONT_SIZE); cnt < GetValue<int>(MAX_FONT_SIZE); cnt++)
-		CreateValue<NrpText>( NrpText("font_") + NrpText(cnt), "" );
-
-	Load( "config/hud.ini" );
+	Load( L"config/hud.ini" );
 }
 //////////////////////////////////////////////////////////////////////////
 

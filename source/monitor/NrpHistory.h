@@ -14,8 +14,8 @@ public:
 	template< class T >
 	void AddValue( NrpText name, T& amount )
 	{
-		if( !IsValueExist( name ) )
-			CreateValue<T>( name, amount );
+		if( !IsExist( name ) )
+			Push<T>( name, amount );
 		else
 			INrpConfig::AddValue<T>( name, amount );
 	}

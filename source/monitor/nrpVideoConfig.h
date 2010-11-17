@@ -8,10 +8,10 @@
 namespace nrp
 {
 
-OPTION_NAME FULLSCREEN("fullScreen");
-OPTION_NAME USE_SHADOWS("useShadows");
-OPTION_NAME VSYNC("vSync");
-OPTION_NAME SCREEN_SIZE("screenSize");
+OPTION_NAME FULLSCREEN(L"fullScreen");
+OPTION_NAME USE_SHADOWS(L"useShadows");
+OPTION_NAME VSYNC(L"vSync");
+OPTION_NAME SCREEN_SIZE(L"screenSize");
 
 class CNrpVideoConfig : public INrpConfig
 {

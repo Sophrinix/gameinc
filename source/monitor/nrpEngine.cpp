@@ -23,7 +23,7 @@ static CNrpEngine * global_app_instance = 0;
 #define NOT_EVENTRECEIVER NULL
 //////////////////////////////////////////////////////////////////////////
 
-nrp::CLASS_NAME CLASS_NRPENGINE( "CNrpEngine" );
+nrp::CLASS_NAME CLASS_NRPENGINE( L"CNrpEngine" );
 
 
 void CNrpEngine::Run() //создание нерпы
@@ -115,12 +115,13 @@ bool CNrpEngine::InitVideo()
 {
 	INrpConfig& config = CNrpVideoConfig::Instance();
 
+	bool r = config[ FULLSCREEN ];
 	device_ = createDevice( video::EDT_OPENGL,
-							config.GetValue< core::dimension2du >( SCREEN_SIZE ), 
+							config[ SCREEN_SIZE ].As< core::dimension2du >(), 
 							32, 
-							config.GetValue<bool>( FULLSCREEN ), 
-							config.GetValue<bool>( USE_SHADOWS ), 
-							config.GetValue<bool>( VSYNC ), 
+							config[ FULLSCREEN ], 
+							config[ USE_SHADOWS ], 
+							config[ VSYNC ], 
 							0 );
 
 	nrpVersion verInfo;

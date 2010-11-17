@@ -44,8 +44,7 @@ int CLuaLinkBox::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool
 	luaL_argcheck(L, argc == 3, 3, _ErrStr( ( NrpText(":") + funcName + " need 2 parameter" ) ) );
 
 	int id = lua_tointeger( L, 2 );
-	const char* fName = lua_tostring( L, 3 );
-	assert( fName != NULL );
+	NrpText fName = lua_tostring( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
@@ -160,8 +159,7 @@ int CLuaLinkBox::SetTexture( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetTexture need string parameter");
 
-	const char* textureName = lua_tostring( L, 2 );
-	assert( textureName != NULL );
+	NrpText textureName = lua_tostring( L, 2 );
 
 	if( textureName != NULL )
 	{
@@ -194,8 +192,7 @@ int CLuaLinkBox::SetDefaultTexture( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetTexture need string parameter");
 
-	const char* textureName = lua_tostring( L, 2 );
-	assert( textureName != NULL );
+	NrpText textureName = lua_tostring( L, 2 );
 
 	if( textureName != NULL )
 	{

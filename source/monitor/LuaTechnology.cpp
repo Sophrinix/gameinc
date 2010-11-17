@@ -86,8 +86,7 @@ int CLuaTechnology::GetOptionAsInt( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::GetOptionAsInt need int parameter");
 
-	const char* opName = lua_tostring( L, 2 );
-	assert( opName != NULL );
+	NrpText opName = lua_tostring( L, 2 );
 
 	int result = 0;
 	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( opName );

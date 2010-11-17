@@ -97,7 +97,7 @@ bool CNrpCircleScrollBar::OnEvent( const SEvent& event )
 					rImage_->SetRotate( core::vector3df( 0, 0, rImage_->getRotate().Z - offset ) );
 
 					if( onChangedAction_.size() > 0 )
-						nrp::CNrpScript::Instance().CallFunction( onChangedAction_.c_str(), this );
+						nrp::CNrpScript::Instance().CallFunction( onChangedAction_, this );
 				}
 				else
 				{

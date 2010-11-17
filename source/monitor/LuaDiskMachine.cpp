@@ -63,8 +63,7 @@ int CLuaDiskMachine::Load( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaDiskMachine:Load need string parameter" );
 
-	const char* fileName = lua_tostring( L, 2 );
-	assert( fileName != NULL );
+	NrpText fileName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->Load( fileName );
 
@@ -77,7 +76,7 @@ int CLuaDiskMachine::IsLoaded( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaDiskMachine::IsLoaded not need any parameter");
 
 	bool loaded = false; 
-	IF_OBJECT_NOT_NULL_THEN loaded = CNrpPlant::Instance().GetDiskMachine( object_->GetString( NAME ) ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN loaded = CNrpPlant::Instance().GetDiskMachine( (*object_)[ NAME ].As<NrpText>() ) != NULL;
 
 	lua_pushboolean( L, loaded );
 	return 1;		
@@ -117,12 +116,11 @@ int CLuaDiskMachine::GetDiskProduced( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaDiskMachine:GetDiskProduced need companyName parameter" );
 
-	const char* company = lua_tostring( L, 2 );
-	assert( company != NULL );
+	NrpText company = lua_tostring( L, 2 );
 
 	int ret = 0;
-	IF_OBJECT_NOT_NULL_THEN ret = object_->IsValueExist( DISKPRODUCED + company ) 
-									? object_->GetValue<int>( DISKPRODUCED + company )
+	IF_OBJECT_NOT_NULL_THEN ret = object_->IsExist( DISKPRODUCED + company ) 
+									? (*object_)[ DISKPRODUCED + company ]
 									: 0 ;
 
 	lua_pushinteger( L, ret );

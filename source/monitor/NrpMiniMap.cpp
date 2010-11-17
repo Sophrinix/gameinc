@@ -69,7 +69,7 @@ bool CNrpMiniMap::OnEvent( const SEvent& event )
 				startAngle_ += offsetAngle_;
 
 				if( onRotateAction_.size() > 0 )
-					nrp::CNrpScript::Instance().CallFunction( onRotateAction_.c_str(), this );
+					nrp::CNrpScript::Instance().CallFunction( onRotateAction_, this );
 			}			
 		}
 	break;

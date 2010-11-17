@@ -73,8 +73,7 @@ int CLuaWindow::AddLuaFunction( lua_State* L )
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaWindow:AddLuaFunction need 2 parameter ");
 
 	int typef = lua_tointeger( L, 2 );
-	const char* name = lua_tostring( L, 3 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->AddLuaFunction( typef, name );
 
@@ -87,8 +86,7 @@ int CLuaWindow::RemoveLuaFunction( lua_State* L )
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaWindow:RemoveLuaFunction need 2 parameter ");
 
 	int typef = lua_tointeger( L, 2 );
-	const char* name = lua_tostring( L, 3 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->RemoveLuaFunction( typef, name );
 

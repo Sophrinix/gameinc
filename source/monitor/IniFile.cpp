@@ -137,9 +137,9 @@ SYSTEMTIME IniFile::Get( const NrpText& section,
 	SYSTEMTIME result( def_value );
 
 	NrpText str_pars = Get( section, key, NrpText( L"y=0 m=0 d=0 h=0 mi=0 s=0" ) );
-	swscanf_s( str_pars.c_str(), L"y=%04d m=%02d d=%02d h=%02d mi=%02d s=%02d", 
-								&result.wYear, &result.wMonth, &result.wDay,
-								&result.wHour, &result.wMinute, &result.wSecond );
+	swscanf_s( str_pars.ToWide(), L"y=%04d m=%02d d=%02d h=%02d mi=%02d s=%02d", 
+								  &result.wYear, &result.wMonth, &result.wDay,
+								  &result.wHour, &result.wMinute, &result.wSecond );
 	result.wSecond = 0;
 	result.wMilliseconds = 0;
 
@@ -180,7 +180,7 @@ void IniFile::Get( const NrpText& sectionName, REQUIRE_MAP& mapt )
 {
 	wchar_t buffer[ 32000 ];
 	memset( buffer, 0, 32000 );
-	GetPrivateProfileSectionW( sectionName.c_str(), buffer, 32000, _fileName.c_str() );
+	GetPrivateProfileSectionW( sectionName.ToWide(), buffer, 32000, _fileName.ToWide() );
 
 	NrpText readLine = buffer;
 	while( readLine.size() )

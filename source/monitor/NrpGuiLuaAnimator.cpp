@@ -21,7 +21,7 @@ CNrpGuiLuaAnimator::CNrpGuiLuaAnimator( IGUIEnvironment* environment, IGUIElemen
 void CNrpGuiLuaAnimator::draw()
 {
 	if( funcName_.size() )
-		nrp::CNrpScript::Instance().CallFunction( funcName_.c_str() );
+		nrp::CNrpScript::Instance().CallFunction( funcName_ );
 }
 
 }//namespace gui

@@ -11,10 +11,9 @@
 #pragma once
 
 #include <irrMap.h>
-#include <irrString.h>
 #include <typeinfo.h>
-#include <stdio.h>
 #include <assert.h>
+#include <memory>
 
 #include "INrpObject.h"
 #include "SectionNames.h"
@@ -26,235 +25,204 @@ using namespace irr;
 namespace nrp
 {
 
-void CheckClassesType( const NrpText& type1, const NrpText& type2 );
+static void CheckClassesType( const NrpText& type1, const NrpText& type2 );
 
-class INrpProperty
+class INrpProperty 
 {
 public:
-	virtual const NrpText& GetValueType() = 0;
-	virtual ~INrpProperty()
-	{
-
-	}
+	/// Returns RTTI of current instance of Object.
+	virtual const NrpText GetType() const = 0;
+	virtual void Reset() = 0;
 };
 
-template< class ValClass > 
-class CNrpProperty : public INrpProperty
-{
-	friend class INrpConfig;
+template<typename T>
+class CNrpProxyProperty : public INrpProperty {
 public:
-	CNrpProperty( ValClass pValue )
-	{
-		type_ = typeid( ValClass ).name();
-		SetValue( pValue );
+	CNrpProxyProperty(const T& value) : value_(value) {}
+	CNrpProxyProperty(const CNrpProxyProperty& copy) : value_(copy.value_){}
+	/// Get the stored data
+	operator T& () { return value_; }
+	/// Get the stored data
+	/**
+	 * @return the reference to the stored data element
+	 */
+	T& Get() { return value_; }
+	/// Get the stored data
+	/**
+	 * @return the constant reference to the stored data element
+	 */
+	const T& Get() const { return value_; }
+	virtual const NrpText GetType() const { return typeid(T).name(); }
+
+	INrpProperty& operator=(const CNrpProxyProperty& copy) {
+		value_=copy.value_;
+		return *this;
 	}
 
-	virtual ~CNrpProperty() 
-	{ 
-	}
+	void Reset() {};
 
-	const NrpText& GetValueType() { return type_; }
-
-	ValClass& ToggleValue()
-	{
-		value_ = !value_;
-		return value_;
-	}
-
-	ValClass& AddValue( ValClass valuel ) { value_ += valuel; return value_; }
-
-	ValClass& GetValue() 
-	{
-		CheckClassesType( type_, typeid( ValClass ).name() );
-		return value_; 
-	}
-
-	void SetValue( ValClass valuel )
-	{
-		value_ = valuel ;
-	}
-
+	~CNrpProxyProperty(){}
 private:
-	NrpText type_;
-	ValClass value_;
-
-	CNrpProperty() {};
-	CNrpProperty( CNrpProperty& ) {};
+	CNrpProxyProperty(){}
+	T value_;
 };
 
-typedef core::map< OPTION_NAME, INrpProperty* > PropertyArray;
+class CNrpProperty 
+{
+public:
+	CNrpProperty() {}
+	CNrpProperty(const CNrpProperty& copy) : _value(copy._value) {}
+
+	CNrpProperty& operator=(const CNrpProperty& copy) 
+	{
+		_value=copy._value;
+		return *this;
+	}
+
+	CNrpProperty(const char* str );
+	/// Template for constructing a Value object from any type.  Creates a copy of the object by using its copy constructor.
+	template<typename T> CNrpProperty(const T& val) 
+	{
+		_value = std::auto_ptr< INrpProperty >( new CNrpProxyProperty<T>(val) );
+	}
+
+	/// Assigns the Value instance with object of any type by using its copy constructor.
+	template<typename T> CNrpProperty& operator=(const T& val);
+	/// Assigns the Value instance with object of type std::string constructed from char*.
+	/**
+	 * Note, that in spite of type of the parameter (const char*) it's std::string which is really
+	 * stored in the current Value! Type char* doesn't match the requirements to types which can be
+	 * stored inside Value
+	 */
+	CNrpProperty& operator=(const char* val);
+
+	/// Accessor to the Structure element by its name.
+	/**
+	 * If current Value is empty, it is initialised as a Structure.
+	 * If it is not empty and it's not a Structure, an exception of type Exception arises.
+	 * If Structure doesn't contain an entry with specified key, it is created
+	 * and initialised with an empty Value.
+	 * @param key - unique name (identifier) of the element
+	 * @return reference to Value stored in the Structure
+	 */
+		/// These two casts are necessary only for old gcc 4.1.2 (fc8)
+	operator CNrpProperty&() { return *this; }
+	operator const CNrpProperty&() const { return *this; }
+	/// Makes a copy of the current instance. Returns an instance of Value that references to a newly created copy.
+
+	template<typename T> T& As() 
+	{
+		if( typeid(T)==typeid(CNrpProperty) ) return *this;
+	
+		return ((CNrpProxyProperty<T>*)(_value.get()))->Get();
+	}
+
+	template<typename T> const T& As() const;
+
+	/// Implicitly convert Value to the specified datatype.
+	/**
+	 * If a Value contains serialized (not restored) data ( Data::RawObject ), it is
+	 * restored first.
+	 * @return data stored in the Value. If the Value is empty  or T doesn't match
+	 * the type of Value's data, an Exception is thrown.
+	 */
+	operator bool() const {	return As<bool>(); }
+	operator NrpText() const { return As<NrpText>(); }
+	operator float() const { return As<float>(); }
+	operator int() const { return As<int>(); }
+
+	template<typename T> bool operator ==( const T& a ) const { return As<T>() == a; }
+	template<typename T> operator T() const { return As<T>(); }
+	template<typename T> operator const T&() const { return As<T>(); }
+	template<typename T> operator const T&() { return As<T>(); }
+	template<typename T> operator T&() { return As<T>(); }
+
+	template<typename T> CNrpProperty& operator +=( const T& a ) 
+	{ 
+		((CNrpProxyProperty<T>*)(_value.get()))->Get() += a;
+		return *this; 
+	}
+
+	NrpText GetType() const;
+	/// Safe (no-exception-throwing) Value type checker
+	/**
+	 * Compares specified type info (template parameter) and type name with stored value type.
+	 * @param typeName - serialized type name (e.g. "int", "double", "Structure", etc).
+	 * @return true if type info <b>or</b> type name matches, and false if both checks fail.
+	 */
+	template<typename T>
+	bool Is(const NrpText& typeName) const
+	{
+		assert( typeName.size() );
+		if( !_value )
+		{
+			if (typeid(T) == typeid(void)) return true;
+
+			if (!typeName.size()) return true;
+
+			return false;
+		}
+		return ( _value->GetType() == typeid(T));
+	}
+
+	bool IsNull() const;
+
+	/// Erase current Value
+	void Reset() 
+	{
+		_value.release();// = std::auto_ptr<INrpProperty>();
+	}
+	
+	virtual ~CNrpProperty(){}
+private:
+	mutable std::auto_ptr<INrpProperty> _value;
+};
 
 class INrpConfig : public INrpObject
 {
 	friend class CNrpConfigLooder;
-
+	typedef core::map< OPTION_NAME, CNrpProperty* > PropertyArray;
 public:
-
-	template< class ValueType >
-	class ConfigAccess
-	{
-		// Let map be the only one who can instantiate this class.
-		friend class INrpConfig;
-
-	public:
-
-		// Assignment operator. Handles the myTree["Foo"] = 32; situation
-		void operator=(const ValueType& value)
-		{
-			// Just use the Set method, it handles already exist/not exist situation
-			_config.SetValue( value );
-		}
-
-		// ValueType operator
-		operator ValueType()
-		{
-			return _config.GetValue();
-		}
-
-	private:
-
-		ConfigAccess(CNrpProperty<ValueType>& conf) : _config(conf) {}
-
-		ConfigAccess();
-
-		CNrpProperty<ValueType>& _config;
-	}; // AccessClass
-
 	INrpConfig( CLASS_NAME className, SYSTEM_NAME sysName ) : INrpObject( className, sysName )
 	{
 
 	}
 
-	virtual ~INrpConfig() 
-	{
-		PropertyArray::Iterator pIter = _options.getIterator();
-		for( ; pIter.atEnd(); pIter++ )
-			delete pIter->getValue();
+	INrpConfig(const INrpConfig& copy);
 
-		_options.clear();
-	}
+	virtual CNrpProperty& operator[](OPTION_NAME& key);
+	
+	/// Const accessor to the Structure element by its name.
+	virtual const CNrpProperty& operator[](OPTION_NAME& key) const;
 
-	template< class T > bool IsValueTypeA( const NrpText& name )
-	{
-		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
+	bool IsExist(const NrpText& key) const;
+	/// Tests whether the index is in bounds of the Array.
 
-		if( !pIter.atEnd() )
-			return ( pIter->getValue()->GetValueType() == typeid( T ).name() );
+	unsigned Erase(const NrpText& key);
+	/// Erase the specified element of the Array
 
-		return false;
-	}
-
-	PropertyArray& GetProperties() { return _options; }
-
-	template< class B > B ToggleValue( const NrpText& name, B defValue )
-	{
-		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
-		if( pIter.atEnd() )
-		{
-			CreateValue<B>( name, defValue );
-			return defValue;
-		}
-		else
-			((CNrpProperty<B>*)pIter->getValue())->ToggleValue();
-
-		return ((CNrpProperty<B>*)pIter->getValue())->GetValue();
-	}
-
-	//! получение свойства объекта
-	template< class B > B& GetValue( const NrpText& name ) const
-	{
-		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
-		
-		if( pIter.atEnd() )
-		{
-#ifdef _DEBUG
-			Log(HW) << L"read: bad config param " << name << term;
-#endif
-			throw "error"; 
-		}
-		else 
-			return ((CNrpProperty<B>*)pIter->getValue())->GetValue();
-	}
-
-/*
-	template< class B > 
-	CNrpProperty<B> operator[]( OPTION_NAME name )
-	{
-		name.make_lower();
-		PropertyArray::Iterator pIter = _options.find( name );
-		
-		if( pIter.atEnd() )
-		{
-#ifdef _DEBUG
-			Log(HW) << L"read: bad config param " << name.c_str() << term;
-#endif
-			throw "error"; 
-		}
-		else 
-			return ConfigAccess((CNrpProperty<B>*)pIter->getValue());
-	}
-*/
-
-	NrpText& GetString( const NrpText& name )
-	{
-		return GetValue<NrpText>( name );
-	}
-
-	void SetString( const NrpText& name, const NrpText& valuel )
-	{
-		SetValue<NrpText>( name, valuel );
-	}
-
-	template< class B > B& AddValue( const NrpText& name, B valuel ) const
-	{
-		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
-		if( pIter.atEnd() )
-		{
-#ifdef _DEBUG
-			Log(HW) << L"add: bad config param " << name << term;
-#endif
-			throw "error"; 
-		}
-		else 
-			return ((CNrpProperty<B>*)pIter->getValue())->AddValue( valuel );
-	}
-
-	template< class B > void SetValue( const NrpText& name, B valuel ) 
-	{ 
-		PropertyArray::Iterator pIter = _options.find( name.ToLower() );
-		if( pIter.atEnd() )
-		{
-#ifdef _DEBUG
-			Log(HW) << L"write: bad config param " << ObjectTypeName() << L":" << name << term;
-#endif
-		}
-		else 
-			((CNrpProperty<B>*)pIter->getValue())->SetValue( valuel );
-	}
-
-	bool IsValueExist( NrpText name )
-	{
-		return ( _options.find( name.ToLower() ) != NULL );
-	}
+	CNrpProperty& Get( OPTION_NAME& key ) { return operator[](key); }
 
 protected:
 	virtual NrpText Save( const NrpText& fileName );
 	virtual void Load( const NrpText& fileName );
 
-	void EraseValue( NrpText name );
-
-	template< class B > void CreateValue( const NrpText& name, B valuel )
+	void Pop( const NrpText& name );
+	
+	template< class B > void Push( OPTION_NAME& name, const B& valuel )
 	{
 		NrpText fName = name.ToLower();
+
 		if( _options.find( fName ) == NULL )
-			_options[ fName ] = new CNrpProperty<B>( valuel );
+			_options[ fName ] = new CNrpProperty( valuel );
 		else
-			SetValue<B>( fName, valuel );
+			*_options[ fName ] = valuel;
 	}
 
 private:
 	//! определение массива свойств
-	PropertyArray _options;
+	INrpConfig() : INrpObject( "error", "error" ) {}
+	mutable PropertyArray _options;
 };
 
 } //namespace nrp

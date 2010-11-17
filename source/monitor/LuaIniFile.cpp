@@ -23,11 +23,9 @@ CLuaIniFile::CLuaIniFile(lua_State *L)	: ILuaObject(L, CLASS_LUAINIFILE)	//конст
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaIniFile::CLuaIniFile need nil, string parameter");
 
-	const char* fn = lua_tostring( L, 2 );
-	assert( fn != NULL );
+	NrpText fn = lua_tostring( L, 2 );
 
-	if( !_ini )
-		_ini = new IniFile( fn );
+	_ini = new IniFile( fn );
 }
 
 int CLuaIniFile::ReadInteger( lua_State* L )
@@ -35,10 +33,10 @@ int CLuaIniFile::ReadInteger( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 4, 4, "Function CLuaIniFile::ReadInteger need string parameter");
 
-	const char* section = lua_tostring( L, 2 );
-	const char* key = lua_tostring( L, 3 );
+	NrpText section = lua_tostring( L, 2 );
+	NrpText key = lua_tostring( L, 3 );
 	int defaultValue = lua_tointeger( L, 4 );
-	assert( section != NULL || key == NULL );
+
 	int resultt = 0;
 
 	resultt = _ini->Get( section, key, (int)defaultValue );

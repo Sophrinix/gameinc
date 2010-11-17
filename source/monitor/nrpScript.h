@@ -9,8 +9,8 @@ struct lua_State; //fwd
 
 namespace nrp
 {
-OPTION_NAME LOAD_FUNCTIONS_FILENAME("functionsFilename");
-OPTION_NAME SHOW_CALL_FUNCTION_NAME("showCallFunctionName");
+OPTION_NAME LOAD_FUNCTIONS_FILENAME(L"functionsFilename");
+OPTION_NAME SHOW_CALL_FUNCTION_NAME(L"showCallFunctionName");
 
 struct CNrpScriptError : std::runtime_error
 {

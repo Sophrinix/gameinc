@@ -52,14 +52,14 @@ void CNrpProjectModule::InitializeOptions_()
 {
 	CNrpTechnology::_InitializeOptions();
 
-	CreateValue<IUser*>( LASTWORKER, NULL );
-	CreateValue<IUser*>( COMPONENTLIDER, NULL );
-	CreateValue<int>( CODEVOLUME, 0 );
-	CreateValue<int>( CODEPASSED, 0 );
-	CreateValue<int>( ERRORNUMBER, 0 );
-	CreateValue<int>( USERNUMBER, 0 );
-	EraseValue( PARENT );
-	CreateValue<INrpDevelopProject*>( PARENT, NULL );
+	Push<IUser*>( LASTWORKER, NULL );
+	Push<IUser*>( COMPONENTLIDER, NULL );
+	Push<int>( CODEVOLUME, 0 );
+	Push<int>( CODEPASSED, 0 );
+	Push<int>( ERRORNUMBER, 0 );
+	Push<int>( USERNUMBER, 0 );
+	Pop( PARENT );
+	Push<INrpDevelopProject*>( PARENT, NULL );
 }
 
 int CNrpProjectModule::AddUser( IUser* ptrUser )

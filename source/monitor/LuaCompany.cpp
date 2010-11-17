@@ -63,9 +63,8 @@ int CLuaCompany::Create( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:Create need companyname, ceoname parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	const char* ceo = lua_tostring( L, 3 );
-	assert( name != NULL && ceo != NULL );
+	NrpText name = lua_tostring( L, 2 );
+	NrpText ceo = lua_tostring( L, 3 );
 
 	PUser user = CNrpApplication::Instance().GetUser( ceo );
  
@@ -93,7 +92,7 @@ int CLuaCompany::SetCEO( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		object_->SetValue<PUser>( nrp::CEO, user );
+		(*object_)[ nrp::CEO ] = user;
 	}
 
 	return 1;
@@ -364,8 +363,7 @@ int CLuaCompany::StartInvention( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:StartInvention need CNrptechnology parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN	CNrpApplication::Instance().AddInvention( name, object_ );
 
@@ -377,8 +375,7 @@ int CLuaCompany::RemoveUser( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:StartInvention need CNrptechnology parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN	object_->RemoveUser( name );
 
@@ -392,7 +389,7 @@ int CLuaCompany::AddBalance( lua_State* L )
 
 	int valuel = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->AddValue<int>( BALANCE, valuel );
+	IF_OBJECT_NOT_NULL_THEN	(*object_)[ BALANCE ] += valuel;
 
 	return 1;		
 }

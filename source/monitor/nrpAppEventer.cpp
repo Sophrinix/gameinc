@@ -17,9 +17,9 @@
 using namespace irr;
 using namespace nrp;
 
-const nrp::CLASS_NAME CLASS_EVENTRECEIVER( "CNrpAppEventer" );
+const nrp::CLASS_NAME CLASS_EVENTRECEIVER( L"CNrpAppEventer" );
 
-CNrpAppEventer::CNrpAppEventer( CNrpEngine* ptr_app ) : INrpObject( "CNrpAppEventer", "appEventer" )  /*конструктор */
+CNrpAppEventer::CNrpAppEventer( CNrpEngine* ptr_app ) : INrpObject( CLASS_EVENTRECEIVER, CLASS_EVENTRECEIVER )  /*конструктор */
 {
 	ptr_app_ = ptr_app;
 }
@@ -39,7 +39,7 @@ bool CNrpAppEventer::OnEvent( const SEvent& event )
 				return true;
 			}
 
-			if( event.KeyInput.Char == nrp::CNrpConsoleConfig::Instance().GetValue<int>( CONSOLE_INIT_KEY ) )							//перхват вызова консоли
+			if( event.KeyInput.Char == nrp::CNrpConsoleConfig::Instance()[ CONSOLE_INIT_KEY ].As<int>() )							//перхват вызова консоли
 			{
 				if( !event.KeyInput.Control && event.KeyInput.PressedDown && ptrCon )
 				{

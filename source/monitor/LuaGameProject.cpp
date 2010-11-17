@@ -227,8 +227,7 @@ int CLuaGameProject::Create( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:Create need string parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
 
 	object_ = new CNrpGameProject( name, NULL );
 

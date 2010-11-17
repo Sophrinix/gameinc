@@ -39,6 +39,8 @@ public:
 	operator const wchar_t* ();
 	operator std::string ();
 	
+	bool operator == ( const NrpText& ) const;
+	bool operator == ( const wchar_t* ) const;
 	NrpText& operator = ( const char* );
 	NrpText& operator = ( const wchar_t* );
 	NrpText& operator = ( const core::stringw& );
@@ -68,11 +70,12 @@ public:
 	bool ToBool();
 
 	const char* ToStr();
-	const wchar_t* ToWide() { return c_str(); }
-	const wchar_t* ToWide() const { return c_str(); }
+	const wchar_t* ToWide() { return stringw::c_str(); }
+	const wchar_t* ToWide() const { return stringw::c_str(); }
 
 private:
 	void _FromStr( const char* str );
+	const wchar_t* c_str() { return stringw::c_str(); }
 	stringc _append;
 };//end namespace conv
 

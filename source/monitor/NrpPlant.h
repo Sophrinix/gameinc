@@ -9,9 +9,9 @@ class CNrpPlantWork;
 class CNrpReklameWork;
 class CNrpDiskMachine;
 
-OPTION_NAME BASEREKLAMENUMBER( "baseReklameNumber" );
-OPTION_NAME REKLAMENUMBER( "reklameNumber" );
-OPTION_NAME DISKMACHINENUMBER( "diskMachineNumber" );
+OPTION_NAME BASEREKLAMENUMBER( L"baseReklameNumber" );
+OPTION_NAME REKLAMENUMBER( L"reklameNumber" );
+OPTION_NAME DISKMACHINENUMBER( L"diskMachineNumber" );
 
 class CNrpPlant : public INrpConfig
 {

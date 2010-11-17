@@ -3,10 +3,10 @@
 
 namespace nrp
 {
-OPTION_NAME WORLD_REAL_SIZE( "worldSize" );
-OPTION_NAME WORLD_MINEDGE( "minEdge" );
-OPTION_NAME WORLD_MAXEDGE( "maxEdge" );
-OPTION_NAME WORLD_WIDTH_COEFF( "widthCoeff" );
+OPTION_NAME WORLD_REAL_SIZE( L"worldSize" );
+OPTION_NAME WORLD_MINEDGE( L"minEdge" );
+OPTION_NAME WORLD_MAXEDGE( L"maxEdge" );
+OPTION_NAME WORLD_WIDTH_COEFF( L"widthCoeff" );
 
 class CNrpWorldConfig : public INrpConfig
 {

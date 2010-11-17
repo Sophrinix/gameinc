@@ -57,8 +57,7 @@ int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функ
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaButton::SetAction need string parameter");
 
-	const char* funcName = lua_tostring( L, 2 );
-	assert( funcName != NULL );
+	NrpText funcName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN	dynamic_cast< gui::CNrpButton* >( object_ )->setOnClickAction( funcName );
 
@@ -72,8 +71,8 @@ int CLuaButton::SetImage_( lua_State* L, const NrpText& funcName, TYPE_IMAGE typ
 	luaL_argcheck(L, argc == 6, 6, _ErrStr( funcName + " need string, rectangle parameter" ) ); 
 
 	core::recti rectangle;
-	const char* texturepath = lua_tostring( L, 6 );
-	assert( texturepath != NULL );
+	NrpText texturepath = lua_tostring( L, 6 );
+
 	video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath );
 
 	rectangle = _ReadRect( L, 2 );

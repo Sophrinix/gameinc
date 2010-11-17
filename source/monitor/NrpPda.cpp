@@ -112,9 +112,9 @@ CPdaItem::CPdaItem( const NrpText& m, const NrpText& a, const SYSTEMTIME& t ) : 
 {
 	assert( m.size() > 0 && a.size() > 0 );
 
-	CreateValue<NrpText>( MESSAGE, m );
-	CreateValue<NrpText>( ACTION, a);
-	CreateValue<SYSTEMTIME>( STARTDATE, t );
+	Push<NrpText>( MESSAGE, m );
+	Push<NrpText>( ACTION, a);
+	Push<SYSTEMTIME>( STARTDATE, t );
 }
 
 CPdaItem::CPdaItem() : INrpConfig( CLASS_PDAITEM, "" )

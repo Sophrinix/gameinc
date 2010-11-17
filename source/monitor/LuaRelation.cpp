@@ -22,7 +22,7 @@ int CLuaRelation::SetValue( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaTab::SetFontFromSize need name, value parameter");
 
-	const char* name = lua_tostring( L, 2 );
+	NrpText name = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
@@ -42,16 +42,15 @@ int CLuaRelation::GetValue( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaTab::GetValue need name parameter");
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( object_->IsValueTypeA<NrpText>( name ) )
+		if( object_->Is<NrpText>( name ) )
 			lua_pushstring( L, object_->GetString( name ) );
-		else if( object_->IsValueTypeA< float >( name ) )
+		else if( object_->Is< float >( name ) )
 			lua_pushnumber( L, object_->GetValue<float>( name ) );
-		else if( object_->IsValueTypeA< int >( name ) )
+		else if( object_->Is< int >( name ) )
 			lua_pushinteger( L, object_->GetValue<int>( name ) );
 		else
 			lua_pushinteger( L, -1 );

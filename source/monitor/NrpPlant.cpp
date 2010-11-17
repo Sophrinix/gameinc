@@ -15,7 +15,7 @@ static nrp::CNrpPlant* _GlobalObjectPlant_ = NULL;
 
 namespace nrp
 {
-CLASS_NAME CLASS_NRPPLANT( "CNrpPlant" );
+CLASS_NAME CLASS_NRPPLANT( L"CNrpPlant" );
 
 template< class R >
 int _SaveWorks( R& arrayt, int startNum, NrpText (*func)(int), const NrpText& fileName, const NrpText saveFolder )
@@ -38,10 +38,10 @@ int _SaveWorks( R& arrayt, int startNum, NrpText (*func)(int), const NrpText& fi
 
 CNrpPlant::CNrpPlant(void) : INrpConfig( CLASS_NRPPLANT, "" )
 {
-	CreateValue<int>( WORKNUMBER, 0 );
-	CreateValue<int>( BASEREKLAMENUMBER, 0 );
-	CreateValue<int>( REKLAMENUMBER, 0 );
-	CreateValue<int>( DISKMACHINENUMBER, 0 );
+	Push<int>( WORKNUMBER, 0 );
+	Push<int>( BASEREKLAMENUMBER, 0 );
+	Push<int>( REKLAMENUMBER, 0 );
+	Push<int>( DISKMACHINENUMBER, 0 );
 }
 
 CNrpPlant::~CNrpPlant(void)

@@ -21,7 +21,7 @@ CNrpConsole::CNrpConsole( IGUIEnvironment* env, IGUIElement* parent, s32 id, cor
 							 consoleHistoryIndex_(0),
 							 toggle_visible_(NONE)//! constructor
 {
-	setName( CNrpConsoleConfig::Instance().GetString( CONSOLE_GUINAME ).ToWide() );
+	setName( CNrpConsoleConfig::Instance()[ CONSOLE_GUINAME ].As<NrpText>().ToWide() );
 
 	InitializeCriticalSectionAndSpinCount(&cs_dataaccess_, 1000);									//критическая секция для доступа к сообщениям консоли
 	
@@ -42,7 +42,7 @@ CNrpConsole::CNrpConsole( IGUIEnvironment* env, IGUIElement* parent, s32 id, cor
 void CNrpConsole::SaveCommands_()																	//сохранение введенных комманд
 {					
 	//при выходе из программы
-	NrpText path = CNrpConsoleConfig::Instance().GetString( CONSOLE_COMMANDS_FILE );							//путь к файлу		
+	NrpText path = CNrpConsoleConfig::Instance()[ CONSOLE_COMMANDS_FILE ];							//путь к файлу		
 
 	try
 	{
@@ -65,7 +65,7 @@ void CNrpConsole::SaveCommands_()																	//сохранение введенных комманд
 
 void CNrpConsole::LoadSaveCommands_()													//загрузка комманд консоли
 {
-	NrpText path = CNrpConsoleConfig::Instance().GetString( CONSOLE_COMMANDS_FILE );
+	NrpText path = CNrpConsoleConfig::Instance()[ CONSOLE_COMMANDS_FILE ];
 
 	IniFile sv( path );
 	int num_com = sv.Get( "commands", "number_commands", (int)0 );
@@ -149,7 +149,7 @@ void CNrpConsole::draw()
 {
 	video::IVideoDriver *driver = Environment->getVideoDriver();
 	CNrpConsoleConfig& conf = CNrpConsoleConfig::Instance();
-	gui::IGUIFont* font = Environment->getFont( conf.GetValue<NrpText>( CONSOLE_FONTNAME ).c_str() );
+	gui::IGUIFont* font = Environment->getFont( conf[ CONSOLE_FONTNAME ].As<NrpText>().ToStr() );
 
 	if( IsVisible )															// render only if the console is visible
 	{
@@ -162,14 +162,14 @@ void CNrpConsole::draw()
 			}
 			else
 			{
-				if( (int)AlphaBlend < conf.GetValue<int>( CONSOLE_MAX_BLEND ) )	AlphaBlend+=3;
+				if( (int)AlphaBlend < (int)conf[ CONSOLE_MAX_BLEND ] )	AlphaBlend+=3;
 				else toggle_visible_ = NONE;
 			}
 		}
 
-		if( conf.GetValue< bool >( CONSOLE_SHOW_BACKGROUND ) )											//if bg is to be drawn fill the console bg with color
+		if( (bool)conf[ CONSOLE_SHOW_BACKGROUND ] )											//if bg is to be drawn fill the console bg with color
 		{
-			video::SColor color = conf.GetValue< video::SColor >( CONSOLE_BG_COLOR );
+			video::SColor color = conf[ CONSOLE_BG_COLOR ].As< video::SColor >();
 			color.setAlpha( AlphaBlend );
 			driver->draw2DRectangle( color, AbsoluteRect );	//draw the bg as per configured color
 		}
@@ -190,7 +190,7 @@ void CNrpConsole::draw()
 							  textRect.UpperLeftCorner.Y + lineHeight);
 
 		EnterCriticalSection( &cs_dataaccess_ );
-		video::SColor fontcolor = conf.GetValue< video::SColor >( CONSOLE_FONT_COLOR );
+		video::SColor fontcolor = conf[ CONSOLE_FONT_COLOR ].As<video::SColor>();
 		fontcolor.setAlpha( AlphaBlend );
 
 		try
@@ -214,12 +214,12 @@ void CNrpConsole::draw()
 
 		LeaveCriticalSection( &cs_dataaccess_);
 
-		NrpText shellText = conf.GetString( CONSOLE_PROMT );	//now, render the prompt
+		NrpText shellText = conf[ CONSOLE_PROMT ];	//now, render the prompt
 		shellText.append( L"$>" );
 		size_t textSize = shellText.size();
 		shellText.append( currentCommand_ );
 		
-		font->draw(   shellText.c_str(),
+		font->draw(   shellText.ToWide(),
 			          shellRect,
 				      fontcolor,
 					  false, false, 
@@ -407,7 +407,7 @@ void CNrpConsole::AddToHistory( const core::stringw& wstr)								//! add to his
 		if( console_history_[ cnt ] == wstr )										//больше не надо её добавлять
 			return;
  
-	if( console_history_.size() >= (size_t)CNrpConsoleConfig::Instance().GetValue<int>( CONSOLE_HISTORY_SIZE ) )
+	if( console_history_.size() >= (int)CNrpConsoleConfig::Instance()[CONSOLE_HISTORY_SIZE] )
 		console_history_.erase( 0 );
 
 	console_history_.push_back( wstr.c_str() );
@@ -418,7 +418,7 @@ void CNrpConsole::CalculateConsoleRect(const irr::core::dimension2du& screenSize
 {
 	core::recti console_rect;
 	CNrpConsoleConfig& conf = CNrpConsoleConfig::Instance();
-	core::dimension2df scr_rat = conf.GetValue< core::dimension2df >( CONSOLE_RELATIVE_SIZE );
+	core::dimension2df scr_rat = conf[CONSOLE_RELATIVE_SIZE].As< core::dimension2df >();
 
 	if( scr_rat.Width == 0 || scr_rat.Height == 0)
 	{
@@ -431,7 +431,7 @@ void CNrpConsole::CalculateConsoleRect(const irr::core::dimension2du& screenSize
 		consoleDim.Width = (s32)(consoleDim.Width  * scr_rat.Width );
 		consoleDim.Height= (s32)(consoleDim.Height * scr_rat.Height );
 
-		ELEMENT_ALIGN al_v = conf.GetValue<ELEMENT_ALIGN>( CONSOLE_VERT_ALIGN );
+		ELEMENT_ALIGN al_v = conf[ CONSOLE_VERT_ALIGN ].As<NrpText>();
 		if( al_v == ALIGN_TOP )									//set vertical alignment
 		{
 			console_rect.UpperLeftCorner.Y = 0;
@@ -445,7 +445,7 @@ void CNrpConsole::CalculateConsoleRect(const irr::core::dimension2du& screenSize
 			console_rect.UpperLeftCorner.Y = (screenSize.Height - consoleDim.Height) / 2; 
 		}
 	
-		ELEMENT_ALIGN al_h = conf.GetValue<ELEMENT_ALIGN>( CONSOLE_HORT_ALIGN );
+		ELEMENT_ALIGN al_h = conf[ CONSOLE_HORT_ALIGN ].As<NrpText>();
 		if( al_h == ALIGN_LEFT )								//set horizontal alignment
 		{
 			console_rect.UpperLeftCorner.X = 0;
@@ -491,13 +491,13 @@ void CNrpConsole::CalculatePrintRects( core::recti& textRect, core::recti& shell
 bool CNrpConsole::CalculateLimits(u32& maxLines, u32& lineHeight,s32& fontHeight)
 {
 	CNrpConsoleConfig& conf = CNrpConsoleConfig::Instance();
-	gui::IGUIFont* font = Environment->getFont( conf.GetValue<NrpText>( CONSOLE_FONTNAME ).c_str() );
+	gui::IGUIFont* font = Environment->getFont( conf[ CONSOLE_FONTNAME ].As<NrpText>().ToWide() );
 	u32 consoleHeight = AbsoluteRect.getHeight();
 
 	if(font != 0 && consoleHeight > 0)
 	{
 		fontHeight = font->getDimension(L"X").Height + 2;
-		lineHeight = fontHeight + CNrpConsoleConfig::Instance().GetValue<int>( CONSOLE_LINE_SPACING );
+		lineHeight = fontHeight + (int)conf[ CONSOLE_LINE_SPACING ];
 		maxLines = consoleHeight / lineHeight;
 		if(maxLines > 2)
 		{

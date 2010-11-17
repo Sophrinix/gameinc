@@ -7,7 +7,7 @@ CLASS_NAME CLASS_LICENSE( "CNrpLicense" );
 
 CNrpLicense::CNrpLicense( const NrpText& name) : INrpProject( CLASS_LICENSE, "" )
 {
-	CreateValue<NrpText>( NAME, name );
+	Push<NrpText>( NAME, name );
 }
 
 CNrpLicense::~CNrpLicense(void)

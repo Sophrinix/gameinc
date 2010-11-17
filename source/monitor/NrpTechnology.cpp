@@ -45,29 +45,29 @@ CNrpTechnology::CNrpTechnology( const CNrpTechnology& p ) : INrpProject( CLASS_T
 }
 void CNrpTechnology::_InitializeOptions()
 {
-	CreateValue<NrpText>( NAME, "" );
-	CreateValue<NrpText>( INTERNAL_NAME, "" );
-	CreateValue<int>( TECHGROUP, 0 );
-	CreateValue<int>( TECHTYPE, 0 );
-	CreateValue<float>( BASE_CODE, 0 );
-	CreateValue<float>( ENGINE_CODE, 0 );
-	CreateValue<int>( LEVEL, 0 );
-	CreateValue<NrpText>( COMPANYNAME, "" );
-	CreateValue<int>( QUALITY, 100 );
-	CreateValue<PNrpCompany>( PARENTCOMPANY, NULL );
-	CreateValue<NrpText>( PARENT, "" );
-	CreateValue<NrpText>( BASEFILE, "" );
-	CreateValue<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
-	CreateValue<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
-	CreateValue<float>( PRICE, 0 );
-	CreateValue<NrpText>( TEXTURENORMAL, "" );
-	CreateValue<NrpText>( TEXTUREHOVER, "" );
-	CreateValue<NrpText>( DESCRIPTIONPATH, "" );
-	CreateValue<float>( INTEREST, 1 );
-	CreateValue<TECH_STATUS>( STATUS, TS_UNKNOWN );
+	Push<NrpText>( NAME, "" );
+	Push<NrpText>( INTERNAL_NAME, "" );
+	Push<int>( TECHGROUP, 0 );
+	Push<int>( TECHTYPE, 0 );
+	Push<float>( BASE_CODE, 0 );
+	Push<float>( ENGINE_CODE, 0 );
+	Push<int>( LEVEL, 0 );
+	Push<NrpText>( COMPANYNAME, "" );
+	Push<int>( QUALITY, 100 );
+	Push<PNrpCompany>( PARENTCOMPANY, NULL );
+	Push<NrpText>( PARENT, "" );
+	Push<NrpText>( BASEFILE, "" );
+	Push<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	Push<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
+	Push<float>( PRICE, 0 );
+	Push<NrpText>( TEXTURENORMAL, "" );
+	Push<NrpText>( TEXTUREHOVER, "" );
+	Push<NrpText>( DESCRIPTIONPATH, "" );
+	Push<float>( INTEREST, 1 );
+	Push<TECH_STATUS>( STATUS, TS_UNKNOWN );
 
-	CreateValue<int>( NEXTTECHNUMBER, 0 );
-	CreateValue<PNrpTechnology>( REQUIRETECH, NULL );
+	Push<int>( NEXTTECHNUMBER, 0 );
+	Push<PNrpTechnology>( REQUIRETECH, NULL );
 }
 
 CNrpTechnology::~CNrpTechnology(void)

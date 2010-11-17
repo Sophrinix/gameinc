@@ -40,8 +40,8 @@ int CLuaTable::SetImage( lua_State *L )							//получает имя файла с текстурой, 
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 6, 6, "Function CLuaTable::setImage need 5 parameter");
 
-	const char* texturepath = lua_tostring( L, 6 );
-	assert( texturepath != NULL );
+	NrpText texturepath = lua_tostring( L, 6 );
+
 	core::recti rectangle;
 	rectangle.UpperLeftCorner.X = lua_tointeger( L, 2 );
 	rectangle.UpperLeftCorner.Y = lua_tointeger( L, 3 );
@@ -64,8 +64,7 @@ int CLuaTable::SetAction( lua_State *L )									//устанавливает имя новой функц
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaButton::SetAction need string parameter");
 
-	const char* funcName = lua_tostring( L, 2 );
-	assert( funcName != NULL );
+	NrpText funcName = lua_tostring( L, 2 );
 	//dynamic_cast< gui::CNrpButton* >( table_ )->setOnClickAction( funcName.c_str() );
 
 	return 1;

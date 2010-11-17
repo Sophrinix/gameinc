@@ -78,17 +78,15 @@ int CLuaSceneManager::AddTerrainSceneNode( lua_State* vm )
 {
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:AddTerrainSceneNode need one parameter (char*) ");
-	const char* heightMapFile = lua_tostring(vm, 2);	
-	assert( heightMapFile != NULL );
-	const char* name = lua_tostring( vm, 3 );
-	assert( name != NULL );
+	NrpText heightMapFile = lua_tostring(vm, 2);	
+	NrpText name = lua_tostring( vm, 3 );
 
 	scene::ITerrainSceneNode* terrain = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		terrain = object_->addTerrainSceneNode( heightMapFile );
 		terrain->setMaterialFlag( video::EMF_LIGHTING, false );
-		terrain->setName( name );
+		terrain->setName( name.ToWide() );
 	}
 
 	lua_pushlightuserdata(vm, (void*)terrain);  // And set the global name of this pointer
@@ -101,8 +99,8 @@ int CLuaSceneManager::AddSkyDomeSceneNode( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 7, 7, "Function CLuaSceneManager:AddSkyDomeSceneNode need 6 parameter ");
 	
-	const char* strSkyTxs = lua_tostring(vm, 2);	
-	assert( strSkyTxs != NULL );
+	NrpText strSkyTxs = lua_tostring(vm, 2);	
+
 	u32 horiRes = (u32)lua_tointeger( vm, 3 );
 	u32 vertRes = (u32)lua_tointeger( vm, 4 );
 	f32 txsPercentage = (f32)lua_tonumber( vm, 5 );
@@ -261,7 +259,7 @@ int CLuaSceneManager::SetWorldSize( lua_State *vm )
 	wsize.Width = (f32)lua_tointeger(vm, 2);	
 	wsize.Height = (f32)lua_tointeger(vm, 3);	
 
-	CNrpWorldConfig::Instance().SetValue<core::dimension2df>( WORLD_REAL_SIZE, wsize );
+	CNrpWorldConfig::Instance()[WORLD_REAL_SIZE] = wsize;
 
 	return 1;
 }
@@ -281,19 +279,19 @@ int CLuaSceneManager::LinkTerrain( lua_State *vm )
 void CLuaSceneManager::RecalculateWorldParams_( scene::ITerrainSceneNode* newTerrain )
 {
 	CNrpWorldConfig& conf = CNrpWorldConfig::Instance();
-	core::vector3df minpos = conf.GetValue<core::vector3df>( WORLD_MINEDGE );
+	core::vector3df minpos = conf[WORLD_MINEDGE];
 	minpos.X = min( minpos.X, newTerrain->getBoundingBox().MinEdge.X );
 	minpos.Z = min( minpos.Z, newTerrain->getBoundingBox().MinEdge.Z );
-	conf.SetValue<core::vector3df>( WORLD_MINEDGE, minpos );
+	conf[ WORLD_MINEDGE ] = minpos;
 
-	core::vector3df maxpos = conf.GetValue<core::vector3df>( WORLD_MAXEDGE );
+	core::vector3df maxpos = conf[ WORLD_MAXEDGE ];
 	maxpos.X = max( maxpos.X, newTerrain->getBoundingBox().MaxEdge.X );
 	maxpos.Z = max( maxpos.Z, newTerrain->getBoundingBox().MaxEdge.Z );
-	conf.SetValue<core::vector3df>( WORLD_MAXEDGE, maxpos );
+	conf[ WORLD_MAXEDGE ] = maxpos;
 
-	core::dimension2df wsize = conf.GetValue<core::dimension2df>( WORLD_REAL_SIZE );
+	core::dimension2df wsize = conf[ WORLD_REAL_SIZE ];
 	float koeff = (maxpos.X - minpos.X) / wsize.Width;
-	conf.SetValue<float>( WORLD_WIDTH_COEFF, koeff );
+	conf[ WORLD_WIDTH_COEFF ] = koeff;
 }
 
 int CLuaSceneManager::AddCubeSceneNode( lua_State* vm )
@@ -301,15 +299,14 @@ int CLuaSceneManager::AddCubeSceneNode( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 2, 2, "Function CLuaSceneManager:AddCubeSceneNode need 1 parameter ");
 
-	const char* name = lua_tostring( vm, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( vm, 2 );
 
 	scene::ISceneNode* cube = NULL;
 	
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		cube = object_->addCubeSceneNode();
-		cube->setName( name);
+		cube->setName( name.ToStr() );
 	}
 
 	lua_pushlightuserdata( vm, cube );
@@ -322,8 +319,7 @@ int CLuaSceneManager::GetSceneNodeByName( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 2, 2, "Function CLuaSceneManager:GetSceneNodeByName need 1 parameter ");
 
-	const char* name = lua_tostring( vm, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( vm, 2 );
 
 	scene::ISceneNode* node = NULL;
 	
@@ -342,8 +338,7 @@ int CLuaSceneManager::AddSceneFunction( lua_State* vm )
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:AddSceneFunction need 2 parameter ");
 
 	int typef = lua_tointeger( vm, 2 );
-	const char* name = lua_tostring( vm, 3 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( vm, 3 );
 
 	CNrpEngine::Instance().GetCurrentScene()->AddLuaFunction( typef, name );
 
@@ -356,8 +351,7 @@ int CLuaSceneManager::RemoveSceneFunction( lua_State* vm )
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:RemoveSceneFunction need 2 parameter ");
 
 	int typef = lua_tointeger( vm, 2 );
-	const char* name = lua_tostring( vm, 3 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( vm, 3 );
 
 	CNrpEngine::Instance().GetCurrentScene()->RemoveLuaFunction( typef, name );
 
@@ -576,8 +570,7 @@ int CLuaSceneManager::LoadIrrlichtScene( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaSceneNode::LoadIrrlichtScene need string parameter");
 
-	const char* fileName = lua_tostring( L, 2 );
-	assert( fileName != NULL);
+	NrpText fileName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{

@@ -101,8 +101,7 @@ int CLuaScrollBar::SetTexture( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaMiniMap::SetTexture need 1 parameter");
 
-	const char* filename = lua_tostring( L, 2 );
-	assert( filename != NULL );
+	NrpText filename = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->setTexture( CNrpEngine::Instance().GetVideoDriver()->getTexture( filename ) );
 
@@ -114,8 +113,7 @@ int CLuaScrollBar::SetAction( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaMiniMap::setName need 1 parameter");
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->setAction( name );
 
@@ -127,8 +125,7 @@ int CLuaScrollBar::SetSliderTexture( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaMiniMap::SetTexture need 1 parameter");
 
-	const char* filename = lua_tostring( L, 2 );
-	assert( filename != NULL );
+	NrpText filename = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->setSliderTexture( CNrpEngine::Instance().GetVideoDriver()->getTexture( filename ) );
 

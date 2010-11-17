@@ -4,7 +4,7 @@
 
 namespace nrp
 {
-OPTION_NAME MODULE_NUMBER( "moduleNumber" );
+OPTION_NAME MODULE_NUMBER( L"moduleNumber" );
 
 class CNrpProjectModule;
 class IUser;

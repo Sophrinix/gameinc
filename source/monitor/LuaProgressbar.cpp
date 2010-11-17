@@ -42,8 +42,7 @@ int CLuaProgressBar::SetImage( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaLabel:SetImage need string parameter");
 
-	const char* textureName = lua_tostring( L, 2 );
-	assert( textureName != NULL );
+	NrpText textureName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -59,8 +58,7 @@ int CLuaProgressBar::SetFillImage( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaLabel:SetFillImage need string parameter");
 
-	const char* textureName = lua_tostring( L, 2 );
-	assert( textureName != NULL );
+	NrpText textureName = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{

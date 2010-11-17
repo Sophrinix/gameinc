@@ -27,7 +27,7 @@ void CNrpTimer::draw()
 	if( _active && (GetTickCount() - _startTime > _time) )
 	{
 		nrp::CNrpScript::Instance().SetSender( this );
-		nrp::CNrpScript::Instance().DoString( _action.c_str() );
+		nrp::CNrpScript::Instance().DoString( _action );
 		_active = false;  
 
 		if( CNrpGUIEnvironment* env = dynamic_cast< CNrpGUIEnvironment* >( Environment) )

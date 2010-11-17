@@ -100,7 +100,7 @@ public:
 
 	virtual bool isScalingImage() const;
 
-	virtual void setOnClickAction( const char* funcname ) { onClickAction_ = funcname; }
+	virtual void setOnClickAction( const NrpText& funcname ) { onClickAction_ = funcname; }
 	virtual nrp::NrpText& getOnClickAction() { return onClickAction_; }
 protected:
 

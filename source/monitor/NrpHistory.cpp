@@ -13,7 +13,7 @@ CNrpHistory::~CNrpHistory(void)
 
 CNrpHistory::CNrpHistory() : INrpConfig( CLASS_NRPHISTORY, "" )
 {
-	CreateValue<int>( HISTORY_SIZE, 0 );
+	Push<int>( HISTORY_SIZE, 0 );
 }
 
 CNrpHistoryStep* CNrpHistory::GetStep( const SYSTEMTIME& time, bool aprocimateData )
@@ -40,9 +40,9 @@ CNrpHistoryStep* CNrpHistory::AddStep( SYSTEMTIME& time )
 {
 	int ret = TimeHelper::DateToInt( time );
 
-	SALE_HISTORY_MAP::Iterator pIter = _steps.find( ret );
+	SALE_HISTORY_MAP::Node* pIter = _steps.find( ret );
 	
-	if( pIter.atEnd() )
+	if( pIter )
 	{
 		CNrpHistoryStep* step = new CNrpHistoryStep( time );
 		_steps[ ret ] = step;
@@ -54,7 +54,7 @@ CNrpHistoryStep* CNrpHistory::AddStep( SYSTEMTIME& time )
 
 CNrpHistoryStep::CNrpHistoryStep( const SYSTEMTIME& time ) : INrpConfig( CLASS_HISTORYSTEP, "" )
 {
-	CreateValue<int>( BOXNUMBER, 0 );
+	Push<int>( BOXNUMBER, 0 );
 }
 
 CNrpHistoryStep::CNrpHistoryStep() : INrpConfig( CLASS_HISTORYSTEP, "" )

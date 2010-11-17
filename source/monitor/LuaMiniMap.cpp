@@ -29,8 +29,7 @@ int CLuaMiniMap::SetTexture( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaMiniMap::SetTexture need 1 parameter");
 
-	const char* filename = lua_tostring( L, 2 );
-	assert( filename != NULL );
+	NrpText filename = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->SetTexture( CNrpEngine::Instance().GetVideoDriver()->getTexture( filename ) );
 
@@ -55,8 +54,7 @@ int CLuaMiniMap::SetOnRotateAction( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaMiniMap::SetAction need 1 parameter");
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN object_->SetOnRotateAction( name );
 

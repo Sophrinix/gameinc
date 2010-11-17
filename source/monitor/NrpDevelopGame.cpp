@@ -30,22 +30,22 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 {
 	INrpDevelopProject::InitializeOptions_();
 
-	CreateValue<int>( USERNUMBER, 0 );
-	CreateValue<NrpText>( PROJECTSTATUS, "unknown" );
-	CreateValue<CNrpCompany*>( PARENTCOMPANY, NULL );
-	CreateValue<PNrpGameEngine>( GAME_ENGINE, NULL );
-	CreateValue<NrpText>( PREV_GAME, "" );
-	CreateValue<int>( BASE_CODEVOLUME, 0 );
-	CreateValue<int>( BASEQUALITY, 0 );
-	CreateValue<int>( QUALITY, 0 );
-	CreateValue<int>( CODEVOLUME, 0 );
-	CreateValue<CNrpScenario*>( SCENARIO, NULL );
-	CreateValue<CNrpLicense*>( GLICENSE, NULL );
-	CreateValue<int>( MONEYONDEVELOP, 0 );
-	CreateValue<int>( PLATFORMNUMBER, 0 );
-	CreateValue<int>( GENRE_MODULE_NUMBER, 0 );
-	CreateValue<int>( LOCALIZATION, 0 );
-	CreateValue<float>( FAMOUS, 0 );
+	Push<int>( USERNUMBER, 0 );
+	Push<NrpText>( PROJECTSTATUS, "unknown" );
+	Push<CNrpCompany*>( PARENTCOMPANY, NULL );
+	Push<PNrpGameEngine>( GAME_ENGINE, NULL );
+	Push<NrpText>( PREV_GAME, "" );
+	Push<int>( BASE_CODEVOLUME, 0 );
+	Push<int>( BASEQUALITY, 0 );
+	Push<int>( QUALITY, 0 );
+	Push<int>( CODEVOLUME, 0 );
+	Push<CNrpScenario*>( SCENARIO, NULL );
+	Push<CNrpLicense*>( GLICENSE, NULL );
+	Push<int>( MONEYONDEVELOP, 0 );
+	Push<int>( PLATFORMNUMBER, 0 );
+	Push<int>( GENRE_MODULE_NUMBER, 0 );
+	Push<int>( LOCALIZATION, 0 );
+	Push<float>( FAMOUS, 0 );
 
 	SetValue<NrpText>( NAME, name );
 }

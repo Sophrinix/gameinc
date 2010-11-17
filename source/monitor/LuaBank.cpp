@@ -33,8 +33,8 @@ int CLuaBank::GetMaxCompanyLoan( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaBank::GetMaxCompanyLoan need string parameter");
 
-	const char* companyName = lua_tostring( L, 2 );
-	assert( companyName != NULL );
+	NrpText companyName = lua_tostring( L, 2 );
+
 	int sum = 0;
 	IF_OBJECT_NOT_NULL_THEN sum = object_->GetMaxCompanyLoan( companyName );
 
@@ -60,7 +60,7 @@ int CLuaBank::GetLoanID( lua_State* L )
 	{
 		CNrpLoan* loan = object_->GetLoan( pos );
 		if( loan )
-			id = loan->GetValue<int>( ID  );
+			id = (*loan)[ ID ];
 	}
 
 	lua_pushinteger( L, id );
@@ -79,7 +79,7 @@ int CLuaBank::GetLoanCompanyName( lua_State* L )
 	{
 		CNrpLoan* loan = object_->FindLoadByID( id );
 		if( loan )
-			name = loan->GetString( COMPANYNAME );
+			name = (*loan)[ COMPANYNAME ];
 	}
 
 	lua_pushstring( L, name );
@@ -98,7 +98,7 @@ template< class T > T CLuaBank::GetLoanParam_( lua_State* L, NrpText& funcName, 
 	{
 		CNrpLoan* loan = object_->FindLoadByID( id );
 		if( loan )
-			paramd = loan->GetValue<T>( name );
+			paramd = (*loan)[ name ].As<T>();
 	}
 
 	return paramd;
@@ -135,8 +135,8 @@ int CLuaBank::CreateLoan( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 5, 5, "Function CLuaBank:CreateLoan need 5 parameter" );
 
-	const char* name = lua_tostring( L, 2 );
-	assert( name != NULL );
+	NrpText name = lua_tostring( L, 2 );
+
 	int money = lua_tointeger( L, 3 );
 	int percent = lua_tointeger( L, 4 );
 	int month = lua_tointeger( L, 5 );
