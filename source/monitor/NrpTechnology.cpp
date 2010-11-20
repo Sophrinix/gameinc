@@ -19,17 +19,17 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen, const CLASS_NAME& className 
 	assert( className.size() );
 	_InitializeOptions();
 
-	SetValue<int>( TECHGROUP, typen );
+	Param( TECHGROUP ) = static_cast< int >( typen );
 }
 
 CNrpTechnology::CNrpTechnology( CNrpInvention* invention ) : INrpProject( CLASS_TECHNOLOGY, "" )
 {
 	_InitializeOptions();
 
-	SetValue<TECH_STATUS>( STATUS, TS_READY );
-	Load( invention->GetString( BASEFILE ) );
-	SetValue<PNrpCompany>( PARENTCOMPANY, invention->GetValue<PNrpCompany>( PARENTCOMPANY ) );
-	SetValue<SYSTEMTIME>( STARTDATE, invention->GetValue<SYSTEMTIME>( ENDDATE ) );
+	Param( STATUS ) = TS_READY;
+	Load( invention->Text( BASEFILE ) );
+	Param( PARENTCOMPANY ) = invention->Param( PARENTCOMPANY );
+	Param( STARTDATE ) = invention->Param( ENDDATE );
 }
 
 CNrpTechnology::CNrpTechnology( const NrpText& fileTech ) : INrpProject( CLASS_TECHNOLOGY, "" )
@@ -48,7 +48,7 @@ void CNrpTechnology::_InitializeOptions()
 	Push<NrpText>( NAME, "" );
 	Push<NrpText>( INTERNAL_NAME, "" );
 	Push<int>( TECHGROUP, 0 );
-	Push<int>( TECHTYPE, 0 );
+	Push<GENRE_TYPE>( TECHTYPE, GT_UNKNOWN );
 	Push<float>( BASE_CODE, 0 );
 	Push<float>( ENGINE_CODE, 0 );
 	Push<int>( LEVEL, 0 );
@@ -100,7 +100,7 @@ NrpText CNrpTechnology::Save( const NrpText& saveFolder )
 {
 	OpFileSystem::CreateDirectory( saveFolder );
 
-	NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + GetString( INTERNAL_NAME ) + ".tech";
+	NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + Text( INTERNAL_NAME ) + ".tech";
 	//не должно быть файла с такимже именем в директории
 	assert( !OpFileSystem::IsExist( fileName ) );
 
@@ -115,13 +115,13 @@ NrpText CNrpTechnology::Save( const NrpText& saveFolder )
 void CNrpTechnology::Load( const NrpText& fileName )
 {
 	INrpProject::Load( fileName );
-	SetString( BASEFILE, fileName );
+	Param( BASEFILE ) = fileName;
 	IniFile rv( fileName );
 	rv.Get( SECTION_REQUIRE_TECH, _techRequires );
 	rv.Get( SECTION_REQUIRE_SKILL, _skillRequires );
 
-	if( GetValue<TECH_STATUS>( STATUS ) == TS_READY )
-		rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, GetValue<int>( NEXTTECHNUMBER ), _futureTech );
+	if( Param( STATUS ) == TS_READY )
+		rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, (int)Param( NEXTTECHNUMBER ), _futureTech );
 }
 
 float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )

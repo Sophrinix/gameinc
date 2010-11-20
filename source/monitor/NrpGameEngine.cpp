@@ -14,7 +14,7 @@ CNrpGameEngine::CNrpGameEngine( const NrpText& name ) : INrpProject( CLASS_GAMEE
 {
 	_InitialyzeOptions();
 
-	SetValue<NrpText>( NAME, name );
+	Param( NAME ) = name;
 }
 
 void CNrpGameEngine::_InitialyzeOptions()
@@ -50,7 +50,7 @@ void CNrpGameEngine::AddGenre( GENRE_TYPE typen )
 	if( _avgenres.find( typen ) == NULL )
 		_avgenres[ typen ] = 1;
 
-	SetValue<int>( AVGENRE_COUNT, _avgenres.size() );
+	Param( AVGENRE_COUNT ) = static_cast< int >( _avgenres.size() );
 }
 
 bool CNrpGameEngine::IsGenreAvailble( GENRE_TYPE typen )
@@ -70,7 +70,7 @@ nrp::GENRE_TYPE CNrpGameEngine::GetGenre( int index )
 NrpText CNrpGameEngine::Save( const NrpText& saveFolder )
 {
 	assert( OpFileSystem::IsExist( saveFolder ) );
-	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder) + GetString( INTERNAL_NAME );
+	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder) + Text( INTERNAL_NAME );
 
 	OpFileSystem::CreateDirectory( localFolder );
 	NrpText saveFile = OpFileSystem::CheckEndSlash( localFolder ) + "item.engine";

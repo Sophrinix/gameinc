@@ -14,8 +14,8 @@ CNrpReklameWork::CNrpReklameWork( const NrpText& typeName,
 				: INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
-	SetValue( TECHTYPE, typeName );
-	SetValue( GAMENAME, gameName );
+	Param( TECHTYPE ) = typeName;
+	Param( GAMENAME ) = gameName;
 }
 
 void CNrpReklameWork::InitializeOptions_()
@@ -39,22 +39,22 @@ void CNrpReklameWork::InitializeOptions_()
 	Push<SYSTEMTIME>( STARTDATE, rt );
 }
 
-CNrpReklameWork::CNrpReklameWork( CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )
+CNrpReklameWork::CNrpReklameWork( const CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
-	SetValue<int>( NUMBERDAY, p.GetValue<int>( NUMBERDAY ) );
-	SetValue<int>( LEVEL, p.GetValue<int>( LEVEL ) );
-	SetString( NAME, p.GetString( NAME ) );
-	SetValue<int>( DAYCOST, p.GetValue<int>( DAYCOST ) );
-	SetValue<float>( QUALITY, p.GetValue<float>( QUALITY ) );
-	SetValue<float>( MAXQUALITY, p.GetValue<float>( MAXQUALITY ) );
-	SetString( GAMENAME, p.GetString( GAMENAME ) );
-	SetString( TECHTYPE, p.GetString( TECHTYPE ) );
-	SetString( TEXTURENORMAL, p.GetString( TEXTURENORMAL ) );
-	SetString( COMPANYNAME, p.GetString( COMPANYNAME ) );
+	Param( NUMBERDAY ) = p[ NUMBERDAY ];
+	Param( LEVEL ) = p[ LEVEL ];
+	Param( NAME ) = p[ NAME ];
+	Param( DAYCOST ) = p[ DAYCOST ];
+	Param( QUALITY ) = p[ QUALITY ];
+	Param( MAXQUALITY ) = p[ MAXQUALITY ];
+	Param( GAMENAME ) = p[ GAMENAME ];
+	Param( TECHTYPE ) = p[ TECHTYPE ];
+	Param( TEXTURENORMAL ) = p[ TEXTURENORMAL ];
+	Param( COMPANYNAME ) = p[ COMPANYNAME ];
 	
 	//надо провер€ть корректность загруженных данных
-	assert( GetString( GAMENAME ).size() );
+	assert( Text( GAMENAME ).size() );
 }
 
 CNrpReklameWork::CNrpReklameWork( const NrpText& fileName ) : INrpConfig( CLASS_REKLAMEWORK, "" )
@@ -74,18 +74,18 @@ void CNrpReklameWork::Load( const NrpText& fileName )
 
 void CNrpReklameWork::Update( const CNrpReklameWork* p )
 {
-	AddValue<int>( NUMBERDAY, p->GetValue<int>( NUMBERDAY ) );
-	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) > 0 );
+	Param( NUMBERDAY ).As<int>() += (int)(*p)[ NUMBERDAY ];
+	Param( FINISHED ) = (int)Param( NUMBERDAY ) > 0;
 }
 
 void CNrpReklameWork::BeginNewDay()
 {
-	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( GetString( COMPANYNAME ) );
+	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( Text( COMPANYNAME ) );
 	assert( cmp != NULL );
 
 	if( cmp != NULL )
 	{
-		NrpText name = GetString( GAMENAME );
+		NrpText name = Text( GAMENAME );
 		//сначала попробуем получить указатель на существующую игру
 		INrpConfig* game = reinterpret_cast< INrpConfig* >( cmp->GetGame( name ) );
 
@@ -98,26 +98,26 @@ void CNrpReklameWork::BeginNewDay()
 		if( game == NULL )
 			return;
 
-		if( GetValue<int>( NUMBERDAY ) > 0 && 
-			GetValue<float>( MAXQUALITY ) > game->GetValue<float>( FAMOUS ) )
+		if( (int)Param( NUMBERDAY ) > 0 && 
+			(float)Param( MAXQUALITY ) > (float)(*game)[ FAMOUS ] )
 		{	
 			//здесь надо учесть факторы конторы, которые могут вли€ть на
 			//повышение или понижение этого параметра
-			game->AddValue<float>( FAMOUS, GetValue<float>( QUALITY ) );
+			(*game)[ FAMOUS ].As<float>() += (float)Param( QUALITY );
 		}
 	}
 
-	AddValue<int>( NUMBERDAY, -1 );
+	Param( NUMBERDAY ) += (int)-1;
 	//AddValue<int>( BALANCE, GetValue<int>( DAYCOST ) );
-	SetValue<bool>( FINISHED, GetValue<int>( NUMBERDAY ) == 0 );
+	Param( FINISHED ) = Param( NUMBERDAY ).As<int>() == 0;
 }
 
 NrpText CNrpReklameWork::Save( const NrpText& saveFolder )
 {
 	assert( OpFileSystem::IsExist( saveFolder ) );
 	//должно получитьс€ что-то вроде  омпани€_ѕродукт.“ип
-	NrpText fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + GetString( COMPANYNAME ) + "_";
-	fileName += (GetString( GAMENAME ) + "." + GetString( TECHTYPE ));
+	NrpText fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + Text( COMPANYNAME ) + "_";
+	fileName += (Text( GAMENAME ) + "." + Text( TECHTYPE ));
 	INrpConfig::Save( fileName );
 
 	return fileName;
@@ -125,7 +125,7 @@ NrpText CNrpReklameWork::Save( const NrpText& saveFolder )
 
 bool CNrpReklameWork::Equale( const NrpText& type, const NrpText& gName )
 {
-	return ( GetString( TECHTYPE ) == type && GetString( GAMENAME ) == gName );
+	return ( Text( TECHTYPE ) == type && Text( GAMENAME ) == gName );
 }
 
 NrpText CNrpReklameWork::ClassName()

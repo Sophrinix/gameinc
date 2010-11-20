@@ -21,7 +21,7 @@ public:
 	NrpText Save( const NrpText& saveFolder );
 	bool Equale( const NrpText& type, const NrpText& gName );
 
-	CNrpReklameWork( CNrpReklameWork& p );
+	CNrpReklameWork( const CNrpReklameWork& p );
 	~CNrpReklameWork(void);
 
 	static NrpText ClassName();

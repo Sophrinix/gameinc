@@ -15,7 +15,7 @@ OPTION_NAME LEFTPRODUCEDISK( "leftProduceDisk" );
 class CNrpPlantWork : public INrpConfig
 {
 	void CalcParams_();
-	void InitializeOptions_();
+	void _InitializeOptions();
 
 public:
 	CNrpPlantWork( const NrpText& companyName );
@@ -25,7 +25,7 @@ public:
 
 	template< class R > void SetValue( NrpText name, R valuel )
 	{
-		INrpConfig::SetValue<R>( name, valuel );
+		INrpConfig::Param( name ) = valuel;
 		CalcParams_();
 	}
 

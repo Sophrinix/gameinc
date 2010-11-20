@@ -234,7 +234,7 @@ CNrpScript::~CNrpScript()
 
 void CNrpScript::LoadFile( const NrpText& fileName )
 {
-	SetString( LOAD_FUNCTIONS_FILENAME, fileName );
+	Param( LOAD_FUNCTIONS_FILENAME ) = fileName;
 
 	if ( luaL_loadfile( vm_, const_cast< NrpText& >( fileName ) ) != 0)
 	{
@@ -326,7 +326,7 @@ void CNrpScript::AddActionToTemporaryScript( const NrpText& fileName, const NrpT
 {
 	NrpText fn = NrpText("tmp/") + fileName + ".lua";
 	IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn, true );
-	file->write( action.c_str(), action.size() );
+	file->write( action.ToWide(), action.size() );
 	
 	stringw endline = "\n";
 	file->write( endline.c_str(), endline.size() );

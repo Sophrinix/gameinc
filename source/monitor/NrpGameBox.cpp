@@ -18,7 +18,7 @@ CNrpGameBox::~CNrpGameBox(void)
 int CNrpGameBox::_FindAddon( const NrpText& name )
 {
 	for( u32 i=0; i < _addons.size(); i++ )
-		if( _addons[ i ]->GetString(NAME) == name )
+		if( (*_addons[ i ])[NAME] == name )
 			return i;
 
 	return -1;
@@ -35,7 +35,7 @@ void CNrpGameBox::RemoveAddon( const NrpText& name )
 	if( pos != -1 )
 	{
 		_addons.erase( pos );
-		SetValue<int>( NUMBERADDON, _addons.size() );
+		Param( NUMBERADDON ) = static_cast< int >( _addons.size() );
 	}
 	else
 		Log(HW) << "Не нашел подходящего элемента = " << name << term;
@@ -43,9 +43,9 @@ void CNrpGameBox::RemoveAddon( const NrpText& name )
 
 int CNrpGameBox::_GetAddonSumLevel()
 {
-	int ret=0;
+	int ret = 0;
 	for( u32 i=0; i < _addons.size(); i++ )
-		ret += _addons[ i ]->GetValue<int>( LEVEL );
+		ret += (int)(*_addons[ i ])[ LEVEL ];
 
 	return ret;
 }
@@ -59,10 +59,10 @@ bool CNrpGameBox::AddAddon( CNrpBoxAddon* tech )
 		return false;
 	}
 
-	if( _GetAddonSumLevel() + tech->GetValue<int>( LEVEL ) < GetValue<int>( LEVEL ) )
+	if( (int)(*tech)[ LEVEL ] + _GetAddonSumLevel() < (int)Param( LEVEL ) )
 	{
 		_addons.push_back( tech );
-		SetValue<int>( NUMBERADDON, _addons.size() );
+		Param( NUMBERADDON ) = static_cast< int >( _addons.size() );
 		return true;
 	}
 	
@@ -78,7 +78,7 @@ NrpText CNrpGameBox::Save( const NrpText& fileName )
 {
 	IniFile sv( fileName );
 	for( u32 k=0; k < _addons.size(); k++ )
-		 sv.Set( SECTION_ADDONS, CreateKeyAddon( k ), _addons[ k ]->GetString( NAME ) );
+		 sv.Set( SECTION_ADDONS, CreateKeyAddon( k ), _addons[ k ]->Text( NAME ) );
 
 	INrpConfig::Save( fileName );	
 
@@ -90,7 +90,7 @@ void CNrpGameBox::Load( const NrpText& fileName )
 	INrpConfig::Load(  fileName );
 	IniFile rv( fileName );
 
-	for( int k=0; k < GetValue<int>( NUMBERADDON ); k++ )
+	for( int k=0; k < (int)Param( NUMBERADDON ); k++ )
 	{
 		NrpText addonName = rv.Get( SECTION_ADDONS, CreateKeyAddon( k ), NrpText("") );
 
@@ -105,7 +105,7 @@ float CNrpGameBox::GetBoxAddonsPrice()
 {
 	float sum = 0;
 	for( u32 i=0; i <_addons.size(); i++ )
-		sum += _addons[ i ]->GetValue<float>( PRICE );
+		sum += (*_addons[ i ])[ PRICE ].As<float>();
 
 	return sum;
 }
@@ -118,7 +118,7 @@ NrpText CNrpGameBox::ClassName()
 nrp::CNrpGameBox::CNrpGameBox( CNrpGame* ptrGame ) : INrpConfig( CLASS_GAMEBOX, "" )
 {
 	assert( ptrGame != NULL );
-	Push<NrpText>( NAME, ptrGame ? ptrGame->GetString( NAME ) : "" );
+	Push<NrpText>( NAME, ptrGame ? ptrGame->Text( NAME ) : "" );
 	Push<PNrpGame>( GAME, ptrGame );
 	Push<int>( NUMBERADDON, 0 );
 	Push<int>( LEVEL, 0 );

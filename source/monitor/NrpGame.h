@@ -65,4 +65,5 @@ private:
 };
 
 typedef CNrpGame* PNrpGame;
+
 }//namespace nrp

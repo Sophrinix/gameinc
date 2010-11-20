@@ -21,7 +21,6 @@ Luna< CLuaDevelopModule >::RegType CLuaDevelopModule::methods[] =			//реализуемы
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetTechGroup ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetOptionAsInt ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, HaveLider ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetEmployerPosibility ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, Remove ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetLevel ),
@@ -49,17 +48,6 @@ int CLuaDevelopModule::GetOptionAsInt( lua_State* L )
 	int result = 0;
 	IF_OBJECT_NOT_NULL_THEN	result = (*object_)[ opName ];
 	lua_pushinteger( L, result );
-	return 1;	
-}
-
-int CLuaDevelopModule::HaveLider( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::HaveLider not need parameter");
-
-	bool haveUser = false; 
-	IF_OBJECT_NOT_NULL_THEN	haveUser = (*object_)[ COMPONENTLIDER ].As<PUser>() != NULL;
-	lua_pushboolean( L, haveUser );
 	return 1;	
 }
 

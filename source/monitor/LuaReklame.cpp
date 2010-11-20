@@ -78,15 +78,14 @@ int CLuaReklame::SetReklameObject( lua_State* L )
 	{
 		if( reklameObject )
 		{
-			object_->SetString( GAMENAME, reklameObject->GetString( NAME ) );
-			object_->SetString( TYPEOBJECT, reklameObject->ObjectTypeName() );
-			object_->SetString( COMPANYNAME, reklameObject->GetString( COMPANYNAME ) );
+			(*object_)[ GAMENAME ] = (*reklameObject)[ NAME ];
+			(*object_)[ TYPEOBJECT ] = (*reklameObject)[ ObjectTypeName() ];
+			(*object_)[ COMPANYNAME ] = (*reklameObject)[ COMPANYNAME ];
 		}
 	}
 
 	return 1;
 }
-
 
 int CLuaReklame::GetQuality( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetQuality", QUALITY, 0 ) ); return 1; }
 int CLuaReklame::GetLevel( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) ); return 1; }

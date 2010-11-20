@@ -93,7 +93,7 @@ int CLuaUser::SetCharacter( lua_State* L )
 
 	int valuel = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( CHARACTER, valuel );
+	IF_OBJECT_NOT_NULL_THEN (*object_)[ CHARACTER ] = valuel;
 	return 1;	
 }
 
@@ -118,7 +118,7 @@ int CLuaUser::GetParam( lua_State* L )
 	NrpText name = lua_tostring( L, 2 );
 	int valuel = 0;
 
-	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValue<int>( name );
+	IF_OBJECT_NOT_NULL_THEN valuel = (*object_)[ name ];
 
 	lua_pushinteger( L, valuel );
 	return 1;	
@@ -145,7 +145,7 @@ int CLuaUser::GetName( lua_State* L )
 
 	NrpText name;
 
-	IF_OBJECT_NOT_NULL_THEN name = object_->GetValue<NrpText>( NAME );
+	IF_OBJECT_NOT_NULL_THEN name = (*object_)[ NAME ];
 
 	lua_pushstring( L, name );
 	return 1;	
@@ -209,7 +209,7 @@ int CLuaUser::GetWorkNumber( lua_State* L )
 
 	int valuel = 0;
 
-	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetValue<int>( WORKNUMBER );
+	IF_OBJECT_NOT_NULL_THEN valuel = (*object_)[ WORKNUMBER ];
 
 	lua_pushinteger( L, valuel );
 	return 1;		
@@ -248,7 +248,7 @@ int CLuaUser::GetTexture( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetTexture not need any parameter" );
 
 	NrpText pathName = "";
-	IF_OBJECT_NOT_NULL_THEN pathName = object_->GetString( TEXTURENORMAL );
+	IF_OBJECT_NOT_NULL_THEN pathName = (*object_)[ TEXTURENORMAL ];
 
 	lua_pushstring( L, pathName );
 	return 1;		
@@ -260,7 +260,7 @@ int CLuaUser::IsFreeUser( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:IsFreeUser not need any parameter" );
 
 	bool noCompany = false;
-	IF_OBJECT_NOT_NULL_THEN noCompany = object_->GetValue<PNrpCompany>( PARENTCOMPANY ) == NULL;
+	IF_OBJECT_NOT_NULL_THEN noCompany = (*object_)[ PARENTCOMPANY ].As<PNrpCompany>() == NULL;
 
 	lua_pushboolean( L, noCompany );
 	return 1;		
@@ -291,7 +291,7 @@ int CLuaUser::HaveInvention( lua_State* L )
 	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		for( int k=0; k < object_->GetValue<int>( WORKNUMBER ); k++ )
+		for( int k=0; k < (*object_)[ WORKNUMBER ].As<int>(); k++ )
 		{
 			if( object_->GetWork( k )->ObjectTypeName() == CNrpInvention::ClassName() )
 			{
@@ -315,7 +315,7 @@ int CLuaUser::AddParam( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		object_->AddValue<int>( name, addvalue );
+		(*object_)[ name ] += addvalue;
 	}
 
 	return 1;	

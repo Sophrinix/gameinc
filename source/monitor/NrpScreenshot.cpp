@@ -17,12 +17,12 @@ CNrpScreenshot::CNrpScreenshot(void) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
 CNrpScreenshot::CNrpScreenshot( const CNrpScreenshot& a ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
 {
 	InitializeOptions_();
-	SetValue<NrpText>( NAME, a.GetValue<NrpText>( NAME ) );
+	Param( NAME ) = a[ NAME ];
 
 	_imagesPath = a._imagesPath;
 	_imagesBoxPath = a._imagesBoxPath;
-	SetValue<int>( IMAGESNUMBER, _imagesPath.size() );
-	SetValue<int>( IMAGESBOXNUMBER, _imagesBoxPath.size() );
+	Param( IMAGESNUMBER ) = static_cast< int >( _imagesPath.size() );
+	Param( IMAGESBOXNUMBER ) = static_cast< int >( _imagesBoxPath.size() );
 }
 
 CNrpScreenshot::CNrpScreenshot( const NrpText& fileName ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
@@ -37,7 +37,7 @@ CNrpScreenshot::~CNrpScreenshot(void)
 
 bool CNrpScreenshot::IsMyYear( int year )
 {
-	return GetValue<SYSTEMTIME>( STARTDATE ).wYear <= year;
+	return Param( STARTDATE ).As<SYSTEMTIME>().wYear <= year;
 }
 
 int CNrpScreenshot::GetEqualeRating( CNrpGame* game )
@@ -56,13 +56,13 @@ void CNrpScreenshot::Load( const NrpText& fileName )
 	INrpConfig::Load( fileName );
 	IniFile rv( fileName );
 
-	for( int k=0; k < GetValue<int>( IMAGESNUMBER ); k++ )
+	for( int k=0; k < (int)Param( IMAGESNUMBER ); k++ )
 		_imagesPath.push_back( rv.Get( SECTION_IMAGES, CreateKeyImage(k), NrpText("") ) );
 
-	for( int k=0; k < GetValue<int>( IMAGESBOXNUMBER ); k++ )
+	for( int k=0; k < (int)Param( IMAGESBOXNUMBER ); k++ )
 		_imagesBoxPath.push_back( rv.Get( SECTION_BOXIMAGES, CreateKeyBoxImage(k), NrpText("") ) );
 
-	for( int i=0; i < GetValue<int>( GENRE_MODULE_NUMBER ); ++i )
+	for( int i=0; i < (int)Param( GENRE_MODULE_NUMBER ); ++i )
 		_genres.push_back( rv.Get( SECTION_GENRES, CreateKeyGenre(i), NrpText("") ) );
 }
 

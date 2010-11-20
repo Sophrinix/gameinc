@@ -27,12 +27,10 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTechGroup ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetOptionAsInt ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetQuality ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveLider ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Load ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Remove ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetLevel ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, IsLoaded ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveRequireTech ),
@@ -89,7 +87,7 @@ int CLuaTechnology::GetOptionAsInt( lua_State* L )
 	NrpText opName = lua_tostring( L, 2 );
 
 	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = object_->GetValue<int>( opName );
+	IF_OBJECT_NOT_NULL_THEN	result = (*object_)[ opName ];
 	lua_pushinteger( L, result );
 	return 1;	
 }
@@ -133,17 +131,6 @@ int CLuaTechnology::SetEmployerSkillRequire( lua_State* L )
 	return 1;	
 }
 
-int CLuaTechnology::HaveLider( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::HaveLider not need parameter");
-
-	bool haveUser = false; 
-	IF_OBJECT_NOT_NULL_THEN	haveUser = object_->GetString( COMPONENTLIDER ).size() > 0;
-	lua_pushboolean( L, haveUser );
-	return 1;	
-}
-
 int CLuaTechnology::Remove( lua_State* L )
 {
 	int argc = lua_gettop(L);
@@ -173,18 +160,6 @@ int CLuaTechnology::GetLevel( lua_State* L )
 {
 	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) );
 	return 1;
-}
-
-int CLuaTechnology::IsLoaded( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::IsLoaded not need any parameter");
-
-	bool loaded = false; 
-	IF_OBJECT_NOT_NULL_THEN loaded = CNrpApplication::Instance().GetBoxAddon( object_->GetValue<stringw>( NAME ) ) != NULL;
-
-	lua_pushboolean( L, loaded );
-	return 1;			
 }
 
 int CLuaTechnology::GetTexture( lua_State* L )
@@ -244,7 +219,7 @@ int CLuaTechnology::GetCompany( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::GetCompany not need any parameter");
 
 	CNrpCompany* cmp = NULL;
-	IF_OBJECT_NOT_NULL_THEN cmp = object_->GetValue<CNrpCompany*>( PARENTCOMPANY );
+	IF_OBJECT_NOT_NULL_THEN cmp = (*object_)[ PARENTCOMPANY ].As<CNrpCompany*>();
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, cmp );

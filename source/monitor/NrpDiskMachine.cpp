@@ -35,7 +35,7 @@ void CNrpDiskMachine::AddProducedDisk( const NrpText& companyName, int valuel )
 	if( !IsExist( valueName ) )
 		Push<int>( valueName, valuel );
 	else
-		AddValue<int>( valueName, valuel );
+		Param( valueName ) += valuel;
 }
 
 NrpText CNrpDiskMachine::ClassName()

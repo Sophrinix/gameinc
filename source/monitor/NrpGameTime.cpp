@@ -21,7 +21,7 @@ CNrpGameTime::CNrpGameTime( CNrpApplication* parent )
 	time.wHour = 0;
 	time.wMinute = 0;
 
-	parent->SetValue<SYSTEMTIME>( CURRENTTIME, time );
+	(*parent)[ CURRENTTIME ] = time;
 }
 
 CNrpGameTime::~CNrpGameTime(void)
@@ -31,9 +31,9 @@ CNrpGameTime::~CNrpGameTime(void)
 bool CNrpGameTime::Update()
 {
 	CNrpApplication& app = CNrpApplication::Instance();
-	SYSTEMTIME& time = app.GetValue<SYSTEMTIME>( CURRENTTIME );
+	SYSTEMTIME& time = app[ CURRENTTIME ];
 	time.wDayOfWeek = time.wMilliseconds = time.wSecond = 0;
-	if( GetTickCount() - lastTimeUpdate_ > app.GetValue<int>( PAUSEBTWSTEP ) )
+	if( GetTickCount() - lastTimeUpdate_ > (int)app[ PAUSEBTWSTEP ] )
 	{
 		lastTimeUpdate_ = GetTickCount();
 		SPEED spd = speed_;

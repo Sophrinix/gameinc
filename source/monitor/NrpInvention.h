@@ -34,7 +34,7 @@ public:
 
 	static NrpText ClassName();
 private:
-	int _GetRealPrice( CNrpTechnology* tech );
+	int _GetRealPrice( CNrpTechnology& tech );
 	
 	void InitializeOptions_();
 	NrpText _GetFileName();

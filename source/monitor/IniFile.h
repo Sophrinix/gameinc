@@ -21,6 +21,8 @@ typedef irr::core::map< int, int > REQUIRE_MAP;
 class IniFile
 {
 	NrpText _fileName;
+	IniFile( const IniFile& other ) {}
+	IniFile() {}
 public:			
 	IniFile( const NrpText& fileName ); 
 	//! Функция записывает в конфигурационный файл целочисленное значение
@@ -160,7 +162,7 @@ public:
 	{
 		for( u32 i=0; i < arrayT.size(); i++ )
 		{
-			Set( section, func( i ), arrayT[ i ]->GetString( param ) );
+			Set( section, func( i ), arrayT[ i ]->Text( param ) );
 			if( useType )
 				Set( section, CreateKeyType( i ), arrayT[ i ]->ObjectTypeName() ); 
 		}

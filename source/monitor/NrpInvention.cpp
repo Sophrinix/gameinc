@@ -13,43 +13,44 @@ namespace nrp
 {
 CLASS_NAME CLASS_INVENTION( "CNrpInvention" );
 
-int CNrpInvention::_GetRealPrice( CNrpTechnology* tech )
+int CNrpInvention::_GetRealPrice( CNrpTechnology& tech )
 {
 	double stime, curtime;
-	int errSTime = SystemTimeToVariantTime( &tech->GetValue<SYSTEMTIME>( STARTDATE ), &stime );
-	int errCurrTime = SystemTimeToVariantTime( &CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ), &curtime );
+	int errSTime = SystemTimeToVariantTime( &(tech[ STARTDATE ].As<SYSTEMTIME>()), &stime );
+	int errCurrTime = SystemTimeToVariantTime( &(CNrpApplication::Instance()[ CURRENTTIME ].As<SYSTEMTIME>()), &curtime );
 	assert( errSTime > 0 && errCurrTime > 0 );
 	
 	int month = static_cast<int>( stime - curtime ) / 30; //получаем количество месяцев от реального срока появления технологии на рынке
-	float price = static_cast< float >( tech->GetValue<int>( BALANCE ) );
+	int price = tech[ BALANCE ];
 	for( int k=0; k < month; k++ )//каждый лишний месяц удорожает технологию на 10% от базовой стоимости( сложный процент )
-		 price *= 1.1f;
+		 price = static_cast< int >( price * 1.1f );
 
-	return static_cast<int>( price );
+	return price;
 }
 
 CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp ) 
-			  : IWorkingModule( pTech->GetValue<PROJECT_TYPE>( TECHGROUP ), CLASS_INVENTION )
+			  : IWorkingModule( pTech->Param( TECHGROUP ).As<PROJECT_TYPE>(), CLASS_INVENTION )
 {
 	InitializeOptions_();
 
 	if( pTech && pCmp )
 	{
-		SetValue<int>( REALPRICE, _GetRealPrice( pTech ) );
-		SetValue<PNrpCompany>( PARENTCOMPANY, pCmp );
-		SetValue<NrpText>( COMPANYNAME, pCmp->GetValue<NrpText>( NAME ) );
-		SetValue<TECH_STATUS>( STATUS, TS_INDEVELOP );
-		SetValue<NrpText>( NAME, pTech->GetValue<NrpText>( NAME ) );
-		SetValue<NrpText>( INTERNAL_NAME, pTech->GetValue<NrpText>( INTERNAL_NAME ) );
-		SetValue<int>( TECHGROUP, pTech->GetValue<int>( TECHGROUP ) );
-		SetValue<PROJECT_TYPE>( TECHTYPE, pTech->GetValue<PROJECT_TYPE>( TECHTYPE ) );
-		SetValue<float>( BASE_CODE, pTech->GetValue<float>( BASE_CODE ) );
-		SetValue<float>( ENGINE_CODE, pTech->GetValue<float>( ENGINE_CODE ) );
-		SetValue<NrpText>( TEXTURENORMAL, pTech->GetValue<NrpText>( TEXTURENORMAL ) );
-		SetValue<int>( LEVEL, pTech->GetValue<int>( LEVEL ) );
-		SetValue<int>( QUALITY, pTech->GetValue<int>( QUALITY ) );
-		SetValue<NrpText>( BASEFILE, pTech->GetValue<NrpText>( BASEFILE ) );
-		SetValue<SYSTEMTIME>( USERSTARTDATE, CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ) );
+		const CNrpTechnology& refTech = * pTech;
+		Param( REALPRICE ) = _GetRealPrice( *pTech );
+		Param( PARENTCOMPANY ) = pCmp;
+		Param( COMPANYNAME ) = (*pCmp)[ NAME ];
+		Param( STATUS ) = TS_INDEVELOP;
+		Param( NAME ) = refTech[ NAME ];
+		Param( INTERNAL_NAME ) = refTech[ INTERNAL_NAME ];
+		Param( TECHGROUP ) = refTech[ TECHGROUP ];
+		Param( TECHTYPE ) = refTech[ TECHTYPE ];
+		Param( BASE_CODE ) = refTech[ BASE_CODE ];
+		Param( ENGINE_CODE ) = refTech[ ENGINE_CODE ];
+		Param( TEXTURENORMAL ) = refTech[ TEXTURENORMAL ];
+		Param( LEVEL ) = refTech[ LEVEL ];
+		Param( QUALITY ) = refTech[ QUALITY ];
+		Param( BASEFILE ) = refTech[ BASEFILE ];
+		Param( USERSTARTDATE ) = CNrpApplication::Instance()[ CURRENTTIME ];
 
 		SYSTEMTIME time;
 		memset( &time, 0, sizeof(SYSTEMTIME) );
@@ -83,22 +84,21 @@ void CNrpInvention::InitializeOptions_()
 
 void CNrpInvention::CheckParams()
 {
-	int dayFromStart = TimeHelper::GetDaysBetweenDate( GetValue<SYSTEMTIME>( USERSTARTDATE ),
-													   CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME) ); 
+	int dayFromStart = TimeHelper::GetDaysBetweenDate( Param( USERSTARTDATE ),
+													   CNrpApplication::Instance()[ CURRENTTIME ] ); 
 
 	//получим скока тратим в день на исследования
-	int moneyInDay = GetValue<int>( PASSEDPRICE ) / dayFromStart;
+	int moneyInDay = (int)Param( PASSEDPRICE ) / dayFromStart;
 	//вычислим сколько дней осталось до конца при нынешних затратах
 	assert( moneyInDay > 0 );
 	if( moneyInDay == 0 )
 		moneyInDay = 1;
-	int dayToFinish = ( GetValue<int>( REALPRICE ) - GetValue<int>( PASSEDPRICE) ) / moneyInDay;
+	int dayToFinish = ( (int)Param( REALPRICE ) - (int)Param( PASSEDPRICE) ) / moneyInDay;
 	
-	SetValue<SYSTEMTIME>( PROGNOSEDATEFINISH, TimeHelper::GetDateWithDay( CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME),
-																		  dayToFinish ) );
+	Param( PROGNOSEDATEFINISH ) = TimeHelper::GetDateWithDay( CNrpApplication::Instance()[ CURRENTTIME ], dayToFinish );
 
-	SetValue<int>( DAYLEFT, dayToFinish );//сколько дней осталось до завершения работ, при полном освоении финансирования
-	SetValue<int>( INVENTIONSPEED, moneyInDay );
+	Param( DAYLEFT ) = dayToFinish;//сколько дней осталось до завершения работ, при полном освоении финансирования
+	Param( INVENTIONSPEED ) = moneyInDay;
 }
 
 CNrpInvention::~CNrpInvention(void)
@@ -107,10 +107,10 @@ CNrpInvention::~CNrpInvention(void)
 
 void CNrpInvention::Update( IUser* ptrUser )
 {
-	PNrpCompany company = GetValue<PNrpCompany>( PARENTCOMPANY );
+	PNrpCompany company = Param( PARENTCOMPANY ).As<PNrpCompany>();
 	assert( ptrUser != NULL && company != NULL );
 
-	if( GetValue<int>( PASSEDPRICE ) < GetValue<int>( REALPRICE ) )
+	if( Param( PASSEDPRICE ) < Param( REALPRICE ) )
 	{
 		int reqSkill = 0;
 		REQUIRE_MAP::Iterator sIter = _skillRequires.getIterator();
@@ -118,27 +118,27 @@ void CNrpInvention::Update( IUser* ptrUser )
 		for( ; !sIter.atEnd(); sIter++ )
 			reqSkill += ptrUser->GetSkill( sIter->getKey() );
 
-		float genreSkill = ptrUser->GetGenreExperience( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
+		float genreSkill = ptrUser->GetGenreExperience( Param( TECHTYPE ).As<GENRE_TYPE>() ) / 100.f;
 
 		if( genreSkill < 0.1f )
 			genreSkill = 0.1f;
-		float genrePref = ptrUser->GetGenrePreferences( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
+		float genrePref = ptrUser->GetGenrePreferences( Param( TECHTYPE ).As<GENRE_TYPE>() ) / 100.f;
 		if( genrePref < 0.1f )
 			genrePref = 0.1f;
 
 		float updateMoney = reqSkill * (genrePref + genreSkill) / ( 30.f * 8 );
-		float maxUpdateMoney = ptrUser->GetValue<int>( SALARY ) / 8.f;
-		float money = updateMoney * GetValue<int>( INVESTIMENT );
+		float maxUpdateMoney = (int)ptrUser->Param( SALARY ) / 8.f;
+		float money = updateMoney * (int)Param( INVESTIMENT );
 		//человек может исследовать технологию в день на сумму не больше своей месячной зарплаты
 		money = min( money, maxUpdateMoney );
 
 		//эти средства реально пошли на изучение новых технологий
-		AddValue<int>( PASSEDPRICE, static_cast<int>( money ) );
+		Param( PASSEDPRICE ) += static_cast<int>( money );
 		//эту сумму надо списать у конторы в конце месяца
-		AddValue<int>( MONEY_TODECREASE, GetValue<int>( INVESTIMENT ) / ( 30 * 8 ) );
+		Param( MONEY_TODECREASE ) += (int)Param( INVESTIMENT ) / ( 30 * 8 );
 	
-		SetValue<float>( READYWORKPERCENT, GetValue<int>(PASSEDPRICE) / static_cast< float >( GetValue<int>( REALPRICE ) ) );
-		AddValue<int>( QUALITY, (GetValue<int>( QUALITY ) + ptrUser->GetValue<int>( CODE_QUALITY )) / 2 );
+		Param( READYWORKPERCENT ) = (int)Param(PASSEDPRICE) / static_cast< float >( (int)Param( REALPRICE ) );
+		Param( QUALITY ) = ( (int)Param( QUALITY ) + (int)ptrUser->Param( CODE_QUALITY ) ) / 2;
 	}
 }
 
@@ -155,7 +155,7 @@ int CNrpInvention::AddUser( IUser* user )
 			return 1;
 	
 	_users.push_back( user );
-	SetValue<int>( USERNUMBER, _users.size() );
+	Param( USERNUMBER ) = static_cast< int >(_users.size() );
 	user->AddWork( this, true );
 	return 0;
 }
@@ -180,7 +180,7 @@ void CNrpInvention::Load( const NrpText& fileName )
 
 NrpText CNrpInvention::_GetFileName()
 {
-	return GetString( INTERNAL_NAME ) + ".invent";
+	return (NrpText)Text( INTERNAL_NAME ) + ".invent";
 }
 
 NrpText CNrpInvention::Save( const NrpText& saveFolder, bool k )
@@ -205,7 +205,7 @@ NrpText CNrpInvention::Save( const NrpText& saveFolder, bool k )
 
 bool CNrpInvention::Equale( const NrpText& name, const NrpText& company )
 {
-	return ( GetString( NAME ) == name || GetString( INTERNAL_NAME ) == name ) && ( GetString( COMPANYNAME ) == company );
+	return ( Text( NAME ) == name || Text( INTERNAL_NAME ) == name ) && ( Text( COMPANYNAME ) == company );
 }
 
 NrpText CNrpInvention::ClassName()

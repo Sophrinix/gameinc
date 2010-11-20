@@ -47,7 +47,7 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 	Push<int>( LOCALIZATION, 0 );
 	Push<float>( FAMOUS, 0 );
 
-	SetValue<NrpText>( NAME, name );
+	Param( NAME ) = name;
 }
 
 void CNrpDevelopGame::_AddModulesFrom( const CNrpTechnology* tech, int baseCode )
@@ -55,7 +55,7 @@ void CNrpDevelopGame::_AddModulesFrom( const CNrpTechnology* tech, int baseCode 
 	if( tech )
 	{
 		CNrpProjectModule* module = new CNrpProjectModule( const_cast< CNrpTechnology* >( tech ), this );
-		module->SetValue<int>( CODEVOLUME, static_cast< int >( baseCode * module->GetValue<float>( BASE_CODE ) ) );
+		(*module)[ CODEVOLUME ] = static_cast< int >( baseCode * (*module)[ BASE_CODE ].As<float>() );
 		_modules.push_back( module );
 	}
 }
@@ -70,76 +70,70 @@ void CNrpDevelopGame::_AddModulesFrom( const TECHS& arrtech, int baseCode )
 		if( tech )
 		{
 			CNrpProjectModule* nTech = new CNrpProjectModule( tech, this );
-			nTech->SetValue<int>( CODEVOLUME, static_cast< int >( baseCode * nTech->GetValue<float>( BASE_CODE )) );
+			(*nTech)[ CODEVOLUME ] = static_cast< int >( baseCode * (*nTech)[ BASE_CODE ].As<float>() );
 			_modules.push_back( nTech );
 		}
 	}
 }
 
 CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCompany ) 
-: INrpDevelopProject( CLASS_DEVELOPGAME, nProject->GetString( NAME ) )
+: INrpDevelopProject( CLASS_DEVELOPGAME, nProject->Text( NAME ) )
 {
-	_InitializeOptions( nProject->GetString( NAME ) );
+	CNrpGameProject& refPr = *nProject;
+	_InitializeOptions( nProject->Text( NAME ) );
     //компания, которая делает это модуль
-	SetValue<CNrpCompany*>( PARENTCOMPANY, ptrCompany );
-	assert( nProject->GetValue<int>( PLATFORMNUMBER ) != 0 );
-	SetValue<int>( PLATFORMNUMBER, nProject->GetValue<int>( PLATFORMNUMBER ) );
-	SetValue<int>( GENRE_MODULE_NUMBER, nProject->GetValue<int>( GENRE_MODULE_NUMBER ) );
-	int bcv = nProject->GetValue<int>( ENGINE_CODEVOLUME );
+	Param( PARENTCOMPANY ) = ptrCompany;
+	assert( nProject->Param( PLATFORMNUMBER ) != (int)0 );
+	Param( PLATFORMNUMBER ) = refPr[ PLATFORMNUMBER ];
+	Param( GENRE_MODULE_NUMBER ) = refPr[ GENRE_MODULE_NUMBER ];
+	int bcv = refPr[ ENGINE_CODEVOLUME ];
 
-	PNrpGameEngine ge = nProject->GetValue<PNrpGameEngine>( GAME_ENGINE );
-	SetValue<PNrpGameEngine>( GAME_ENGINE, ge );
+	PNrpGameEngine ge = refPr[ GAME_ENGINE ].As<PNrpGameEngine>();
+	Param( GAME_ENGINE ) = ge;
 
 	CNrpProjectModule* extEngine = new CNrpProjectModule( PT_ENGINDEEXTEND, this );
-	extEngine->SetString( NAME, GetString( NAME ) + " Расширение движка" );
-	extEngine->SetEmployerSkillRequire( SKL_CODING, ge->GetValue<int>( SKILL_CODING ) );
-	extEngine->SetValue<int>( CODEVOLUME, nProject->GetValue<int>( ENGINE_CODEVOLUME) );
-	extEngine->SetValue<float>( BASE_CODE, 1 );
+	(*extEngine)[ NAME ] = Text( NAME ) + " Расширение движка";
+	(*extEngine).SetEmployerSkillRequire( SKL_CODING, (*ge)[ SKILL_CODING ] );
+	(*extEngine)[ CODEVOLUME ] = refPr[ ENGINE_CODEVOLUME ];
+	(*extEngine)[ BASE_CODE ] = 1.f;
 	_modules.push_back( extEngine );
 	
 	CNrpProjectModule* langSupport = new CNrpProjectModule( PT_LANGSUPPORT, this );
-	langSupport->SetString( NAME, "Локализация" );
-	langSupport->SetEmployerSkillRequire( SKL_CODING, 10 );
-	langSupport->SetValue<float>( BASE_CODE, nProject->GetValue<int>( LANGNUMBER ) * 0.05f );
-	langSupport->SetValue<int>( CODEVOLUME, (int)(bcv * langSupport->GetValue<float>( BASE_CODE )) );
+	(*langSupport)[ NAME ] = NrpText( "Локализация" );
+	(*langSupport).SetEmployerSkillRequire( SKL_CODING, 10 );
+	(*langSupport)[ BASE_CODE ] = refPr[ LANGNUMBER ] * 0.05f;
+	(*langSupport)[ CODEVOLUME ] = static_cast< int >( bcv * (*langSupport)[ BASE_CODE ].As<float>() );
 	_modules.push_back( langSupport );
 
-	CNrpProjectModule* cpCode = new CNrpProjectModule( PT_PLATFORMSUPPORT, this );
-	cpCode->SetString( NAME, "Кроссплатформенный код" );
-	cpCode->SetEmployerSkillRequire( SKL_CODING, ge->GetValue<int>( SKILL_CODING ) );
-	cpCode->SetValue<float>( BASE_CODE, nProject->GetValue<int>( PLATFORMNUMBER ) * 0.1f );
-	cpCode->SetValue<int>( CODEVOLUME, (int)(bcv * cpCode->GetValue<float>( BASE_CODE )) );
-	_modules.push_back( cpCode );
+	Param( PREV_GAME ) = refPr[ PREV_GAME ];
+	Param( BASE_CODEVOLUME ) = refPr[ BASE_CODEVOLUME ];
+	Param( CODEVOLUME ) = refPr[ CODEVOLUME ];
+	Param( TECHTYPE ) = refPr[ TECHTYPE ];
+	Param( SCENARIO ) = refPr[ SCENARIO ];
+	Param( GLICENSE ) = refPr[ GLICENSE ];
+	Param( BASEQUALITY ) = refPr[ BASEQUALITY ];
+	Param( PROJECTREADY ) = false;
+	Param( QUALITY ) = int(0);
 
-	SetString( PREV_GAME, nProject->GetString( PREV_GAME ) );
-	SetValue<int>( BASE_CODEVOLUME, nProject->GetValue<int>( BASE_CODEVOLUME ) );
-	SetValue<int>( CODEVOLUME, nProject->GetValue<int>( CODEVOLUME ) );
-	SetValue<int>( TECHTYPE, nProject->GetValue<int>( TECHTYPE ) );
-	SetValue<CNrpScenario*>( SCENARIO, nProject->GetValue<CNrpScenario*>( SCENARIO ) );
-	SetValue<CNrpLicense*>( GLICENSE, nProject->GetValue<CNrpLicense*>( GLICENSE ) );
-	SetValue<int>( BASEQUALITY, nProject->GetValue<int>( BASEQUALITY ) );
-	SetValue<bool>( PROJECTREADY, false );
-	SetValue<int>( QUALITY, 0 );
-
-	_AddModulesFrom( nProject->GetValue<PNrpTechnology>( SCRIPTENGINE ), bcv );
-	_AddModulesFrom( nProject->GetValue<PNrpTechnology>( MINIGAMEENGINE ), bcv );
-	_AddModulesFrom( nProject->GetValue<PNrpTechnology>( PHYSICSENGINE ), bcv );
-	_AddModulesFrom( nProject->GetValue<PNrpTechnology>( GRAPHICQUALITY ), bcv);
-	_AddModulesFrom( nProject->GetValue<PNrpTechnology>( SOUNDQUALITY ), bcv );
-	_AddModulesFrom( nProject->GetTechList(), bcv );
-	_AddModulesFrom( nProject->GetGenreList(), bcv );
-	_AddModulesFrom( nProject->GetVideoTechList(), bcv );
+	_AddModulesFrom( refPr[ SCRIPTENGINE ], bcv );
+	_AddModulesFrom( refPr[ MINIGAMEENGINE ], bcv );
+	_AddModulesFrom( refPr[ PHYSICSENGINE ], bcv );
+	_AddModulesFrom( refPr[ GRAPHICQUALITY ], bcv);
+	_AddModulesFrom( refPr[ SOUNDQUALITY ], bcv );
+	_AddModulesFrom( refPr.GetTechList(), bcv );
+	_AddModulesFrom( refPr.GetGenreList(), bcv );
+	_AddModulesFrom( refPr.GetVideoTechList(), bcv );
 	_AddModulesFrom( nProject->GetSoundTechList(), bcv );
 
-	SetString( PROJECTSTATUS, "develop" );
-	SetValue<int>( MODULE_NUMBER, _modules.size() );
+	Param( PROJECTSTATUS ) = NrpText( "develop" );
+	Param( MODULE_NUMBER ) = static_cast< int >( _modules.size() );
 }
 
 CNrpDevelopGame::CNrpDevelopGame( const NrpText& name, CNrpCompany* ptrCompany )
 : INrpDevelopProject( CLASS_DEVELOPGAME, name )
 {
 	_InitializeOptions( name );
-	SetValue<PNrpCompany>( PARENTCOMPANY, ptrCompany );
+	Param( PARENTCOMPANY ) = ptrCompany;
 }
 
 CNrpDevelopGame::CNrpDevelopGame( const NrpText& fileName ) 
@@ -157,11 +151,11 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
 	for( size_t k=0; k < uList.size(); k++ )
 	{
 		 SetDeveloper( uList[ k ] );
-		 float growExp = module->GetValue<int>( CODEVOLUME ) / (float)GetValue<int>( BASE_CODEVOLUME );
-		 int techType = GetGenre( 0 )->GetValue<PROJECT_TYPE>( TECHTYPE );
+		 float growExp = (int)(*module)[ CODEVOLUME ] / (float)Param( BASE_CODEVOLUME );
+		 GENRE_TYPE techType = (*GetGenre( 0 ))[ TECHTYPE ].As<GENRE_TYPE>();
 		 //опыт пользователя растет по мере выполнения компонентов
 		 //а если у пользователя не было опыта в этом жанре, то он появляется
-		 uList[ k ]->IncreaseExperience( techType, (int)growExp );
+		 uList[ k ]->IncreaseExperience( techType, static_cast< int >( growExp ) );
 	}
 
 	CNrpApplication::Instance().DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
@@ -171,7 +165,7 @@ NrpText CNrpDevelopGame::Save( const NrpText& folderSave )
 {
 	assert( OpFileSystem::IsExist( folderSave ) );
 
-	NrpText localFolder = OpFileSystem::CheckEndSlash( folderSave + GetString( NAME ) );
+	NrpText localFolder = OpFileSystem::CheckEndSlash( folderSave + Text( NAME ) );
 
 	OpFileSystem::CreateDirectory( localFolder );
 
@@ -182,24 +176,21 @@ NrpText CNrpDevelopGame::Save( const NrpText& folderSave )
 	for( u32 i=0; i < _modules.size(); i++ )
 	{
 		_modules[ i ]->Save( localFolder );
-		sf.Set( SECTION_MODULES, CreateKeyModule(i), _modules[ i ]->GetString( NAME ) );
+		sf.Set( SECTION_MODULES, CreateKeyModule(i), _modules[ i ]->Text( NAME ) );
 	}
 
-	if( GetValue<PNrpGameEngine>( GAME_ENGINE ) )
-	{
-		PNrpGameEngine engine = GetValue<PNrpGameEngine>( GAME_ENGINE );
-		sf.Set( SECTION_PROPERTIES, GAME_ENGINE, engine->GetString( NAME ) );
-	}
+	if( PNrpGameEngine ge = Param( GAME_ENGINE ).As<PNrpGameEngine>() )
+		sf.Set( SECTION_PROPERTIES, GAME_ENGINE, ge->Text( NAME ) );
 
-	if( PNrpScenario sxn = GetValue<PNrpScenario>( SCENARIO ) )
+	if( PNrpScenario sxn = Param( SCENARIO ).As<PNrpScenario>() )
 	{
-		sf.Set( SECTION_PROPERTIES, SCENARIO, sxn->GetString(NAME) );
+		sf.Set( SECTION_PROPERTIES, SCENARIO, sxn->Text(NAME) );
 		sxn->Save( localFolder + SCENARIO + ".ini" );
 	}
 
-	if( PNrpLicense sln = GetValue<PNrpLicense>( GLICENSE ) )
+	if( PNrpLicense sln = Param( GLICENSE ).As<PNrpLicense>() )
 	{
-		sf.Set( SECTION_PROPERTIES, GLICENSE, sln->GetString(NAME) );
+		sf.Set( SECTION_PROPERTIES, GLICENSE, sln->Text(NAME) );
 		sln->Save( localFolder + GLICENSE + ".ini");
 	}
 
@@ -212,11 +203,11 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 	NrpText myFolder = OpFileSystem::CheckEndSlash(loadFolder);
 
 	NrpText fileName = myFolder + "item.devgame";
-	CNrpCompany* ptrCompany = GetValue<PNrpCompany>( PARENTCOMPANY );
+	CNrpCompany* ptrCompany = Param( PARENTCOMPANY ).As<CNrpCompany*>();
 	INrpProject::Load( fileName );
 	IniFile rf( fileName );
 
-	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
+	for( int i=0; i < (int)Param( MODULE_NUMBER ); ++i )
 	{
 		NrpText name = rf.Get( SECTION_MODULES, CreateKeyModule(i), NrpText("") );
 		if( name.size() )
@@ -228,17 +219,17 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 	}
 
 	NrpText name = rf.Get( SECTION_PROPERTIES, GAME_ENGINE, NrpText("") );
-	SetValue<PNrpGameEngine>( GAME_ENGINE, CNrpApplication::Instance().GetGameEngine( name ) );
+	Param( GAME_ENGINE ) = CNrpApplication::Instance().GetGameEngine( name );
 
 	name = rf.Get( SECTION_PROPERTIES, SCENARIO, NrpText("") );
 	PNrpScenario scenario = new CNrpScenario( name );
 	scenario->Load( myFolder + SCENARIO + ".ini" ); 
-	SetValue<PNrpScenario>( SCENARIO, scenario );
+	Param( SCENARIO ) = scenario;
 
 	name = rf.Get( SECTION_PROPERTIES, GLICENSE, NrpText("") );
 	PNrpLicense license = new CNrpLicense( name );
 	license->Load( myFolder + GLICENSE + ".ini" );
-	SetValue<PNrpLicense>( GLICENSE, license );
+	Param( GLICENSE ) = license;
 }
 
 bool CNrpDevelopGame::IsReady()
@@ -250,7 +241,7 @@ bool CNrpDevelopGame::IsReady()
 		assert( _modules[ i ] );
 		if( _modules[ i ] )
 		{
-			float prc = _modules[ i ]->GetValue<float>( READYWORKPERCENT );
+			float prc = (*_modules[ i ])[ READYWORKPERCENT ];
 			if( prc < 1 )
 				ready = false;		
 	
@@ -259,10 +250,10 @@ bool CNrpDevelopGame::IsReady()
 		}
 	}
 
-	SetValue<bool>( PROJECTREADY, ready );
-	SetValue<float>( READYWORKPERCENT, workP );
+	Param( PROJECTREADY ) = ready;
+	Param( READYWORKPERCENT ) = workP;
 	if( ready )
-		SetString( PROJECTSTATUS, "produce" );
+		Param( PROJECTSTATUS ) = NrpText( "produce" );
 
 	return ready;
 }
@@ -272,7 +263,7 @@ CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index )
 	int position = 0;
 	for( u32 i=0; i < _modules.size(); i++ )
 	{
-		 if( _modules[ i ]->GetValue<int>( TECHGROUP ) == PT_GENRE && position == index )
+		 if( _modules[ i ]->Param( TECHGROUP ).As<GENRE_TYPE>() == PT_GENRE && position == index )
 			 return _modules[ i ];
 		 else
 			 position++;

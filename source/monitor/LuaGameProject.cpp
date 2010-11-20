@@ -56,10 +56,6 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetSoundTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetSoundTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCodeQuality ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsPlatformAvaible ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsLangAvaible ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, TogglePlatform ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, ToggleLanguage ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetScenario ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetEngineExtend ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLocalization ),
@@ -260,7 +256,7 @@ int CLuaGameProject::IsMyGameEngine( lua_State* L )
 	CNrpGameEngine* ge = (CNrpGameEngine*)lua_touserdata( L, 2 );
 	bool isIncl = false;
 
-	IF_OBJECT_NOT_NULL_THEN isIncl = (object_->GetValue<PNrpGameEngine>( GAME_ENGINE ) == ge);
+	IF_OBJECT_NOT_NULL_THEN isIncl = (*object_)[ GAME_ENGINE ] == ge;
 	lua_pushboolean( L, isIncl );
 
 	return 1;		
@@ -286,7 +282,7 @@ int CLuaGameProject::SetNamedTech_( lua_State* L, const NrpText& funcName, const
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		object_->SetValue<PNrpTechnology>( paramName, tech );
+		(*object_)[ paramName ] = tech;
 		object_->CalculateCodeVolume();
 	}
 
@@ -323,59 +319,6 @@ int CLuaGameProject::SetNumericalTech_( lua_State* L,
 		(object_->*Method)( ptrTech, number );
 		object_->CalculateCodeVolume();
 	}
-	return 1;	
-}
-
-int CLuaGameProject::IsLangAvaible( lua_State* L )
-{
-	return IsParamAvaible_( L, "IsLangAvaible", "language_" );
-}
-
-int CLuaGameProject::ToggleLanguage( lua_State* L )
-{
-	return ToggleParam_( L, "ToggleLanguage", "language_" );
-}
-
-int CLuaGameProject::IsPlatformAvaible( lua_State* L )
-{
-	return IsParamAvaible_( L, "IsPlatformAvaible", "platform_" );
-}
-
-int CLuaGameProject::TogglePlatform( lua_State* L )
-{
-	return ToggleParam_( L, "TogglePlatform", "platform_" );
-}
-
-int CLuaGameProject::ToggleParam_( lua_State* L, const NrpText& funcName, const NrpText& prefix )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + " need string parameter") );
-
-	NrpText str( lua_tostring( L, 2 ) );
-
-	IF_OBJECT_NOT_NULL_THEN	
-	{
-		object_->ToggleValue<bool>( prefix + str, true );
-		object_->CalculateCodeVolume();
-	}
-	return 1;	
-}
-
-int CLuaGameProject::IsParamAvaible_( lua_State* L, const NrpText& funcName, const NrpText& prefix )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + " need string parameter") );
-
-	NrpText str( lua_tostring( L, 2 ) );
-	bool isAvaible = false;
-
-	IF_OBJECT_NOT_NULL_THEN
-	{
-		try	{ isAvaible = object_->GetValue<bool>( prefix + str );	}
-		catch(...) { }
-	}
-	lua_pushboolean( L, isAvaible );
-
 	return 1;	
 }
 

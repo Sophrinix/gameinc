@@ -43,7 +43,7 @@ int CLuaPlant::Load( lua_State* L )
 	
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		object_->Load( CNrpApplication::Instance().GetString( SAVEDIR_PLANT ) );
+		object_->Load( CNrpApplication::Instance()[ SAVEDIR_PLANT ] );
 	}
 
 	return 1;
@@ -109,7 +109,7 @@ int CLuaPlant::Save( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		NrpText savedir = CNrpApplication::Instance().GetString( SAVEDIR_PLANT );
+		NrpText savedir = CNrpApplication::Instance()[ SAVEDIR_PLANT ];
 		object_->Save( savedir );
 	}
 
@@ -147,14 +147,14 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		NrpText savedir = CNrpApplication::Instance().GetString( SAVEDIR );
+		NrpText savedir = CNrpApplication::Instance()[ SAVEDIR ];
 		NrpText reklamePrice = savedir+profileName+"/reklameprice.ini";
 
 		IniFile sv( reklamePrice );
-		for( int k=0; k < object_->GetValue<int>( BASEREKLAMENUMBER ); k++ )
+		for( int k=0; k < (int)(*object_)[ BASEREKLAMENUMBER ]; k++ )
 		{
 			CNrpReklameWork* rW = object_->GetBaseReklame( k );
-			sv.Set( SECTION_PROPERTIES, rW->GetString( TECHTYPE ), rW->GetValue<int>( DAYCOST ) );
+			sv.Set( SECTION_PROPERTIES, (*rW)[ TECHTYPE ], (int)(*rW)[ DAYCOST ] );
 		}
 	}
 
@@ -170,14 +170,14 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		NrpText savedir = CNrpApplication::Instance().GetString( SAVEDIR );
+		NrpText savedir = CNrpApplication::Instance()[ SAVEDIR ];
 		NrpText reklamePrice = savedir+profileName+"/reklameprice.ini";
 
-		wchar_t buffer[ 32000 ];
-		memset( buffer, 0, 32000 );
-		GetPrivateProfileSectionW( SECTION_PROPERTIES.c_str(), buffer, 32000, reklamePrice.c_str() );
+		std::auto_ptr<wchar_t> buffer( new wchar_t[ 32000 ] );
+		memset( buffer.get(), 0, 32000 );
+		GetPrivateProfileSectionW( SECTION_PROPERTIES.ToWide(), buffer.get(), 32000, reklamePrice.ToWide() );
 
-		NrpText readLine = buffer;
+		NrpText readLine = buffer.get();
 		while( readLine.size() )
 		{
 			NrpText name, valuel;
@@ -187,10 +187,10 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 
 			CNrpReklameWork* rW = object_->GetBaseReklame( name );
 			if( rW != NULL )
-				rW->SetValue<int>( DAYCOST, valuel.ToInt() );
+				(*rW)[ DAYCOST ] = valuel.ToInt();
 
-			memcpy( buffer, buffer + wcslen(buffer) + 1, 32000 );  
-			readLine = buffer;
+			memcpy( buffer.get(), buffer.get() + wcslen(buffer.get()) + 1, 32000 );  
+			readLine = buffer.get();
 		}
 	}
 	return 1;

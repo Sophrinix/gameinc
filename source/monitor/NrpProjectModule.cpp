@@ -12,20 +12,21 @@ namespace nrp
 CLASS_NAME CLASS_PROJECTMODULE( "CNrpProjectModule" );
 
 CNrpProjectModule::CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProject )
-	: IWorkingModule( pTech->GetValue<PROJECT_TYPE>( TECHGROUP ), CLASS_PROJECTMODULE )
+	: IWorkingModule( (*pTech)[ TECHGROUP ].As<PROJECT_TYPE>(), CLASS_PROJECTMODULE )
 {
 	InitializeOptions_();
 
-	SetValue<NrpText>( NAME, pTech->GetString( NAME ) );
-	SetValue<int>( TECHGROUP, pTech->GetValue<int>( TECHGROUP ) );
-	SetValue<int>( TECHTYPE, pTech->GetValue<int>( TECHTYPE ) );
-	SetValue<float>( BASE_CODE, pTech->GetValue<float>( BASE_CODE ) );
-	SetValue<float>( ENGINE_CODE, pTech->GetValue<float>( ENGINE_CODE ) );
-	SetValue<NrpText>( INTERNAL_NAME, pTech->GetString( INTERNAL_NAME) );
-	SetValue<NrpText>( TEXTURENORMAL, pTech->GetString( TEXTURENORMAL ) );
-	SetValue<int>( LEVEL, pTech->GetValue<int>( LEVEL ) );
-	SetValue<INrpProject*>( PARENT, pProject );
-	SetValue<int>( QUALITY, pTech->GetValue<int>( QUALITY ) );
+	CNrpTechnology& refTech = *pTech;
+	Param( NAME ) = refTech[ NAME ];
+	Param( TECHGROUP ) = refTech[ TECHGROUP ];
+	Param( TECHTYPE ) = refTech[ TECHTYPE ];
+	Param( BASE_CODE ) = refTech[ BASE_CODE ];
+	Param( ENGINE_CODE ) = refTech[ ENGINE_CODE ];
+	Param( INTERNAL_NAME ) = refTech[ INTERNAL_NAME ];
+	Param( TEXTURENORMAL ) = refTech[ TEXTURENORMAL ];
+	Param( LEVEL ) = refTech[ LEVEL ];
+	Param( PARENT ) = pProject;
+	Param( QUALITY ) = refTech[ QUALITY ];
 
 	CopyMapTo( _techRequires, pTech->GetTechRequires() );
 	CopyMapTo( _skillRequires, pTech->GetSkillRequires() );
@@ -35,8 +36,8 @@ CNrpProjectModule::CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject* pPr
 	: IWorkingModule( type, CLASS_PROJECTMODULE )
 {
 	InitializeOptions_();
-	SetValue<int>( TECHTYPE, type );
-	SetValue<INrpDevelopProject*>( PARENT, pProject );
+	Param( TECHTYPE ) = type;
+	Param( PARENT ) = pProject;
 }
 
 CNrpProjectModule::CNrpProjectModule() : IWorkingModule( PROJECT_TYPE(0), CLASS_PROJECTMODULE )
@@ -64,21 +65,21 @@ void CNrpProjectModule::InitializeOptions_()
 
 int CNrpProjectModule::AddUser( IUser* ptrUser )
 {
-	if( GetValue<float>( READYWORKPERCENT ) < 1 )
+	if( Param( READYWORKPERCENT ).As<float>() < 1.f )
 	{
 		_users.push_back( ptrUser );
-		SetValue( USERNUMBER, _users.size() );
+		Param( USERNUMBER ) = static_cast< int >( _users.size() );
 	}
 
-	return (GetValue<float>( READYWORKPERCENT ) < 1);
+	return ( Param( READYWORKPERCENT ).As<int>() < 1.f);
 }
 
 void CNrpProjectModule::Update( IUser* ptrUser )
 {
-	INrpDevelopProject* parent = GetValue<INrpDevelopProject*>( PARENT );
+	INrpDevelopProject* parent = Param( PARENT ).As<INrpDevelopProject*>();
 	assert( parent != NULL );
 
-	if( GetValue<int>( CODEPASSED ) < GetValue<int>( CODEVOLUME) )
+	if( Param( CODEPASSED ).As<int>() < Param( CODEVOLUME).As<int>() )
 	{
 		int reqSkill = 0;
 		REQUIRE_MAP::Iterator sIter = _skillRequires.getIterator();
@@ -92,29 +93,28 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 		//коэффициент команды нужен из-за того, что отимальный размер команды 5, а дальнейший рост 
 		//приводит к ухудшению производительности каждого из членов команды,
 		//хотя общая растет
-		float genreSkill = teamKoeff * ptrUser->GetGenreExperience( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
+		float genreSkill = teamKoeff * ptrUser->GetGenreExperience( Param( TECHTYPE ).As<GENRE_TYPE>() ) / 100.f;
 
 		if( genreSkill < 0.1f )
 			genreSkill = 0.1f;
-		float genrePref = teamKoeff * ptrUser->GetGenrePreferences( GetValue<PROJECT_TYPE>( TECHTYPE ) ) / 100.f;
+		float genrePref = teamKoeff * ptrUser->GetGenrePreferences( Param( TECHTYPE ).As<GENRE_TYPE>() ) / 100.f;
 		
 		if( genrePref < 0.1f )
 			genrePref = 0.1f;
 
 
-		int codePassed = GetValue<int>( CODEPASSED ) + (int)(reqSkill * (genrePref + genreSkill));
-		if( codePassed >= GetValue<int>( CODEVOLUME ) )
-			codePassed = GetValue<int>( CODEVOLUME);
+		int codePassed = Param( CODEPASSED ).As<int>() + (int)(reqSkill * (genrePref + genreSkill));
+		if( Param( CODEVOLUME ).As<int>() <= codePassed )
+			codePassed = Param( CODEVOLUME);
 
-		SetValue<int>( CODEPASSED, codePassed );
-		SetValue<float>( READYWORKPERCENT, codePassed / (float)GetValue<int>( CODEVOLUME ) );
-		int quality = GetValue<int>( QUALITY );
-		SetValue<int>( QUALITY, (quality + ptrUser->GetValue<int>( CODE_QUALITY )) / 2 );
-
-		parent->AddValue<int>( MONEYONDEVELOP, ptrUser->GetValue<int>( SALARY ) / (20*9) );
+		Param( CODEPASSED ) = codePassed;
+		Param( READYWORKPERCENT ) = codePassed / static_cast< float >( Param( CODEVOLUME ).As<int>() );
+		int quality = Param( QUALITY );
+		Param( QUALITY ) = static_cast< int >( quality + (*ptrUser)[ CODE_QUALITY ].As<int>() / 2 );
+		Param( MONEYONDEVELOP ) += static_cast< int >( (*ptrUser)[ SALARY ].As<int>() / (20*9) );
 	}
 
-	if( GetValue<float>( READYWORKPERCENT ) >= 1 )
+	if( Param( READYWORKPERCENT ) >= 1.f )
 		parent->ModuleFinished( this );
 }
 
@@ -128,7 +128,7 @@ NrpText CNrpProjectModule::Save( const NrpText& saveFolder )
 {
 	OpFileSystem::CreateDirectory( saveFolder );
 
-	NrpText fileName = saveFolder + GetString( NAME ) + ".devmod";
+	NrpText fileName = saveFolder + Text( NAME ) + ".devmod";
 	assert( !OpFileSystem::IsExist( fileName ) );
 
 	INrpProject::Save( fileName );

@@ -139,7 +139,7 @@ int CLuaInvention::GetPrognoseDateFinish( lua_State* L )
 
 	SYSTEMTIME time;
 	memset( &time, 0, sizeof(SYSTEMTIME) );
-	IF_OBJECT_NOT_NULL_THEN	time = object_->GetValue<SYSTEMTIME>( PROGNOSEDATEFINISH );
+	IF_OBJECT_NOT_NULL_THEN	time = (*object_)[ PROGNOSEDATEFINISH ];
 
 	lua_pushinteger( L, time.wDay );
 	lua_pushinteger( L, time.wMonth );
@@ -222,7 +222,7 @@ int CLuaInvention::GetCompany( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:GetCompany not need parameter");
 
 	PNrpCompany cmp = NULL;
-	IF_OBJECT_NOT_NULL_THEN	cmp = object_->GetValue<PNrpCompany>( PARENTCOMPANY );
+	IF_OBJECT_NOT_NULL_THEN	cmp = (*object_)[ PARENTCOMPANY ].As<PNrpCompany>();
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, cmp );
@@ -248,7 +248,7 @@ int CLuaInvention::ClearMonthPay( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:ClearMonthPay not need parameter");
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( MONEY_TODECREASE, 0 );
+	IF_OBJECT_NOT_NULL_THEN (*object_)[ MONEY_TODECREASE ] = (int)0;
 
 	return 1;
 }

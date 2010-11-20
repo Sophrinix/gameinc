@@ -27,9 +27,9 @@ int CLuaRelation::SetValue( lua_State *L )
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		if( lua_isnumber( L, 3 ) )
-			object_->SetValue( name, static_cast< float >( lua_tonumber( L, 3 ) ) );
+			(*object_)[ name ] = static_cast< float >( lua_tonumber( L, 3 ) );
 		else if( lua_isstring( L, 3 ) )
-			object_->SetValue( name, NrpText( lua_tostring( L, 3 ) ) );
+			(*object_)[ name ] = NrpText( lua_tostring( L, 3 ) );
 		else
 			assert( "unsupport type" );
 	}
@@ -46,12 +46,12 @@ int CLuaRelation::GetValue( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( object_->Is<NrpText>( name ) )
-			lua_pushstring( L, object_->GetString( name ) );
-		else if( object_->Is< float >( name ) )
-			lua_pushnumber( L, object_->GetValue<float>( name ) );
-		else if( object_->Is< int >( name ) )
-			lua_pushinteger( L, object_->GetValue<int>( name ) );
+		if( (*object_)[ name ].Is<NrpText>() )
+			lua_pushstring( L, (*object_)[ name ].As<NrpText>() );
+		else if( (*object_)[ name ].Is< float >() )
+			lua_pushnumber( L, (*object_)[ name ].As<float>() );
+		else if( (*object_)[ name ].Is< int >() )
+			lua_pushinteger( L, (*object_)[ name ].As<int>() );
 		else
 			lua_pushinteger( L, -1 );
 	}

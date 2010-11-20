@@ -30,7 +30,7 @@ int CLuaPda::GetMessage( lua_State *L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPda::GetMessage not need parameter");
 
 	NrpText ret = "0:0_error";
-	IF_OBJECT_NOT_NULL_THEN ret = const_cast< CPdaItem& >( object_->Current() ).GetString( MESSAGE );
+	IF_OBJECT_NOT_NULL_THEN ret = const_cast< CPdaItem& >( object_->Current() )[ MESSAGE ];
 
 	lua_pushstring( L, ret );
 	return 1;
@@ -64,7 +64,7 @@ int CLuaPda::GetTimeStr( lua_State* L )
 	NrpText ret = "0:0_error";
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		SYSTEMTIME time = object_->Current().GetValue<SYSTEMTIME>( STARTDATE );
+		SYSTEMTIME time = object_->Current()[ STARTDATE ].As<SYSTEMTIME>();
 		char dd[ MAX_PATH ] = { 0 };
 		snprintf( dd, MAX_PATH - 1, "%04d.%02d.%02d %02d:%02d", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute );
 		ret = dd;
@@ -84,7 +84,7 @@ int CLuaPda::AddMessage( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		SYSTEMTIME time = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
+		SYSTEMTIME time = CNrpApplication::Instance()[ CURRENTTIME ].As<SYSTEMTIME>();
 		object_->AddItem( message, action, time );
 	}
 
@@ -98,9 +98,9 @@ int CLuaPda::Save( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		NrpText saveFile = CNrpApplication::Instance().GetString( SAVEDIR );
-		saveFile += CNrpApplication::Instance().GetString( PROFILENAME );
-		saveFile += "/pda.ini";
+		NrpText saveFile = CNrpApplication::Instance()[ SAVEDIR ];
+		saveFile.append( (NrpText)CNrpApplication::Instance()[ PROFILENAME ] );
+		saveFile.append( L"/pda.ini" );
 
 		object_->Save( saveFile );
 	}
@@ -115,9 +115,9 @@ int CLuaPda::Load( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		NrpText saveFile = CNrpApplication::Instance().GetString( SAVEDIR );
-		saveFile += CNrpApplication::Instance().GetString( PROFILENAME );
-		saveFile += "/pda.ini";
+		NrpText saveFile = CNrpApplication::Instance()[ SAVEDIR ];
+		saveFile.append( (NrpText)CNrpApplication::Instance()[ PROFILENAME ] );
+		saveFile.append( L"/pda.ini" );
 		object_->Load( saveFile );
 	}
 

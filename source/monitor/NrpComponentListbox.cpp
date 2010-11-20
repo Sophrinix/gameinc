@@ -937,7 +937,7 @@ void CNrpComponentListbox::setItemOverrideColor(u32 index, const video::SColor &
 
 void CNrpComponentListbox::setItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType, const video::SColor &color)
 {
-	if ( index >= Items.size() || colorType < 0 || colorType >= EGUI_LBC_COUNT )
+	if ( index >= Items.size() || (int)colorType < 0 || colorType >= EGUI_LBC_COUNT )
 		return;
 
 	Items[index].OverrideColors[colorType].Use = true;
@@ -956,7 +956,7 @@ void CNrpComponentListbox::clearItemOverrideColor(u32 index)
 
 void CNrpComponentListbox::clearItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType)
 {
-	if ( index >= Items.size() || colorType < 0 || colorType >= EGUI_LBC_COUNT )
+	if ( index >= Items.size() || (s32)colorType < 0 || colorType >= EGUI_LBC_COUNT )
 		return;
 
 	Items[index].OverrideColors[colorType].Use = false;
@@ -965,7 +965,7 @@ void CNrpComponentListbox::clearItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR 
 
 bool CNrpComponentListbox::hasItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType) const
 {
-	if ( index >= Items.size() || colorType < 0 || colorType >= EGUI_LBC_COUNT )
+	if ( index >= Items.size() || (s32)colorType < 0 || colorType >= EGUI_LBC_COUNT )
 		return false;
 
 	return Items[index].OverrideColors[colorType].Use;
@@ -974,7 +974,7 @@ bool CNrpComponentListbox::hasItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR co
 
 video::SColor CNrpComponentListbox::getItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType) const
 {
-	if ( (u32)index >= Items.size() || colorType < 0 || colorType >= EGUI_LBC_COUNT )
+	if ( (u32)index >= Items.size() || (s32)colorType < 0 || colorType >= EGUI_LBC_COUNT )
 		return video::SColor();
 
 	return Items[index].OverrideColors[colorType].Color;

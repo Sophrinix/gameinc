@@ -33,10 +33,10 @@ NrpText CNrpPda::Save( const NrpText& fileName )
 	{
 		CPdaItem* item = _items[ k ];
 		NrpText section = CreateKeyItem( k );
-		assert( item->GetValue<NrpText>( MESSAGE ).size() > 0 );
-		sv.Set( section, "message", item->GetValue<NrpText>( MESSAGE ) );
-		sv.Set( section, "time", item->GetValue<SYSTEMTIME>( STARTDATE ) );
-		sv.Set( section, "action", item->GetValue<NrpText>( ACTION ) );
+		assert( item->Text( MESSAGE ).size() > 0 );
+		sv.Set( section, "message", item->Text( MESSAGE ) );
+		sv.Set( section, "time", item->Param( STARTDATE ).As<SYSTEMTIME>() );
+		sv.Set( section, "action", item->Text( ACTION ) );
 	}	
 
 	return fileName;

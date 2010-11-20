@@ -12,12 +12,12 @@ public:
 	CNrpHistoryStep( const SYSTEMTIME& time );
 
 	template< class T >
-	void AddValue( NrpText name, T& amount )
+	void AddValue( const NrpText& name, T& amount )
 	{
 		if( !IsExist( name ) )
 			Push<T>( name, amount );
 		else
-			INrpConfig::AddValue<T>( name, amount );
+			Param( name ).As<T>() += amount;
 	}
 };
 

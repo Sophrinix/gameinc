@@ -7,7 +7,8 @@ CLASS_NAME CLASS_AIUSER( "CNrpAiUser" );
 
 CNrpAiUser::CNrpAiUser( const NrpText& name, CNrpCompany* ptrCmp ) : IUser( CLASS_AIUSER, name )
 {
-	SetValue< NrpText >( NAME, name );
+	assert( name.size() > 0 );
+	Param( NAME ) = name;
 }
 
 CNrpAiUser::CNrpAiUser( const NrpText& fileName ) : IUser( CLASS_AIUSER, "" )

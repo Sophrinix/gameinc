@@ -148,7 +148,7 @@ NrpText OpFileSystem::CheckEndSlash( NrpText pathTo )
 {
 	wchar_t endsym = pathTo[ pathTo.size() - 1 ];
 	if( endsym != L'/' && endsym != L'\\' )
-		pathTo += L"/";
+		pathTo.append( L"/" );
 
 	return pathTo;
 }

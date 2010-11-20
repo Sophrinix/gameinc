@@ -45,11 +45,11 @@ void INrpDevelopProject::InitializeOptions_()
 void INrpDevelopProject::SetDeveloper( IUser* user )
 {
 	for( u32 i=0; i < _developers.size(); i++ )
-		if( _developers[ i ] == user->GetString( NAME ) )
+		if( _developers[ i ] == user->Text( NAME ) )
 			continue;
 
-	_developers.push_back( user->GetString( NAME ) );
-	SetValue<int>( USERNUMBER, _developers.size() );
+	_developers.push_back( user->Text( NAME ) );
+	Param( USERNUMBER ) = static_cast< int >( _developers.size() );
 }
 
 void INrpDevelopProject::Load( const NrpText& pathTo )
@@ -57,7 +57,7 @@ void INrpDevelopProject::Load( const NrpText& pathTo )
 	INrpProject::Load( pathTo );
 
 	IniFile rv( pathTo );
-	rv.Get( SECTION_USERS, CreateKeyUser, GetValue<int>( USERNUMBER ), _developers );
+	rv.Get( SECTION_USERS, CreateKeyUser, (int)Param( USERNUMBER ), _developers );
 }
 
 NrpText INrpDevelopProject::ClassName()

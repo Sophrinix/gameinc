@@ -58,7 +58,7 @@ OBJECT_TYPE* FindByName( const ARRAY_TYPE& arrayT, const NrpText& someName )
 {
 	for( u32 pos=0; pos < arrayT.size(); pos++ )
 	{
-		if( arrayT[ pos ]->GetString( NAME ) == someName  )
+		if( (NrpText)(*arrayT[ pos ])[ NAME ] == someName  )
 			return arrayT[ pos ];
 	}
 
@@ -70,7 +70,7 @@ OBJECT_TYPE* FindByNameAndIntName( const ARRAY_TYPE& arrayT, const NrpText& some
 {
 	for( u32 pos=0; pos < arrayT.size(); pos++ )
 	{
-		if( arrayT[ pos ]->GetString( NAME ) == someName || arrayT[ pos ]->GetString( INTERNAL_NAME ) == someName  )
+		if( (*arrayT[ pos ])[ NAME ]== someName || (*arrayT[ pos ])[ INTERNAL_NAME ] == someName  )
 			return arrayT[ pos ];
 	}
 

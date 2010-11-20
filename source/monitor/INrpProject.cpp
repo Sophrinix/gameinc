@@ -23,7 +23,7 @@ NrpText INrpProject::Save( const NrpText& fileName )
 
 bool INrpProject::Equale( const NrpText& name )
 {
-	return ( Get( NAME ) == name || Get( INTERNAL_NAME ) == name);
+	return ( Param( NAME ) == name || Param( INTERNAL_NAME ) == name);
 }
 
 }//namespace nrp

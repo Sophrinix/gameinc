@@ -25,8 +25,8 @@ bool IC_Command_ECHO::invoke(const array<stringw>& args, CCommandDispatcher* pDi
 		NrpText wstr = L"";
 		for(u32 i = 0; i < args.size(); i++)
 		{
-			wstr += args[i];
-			wstr += L" ";
+			wstr.append( args[i] );
+			wstr.append( L" " );
 		}
 		pOutput->AppendMessage( wstr );
 	}
@@ -57,8 +57,8 @@ bool IC_Command_HELP::invoke(const array<stringw>& args, CCommandDispatcher* pDi
 		NrpText  wstr = args[0];
 		for(u32 i = 1; i < args.size(); i++)
 		{
-			wstr += L" ";
-			wstr += args[i];
+			wstr.append( L" " );
+			wstr.append( args[i] );
 		}
 
 		if(pDispatcher->hasCommand(wstr))
@@ -67,8 +67,7 @@ bool IC_Command_HELP::invoke(const array<stringw>& args, CCommandDispatcher* pDi
 		}
 		else
 		{
-			NrpText msg = "Комманда не обнаружена ";
-			msg+= wstr;
+			NrpText msg = NrpText( "Комманда не обнаружена " ) + NrpText( wstr );
 			pOutput->AppendMessage( msg );
 		}
 	}

@@ -58,7 +58,7 @@ CNrpConfigLooder::~CNrpConfigLooder(void)
 {
 }
 
-void CNrpConfigLooder::_WriteInt( const CNrpProperty* prop, const NrpText& key, IniFile* ini )
+void CNrpConfigLooder::_WriteInt( const NParam* prop, const NrpText& key, IniFile* ini )
 {
 	ini->Set( SECTION_PROPERTIES, key + L":int", prop->As<int>() );
 }
@@ -70,12 +70,12 @@ void CNrpConfigLooder::Save( const NrpText& fileName )
 
 	assert( OpFileSystem::IsExist( fileName ) );
 
-	INrpConfig::PropertyArray::Iterator paIter = _config->_options.getIterator();
+	INrpConfig::PARAMS::Iterator paIter = _config->_params.getIterator();
 
 	for( ; !paIter.atEnd(); paIter++)
 	{
 		NrpText typesave = "";
-		CNrpProperty* prop = paIter->getValue();
+		NParam* prop = paIter->getValue();
 		assert( !prop->IsNull() );
 		
 		WRITERS_MAP::Node* wIter = _writers.find( prop->GetType() );
@@ -180,9 +180,9 @@ void CNrpConfigLooder::_ReadTechnology( KeyPair* p )
 		_config->Push<PNrpTechnology>( p->GetName(), tech );
 }
 
-void CNrpConfigLooder::_WriteUnknown( const CNrpProperty* prop, const NrpText& key, IniFile* ini )
+void CNrpConfigLooder::_WriteUnknown( const NParam* prop, const NrpText& key, IniFile* ini )
 {
-	NrpText dd = const_cast< CNrpProperty* >( prop )->GetType();
+	NrpText dd = const_cast< NParam* >( prop )->GetType();
 	if( dd.find( L"enum" ) == 0 )
 	{
 		_WriteInt( prop, key, ini );
@@ -191,7 +191,7 @@ void CNrpConfigLooder::_WriteUnknown( const CNrpProperty* prop, const NrpText& k
 		ini->Set( SECTION_PROPERTIES, key + L":unknown", NrpText("") );	
 }
 
-void CNrpConfigLooder::_WriteTechnology( const CNrpProperty* prop, const NrpText& key, IniFile* ini )
+void CNrpConfigLooder::_WriteTechnology( const NParam* prop, const NrpText& key, IniFile* ini )
 {
 	const CNrpTechnology& tech = *(prop->As<PNrpTechnology>());
 	
@@ -201,7 +201,7 @@ void CNrpConfigLooder::_WriteTechnology( const CNrpProperty* prop, const NrpText
 	}
 }
 
-void CNrpConfigLooder::_WriteUser( const CNrpProperty* prop, const NrpText& key, 
+void CNrpConfigLooder::_WriteUser( const NParam* prop, const NrpText& key, 
 								   IniFile* ini )
 {
 	const PUser user = prop->As<PUser>();
@@ -209,25 +209,25 @@ void CNrpConfigLooder::_WriteUser( const CNrpProperty* prop, const NrpText& key,
 		ini->Set( SECTION_PROPERTIES, key + L":user", (NrpText)(*user)[ NAME ] );
 }
 
-void CNrpConfigLooder::_WriteFloat( const CNrpProperty* prop, const NrpText& key, IniFile* ini )
+void CNrpConfigLooder::_WriteFloat( const NParam* prop, const NrpText& key, IniFile* ini )
 {
 	ini->Set( SECTION_PROPERTIES, key + ":float", prop->As<float>() );
 }
 
-void CNrpConfigLooder::_WriteTime( const CNrpProperty* prop, const NrpText& key, IniFile* ini )
+void CNrpConfigLooder::_WriteTime( const NParam* prop, const NrpText& key, IniFile* ini )
 {
 	ini->Set( SECTION_PROPERTIES, key + L":time", prop->As<SYSTEMTIME>() );
 }
 
-void CNrpConfigLooder::_WriteString( const CNrpProperty* prop, const NrpText& key, IniFile* ini)
+void CNrpConfigLooder::_WriteString( const NParam* prop, const NrpText& key, IniFile* ini)
 {
 	ini->Set( SECTION_PROPERTIES, key + L":string", prop->As<NrpText>() );
 }
 
-void CNrpConfigLooder::_WriteBool( const CNrpProperty* prop, const NrpText& key, 
+void CNrpConfigLooder::_WriteBool( const NParam* prop, const NrpText& key, 
 								   IniFile* ini )
 {
-	ini->Set( SECTION_PROPERTIES, key + L":bool", prop->As<bool>() );
+	ini->Set( SECTION_PROPERTIES, key + L":bool", (bool)(*prop) );
 }
 
 void CNrpConfigLooder::_ReadUnknown( KeyPair* p )

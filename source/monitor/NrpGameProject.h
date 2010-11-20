@@ -67,14 +67,13 @@ public:
 	static NrpText ClassName();
 private:
 	void _InitializeOptions( const NrpText& name );
-	CNrpGameProject( CNrpGameProject& ptr );
+	CNrpGameProject( const CNrpGameProject& ptr );
 	TECHS _technologies;
 	TECHS _genres;
 	TECHS _video;
 	TECHS _sound;
 
 	void _SetTech( CNrpTechnology* ptrTech, int index, TECHS& listd, OPTION_NAME optname );
-	void _FindPlaformsAndLanguages();
 	void _GetAllTech( TECHS& techList );
 	void _SaveTech( const OPTION_NAME& name, const NrpText& saveFolder, IniFile* ini );
 	void _LoadTechs( const SECTION_NAME& section, NrpText (*func)(int index), int maxVal, TECHS& arr, IniFile* ini );

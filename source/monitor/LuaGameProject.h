@@ -54,10 +54,6 @@ public:
 	int GetSoundTechNumber( lua_State* L );
 	int GetSoundQuality( lua_State* L );
 	int SetSoundQuality( lua_State* L );
-	int IsLangAvaible( lua_State* L );
-	int ToggleLanguage( lua_State* L );
-	int IsPlatformAvaible( lua_State* L );
-	int TogglePlatform( lua_State* L );
 	int GetEngineExtend( lua_State* L );
 	int GetLocalization( lua_State* L );
 	int GetCrossPlatformCode( lua_State* L );
@@ -75,8 +71,6 @@ private:
 											   const NrpText& funcName, 
 											   CNrpTechnology* (T::*Method)( int index) );
 
-	int IsParamAvaible_( lua_State* L, const NrpText& funcName, const NrpText& prefix );
-	int ToggleParam_( lua_State* L, const NrpText& funcName, const NrpText& prefix );
 	int _TechLuaInitialize( lua_State* L, const NrpText& funcName, OPTION_NAME& paramName );
 };
 

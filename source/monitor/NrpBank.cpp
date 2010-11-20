@@ -27,14 +27,14 @@ size_t CNrpBank::GetMaxCompanyLoan( const NrpText& companyName )
 
 	for( u32 i=0; i < _loans.size(); i++ )
 	{
-		if( _loans[ i ]->GetString( COMPANYNAME ) == companyName )
-			dolg += _loans[ i ]->GetValue<int>( MONEY ); 
+		if( (*_loans[ i ])[ COMPANYNAME ] == companyName )
+			dolg += (int)(*_loans[ i ])[ MONEY ]; 
 	}
 
 	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( companyName );
 
 	if( cmp )
-		result = (int)(cmp->GetValue<int>( BALANCE ) - dolg * 1.5);
+		result = (*cmp)[ BALANCE ] - static_cast< int >( dolg * 1.5f );
 
 	return result > 10000 ? result * 2 : 0;
 }
@@ -50,33 +50,35 @@ CNrpBank& CNrpBank::Instance()
 CNrpLoan* CNrpBank::FindLoadByID( u32 id )
 {
 	for( u32 i=0; i < _loans.size(); i++ )
-		if( _loans[ i ]->GetValue<int>( ID ) == id )
+		if( (*_loans[ i ])[ ID ] == id )
 			return _loans[ i ];
-
+	
 	return NULL;
 }
 
 void CNrpBank::CreateLoan( const NrpText& name, int money, int percent, int month )
 {
 	CNrpLoan* loan = new CNrpLoan( loanId_++ );
-	SYSTEMTIME endtime, time = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
+	CNrpLoan& refLoan = *loan;
+	SYSTEMTIME endtime, time = CNrpApplication::Instance()[ CURRENTTIME ].As<SYSTEMTIME>();
 	endtime = time;
 	endtime.wYear = time.wYear + month / 12;
 	endtime.wMonth = ( time.wMonth + month ) % 12;
-	loan->SetValue<int>( YEARPERCENT, percent );
-	loan->SetValue<int>( STARTMONEY, money );
-	loan->SetValue<int>( MONEY, money );
-	loan->SetValue<SYSTEMTIME>( STARTDATE, time );
-	loan->SetValue<int>( MONTHLEFT, month );
-	loan->SetValue<SYSTEMTIME>( ENDDATE, endtime );
+	refLoan[ YEARPERCENT ] = percent;
+	refLoan[ STARTMONEY ] = money;
+	refLoan[ MONEY ] = money;
+	refLoan[ STARTDATE ] = time;
+	refLoan[ MONTHLEFT ] = month;
+	refLoan[ ENDDATE ] = endtime;
 	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( name );
-	loan->SetString( COMPANYNAME, cmp->GetString( NAME ) );
+	assert( cmp );
+	if( cmp )
+		refLoan[ COMPANYNAME ] = (*cmp)[ NAME ];
 
 	_loans.push_back( loan );
-	cmp->AddValue<int>( BALANCE, money );
+	(*cmp)[ BALANCE ] += money;
 
-	int lNum = _loans.size();
-	SetValue<int>( LOANNUMBER, lNum ); 
+	Param( LOANNUMBER ) = static_cast< int >( _loans.size() ); 
 }
 
 NrpText CNrpBank::ClassName()

@@ -64,43 +64,45 @@ void CNrpGame::InitializeOptions_()
 	_history = NULL;
 }
 
-CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpConfig( CLASS_NRPGAME, devGame->GetString( NAME ) )
+CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpConfig( CLASS_NRPGAME, devGame->Text( NAME ) )
 {
 	InitializeOptions_();
 
-	SetValue<PNrpCompany>( PARENTCOMPANY, ptrCompany );
-	SetString( COMPANYNAME, ptrCompany->GetString( NAME ) );
-	SetString( NAME, devGame->GetString( NAME ) );
-	SetValue<int>( MONEYONDEVELOP, devGame->GetValue<int>( MONEYONDEVELOP ) );
-	CNrpGameEngine* ge = devGame->GetValue<CNrpGameEngine*>( GAME_ENGINE );
+	assert( devGame );
+	CNrpDevelopGame& refGame = *devGame;
+	Param( PARENTCOMPANY ) = ptrCompany;
+	Param( COMPANYNAME ) = (*ptrCompany)[ NAME ];
+	Param( NAME ) = refGame[ NAME ];
+	Param( MONEYONDEVELOP ) = refGame[ MONEYONDEVELOP ];
+	CNrpGameEngine* ge = refGame[ GAME_ENGINE ].As<CNrpGameEngine*>();
 	if( ge )
-		SetString( GAME_ENGINE, ge->GetString( NAME ) );
+		Param( GAME_ENGINE ) = (*ge)[ NAME ];
 
-	SetValue<float>( FAMOUS, devGame->GetValue<float>( FAMOUS ) );
-	assert( devGame->GetValue<int>( PLATFORMNUMBER ) != 0 );
-	SetValue<int>( PLATFORMNUMBER, devGame->GetValue<int>( PLATFORMNUMBER ) );
-	SetValue<int>( USERNUMBER, devGame->GetValue<int>( USERNUMBER ) );
-	SetString( PREV_GAME, devGame->GetString( NAME ) ); 
+	Param( FAMOUS ) = refGame[ FAMOUS ];
+	assert( refGame[ PLATFORMNUMBER ] != (int)0 );
+	Param( PLATFORMNUMBER ) = refGame[ PLATFORMNUMBER ];
+	Param( USERNUMBER ) = refGame[ USERNUMBER ];
+	Param( PREV_GAME ) = refGame[ NAME ]; 
 	
 	_developers = devGame->GetDevelopers();
 
-	SetValue<int>( GENRE_MODULE_NUMBER, devGame->GetValue<int>( GENRE_MODULE_NUMBER ) );
-	for( int cnt=0; cnt < GetValue<int>( GENRE_MODULE_NUMBER ); cnt++ )
+	Param( GENRE_MODULE_NUMBER ) = refGame[ GENRE_MODULE_NUMBER ];
+	for( int cnt=0; cnt < (int)Param( GENRE_MODULE_NUMBER ); cnt++ )
 	{
 		 CNrpTechnology* genre = devGame->GetGenre( cnt );
 		 if( genre )
-			_genres.push_back( genre->GetString( INTERNAL_NAME ) );
+			_genres.push_back( (*genre)[ INTERNAL_NAME ] );
 	}
 
-	SetValue<int>( MODULE_NUMBER, devGame->GetValue<int>( MODULE_NUMBER ) );
-	for( int cnt=0; cnt < GetValue<int>( MODULE_NUMBER ); cnt++ )
-		 _techs.push_back( devGame->GetModule( cnt )->GetString( INTERNAL_NAME ) );
+	Param( MODULE_NUMBER ) = refGame[ MODULE_NUMBER ];
+	for( int cnt=0; cnt < (int)Param( MODULE_NUMBER ); cnt++ )
+		 _techs.push_back( refGame.GetModule( cnt )->Param( INTERNAL_NAME ) );
 
-	SetString( INTERNAL_NAME, CNrpApplication::Instance().GetFreeInternalName( this ) );
-	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( GetString( INTERNAL_NAME ) );
+	Param( INTERNAL_NAME ) = CNrpApplication::Instance().GetFreeInternalName( this );
+	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( Param( INTERNAL_NAME ) );
 	assert( pgList != NULL );
 	if( pgList != NULL )
-		SetValue<CNrpScreenshot*>( GAMEIMAGELIST, pgList );
+		Param( GAMEIMAGELIST ) = pgList;
 }
 
 CNrpGame::CNrpGame( const NrpText& fileName ) : INrpConfig( CLASS_NRPGAME, fileName )
@@ -126,13 +128,14 @@ NrpText CNrpGame::Save( const NrpText& saveFolder )
 	if( !upDirExist )
 		return "";
 	
-	NrpText localFolder = OpFileSystem::CheckEndSlash( OpFileSystem::CheckEndSlash( saveFolder ) + GetString( NAME ) );
+	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder ) + Text( NAME ); //директория куда сохраняем
+	localFolder = OpFileSystem::CheckEndSlash( localFolder ); //добавляем слеш в конец
 	NrpText saveFile = localFolder + "item.game";
 
 	OpFileSystem::CreateDirectory( localFolder );
 	INrpConfig::Save( saveFile );
 
-	if( PNrpGameBox box = GetValue<PNrpGameBox>( GBOX ) )
+	if( PNrpGameBox box = Param( GBOX ).As<PNrpGameBox>() )
 	{
 		box->Save( localFolder + "box.ini" );
 	}
@@ -176,10 +179,10 @@ void CNrpGame::Load( const NrpText& loadPath )
 
 	INrpConfig::Load( loadFile );
 	IniFile rv( loadFile );
-	for( int i=0; i < GetValue<int>( MODULE_NUMBER ); ++i )
+	for( int i=0; i < (int)Param( MODULE_NUMBER ); ++i )
 		_techs.push_back( rv.Get( SECTION_TECHS, CreateKeyTech(i), NrpText("") ) );
 
-	for( int i=0; i < GetValue<int>( GENRE_MODULE_NUMBER ); ++i )
+	for( int i=0; i < (int)Param( GENRE_MODULE_NUMBER ); ++i )
 		_genres.push_back( rv.Get( SECTION_GENRES, CreateKeyGenre(i), NrpText("") ) );
 
 	NrpText boxIni = loadFolder + "box.ini";
@@ -187,13 +190,13 @@ void CNrpGame::Load( const NrpText& loadPath )
 	{
 		PNrpGameBox box = new CNrpGameBox( this );
 		box->Load( boxIni );
-		SetValue<PNrpGameBox>( GBOX, box );
+		Param( GBOX ) = box;
 	}
 
-	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( GetString( INTERNAL_NAME ) );
+	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( Text( INTERNAL_NAME ) );
 	assert( pgList != NULL );
 	if( pgList != NULL )
-		SetValue<CNrpScreenshot*>( GAMEIMAGELIST, pgList );
+		Param( GAMEIMAGELIST ) = pgList;
 }
 
 float CNrpGame::GetAuthorFamous()
@@ -204,7 +207,7 @@ float CNrpGame::GetAuthorFamous()
 		IUser* user = CNrpApplication::Instance().GetUser( _developers[ i ] );
 		if( user )
 		{
-			summ += user->GetValue<float>( FAMOUS );
+			summ += (*user)[ FAMOUS ].As<float>();
 			summ /= 2.f;
 		}
 	}
@@ -223,23 +226,25 @@ NrpText CNrpGame::GetTechName( size_t index )
 
 void CNrpGame::GameBoxSaling( int number )
 {
-	PNrpGameBox gameBox = GetValue<PNrpGameBox>( GBOX );
-	Log(HW) << "gameBox == NULL " << GetString( INTERNAL_NAME ) << term;
+	PNrpGameBox gameBox = Param( GBOX ).As<PNrpGameBox>();
+	Log(HW) << "gameBox == NULL " << Text( INTERNAL_NAME ) << term;
 
 	if( gameBox != NULL )
 	{
-		int boxNumber = GetValue<PNrpGameBox>( GBOX )->GetValue<int>( BOXNUMBER );
+		int boxNumber = (*gameBox)[ BOXNUMBER ];
 		number = number > boxNumber ? boxNumber : number;
-		GetValue<PNrpGameBox>( GBOX )->AddValue<int>( BOXNUMBER, -number );
-		int price = GetValue<PNrpGameBox>( GBOX )->GetValue<int>( PRICE );
+		
+		(*gameBox)[ BOXNUMBER ] -= number;
+		int price = (*gameBox)[ PRICE ];
 
-		AddValue<int>( CASH, price * number );
-		AddValue<int>( COPYSELL, number );
+		Param( CASH ) += price * number;
+		Param( COPYSELL ) += number;
 
-		if( GetValue<PNrpCompany>( PARENTCOMPANY ) )
-			GetValue<PNrpCompany>( PARENTCOMPANY )->AddValue<int>( BALANCE, price * number );
+		PNrpCompany cmp = Param( PARENTCOMPANY ).As<PNrpCompany>();
+		if( cmp )
+			(*cmp)[ BALANCE ] += price * number;
 
-		SYSTEMTIME curTime = CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME );
+		SYSTEMTIME curTime = CNrpApplication::Instance()[ CURRENTTIME ].As<SYSTEMTIME>();
 	}
 	//history_->AddStep( CURRENTTIME, number, price * number );
 }

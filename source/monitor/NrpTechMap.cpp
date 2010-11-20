@@ -936,9 +936,9 @@ void CNrpTechMap::draw()
 					// draw item text
 					if( TS_INDEVELOP == refTech[ STATUS ].As<TECH_STATUS>() )
 					{
-						text += "\n(";
-						text += static_cast<int>( refTech[ READYWORKPERCENT ].As<float>() );
-						text += ")";
+						text.append( "\n(" );
+						text.append( static_cast< int >( refTech[ READYWORKPERCENT ].As<float>() ) );
+						text.append( ")" );
 					}
 				}
 
@@ -1325,7 +1325,7 @@ void CNrpTechMap::AssignTechMapToTable_( const ATECH_ARRAY& pArray )
 
 			if( CNrpTechnology* rechnology = pTech->GetTechnology() )
 			{
-				cell.Text = rechnology->Get( NAME ).As<NrpText>();
+				cell.Text = rechnology->Param( NAME ).As<NrpText>();
 
 				AssignTechMapToTable_( pTech->GetChilds() );
 			}
@@ -1339,7 +1339,7 @@ void CNrpTechMap::RelocateTable_()
 	for( size_t pos=0; pos < techMap_.size(); pos++ )
 	{
 		 ypos = techMap_[ pos ]->RootCell( 0, ypos );
-		 ypos += !(techMap_[ pos ]->GetTechnology()->Get( NEXTTECHNUMBER ));
+		 ypos += !(techMap_[ pos ]->GetTechnology()->Param( NEXTTECHNUMBER ));
 	}
 
 	clear();
@@ -1370,7 +1370,7 @@ int CNrpTechMap::GetSelectedObjectType()
 {
 	CNrpTechnology* tech = Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology();
 	
-	return ( tech == NULL ? TS_PROJECT : tech->Get( STATUS ).As<TECH_STATUS>() );
+	return ( tech == NULL ? TS_PROJECT : tech->Param( STATUS ).As<TECH_STATUS>() );
 }
 
 } // end namespace gui

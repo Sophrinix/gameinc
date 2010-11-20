@@ -3,6 +3,7 @@
 
 #include "nrpConfig.h"
 #include "nrpArrays.h"
+#include "NrpTypes.h"
 
 namespace nrp
 {
@@ -46,12 +47,12 @@ public:
 	void SetSkill( const NrpText& name, int valuel );
 	int GetSkill( int typen );
 	
-	int GetGenreExperience( int typen );
-	void SetGenreExperience( int typen, int valuel );
+	int GetGenreExperience( GENRE_TYPE typen );
+	void SetGenreExperience( GENRE_TYPE typen, int valuel );
 	void IncreaseExperience( int techGroup, int grow );
 
-	int GetGenrePreferences( int typen );
-	void SetGenrePreferences( int typen, int valuel );
+	int GetGenrePreferences( GENRE_TYPE typen );
+	void SetGenrePreferences( GENRE_TYPE typen, int valuel );
 	
 	void AddWork( IWorkingModule* techWork, bool toFront=false );
 

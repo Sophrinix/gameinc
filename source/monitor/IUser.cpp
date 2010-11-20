@@ -62,7 +62,7 @@ void IUser::SetSkill( int typen, int valuel )
 
 void IUser::SetSkill( const NrpText& name, int valuel )
 {
-	SetValue<int>( name, valuel );
+	Param( name ) = valuel;
 
 	CalculateWantSalary_();
 }
@@ -78,9 +78,9 @@ void IUser::CalculateWantSalary_()
 		 cash *= (cash > 100 ? 0.9f : 1);
 	}
 
-	sum += GetValue<int>( CODE_QUALITY ) * 10;
+	sum += (int)Param( CODE_QUALITY ) * 10;
 
-	SetValue<int>( WANTMONEY, (int)sum );
+	Param( WANTMONEY ) = (int)sum;
 
 	CalculateKnowledgeLevel_();
 }
@@ -95,7 +95,7 @@ void IUser::CalculateKnowledgeLevel_()
 				sum /= 2;
 	}
 	
-	SetValue<int>( KNOWLEDGE_LEVEL, sum );
+	Param( KNOWLEDGE_LEVEL ) = sum;
 }
 
 int IUser::GetSkill( int typen )
@@ -109,7 +109,7 @@ NrpText IUser::Save( const NrpText& folderPath )
 	{
 		assert( OpFileSystem::IsExist( folderPath ) );
 
-		NrpText fileName = OpFileSystem::CheckEndSlash( folderPath )+ GetString( NAME ) + ".user";
+		NrpText fileName = OpFileSystem::CheckEndSlash( folderPath )+ Param( NAME ).As<NrpText>() + ".user";
 		assert( !OpFileSystem::IsExist( fileName ) );
 		
 		IniFile sv( fileName );
@@ -130,15 +130,15 @@ NrpText IUser::Save( const NrpText& folderPath )
 		{
 			if( CNrpProjectModule* prjModule = dynamic_cast< CNrpProjectModule* >( works_[ i ] )  )
 			{
-				NrpText projectName = prjModule->GetValue<INrpProject*>( PARENT )->GetString( NAME );
-				NrpText name = prjModule->GetString(NAME);
+				NrpText projectName = (*prjModule)[ PARENT ].As<INrpProject*>()->Text( NAME );
+				NrpText name = (*prjModule)[NAME];
 				sv.Set( SECTION_WORKS, CreateKeyWork( i ), "project" );
 				sv.Set( SECTION_WORKS, CreateKeyProject( i ), projectName );
 				sv.Set( SECTION_WORKS, CreateKeyModule( i ), name );
 			}
 			else if( CNrpInvention* invention = dynamic_cast< CNrpInvention* >( works_[ i ] ) )
 			{
-				NrpText name = invention->GetString(NAME);
+				NrpText name = (*invention)[NAME];
 				sv.Set( SECTION_WORKS, CreateKeyWork( i ), "invention" );
 				sv.Set( SECTION_WORKS, CreateKeyInvention( i ), name );
 			}
@@ -159,12 +159,12 @@ void IUser::Load( const NrpText& fileName )
 	assert( OpFileSystem::IsExist( fileName ) );
 
 	INrpConfig::Load( fileName );
-	assert( GetString( NAME ).size() > 0 );
+	assert( Param( NAME ).As<NrpText>().size() > 0 );
 
 	IniFile rv( fileName );
 	rv.Get( "knowledges", knowledges_ );
 
-	for( int k=0; k < GetValue<int>( WORKNUMBER ); k++ )
+	for( int k=0; k < (int)Param( WORKNUMBER ); k++ )
 	{
 		NrpText action = "";
 		NrpText workType = rv.Get( SECTION_WORKS, CreateKeyWork( k ), NrpText("") );
@@ -174,12 +174,12 @@ void IUser::Load( const NrpText& fileName )
 			{
 				NrpText projectName = rv.Get( SECTION_WORKS, CreateKeyProject( k ), NrpText("") );	
 				NrpText moduleName = rv.Get( SECTION_WORKS, CreateKeyModule( k ), NrpText("") );
-				action = NrpText( "autoscript:AddUserToGameProject(\"" ) + GetString( NAME ) + "\", \"" + projectName + "\", \"" + moduleName + "\")";
+				action = NrpText( "autoscript:AddUserToGameProject(\"" ) + Text( NAME ) + "\", \"" + projectName + "\", \"" + moduleName + "\")";
 			}
 			else if( workType.equals_ignore_case( "invention" ) )
 			{
 				NrpText inventionName = rv.Get( SECTION_WORKS, CreateKeyInvention( k ), NrpText("") );	
-				action = NrpText( "autoscript:AddUserToInvention(\"" ) + GetString( NAME ) + "\" , \"" + inventionName + "\")";	
+				action = NrpText( "autoscript:AddUserToInvention(\"" ) + Text( NAME ) + "\" , \"" + inventionName + "\")";	
 			}				
 			
 			CNrpScript::Instance().AddActionToTemporaryScript( AFTER_LOAD_SCRIPT, action );
@@ -214,7 +214,7 @@ void IUser::AddWork( IWorkingModule* module, bool toFront )
 {
 	assert( module != NULL );
 
-	if( GetWork( module->GetValue<NrpText>( NAME ) ) == NULL )
+	if( GetWork( module->Text( NAME ) ) == NULL )
 	{
 		if( toFront )
 			works_.insert( module, 0 );
@@ -224,7 +224,7 @@ void IUser::AddWork( IWorkingModule* module, bool toFront )
 		module->AddUser( this );
 	}
 
-	SetValue<int>( WORKNUMBER, works_.size() );
+	Param( WORKNUMBER ) = static_cast< int >( works_.size() );
 }
 
 void IUser::RemoveWork( IWorkingModule* techWork )
@@ -236,13 +236,13 @@ void IUser::RemoveWork( IWorkingModule* techWork )
 	for( u32 i=0; i < works_.size(); i++ )
 		if( works_[ i ] == techWork )
 		{
-			techWork->RemoveUser( GetString( NAME ) );
+			techWork->RemoveUser( Text( NAME ) );
 			works_.erase( i );
-			SetValue<int>( WORKNUMBER, works_.size() );
+			Param( WORKNUMBER ) = static_cast< int >( works_.size() );
 			return;
 		}
 		
-	NrpText text = NrpText( "Не могу найти компонент для удаления " ) + techWork->GetString( NAME );
+	NrpText text = NrpText( "Не могу найти компонент для удаления " ) + techWork->Text( NAME );
 	Log(HW) << text << term;
 }
 
@@ -255,7 +255,7 @@ IWorkingModule* IUser::GetWork( u32 index ) const
 IWorkingModule* IUser::GetWork( const NrpText& name ) const
 {
 	for( u32 i=0; i < works_.size(); i++ )
-		if( works_[ i ]->GetString( NAME ) == name )
+		if( (*works_[ i ])[ NAME ] == name )
 			return works_[ i ];
 
 	return NULL;
@@ -263,12 +263,13 @@ IWorkingModule* IUser::GetWork( const NrpText& name ) const
 
 void IUser::BeginNewHour( const SYSTEMTIME& time )
 {
-	if( time.wHour == 9 && GetString( USERSTATE ).equals_ignore_case( "readyToWork" ) )
+	if( time.wHour == 9 && Text( USERSTATE ).equals_ignore_case( "readyToWork" ) )
 	{
-		SetValue<NrpText>( USERSTATE, "work" );
+		Param( USERSTATE ) = NrpText( "work" );
 	}
 
-	if(	AddValue<int>( HANGRY, -15 ) < 30 )
+	Param( HANGRY ) -= 15;
+	if(	(int)Param( HANGRY ) < 30 )
 	{
 		SYSTEMTIME endTime = time;
 		endTime.wHour = 23;
@@ -277,15 +278,15 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 
 	if( time.wHour == 18 )
 	{
-		SetString( USERSTATE, "readyToWork" );
+		Param( USERSTATE ) = NrpText( "readyToWork" );
 	}
 
-	if( GetString( USERSTATE ).equals_ignore_case( "work" ) )
+	if( Text( USERSTATE ).equals_ignore_case( "work" ) )
 	{
 		if( works_.size() > 0 )
 		{
 			//закончили обработку компонента
-			if( works_[ 0 ]->GetValue<float>( READYWORKPERCENT ) >= 1 )
+			if( (*works_[ 0 ] )[ READYWORKPERCENT ] >= 1.f )
 				RemoveWork( works_[ 0 ] );
 			else
 				works_[ 0 ]->Update( this );			
@@ -293,24 +294,24 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 	}
 }
 
-int IUser::GetGenreExperience( int typen )
+int IUser::GetGenreExperience( GENRE_TYPE typen )
 {
 	KNOWLEDGE_MAP::Node* kIter = genreExperience_.find( typen );
 	return kIter != NULL ? kIter->getValue() : 0;
 }
 
-int IUser::GetGenrePreferences( int typen )
+int IUser::GetGenrePreferences( GENRE_TYPE typen )
 {
 	KNOWLEDGE_MAP::Node* kIter = genrePreferences_.find( typen );
 	return kIter != NULL ? kIter->getValue() : 0;
 }
 
-void IUser::SetGenreExperience( int typen, int valuel )
+void IUser::SetGenreExperience( GENRE_TYPE typen, int valuel )
 {
 	genreExperience_[ typen ] = valuel;
 }
 
-void IUser::SetGenrePreferences( int typen, int valuel )
+void IUser::SetGenrePreferences( GENRE_TYPE typen, int valuel )
 {
 	genrePreferences_[ typen ] = valuel;
 }
@@ -328,7 +329,7 @@ void IUser::RemoveOldModificators_( const SYSTEMTIME& time )
 
 void IUser::BeginNewDay( const SYSTEMTIME& time )
 {
-	SetValue<int>( HANGRY, 100 );
+	Param( HANGRY ) = 100;
 	RemoveOldModificators_( time );
 }
 
@@ -365,7 +366,7 @@ CNrpRelation* IUser::GetRelation( const NrpText& name )
 
 bool IUser::Equale( const NrpText& name )
 {
-	return GetString( NAME ) == name;
+	return Text( NAME ) == name;
 }
 
 NrpText IUser::ClassName()

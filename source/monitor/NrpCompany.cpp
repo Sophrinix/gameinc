@@ -38,8 +38,8 @@ CNrpCompany::CNrpCompany( const NrpText& name, IUser* ceo ) : INrpConfig( CLASS_
 {
 	_InitialyzeOptions();
 
-	SetString( NAME, name );
-	SetValue<PUser>( CEO, ceo );
+	Param( NAME ) = name;
+	Param( CEO ) = ceo;
 }
 
 CNrpCompany::CNrpCompany( const NrpText& fileName ) : INrpConfig( CLASS_NRPCOMPANY, fileName )
@@ -69,9 +69,9 @@ void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 	if( ptrEng != NULL )
 	{
 		_engines.push_back( ptrEng );
-		SetValue<int>( ENGINES_NUMBER, _engines.size() );
-		ptrEng->SetString( COMPANYNAME, this->GetString( NAME ) );
-		ptrEng->SetValue<PNrpCompany>( PARENTCOMPANY, this );
+		Param( ENGINES_NUMBER ) = static_cast< int >( _engines.size() );
+		(*ptrEng)[ COMPANYNAME ] = Text( NAME );
+		(*ptrEng)[ PARENTCOMPANY ] = this;
 	}
 }
 
@@ -95,20 +95,20 @@ void CNrpCompany::AddProject( INrpProject* ptrProject )
 	if( FindByNameAndIntName< PROJECTS, INrpProject >( _projects, NAME ) == NULL )
 	{
 		_projects.push_back( ptrProject );
-		SetValue<int>( PROJECTNUMBER, _projects.size() );
-		ptrProject->SetString( COMPANYNAME, this->GetString( NAME ) );
+		Param( PROJECTNUMBER ) = static_cast< int >( _projects.size() );
+		(*ptrProject)[ COMPANYNAME ] = Text( NAME );
 	}
 }
 
 void CNrpCompany::AddUser( IUser* user )
 {
 	assert( user );
-	if( user && !GetUser( user->GetValue<NrpText>( NAME ) ) )
+	if( user && !GetUser( user->Text( NAME ) ) )
 	{
 		_employers.push_back( user );
-		user->SetValue<int>( SALARY, user->GetValue<int>( WANTMONEY ) );
-		user->SetValue<PNrpCompany>( PARENTCOMPANY, this );
-		SetValue<int>( USERNUMBER, _employers.size() );
+		(*user)[ SALARY ] = (*user)[ WANTMONEY ];
+		(*user)[ PARENTCOMPANY ] = this;
+		Param( USERNUMBER ) = static_cast< int >( _employers.size() );
 	}
 }
 
@@ -128,7 +128,7 @@ NrpText CNrpCompany::Save( const NrpText& saveFolder )
 	//переданная директория должна существовать
 	assert( OpFileSystem::IsExist( saveFolder ) );
 
-	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder + GetString( NAME ) );
+	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder + Text( NAME ) );
 
 	//если нет директории в которую надо сохранять данные
 	OpFileSystem::CreateDirectory( localFolder );
@@ -157,7 +157,7 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 	IniFile rv( fileName );
 	CNrpApplication& app = CNrpApplication::Instance();
 
-	int maxCond = GetValue<int>( condition );
+	int maxCond = (int)Param( condition );
 	for( int i=0; i < maxCond; i++ )
 	{
 		NrpText type = rv.Get( section, CreateKeyType(i), NrpText() );
@@ -182,7 +182,7 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		}
 		else if( type == CNrpInvention::ClassName() )
 		{
-			AddInvention( app.GetInvention( rName, GetString( NAME ) ) );
+			AddInvention( app.GetInvention( rName, Text( NAME ) ) );
 		}
 		/*else if( type == INrpProject::ClassName() )
 		{
@@ -206,9 +206,9 @@ void CNrpCompany::Load( const NrpText& loadFolder )
 	NrpText loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + "company.ini";
 	INrpConfig::Load( loadFile );
 
-	PUser ceo = GetValue<PUser>( CEO );
+	PUser ceo = Param( CEO ).As<PUser>();
 	if( ceo )
-	    ceo->SetValue<PNrpCompany>( PARENTCOMPANY, this );
+	    (*ceo)[ PARENTCOMPANY ] = this;
 
 	_LoadArray( SECTION_ENGINES, loadFile, ENGINES_NUMBER );
 	_LoadArray( SECTION_USERS, loadFile, USERNUMBER );
@@ -220,7 +220,8 @@ void CNrpCompany::Load( const NrpText& loadFolder )
 
 	IniFile rv( loadFile );
 
-	for( int k=0; k < GetValue<int>( OBJECTSINPORTFELLE ); k++ )
+	int maxObj = (int)Param( OBJECTSINPORTFELLE );
+	for( int k=0; k < maxObj; k++ )
 	{
 		NrpText typeName = rv.Get( SECTION_PORTFELLE, CreateKeyType( k ), NrpText() );
 		NrpText prjName = rv.Get( SECTION_PORTFELLE, CreateKeyModule( k ), NrpText() );
@@ -267,7 +268,7 @@ void CNrpCompany::BeginNewDay( const SYSTEMTIME& time )
 			{
 				INrpDevelopProject* project = _devProjects[ i ];
 				const PNrpGame game = CreateGame(	(CNrpDevelopGame*)project );
-				RemoveDevelopProject( project->GetValue<NrpText>( NAME ) );
+				RemoveDevelopProject( (*project)[ NAME ] );
 				CNrpApplication::Instance().DoLuaFunctionsByType( APP_PROJECT_FINISHED, game );
 				break;
 			}
@@ -283,33 +284,33 @@ void CNrpCompany::_PaySalaries()
 	int workersSalary = 0;
 	for( size_t cnt=0; cnt < _employers.size(); cnt++ )
 	{
-		int salary = _employers[ cnt ]->GetValue<int>( SALARY );	
+		int salary = (*_employers[ cnt ])[ SALARY ];	
 		workersSalary += salary;
 
-		_employers[ cnt ]->AddValue<int>( BALANCE, salary );
+		(*_employers[ cnt ])[ BALANCE ] += salary;
 	}
-	AddValue<int>( BALANCE, workersSalary );
+	Param( BALANCE ) -= workersSalary;
 }
 
 void CNrpCompany::AddGame( CNrpGame* game )
 {
-	if( game && FindByNameAndIntName< GAMES, CNrpGame >( _games, game->GetString( NAME ) ) == NULL )
+	if( game && FindByNameAndIntName< GAMES, CNrpGame >( _games, (*game)[ NAME ] ) == NULL )
 	{
 		_games.push_back( game );
-		SetValue<int>( GAMENUMBER, _games.size() );
+		Param( GAMENUMBER ) = static_cast< int >( _games.size() );
 	}
 }
 
 CNrpGame* CNrpCompany::CreateGame( CNrpDevelopGame* devGame )
 {
 	CNrpGame* ptrGame = new CNrpGame( devGame, this );
-	ptrGame->SetValue<SYSTEMTIME>( STARTDATE, CNrpApplication::Instance().GetValue<SYSTEMTIME>( CURRENTTIME ) );
+	(*ptrGame)[ STARTDATE ] = CNrpApplication::Instance()[ CURRENTTIME ];
 	CNrpApplication::Instance().AddGame( ptrGame );
 	CNrpApplication::Instance().UpdateGameRatings( ptrGame, true );
 	RemoveFromPortfelle( devGame );
 
 	_games.push_back( ptrGame );
-	SetValue<int>( GAMENUMBER, _games.size() );
+	Param( GAMENUMBER ) = static_cast< int >( _games.size() );
 
 	return ptrGame;
 }
@@ -320,7 +321,7 @@ void CNrpCompany::RemoveProject( const NrpText& name )
 		if( _projects[ i ]->Equale( name ) )
 			_projects.erase( i );
 
-	SetValue<int>( PROJECTNUMBER, _projects.size() );
+	Param( PROJECTNUMBER ) = static_cast< int >( _projects.size() );
 }
 
 void CNrpCompany::BeginNewMonth( const SYSTEMTIME& time )
@@ -331,7 +332,7 @@ void CNrpCompany::BeginNewMonth( const SYSTEMTIME& time )
 void CNrpCompany::AddToPortfelle( INrpConfig* const ptrObject )
 {
 	_portfelle.push_back( ptrObject );
-	SetValue<int>( OBJECTSINPORTFELLE, _portfelle.size() );
+	Param( OBJECTSINPORTFELLE ) = static_cast< int >( _portfelle.size() );
 }
 
 INrpConfig* CNrpCompany::GetFromPortfelle( size_t index ) const
@@ -351,11 +352,11 @@ void CNrpCompany::AddDevelopProject( INrpDevelopProject* ptrDevProject )
 	if( ptrDevProject == NULL )
 		return;
 
-	if( FindByNameAndIntName< DEVPROJECTS, INrpDevelopProject >( _devProjects, ptrDevProject->GetString( NAME ) ) )
+	if( FindByNameAndIntName< DEVPROJECTS, INrpDevelopProject >( _devProjects, ptrDevProject->Text( NAME ) ) )
 		_devProjects.push_back( ptrDevProject );
 
-	SetValue<int>( DEVELOPPROJECTS_NUMBER, _devProjects.size() );
-	ptrDevProject->SetString( COMPANYNAME, GetString( NAME ) );
+	Param( DEVELOPPROJECTS_NUMBER ) == static_cast< int >( _devProjects.size() );
+	ptrDevProject->Param( COMPANYNAME ) = Text( NAME );
 }
 
 INrpDevelopProject* CNrpCompany::GetDevelopProject( const NrpText& name ) const
@@ -381,7 +382,7 @@ void CNrpCompany::RemoveDevelopProject( const NrpText& name )
 		if( _devProjects[ i ]->Equale( name ) )
 			_devProjects.erase( i );
 
-	SetValue<int>( DEVELOPPROJECTS_NUMBER, _devProjects.size() );
+	Param( DEVELOPPROJECTS_NUMBER ) = static_cast< int >( _devProjects.size() );
 	CNrpApplication::Instance().RemoveDevelopProject( name );
 }
 
@@ -391,26 +392,26 @@ void CNrpCompany::RemoveFromPortfelle( const INrpConfig* ptrObject )
 		if( _portfelle[ i ] == ptrObject )
 			_portfelle.erase( i );
 
-	SetValue<int>( OBJECTSINPORTFELLE, _portfelle.size() );
+	Param( OBJECTSINPORTFELLE ) = static_cast< int >( _portfelle.size() );
 }
 
 void CNrpCompany::AddInvention( CNrpInvention* const inv )
 {
 	assert( inv != NULL );
 
-	if( inv && FindByNameAndIntName<INVENTIONS, CNrpInvention>( _inventions, inv->GetString( NAME ) ) == NULL )
+	if( inv && FindByNameAndIntName<INVENTIONS, CNrpInvention>( _inventions, inv->Text( NAME ) ) == NULL )
 	{
 		_inventions.push_back( inv );
-		SetValue<int>( INVENTIONSNUMBER, _inventions.size() );
+		Param( INVENTIONSNUMBER ) = static_cast< int >( _inventions.size() );
 	}
 }
 
 void CNrpCompany::InventionReleased( const CNrpInvention* inv )
 {
-	NrpText name = static_cast< CNrpInvention >( *inv ).GetString( NAME );
+	NrpText name = static_cast< CNrpInvention >( *inv ).Text( NAME );
 	for( u32 p=0; p < _inventions.size(); p++ )
 	{
-		if( _inventions[ p ]->Equale( name, GetString( name ) ) )
+		if( _inventions[ p ]->Equale( name, Text( name ) ) )
 		{
 			//надо что-то делать с похожей технологией... либо развивать следующий уровень,
 			//либо прекращать разработки и переводить людей на другой проект с частичным
@@ -427,10 +428,10 @@ void CNrpCompany::InventionReleased( const CNrpInvention* inv )
 void CNrpCompany::AddTechnology( CNrpTechnology* tech )
 {
 	assert( tech );
-	if( tech && FindByNameAndIntName< TECHS, CNrpTechnology>( _technologies, tech->GetString( NAME ) )== NULL )
+	if( tech && FindByNameAndIntName< TECHS, CNrpTechnology>( _technologies, tech->Text( NAME ) )== NULL )
 	{
 		_technologies.push_back( tech );
-		SetValue<int>( TECHNUMBER, _technologies.size() );
+		Param( TECHNUMBER ) = static_cast< int >( _technologies.size() );
 	}
 }
 
@@ -460,9 +461,9 @@ void CNrpCompany::RemoveUser( const NrpText& name )
 			IUser* user = _employers[ i ];
 			_employers.erase( i );
 
-			user->SetValue<int>( WANTMONEY, static_cast< int >( user->GetValue<int>( SALARY ) * 1.5 ) );
-			user->SetValue<PNrpCompany>( PARENTCOMPANY, NULL );
-			SetValue<int>( USERNUMBER, _employers.size() );
+			user->Param( WANTMONEY ) = static_cast< int >( (int)user->Param( SALARY ) * 1.5f );
+			user->Param( PARENTCOMPANY ) = (CNrpCompany*)NULL;
+			Param( USERNUMBER ) =_employers.size();
 
 			break;
 		}
