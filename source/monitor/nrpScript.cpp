@@ -55,6 +55,7 @@
 #include "LuaRelation.h"
 #include "LuaPda.h"
 #include "LuaTab.h"
+#include "LuaPlatform.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
 
@@ -67,8 +68,8 @@ namespace nrp
 CLASS_NAME CLASS_NRPSCRIPT( "CNrpScript" );
 CNrpScript::CNrpScript() : INrpConfig( CLASS_NRPSCRIPT, CLASS_NRPSCRIPT ), vm_(0)
 {
-	Push<NrpText>( LOAD_FUNCTIONS_FILENAME, "" );
-	Push<bool>( SHOW_CALL_FUNCTION_NAME, true );
+	Add<NrpText>( LOAD_FUNCTIONS_FILENAME, "" );
+	Add<bool>( SHOW_CALL_FUNCTION_NAME, true );
 
 	// NULL если была ошибка аллокации памяти
 	if (!(vm_ = luaL_newstate()))
@@ -213,6 +214,7 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaTab >::Register( vm_ );
 	Luna< CLuaRelation >::Register( vm_ );
 	Luna< CLuaPda >::Register( vm_ );
+	Luna< CLuaPlatform >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()
@@ -269,9 +271,19 @@ void CNrpScript::DoFile( const NrpText& fileName )
 
 void CNrpScript::DoString( const NrpText& s )
 {
-	if (luaL_dostring(vm_, const_cast< NrpText& >( s ) ) != 0)
+	try
 	{
-		// Вытаскиваем сообщение об ошибке
+		if (luaL_dostring(vm_, const_cast< NrpText& >( s ).ToStr() ) != 0)
+		{
+			// Вытаскиваем сообщение об ошибке
+			NrpText errMsg = lua_tostring(vm_, -1);
+			// убрать из стека сообщение об ошибке
+			lua_pop(vm_, -1);
+			Log(SCRIPT, FATAL) << errMsg << term;
+		}
+	}
+	catch(...)
+	{
 		NrpText errMsg = lua_tostring(vm_, -1);
 		// убрать из стека сообщение об ошибке
 		lua_pop(vm_, -1);
@@ -327,9 +339,7 @@ void CNrpScript::AddActionToTemporaryScript( const NrpText& fileName, const NrpT
 	NrpText fn = NrpText("tmp/") + fileName + ".lua";
 	IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn, true );
 	file->write( action.ToWide(), action.size() );
-	
-	stringw endline = "\n";
-	file->write( endline.c_str(), endline.size() );
+	file->write( L"\n", 1 );
 	file->drop();		
 }
 

@@ -6,10 +6,10 @@ namespace nrp
 	
 INrpProject::INrpProject( const NrpText& className, const NrpText& systemName ) : INrpConfig( className, systemName )
 {
-	Push( NAME, systemName );
-	Push( INTERNAL_NAME, systemName );
-	Push( BALANCE, (int)0 );
-	Push( TECHTYPE, PT_UNKNOWN );
+	Add( NAME, systemName );
+	Add( INTERNAL_NAME, systemName );
+	Add( BALANCE, (int)0 );
+	Add( TECHTYPE, (int)PT_UNKNOWN );
 }
 
 INrpProject::~INrpProject(void)

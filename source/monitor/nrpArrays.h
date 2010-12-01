@@ -28,6 +28,7 @@ class CNrpRelation;
 class CNrpLoan;
 class CNrpReklameWork;
 class CNrpDiskMachine;
+class CNrpPlatform;
 
 typedef core::array< CNrpLoan* > LOANS;
 typedef core::array< CNrpGameEngine* > ENGINES;
@@ -48,6 +49,7 @@ typedef core::array< IUserAction* > USERACTIONS;
 typedef core::array< CNrpReklameWork* > REKLAMES;
 typedef core::array< CNrpDiskMachine* > DISKMACHINES;
 typedef core::array< IModificator* > MODIFICATORS;
+typedef core::array< CNrpPlatform* > PLATFORMS;
 
 typedef core::map< NrpText, CNrpRelation* > RELATION_MAP;
 typedef core::map< s32, s32 > REQUIRE_MAP;

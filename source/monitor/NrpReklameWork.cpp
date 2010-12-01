@@ -20,23 +20,23 @@ CNrpReklameWork::CNrpReklameWork( const NrpText& typeName,
 
 void CNrpReklameWork::InitializeOptions_()
 {
-	Push<int>( NUMBERDAY, 0 );
-	Push<int>( LEVEL, 0 );
-	Push<NrpText>( NAME, "" );
-	Push<NrpText>( TECHTYPE, "" );
-	Push<int>( DAYCOST, 0 );
-	Push<float>( QUALITY, 0 );
-	Push<float>( MAXQUALITY, 0 );
-	Push<NrpText>( GAMENAME, "" );
-	Push<bool>( FINISHED, false );
-	Push<NrpText>( TEXTURENORMAL, "" );
-	Push<int>( BALANCE, 0 );
-	Push<NrpText>( COMPANYNAME, "" );
-	Push<NrpText>( TYPEOBJECT, "" );
+	Add<int>( NUMBERDAY, 0 );
+	Add<int>( LEVEL, 0 );
+	Add<NrpText>( NAME, "" );
+	Add<NrpText>( TECHTYPE, "" );
+	Add<int>( DAYCOST, 0 );
+	Add<float>( QUALITY, 0 );
+	Add<float>( MAXQUALITY, 0 );
+	Add<NrpText>( GAMENAME, "" );
+	Add<bool>( FINISHED, false );
+	Add<NrpText>( TEXTURENORMAL, "" );
+	Add<int>( BALANCE, 0 );
+	Add<NrpText>( COMPANYNAME, "" );
+	Add<NrpText>( TYPEOBJECT, "" );
 
 	SYSTEMTIME rt;
 	memset( &rt, 0, sizeof( rt ) );
-	Push<SYSTEMTIME>( STARTDATE, rt );
+	Add<SYSTEMTIME>( STARTDATE, rt );
 }
 
 CNrpReklameWork::CNrpReklameWork( const CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )
@@ -74,7 +74,7 @@ void CNrpReklameWork::Load( const NrpText& fileName )
 
 void CNrpReklameWork::Update( const CNrpReklameWork* p )
 {
-	Param( NUMBERDAY ).As<int>() += (int)(*p)[ NUMBERDAY ];
+	Param( NUMBERDAY ) += (int)(*p)[ NUMBERDAY ];
 	Param( FINISHED ) = (int)Param( NUMBERDAY ) > 0;
 }
 
@@ -103,13 +103,13 @@ void CNrpReklameWork::BeginNewDay()
 		{	
 			//здесь надо учесть факторы конторы, которые могут влиять на
 			//повышение или понижение этого параметра
-			(*game)[ FAMOUS ].As<float>() += (float)Param( QUALITY );
+			(*game)[ FAMOUS ] += (float)Param( QUALITY );
 		}
 	}
 
 	Param( NUMBERDAY ) += (int)-1;
 	//AddValue<int>( BALANCE, GetValue<int>( DAYCOST ) );
-	Param( FINISHED ) = Param( NUMBERDAY ).As<int>() == 0;
+	Param( FINISHED ) = (int)Param( NUMBERDAY ) == 0;
 }
 
 NrpText CNrpReklameWork::Save( const NrpText& saveFolder )

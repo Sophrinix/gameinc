@@ -83,7 +83,7 @@ bool COpenGLDriver::changeRenderContext(const SExposedVideoData& videoData, CIrr
 bool COpenGLDriver::initDriver(irr::SIrrlichtCreationParameters params, CIrrDeviceWin32* device)
 {
 	// Create a window to test antialiasing support
-	const wchar_t* ClassName = __TEXT("GLCIrrDeviceWin32");
+	const char* ClassName = __TEXT("GLCIrrDeviceWin32");
 	HINSTANCE lhInstance = GetModuleHandle(0);
 
 	// Register Class

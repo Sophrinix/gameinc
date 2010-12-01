@@ -16,10 +16,10 @@ CLASS_NAME CLASS_VIDEOCONFIG( L"CNrpVideoConfig" );
 
 CNrpVideoConfig::CNrpVideoConfig() : INrpConfig( CLASS_VIDEOCONFIG, CLASS_VIDEOCONFIG) 
 {		
-	Push<dimension2du>( SCREEN_SIZE, dimension2du( 1024, 660 ) );//высота экрана
-	Push<bool>( FULLSCREEN, false );		//полноэкранный режим
-	Push<bool>( USE_SHADOWS, false );		//отображение теней
-	Push<bool>( VSYNC, false );	//вертикальная синх.
+	Add<dimension2du>( SCREEN_SIZE, dimension2du( 1024, 660 ) );//высота экрана
+	Add<bool>( FULLSCREEN, false );		//полноэкранный режим
+	Add<bool>( USE_SHADOWS, false );		//отображение теней
+	Add<bool>( VSYNC, false );	//вертикальная синх.
 
 	Load( "config/video.ini" );
 }

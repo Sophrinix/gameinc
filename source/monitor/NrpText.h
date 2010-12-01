@@ -73,6 +73,9 @@ public:
 	const wchar_t* ToWide() { return stringw::c_str(); }
 	const wchar_t* ToWide() const { return stringw::c_str(); }
 
+	static NrpText LuaString( const NrpText& luaVarName );
+	static float LuaNumber( const NrpText& luaVarName );
+
 private:
 	void _FromStr( const char* str );
 	const wchar_t* c_str() { return stringw::c_str(); }

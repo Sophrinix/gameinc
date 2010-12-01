@@ -41,7 +41,7 @@ void CNrpEngine::Run() //создание нерпы
 
 		while ( device_->run() )
 		{
-			device_->setWindowCaption( stringw( device_->getVideoDriver()->getFPS() ).c_str() );
+			device_->setWindowCaption( NrpText( device_->getVideoDriver()->getFPS() ).ToWide() );
 			try
 			{
 				switch( run_state_ )
@@ -145,14 +145,14 @@ bool CNrpEngine::InitVideo()
 }
 //////////////////////////////////////////////////////////////////////////
 
-void CNrpEngine::ActivateScene_( stringw name )
+void CNrpEngine::ActivateScene_( const NrpText& name )
 {
-	std::map< stringw, stringw >::iterator pIter = scenes_.begin();
+	std::map< NrpText, NrpText >::iterator pIter = scenes_.begin();
 
 	for(; pIter != scenes_.end(); pIter++ )
 		if( (*pIter).first == name )
 		{
-			CNrpScript::Instance().DoFile( (*pIter).second.c_str() );	
+			CNrpScript::Instance().DoFile( (*pIter).second.ToWide() );	
 			guienv_->getRootGUIElement()->addChild( console_ );
 			run_state_ = DRAW;
 			return;
@@ -289,7 +289,7 @@ irr::io::IFileSystem* CNrpEngine::GetFileSystem()
 	return device_->getFileSystem();
 }
 
-void CNrpEngine::AddScene( const stringw& name, const stringw& fileName )
+void CNrpEngine::AddScene( const NrpText& name, const NrpText& fileName )
 {
 	scenes_[ name ] = fileName;
 }

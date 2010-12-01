@@ -33,13 +33,13 @@ NrpText INrpDevelopProject::Save( const NrpText& amount )
 
 void INrpDevelopProject::InitializeOptions_()
 {
-	Push<NrpText>( COMPANYNAME, "" );
-	Push<int>( MODULE_NUMBER, 0 );
-	Push<float>( READYWORKPERCENT, 0 );
-	Push<bool>( PROJECTREADY, false );
-	Push<int>( TECHTYPE, 0 );
-	Push<NrpText>( TEXTURENORMAL, "" );
-	Push<float>( FAMOUS, 0.f );
+	Add<NrpText>( COMPANYNAME, "" );
+	Add<int>( MODULE_NUMBER, 0 );
+	Add<float>( READYWORKPERCENT, 0 );
+	Add<bool>( PROJECTREADY, false );
+	Add<int>( TECHTYPE, 0 );
+	Add<NrpText>( TEXTURENORMAL, "" );
+	Add<float>( FAMOUS, 0.f );
 }
 
 void INrpDevelopProject::SetDeveloper( IUser* user )

@@ -3,6 +3,8 @@
 
 namespace nrp
 {
+
+OPTION_NAME BASEDIR("basedir");
 class CNrpHtmlEngineConfig : public INrpConfig
 {
 private:

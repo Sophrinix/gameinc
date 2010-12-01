@@ -12,15 +12,17 @@ class CNrp2DPictureFlow : public IGUIListBox
 	class CNrpImageDescription
 	{
 	public:
-		core::recti rectangle;
+		core::recti rectangle, downRect;
 		core::rectf currentRect;
 		core::stringw name;
+		int blend;
 		void* object;
 
 		CNrpImageDescription()
 		{
 			texture_ = NULL;
 			downTexture_ = NULL;
+			blend = 0xff;
 		}
 
 		~CNrpImageDescription()
@@ -63,6 +65,8 @@ public:
 	u32 addItem( video::ITexture* texture, const wchar_t* text );
 	u32 addItem( const wchar_t* text);
 	u32 addItem( video::ITexture* texture, const wchar_t* text, void* object );
+	void setItemTexture( u32 index, video::ITexture* texture );
+	void setItemBlend( u32 index, int blend );
 	void removeItem(u32 index);
 
 	bool OnEvent(const SEvent& event);
@@ -107,6 +111,7 @@ private:
 	void _UpdatePositions();
 	core::recti _CorrectRect( video::ITexture* texture, const core::recti& rectangle );
 	void _DrawAny( video::ITexture* txs, const core::recti& rectabgle, video::SColor* colors );
+	core::recti _GetDownRect( const core::rectf& rectangle );
 	s32 _activeIndex;
 	s32 _lastTimeKey;
 	core::array< CNrpImageDescription* > _images;

@@ -96,7 +96,7 @@ struct Log
 
 	template<> Log& operator<< <NrpText>(NrpText t)
 	{
-		Text << t.ToWide();
+		Text << t.ToStr();
 		return *this;
 	}
 
@@ -129,7 +129,7 @@ struct Log
 	// Устройства(о), на который будет отправлено сообщение
 	int Device;
 	
-	std::wstringstream Text;
+	std::stringstream Text;
 
 	SYSTEMTIME createTime;			//время возникновения сообщения
 };

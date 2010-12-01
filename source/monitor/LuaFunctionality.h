@@ -37,7 +37,7 @@ public:
 	ILuaFunctionality(void) {};
 	virtual	~ILuaFunctionality(void) 
 	{
-		FunctionArray::Iterator& pIter = luaFunctions_.begin();
+		FunctionArray::Iterator pIter = luaFunctions_.begin();
 
 		if( pIter != luaFunctions_.end() )
 		{
@@ -79,7 +79,7 @@ public:
 	*/
 	virtual void RemoveLuaFunction( const int actionType, const nrp::NrpText& funcName ) 
 	{
-		FunctionArray::Iterator& pIter = FindLuaFunction( actionType, funcName );
+		FunctionArray::Iterator pIter = FindLuaFunction( actionType, funcName );
 
 		if( pIter != luaFunctions_.end() )
 		{

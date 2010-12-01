@@ -3,7 +3,6 @@
 #include <sstream>
 #include "IniFile.h"
 #include "NrpText.h"
-#include "NrpTranslate.h"
 
 namespace nrp
 {
@@ -188,7 +187,7 @@ void IniFile::Get( const NrpText& sectionName, REQUIRE_MAP& mapt )
 		NrpText name, valuel;
 		name = readLine.subString( 0, readLine.findFirst( L'=' ) );
 		valuel = readLine.subString( readLine.findFirst( L'=' ) + 1, 0xff );
-		int keey = static_cast< int >( translate::GetNumber( name ) );
+		int keey = static_cast< int >( NrpText::LuaNumber( name ) );
 		mapt[ keey ] = valuel.ToInt();
 
 		memcpy( buffer, buffer + wcslen(buffer) + 1, 32000 );  

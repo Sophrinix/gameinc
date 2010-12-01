@@ -297,7 +297,7 @@ bool LLMozLib::navigateTo( int browserWindowIdIn, const std::string uriIn )
 	if ( browserWindow )
 	{
 		return browserWindow->navigateTo( uriIn ) ? true : false;
-	};
+	}
 
 	return false;
 }

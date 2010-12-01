@@ -8,7 +8,7 @@
 #include "INrpObject.h"
 #include "nrptext.h"
 
-#define IF_OBJECT_NOT_NULL_THEN if( object_ == NULL ) DebugReport( __FILE__, __LINE__, "Access null object" ); else
+#define IF_OBJECT_NOT_NULL_THEN if( object_ == NULL ) DebugReport( __FILEW__, __LINE__, "Access null object" ); else
 
 #define LUNA_ILUAOBJECT_HEADER(class) LUNA_AUTONAME_FUNCTION(class,	SetObject),\
 									  LUNA_AUTONAME_FUNCTION(class, Self),\
@@ -37,29 +37,29 @@ protected:
 		return rectangle;
 	}
 
-	const char* _ErrStr( const char* str )
+	NrpText _ErrStr( const char* str )
 	{
-		return NrpText( ObjectTypeName() + NrpText( str ) ).ToStr();
+		return ObjectTypeName() + NrpText( str );
 	}
 
-	const char* _ErrEmptyObject()
+	NrpText _ErrEmptyObject()
 	{
-		return NrpText( NrpText( "Assign empty object in " ) + ObjectTypeName() ).ToStr();
+		return NrpText( "Assign empty object in " ) + ObjectTypeName();
 	}
 
-	const char* _ErrNotNeedParam() 
+	NrpText _ErrNotNeedParam() 
 	{ 
-		return NrpText( ObjectTypeName() + NrpText( ":Self not need any parameter" ) ).ToStr();
+		return ObjectTypeName() + NrpText( ":Self not need any parameter" );
 	}
 	
 public:
 	
-	ILuaObject(lua_State *L, const NrpText& ClassName) : INrpObject( ClassName, "" ) 
+	ILuaObject(lua_State *L, const NrpText& className) : INrpObject( className, "" ) 
 	{
 		object_ = (ObjectType*)lua_touserdata(L, 1);
 
 		if( object_ == NULL )
-			DebugReport( __FILE__, __LINE__, _ErrEmptyObject() );
+			DebugReport( __FILEW__, __LINE__, _ErrEmptyObject() );
 	}
 
 	virtual int SetObject(lua_State *L)
@@ -67,7 +67,7 @@ public:
 		object_ = (ObjectType*)lua_touserdata(L, 2);
 
 		if( object_ == NULL )
-			DebugReport( __FILE__, __LINE__, _ErrEmptyObject() );
+			DebugReport( __FILEW__, __LINE__, _ErrEmptyObject() );
 
 		return 1;
 	}
@@ -92,7 +92,7 @@ public:
 		return 1;
 	}
 
-	virtual int DebugReport( const NrpText& fileName, const int lineNumber, const NrpText& text )
+	virtual int DebugReport( const NrpText& fileName, int lineNumber, const NrpText& text )
 	{
 #ifdef _DEBUG
 		Log(HW) << fileName << ":" << lineNumber << " Error" << text;

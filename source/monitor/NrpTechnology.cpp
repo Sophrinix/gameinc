@@ -45,29 +45,28 @@ CNrpTechnology::CNrpTechnology( const CNrpTechnology& p ) : INrpProject( CLASS_T
 }
 void CNrpTechnology::_InitializeOptions()
 {
-	Push<NrpText>( NAME, "" );
-	Push<NrpText>( INTERNAL_NAME, "" );
-	Push<int>( TECHGROUP, 0 );
-	Push<GENRE_TYPE>( TECHTYPE, GT_UNKNOWN );
-	Push<float>( BASE_CODE, 0 );
-	Push<float>( ENGINE_CODE, 0 );
-	Push<int>( LEVEL, 0 );
-	Push<NrpText>( COMPANYNAME, "" );
-	Push<int>( QUALITY, 100 );
-	Push<PNrpCompany>( PARENTCOMPANY, NULL );
-	Push<NrpText>( PARENT, "" );
-	Push<NrpText>( BASEFILE, "" );
-	Push<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
-	Push<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
-	Push<float>( PRICE, 0 );
-	Push<NrpText>( TEXTURENORMAL, "" );
-	Push<NrpText>( TEXTUREHOVER, "" );
-	Push<NrpText>( DESCRIPTIONPATH, "" );
-	Push<float>( INTEREST, 1 );
-	Push<TECH_STATUS>( STATUS, TS_UNKNOWN );
+	Add<NrpText>( NAME, "" );
+	Add<NrpText>( INTERNAL_NAME, "" );
+	Add<int>( TECHGROUP, 0 );
+	Add<float>( BASE_CODE, 0 );
+	Add<float>( ENGINE_CODE, 0 );
+	Add<int>( LEVEL, 0 );
+	Add<NrpText>( COMPANYNAME, "" );
+	Add<int>( QUALITY, 100 );
+	Add<PNrpCompany>( PARENTCOMPANY, NULL );
+	Add<NrpText>( PARENT, "" );
+	Add<NrpText>( BASEFILE, "" );
+	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	Add<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
+	Add<float>( PRICE, 0 );
+	Add<NrpText>( TEXTURENORMAL, "" );
+	Add<NrpText>( TEXTUREHOVER, "" );
+	Add<NrpText>( DESCRIPTIONPATH, "" );
+	Add<float>( INTEREST, 1 );
+	Add<int>( STATUS, TS_UNKNOWN );
 
-	Push<int>( NEXTTECHNUMBER, 0 );
-	Push<PNrpTechnology>( REQUIRETECH, NULL );
+	Add<int>( NEXTTECHNUMBER, 0 );
+	Add<PNrpTechnology>( REQUIRETECH, NULL );
 }
 
 CNrpTechnology::~CNrpTechnology(void)
@@ -120,7 +119,7 @@ void CNrpTechnology::Load( const NrpText& fileName )
 	rv.Get( SECTION_REQUIRE_TECH, _techRequires );
 	rv.Get( SECTION_REQUIRE_SKILL, _skillRequires );
 
-	if( Param( STATUS ) == TS_READY )
+	if( Param( STATUS ) == (int)TS_READY )
 		rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, (int)Param( NEXTTECHNUMBER ), _futureTech );
 }
 

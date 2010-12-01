@@ -66,7 +66,7 @@ public:
 	irr::IrrlichtDevice* GetDevice();
 
 	HWND GetWindowHandle() { return windowHandle_; }
-	void AddScene( const stringw& name, const stringw& fileName );
+	void AddScene( const NrpText& name, const NrpText& fileName );
 
 	// by d.a, для управления объектами на сцене
 	irr::scene::INrpScene* GetCurrentScene() const;
@@ -79,7 +79,7 @@ private:
 	CNrpEngine& operator=(CNrpEngine&); // не реализован
 	
 	void CreateScreenShot_();
-	void ActivateScene_( stringw name );
+	void ActivateScene_( const NrpText& name );
 
 	irr::IrrlichtDevice* device_;											//устройство видео вывода 
 	irr::scene::INrpScene* currentScene_;
@@ -88,12 +88,11 @@ private:
 	bool engine_started_, terminated_;
 	HWND windowHandle_;
 	RUNNING_STATUS run_state_;
-	stringw next_scene_;
+	NrpText next_scene_;
 	irr::gui::IGUIEnvironment* guienv_;
 	irr::gui::CNrpConsole* console_;
 
-	std::map< stringw, nrp::INrpConfig* > config_;
-	std::map< stringw, stringw > scenes_;
+	std::map< NrpText, NrpText > scenes_;
 };
 
 #endif /* CNRP_APPLICATION_H_ */

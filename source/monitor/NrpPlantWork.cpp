@@ -24,41 +24,41 @@ CNrpPlantWork::~CNrpPlantWork(void)
 
 void CNrpPlantWork::_InitializeOptions()
 {
-	Push<NrpText>( NAME, "" );
-	Push<PNrpDiskMachine>( PRODUCETYPE, NULL );
-	Push<int>( NUMBERMACHINE, 0 );
-	Push<int>( NUMBERDAY, 0 );
-	Push<int>( DISKNUMBER, 0 );
-	Push<float>( DISKPRICE, 0 );
-	Push<int>( FINALPRICE, 0 );
-	Push<PNrpGame>( PARENT, NULL );
-	Push<NrpText>( COMPANYNAME, "" );
-	Push<NrpText>( GAMENAME, "" );
-	Push<NrpText>( DISKMACHINENAME, "" );
-	Push<int>( DISKINDAY, 0 );
-	Push<int>( LEFTPRODUCEDISK, 0 );
-	Push<int>( DAYCOST, 0 );
-	Push<bool>( FINISHED, false );
-	Push<int>( RENTPRICE, 0 );
+	Add<NrpText>( NAME, "" );
+	Add<PNrpDiskMachine>( PRODUCETYPE, NULL ); _self[ PRODUCETYPE ].AddNotification( "calc", this, &CNrpPlantWork::_CalcParams );
+	Add<int>( NUMBERMACHINE, 0 );			   _self[ NUMBERMACHINE ].AddNotification( "calc", this, &CNrpPlantWork::_CalcParams );
+	Add<int>( NUMBERDAY, 0 );				   _self[ NUMBERDAY ].AddNotification( "calc", this, &CNrpPlantWork::_CalcParams );
+	Add<int>( DISKNUMBER, 0 );
+	Add<float>( DISKPRICE, 0 );
+	Add<int>( FINALPRICE, 0 );
+	Add<PNrpGame>( PARENT, NULL );
+	Add<NrpText>( COMPANYNAME, "" );
+	Add<NrpText>( GAMENAME, "" );
+	Add<NrpText>( DISKMACHINENAME, "" );
+	Add<int>( DISKINDAY, 0 );
+	Add<int>( LEFTPRODUCEDISK, 0 );
+	Add<int>( DAYCOST, 0 );
+	Add<bool>( FINISHED, false );
+	Add<int>( RENTPRICE, 0 );
 }
 
 CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
 {
 	_InitializeOptions();
-	Param( NAME ) = p[ NAME ];
-	Param( PRODUCETYPE ) = p[ PRODUCETYPE ];
-	Param( NUMBERMACHINE ) = p[ NUMBERMACHINE ];
-	Param( NUMBERDAY ) = p[ NUMBERDAY ];
-	Param( DISKNUMBER ) =  p[ DISKNUMBER ];
-	Param( DISKPRICE ) = p[ DISKPRICE ];
-	Param( FINALPRICE ) = p[  FINALPRICE ];
-	Param( PARENT ) = p[ PARENT ];
-	Param( COMPANYNAME ) = p[ COMPANYNAME ];
-	Param( GAMENAME ) = p[ GAMENAME ];
-	Param( DISKMACHINENAME ) = p[ DISKMACHINENAME ];
-	Param( DISKINDAY ) = p[ DISKINDAY ];
-	Param( LEFTPRODUCEDISK ) = p[ LEFTPRODUCEDISK ];
-	Param( DAYCOST ) = p[ DAYCOST ];
+	_self[ NAME ] = p[ NAME ];
+	_self[ PRODUCETYPE ] = p[ PRODUCETYPE ];
+	_self[ NUMBERMACHINE ] = p[ NUMBERMACHINE ];
+	_self[ NUMBERDAY ] = p[ NUMBERDAY ];
+	_self[ DISKNUMBER ]=  p[ DISKNUMBER ];
+	_self[ DISKPRICE ] = p[ DISKPRICE ];
+	_self[ FINALPRICE ] = p[  FINALPRICE ];
+	_self[ PARENT ] = p[ PARENT ];
+	_self[ COMPANYNAME ] = p[ COMPANYNAME ];
+	_self[ GAMENAME ] = p[ GAMENAME ];
+	_self[ DISKMACHINENAME ] = p[ DISKMACHINENAME ];
+	_self[ DISKINDAY ] = p[ DISKINDAY ];
+	_self[ LEFTPRODUCEDISK ] = p[ LEFTPRODUCEDISK ];
+	_self[ DAYCOST ] = p[ DAYCOST ];
 }
 
 CNrpPlantWork::CNrpPlantWork( const NrpText& fileName, bool load ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
@@ -72,19 +72,17 @@ void CNrpPlantWork::Load( const NrpText& fileName )
 	INrpConfig::Load( fileName );
 	CNrpGame* pGame = CNrpApplication::Instance().GetGame( Text( GAMENAME ) );
 	assert( pGame != NULL );
-	SetValue<PNrpGame>( PARENT, pGame );
+	_self[ PARENT ] = pGame;
 
 	CNrpDiskMachine* dm = CNrpPlant::Instance().GetDiskMachine( Text( DISKMACHINENAME ) );
 	assert( dm != NULL );
-	SetValue<PNrpDiskMachine>( PRODUCETYPE, dm );
-
-	CalcParams_();
+	_self[ PRODUCETYPE ] = dm;
 }
 
-void CNrpPlantWork::CalcParams_()
+void CNrpPlantWork::_CalcParams( NParam& )
 {
-	CNrpGame* game = Param( PARENT ).As<CNrpGame*>();
-	PNrpDiskMachine dm = Param( PRODUCETYPE ).As<PNrpDiskMachine>();
+	CNrpGame* game = _self[ PARENT ].As<CNrpGame*>();
+	PNrpDiskMachine dm = _self[ PRODUCETYPE ].As<PNrpDiskMachine>();
 	assert( game && dm );
 	if( game && game->Param( GBOX ).As<PNrpGameBox>() && dm )
 	{	
@@ -92,10 +90,10 @@ void CNrpPlantWork::CalcParams_()
 		assert( game->Param( GBOX ).As<PNrpGameBox>() );
 		CNrpGameBox& box = *(game->Param( GBOX ).As<PNrpGameBox>());
 
-		int nDay = Param( NUMBERDAY );
-		int nM = Param( NUMBERMACHINE );
+		int nDay = _self[ NUMBERDAY ];
+		int nM = _self[ NUMBERMACHINE ];
 		int dskNum = (int)refDm[ DISKPERHOUR ] * 24 * nDay * nM;
-		INrpConfig::Param( DISKNUMBER ) = dskNum;
+		_self[ DISKNUMBER ] = dskNum;
 		int price = (int)refDm[ RENTPRICE ] * nM; //цена за размещение заказа
 		price += nM * (int)refDm[ PRICEPERHOUR ] * 24 * nDay; //стоимость работы 
 		price += (int)( dskNum * box.GetBoxAddonsPrice()); //стоимость дополнительных материалов
@@ -103,15 +101,15 @@ void CNrpPlantWork::CalcParams_()
 		priceInDay += static_cast<int>( (int)refDm[ DISKPERHOUR ] * 24 * box.GetBoxAddonsPrice() );//плата за покупку аддонов дл€ коробки
 			
 		float dskPrice = price / (float)dskNum;
-		INrpConfig::Param( NAME ) = (*game)[ NAME ];
-		INrpConfig::Param( DISKINDAY ) = (int)refDm[ DISKPERHOUR ] * 24;
-		INrpConfig::Param( DISKPRICE ) = dskPrice;
-		INrpConfig::Param( FINALPRICE ) = price;
-		INrpConfig::Param( DISKMACHINENAME ) = refDm[ NAME ]; 
-		INrpConfig::Param( GAMENAME ) = (*game)[ NAME ];
-		INrpConfig::Param( DAYCOST ) = priceInDay;
-		INrpConfig::Param( RENTPRICE ) = (int)refDm[ RENTPRICE ] * nM;
-		INrpConfig::Param( COMPANYNAME ) = (*game)[ PARENTCOMPANY ].As<PNrpCompany>()->Text( NAME );
+		_self[ NAME ] = (*game)[ NAME ];
+		_self[ DISKINDAY ] = (int)refDm[ DISKPERHOUR ] * 24;
+		_self[ DISKPRICE ] = dskPrice;
+		_self[ FINALPRICE ] = price;
+		_self[ DISKMACHINENAME ] = refDm[ NAME ]; 
+		_self[ GAMENAME ] = (*game)[ NAME ];
+		_self[ DAYCOST ] = priceInDay;
+		_self[ RENTPRICE ] = (int)refDm[ RENTPRICE ] * nM;
+		_self[ COMPANYNAME ] = (*game)[ PARENTCOMPANY ].As<PNrpCompany>()->Text( NAME );
 	}
 }
 
@@ -146,7 +144,7 @@ void CNrpPlantWork::BeginNewDay()
 
 			if( (int)Param( NUMBERDAY ) < (int)0 )
 			{
-				SetValue<bool>( FINISHED, true );
+				_self[ FINISHED ] = true;
 				Log(HW) << "«акончено производство коробок с игрой " << game->Text( NAME ) << term;
 			}
 		}

@@ -10,6 +10,7 @@
 #include "NrpTechnology.h"
 #include "NrpScreenshot.h"
 #include "NrpGameTime.h"
+#include "NrpPlatform.h"
 
 #include "LuaCompany.h"
 #include "LuaUser.h"
@@ -20,6 +21,7 @@
 #include "LuaGame.h"
 #include "OpFileSystem.h"
 #include "IniFile.h"
+#include "LuaPlatform.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -40,6 +42,9 @@ Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetBank ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlayerCompany ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatformNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatform ),
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadPlatform ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddLuaFunction ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveLuaFunction ),
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTechNumber ),
@@ -134,11 +139,11 @@ int CLuaApplication::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, 
 	{
 		if( rem ) object_->RemoveLuaFunction( typea, fName );
 		else object_->AddLuaFunction( typea, fName );
-	}
 
 #ifdef _DEBUG
-	Log(HW) << "Object:" << NrpText(rem ? "remove" : "added") << (int)object_ << fName << term;
+		Log(HW) << NrpText(rem ? "remove " : "added ") << "application:" << fName << term;
 #endif
+	}
 
 	return 1;
 }
@@ -461,7 +466,7 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 		{
 			if( CNrpTechnology* tech = applic.GetBoxAddon( k ) )
 			{
-				sv.Set( "prices", (*tech)[ NAME ], (*tech)[PRICE].As<float>() );
+				sv.Set( "prices", (*tech)[ NAME ], (float)(*tech)[PRICE] );
 			}
 		}
 	}
@@ -520,7 +525,7 @@ int CLuaApplication::LoadScreenshots( lua_State* L )
 	if( !imageListName.size() )
 		return 1;
 
-	IF_OBJECT_NOT_NULL_THEN object_->LoadScreenshots( imageListName );
+	IF_OBJECT_NOT_NULL_THEN object_->LoadScreenshot( imageListName );
 
 	return 1;		
 }
@@ -620,4 +625,52 @@ const char* CLuaApplication::ClassName()
 {
 	return ( CLASS_CLUAPPLICATION );
 }
+
+int CLuaApplication::GetPlatformNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, "GetPlatformNumber", PLATFORMNUMBER, 0 ) );
+	return 1;
+}
+
+int CLuaApplication::GetPlatform( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetPlatform need index parameter" );
+
+	int index = lua_tointeger( L, 2 );
+	CNrpPlatform* plt = NULL;
+	IF_OBJECT_NOT_NULL_THEN plt = object_->GetPlatform( index );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, plt );
+	Luna< CLuaPlatform >::constructor( L );
+
+	return 1;		
+}
+
+int CLuaApplication::LoadPlatform( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadPlatform need PathToFile parameter" );
+
+	NrpText pathTo = lua_tostring( L, 2 );
+
+	bool ret = false;
+	IF_OBJECT_NOT_NULL_THEN 
+	{	
+		IniFile r( pathTo );
+
+		NrpText plName = r.Get( SECTION_PROPERTIES, "internalname::string", NrpText("") );
+		if( !object_->GetPlatform( plName ) )
+		{
+			CNrpPlatform* plt = new CNrpPlatform( pathTo );
+			plt->Load( pathTo );
+			ret = object_->AddPlatform( plt );
+		}
+	}
+
+	lua_pushboolean( L, ret );
+	return 1;		
+}
+
 }//namespace nrp  

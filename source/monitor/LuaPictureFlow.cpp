@@ -26,6 +26,8 @@ Luna< CLuaPictureFlow >::RegType CLuaPictureFlow::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelectedItem ),
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetPictureRect ),
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetDrawBorder ),
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetItemTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetItemBlend ),
 	{0,0}
 };
 
@@ -45,7 +47,8 @@ int CLuaPictureFlow::AddItem( lua_State *L )	//добавляет текст в списко отображе
 		NrpText text( lua_tostring( L, 3 ) ); 
 		void* object = lua_touserdata( L, 4 );
 	
-		object_->addItem( texture, text.ToWide(), object );			
+		int ret = object_->addItem( texture, text.ToWide(), object );			
+		lua_pushinteger( L, ret );
 	}
 
 	return 1;
@@ -137,7 +140,7 @@ int CLuaPictureFlow::GetSelectedItem( lua_State* L )
 int CLuaPictureFlow::SetDrawBorder( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaPictureFlow::SetDrawBorder need int parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaPictureFlow::SetDrawBorder need boolean parameter");
 
 	bool drawBorder = lua_toboolean( L, 2 ) > 0;
 
@@ -149,5 +152,35 @@ int CLuaPictureFlow::SetDrawBorder( lua_State* L )
 const char* CLuaPictureFlow::ClassName()
 {
 	return ( CLASS_LUAPICTUREFLOW );
+}
+
+int CLuaPictureFlow::SetItemTexture( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaPictureFlow::SetItemTexture need index, pathToTexure parameter");
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int index = lua_tointeger( L, 2 );
+		NrpText texturePath = lua_tostring( L, 3 );
+		video::ITexture* texture = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturePath );
+
+		object_->setItemTexture( index, texture );			
+	}
+
+	return 1;
+}
+
+int CLuaPictureFlow::SetItemBlend( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaPictureFlow::SetItemBlend need int, int parameter");
+
+	int index = lua_tointeger( L, 2 );
+	int blend = lua_tointeger( L, 3 );
+
+	IF_OBJECT_NOT_NULL_THEN	object_->setItemBlend( index, blend );			
+
+	return 1;
 }
 }//namespace nrp

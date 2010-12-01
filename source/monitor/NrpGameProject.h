@@ -22,8 +22,6 @@ OPTION_NAME GRAPHICQUALITY( "graphicQuality" );
 OPTION_NAME VIDEOTECHNUMBER( "videoTechNumber" );
 OPTION_NAME SOUNDQUALITY( "soundQuality" );
 OPTION_NAME SOUNDTECHNUMBER( "soundTechNumber" );
-OPTION_NAME LANGNUMBER( "langNumber" );
-OPTION_NAME PLATFORMNUMBER( "platformNumber" );
 OPTION_NAME BASE_CODEVOLUME( "baseCodeVolume" );
 OPTION_NAME ENGINE_CODEVOLUME( "engineCodeVolume" );
 OPTION_NAME PROJECTSTATUS( "projectStatus" );
@@ -50,8 +48,14 @@ public:
 	bool IsTechInclude( ADV_TECH_TYPE typen );
 	void SetTechnology( CNrpTechnology* ptrTech, int index );
 	void SetVideoTech( CNrpTechnology* ptrTech, int index );
+	void SetPlatform( CNrpPlatform* platform, int index=-1 );
+	CNrpPlatform* GetPlatform( int index );
+	CNrpPlatform* GetPlatform( const NrpText& name );
 	CNrpTechnology* GetVideoTech( int index );
 	CNrpTechnology* GetTechnology( int index );
+	void SetLanguage( CNrpTechnology* ptrLang, int index=-1 );
+	CNrpTechnology* GetLanguage( int index );
+	CNrpTechnology* GetLanguage( const NrpText& name );
 	void SetSoundTech( CNrpTechnology* ptrTech, int index );
 	CNrpTechnology* GetSoundTech( int index );
 	NrpText Save( const NrpText& folderSave );
@@ -63,6 +67,8 @@ public:
 	const TECHS& GetGenreList() { return _genres; }
 	const TECHS& GetVideoTechList() { return _video; }
 	const TECHS& GetSoundTechList() { return _sound; }
+	const TECHS& GetLanguageTechList() { return _languages; }
+	const PLATFORMS& GetPlatformsList() { return _platforms; }
 
 	static NrpText ClassName();
 private:
@@ -71,6 +77,8 @@ private:
 	TECHS _technologies;
 	TECHS _genres;
 	TECHS _video;
+	PLATFORMS _platforms;
+	TECHS _languages;
 	TECHS _sound;
 
 	void _SetTech( CNrpTechnology* ptrTech, int index, TECHS& listd, OPTION_NAME optname );

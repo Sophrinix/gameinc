@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "HTMLEngine.h"
 #include "NrpBrowserWindow.h"
+#include "NrpHtmlEngineConfig.h"
 #include "nrpEngine.h"
 #include "nrpScript.h"
 
@@ -31,7 +32,7 @@ HTMLEngine::HTMLEngine()
 
 	irr::video::IVideoDriver *driver = CNrpEngine::Instance().GetVideoDriver();
 	//мозлибе для работы нужно знать, где хранятся конфииг веб-движка
-	NrpText profileBaseDir = NrpText(__argv[0]).subString(0, NrpText( __argv[0]).findLastChar( L"\\/", profileBaseDir.size() ));
+	NrpText profileBaseDir = CNrpHtmlEngineConfig::Instance()[ BASEDIR ];
 	HWND w = (HWND)driver->getExposedVideoData().OpenGLWin32.HWnd;
 	llmozlib_ = LLMozLib::getInstance();
 	//стартуем веб-движок

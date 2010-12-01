@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ConfigReader.h"
 #include <IReadFile.h>
+#include <memory>
 
 
 CConfigReader::CConfigReader()
@@ -58,14 +59,12 @@ bool CConfigReader::Load( io::IReadFile* file )
 
     int size = file->getSize();
 
-    char* buffer = new char[size+1];
+	std::auto_ptr< char > buffer( new char[size+1] );
 
-    file->read( buffer, size );
+    file->read( buffer.get(), size );
 
-    Text = buffer;
+    Text = buffer.get();
     TextPtr = Text.c_str();
-
-    delete [] buffer;
 
     return (Text != "");
 }

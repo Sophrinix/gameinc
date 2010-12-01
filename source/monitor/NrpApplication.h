@@ -79,16 +79,21 @@ public:
 	void AddProject( nrp::INrpProject* project );
 	INrpProject* GetProject( const NrpText& name );
 
-	int GetTechsNumber() { return technologies_.size(); }
+	int GetTechsNumber() { return _technologies.size(); }
 	CNrpTechnology* GetTechnology( int index );
 	CNrpTechnology* GetTechnology( const NrpText& name );
 
 	void AddTechnology( CNrpTechnology* ptrTech );
 	void RemoveTechnology( CNrpTechnology* ptrTech );
 
+	bool AddPlatform( CNrpPlatform* platform );
+	void RemovePlatform( const NrpText& name );
+	CNrpPlatform* GetPlatform( const NrpText& name );
+	CNrpPlatform* GetPlatform( int index );
+
 	void UpdateGameRatings( CNrpGame* ptrGame, bool firstTime=false );
 
-	CNrpTechnology* GetBoxAddon( size_t index ) { return index < boxAddons_.size() ? boxAddons_[ index ] : NULL; }
+	CNrpTechnology* GetBoxAddon( size_t index ) { return index < _boxAddons.size() ? _boxAddons[ index ] : NULL; }
 	CNrpTechnology* GetBoxAddon( const NrpText& name );
 	bool AddBoxAddon( CNrpTechnology* tech );
 
@@ -99,13 +104,15 @@ public:
 
 	NrpText GetFreeInternalName( CNrpGame* game );
 	CNrpScreenshot* GetScreenshot( const NrpText& name );
-	void LoadScreenshots( const NrpText& fileName );
+	void LoadScreenshot( const NrpText& fileName );
 	float GetGameGenreInterest( CNrpGame* game );
 
 	void AddInvention( const NrpText& startTech, CNrpCompany* parentCompany );
 	void InventionFinished( CNrpInvention* ptrInvention );
 	void InventionCanceled( CNrpInvention* ptrInvention );
 	CNrpInvention* GetInvention( const NrpText& name, const NrpText& companyName );
+	void Init();
+
 	static NrpText ClassName();
 private:
 	CNrpApplication(void);
@@ -113,24 +120,25 @@ private:
 
 	COMPANIES _companies;
 	SCREENSHOTS _screenshots;
-	USERS users_;
-	TECHS technologies_;					//хранит все технологии игрового мира
-	INVENTIONS inventions_;
-	TECHS boxAddons_;
-	GAMES games_;
-	RETAILERS retailers_;
-	ENGINES engines_;
+	USERS _users;
+	TECHS _technologies;					//хранит все технологии игрового мира
+	INVENTIONS _inventions;
+	TECHS _boxAddons;
+	GAMES _games;
+	PLATFORMS _platforms;
+	RETAILERS _retailers;
+	ENGINES _engines;
 	PROJECTS _projects;
 	DEVPROJECTS _devProjects;
 
 	void _BeginNewHour();
 	void _BeginNewDay();
 	void _BeginNewMonth();
-	IUser* CreateRandomUser_( NrpText userType );
-	void UpdateMarketGames_();
-	int GetFreePlatformNumberForGame_( CNrpGame* game );
-	int GetSalesNumber_( CNrpGame* game );
-	void UpdateInvention_();
+	IUser* _CreateRandomUser( NrpText userType );
+	void _UpdateMarketGames();
+	int _GetFreePlatformNumberForGame( CNrpGame* game );
+	int _GetSalesNumber( CNrpGame* game );
+	void _UpdateInvention();
 
 	void _LoadUsers( const NrpText& iniFile );
 	void _InitialyzeSaveDirectories( const NrpText& profileName );

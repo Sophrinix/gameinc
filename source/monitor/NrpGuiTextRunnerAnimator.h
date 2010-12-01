@@ -19,7 +19,7 @@ public:
 
 private:
 	size_t time_;
-	core::stringw _text;
+	NrpText _text;
 	size_t _currentPos;
 };
 

@@ -10,10 +10,10 @@ CLASS_NAME CLASS_WORLDCONFIG( L"CNrpWorldConfig" );
 
 CNrpWorldConfig::CNrpWorldConfig(void) : INrpConfig( CLASS_WORLDCONFIG, CLASS_WORLDCONFIG )
 {
-	Push<core::dimension2df>(WORLD_REAL_SIZE, core::dimension2df( 0, 0 ) );
-	Push<core::vector3df>( WORLD_MINEDGE, core::vector3df( 99999, 99999, 99999 ) );
-	Push<core::vector3df>( WORLD_MAXEDGE, core::vector3df( -99999, -99999, -99999 ) );
-	Push<float>( WORLD_WIDTH_COEFF, 1.f );
+	Add<core::dimension2df>(WORLD_REAL_SIZE, core::dimension2df( 0, 0 ) );
+	Add<core::vector3df>( WORLD_MINEDGE, core::vector3df( 99999, 99999, 99999 ) );
+	Add<core::vector3df>( WORLD_MAXEDGE, core::vector3df( -99999, -99999, -99999 ) );
+	Add<float>( WORLD_WIDTH_COEFF, 1.f );
 
 	Load( "config/world.ini" );
 }

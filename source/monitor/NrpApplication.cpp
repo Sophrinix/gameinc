@@ -25,6 +25,18 @@
 #include "NrpGameTime.h"
 #include "timeHelpers.h"
 #include "IniFile.h"
+#include "nrpScript.h"
+#include "NrpHtmlEngineConfig.h"
+#include "HTMLEngine.h"
+#include "NrpPluginEngine.h"
+#include "NrpApplication.h"
+#include "NrpBank.h"
+#include "nrpPlant.h"
+#include "OpFileSystem.h"
+#include "nrpVideoConfig.h"
+#include "nrpHUDConfig.h"
+#include "NrpConsoleConfig.h"
+#include "NrpPlatform.h"
 
 #include <io.h>
 #include <errno.h>
@@ -38,42 +50,43 @@ CLASS_NAME CLASS_NRPAPPLICATION( "CNrpApplication" );
 
 CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS_NRPAPPLICATION )
 {
-	Push<PNrpBank>( BANK, NULL );
-	Push<int>( TECHNUMBER, 0 );
-	Push<int>( USERNUMBER, 0 );
-	Push<int>( COMPANIESNUMBER, 0 );
+	Add<PNrpBank>( BANK, NULL );
+	Add( TECHNUMBER, (int)0 );
+	Add( USERNUMBER, (int)0 );
+	Add( COMPANIESNUMBER, (int)0 );
 
-	Push<NrpText>( WORKDIR, "" );
-	Push<NrpText>( SAVEDIR, "save/" );
-	Push<NrpText>( SAVEDIR_INVENTIONS, "" );
-	Push<NrpText>( SAVEDIR_COMPANIES, "" );
-	Push<NrpText>( SAVEDIR_DEVPR, "" );
-	Push<NrpText>( SAVEDIR_GAMES, "" );
-	Push<NrpText>( SAVEDIR_PROJECTS, "" );
-	Push<NrpText>( SAVEDIR_ENGINES, "" );
-	Push<NrpText>( SAVEDIR_USERS, "" );
-	Push<NrpText>( SAVEDIR_PLANT, "" );
-	Push<NrpText>( SAVEINI_PROFILE, "" );
-	Push<NrpText>( SAVEDIR_PROFILE, "" );
-	Push<NrpText>( SAVEDIR_TECHS, "" );
-	Push<NrpText>( SYSTEMINI, "config/system.ini" );
+	Add<NrpText>( WORKDIR, "" );
+	Add<NrpText>( SAVEDIR, "save/" );
+	Add<NrpText>( SAVEDIR_INVENTIONS, "" );
+	Add<NrpText>( SAVEDIR_COMPANIES, "" );
+	Add<NrpText>( SAVEDIR_DEVPR, "" );
+	Add<NrpText>( SAVEDIR_GAMES, "" );
+	Add<NrpText>( SAVEDIR_PROJECTS, "" );
+	Add<NrpText>( SAVEDIR_ENGINES, "" );
+	Add<NrpText>( SAVEDIR_USERS, "" );
+	Add<NrpText>( SAVEDIR_PLANT, "" );
+	Add<NrpText>( SAVEINI_PROFILE, "" );
+	Add<NrpText>( SAVEDIR_PROFILE, "" );
+	Add<NrpText>( SAVEDIR_TECHS, "" );
+	Add( SYSTEMINI, NrpText( "config/system.ini" ) );
+	Add( PLATFORMNUMBER, (int)0 );
 
 	IniFile rv( (NrpText)Param( SYSTEMINI ) );
-	Push<NrpText>( PROFILENAME, rv.Get( SECTION_OPTIONS, "currentProfile", NrpText( "dalerank" ) ) );
-	Push<NrpText>( PROFILECOMPANY, rv.Get( SECTION_OPTIONS, "currentCompany", NrpText( "daleteam" ) ) );
+	Add( PROFILENAME, rv.Get( SECTION_OPTIONS, "currentProfile", NrpText( "dalerank" ) ) );
+	Add( PROFILECOMPANY, rv.Get( SECTION_OPTIONS, "currentCompany", NrpText( "daleteam" ) ) );
 
-	Push<SYSTEMTIME>( CURRENTTIME, SYSTEMTIME() );
-	Push<int>( BOXADDONNUMBER, 0 );
-	Push<int>( GAMENUMBER, 0 );
-	Push<int>( ENGINES_NUMBER, 0 );
-	Push<int>( DEVELOPPROJECTS_NUMBER, 0 );
-	Push<int>( PROJECTNUMBER, 0 );
-	Push<PNrpCompany>( PLAYERCOMPANY, NULL );
-	Push<int>( INVENTIONSNUMBER, 0 );
-	Push<int>( MINIMUM_USER_SALARY, 250 );
-	Push<CNrpPda*>( PDA, new CNrpPda() );
-	Push<CNrpGameTime*>( GAME_TIME, new CNrpGameTime( this ) );
-	Push<int>( PAUSEBTWSTEP, 100 );
+	Add( CURRENTTIME, SYSTEMTIME() );
+	Add( BOXADDONNUMBER, (int)0 );
+	Add( GAMENUMBER, (int)0 );
+	Add( ENGINES_NUMBER, (int)0 );
+	Add( DEVELOPPROJECTS_NUMBER, 0 );
+	Add( PROJECTNUMBER, (int)0 );
+	Add<PNrpCompany>( PLAYERCOMPANY, NULL );
+	Add( INVENTIONSNUMBER, (int)0 );
+	Add( MINIMUM_USER_SALARY, (int)250 );
+	Add<CNrpPda*>( PDA, new CNrpPda() );
+	Add<CNrpGameTime*>( GAME_TIME, new CNrpGameTime( this ) );
+	Add( PAUSEBTWSTEP, 100 );
 
 	srand( GetTickCount() );
 }
@@ -104,7 +117,7 @@ int CNrpApplication::AddCompany( CNrpCompany* company )
 	{
 		_companies.push_back( company );
 
-		Param( COMPANIESNUMBER ) = _companies.size();
+		Param( COMPANIESNUMBER ) = static_cast< int >( _companies.size() );
 		PUser ceo = (*company)[ CEO ].As<PUser>();
 		
 		assert( ceo );
@@ -122,9 +135,9 @@ int CNrpApplication::AddUser( IUser* user )
 	assert( tmpUser == NULL );
 
 	if( user && tmpUser == NULL )
-		users_.push_back( user );
+		_users.push_back( user );
 
-	Param( USERNUMBER ) = static_cast< int >( users_.size() );
+	Param( USERNUMBER ) = static_cast< int >( _users.size() );
 	return 1;
 }
 
@@ -137,41 +150,42 @@ void CNrpApplication::AddProject( INrpProject* project )
 
 CNrpTechnology* CNrpApplication::GetTechnology( int index )
 {
-	return index < (int)technologies_.size() ?  technologies_[ index ] : NULL;
+	return index < (int)_technologies.size() ?  _technologies[ index ] : NULL;
 }
 
 CNrpTechnology* CNrpApplication::GetTechnology( const NrpText& name )
 {
-	return FindByNameAndIntName<TECHS, CNrpTechnology>( technologies_, name );
+	return FindByNameAndIntName<TECHS, CNrpTechnology>( _technologies, name );
 }
 
 void CNrpApplication::AddTechnology( CNrpTechnology* ptrTech )
 {
+	assert( ptrTech );
 	CNrpTechnology* tech = GetTechnology( (NrpText)ptrTech->Param( INTERNAL_NAME) );
 	if( !tech )
-		technologies_.push_back( ptrTech );
+		_technologies.push_back( ptrTech );
 
-	Param( TECHNUMBER ) = static_cast<int>( technologies_.size() );
+	Param( TECHNUMBER ) = static_cast<int>( _technologies.size() );
 }
 
 IUser* CNrpApplication::GetUser( u32 index )
 {
-	return index < users_.size() ? users_[ index ] : NULL;
+	return index < _users.size() ? _users[ index ] : NULL;
 }
 
 IUser* CNrpApplication::GetUser( const NrpText& name )
 {
-	return FindByNameAndIntName<USERS, IUser>( users_, name );
+	return FindByNameAndIntName<USERS, IUser>( _users, name );
 }
 
 int CNrpApplication::RemoveUser( IUser* user )
 {
-	for( u32 pos=0; pos < users_.size(); pos++ )
-		if( users_[ pos ] == user )
+	for( u32 pos=0; pos < _users.size(); pos++ )
+		if( _users[ pos ] == user )
 		{
-			delete users_[ pos ];
-			users_.erase( pos );
-			Param( USERNUMBER ) = static_cast< int >( users_.size() );
+			delete _users[ pos ];
+			_users.erase( pos );
+			Param( USERNUMBER ) = static_cast< int >( _users.size() );
 			return 0;
 		}
 
@@ -229,35 +243,35 @@ void CNrpApplication::Save()
 		sv.Set( SECTION_PROJECTS, CreateKeyProject(i), saveFile );
 	}
 
-	for( u32 i=0; i < users_.size(); i++ )
+	for( u32 i=0; i < _users.size(); i++ )
 	{
-		users_[ i ]->Save( Param( SAVEDIR_USERS ) );
-		sv.Set( SECTION_USERS, CreateKeyType(i),users_[ i ]->ObjectTypeName() );
-		sv.Set( SECTION_USERS, CreateKeyUser(i), (NrpText)users_[ i ]->Param( NAME ) );
+		_users[ i ]->Save( Param( SAVEDIR_USERS ) );
+		sv.Set( SECTION_USERS, CreateKeyType(i),_users[ i ]->ObjectTypeName() );
+		sv.Set( SECTION_USERS, CreateKeyUser(i), (NrpText)_users[ i ]->Param( NAME ) );
 	}
 
-	for( u32 i=0; i < technologies_.size(); i++ )
+	for( u32 i=0; i < _technologies.size(); i++ )
 	{
-		NrpText saveFile = technologies_[ i ]->Save( Param( SAVEDIR_TECHS ) );
+		NrpText saveFile = _technologies[ i ]->Save( Param( SAVEDIR_TECHS ) );
 		sv.Set( SECTION_TECHS, CreateKeyTech(i), saveFile );
 	}
 
-	for( u32 i=0; i < inventions_.size(); i++ )
+	for( u32 i=0; i < _inventions.size(); i++ )
 	{
-		NrpText inventSaveFile = inventions_[ i ]->Save( (NrpText)Param( SAVEDIR_INVENTIONS ) + 
-														 (NrpText)inventions_[ i ]->Param( COMPANYNAME ), true );
+		NrpText inventSaveFile = _inventions[ i ]->Save( (NrpText)Param( SAVEDIR_INVENTIONS ) + 
+														 (NrpText)_inventions[ i ]->Param( COMPANYNAME ), true );
 		sv.Set( SECTION_INVENTIONS, CreateKeyInvention( i ), inventSaveFile );
 	}
 
-	for( u32 i=0; i < engines_.size(); i++ )
+	for( u32 i=0; i < _engines.size(); i++ )
 	{
-		NrpText saveFolder = engines_[ i ]->Save( Param( SAVEDIR_ENGINES ) );
+		NrpText saveFolder = _engines[ i ]->Save( Param( SAVEDIR_ENGINES ) );
 		sv.Set( SECTION_ENGINES, CreateKeyEngine(i), saveFolder );
 	}
 
-	for( u32 i=0; i < games_.size(); i++ )
+	for( u32 i=0; i < _games.size(); i++ )
 	{
-		NrpText saveDir = games_[ i ]->Save( Param( SAVEDIR_GAMES ) );
+		NrpText saveDir = _games[ i ]->Save( Param( SAVEDIR_GAMES ) );
 		sv.Set( SECTION_GAMES, CreateKeyGame( i ), saveDir );
 	}
 }
@@ -324,13 +338,13 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 	{
 		NrpText fileName = rv.Get( SECTION_TECHS, CreateKeyTech(i), NrpText("") );
 		CNrpTechnology* tech = new CNrpTechnology( fileName ); //loading
-		technologies_.push_back( tech );
+		_technologies.push_back( tech );
 	}
 
 	for( int i=0; i < (int)Param( ENGINES_NUMBER ); i++ )
 	{
 		NrpText saveFolder = rv.Get( SECTION_ENGINES, CreateKeyEngine(i), NrpText("") );
-		engines_.push_back( new CNrpGameEngine( saveFolder, true ) );
+		_engines.push_back( new CNrpGameEngine( saveFolder, true ) );
 	}
 
 	for( int i=0; i < (int)Param( DEVELOPPROJECTS_NUMBER ); i++ )
@@ -367,16 +381,16 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 	{
 		NrpText fileName = rv.Get( SECTION_GAMES,  CreateKeyGame( i ), NrpText("") );
 		PNrpGame game = new CNrpGame( fileName );
-		games_.push_back( game );
+		_games.push_back( game );
 	}
 
 	for( int k=0; k < (int)Param( INVENTIONSNUMBER ); k++ )
 	{
 		NrpText saveFile = rv.Get( SECTION_INVENTIONS, CreateKeyInvention( k ), NrpText("") );
 		CNrpInvention* invention = new CNrpInvention( saveFile );
-		inventions_.push_back( invention );
+		_inventions.push_back( invention );
 	}
-	Param( INVENTIONSNUMBER ) = static_cast<int>( inventions_.size() );
+	Param( INVENTIONSNUMBER ) = static_cast<int>( _inventions.size() );
 
 	for( int k=0; k < (int)Param( COMPANIESNUMBER ); k++ )
 	{
@@ -384,12 +398,12 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 		CNrpCompany* cmp = new CNrpCompany( Param( SAVEDIR_COMPANIES ).As<NrpText>() + fileName );
 		AddCompany( cmp );
 	}
-	Param( GAMENUMBER ) = static_cast<int>( games_.size() );
+	Param( GAMENUMBER ) = static_cast<int>( _games.size() );
 
 	CNrpScript::Instance().TemporaryScript( AFTER_LOAD_SCRIPT, CNrpScript::SA_EXEC );
 }
 
-void CNrpApplication::LoadScreenshots( const NrpText& fileName )
+void CNrpApplication::LoadScreenshot( const NrpText& fileName )
 {
 	IniFile rv( fileName );
 	size_t imageListNumber = rv.Get( SECTION_OPTIONS, "screenshotNumber", (int)0 );
@@ -423,13 +437,13 @@ void ClearArray( T& arrayt )
 void CNrpApplication::ResetData()
 {
 	ClearArray( _companies );
-	ClearArray( users_ );
-	ClearArray( technologies_ );
+	ClearArray( _users );
+	ClearArray( _technologies );
 }
 
 CNrpGameEngine* CNrpApplication::GetGameEngine( const NrpText& name ) 
 {
-	return FindByNameAndIntName<ENGINES, CNrpGameEngine>( engines_, name );
+	return FindByNameAndIntName<ENGINES, CNrpGameEngine>( _engines, name );
 }
 
 void CNrpApplication::_BeginNewDay()
@@ -438,15 +452,15 @@ void CNrpApplication::_BeginNewDay()
 		 _companies[ i ]->BeginNewDay( Param( CURRENTTIME ) );
 
 	CNrpPlant::Instance().BeginNewDay();
-	UpdateMarketGames_();
-	UpdateInvention_();
+	_UpdateMarketGames();
+	_UpdateInvention();
 }
 
-void CNrpApplication::UpdateInvention_()
+void CNrpApplication::_UpdateInvention()
 {
-	for( u32 k=0; k < inventions_.size(); k++ )
+	for( u32 k=0; k < _inventions.size(); k++ )
 	{
-		CNrpInvention* pInv = inventions_[ k ];
+		CNrpInvention* pInv = _inventions[ k ];
 		assert( pInv );
 		pInv->CheckParams();
 
@@ -473,7 +487,7 @@ float GetConsumerAbility_( int price )
 	else return 30.f / price;
 }
 
-int CNrpApplication::GetFreePlatformNumberForGame_( CNrpGame* game )
+int CNrpApplication::_GetFreePlatformNumberForGame( CNrpGame* game )
 {
 	int yearRaznost = Param( CURRENTTIME ).As<SYSTEMTIME>().wYear - 1980;
 
@@ -484,7 +498,7 @@ int CNrpApplication::GetFreePlatformNumberForGame_( CNrpGame* game )
 	return summ * ((int)(*game)[ PLATFORMNUMBER ]);
 }
 
-int CNrpApplication::GetSalesNumber_( CNrpGame* game )
+int CNrpApplication::_GetSalesNumber( CNrpGame* game )
 {
 	CNrpCompany* cmp = game->Param( PARENTCOMPANY ).As<CNrpCompany*>();
 	assert( cmp );
@@ -492,13 +506,13 @@ int CNrpApplication::GetSalesNumber_( CNrpGame* game )
 		return 0;
 
 	//получим количество платформ на которых может быть продана игра
-	int freePlatformNumber = GetFreePlatformNumberForGame_( game );
+	int freePlatformNumber = _GetFreePlatformNumberForGame( game );
 	
 	//найдем количество игр этого жанра
 	float gamesInThisGenre = 1;
-	for( u32 i=0; i < games_.size(); i++ )
+	for( u32 i=0; i < _games.size(); i++ )
 	{
-		CNrpGame* tmpGame = games_[ i ];
+		CNrpGame* tmpGame = _games[ i ];
 		if( (game != tmpGame) && 
 			game->Param( GAMEISSALING ) &&
 			(tmpGame->GetGenreName( 0 ) == game->GetGenreName( 0 )) )
@@ -544,15 +558,15 @@ int CNrpApplication::GetSalesNumber_( CNrpGame* game )
 	return gameMaySaledToday;
 }
 
-void CNrpApplication::UpdateMarketGames_()
+void CNrpApplication::_UpdateMarketGames()
 {
-	for( u32 i=0; i < games_.size(); i++ )
+	for( u32 i=0; i < _games.size(); i++ )
 	{
-		CNrpGame* rGame = games_[ i ];
+		CNrpGame* rGame = _games[ i ];
 		if( !rGame->Param( GAMEISSALING ) )
 			continue;
 
-		rGame->GameBoxSaling( GetSalesNumber_( rGame ) );
+		rGame->GameBoxSaling( _GetSalesNumber( rGame ) );
 	}
 }
 
@@ -565,9 +579,9 @@ void CNrpApplication::CreateNewFreeUsers()
 	group[ "composer" ] = &composer;
 	group[ "tester" ] = &tester;
 	
-	for( u32 i=0; i < users_.size(); i++ )
+	for( u32 i=0; i < _users.size(); i++ )
 	{
-		IUser* user = users_[ i ];
+		IUser* user = _users[ i ];
 		NrpText typeName = user->ObjectTypeName();
 		if( user->Param( PARENTCOMPANY ).As<PNrpCompany>() != NULL )
 			continue;
@@ -588,18 +602,44 @@ void CNrpApplication::CreateNewFreeUsers()
 		tmpList.clear();
 
 		for( size_t cnt=tmpList.size(); cnt < USER_GROUP_COUNT; cnt++ )
-			tmpList.push_back( CreateRandomUser_( gIter->getKey() ) );
+			tmpList.push_back( _CreateRandomUser( gIter->getKey() ) );
 	}
 
 	gIter = group.getIterator();
 	for( ; !gIter.atEnd(); gIter++ )
 		for( u32 cnt=0; cnt < gIter->getValue()->size(); cnt++ )
-			users_.push_back( (*gIter->getValue())[ cnt ] );
+			_users.push_back( (*gIter->getValue())[ cnt ] );
 
-	if( Param( USERNUMBER ) != static_cast< int >( users_.size() ) )
+	if( Param( USERNUMBER ) != static_cast< int >( _users.size() ) )
 		DoLuaFunctionsByType<void>( APP_USER_MARKETUPDATE, NULL );
 
-	Param( USERNUMBER ) = static_cast< int >( users_.size() );
+	Param( USERNUMBER ) = static_cast< int >( _users.size() );
+}
+
+void CNrpApplication::Init()
+{
+#ifdef _DEBUG
+	Param( WORKDIR ) = OpFileSystem::UpDir( OpFileSystem::UpDir( __argv[ 0 ] ) );
+#else
+	Param( WORKDIR ) = OpFileSystem::UpDir( __argv[ 0 ] );
+#endif
+	Param( BANK ) = &CNrpBank::Instance();
+
+	plugin::CNrpPluginEngine::Instance();
+	//инициализация систем
+	CNrpHUDConfig::Instance();
+	CNrpVideoConfig::Instance();
+	CNrpConsoleConfig::Instance();
+	CNrpPlant::Instance();
+	CNrpScript::Instance();
+	CNrpHtmlEngineConfig& heConfig = CNrpHtmlEngineConfig::Instance();
+	heConfig[ BASEDIR ] = OpFileSystem::CheckEndSlash( Param( WORKDIR ) ) + (NrpText)heConfig[ BASEDIR ];
+
+	//ожидаем подгрузки видео
+	CNrpEngine::Instance().InitVideo();
+	CNrpEngine::Instance().InitConsole();
+
+	HTMLEngine::Instance();
 }
 
 CNrpApplication& nrp::CNrpApplication::Instance()
@@ -657,10 +697,10 @@ void CNrpApplication::UpdateGameRatings( CNrpGame* ptrGame, bool firstTime )
 		ptrGame->SetValue<int>( STARTADVFUNCRATING, GetGameRating_( ptrGame, GRT_ADVFUNC ) ); */
 }
 
-IUser* CNrpApplication::CreateRandomUser_( NrpText userType )
+IUser* CNrpApplication::_CreateRandomUser( NrpText userType )
 {
-	size_t randomParams = 1 + rand() % (GT_COUNT % 100);//сколько параметров будем создавать
-	size_t maxParamValue = 1 + rand() % 100;//максимальное значение параметров
+	int randomParams = 1 + rand() % (GT_COUNT % 100);//сколько параметров будем создавать
+	int maxParamValue = 1 + rand() % 100;//максимальное значение параметров
 
 	std::map< NrpText, int > skillMap;
 	skillMap[ "coder" ] = SKL_CODING;
@@ -711,9 +751,9 @@ void CNrpApplication::_BeginNewMonth()
 		_companies[ i ]->BeginNewMonth( Param( CURRENTTIME ));
 
 	//обновляем рейтинги игр
-	for( u32 i=0; i < games_.size(); i++ )
-		 if( games_[ i ]->Param( GAMEISSALING ) )
-			 UpdateGameRatings( games_[ i ] );
+	for( u32 i=0; i < _games.size(); i++ )
+		 if( _games[ i ]->Param( GAMEISSALING ) )
+			 UpdateGameRatings( _games[ i ] );
 }
 
 void CNrpApplication::_BeginNewHour()
@@ -726,8 +766,8 @@ bool CNrpApplication::AddBoxAddon( CNrpTechnology* tech )
 {
 	if( GetBoxAddon( (*tech)[ NAME ].As<NrpText>() ) == NULL  )
 	{
-		boxAddons_.push_back( tech );
-		Param( BOXADDONNUMBER ) = static_cast< int >( boxAddons_.size() );
+		_boxAddons.push_back( tech );
+		Param( BOXADDONNUMBER ) = static_cast< int >( _boxAddons.size() );
 		return true;
 	}
 
@@ -736,7 +776,7 @@ bool CNrpApplication::AddBoxAddon( CNrpTechnology* tech )
 
 CNrpTechnology* CNrpApplication::GetBoxAddon( const NrpText& name )
 {
-	return FindByNameAndIntName< TECHS, CNrpTechnology >( boxAddons_, name );
+	return FindByNameAndIntName< TECHS, CNrpTechnology >( _boxAddons, name );
 }
 
 void CNrpApplication::AddGameToMarket( CNrpGame* game )
@@ -759,8 +799,8 @@ void CNrpApplication::AddGameToMarket( CNrpGame* game )
 			(*tech)[ INTEREST ] = -(int)refGame[ STARTGAMERATING ] / 1000.f;
 	}
 
-	games_.push_back( game );
-	Param( GAMENUMBER ) = static_cast< int >( games_.size() );
+	_games.push_back( game );
+	Param( GAMENUMBER ) = static_cast< int >( _games.size() );
 }
 
 //интерес к жанру меняется в противоположную сторону на 10% от рейтинга игры
@@ -841,21 +881,21 @@ CNrpScreenshot* CNrpApplication::GetScreenshot( const NrpText& name )
 
 CNrpGame* CNrpApplication::GetGame( const NrpText& name )
 {
-	return FindByNameAndIntName< GAMES, CNrpGame >( games_, name );
+	return FindByNameAndIntName< GAMES, CNrpGame >( _games, name );
 }
 
 CNrpGame* CNrpApplication::GetGame( u32 index )
 {
-	assert( index < games_.size() );
-	return index < games_.size() ? games_[ index ] : NULL;
+	assert( index < _games.size() );
+	return index < _games.size() ? _games[ index ] : NULL;
 }
 
 void CNrpApplication::RemoveTechnology( CNrpTechnology* ptrTech )
 {
-	for( u32 i=0; i < technologies_.size(); i++ )
-		if( technologies_[ i ] == ptrTech )
+	for( u32 i=0; i < _technologies.size(); i++ )
+		if( _technologies[ i ] == ptrTech )
 		{
-			technologies_.erase( i );
+			_technologies.erase( i );
 			return;
 		}
 
@@ -866,8 +906,8 @@ void CNrpApplication::AddGameEngine( nrp::CNrpGameEngine* ptrEngine )
 {
 	if( GetGameEngine( ptrEngine->Param( INTERNAL_NAME ) ) == NULL )
 	{
-		engines_.push_back( ptrEngine );
-		Param( ENGINES_NUMBER ) = static_cast<int>( engines_.size() );
+		_engines.push_back( ptrEngine );
+		Param( ENGINES_NUMBER ) = static_cast<int>( _engines.size() );
 		return;
 	}
 
@@ -911,8 +951,8 @@ void CNrpApplication::RemoveDevelopProject( const NrpText& name )
 void CNrpApplication::AddGame( CNrpGame* ptrGame )
 {
 	assert( ptrGame != NULL );
-	games_.push_back( ptrGame );
-	Param( GAMENUMBER ) = static_cast< int >( games_.size() );
+	_games.push_back( ptrGame );
+	Param( GAMENUMBER ) = static_cast< int >( _games.size() );
 }
 
 void CNrpApplication::AddInvention( const NrpText& name, CNrpCompany* parentCompany )
@@ -925,8 +965,8 @@ void CNrpApplication::AddInvention( const NrpText& name, CNrpCompany* parentComp
 
 		CNrpInvention* inv = new CNrpInvention( startTech, parentCompany );
 		parentCompany->AddInvention( inv );	
-		inventions_.push_back( inv );  
-		Param( INVENTIONSNUMBER ) = static_cast< int >( inventions_.size() );
+		_inventions.push_back( inv );  
+		Param( INVENTIONSNUMBER ) = static_cast< int >( _inventions.size() );
 
 		delete startTech;
 	}
@@ -940,9 +980,9 @@ void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )
 	AddTechnology( tech );
 
 	int delPos = -1;
-	for( u32 i=0; i < inventions_.size(); i++ )
+	for( u32 i=0; i < _inventions.size(); i++ )
 	{
-		CNrpInvention* inv = inventions_[ i ];
+		CNrpInvention* inv = _inventions[ i ];
 		if( inv->Param( NAME ) == ptrInvention->Param( NAME ) )
 		{
 			CNrpCompany* pCmp = inv->Param( PARENTCOMPANY ).As<PNrpCompany>();
@@ -960,15 +1000,15 @@ void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )
 
 	DoLuaFunctionsByType( APP_INVENTION_FINISHED, tech );
 	
-	delete inventions_[ delPos ];
-	inventions_.erase( delPos );
+	delete _inventions[ delPos ];
+	_inventions.erase( delPos );
 }
 
 void CNrpApplication::InventionCanceled( CNrpInvention* ptrInvention )
 {
-	for( u32 i=0; i < inventions_.size(); i++ )
+	for( u32 i=0; i < _inventions.size(); i++ )
 	{
-		CNrpInvention* inv = inventions_[ i ];
+		CNrpInvention* inv = _inventions[ i ];
 		if( inv == ptrInvention )
 		{
 #ifdef _DEBUG
@@ -979,7 +1019,7 @@ void CNrpApplication::InventionCanceled( CNrpInvention* ptrInvention )
 			Log( HW ) << text << term;
 #endif
 			delete inv;
-			inventions_.erase( i );
+			_inventions.erase( i );
 			break;
 		}
 	}
@@ -987,9 +1027,9 @@ void CNrpApplication::InventionCanceled( CNrpInvention* ptrInvention )
 
 CNrpInvention* CNrpApplication::GetInvention( const NrpText& name, const NrpText& companyName )
 {
-	for( u32 i=0; i < inventions_.size(); i++ )
-		if( inventions_[ i ]->Equale( name, companyName ) )
-			return inventions_[ i ];
+	for( u32 i=0; i < _inventions.size(); i++ )
+		if( _inventions[ i ]->Equale( name, companyName ) )
+			return _inventions[ i ];
 
 	return NULL;
 }
@@ -998,4 +1038,28 @@ NrpText CNrpApplication::ClassName()
 {
 	return CLASS_NRPAPPLICATION;
 }
+
+CNrpPlatform* CNrpApplication::GetPlatform( const NrpText& name )
+{
+	return FindByNameAndIntName< PLATFORMS, CNrpPlatform >( _platforms, name );
+}
+
+CNrpPlatform* CNrpApplication::GetPlatform( int index )
+{
+	assert( index < _platforms.size() );
+	return index < _platforms.size() ? _platforms[ index ] : NULL;
+}
+
+bool CNrpApplication::AddPlatform( CNrpPlatform* platform )
+{
+	if( GetPlatform( (NrpText)(*platform)[ INTERNAL_NAME ] ) == NULL )
+	{
+		_platforms.push_back( platform );
+		_self[ PLATFORMNUMBER ] = static_cast< int >( _platforms.size() );
+		return true;
+	}
+
+	return false;
+}
+
 }//namespace nrp

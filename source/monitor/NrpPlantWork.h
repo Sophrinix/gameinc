@@ -14,7 +14,7 @@ OPTION_NAME LEFTPRODUCEDISK( "leftProduceDisk" );
 
 class CNrpPlantWork : public INrpConfig
 {
-	void CalcParams_();
+	void _CalcParams( NParam& );
 	void _InitializeOptions();
 
 public:
@@ -22,12 +22,6 @@ public:
 	CNrpPlantWork( const NrpText& fileName, bool load );
 	CNrpPlantWork( const CNrpPlantWork& p );
 	~CNrpPlantWork(void);
-
-	template< class R > void SetValue( NrpText name, R valuel )
-	{
-		INrpConfig::Param( name ) = valuel;
-		CalcParams_();
-	}
 
 	virtual NrpText Save( const NrpText& folder );
 	virtual void Load( const NrpText& fileName );

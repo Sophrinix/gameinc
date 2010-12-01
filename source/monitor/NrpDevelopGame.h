@@ -37,7 +37,10 @@ private:
 	void _InitializeOptions( const NrpText& name );
 	void ModuleFinished( CNrpProjectModule* module );
 	void _FindPlaformsAndLanguages();
-	void _AddModulesFrom( const TECHS& arrtech, int baseCode );
+
+	template< typename T, typename TARRAY >
+	void _AddModulesFrom( const TARRAY& arrtech, int baseCode );
+	
 	void _AddModulesFrom( const CNrpTechnology* tech, int baseCode );
 };
 

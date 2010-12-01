@@ -28,6 +28,8 @@ public:
 	int SetSelected( lua_State *L );
 	int SetPictureRect( lua_State* L );
 	int SetDrawBorder( lua_State* L );
+	int SetItemTexture( lua_State* L );
+	int SetItemBlend( lua_State* L );
 	int Clear( lua_State* L );
 };
 

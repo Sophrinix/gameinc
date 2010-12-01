@@ -4,7 +4,6 @@
 #include "IUser.h"
 #include "IniFile.h"
 #include "OpFileSystem.h"
-#include "NrpTranslate.h"
 #include "NrpApplication.h"
 #include "NrpTechnology.h"
 
@@ -60,7 +59,7 @@ CNrpConfigLooder::~CNrpConfigLooder(void)
 
 void CNrpConfigLooder::_WriteInt( const NParam* prop, const NrpText& key, IniFile* ini )
 {
-	ini->Set( SECTION_PROPERTIES, key + L":int", prop->As<int>() );
+	ini->Set( SECTION_PROPERTIES, key + L":int", (int)prop );
 }
 
 void CNrpConfigLooder::Save( const NrpText& fileName ) 
@@ -70,20 +69,20 @@ void CNrpConfigLooder::Save( const NrpText& fileName )
 
 	assert( OpFileSystem::IsExist( fileName ) );
 
-	INrpConfig::PARAMS::Iterator paIter = _config->_params.getIterator();
+	INrpConfig::PARAMS::iterator paIter = _config->_params.begin();
 
-	for( ; !paIter.atEnd(); paIter++)
+	for( ; paIter != _config->_params.end(); paIter++)
 	{
 		NrpText typesave = "";
-		NParam* prop = paIter->getValue();
+		NParam* prop = paIter->second;
 		assert( !prop->IsNull() );
 		
 		WRITERS_MAP::Node* wIter = _writers.find( prop->GetType() );
 
 		if( wIter )
-			_WriteUnknown( prop, paIter->getKey(), ini.get() );
+			_WriteUnknown( prop, paIter->first, ini.get() );
 		else
-			(this->*(wIter->getValue()))( prop, paIter->getKey(), ini.get() );
+			(this->*(wIter->getValue()))( prop, paIter->first, ini.get() );
 	}
 }
 
@@ -141,27 +140,27 @@ void CNrpConfigLooder::_InitWriters()
 
 void CNrpConfigLooder::_ReadInt( KeyPair* p )
 {
-	_config->Push<int>( p->GetName(), static_cast< int >( translate::GetNumber( p->GetValue() ) ) );	
+	_config->Add( p->GetName(), static_cast< int >( NrpText::LuaNumber( p->GetValue() ) ) );	
 }
 
 void CNrpConfigLooder::_ReadFloat( KeyPair* p )
 {
-	_config->Push<float>( p->GetName(), static_cast< float >( translate::GetNumber( p->GetValue() ) ) );	
+	_config->Add( p->GetName(), static_cast< float >( NrpText::LuaNumber( p->GetValue() ) ) );	
 }
 
 void CNrpConfigLooder::_ReadBool( KeyPair* p )
 {
-	_config->Push<bool>( p->GetName(), p->GetValue().ToBool() );
+	_config->Add( p->GetName(), p->GetValue().ToBool() );
 }
 
 void CNrpConfigLooder::_ReadString( KeyPair* p )
 {
-	_config->Push<NrpText>( p->GetName(), translate::GetTranslate( p->GetValue() ) );
+	_config->Add( p->GetName(), NrpText::LuaString( p->GetValue() ) );
 }
 
 void CNrpConfigLooder::_ReadTime( KeyPair* p )
 {
-	_config->Push<SYSTEMTIME>( p->GetName(), p->GetValue().ToTime() );
+	_config->Add( p->GetName(), p->GetValue().ToTime() );
 }
 
 void CNrpConfigLooder::_ReadUser( KeyPair* p )
@@ -169,7 +168,7 @@ void CNrpConfigLooder::_ReadUser( KeyPair* p )
 	IUser* user = CNrpApplication::Instance().GetUser( p->GetValue() );
 	assert( user != NULL );
 	if( user )
-		_config->Push<PUser>( p->GetName(), user );
+		_config->Add( p->GetName(), user );
 }
 
 void CNrpConfigLooder::_ReadTechnology( KeyPair* p )
@@ -177,7 +176,7 @@ void CNrpConfigLooder::_ReadTechnology( KeyPair* p )
 	PNrpTechnology tech = CNrpApplication::Instance().GetTechnology( p->GetValue() );
 	assert( tech != NULL );
 	if( tech )
-		_config->Push<PNrpTechnology>( p->GetName(), tech );
+		_config->Add( p->GetName(), tech );
 }
 
 void CNrpConfigLooder::_WriteUnknown( const NParam* prop, const NrpText& key, IniFile* ini )
@@ -227,7 +226,7 @@ void CNrpConfigLooder::_WriteString( const NParam* prop, const NrpText& key, Ini
 void CNrpConfigLooder::_WriteBool( const NParam* prop, const NrpText& key, 
 								   IniFile* ini )
 {
-	ini->Set( SECTION_PROPERTIES, key + L":bool", (bool)(*prop) );
+	ini->Set( SECTION_PROPERTIES, key + L":bool", prop->As<bool>() );
 }
 
 void CNrpConfigLooder::_ReadUnknown( KeyPair* p )
@@ -237,6 +236,6 @@ void CNrpConfigLooder::_ReadUnknown( KeyPair* p )
 
 void CNrpConfigLooder::_ReadDim2u( KeyPair* p )
 {
-	_config->Push<core::dimension2du>( p->GetName(), p->GetValue().ToDim2du() );
+	_config->Add<core::dimension2du>( p->GetName(), p->GetValue().ToDim2du() );
 }
 }//end namespace nrp

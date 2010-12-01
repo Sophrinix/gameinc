@@ -18,7 +18,6 @@
 #include "NrpPluginEngine.h"
 #include "NrpApplication.h"
 #include "NrpPlant.h"
-#include "NrpTranslate.h"
 #include "HTMLEngine.h"
 #include "LuaPlant.h"
 #include "LuaGuiEnvironment.h"
@@ -354,7 +353,7 @@ int ApplicationGetTranslate( lua_State* vm )
 
 	NrpText name = lua_tostring( vm, 1 );
 
-	const char* resultt = translate::GetTranslate( name );
+	const char* resultt = NrpText::LuaString( name );
 
 	lua_pushstring( vm, resultt );
 	return 1;

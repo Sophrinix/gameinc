@@ -7,17 +7,17 @@ CLASS_NAME CLASS_DISKMACHINE( "CNrpDiskMachine" );
 
 CNrpDiskMachine::CNrpDiskMachine(void) : INrpConfig( CLASS_DISKMACHINE, "" )
 {
-	Push<NrpText>( NAME, "" );
-	Push<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );	
-	Push<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
-	Push<int>( DISKPERHOUR, 0 );
-	Push<int>( PRICEPERHOUR, 0 );
-	Push<int>( RENTPRICE, 0 );
-	Push<NrpText>( TEXTURENORMAL, "" );
-	Push<float>( DISCOUNT, 0.f );
-	Push<float>( MAXDISCOUNT, 0.f );
-	Push<float>( REJECT, 0.f );
-	Push<float>( LINEDISCOUNT, 0.f );
+	Add<NrpText>( NAME, "" );
+	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );	
+	Add<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
+	Add<int>( DISKPERHOUR, 0 );
+	Add<int>( PRICEPERHOUR, 0 );
+	Add<int>( RENTPRICE, 0 );
+	Add<NrpText>( TEXTURENORMAL, "" );
+	Add<float>( DISCOUNT, 0.f );
+	Add<float>( MAXDISCOUNT, 0.f );
+	Add<float>( REJECT, 0.f );
+	Add<float>( LINEDISCOUNT, 0.f );
 }
 
 CNrpDiskMachine::~CNrpDiskMachine(void)
@@ -33,7 +33,7 @@ void CNrpDiskMachine::AddProducedDisk( const NrpText& companyName, int valuel )
 {
 	NrpText valueName = DISKPRODUCED + companyName;
 	if( !IsExist( valueName ) )
-		Push<int>( valueName, valuel );
+		Add<int>( valueName, valuel );
 	else
 		Param( valueName ) += valuel;
 }

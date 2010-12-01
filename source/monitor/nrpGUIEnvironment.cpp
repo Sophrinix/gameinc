@@ -31,8 +31,6 @@ namespace gui
 
 bool CNrpGUIEnvironment::CreateSkin_()
 {
-	video::IVideoDriver* driver = getVideoDriver();
-	
 	SImageGUISkinConfig guicfg;
 	CNrpImageSkinLoader::Load( getFileSystem(), 
 	 						   getVideoDriver(), 
@@ -98,8 +96,6 @@ CNrpGUIEnvironment::~CNrpGUIEnvironment()
 {
 	CImageGUISkin* adv_skin = reinterpret_cast< CImageGUISkin* >( _nativeEnv->getSkin() );
 	_nativeEnv->setSkin( adv_skin->GetNativeSkin() );
-
-	IGUIFont* fonggg =  _nativeEnv->getSkin()->getFont( gui::EGDF_TOOLTIP );
 
 	adv_skin->drop();
 	IGUISkin* old_skin = _nativeEnv->getSkin();

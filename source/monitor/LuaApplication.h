@@ -26,6 +26,12 @@ public:
 	int UpdateGameTime( lua_State* L );
 	int GetBank( lua_State* L );
 	int GetPlayerCompany( lua_State* L );
+
+	int GetPlatformNumber( lua_State* L );
+	int GetPlatform( lua_State* L );
+	int AddPlatform( lua_State* L );
+	int LoadPlatform( lua_State* L );
+
 	int RemoveLuaFunction( lua_State* L );
 	int AddLuaFunction( lua_State* L );
 	int GetTechNumber( lua_State* L );

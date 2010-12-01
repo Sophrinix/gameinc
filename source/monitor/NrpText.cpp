@@ -6,6 +6,7 @@
 #include <memory>
 #include <regex>
 #include <assert.h>
+#include "NrpTranslate.h"
 
 namespace nrp
 { 
@@ -179,7 +180,7 @@ vector3df NrpText::ToVector3df()
 {
 	irr::core::vector3df result( 0, 0, 0 );
 	int ret = swscanf_s( c_str(), L"%f,%f,%f", &result.X, &result.Y, &result.Z );
-	assert( ret = 3 );
+	assert( ret == 3 );
 	return result;
 }
 
@@ -195,7 +196,7 @@ dimension2di NrpText::ToDim2di()
 {
 	irr::core::dimension2di result( 0, 0 );
 	int ret = swscanf_s( c_str(), L"%d,%d", &result.Width, &result.Height );
-	assert( ret = 2 );
+	assert( ret == 2 );
 	return result;
 }
 
@@ -203,7 +204,7 @@ dimension2du NrpText::ToDim2du()
 {
 	irr::core::dimension2du result( 0, 0 );
 	int ret = swscanf_s( c_str(), L"%d,%d", &result.Width, &result.Height );
-	assert( ret = 2 );
+	assert( ret == 2 );
 	return result;
 }
 
@@ -307,5 +308,15 @@ bool NrpText::operator==( const NrpText& a ) const
 bool NrpText::operator==( const wchar_t* a ) const
 {
 	return stringw(*this) == stringw(a);
+}
+
+NrpText NrpText::LuaString( const NrpText& luaVarName )
+{
+	return NrpText( translate::LuaString( const_cast< NrpText& >( luaVarName ).ToStr() ) );
+}
+
+float NrpText::LuaNumber( const NrpText& luaVarName )
+{
+	return static_cast< float>( translate::LuaNumber( luaVarName ) );
 }
 } //namespace nrp

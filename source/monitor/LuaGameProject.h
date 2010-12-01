@@ -30,7 +30,13 @@ public:
 	int SetScenario( lua_State* L );
 	int GetLicense( lua_State* L );
 	int GetPlatformsNumber( lua_State* L );
+	int GetPlatform( lua_State* L );
+	int IsMyPlatform( lua_State* L );
+
 	int GetLanguagesNumber( lua_State* L );
+	int GetLanguage( lua_State* L );
+	int IsMyLanguage( lua_State* L );
+
 	int IsProjectReady( lua_State* L );
 	int HaveLicense( lua_State* L );
 	int HaveScenario( lua_State* L );
@@ -67,9 +73,9 @@ private:
 											   const NrpText& funcName, 
 											   void (T::*Method)( CNrpTechnology* tehc, int index) );
 
-	template< class T > int GetNumericalTech_( lua_State* L,
+	template< class B, class A, class T > int GetNumericalParam_( lua_State* L,
 											   const NrpText& funcName, 
-											   CNrpTechnology* (T::*Method)( int index) );
+											   A* (T::*Method)( int index) );
 
 	int _TechLuaInitialize( lua_State* L, const NrpText& funcName, OPTION_NAME& paramName );
 };

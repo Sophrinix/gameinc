@@ -21,7 +21,7 @@ typedef irr::core::map< int, int > REQUIRE_MAP;
 class IniFile
 {
 	NrpText _fileName;
-	IniFile( const IniFile& other ) {}
+	IniFile( const IniFile& ) {}
 	IniFile() {}
 public:			
 	IniFile( const NrpText& fileName ); 

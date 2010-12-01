@@ -4,7 +4,6 @@
 #include "NrpTechnology.h"
 #include "IUser.h"
 #include "NrpDevelopGame.h"
-#include "NrpTranslate.h"
 #include "NrpGame.h"
 
 using namespace nrp;
@@ -644,9 +643,9 @@ void CNrpComponentListbox::_DrawAsGame( INrpConfig* devGame, core::recti rectang
 	driver->draw2DRectangle( 0xff00ff00, famous, &clipRect );
 
 	NrpText name = refConf[NAME];
-	if( refConf[READYWORKPERCENT].As<float>() < 1 )
+	if( (float)refConf[READYWORKPERCENT] < 1.f )
 	{
-		name = translate::GetTranslate( "#STR_INDEVELOP" ) + name;
+		name = NrpText::LuaString( "#STR_INDEVELOP" ) + name;
 
 		//создадим прямоугольник для завершенности игры
 		core::recti finished = famous + core::position2di( 0, rectangle.getHeight() / 10 ) ;

@@ -1,28 +1,29 @@
 #include "stdafx.h"
 #include "nrpConfig.h"
-#include "NrpTranslate.h"
 #include "NrpConfigLooder.h"
 
 namespace nrp
 {
-
-bool CheckClassesType( const NrpText& type1, const NrpText& type2 )
+//Проверка совпадения типов
+bool CheckClassesType( const type_info& type1, const type_info& type2 )
 {
 	if( type1 != type2 ) 
 	{
-		Log(HW) << L"warning: request type " << type2 << L" but native typename is " << type1 << term;
+		Log(HW) << "warning: request type " << type2.name() << " but native typename is " << type1.name() << term;
 		return false;
 	}
 
 	return true;
 }
 
+//Загрузка параметров из файла
 void INrpConfig::Load( const NrpText& fileName )
 {
 	CNrpConfigLooder p( this );
 	p.Load( fileName );
 }
 
+//Созранение конфига в файл
 NrpText INrpConfig::Save( const NrpText& fileName )
 {
 	CNrpConfigLooder p( this );
@@ -30,55 +31,78 @@ NrpText INrpConfig::Save( const NrpText& fileName )
 	return fileName;
 }
 
+//Проверка существования параметра
 bool INrpConfig::IsExist(const NrpText& key) const 
 {
-	return _params.find( key ) != NULL;
+	return _params.find( key.ToLower() ) != _params.end();
 }
 
-unsigned INrpConfig::Pop(const NrpText& key) 
+//Удаление параметра из карты
+unsigned INrpConfig::Remove(const NrpText& key) 
 {
-	if( PARAMS::Node* node = _params.find( key ) )
+	PARAMS::iterator node = _params.find( key.ToLower() );
+	if( node != _params.end() )
 	{
-		node->getValue()->Reset();
-		_params.remove( key );
+		node->second->Reset();
+		_params.erase( node );
 	}
 
 	return 0;
 }
 
+//Получение доступа к параметру
 NParam& INrpConfig::operator[](OPTION_NAME& key) 
 {
-	if( PARAMS::Node* node = _params.find( key.ToLower() ) )
+	PARAMS::iterator node = _params.find( key.ToLower() );
+	if( node != _params.end() )
 	{
-		return *(node->getValue());
+		return *(node->second);
 	}
-	throw std::exception( "invalid key" );
+	NrpText err = NrpText( "invalid key" ) + NrpText( key );
+	Log(HW) << "error: " << key  << term;
+	throw std::exception( err );
 }
 
 const NParam& INrpConfig::operator[](OPTION_NAME& key) const
 {
-	if( PARAMS::Node* node = _params.find( key ) )
+	PARAMS::iterator node = _params.find( key.ToLower() );
+	if( node != _params.end() )
 	{
-		return (*node->getValue());
+		return *(node->second);
 	}
-	throw std::exception( "invalid key" );
+	NrpText err = NrpText( "invalid key" ) + NrpText( key );
+	Log(HW) << "error: " << key << term;
+	throw std::exception( err );
 }
 
+
+//
 NParam::NParam( const char* str )
 {
 	_value = std::auto_ptr< IParam >( new NProxyParam<NrpText>(str) );
 }
 
-NrpText NParam::GetType() const
-{
-	if( _value.get() ) 
-		return _value.get()->GetType();
-
-	return typeid(void).name();
-}
-
+//
 bool NParam::IsNull() const
 {
 	return _value.get() == NULL;
+}
+
+//Уведомление об изменении параметра
+void NParam::_CheckNotifications()
+{
+	for( NOTIFICATIONS::iterator pIter=_notifications.begin();
+		 pIter != _notifications.end(); 
+		 pIter++ )
+	{
+		try
+		{
+			pIter->second->Exec();
+		}
+		catch (...)
+		{
+			
+		}
+	}
 }
 }//end namespace nrp

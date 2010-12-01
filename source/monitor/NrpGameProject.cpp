@@ -9,6 +9,7 @@
 #include "NrpApplication.h"
 #include "OpFileSystem.h"
 #include "IniFile.h"
+#include "NrpPlatform.h"
 
 #include <errno.h>
 
@@ -49,7 +50,7 @@ void CNrpGameProject::SetGameEngine( CNrpGameEngine* gameEng )
 bool CNrpGameProject::IsGenreIncluded( GENRE_TYPE typen )
 {
 	for( u32 i=0; i < _genres.size(); i++)
-		if( _genres[ i ] && (*_genres[ i ])[TECHTYPE] == typen )
+		if( _genres[ i ] && (*_genres[ i ])[TECHTYPE] == (int)typen )
 			return true;
 
 	return false;
@@ -94,7 +95,7 @@ void CNrpGameProject::CalculateCodeVolume()
 	summ += platformSupCode;
 	
 	bool projectReady = Param( GAME_ENGINE ).As<PNrpGameEngine>() != NULL;
-	projectReady &= ( Param( SCENARIO ).As<PNrpScenario>() != NULL || Param( GLICENSE ).As<PNrpLicense>() != NULL );
+	projectReady &= ( Param( SCENARIO ).As<PNrpTechnology>() != NULL || Param( GLICENSE ).As<PNrpTechnology>() != NULL );
 	projectReady &= ( (int)Param( LANGNUMBER ) >0 && (int)Param( PLATFORMNUMBER ) > 0 );
 	projectReady &= ( GetGenre( 0 ) != NULL );
 	
@@ -112,10 +113,10 @@ void CNrpGameProject::SetGenre( CNrpTechnology* genre, int number )
 		_genres[ number ] = NULL;
 	else
 	{	
-		GENRE_TYPE techType = (*genre)[ TECHTYPE ].As<GENRE_TYPE>();
+		int techType = (*genre)[ TECHTYPE ];
 
-		if( Param( GAME_ENGINE ).As<PNrpGameEngine>()->IsGenreAvailble( techType ) &&
-			!IsGenreIncluded( techType ) )
+		if( Param( GAME_ENGINE ).As<PNrpGameEngine>()->IsGenreAvailble( GENRE_TYPE( techType ) ) &&
+			!IsGenreIncluded( GENRE_TYPE( techType ) ) )
 			_genres[ number ] = genre;
 	}
 
@@ -133,7 +134,7 @@ bool CNrpGameProject::IsTechInclude( ADV_TECH_TYPE typen )
 	_GetAllTech( rt );
 
 	for( u32 i=0; i < rt.size(); i++)
-		if( rt[ i ] && (*rt[ i ])[ TECHTYPE ] == typen )
+		if( rt[ i ] && (*rt[ i ])[ TECHTYPE ] == (int)typen )
 			return true;
 
 	return false;
@@ -142,7 +143,10 @@ bool CNrpGameProject::IsTechInclude( ADV_TECH_TYPE typen )
 void CNrpGameProject::_SetTech( CNrpTechnology* ptrTech, int index, TECHS& listd, OPTION_NAME optname )
 {
 	if( index >= (int)listd.size() )
-		listd.push_back( ptrTech );
+	{
+		if( ptrTech )
+			listd.push_back( ptrTech );
+	}
 	else
 	{
 		if( !ptrTech )
@@ -286,38 +290,38 @@ void CNrpGameProject::Load( const NrpText& loadFolder )
 
 void CNrpGameProject::_InitializeOptions( const NrpText& name )
 {
-	Param( TECHTYPE ) = PT_GAME;
+	Param( TECHTYPE ) = (int)PT_GAME;
 	Param( NAME ) = name;
-	Param( GAME_ENGINE ) = static_cast<PNrpGameEngine>( NULL );
-	Push<int>( GENRE_MODULE_NUMBER, 0 );
-	Push<PNrpGame>( PREV_GAME, NULL );
-	Push<int>( CODEVOLUME, 0 );
-	Push<int>( BASE_CODEVOLUME, 0 );
-	Push<PNrpScenario>( SCENARIO, NULL );
-	Push<PNrpLicense>( GLICENSE, NULL ); 
-	Push<PNrpTechnology>( SCRIPTENGINE, NULL );
-	Push<PNrpTechnology>( MINIGAMEENGINE, NULL );
-	Push<PNrpTechnology>( PHYSICSENGINE, NULL );
-	Push<PNrpTechnology>( GRAPHICQUALITY, NULL );
-	Push<int>( VIDEOTECHNUMBER, 0 );
-	Push<PNrpTechnology>( SOUNDQUALITY, NULL );
-	Push<int>( SOUNDTECHNUMBER, 0 );
-	Push<int>( LANGNUMBER, 0 );
-	Push<int>( PLATFORMNUMBER, 0 );
-	Push<int>( BASEQUALITY, 0 );
-	Push<int>( ADVTECHNUMBER, 0 );
-	Push<int>( ENGINE_CODEVOLUME, 0 );
-	Push<int>( QUALITY, 0 );
-	Push<NrpText>( COMPANYNAME, "" );
-	Push<PNrpCompany>( PARENTCOMPANY, NULL );
-	Push<int>( PLATFORMSUPPORTCODE, 0 );
-	Push<int>( LANGUAGESUPPORTCODE, 0 );
-	Push<PNrpTechnology>( ENGINEEXTENDED, NULL );
-	Push<PNrpTechnology>( LOCALIZATION, NULL );
-	Push<PNrpTechnology>( CROSSPLATFORMCODE, NULL ); 
-	Push<int>( MONEYONDEVELOP, 0 );
-	Push<bool>( PROJECTREADY, false );
-	Push<float>( FAMOUS, 0 );
+	Add( GAME_ENGINE, static_cast<PNrpGameEngine>( NULL ) );
+	Add( GENRE_MODULE_NUMBER, (int)0 );
+	Add( PREV_GAME, (PNrpGame)NULL );
+	Add( CODEVOLUME, (int)0 );
+	Add( BASE_CODEVOLUME, (int)0 );
+	Add<PNrpTechnology>( SCENARIO, NULL );
+	Add<PNrpTechnology>( GLICENSE, NULL ); 
+	Add<PNrpTechnology>( SCRIPTENGINE, NULL );
+	Add<PNrpTechnology>( MINIGAMEENGINE, NULL );
+	Add<PNrpTechnology>( PHYSICSENGINE, NULL );
+	Add<PNrpTechnology>( GRAPHICQUALITY, NULL );
+	Add( VIDEOTECHNUMBER, 0 );
+	Add<PNrpTechnology>( SOUNDQUALITY, NULL );
+	Add( SOUNDTECHNUMBER, 0 );
+	Add( LANGNUMBER, 0 );
+	Add( PLATFORMNUMBER, 0 );
+	Add( BASEQUALITY, 0 );
+	Add( ADVTECHNUMBER, 0 );
+	Add( ENGINE_CODEVOLUME, 0 );
+	Add( QUALITY, 0 );
+	Add<NrpText>( COMPANYNAME, "" );
+	Add<PNrpCompany>( PARENTCOMPANY, NULL );
+	Add<int>( PLATFORMSUPPORTCODE, 0 );
+	Add<int>( LANGUAGESUPPORTCODE, 0 );
+	Add<PNrpTechnology>( ENGINEEXTENDED, NULL );
+	Add<PNrpTechnology>( LOCALIZATION, NULL );
+	Add<PNrpTechnology>( CROSSPLATFORMCODE, NULL ); 
+	Add( MONEYONDEVELOP, (int)0 );
+	Add( PROJECTREADY, false );
+	Add( FAMOUS, 0.f );
 }
 
 void CNrpGameProject::_GetAllTech( TECHS& techList )
@@ -342,4 +346,44 @@ NrpText CNrpGameProject::ClassName()
 	return CLASS_GAMEPROJECT;
 }
 
-}//namespace nrp
+CNrpPlatform* CNrpGameProject::GetPlatform( int index )
+{
+	assert( index < _platforms.size() );
+	return index < _platforms.size() ? _platforms[ index ] : NULL; 
+}
+
+CNrpPlatform* CNrpGameProject::GetPlatform( const NrpText& name )
+{
+	return FindByNameAndIntName<PLATFORMS, CNrpPlatform>( _platforms, name );
+}
+
+void CNrpGameProject::SetPlatform( CNrpPlatform* platform, int index/*=-1 */ )
+{
+	if( FindByNameAndIntName<PLATFORMS, CNrpPlatform>( _platforms, (*platform)[ INTERNAL_NAME ] ) == NULL )
+	{
+		_platforms.push_back( platform );
+		Param( PLATFORMNUMBER ) = static_cast< int >( _platforms.size() );
+	}
+}
+
+void CNrpGameProject::SetLanguage( CNrpTechnology* language, int index/*=-1 */ )
+{
+	if( FindByNameAndIntName<TECHS, CNrpTechnology>( _languages, (*language)[ INTERNAL_NAME ] ) == NULL )
+	{
+		_languages.push_back( language );
+		Param( LANGNUMBER ) = static_cast< int >( _languages.size() );
+	}
+}
+
+CNrpTechnology* CNrpGameProject::GetLanguage( int index )
+{
+	assert( index < _languages.size() );
+	return index < _languages.size() ? _languages[ index ] : NULL;
+}
+
+CNrpTechnology* CNrpGameProject::GetLanguage( const NrpText& name )
+{
+	return FindByNameAndIntName<TECHS, CNrpTechnology>( _languages, name );
+}
+
+}//end namespace nrp

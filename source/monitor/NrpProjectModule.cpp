@@ -3,6 +3,7 @@
 #include "IUser.h"
 #include "INrpDevelopProject.h"
 #include "OpFileSystem.h"
+#include "NrpPlatform.h"
 #include "IniFile.h"
 
 #include <assert.h>
@@ -41,8 +42,28 @@ CNrpProjectModule::CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject* pPr
 }
 
 CNrpProjectModule::CNrpProjectModule() : IWorkingModule( PROJECT_TYPE(0), CLASS_PROJECTMODULE )
-{
+{}
 
+CNrpProjectModule::CNrpProjectModule( CNrpPlatform* platform, INrpProject* project )
+: IWorkingModule( (*platform)[ TECHGROUP ].As<PROJECT_TYPE>(), CLASS_PROJECTMODULE )
+{
+	InitializeOptions_();
+
+	CNrpPlatform& refPl = *platform;
+	Param( NAME ) = NrpText::LuaString( "#PLATFORM_PORTING" ) + (NrpText)refPl[ NAME ];
+	Param( TECHGROUP ) = refPl[ TECHGROUP ];
+	Param( TECHTYPE ) = refPl[ TECHTYPE ];
+	Param( BASE_CODE ) = refPl[ BASE_CODE ];
+	Param( ENGINE_CODE ) = refPl[ ENGINE_CODE ];
+	Param( INTERNAL_NAME ) = refPl[ INTERNAL_NAME ];
+	Param( TEXTURENORMAL ) = refPl[ TEXTURENORMAL ];
+	Param( LEVEL ) = refPl[ LEVEL ];
+	Param( PARENT ) = project;
+	Param( QUALITY ) = refPl[ QUALITY ];
+
+	const TECHS& techs = platform->GetTechsList();
+	for( s32 i=0; i < techs.size(); i++ )
+		 _techRequires[ (int)(*techs[ i ])[  TECHTYPE ] ] = 100;
 }
 
 CNrpProjectModule::~CNrpProjectModule(void)
@@ -53,25 +74,25 @@ void CNrpProjectModule::InitializeOptions_()
 {
 	CNrpTechnology::_InitializeOptions();
 
-	Push<IUser*>( LASTWORKER, NULL );
-	Push<IUser*>( COMPONENTLIDER, NULL );
-	Push<int>( CODEVOLUME, 0 );
-	Push<int>( CODEPASSED, 0 );
-	Push<int>( ERRORNUMBER, 0 );
-	Push<int>( USERNUMBER, 0 );
-	Pop( PARENT );
-	Push<INrpDevelopProject*>( PARENT, NULL );
+	Add<IUser*>( LASTWORKER, NULL );
+	Add<IUser*>( COMPONENTLIDER, NULL );
+	Add<int>( CODEVOLUME, 0 );
+	Add<int>( CODEPASSED, 0 );
+	Add<int>( ERRORNUMBER, 0 );
+	Add<int>( USERNUMBER, 0 );
+	Remove( PARENT );
+	Add<INrpDevelopProject*>( PARENT, NULL );
 }
 
 int CNrpProjectModule::AddUser( IUser* ptrUser )
 {
-	if( Param( READYWORKPERCENT ).As<float>() < 1.f )
+	if( (float)Param( READYWORKPERCENT ) < 1.f )
 	{
 		_users.push_back( ptrUser );
 		Param( USERNUMBER ) = static_cast< int >( _users.size() );
 	}
 
-	return ( Param( READYWORKPERCENT ).As<int>() < 1.f);
+	return ( (float)Param( READYWORKPERCENT ) < 1.f);
 }
 
 void CNrpProjectModule::Update( IUser* ptrUser )
@@ -79,7 +100,7 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 	INrpDevelopProject* parent = Param( PARENT ).As<INrpDevelopProject*>();
 	assert( parent != NULL );
 
-	if( Param( CODEPASSED ).As<int>() < Param( CODEVOLUME).As<int>() )
+	if( Param( CODEPASSED ) < Param( CODEVOLUME) )
 	{
 		int reqSkill = 0;
 		REQUIRE_MAP::Iterator sIter = _skillRequires.getIterator();
@@ -103,15 +124,15 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 			genrePref = 0.1f;
 
 
-		int codePassed = Param( CODEPASSED ).As<int>() + (int)(reqSkill * (genrePref + genreSkill));
-		if( Param( CODEVOLUME ).As<int>() <= codePassed )
+		int codePassed = (int)Param( CODEPASSED ) + static_cast< int >(reqSkill * (genrePref + genreSkill));
+		if( (int)Param( CODEVOLUME ) <= codePassed )
 			codePassed = Param( CODEVOLUME);
 
 		Param( CODEPASSED ) = codePassed;
-		Param( READYWORKPERCENT ) = codePassed / static_cast< float >( Param( CODEVOLUME ).As<int>() );
+		Param( READYWORKPERCENT ) = codePassed / static_cast< float >( (int)Param( CODEVOLUME ) );
 		int quality = Param( QUALITY );
-		Param( QUALITY ) = static_cast< int >( quality + (*ptrUser)[ CODE_QUALITY ].As<int>() / 2 );
-		Param( MONEYONDEVELOP ) += static_cast< int >( (*ptrUser)[ SALARY ].As<int>() / (20*9) );
+		Param( QUALITY ) = static_cast< int >( quality + (int)(*ptrUser)[ CODE_QUALITY ] / 2 );
+		Param( MONEYONDEVELOP ) += (int)(*ptrUser)[ SALARY ] / (20*9);
 	}
 
 	if( Param( READYWORKPERCENT ) >= 1.f )

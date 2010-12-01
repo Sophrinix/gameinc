@@ -30,22 +30,22 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 {
 	INrpDevelopProject::InitializeOptions_();
 
-	Push<int>( USERNUMBER, 0 );
-	Push<NrpText>( PROJECTSTATUS, "unknown" );
-	Push<CNrpCompany*>( PARENTCOMPANY, NULL );
-	Push<PNrpGameEngine>( GAME_ENGINE, NULL );
-	Push<NrpText>( PREV_GAME, "" );
-	Push<int>( BASE_CODEVOLUME, 0 );
-	Push<int>( BASEQUALITY, 0 );
-	Push<int>( QUALITY, 0 );
-	Push<int>( CODEVOLUME, 0 );
-	Push<CNrpScenario*>( SCENARIO, NULL );
-	Push<CNrpLicense*>( GLICENSE, NULL );
-	Push<int>( MONEYONDEVELOP, 0 );
-	Push<int>( PLATFORMNUMBER, 0 );
-	Push<int>( GENRE_MODULE_NUMBER, 0 );
-	Push<int>( LOCALIZATION, 0 );
-	Push<float>( FAMOUS, 0 );
+	Add<int>( USERNUMBER, 0 );
+	Add<NrpText>( PROJECTSTATUS, "unknown" );
+	Add<CNrpCompany*>( PARENTCOMPANY, NULL );
+	Add<PNrpGameEngine>( GAME_ENGINE, NULL );
+	Add<NrpText>( PREV_GAME, "" );
+	Add<int>( BASE_CODEVOLUME, 0 );
+	Add<int>( BASEQUALITY, 0 );
+	Add<int>( QUALITY, 0 );
+	Add<int>( CODEVOLUME, 0 );
+	Add<CNrpScenario*>( SCENARIO, NULL );
+	Add<CNrpLicense*>( GLICENSE, NULL );
+	Add<int>( MONEYONDEVELOP, 0 );
+	Add<int>( PLATFORMNUMBER, 0 );
+	Add<int>( GENRE_MODULE_NUMBER, 0 );
+	Add<int>( LOCALIZATION, 0 );
+	Add<float>( FAMOUS, 0 );
 
 	Param( NAME ) = name;
 }
@@ -60,17 +60,18 @@ void CNrpDevelopGame::_AddModulesFrom( const CNrpTechnology* tech, int baseCode 
 	}
 }
 
-void CNrpDevelopGame::_AddModulesFrom( const TECHS& arrtech, int baseCode )
+template< typename T, typename TARRAY >
+void CNrpDevelopGame::_AddModulesFrom( const TARRAY& arrtech, int baseCode )
 {
 	for( u32 i=0; i < arrtech.size(); i++ )
 	{
-		CNrpTechnology* tech = arrtech[ i ];
+		T* ptr = arrtech[ i ];
 
-		assert( tech );
-		if( tech )
+		assert( ptr );
+		if( ptr )
 		{
-			CNrpProjectModule* nTech = new CNrpProjectModule( tech, this );
-			(*nTech)[ CODEVOLUME ] = static_cast< int >( baseCode * (*nTech)[ BASE_CODE ].As<float>() );
+			CNrpProjectModule* nTech = new CNrpProjectModule( ptr, this );
+			(*nTech)[ CODEVOLUME ] = static_cast< int >( baseCode * (float)(*nTech)[ BASE_CODE ] );
 			_modules.push_back( nTech );
 		}
 	}
@@ -98,13 +99,6 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	(*extEngine)[ BASE_CODE ] = 1.f;
 	_modules.push_back( extEngine );
 	
-	CNrpProjectModule* langSupport = new CNrpProjectModule( PT_LANGSUPPORT, this );
-	(*langSupport)[ NAME ] = NrpText( "Локализация" );
-	(*langSupport).SetEmployerSkillRequire( SKL_CODING, 10 );
-	(*langSupport)[ BASE_CODE ] = refPr[ LANGNUMBER ] * 0.05f;
-	(*langSupport)[ CODEVOLUME ] = static_cast< int >( bcv * (*langSupport)[ BASE_CODE ].As<float>() );
-	_modules.push_back( langSupport );
-
 	Param( PREV_GAME ) = refPr[ PREV_GAME ];
 	Param( BASE_CODEVOLUME ) = refPr[ BASE_CODEVOLUME ];
 	Param( CODEVOLUME ) = refPr[ CODEVOLUME ];
@@ -115,15 +109,17 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	Param( PROJECTREADY ) = false;
 	Param( QUALITY ) = int(0);
 
-	_AddModulesFrom( refPr[ SCRIPTENGINE ], bcv );
-	_AddModulesFrom( refPr[ MINIGAMEENGINE ], bcv );
-	_AddModulesFrom( refPr[ PHYSICSENGINE ], bcv );
-	_AddModulesFrom( refPr[ GRAPHICQUALITY ], bcv);
-	_AddModulesFrom( refPr[ SOUNDQUALITY ], bcv );
-	_AddModulesFrom( refPr.GetTechList(), bcv );
-	_AddModulesFrom( refPr.GetGenreList(), bcv );
-	_AddModulesFrom( refPr.GetVideoTechList(), bcv );
-	_AddModulesFrom( nProject->GetSoundTechList(), bcv );
+	_AddModulesFrom( refPr[ SCRIPTENGINE ].As<CNrpTechnology*>(), bcv );
+	_AddModulesFrom( refPr[ MINIGAMEENGINE ].As<CNrpTechnology*>(), bcv );
+	_AddModulesFrom( refPr[ PHYSICSENGINE ].As<CNrpTechnology*>(), bcv );
+	_AddModulesFrom( refPr[ GRAPHICQUALITY ].As<CNrpTechnology*>(), bcv);
+	_AddModulesFrom( refPr[ SOUNDQUALITY ].As<CNrpTechnology*>(), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetTechList(), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetGenreList(), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetVideoTechList(), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetSoundTechList(), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetLanguageTechList(), bcv );
+	_AddModulesFrom< CNrpPlatform >( refPr.GetPlatformsList(), bcv );
 
 	Param( PROJECTSTATUS ) = NrpText( "develop" );
 	Param( MODULE_NUMBER ) = static_cast< int >( _modules.size() );

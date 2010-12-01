@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Nrp2DPictureFlow.h"
+#include <assert.h>
+
+#define DEFAULT_SMOOTH 0.4f
 
 namespace irr
 {
@@ -15,14 +18,15 @@ video::ITexture* CNrp2DPictureFlow::CNrpImageDescription::CreateDownTexture_( vi
 	if( pTxr != NULL )
 	{
 		NrpText name = NrpText( pTxr->getName().getPath().c_str() ) + NrpText( "toDown" );
-		resultt = driver->addTexture( pTxr->getSize(), name, pTxr->getColorFormat() );
+		resultt = driver->addTexture( core::dimension2du( pTxr->getSize().Width, pTxr->getSize().Height * DEFAULT_SMOOTH ), 
+									  name, pTxr->getColorFormat() );
 
 		u32* pTxrData = (u32*)pTxr->lock();
 		u32* resultTxrData = (u32*)resultt->lock();
-		for( size_t k=0; k < pTxr->getSize().Height; k++ )
+		for( size_t k=0; k < resultt->getSize().Height; k++ )
 		{
-			int offsetPtxr = k * pTxr->getSize().Width;
-			int offsetResult = ( resultt->getSize().Height - k - 1 ) * resultt->getSize().Width;
+			int offsetPtxr = ( pTxr->getSize().Height - k - 1 ) * pTxr->getSize().Width;
+			int offsetResult = k * resultt->getSize().Width;
 			int pith = pTxr->getPitch();
 			memcpy( resultTxrData+offsetResult, pTxrData+offsetPtxr, pTxr->getPitch() );
 		}
@@ -42,7 +46,9 @@ CNrp2DPictureFlow::CNrp2DPictureFlow( IGUIEnvironment* env,
 : IGUIListBox( env, parent, id, rectangle )
 {
 	_activeIndex = 0;
-	_pictureRect = pictureRect;
+	//_pictureRect = pictureRect;
+	int minSize = min( rectangle.getWidth(), rectangle.getHeight() );
+	_pictureRect = core::recti( 0, 0, minSize * 0.5f, minSize * 0.5f );
 	_drawBackground = true;
 }
 
@@ -83,21 +89,34 @@ core::recti CNrp2DPictureFlow::_CorrectRect( video::ITexture* texture, const cor
 		core::recti realRect( rectangle.getCenter().X - imSize.Width / 2, rectangle.getCenter().Y - imSize.Height / 2,
 					          rectangle.getCenter().X + imSize.Width / 2, rectangle.getCenter().Y + imSize.Height / 2 );
 
-		return realRect;
+		return realRect - core::position2di( 0, AbsoluteRect.getHeight() * 0.1f );
 	}
 	else
-		return rectangle;
+		return rectangle - core::position2di( 0, AbsoluteRect.getHeight() * 0.1f );
+}
+
+core::recti CNrp2DPictureFlow::_GetDownRect( const core::rectf& rectangle )
+{
+	core::recti ret( rectangle.UpperLeftCorner.X, rectangle.LowerRightCorner.Y,
+					  rectangle.LowerRightCorner.X, 0  );
+	ret.LowerRightCorner.Y = rectangle.LowerRightCorner.Y + rectangle.getHeight() * DEFAULT_SMOOTH;
+
+	ret += core::position2di( 0, 10 );
+
+	return ret;
 }
 
 void CNrp2DPictureFlow::_UpdateImages()
 {
-	core::recti tmpRect( RelativeRect.getCenter().X - _pictureRect.getWidth()/2, 
-						 RelativeRect.getCenter().Y - _pictureRect.getHeight()/2,
-						 RelativeRect.getCenter().X + _pictureRect.getWidth()/2, 
-						 RelativeRect.getCenter().Y + _pictureRect.getHeight()/2 );
+	core::recti tmpRect( AbsoluteRect.getCenter().X - _pictureRect.getWidth()/2, 
+						 AbsoluteRect.getCenter().Y - _pictureRect.getHeight()/2,
+						 AbsoluteRect.getCenter().X + _pictureRect.getWidth()/2, 
+						 AbsoluteRect.getCenter().Y + _pictureRect.getHeight()/2 );
 
 	if( _activeIndex < (int)_images.size() )
+	{
 		_images[ _activeIndex ]->rectangle = _CorrectRect( _images[ _activeIndex ]->GetTexture(), tmpRect );
+	}
 
 	s32 offsetx = 0;
 	core::recti lRect = tmpRect;
@@ -107,8 +126,8 @@ void CNrp2DPictureFlow::_UpdateImages()
 			offsetx += static_cast< s32 >( lRect.getWidth() * (0.7f - (_activeIndex-k)*0.1f) );
 			core::dimension2di sides( 0.7f * lRect.getWidth(), 0.7f * lRect.getHeight() ); 
 			
-			lRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
-				                 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
+			lRect = core::recti( AbsoluteRect.getCenter().X - sides.Width/2, AbsoluteRect.getCenter().Y - sides.Height/2,
+				                 AbsoluteRect.getCenter().X + sides.Width/2, AbsoluteRect.getCenter().Y + sides.Height/2 );
 
 			
 			_images[ k ]->rectangle = _CorrectRect( _images[ k ]->GetTexture(), lRect ) - core::position2di( offsetx, 0 );
@@ -120,8 +139,8 @@ void CNrp2DPictureFlow::_UpdateImages()
 	{
 		offsetx += static_cast< s32 >( rRect.getWidth() * (0.7f - (k-_activeIndex)*0.1f) );
 		core::dimension2di sides( 0.7f * rRect.getWidth(), 0.7f * rRect.getHeight() ); 
-		rRect = core::recti( RelativeRect.getCenter().X - sides.Width/2, RelativeRect.getCenter().Y - sides.Height/2,
-							 RelativeRect.getCenter().X + sides.Width/2, RelativeRect.getCenter().Y + sides.Height/2 );
+		rRect = core::recti( AbsoluteRect.getCenter().X - sides.Width/2, AbsoluteRect.getCenter().Y - sides.Height/2,
+							 AbsoluteRect.getCenter().X + sides.Width/2, AbsoluteRect.getCenter().Y + sides.Height/2 );
 	
 		_images[ k ]->rectangle = _CorrectRect( _images[ k ]->GetTexture(), rRect ) + core::position2di( offsetx, 0 );
 	}
@@ -136,7 +155,7 @@ void CNrp2DPictureFlow::_DrawAny( video::ITexture* txs, const core::recti& recta
 							 &AbsoluteClippingRect, colors, true );
 	else
 		driver->draw2DRectangle( rectabgle, 
-								 *colors, *(colors+1), *(colors+2), *(colors+3),
+								 *colors, *(colors+3), *(colors+2), *(colors+1),
 								 &AbsoluteClippingRect );
 }
 
@@ -145,12 +164,13 @@ void CNrp2DPictureFlow::_DrawPairImage( CNrpImageDescription* pDesk )
 	core::recti rectangle( pDesk->currentRect.UpperLeftCorner.X, pDesk->currentRect.UpperLeftCorner.Y,
 						   pDesk->currentRect.LowerRightCorner.X, pDesk->currentRect.LowerRightCorner.Y );
 
-	core::recti rectUp = rectangle;// + AbsoluteRect.UpperLeftCorner;
-	video::SColor colorsA[] = {0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0, 0xC0C0C0C0};
-	_DrawAny( pDesk->GetTexture(), rectUp, colorsA );
+	video::SColor clr( pDesk->blend, 0xff, 0xff, 0xff );
+	video::SColor colorsA[] = { clr, clr, clr, clr};
+	_DrawAny( pDesk->GetTexture(), rectangle, colorsA );
 
 	colorsA[ 1 ] = colorsA[ 2 ] = 0;
-	_DrawAny( pDesk->GetDownTexture(), rectUp + core::position2di( 0, rectangle.getHeight()), colorsA );
+	colorsA[ 3 ] = colorsA[ 0 ] = 0xC0C0C0C0C0;
+	_DrawAny( pDesk->GetDownTexture(), pDesk->downRect, colorsA );
 }
 
 void CNrp2DPictureFlow::draw()
@@ -212,6 +232,8 @@ void CNrp2DPictureFlow::_UpdatePositions()
 
 			_images[ k ]->currentRect.UpperLeftCorner.Y += offset;
 		}
+
+		_images[ k ]->downRect = _GetDownRect( _images[ k ]->currentRect );
 	}
 }
 
@@ -336,6 +358,20 @@ void CNrp2DPictureFlow::clear()
 void* CNrp2DPictureFlow::getObject( int index )
 {
 	return index < _images.size() ? _images[ index ]->object : NULL;
+}
+
+void CNrp2DPictureFlow::setItemTexture( u32 index, video::ITexture* texture )
+{
+	assert( index < _images.size() );
+	if( index < _images.size() )
+		_images[ index ]->SetTexture( Environment->getVideoDriver(), texture );
+}
+
+void CNrp2DPictureFlow::setItemBlend( u32 index, int blend )
+{
+	assert( index < _images.size() );
+	if( index < _images.size() )
+		_images[ index ]->blend = blend;
 }
 }//end namespace gui
 

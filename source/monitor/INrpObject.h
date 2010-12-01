@@ -21,7 +21,7 @@ class INrpObject
 {
 private:
 	SYSTEM_NAME systemName_;
-	CLASS_NAME objectName_;
+	const CLASS_NAME objectName_;
 
 	INrpObject(void)
 	{
@@ -30,14 +30,14 @@ private:
 public:
 	//уникальное имя объекта в массиве
 	SYSTEM_NAME SystemName() { return systemName_; }
-	CLASS_NAME& ObjectTypeName() { return objectName_; }
+	const CLASS_NAME& ObjectTypeName() { return objectName_; }
 
 	//размещение объекта в массиве
-	INrpObject( CLASS_NAME objectName, SYSTEM_NAME sysName ):
-			objectName_( objectName ), systemName_( sysName )
+	INrpObject( CLASS_NAME className, SYSTEM_NAME sysName ):
+			objectName_( className ), systemName_( sysName )
 	{
 		if( !systemName_.size() )
-			systemName_ = objectName + NrpText("_object") + NrpText( rand() );
+			systemName_ = className + NrpText("_object") + NrpText( rand() );
 
 		GInsertObjectToSystemMap( this );
 	}

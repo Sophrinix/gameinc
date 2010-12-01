@@ -12,7 +12,7 @@ public:
 	{
 		CNrpTechnology::_InitializeOptions();
 
-		Push<float>( READYWORKPERCENT, 0 );
+		Add<float>( READYWORKPERCENT, 0 );
 	}
 
 	virtual void Update( IUser* ptrUser ) = 0;

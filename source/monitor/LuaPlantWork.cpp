@@ -75,7 +75,7 @@ int CLuaPlantWork::SetProduceType( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlantWork:SetPoduceType need CNrpDiskMachine* parameter" );
 
 	CNrpDiskMachine* dm = (CNrpDiskMachine*)lua_touserdata( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN object_->SetValue<PNrpDiskMachine>( PRODUCETYPE, dm );
+	IF_OBJECT_NOT_NULL_THEN (*object_)[ PRODUCETYPE ] = dm;
 
 	return 1;		
 }
@@ -185,7 +185,7 @@ int CLuaPlantWork::SetNumberMachine( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlantWork:SetNumberMachine not need parameter" );
 
 	int nMachine = lua_tointeger( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( NUMBERMACHINE, nMachine );
+	IF_OBJECT_NOT_NULL_THEN (*object_)[ NUMBERMACHINE ] = nMachine;
 
 	return 1;	
 }
@@ -196,7 +196,7 @@ int CLuaPlantWork::SetNumberDay( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlantWork:SetNumberDay not need parameter" );
 
 	int nDay = lua_tointeger( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN object_->SetValue<int>( NUMBERDAY, nDay );
+	IF_OBJECT_NOT_NULL_THEN (*object_)[ NUMBERDAY ] = nDay;
 
 	return 1;	
 }
@@ -218,7 +218,7 @@ int CLuaPlantWork::SetGame( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlantWork:SetPoduceType need CNrpDiskMachine* parameter" );
 
 	CNrpGame* dm = (CNrpGame*)lua_touserdata( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN object_->SetValue<PNrpGame>( PARENT, dm );
+	IF_OBJECT_NOT_NULL_THEN (*object_)[ PARENT ] = dm;
 
 	return 1;		
 }

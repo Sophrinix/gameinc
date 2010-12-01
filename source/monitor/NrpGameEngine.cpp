@@ -19,17 +19,17 @@ CNrpGameEngine::CNrpGameEngine( const NrpText& name ) : INrpProject( CLASS_GAMEE
 
 void CNrpGameEngine::_InitialyzeOptions()
 {
-	Push<int>( AVGENRE_COUNT, 0 );
-	Push<NrpText>( INTERNAL_NAME, "" ); 
-	Push<int>( TIME_ACTUAL, 0 );
-	Push<int>( GENRE_MODULE_NUMBER, 0 );
-	Push<int>( CODEVOLUME, 0 );
-	Push<int>( QUALITY, 0 );
-	Push<int>( SKILL_CODING, 0 );
-	Push<NrpText>( COMPANYNAME, "" );
-	Push<PNrpCompany>( PARENTCOMPANY, NULL );
-	Push<NrpText>( TEXTURENORMAL, "" );
-	Push<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	Add<int>( AVGENRE_COUNT, 0 );
+	Add<NrpText>( INTERNAL_NAME, "" ); 
+	Add<int>( TIME_ACTUAL, 0 );
+	Add<int>( GENRE_MODULE_NUMBER, 0 );
+	Add<int>( CODEVOLUME, 0 );
+	Add<int>( QUALITY, 0 );
+	Add<int>( SKILL_CODING, 0 );
+	Add<NrpText>( COMPANYNAME, "" );
+	Add<PNrpCompany>( PARENTCOMPANY, NULL );
+	Add<NrpText>( TEXTURENORMAL, "" );
+	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 }
 
 CNrpGameEngine::CNrpGameEngine( const NrpText& fileName, bool load )

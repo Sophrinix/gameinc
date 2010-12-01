@@ -199,12 +199,12 @@ void Logger::TreatLogEntry(const Log& log)
 	{
 		// переносим текст из std::stirng в массив чаров (чтобы избежать глюка)
 		const int FULL_TEXT_BUF_LEN = 8192;
-		wchar_t logText[ FULL_TEXT_BUF_LEN ] = { 0 };
-		wcsncpy_s(logText, log.Text.str().c_str(), min(FULL_TEXT_BUF_LEN, log.Text.str().size()));
+		char logText[ FULL_TEXT_BUF_LEN ] = { 0 };
+		strncpy_s(logText, log.Text.str().c_str(), min(FULL_TEXT_BUF_LEN, log.Text.str().size()));
 
 #ifdef _DEBUG
-		OutputDebugStringW( logText );
-		OutputDebugStringW( L"\n" );
+		OutputDebugString( logText );
+		OutputDebugString( "\n" );
 #endif
 	}
 

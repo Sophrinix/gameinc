@@ -1,7 +1,6 @@
 #pragma once
 #include "ILuaObject.h"
 
-
 namespace irr
 {
 	struct SEvent;

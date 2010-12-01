@@ -7,10 +7,10 @@ CLASS_NAME CLASS_NRPRETAILER( "CNrpRetailer" );
 
 CNrpRetailer::CNrpRetailer(const NrpText& name) : INrpProject( CLASS_NRPRETAILER, "" )
 {
-	Push<NrpText>( NAME, name );
-	Push<float>( FAMOUS, 0 );
-	Push<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
-	Push<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
+	Add<NrpText>( NAME, name );
+	Add<float>( FAMOUS, 0 );
+	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	Add<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
 }
 
 CNrpRetailer::~CNrpRetailer(void)

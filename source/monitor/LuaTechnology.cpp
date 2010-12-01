@@ -13,7 +13,7 @@
 
 namespace nrp
 {
-CLASS_NAME CLASS_LUATECH( "CLuaTech" );
+CLASS_NAME CLASS_LUATECH( L"CLuaTech" );
 
 Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы методы
 {

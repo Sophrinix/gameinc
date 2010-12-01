@@ -20,18 +20,18 @@ CLASS_NAME CLASS_NRPCOMPANY( "CNrpCompany" );
 
 void CNrpCompany::_InitialyzeOptions()
 {
-	Push<int>( BALANCE, 100000 );
-	Push<NrpText>( NAME, "" );
-	Push<PUser>( CEO, NULL );
-	Push<int>( ENGINES_NUMBER, 0 );
-	Push<int>( TECHNUMBER, 0 );
-	Push<int>( USERNUMBER, 0 );
-	Push<int>( PROJECTNUMBER, 0 );
-	Push<int>( GAMENUMBER, 0 );
-	Push<int>( OBJECTSINPORTFELLE, 0 );
-	Push<int>( DEVELOPPROJECTS_NUMBER, 0 );
-	Push<float>( FAMOUS, 0.1f );
-	Push<int>( INVENTIONSNUMBER, 0 );
+	Add<int>( BALANCE, 100000 );
+	Add<NrpText>( NAME, "" );
+	Add<PUser>( CEO, NULL );
+	Add<int>( ENGINES_NUMBER, 0 );
+	Add<int>( TECHNUMBER, 0 );
+	Add<int>( USERNUMBER, 0 );
+	Add<int>( PROJECTNUMBER, 0 );
+	Add<int>( GAMENUMBER, 0 );
+	Add<int>( OBJECTSINPORTFELLE, 0 );
+	Add<int>( DEVELOPPROJECTS_NUMBER, 0 );
+	Add<float>( FAMOUS, 0.1f );
+	Add<int>( INVENTIONSNUMBER, 0 );
 }
 
 CNrpCompany::CNrpCompany( const NrpText& name, IUser* ceo ) : INrpConfig( CLASS_NRPCOMPANY, name)

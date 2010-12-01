@@ -166,8 +166,8 @@ void CNrpCircleScrollBar::draw()
 	IGUIElement::draw();
 
 #ifdef _DEBUG
-	core::stringw text( (s32)aPos );
-	Environment->getSkin()->getFont()->draw( text, 
+	NrpText text( (s32)aPos );
+	Environment->getSkin()->getFont()->draw( text.ToWide(), 
 											 core::recti( 0, 0, 100, 25 ) + AbsoluteRect.UpperLeftCorner,
 											 video::SColor( 0xff, 0, 0, 0 ) );
 #endif

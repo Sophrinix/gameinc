@@ -39,7 +39,7 @@ bool CNrpAppEventer::OnEvent( const SEvent& event )
 				return true;
 			}
 
-			if( event.KeyInput.Char == nrp::CNrpConsoleConfig::Instance()[ CONSOLE_INIT_KEY ].As<int>() )							//перхват вызова консоли
+			if( nrp::CNrpConsoleConfig::Instance()[ CONSOLE_INIT_KEY ] == (int)event.KeyInput.Char )							//перхват вызова консоли
 			{
 				if( !event.KeyInput.Control && event.KeyInput.PressedDown && ptrCon )
 				{

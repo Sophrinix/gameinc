@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="GameDev"
 	ProjectGUID="{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"
 	RootNamespace="nerpa_sc"
@@ -368,10 +368,6 @@
 			</File>
 			<File
 				RelativePath=".\NrpText.h"
-				>
-			</File>
-			<File
-				RelativePath=".\nrpTranslate.cpp"
 				>
 			</File>
 			<File
@@ -1323,6 +1319,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaPlatform.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaPlatform.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaReklame.cpp"
 						>
 					</File>
@@ -1589,7 +1593,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\swork_startDefinition.lua"
+				RelativePath="..\..\application\scripts\startDefinition.lua"
 				>
 			</File>
 			<File
@@ -1656,14 +1660,6 @@
 				RelativePath=".\NrpGameTime.h"
 				>
 			</File>
-			<File
-				RelativePath=".\NrpScreenshot.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpScreenshot.h"
-				>
-			</File>
 			<Filter
 				Name="plant"
 				>
@@ -1721,6 +1717,22 @@
 				</File>
 				<File
 					RelativePath=".\NrpGameBox.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpPlatform.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpPlatform.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpScreenshot.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpScreenshot.h"
 					>
 				</File>
 			</Filter>

@@ -9,18 +9,18 @@ Luna< CLuaRelation >::RegType CLuaRelation::methods[] =
 {
 	LUNA_ILUAOBJECT_HEADER( CLuaRelation ),
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaRelation, SetValue ),
-	LUNA_AUTONAME_FUNCTION( CLuaRelation, GetValue ),
+	LUNA_AUTONAME_FUNCTION( CLuaRelation, Set ),
+	LUNA_AUTONAME_FUNCTION( CLuaRelation, Get ),
 	{0,0}
 };
 
 CLuaRelation::CLuaRelation(lua_State *L) : ILuaObject(L, "CLuaRelation")
 {}
 
-int CLuaRelation::SetValue( lua_State *L )
+int CLuaRelation::Set( lua_State *L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaTab::SetFontFromSize need name, value parameter");
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaRelation::Set need name, value parameter");
 
 	NrpText name = lua_tostring( L, 2 );
 
@@ -37,21 +37,21 @@ int CLuaRelation::SetValue( lua_State *L )
 	return 1;
 }
 
-int CLuaRelation::GetValue( lua_State *L )
+int CLuaRelation::Get( lua_State *L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaTab::GetValue need name parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaRelation::GetValue need name parameter");
 
 	NrpText name = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		if( (*object_)[ name ].Is<NrpText>() )
-			lua_pushstring( L, (*object_)[ name ].As<NrpText>() );
+			lua_pushstring( L, (NrpText)(*object_)[ name ] );
 		else if( (*object_)[ name ].Is< float >() )
-			lua_pushnumber( L, (*object_)[ name ].As<float>() );
+			lua_pushnumber( L, (float)(*object_)[ name ] );
 		else if( (*object_)[ name ].Is< int >() )
-			lua_pushinteger( L, (*object_)[ name ].As<int>() );
+			lua_pushinteger( L, (int)(*object_)[ name ] );
 		else
 			lua_pushinteger( L, -1 );
 	}

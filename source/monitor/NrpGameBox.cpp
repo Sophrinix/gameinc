@@ -118,12 +118,12 @@ NrpText CNrpGameBox::ClassName()
 nrp::CNrpGameBox::CNrpGameBox( CNrpGame* ptrGame ) : INrpConfig( CLASS_GAMEBOX, "" )
 {
 	assert( ptrGame != NULL );
-	Push<NrpText>( NAME, ptrGame ? ptrGame->Text( NAME ) : "" );
-	Push<PNrpGame>( GAME, ptrGame );
-	Push<int>( NUMBERADDON, 0 );
-	Push<int>( LEVEL, 0 );
-	Push<int>( BOXNUMBER, 0 );
-	Push<int>( PRICE, 18 );
+	Add<NrpText>( NAME, ptrGame ? ptrGame->Text( NAME ) : "" );
+	Add<PNrpGame>( GAME, ptrGame );
+	Add<int>( NUMBERADDON, 0 );
+	Add<int>( LEVEL, 0 );
+	Add<int>( BOXNUMBER, 0 );
+	Add<int>( PRICE, 18 );
 }
 
 }//end of namespace nrp

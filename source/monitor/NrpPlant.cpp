@@ -38,10 +38,10 @@ int _SaveWorks( R& arrayt, int startNum, NrpText (*func)(int), const NrpText& fi
 
 CNrpPlant::CNrpPlant(void) : INrpConfig( CLASS_NRPPLANT, "" )
 {
-	Push<int>( WORKNUMBER, 0 );
-	Push<int>( BASEREKLAMENUMBER, 0 );
-	Push<int>( REKLAMENUMBER, 0 );
-	Push<int>( DISKMACHINENUMBER, 0 );
+	Add<int>( WORKNUMBER, 0 );
+	Add<int>( BASEREKLAMENUMBER, 0 );
+	Add<int>( REKLAMENUMBER, 0 );
+	Add<int>( DISKMACHINENUMBER, 0 );
 }
 
 CNrpPlant::~CNrpPlant(void)

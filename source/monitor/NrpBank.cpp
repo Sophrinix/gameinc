@@ -13,7 +13,7 @@ CLASS_NAME CLASS_BANK( L"CNrpBank" );
 CNrpBank::CNrpBank(void) : INrpConfig( CLASS_BANK, "systemBank" )
 {
 	loanId_ = 0;
-	Push<int>( LOANNUMBER, 0 );
+	Add<int>( LOANNUMBER, 0 );
 }
 
 CNrpBank::~CNrpBank(void)

@@ -13,7 +13,7 @@ CNrpHistory::~CNrpHistory(void)
 
 CNrpHistory::CNrpHistory() : INrpConfig( CLASS_NRPHISTORY, "" )
 {
-	Push<int>( HISTORY_SIZE, 0 );
+	Add<int>( HISTORY_SIZE, 0 );
 }
 
 CNrpHistoryStep* CNrpHistory::GetStep( const SYSTEMTIME& time, bool aprocimateData )
@@ -54,7 +54,7 @@ CNrpHistoryStep* CNrpHistory::AddStep( SYSTEMTIME& time )
 
 CNrpHistoryStep::CNrpHistoryStep( const SYSTEMTIME& time ) : INrpConfig( CLASS_HISTORYSTEP, "" )
 {
-	Push<int>( BOXNUMBER, 0 );
+	Add<int>( BOXNUMBER, 0 );
 }
 
 CNrpHistoryStep::CNrpHistoryStep() : INrpConfig( CLASS_HISTORYSTEP, "" )

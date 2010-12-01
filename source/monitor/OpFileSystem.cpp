@@ -57,7 +57,7 @@ void OpFileSystem::Remove( const NrpText& pathTo )
 
 void OpFileSystem::Move( const NrpText& pathOld, const NrpText& pathNew )
 {
-	NrpText workDir = CNrpApplication::Instance()[ WORKDIR ].As<NrpText>();
+	NrpText workDir = CNrpApplication::Instance()[ WORKDIR ];
 	NrpText mStr = RemoveEndSlash( workDir + pathOld );
 	NrpText mStr2 = RemoveEndSlash( workDir + pathNew );
 
@@ -130,9 +130,9 @@ void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory,
 				{
 					if( _wcsicmp( itemName.ToWide(), fdata.name ) == 0 )
 					{
-						ini->Get( L"options", templateName + number, CheckEndSlash( directory )+ fdata.name );
+						ini->Set( L"options", templateName + NrpText( (int)number ), CheckEndSlash( directory )+ fdata.name );
 						number++;
-						ini->Get( L"options", templateName + L"Number", number );
+						ini->Set( L"options", templateName + L"Number", number );
 					}
 				}
 			
@@ -215,14 +215,13 @@ NrpText OpFileSystem::UpDir( const NrpText& pathTo )
 	if( !pathTo.size() )
 		return "";
 
-	NrpText pathToAny = CheckEndSlash( pathTo );
-	pathToAny.erase( pathToAny.size()-1 );
-	int index = pathTo.findLast( L'\\' );
+	NrpText pathToAny = RemoveEndSlash( pathTo );
+	int index = pathToAny.findLast( L'\\' );
 	if( index < 0 )
-		index = pathTo.findLast( L'/' );
+		index = pathToAny.findLast( L'/' );
 
 	if( index >=0 )
-		return pathTo.subString( 0, index+1 );
+		return pathToAny.subString( 0, index+1 );
 
 	assert( IsExist( pathTo ) );
 	return "";

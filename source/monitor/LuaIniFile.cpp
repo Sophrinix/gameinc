@@ -21,7 +21,7 @@ Luna< CLuaIniFile >::RegType CLuaIniFile::methods[] =			//реализуемы методы
 CLuaIniFile::CLuaIniFile(lua_State *L)	: ILuaObject(L, CLASS_LUAINIFILE)	//конструктор
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaIniFile::CLuaIniFile need nil, string parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaIniFile::CLuaIniFile need string parameter");
 
 	NrpText fn = lua_tostring( L, 2 );
 

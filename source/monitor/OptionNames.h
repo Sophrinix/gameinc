@@ -39,5 +39,7 @@ OPTION_NAME WORKNUMBER( L"workNumber" );
 OPTION_NAME INTERNAL_NAME( L"internalName" );
 OPTION_NAME BOXNUMBER( L"boxNumber" );
 OPTION_NAME DESCRIPTIONPATH( L"descriptionPath" );
+OPTION_NAME LANGNUMBER( "langNumber" );
+OPTION_NAME PLATFORMNUMBER( "platformNumber" );
 
 }//end namespace nrp

@@ -9,6 +9,7 @@ class CNrpProjectModule : public IWorkingModule
 {
 public:
 	CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProject  );
+	CNrpProjectModule( CNrpPlatform* platform, INrpProject* project );
 	CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject* pProject );
 	virtual ~CNrpProjectModule(void);
 

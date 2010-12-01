@@ -44,7 +44,7 @@ Luna< CLuaUser >::RegType CLuaUser::methods[] =
 	{0,0}
 };
 
-CLuaUser::CLuaUser(lua_State *L) : ILuaObject(L, "CLuaUser") {}
+CLuaUser::CLuaUser(lua_State *L) : ILuaObject(L, CLASS_LUAUSER) {}
 
 int CLuaUser::Create( lua_State *L )
 {
@@ -119,7 +119,7 @@ int CLuaUser::GetParam( lua_State* L )
 	int valuel = 0;
 
 	IF_OBJECT_NOT_NULL_THEN valuel = (*object_)[ name ];
-
+ 
 	lua_pushinteger( L, valuel );
 	return 1;	
 }
@@ -145,7 +145,7 @@ int CLuaUser::GetName( lua_State* L )
 
 	NrpText name;
 
-	IF_OBJECT_NOT_NULL_THEN name = (*object_)[ NAME ];
+	IF_OBJECT_NOT_NULL_THEN name = (NrpText)(*object_)[ NAME ];
 
 	lua_pushstring( L, name );
 	return 1;	
@@ -291,7 +291,7 @@ int CLuaUser::HaveInvention( lua_State* L )
 	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		for( int k=0; k < (*object_)[ WORKNUMBER ].As<int>(); k++ )
+		for( int k=0; k < (int)(*object_)[ WORKNUMBER ]; k++ )
 		{
 			if( object_->GetWork( k )->ObjectTypeName() == CNrpInvention::ClassName() )
 			{

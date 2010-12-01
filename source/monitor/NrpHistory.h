@@ -15,7 +15,7 @@ public:
 	void AddValue( const NrpText& name, T& amount )
 	{
 		if( !IsExist( name ) )
-			Push<T>( name, amount );
+			Add<T>( name, amount );
 		else
 			Param( name ).As<T>() += amount;
 	}

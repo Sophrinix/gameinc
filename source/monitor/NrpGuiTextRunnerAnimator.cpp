@@ -36,9 +36,9 @@ void CNrpGuiTextRunnerAnimator::draw()
 			return;
 
 		time_ = GetTickCount();
-		core::stringw tmpText = _text.subString( 0, _currentPos+1 );
+		NrpText tmpText = _text.subString( 0, _currentPos+1 );
 		_currentPos++;
-		Parent->setText( tmpText.c_str() );
+		Parent->setText( tmpText.ToWide() );
 	}
 }
 

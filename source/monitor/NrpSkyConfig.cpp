@@ -9,7 +9,7 @@ CLASS_NAME CLASS_SKYCONFIG( L"CNrpSkyConfig" );
 
 CNrpSkyConfig::CNrpSkyConfig(void) : INrpConfig( CLASS_SKYCONFIG, CLASS_SKYCONFIG )
 {
-	Push<NrpText>( SKY_TEXTURE, "" );
+	Add<NrpText>( SKY_TEXTURE, "" );
 
 	Load( "config/sky.ini" );
 }
