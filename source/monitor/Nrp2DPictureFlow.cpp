@@ -2,7 +2,7 @@
 #include "Nrp2DPictureFlow.h"
 #include <assert.h>
 
-#define DEFAULT_SMOOTH 0.4f
+#define DEFAULT_SMOOTH 0.6f
 
 namespace irr
 {
@@ -119,11 +119,12 @@ void CNrp2DPictureFlow::_UpdateImages()
 	}
 
 	s32 offsetx = 0;
+	s32 offsetWidth = AbsoluteRect.getWidth() / 4;
 	core::recti lRect = tmpRect;
 	if( _activeIndex - 1 >= 0 )
 		for( int k=max( 0, _activeIndex-1); k >= 0; k-- )
 		{
-			offsetx += static_cast< s32 >( lRect.getWidth() * (0.7f - (_activeIndex-k)*0.1f) );
+			offsetx += static_cast< s32 >( offsetWidth * (0.7f - (_activeIndex-k)*0.1f) );
 			core::dimension2di sides( 0.7f * lRect.getWidth(), 0.7f * lRect.getHeight() ); 
 			
 			lRect = core::recti( AbsoluteRect.getCenter().X - sides.Width/2, AbsoluteRect.getCenter().Y - sides.Height/2,
@@ -137,7 +138,7 @@ void CNrp2DPictureFlow::_UpdateImages()
 	core::recti rRect = tmpRect;
 	for( size_t k=min(_activeIndex+1, _images.size()); k < _images.size(); k++ )
 	{
-		offsetx += static_cast< s32 >( rRect.getWidth() * (0.7f - (k-_activeIndex)*0.1f) );
+		offsetx += static_cast< s32 >( offsetWidth * (0.7f - (k-_activeIndex)*0.1f) );
 		core::dimension2di sides( 0.7f * rRect.getWidth(), 0.7f * rRect.getHeight() ); 
 		rRect = core::recti( AbsoluteRect.getCenter().X - sides.Width/2, AbsoluteRect.getCenter().Y - sides.Height/2,
 							 AbsoluteRect.getCenter().X + sides.Width/2, AbsoluteRect.getCenter().Y + sides.Height/2 );
@@ -164,7 +165,7 @@ void CNrp2DPictureFlow::_DrawPairImage( CNrpImageDescription* pDesk )
 	core::recti rectangle( pDesk->currentRect.UpperLeftCorner.X, pDesk->currentRect.UpperLeftCorner.Y,
 						   pDesk->currentRect.LowerRightCorner.X, pDesk->currentRect.LowerRightCorner.Y );
 
-	video::SColor clr( pDesk->blend, 0xff, 0xff, 0xff );
+	video::SColor clr( pDesk->blend, pDesk->blend, pDesk->blend, pDesk->blend );
 	video::SColor colorsA[] = { clr, clr, clr, clr};
 	_DrawAny( pDesk->GetTexture(), rectangle, colorsA );
 
@@ -185,10 +186,10 @@ void CNrp2DPictureFlow::draw()
 
 	if( _images.size() > 0 )
 	{
-		for( int pos=max( 0, _activeIndex-4 ); pos < _activeIndex; pos++ )
+		for( int pos=max( 0, _activeIndex-6 ); pos < _activeIndex; pos++ )
 			_DrawPairImage( _images[ pos ] );
 
-		for( size_t pos=min( _activeIndex + 4, _images.size()-1); pos > _activeIndex; pos-- )
+		for( size_t pos=min( _activeIndex + 6, _images.size()-1); pos > _activeIndex; pos-- )
 			 _DrawPairImage( _images[ pos ] );
 
 		if( _activeIndex < static_cast< int >( _images.size() ) )
@@ -275,7 +276,6 @@ bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
 			Next( +1 );
 			_lastTimeKey = GetTickCount();
 
-			_SendEventSelected( event );
 			return true;
 		}
 
@@ -283,7 +283,12 @@ bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
 		{
 			Prev( 1 );
 			_lastTimeKey = GetTickCount();
+			return true;
+		}
 
+		if( event.KeyInput.PressedDown && event.KeyInput.Key == KEY_SPACE && (curTime - _lastTimeKey > 20))
+		{
+			_lastTimeKey = GetTickCount();
 			_SendEventSelected( event );
 			return true;
 		}
@@ -293,20 +298,30 @@ bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
 		if( event.MouseInput.Event == EMIE_LMOUSE_PRESSED_DOWN )
 		{
 			int side = AbsoluteRect.getWidth() / 5;
-			if( event.MouseInput.X > AbsoluteRect.getCenter().X / 2 )
+			if( event.MouseInput.X > AbsoluteRect.getCenter().X + _pictureRect.getWidth() / 2 )
 			{
-				int offset = (event.MouseInput.X-AbsoluteRect.getCenter().X / 2) / side - 1;
+				int offset = (event.MouseInput.X-AbsoluteRect.getCenter().X ) / side;
 				Next( offset );
-
-				_SendEventSelected( event );
+				return true;
 			}
-			else
+			
+			if( event.MouseInput.X < AbsoluteRect.getCenter().X - _pictureRect.getWidth() / 2 )
 			{
-				int offset = (AbsoluteRect.getCenter().X / 2 - event.MouseInput.X) / side + 1;
+				int offset = (AbsoluteRect.getCenter().X - event.MouseInput.X) / side;
 				Prev( offset );
-
-				_SendEventSelected( event );
+				return true;
 			}
+
+			core::recti centralRect = _pictureRect;
+			centralRect += core::position2di( AbsoluteRect.getCenter().X - _pictureRect.getWidth() / 2, 
+											  AbsoluteRect.getCenter().Y - _pictureRect.getHeight() / 2 );
+				
+			if( centralRect.isPointInside( core::position2di( event.MouseInput.X, event.MouseInput.Y ) ) )
+			{
+				_SendEventSelected( event );
+				return true;
+			}
+
 			return true;
 		}
 	break;
