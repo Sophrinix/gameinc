@@ -43,16 +43,15 @@ class IUser : public INrpConfig
 public:
 	IUser(const NrpText& className, const NrpText& systemName );
 
-	void SetSkill( int typen, int valuel ); 
-	void SetSkill( const NrpText& name, int valuel );
-	int GetSkill( int typen );
+	void SetSkill( const NrpText& name, int valuel ); 
+	int GetSkill( const NrpText& name );
 	
-	int GetGenreExperience( GENRE_TYPE typen );
-	void SetGenreExperience( GENRE_TYPE typen, int valuel );
-	void IncreaseExperience( int techGroup, int grow );
+	int GetGenreExperience( const NrpText& name );
+	void SetGenreExperience( const NrpText& name, int valuel );
+	void IncreaseExperience( const NrpText& name, int grow );
 
-	int GetGenrePreferences( GENRE_TYPE typen );
-	void SetGenrePreferences( GENRE_TYPE typen, int valuel );
+	int GetGenrePreferences( const NrpText& name );
+	void SetGenrePreferences( const NrpText& name, int valuel );
 	
 	void AddWork( IWorkingModule* techWork, bool toFront=false );
 

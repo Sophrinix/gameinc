@@ -1513,6 +1513,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\genres.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\globalVariableInitialize.lua"
 				>
 			</File>

@@ -36,7 +36,7 @@ int CLuaChart::SetAxisAutomatic( lua_State *L )
 
 	int aType = lua_tointeger( L, 2 );
 	bool automatic = lua_toboolean( L, 3 ) > 0;
-	IF_OBJECT_NOT_NULL_THEN object_->GetAxis( gui::CChartCtrl::CHART_AXIS_NAME(aType) )->SetAutomatic( automatic );
+	IF_OBJECT_NOT_NULL_THEN _object->GetAxis( gui::CChartCtrl::CHART_AXIS_NAME(aType) )->SetAutomatic( automatic );
 
 	return 1;
 }
@@ -46,7 +46,7 @@ int CLuaChart::Update( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaElement::Update not need any parameter");
 
-	IF_OBJECT_NOT_NULL_THEN object_->Update();
+	IF_OBJECT_NOT_NULL_THEN _object->Update();
 
 	return 1;
 }
@@ -58,9 +58,9 @@ int CLuaChart::AddSerie( lua_State *L )
 
 	int sType = lua_tointeger( L, 2 );
 	gui::CChartSerie* ptrSerie = NULL;
-	IF_OBJECT_NOT_NULL_THEN ptrSerie = object_->AddSerie( gui::CChartSerie::SERIES_TYPE( sType ) );
+	IF_OBJECT_NOT_NULL_THEN ptrSerie = _object->AddSerie( gui::CChartSerie::SERIES_TYPE( sType ) );
 
-	lua_pushinteger( L, ptrSerie == NULL ? -1 : (object_->GetSeriesCount() - 1) );
+	lua_pushinteger( L, ptrSerie == NULL ? -1 : (_object->GetSeriesCount() - 1) );
 
 	return 1;
 }
@@ -76,7 +76,7 @@ int CLuaChart::AddPoint( lua_State *L )
 	
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		gui::CChartSerie* ptrSerie = object_->GetSerie( numSerie );
+		gui::CChartSerie* ptrSerie = _object->GetSerie( numSerie );
 		if( ptrSerie )
 			ptrSerie->AddPoint( x, y );
 	}
@@ -127,12 +127,12 @@ int CLuaChart::SetOffsetPoints( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( serieNumber >= object_->GetSeriesCount() )
+		if( serieNumber >= _object->GetSeriesCount() )
 			return 1;
 
-		object_->GetSerie( serieNumber )->SetOffset( xOffset, yOffset );
+		_object->GetSerie( serieNumber )->SetOffset( xOffset, yOffset );
 
-		object_->Update();
+		_object->Update();
 	}
 
 

@@ -57,13 +57,13 @@ void OpFileSystem::Remove( const NrpText& pathTo )
 
 void OpFileSystem::Move( const NrpText& pathOld, const NrpText& pathNew )
 {
-	NrpText workDir = CNrpApplication::Instance()[ WORKDIR ];
+	NrpText workDir = _nrpApp[ WORKDIR ];
 	NrpText mStr = RemoveEndSlash( workDir + pathOld );
 	NrpText mStr2 = RemoveEndSlash( workDir + pathNew );
 
 	SHFILEOPSTRUCTW sh;
 	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );
-	sh.hwnd   = CNrpEngine::Instance().GetWindowHandle(); //Äëÿ BCB sh.hwnd=FormX->Handle;
+	sh.hwnd   = _nrpEngine.GetWindowHandle(); //Äëÿ BCB sh.hwnd=FormX->Handle;
 	sh.wFunc  = FO_MOVE;
 
 	wchar_t from[ MAX_PATH ] = { 0 };
@@ -88,7 +88,7 @@ void OpFileSystem::Copy( const NrpText& pathOld, const NrpText& pathNew )
 
 	SHFILEOPSTRUCTW sh;
 	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );
-	sh.hwnd   = CNrpEngine::Instance().GetWindowHandle(); //Äëÿ BCB sh.hwnd=FormX->Handle;
+	sh.hwnd   = _nrpEngine.GetWindowHandle(); //Äëÿ BCB sh.hwnd=FormX->Handle;
 	sh.wFunc  = FO_COPY;
 	wchar_t from[ MAX_PATH ] = { 0 };
 	wcsncpy_s( from, MAX_PATH-1, mStr.ToWide(), mStr.size() );

@@ -175,7 +175,7 @@ bool IniFile::Set( const NrpText& section, const NrpText& key, float valuel )
 	return IniFile::Set(section, key, NrpText( valuel ) );
 }
 
-void IniFile::Get( const NrpText& sectionName, REQUIRE_MAP& mapt )
+void IniFile::Get( const NrpText& sectionName, KNOWLEDGE_MAP& mapt )
 {
 	wchar_t buffer[ 32000 ];
 	memset( buffer, 0, 32000 );
@@ -187,8 +187,7 @@ void IniFile::Get( const NrpText& sectionName, REQUIRE_MAP& mapt )
 		NrpText name, valuel;
 		name = readLine.subString( 0, readLine.findFirst( L'=' ) );
 		valuel = readLine.subString( readLine.findFirst( L'=' ) + 1, 0xff );
-		int keey = static_cast< int >( NrpText::LuaNumber( name ) );
-		mapt[ keey ] = valuel.ToInt();
+		mapt[ NrpText::LuaString( name ) ] = valuel.ToInt();
 
 		memcpy( buffer, buffer + wcslen(buffer) + 1, 32000 );  
 		readLine = buffer;
@@ -207,9 +206,9 @@ void IniFile::Set( const NrpText& section, NrpText (*func)( int), const STRINGS&
 		Set( section, func( i ), art[ i ] );
 }
 
-void IniFile::Set( const NrpText& section, const REQUIRE_MAP& rmap )
+void IniFile::Set( const NrpText& section, const KNOWLEDGE_MAP& rmap )
 {
-	for( REQUIRE_MAP::Iterator tIter = const_cast< REQUIRE_MAP& >( rmap ).getIterator(); !tIter.atEnd() ; tIter++ )
+	for( KNOWLEDGE_MAP::Iterator tIter = const_cast< KNOWLEDGE_MAP& >( rmap ).getIterator(); !tIter.atEnd() ; tIter++ )
 		 Set( section, NrpText( tIter->getKey() ), NrpText( tIter->getValue() ) );
 }
 

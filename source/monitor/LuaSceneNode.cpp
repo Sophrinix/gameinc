@@ -24,12 +24,12 @@ CLuaSceneNode::CLuaSceneNode(lua_State *L)	: ILuaSceneNode(L, "CLuaSceneNode")		
 
 bool CLuaSceneNode::IsChildOfCurrentScene_()
 {
-	const core::list< scene::ISceneNode* >& childs = CNrpEngine::Instance().GetSceneManager()->
+	const core::list< scene::ISceneNode* >& childs = _nrpEngine.GetSceneManager()->
 																	getRootSceneNode()->getChildren();
 
 	core::list< scene::ISceneNode* >::ConstIterator pIter = childs.begin();
 	for(; pIter != childs.end(); pIter++ )
-		if( *pIter == object_ )
+		if( *pIter == _object )
 			return true;
 
 	return false;

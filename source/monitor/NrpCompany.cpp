@@ -140,14 +140,14 @@ NrpText CNrpCompany::Save( const NrpText& saveFolder )
 
 	IniFile rv( saveFile );
 
-	rv.SetArray( SECTION_PROJECTS,		_projects,		CreateKeyItem, NAME, true );
-	rv.SetArray( SECTION_DEVPROJECTS,	_devProjects,	CreateKeyItem, NAME, true );
-	rv.SetArray( SECTION_ENGINES,		_engines,		CreateKeyItem, INTERNAL_NAME, true );
-	rv.SetArray( SECTION_TECHS,			_technologies,	CreateKeyItem, INTERNAL_NAME, true );
-	rv.SetArray( SECTION_GAMES,			_games,			CreateKeyItem, INTERNAL_NAME );
-	rv.SetArray( SECTION_USERS,			_employers,		CreateKeyItem, NAME, true );
-	rv.SetArray( SECTION_PORTFELLE,		_portfelle,		CreateKeyItem, NAME, true );
-	rv.SetArray( SECTION_INVENTIONS,	_inventions,	CreateKeyItem, NAME, true );
+	rv.Set( SECTION_PROJECTS, _projects, CreateKeyItem, NAME );
+	rv.Set( SECTION_DEVPROJECTS, _devProjects,	CreateKeyItem, NAME );
+	rv.Set( SECTION_ENGINES, _engines,		CreateKeyItem, INTERNAL_NAME );
+	rv.Set( SECTION_TECHS,			_technologies,	CreateKeyItem, INTERNAL_NAME );
+	rv.Set( SECTION_GAMES,			_games,			CreateKeyItem, INTERNAL_NAME );
+	rv.Set( SECTION_USERS,			_employers,		CreateKeyItem, NAME );
+	rv.Set( SECTION_PORTFELLE,		_portfelle,		CreateKeyItem, NAME );
+	rv.Set( SECTION_INVENTIONS,	_inventions,	CreateKeyItem, INTERNAL_NAME );
 
 	return saveFile;
 }
@@ -155,7 +155,6 @@ NrpText CNrpCompany::Save( const NrpText& saveFolder )
 void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, const NrpText& condition )
 {
 	IniFile rv( fileName );
-	CNrpApplication& app = CNrpApplication::Instance();
 
 	int maxCond = (int)Param( condition );
 	for( int i=0; i < maxCond; i++ )
@@ -166,23 +165,23 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		INrpConfig* conf = NULL;
 		if( type == CNrpGameEngine::ClassName() )
 		{
-			AddGameEngine( app.GetGameEngine( rName ) );
+			AddGameEngine( _nrpApp.GetGameEngine( rName ) );
 		}
 		else if( type == IUser::ClassName() )
 		{
-			AddUser( app.GetUser( rName ) );
+			AddUser( _nrpApp.GetUser( rName ) );
 		}
 		else if( type == CNrpTechnology::ClassName() )
 		{
-			AddTechnology( app.GetTechnology( rName ) );
+			AddTechnology( _nrpApp.GetTechnology( rName ) );
 		}
 		else if( type == CNrpGame::ClassName() )
 		{
-			AddGame( app.GetGame( rName ) );
+			AddGame( _nrpApp.GetGame( rName ) );
 		}
 		else if( type == CNrpInvention::ClassName() )
 		{
-			AddInvention( app.GetInvention( rName, Text( NAME ) ) );
+			AddInvention( _nrpApp.GetInvention( rName, Text( NAME ) ) );
 		}
 		/*else if( type == INrpProject::ClassName() )
 		{
@@ -304,13 +303,13 @@ void CNrpCompany::AddGame( CNrpGame* game )
 CNrpGame* CNrpCompany::CreateGame( CNrpDevelopGame* devGame )
 {
 	CNrpGame* ptrGame = new CNrpGame( devGame, this );
-	(*ptrGame)[ STARTDATE ] = CNrpApplication::Instance()[ CURRENTTIME ];
-	CNrpApplication::Instance().AddGame( ptrGame );
-	CNrpApplication::Instance().UpdateGameRatings( ptrGame, true );
+	(*ptrGame)[ STARTDATE ] = _nrpApp[ CURRENTTIME ];
+	_nrpApp.AddGame( ptrGame );
+	_nrpApp.UpdateGameRatings( ptrGame, true );
 	RemoveFromPortfelle( devGame );
 
 	_games.push_back( ptrGame );
-	Param( GAMENUMBER ) = static_cast< int >( _games.size() );
+	_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
 
 	return ptrGame;
 }
@@ -383,7 +382,7 @@ void CNrpCompany::RemoveDevelopProject( const NrpText& name )
 			_devProjects.erase( i );
 
 	Param( DEVELOPPROJECTS_NUMBER ) = static_cast< int >( _devProjects.size() );
-	CNrpApplication::Instance().RemoveDevelopProject( name );
+	_nrpApp.RemoveDevelopProject( name );
 }
 
 void CNrpCompany::RemoveFromPortfelle( const INrpConfig* ptrObject )
@@ -417,8 +416,8 @@ void CNrpCompany::InventionReleased( const CNrpInvention* inv )
 			//либо прекращать разработки и переводить людей на другой проект с частичным
 			//переносом опыта...
 			//в любом случае текущие иследования прекращаются...
-			CNrpApplication::Instance().InventionCanceled(  _inventions[ p ] );
-			CNrpApplication::Instance().DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED,  _inventions[ p ] );
+			_nrpApp.InventionCanceled(  _inventions[ p ] );
+			_nrpApp.DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED,  _inventions[ p ] );
 			_inventions.erase( p );
 			break;
 		}			

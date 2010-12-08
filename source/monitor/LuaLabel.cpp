@@ -33,8 +33,8 @@ int CLuaLabel::SetOverrideFont( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( fontName );
-		object_->setOverrideFont( font );
+		gui::IGUIFont* font = _nrpEngine.GetGuiEnvironment()->getFont( fontName );
+		_object->setOverrideFont( font );
 	}
 
 	return 1;
@@ -50,7 +50,7 @@ int CLuaLabel::SetOverrideColor( lua_State* L )
 	ovColor += (lua_tointeger( L, 4 ) << 8);
 	ovColor += lua_tointeger( L, 5 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setOverrideColor( ovColor );
+	IF_OBJECT_NOT_NULL_THEN	_object->setOverrideColor( ovColor );
 
 	return 1;
 }
@@ -63,7 +63,7 @@ int CLuaLabel::SetTextAlignment( lua_State* L )
 	int hAl = lua_tointeger( L, 2 );
 	int vAl = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setTextAlignment( gui::EGUI_ALIGNMENT(hAl), gui::EGUI_ALIGNMENT(vAl) );
+	IF_OBJECT_NOT_NULL_THEN	_object->setTextAlignment( gui::EGUI_ALIGNMENT(hAl), gui::EGUI_ALIGNMENT(vAl) );
 
 	return 1;
 }

@@ -53,16 +53,9 @@ IUser::~IUser(void)
 {
 }
 
-void IUser::SetSkill( int typen, int valuel )
-{
-	knowledges_[ typen ] = valuel;
-
-	CalculateWantSalary_();
-}
-
 void IUser::SetSkill( const NrpText& name, int valuel )
 {
-	Param( name ) = valuel;
+	knowledges_[ name ] = valuel;
 
 	CalculateWantSalary_();
 }
@@ -98,9 +91,9 @@ void IUser::CalculateKnowledgeLevel_()
 	Param( KNOWLEDGE_LEVEL ) = sum;
 }
 
-int IUser::GetSkill( int typen )
+int IUser::GetSkill( const NrpText& name )
 {
-	return knowledges_.find( typen ) != NULL ? knowledges_[ typen ] : 0;
+	return knowledges_.find( name ) != NULL ? knowledges_[ name ] : 0;
 }
 
 NrpText IUser::Save( const NrpText& folderPath )
@@ -159,12 +152,12 @@ void IUser::Load( const NrpText& fileName )
 	assert( OpFileSystem::IsExist( fileName ) );
 
 	INrpConfig::Load( fileName );
-	assert( Param( NAME ).As<NrpText>().size() > 0 );
+	assert( ((NrpText)_self[ NAME ]).size() > 0 );
 
 	IniFile rv( fileName );
 	rv.Get( "knowledges", knowledges_ );
 
-	for( int k=0; k < (int)Param( WORKNUMBER ); k++ )
+	for( int k=0; k < (int)_self[ WORKNUMBER ]; k++ )
 	{
 		NrpText action = "";
 		NrpText workType = rv.Get( SECTION_WORKS, CreateKeyWork( k ), NrpText("") );
@@ -294,26 +287,26 @@ void IUser::BeginNewHour( const SYSTEMTIME& time )
 	}
 }
 
-int IUser::GetGenreExperience( GENRE_TYPE typen )
+int IUser::GetGenreExperience( const NrpText& name )
 {
-	KNOWLEDGE_MAP::Node* kIter = genreExperience_.find( typen );
+	KNOWLEDGE_MAP::Node* kIter = genreExperience_.find( name );
 	return kIter != NULL ? kIter->getValue() : 0;
 }
 
-int IUser::GetGenrePreferences( GENRE_TYPE typen )
+int IUser::GetGenrePreferences( const NrpText& name )
 {
-	KNOWLEDGE_MAP::Node* kIter = genrePreferences_.find( typen );
+	KNOWLEDGE_MAP::Node* kIter = genrePreferences_.find( name );
 	return kIter != NULL ? kIter->getValue() : 0;
 }
 
-void IUser::SetGenreExperience( GENRE_TYPE typen, int valuel )
+void IUser::SetGenreExperience( const NrpText& name, int valuel )
 {
-	genreExperience_[ typen ] = valuel;
+	genreExperience_[ name ] = valuel;
 }
 
-void IUser::SetGenrePreferences( GENRE_TYPE typen, int valuel )
+void IUser::SetGenrePreferences( const NrpText& name, int valuel )
 {
-	genrePreferences_[ typen ] = valuel;
+	genrePreferences_[ name ] = valuel;
 }
 
 void IUser::RemoveOldModificators_( const SYSTEMTIME& time )
@@ -338,9 +331,9 @@ void IUser::AddModificator( IModificator* ptrModificator )
 	modificators_.push_back( ptrModificator );
 }
 
-void IUser::IncreaseExperience( int techGroup, int grow )
+void IUser::IncreaseExperience( const NrpText& name, int grow )
 {
-	genreExperience_[ techGroup ] = (genreExperience_.find( techGroup ) != NULL ? genreExperience_[ techGroup ] : 0) + grow;
+	genreExperience_[ name ] = ( genreExperience_.find( name ) != NULL ? genreExperience_[ name ] : 0) + grow;
 }
 
 void IUser::CheckModificators_()

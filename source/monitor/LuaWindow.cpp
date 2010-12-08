@@ -34,7 +34,7 @@ int CLuaWindow::GetCloseButton( lua_State *L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaWindow::getCloseButton not need any parameter");
 	void* button = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	button = (void*)(object_->getCloseButton());
+	IF_OBJECT_NOT_NULL_THEN	button = (void*)(_object->getCloseButton());
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, button );
@@ -50,7 +50,7 @@ int CLuaWindow::SetDraggable( lua_State *L )
 
 	bool drag = lua_toboolean( L, 2 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN object_->setDraggable( drag );
+	IF_OBJECT_NOT_NULL_THEN _object->setDraggable( drag );
 
 	return 1;
 }
@@ -62,7 +62,7 @@ int CLuaWindow::SetDrawBody( lua_State *L )
 
 	bool drag = lua_toboolean( L, 2 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setDrawBackground( drag );
+	IF_OBJECT_NOT_NULL_THEN	_object->setDrawBackground( drag );
 
 	return 1;
 }
@@ -75,7 +75,7 @@ int CLuaWindow::AddLuaFunction( lua_State* L )
 	int typef = lua_tointeger( L, 2 );
 	NrpText name = lua_tostring( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->AddLuaFunction( typef, name );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddLuaFunction( typef, name );
 
 	return 1;
 }
@@ -88,7 +88,7 @@ int CLuaWindow::RemoveLuaFunction( lua_State* L )
 	int typef = lua_tointeger( L, 2 );
 	NrpText name = lua_tostring( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->RemoveLuaFunction( typef, name );
+	IF_OBJECT_NOT_NULL_THEN	_object->RemoveLuaFunction( typef, name );
 
 	return 1;
 }
@@ -98,7 +98,7 @@ int CLuaWindow::Draw( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaWindow::Draw not need any parameter");
 
-	IF_OBJECT_NOT_NULL_THEN	object_->draw();
+	IF_OBJECT_NOT_NULL_THEN	_object->draw();
 
 	return 1;
 }

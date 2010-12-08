@@ -94,7 +94,7 @@ void CNrpGameBox::Load( const NrpText& fileName )
 	{
 		NrpText addonName = rv.Get( SECTION_ADDONS, CreateKeyAddon( k ), NrpText("") );
 
-		CNrpTechnology* tech = CNrpApplication::Instance().GetBoxAddon( addonName );
+		CNrpTechnology* tech = _nrpApp.GetBoxAddon( addonName );
 
 		if( tech )
 			AddAddon( tech );

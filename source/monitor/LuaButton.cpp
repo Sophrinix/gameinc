@@ -59,7 +59,7 @@ int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функ
 
 	NrpText funcName = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	dynamic_cast< gui::CNrpButton* >( object_ )->setOnClickAction( funcName );
+	IF_OBJECT_NOT_NULL_THEN	dynamic_cast< gui::CNrpButton* >( _object )->setOnClickAction( funcName );
 
 	return 1;
 }
@@ -73,7 +73,7 @@ int CLuaButton::SetImage_( lua_State* L, const NrpText& funcName, TYPE_IMAGE typ
 	core::recti rectangle;
 	NrpText texturepath = lua_tostring( L, 6 );
 
-	video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath );
+	video::ITexture* txs = _nrpEngine.GetVideoDriver()->getTexture( texturepath );
 
 	rectangle = _ReadRect( L, 2 );
 	if( rectangle == core::recti( 0, 0, 0, 0) && ( txs != NULL ) )
@@ -82,9 +82,9 @@ int CLuaButton::SetImage_( lua_State* L, const NrpText& funcName, TYPE_IMAGE typ
 	IF_OBJECT_NOT_NULL_THEN
 		switch( typeimg ) 
 		{
-		case TI_IMAGE: object_->setImage( txs, rectangle ); break;
-		case TI_HOVER: dynamic_cast< gui::CNrpButton* >( object_ )->setHoveredImage( txs, rectangle ); break;
-		case TI_PRESSED: object_->setPressedImage( txs, rectangle ); break;
+		case TI_IMAGE: _object->setImage( txs, rectangle ); break;
+		case TI_HOVER: dynamic_cast< gui::CNrpButton* >( _object )->setHoveredImage( txs, rectangle ); break;
+		case TI_PRESSED: _object->setPressedImage( txs, rectangle ); break;
 		}
 
 	return 1;

@@ -43,10 +43,10 @@ int CLuaReklame::Create( lua_State* L )
 	NrpText gameName = lua_tostring( L, 3 );
 	NrpText company = lua_tostring( L, 4 );
 
-	object_ = CNrpPlant::Instance().CreateReklame( typeName, gameName, company );
+	_object = CNrpPlant::Instance().CreateReklame( typeName, gameName, company );
 
 	lua_pop( L, argc );
-	lua_pushlightuserdata(L, object_ );
+	lua_pushlightuserdata(L, _object );
 	Luna< CLuaReklame >::constructor( L );
 
 	return 1;
@@ -59,8 +59,8 @@ int CLuaReklame::Remove( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		delete object_;
-		object_ = NULL;
+		delete _object;
+		_object = NULL;
 	}
 
 	return 1;	
@@ -78,9 +78,9 @@ int CLuaReklame::SetReklameObject( lua_State* L )
 	{
 		if( reklameObject )
 		{
-			(*object_)[ GAMENAME ] = (*reklameObject)[ NAME ];
-			(*object_)[ TYPEOBJECT ] = (*reklameObject)[ ObjectTypeName() ];
-			(*object_)[ COMPANYNAME ] = (*reklameObject)[ COMPANYNAME ];
+			(*_object)[ GAMENAME ] = (*reklameObject)[ NAME ];
+			(*_object)[ TYPEOBJECT ] = (*reklameObject)[ ObjectTypeName() ];
+			(*_object)[ COMPANYNAME ] = (*reklameObject)[ COMPANYNAME ];
 		}
 	}
 
@@ -90,7 +90,7 @@ int CLuaReklame::SetReklameObject( lua_State* L )
 int CLuaReklame::GetQuality( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetQuality", QUALITY, 0 ) ); return 1; }
 int CLuaReklame::GetLevel( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) ); return 1; }
 int CLuaReklame::GetNumberDay( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetNumberDay", NUMBERDAY, 0 ) ); return 1; }
-int CLuaReklame::GetTypeName( lua_State* L ) { lua_pushstring( L, GetParam_<NrpText>( L, "GetTypeName", TECHTYPE, "" ) ); return 1; }
+int CLuaReklame::GetTypeName( lua_State* L ) { lua_pushstring( L, GetParam_<NrpText>( L, "GetTypeName", REKLAMETYPE, "" ) ); return 1; }
 int CLuaReklame::SetNumberDay( lua_State* L ) {	SetParam_<int, lua_Integer>( L, "SetNumberDay", NUMBERDAY, lua_tointeger );	return 1; }
 int CLuaReklame::GetTexture( lua_State* L ) { lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "" ) ); return 1; }
 int CLuaReklame::GetPrice( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetPrice", BALANCE, 0 ) ); return 1; }

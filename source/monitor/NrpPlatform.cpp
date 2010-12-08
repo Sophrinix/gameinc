@@ -1,5 +1,9 @@
 #include "StdAfx.h"
 #include "NrpPlatform.h"
+#include "IniFile.h"
+#include "NrpApplication.h"
+#include "NrpTechnology.h"
+#include "OpFileSystem.h"
 
 namespace nrp
 {
@@ -26,9 +30,9 @@ void CNrpPlatform::_InitialyzeOptions()
 	Add( INTERNAL_NAME, NrpText() );
 	Add( MAXWIDTH, 0 );
 	Add( MAXHEIGHT, 0 );
-	Add( MAXVIDEO, NrpText() );
 	Add( SELLDEVICE, 0 );
 	Add( TEXTURENORMAL, NrpText() );
+	Add( TECHNUMBER, 0 );
 }
 
 NrpText CNrpPlatform::ClassName()
@@ -38,13 +42,33 @@ NrpText CNrpPlatform::ClassName()
 
 NrpText CNrpPlatform::Save( const NrpText& pathTo )
 {
-	throw std::exception( "unfinished function" );
-	return "";
+	assert( OpFileSystem::IsExist(pathTo) );
+
+	NrpText localFolder = OpFileSystem::CheckEndSlash( pathTo + Text( NAME ) );
+
+	OpFileSystem::CreateDirectory( localFolder );
+
+	NrpText fileName = localFolder + "item.platform";
+	INrpProject::Save( fileName );
+
+	IniFile sv( fileName );
+	sv.Set( SECTION_TECHS, _techs, CreateKeyTech, INTERNAL_NAME );
+
+	return fileName;
 }
 
 void CNrpPlatform::Load( const NrpText& pathTo )
 {
 	INrpProject::Load( pathTo );
+
+	IniFile lv( pathTo );
+
+	lv.Get( SECTION_TECHS, CreateKeyTech, _self[ TECHNUMBER ], _techs, &CNrpApplication::GetTechnology, &_nrpApp );
+}
+
+CNrpTechnology* CNrpPlatform::GetTech( const NrpText& name )
+{
+	return FindByNameAndIntName< TECHS, CNrpTechnology >( _techs, name );
 }
 
 }//end namespace platform

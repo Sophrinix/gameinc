@@ -30,10 +30,9 @@ CNrpGameTime::~CNrpGameTime(void)
 
 bool CNrpGameTime::Update()
 {
-	CNrpApplication& app = CNrpApplication::Instance();
-	SYSTEMTIME& time = app[ CURRENTTIME ];
+	SYSTEMTIME& time = _nrpApp[ CURRENTTIME ];
 	time.wDayOfWeek = time.wMilliseconds = time.wSecond = 0;
-	if( GetTickCount() - lastTimeUpdate_ > (int)app[ PAUSEBTWSTEP ] )
+	if( GetTickCount() - lastTimeUpdate_ > (int)_nrpApp[ PAUSEBTWSTEP ] )
 	{
 		lastTimeUpdate_ = GetTickCount();
 		SPEED spd = speed_;
@@ -44,7 +43,7 @@ bool CNrpGameTime::Update()
 			{
 				time.wMinute = 0;
 				spd = SPD_HOUR;
-				app._BeginNewHour();
+				_nrpApp._BeginNewHour();
 			}
 		}
 
@@ -55,8 +54,8 @@ bool CNrpGameTime::Update()
 			{
 				time.wHour = 9;
 				spd = SPD_DAY;
-				app._BeginNewDay();
-				app.DoLuaFunctionsByType( APP_DAY_CHANGE, this );
+				_nrpApp._BeginNewDay();
+				_nrpApp.DoLuaFunctionsByType( APP_DAY_CHANGE, this );
 			}
 		}
 
@@ -68,8 +67,8 @@ bool CNrpGameTime::Update()
 			{
 				time.wDay = 1;
 				spd = SPD_MONTH;
-				app._BeginNewMonth();
-				app.DoLuaFunctionsByType( APP_MONTH_CHANGE, this );
+				_nrpApp._BeginNewMonth();
+				_nrpApp.DoLuaFunctionsByType( APP_MONTH_CHANGE, this );
 			}
 		}
 
@@ -81,7 +80,7 @@ bool CNrpGameTime::Update()
 				time.wMonth = 1;
 				time.wYear++;
 				//app.BeginNewYear_();
-				app.DoLuaFunctionsByType( APP_YEAR_CHANGE, this );
+				_nrpApp.DoLuaFunctionsByType( APP_YEAR_CHANGE, this );
 			}
 		}
 

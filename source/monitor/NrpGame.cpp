@@ -94,12 +94,12 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpCo
 			_genres.push_back( (*genre)[ INTERNAL_NAME ] );
 	}
 
-	Param( MODULE_NUMBER ) = refGame[ MODULE_NUMBER ];
+	_self[ MODULE_NUMBER ] = refGame[ MODULE_NUMBER ];
 	for( int cnt=0; cnt < (int)Param( MODULE_NUMBER ); cnt++ )
 		 _techs.push_back( refGame.GetModule( cnt )->Param( INTERNAL_NAME ) );
 
-	Param( INTERNAL_NAME ) = CNrpApplication::Instance().GetFreeInternalName( this );
-	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( Param( INTERNAL_NAME ) );
+	_self[ INTERNAL_NAME ] = _nrpApp.GetFreeInternalName( this );
+	CNrpScreenshot* pgList = _nrpApp.GetScreenshot( Param( INTERNAL_NAME ) );
 	assert( pgList != NULL );
 	if( pgList != NULL )
 		Param( GAMEIMAGELIST ) = pgList;
@@ -204,7 +204,7 @@ float CNrpGame::GetAuthorFamous()
 	float summ = 0.1f;
 	for( u32 i=0; i < _developers.size(); i++ )
 	{
-		IUser* user = CNrpApplication::Instance().GetUser( _developers[ i ] );
+		IUser* user = _nrpApp.GetUser( _developers[ i ] );
 		if( user )
 		{
 			summ += (*user)[ FAMOUS ].As<float>();
@@ -244,7 +244,7 @@ void CNrpGame::GameBoxSaling( int number )
 		if( cmp )
 			(*cmp)[ BALANCE ] += price * number;
 
-		SYSTEMTIME curTime = CNrpApplication::Instance()[ CURRENTTIME ].As<SYSTEMTIME>();
+		SYSTEMTIME curTime =_nrpApp[ CURRENTTIME ].As<SYSTEMTIME>();
 	}
 	//history_->AddStep( CURRENTTIME, number, price * number );
 }

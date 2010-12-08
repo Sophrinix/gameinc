@@ -32,7 +32,7 @@ int CLuaProgressBar::SetPosition( lua_State* L )
 
 	int position = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setPosition( position );
+	IF_OBJECT_NOT_NULL_THEN	_object->setPosition( position );
 
 	return 1;
 }
@@ -46,8 +46,8 @@ int CLuaProgressBar::SetImage( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		video::ITexture* ptrTexture = CNrpEngine::Instance().GetVideoDriver()->getTexture( textureName );
-		object_->setImage( ptrTexture );
+		video::ITexture* ptrTexture = _nrpEngine.GetVideoDriver()->getTexture( textureName );
+		_object->setImage( ptrTexture );
 	}
 
 	return 1;	
@@ -62,8 +62,8 @@ int CLuaProgressBar::SetFillImage( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		video::ITexture* ptrTexture = CNrpEngine::Instance().GetVideoDriver()->getTexture( textureName );
-		object_->setFillImage( ptrTexture );
+		video::ITexture* ptrTexture = _nrpEngine.GetVideoDriver()->getTexture( textureName );
+		_object->setFillImage( ptrTexture );
 	}
 
 	return 1;	

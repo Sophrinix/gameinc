@@ -43,7 +43,7 @@ int CLuaComboBox::SetImage( lua_State *L )							//получает имя файла с текстуро
 	rectangle.LowerRightCorner.X = lua_tointeger( L, 4 );
 	rectangle.LowerRightCorner.Y = lua_tointeger( L, 5 );
 
-	video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath.c_str() ); //грузим текстуру в видеокарту
+	video::ITexture* txs = _nrpEngine.GetVideoDriver()->getTexture( texturepath.c_str() ); //грузим текстуру в видеокарту
 	
 	IF_OBJECT_NOT_NULL_THEN	object_->setImage( txs, rectangle );								//размещаем текстуру в кнопке			
 	*/
@@ -67,7 +67,7 @@ int CLuaComboBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 	NrpText text( lua_tostring( L, 2 ) );
 	void* object = lua_touserdata( L, 3 );
 	
-	IF_OBJECT_NOT_NULL_THEN	object_->addItem( text.ToWide(), (u32)object );			
+	IF_OBJECT_NOT_NULL_THEN	_object->addItem( text.ToWide(), (u32)object );			
 
 	return 1;
 }
@@ -79,7 +79,7 @@ int CLuaComboBox::GetSelected( lua_State *L )
 
 	int selected = -1;
 
-	IF_OBJECT_NOT_NULL_THEN selected = object_->getSelected();
+	IF_OBJECT_NOT_NULL_THEN selected = _object->getSelected();
 	lua_pushinteger( L, selected );
 
 	return 1;
@@ -92,7 +92,7 @@ int CLuaComboBox::SetSelected( lua_State *L )
 
 	int selected = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setSelected( selected );			
+	IF_OBJECT_NOT_NULL_THEN	_object->setSelected( selected );			
 
 	return 1;
 }
@@ -102,7 +102,7 @@ int CLuaComboBox::Clear( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaComboBox::GetSelected not need any parameter");
 
-	IF_OBJECT_NOT_NULL_THEN object_->clear();
+	IF_OBJECT_NOT_NULL_THEN _object->clear();
 
 	return 1;
 }
@@ -116,9 +116,9 @@ int CLuaComboBox::GetSelectedObject( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		int selected = object_->getSelected();
+		int selected = _object->getSelected();
 		if( selected >= 0 )
-			ptrData = (void*)object_->getItemData( selected );
+			ptrData = (void*)_object->getItemData( selected );
 	}
 	lua_pushlightuserdata( L, ptrData );
 

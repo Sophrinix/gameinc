@@ -23,6 +23,7 @@ NrpText CreateKeyGenre( int index ) { return NrpText("genre_") + NrpText( index 
 NrpText CreateKeyProject( int index ) { return NrpText("project_") + NrpText( index ); }
 NrpText CreateKeyEngine( int index ) { return NrpText("engine_") + NrpText( index ); }
 NrpText CreateKeyGame( int index ) { return NrpText("game_") + NrpText( index ); }
+NrpText CreateKeyPlatform( int index ) { return NrpText("platform_") + NrpText( index ); }
 
 NrpText CreateKeyType( int index ) { return NrpText("type_") + NrpText( index ); }
 NrpText CreateKeyModule( int index ) { return NrpText("module_") + NrpText( index ); }

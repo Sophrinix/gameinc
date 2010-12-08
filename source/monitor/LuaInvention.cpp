@@ -54,8 +54,8 @@ int CLuaInvention::Create( lua_State* L )
 	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
 	PNrpCompany cmp = (PNrpCompany)lua_touserdata( L, 3 );
 
-	object_ = new CNrpInvention( tech, cmp );
-	lua_pushlightuserdata(L, object_ );
+	_object = new CNrpInvention( tech, cmp );
+	lua_pushlightuserdata(L, _object );
 
 	return 1;
 }
@@ -66,7 +66,7 @@ int CLuaInvention::AddUser( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaInvention::AddUser not need parameter");
 
 	IUser* user = (IUser*)lua_touserdata( L, 2 ); 
-	IF_OBJECT_NOT_NULL_THEN	object_->AddUser( user );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddUser( user );
 
 	return 1;	
 }
@@ -78,8 +78,8 @@ int CLuaInvention::Remove( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		delete object_;
-		object_ = NULL;
+		delete _object;
+		_object = NULL;
 	}
 
 	return 1;	
@@ -92,7 +92,7 @@ int CLuaInvention::Load( lua_State* L )
 
 	NrpText iniFile = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->Load( iniFile );
+	IF_OBJECT_NOT_NULL_THEN	_object->Load( iniFile );
 	return 1;	
 }
 
@@ -139,7 +139,7 @@ int CLuaInvention::GetPrognoseDateFinish( lua_State* L )
 
 	SYSTEMTIME time;
 	memset( &time, 0, sizeof(SYSTEMTIME) );
-	IF_OBJECT_NOT_NULL_THEN	time = (*object_)[ PROGNOSEDATEFINISH ];
+	IF_OBJECT_NOT_NULL_THEN	time = (*_object)[ PROGNOSEDATEFINISH ];
 
 	lua_pushinteger( L, time.wDay );
 	lua_pushinteger( L, time.wMonth );
@@ -157,7 +157,7 @@ int CLuaInvention::CheckParams( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:CheckParams not need parameter");
 
-	IF_OBJECT_NOT_NULL_THEN	object_->CheckParams();
+	IF_OBJECT_NOT_NULL_THEN	_object->CheckParams();
 
 	return 1;
 }
@@ -176,7 +176,7 @@ int CLuaInvention::GetUser( lua_State* L )
 	int index = lua_tointeger( L, 2 );
 	IUser* user = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	user = object_->GetUser( index );
+	IF_OBJECT_NOT_NULL_THEN	user = _object->GetUser( index );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
@@ -205,7 +205,7 @@ int CLuaInvention::IsValid( lua_State* L )
 	bool avaible = true;
 	try
 	{
-		IF_OBJECT_NOT_NULL_THEN	object_->ClassName();
+		IF_OBJECT_NOT_NULL_THEN	_object->ClassName();
 	}
 	catch(...)
 	{
@@ -222,7 +222,7 @@ int CLuaInvention::GetCompany( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:GetCompany not need parameter");
 
 	PNrpCompany cmp = NULL;
-	IF_OBJECT_NOT_NULL_THEN	cmp = (*object_)[ PARENTCOMPANY ].As<PNrpCompany>();
+	IF_OBJECT_NOT_NULL_THEN	cmp = (*_object)[ PARENTCOMPANY ].As<PNrpCompany>();
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, cmp );
@@ -248,7 +248,7 @@ int CLuaInvention::ClearMonthPay( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:ClearMonthPay not need parameter");
 
-	IF_OBJECT_NOT_NULL_THEN (*object_)[ MONEY_TODECREASE ] = (int)0;
+	IF_OBJECT_NOT_NULL_THEN (*_object)[ MONEY_TODECREASE ] = (int)0;
 
 	return 1;
 }

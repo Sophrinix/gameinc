@@ -31,7 +31,7 @@ size_t CNrpBank::GetMaxCompanyLoan( const NrpText& companyName )
 			dolg += (int)(*_loans[ i ])[ MONEY ]; 
 	}
 
-	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( companyName );
+	CNrpCompany* cmp = _nrpApp.GetCompany( companyName );
 
 	if( cmp )
 		result = (*cmp)[ BALANCE ] - static_cast< int >( dolg * 1.5f );
@@ -60,7 +60,7 @@ void CNrpBank::CreateLoan( const NrpText& name, int money, int percent, int mont
 {
 	CNrpLoan* loan = new CNrpLoan( loanId_++ );
 	CNrpLoan& refLoan = *loan;
-	SYSTEMTIME endtime, time = CNrpApplication::Instance()[ CURRENTTIME ].As<SYSTEMTIME>();
+	SYSTEMTIME endtime, time = _nrpApp[ CURRENTTIME ].As<SYSTEMTIME>();
 	endtime = time;
 	endtime.wYear = time.wYear + month / 12;
 	endtime.wMonth = ( time.wMonth + month ) % 12;
@@ -70,7 +70,7 @@ void CNrpBank::CreateLoan( const NrpText& name, int money, int percent, int mont
 	refLoan[ STARTDATE ] = time;
 	refLoan[ MONTHLEFT ] = month;
 	refLoan[ ENDDATE ] = endtime;
-	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( name );
+	PNrpCompany cmp = _nrpApp.GetCompany( name );
 	assert( cmp );
 	if( cmp )
 		refLoan[ COMPANYNAME ] = (*cmp)[ NAME ];

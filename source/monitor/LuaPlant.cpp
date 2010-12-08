@@ -7,6 +7,7 @@
 #include "LuaReklame.h" 
 #include "NrpApplication.h"
 #include "LuaDiskMachine.h"
+#include "LuaPlantWork.h"
 #include "NrpDiskMachine.h"
 #include "IniFile.h"
 
@@ -43,7 +44,7 @@ int CLuaPlant::Load( lua_State* L )
 	
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		object_->Load( CNrpApplication::Instance()[ SAVEDIR_PLANT ] );
+		_object->Load( _nrpApp[ SAVEDIR_PLANT ] );
 	}
 
 	return 1;
@@ -56,7 +57,7 @@ int CLuaPlant::GetDiskMachine( lua_State* L )
 
 	int dmNumber = lua_tointeger( L, 2 );
 	CNrpDiskMachine* dm = NULL;
-	IF_OBJECT_NOT_NULL_THEN	dm = object_->GetDiskMachine( dmNumber );
+	IF_OBJECT_NOT_NULL_THEN	dm = _object->GetDiskMachine( dmNumber );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, dm );
@@ -82,7 +83,7 @@ int CLuaPlant::LoadDiskMachine( lua_State* L )
 	{
 		CNrpDiskMachine* dm = new CNrpDiskMachine();
 		dm->Load( dmIniFile );
-		object_->AddDiskMachine( dm );
+		_object->AddDiskMachine( dm );
 	}
 
 	return 1;		
@@ -93,10 +94,10 @@ int CLuaPlant::AddProduceWork( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::AddProduceWork need CNrpPlantWork* parameter");
 
-	CNrpPlantWork* plantWork = (CNrpPlantWork*)lua_touserdata( L, 2 );
+	CNrpPlantWork* plantWork = _GetObjectFromTable< CNrpPlantWork, CLuaPlantWork >( L, 2, -1 );
 	assert( plantWork != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddWork( plantWork );
+	IF_OBJECT_NOT_NULL_THEN _object->AddWork( plantWork );
 
 	return 1;
 }
@@ -109,8 +110,8 @@ int CLuaPlant::Save( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		NrpText savedir = CNrpApplication::Instance()[ SAVEDIR_PLANT ];
-		object_->Save( savedir );
+		NrpText savedir = _nrpApp[ SAVEDIR_PLANT ];
+		_object->Save( savedir );
 	}
 
 	return 1;
@@ -127,10 +128,10 @@ int CLuaPlant::LoadBaseReklame( lua_State* L )
 	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( object_->GetBaseReklame( reklameName ) == NULL )
+		if( _object->GetBaseReklame( reklameName ) == NULL )
 		{
 			CNrpReklameWork* baseReklame = new CNrpReklameWork( fileName );
-			ret = object_->AddBaseReklame( baseReklame );
+			ret = _object->AddBaseReklame( baseReklame );
 		}
 	}
 
@@ -147,14 +148,14 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		NrpText savedir = CNrpApplication::Instance()[ SAVEDIR ];
+		NrpText savedir = _nrpApp[ SAVEDIR ];
 		NrpText reklamePrice = savedir+profileName+"/reklameprice.ini";
 
 		IniFile sv( reklamePrice );
-		for( int k=0; k < (int)(*object_)[ BASEREKLAMENUMBER ]; k++ )
+		for( int k=0; k < (int)(*_object)[ BASEREKLAMENUMBER ]; k++ )
 		{
-			CNrpReklameWork* rW = object_->GetBaseReklame( k );
-			sv.Set( SECTION_PROPERTIES, (*rW)[ TECHTYPE ], (int)(*rW)[ DAYCOST ] );
+			CNrpReklameWork* rW = _object->GetBaseReklame( k );
+			sv.Set( SECTION_PROPERTIES, (*rW)[ INTERNAL_NAME ], (int)(*rW)[ DAYCOST ] );
 		}
 	}
 
@@ -170,7 +171,7 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		NrpText savedir = CNrpApplication::Instance()[ SAVEDIR ];
+		NrpText savedir = _nrpApp[ SAVEDIR ];
 		NrpText reklamePrice = savedir+profileName+"/reklameprice.ini";
 
 		std::auto_ptr<wchar_t> buffer( new wchar_t[ 32000 ] );
@@ -185,7 +186,7 @@ int CLuaPlant::LoadReklamePrice( lua_State* L )
 			name = readLine.subString( 0, pos );
 			valuel = readLine.subString( pos + 1, 0xff );
 
-			CNrpReklameWork* rW = object_->GetBaseReklame( name );
+			CNrpReklameWork* rW = _object->GetBaseReklame( name );
 			if( rW != NULL )
 				(*rW)[ DAYCOST ] = valuel.ToInt();
 
@@ -204,7 +205,7 @@ int CLuaPlant::AddReklameWork( lua_State* L )
 	CNrpReklameWork* reklameWork = (CNrpReklameWork*)lua_touserdata( L, 2 );
 	assert( reklameWork != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddReklame( reklameWork );
+	IF_OBJECT_NOT_NULL_THEN _object->AddReklame( reklameWork );
 
 	return 1;
 }
@@ -221,7 +222,7 @@ int CLuaPlant::GetReklame( lua_State* L )
 		return 1;
 
 	CNrpReklameWork* r = NULL;
-	IF_OBJECT_NOT_NULL_THEN r = object_->GetReklame( typeName, game );
+	IF_OBJECT_NOT_NULL_THEN r = _object->GetReklame( typeName, game );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, r );
@@ -244,7 +245,7 @@ int CLuaPlant::GetBaseReklame( lua_State* L )
 	assert( index >= 0 );
 
 	CNrpReklameWork* ret = NULL;
-	IF_OBJECT_NOT_NULL_THEN  ret = object_->GetBaseReklame( index );
+	IF_OBJECT_NOT_NULL_THEN  ret = _object->GetBaseReklame( index );
 	
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, ret );

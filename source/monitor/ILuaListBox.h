@@ -33,7 +33,7 @@ public:
 		video::SColor color( lua_tointeger( L, 3 ), lua_tointeger( L, 4 ), 
 			lua_tointeger( L, 5 ), lua_tointeger( L, 6 ) );
 
-		IF_OBJECT_NOT_NULL_THEN object_->setItemOverrideColor( index, gui::EGUI_LBC_BACKGROUND, color );
+		IF_OBJECT_NOT_NULL_THEN _object->setItemOverrideColor( index, gui::EGUI_LBC_BACKGROUND, color );
 
 		return 1;
 	}	
@@ -46,7 +46,7 @@ public:
 		int height = lua_tointeger( L, 2 );
 		assert( height > 0 && height < 200 );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setItemHeight( height );			
+		IF_OBJECT_NOT_NULL_THEN	_object->setItemHeight( height );			
 
 		return 1;
 	}
@@ -57,7 +57,7 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText(":Clear not need any parameter" ) ) );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->clear();			
+		IF_OBJECT_NOT_NULL_THEN	_object->clear();			
 
 		return 1;
 	}
@@ -69,7 +69,7 @@ public:
 
 		int selected = lua_tointeger( L, 2 );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setSelected( selected );			
+		IF_OBJECT_NOT_NULL_THEN	_object->setSelected( selected );			
 
 		return 1;
 	}
@@ -81,7 +81,7 @@ public:
 
 		int selected = -1;
 
-		IF_OBJECT_NOT_NULL_THEN selected = object_->getSelected();
+		IF_OBJECT_NOT_NULL_THEN selected = _object->getSelected();
 		lua_pushinteger( L, selected );
 
 		return 1;
@@ -96,8 +96,8 @@ public:
 
 		IF_OBJECT_NOT_NULL_THEN 
 		{
-			irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( NrpText("font_") + NrpText( size ) );
-			object_->setRFont( font );
+			irr::gui::IGUIFont* font = _nrpEngine.GetGuiEnvironment()->getFont( NrpText("font_") + NrpText( size ) );
+			_object->setRFont( font );
 		}
 
 		return 1;
@@ -114,7 +114,7 @@ public:
 			lua_tointeger( L, 5 ),
 			lua_tointeger( L, 6 ) );
 
-		IF_OBJECT_NOT_NULL_THEN object_->setItemOverrideColor( index, gui::EGUI_LBC_TEXT, color );
+		IF_OBJECT_NOT_NULL_THEN _object->setItemOverrideColor( index, gui::EGUI_LBC_TEXT, color );
 
 		return 1;
 	}

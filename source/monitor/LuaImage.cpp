@@ -34,7 +34,7 @@ int CLuaImage::SetImage( lua_State *L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		if( pathToTexture.size() )
-			object_->setImage( CNrpEngine::Instance().GetVideoDriver()->getTexture( pathToTexture ) );
+			_object->setImage( _nrpEngine.GetVideoDriver()->getTexture( pathToTexture ) );
 	}
 
 	return 1;
@@ -47,7 +47,7 @@ int CLuaImage::SetScaleImage( lua_State *L )
 
 	bool scaleImage = lua_toboolean( L, 2 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setScaleImage( scaleImage );
+	IF_OBJECT_NOT_NULL_THEN	_object->setScaleImage( scaleImage );
 
 	return 1;
 }
@@ -59,7 +59,7 @@ int CLuaImage::SetUseAlphaChannel( lua_State* L )
 
 	bool useAlpha = lua_toboolean( L, 2 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setUseAlphaChannel( useAlpha );
+	IF_OBJECT_NOT_NULL_THEN	_object->setUseAlphaChannel( useAlpha );
 
 	return 1;
 }

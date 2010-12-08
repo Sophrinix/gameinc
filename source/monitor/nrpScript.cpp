@@ -321,7 +321,7 @@ void CNrpScript::TemporaryScript( const NrpText& fileName, SCRIPT_ACTION action 
 	case SA_CREATE:
 		{
 			NrpText fn = NrpText("tmp/") + fileName + ".lua";
-			IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn );
+			IWriteFile* file = _nrpEngine.GetFileSystem()->createAndWriteFile( fn );
 			file->drop();	
 		}
 	break;
@@ -337,7 +337,7 @@ void CNrpScript::TemporaryScript( const NrpText& fileName, SCRIPT_ACTION action 
 void CNrpScript::AddActionToTemporaryScript( const NrpText& fileName, const NrpText& action )
 {
 	NrpText fn = NrpText("tmp/") + fileName + ".lua";
-	IWriteFile* file = CNrpEngine::Instance().GetFileSystem()->createAndWriteFile( fn, true );
+	IWriteFile* file = _nrpEngine.GetFileSystem()->createAndWriteFile( fn, true );
 	file->write( action.ToWide(), action.size() );
 	file->write( L"\n", 1 );
 	file->drop();		

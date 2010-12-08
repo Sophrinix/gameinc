@@ -119,6 +119,7 @@ public:
         lua_pushcclosure(L, &Luna<T>::thunk, 1);
         lua_settable(L, -3); // self["function"] = thunk("function")
       }
+
       return 1;
     }
 
@@ -143,7 +144,7 @@ public:
       return 0;
     }
 
-    struct RegType {
+	struct RegType {
       const char *name;
       int(T::*mfunc)(lua_State*);
     };

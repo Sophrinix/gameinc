@@ -19,7 +19,6 @@ Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы метод
 {
 	LUNA_ILUAPROJECT_HEADER( CLuaTechnology ),
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetTechType ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetBaseCode ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetAddingEngineCode ),
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEngineTechRequire ),
@@ -59,11 +58,6 @@ int CLuaTechnology::SetBaseCode( lua_State* L )
 	return SetParam_<float, lua_Number>( L, "SetBaseCode", BASE_CODE, lua_tonumber );
 }
 
-int CLuaTechnology::SetTechType( lua_State* L )
-{
-	return SetParam_<int, lua_Integer>( L, "SetTechType", TECHTYPE, lua_tointeger );
-}
-
 int CLuaTechnology::SetAddingEngineCode( lua_State* L )
 {
 	return SetParam_<float, lua_Number>( L, "SetAddingEngineCode", ENGINE_CODE, lua_tonumber );
@@ -87,7 +81,7 @@ int CLuaTechnology::GetOptionAsInt( lua_State* L )
 	NrpText opName = lua_tostring( L, 2 );
 
 	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = (*object_)[ opName ];
+	IF_OBJECT_NOT_NULL_THEN	result = (*_object)[ opName ];
 	lua_pushinteger( L, result );
 	return 1;	
 }
@@ -99,8 +93,8 @@ int CLuaTechnology::Create( lua_State* L )
 
 	int typen = lua_tointeger( L, 2 );
 
-	object_ = new CNrpTechnology( PROJECT_TYPE(typen) );
-	lua_pushlightuserdata(L, object_ );
+	_object = new CNrpTechnology( PROJECT_TYPE(typen) );
+	lua_pushlightuserdata(L, _object );
 
 	return 1;
 }
@@ -113,7 +107,7 @@ int CLuaTechnology::SetEngineTechRequire( lua_State* L )
 	int typen = lua_tointeger( L, 2 );
 	int valuel = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->SetEngineTechRequire( typen, valuel );
+	IF_OBJECT_NOT_NULL_THEN	_object->SetEngineTechRequire( typen, valuel );
 
 	return 1;	
 }
@@ -126,7 +120,7 @@ int CLuaTechnology::SetEmployerSkillRequire( lua_State* L )
 	int typen = lua_tointeger( L, 2 );
 	int valuel = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->SetEmployerSkillRequire( typen, valuel );
+	IF_OBJECT_NOT_NULL_THEN	_object->SetEmployerSkillRequire( typen, valuel );
 
 	return 1;	
 }
@@ -138,8 +132,8 @@ int CLuaTechnology::Remove( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		delete object_;
-		object_ = NULL;
+		delete _object;
+		_object = NULL;
 	}
 
 	return 1;	
@@ -152,7 +146,7 @@ int CLuaTechnology::Load( lua_State* L )
 
 	NrpText iniFile( lua_tostring( L, 2 ) );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->Load( iniFile );
+	IF_OBJECT_NOT_NULL_THEN	_object->Load( iniFile );
 	return 1;	
 }
 
@@ -189,7 +183,7 @@ int CLuaTechnology::GetFutureTechInternalName( lua_State* L )
 	NrpText name;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		name = object_->GetFutureTech( index );
+		name = _object->GetFutureTech( index );
 	}
 
 	lua_pushstring( L, name );
@@ -219,7 +213,7 @@ int CLuaTechnology::GetCompany( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechnology::GetCompany not need any parameter");
 
 	CNrpCompany* cmp = NULL;
-	IF_OBJECT_NOT_NULL_THEN cmp = (*object_)[ PARENTCOMPANY ].As<CNrpCompany*>();
+	IF_OBJECT_NOT_NULL_THEN cmp = (*_object)[ PARENTCOMPANY ].As<CNrpCompany*>();
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, cmp );

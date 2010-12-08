@@ -21,7 +21,7 @@ CNrpGuiCursorAnimator::CNrpGuiCursorAnimator( IGUIEnvironment* environment, IGUI
 void CNrpGuiCursorAnimator::draw()
 {
 
-	core::position2di pos = CNrpEngine::Instance().GetDevice()->getCursorControl()->getPosition();
+	core::position2di pos = _nrpEngine.GetDevice()->getCursorControl()->getPosition();
 
 	core::position2di parentPos = Parent->getParent() ? Parent->getParent()->getAbsolutePosition().UpperLeftCorner : core::position2di( 0, 0 );
 

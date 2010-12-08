@@ -37,9 +37,7 @@ template< class T > class ILuaGuiElement : public ILuaObject< T >
 {
 public:
 	ILuaGuiElement(lua_State *L, NrpText luaName) : ILuaObject( L, luaName )
-	{
-
-	}
+	{}
 
 	int GetChildCount( lua_State* L )
 	{
@@ -47,7 +45,7 @@ public:
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetChildCount not need parameter" ) ) );
 
 		int ret = 0;
-		IF_OBJECT_NOT_NULL_THEN ret = object_->getChildren().size();
+		IF_OBJECT_NOT_NULL_THEN ret = _object->getChildren().size();
 
 		lua_pushinteger( L, ret );
 		return 1;
@@ -63,7 +61,7 @@ public:
 		gui::IGUIElement* ret = NULL;
 		IF_OBJECT_NOT_NULL_THEN
 		{
-			const core::list<gui::IGUIElement*>& childs = object_->getChildren();
+			const core::list<gui::IGUIElement*>& childs = _object->getChildren();
 			bool isValid = (index >= 0 && index < childs.size());
 			assert( isValid );
 
@@ -82,8 +80,8 @@ public:
 
 		IF_OBJECT_NOT_NULL_THEN 
 		{
-			gui::CNrpGUIEnvironment* guienv = dynamic_cast< gui::CNrpGUIEnvironment* >( CNrpEngine::Instance().GetGuiEnvironment() ); 
-			object_->setRFont( fontName != NULL ? guienv->getFont( fontName ) : NULL );
+			gui::CNrpGUIEnvironment* guienv = dynamic_cast< gui::CNrpGUIEnvironment* >( _nrpEngine.GetGuiEnvironment() ); 
+			_object->setRFont( fontName != NULL ? guienv->getFont( fontName ) : NULL );
 		}
 
 		return 1;			
@@ -94,10 +92,10 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":RemoveChilds not need parameter" ) ) );
 
-		gui::CNrpGUIEnvironment* guienv = dynamic_cast< gui::CNrpGUIEnvironment* >( CNrpEngine::Instance().GetGuiEnvironment() ); 
+		gui::CNrpGUIEnvironment* guienv = dynamic_cast< gui::CNrpGUIEnvironment* >( _nrpEngine.GetGuiEnvironment() ); 
 		IF_OBJECT_NOT_NULL_THEN 
 		{
-			core::list< gui::IGUIElement* > childs = object_->getChildren();
+			core::list< gui::IGUIElement* > childs = _object->getChildren();
 
 			core::list< gui::IGUIElement* >::Iterator pIter = childs.begin();
 			for( ; pIter != childs.end(); pIter++ ) 
@@ -114,7 +112,7 @@ public:
 
 		void* parent = NULL;
 
-		IF_OBJECT_NOT_NULL_THEN parent = object_->getParent();
+		IF_OBJECT_NOT_NULL_THEN parent = _object->getParent();
 		lua_pushlightuserdata( L, parent );
 
 		return 1;
@@ -127,7 +125,7 @@ public:
 
 		core::position2di pos( 0, 0 );
 
-		IF_OBJECT_NOT_NULL_THEN pos = object_->getRelativePosition().UpperLeftCorner;
+		IF_OBJECT_NOT_NULL_THEN pos = _object->getRelativePosition().UpperLeftCorner;
 		lua_pushinteger( L, pos.X );
 		lua_pushinteger( L, pos.Y );
 
@@ -141,7 +139,7 @@ public:
 
 		int id = 0;
 
-		IF_OBJECT_NOT_NULL_THEN id = object_->getID();
+		IF_OBJECT_NOT_NULL_THEN id = _object->getID();
 		lua_pushinteger( L, id );
 
 		return 1;
@@ -154,7 +152,7 @@ public:
 
 		bool enabled = false;
 
-		IF_OBJECT_NOT_NULL_THEN enabled = object_->isEnabled();
+		IF_OBJECT_NOT_NULL_THEN enabled = _object->isEnabled();
 		lua_pushboolean( L, enabled );
 
 		return 1;
@@ -167,7 +165,7 @@ public:
 
 		NrpText text( lua_tostring( L, 2 ) );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setText( text.ToWide() );
+		IF_OBJECT_NOT_NULL_THEN	_object->setText( text.ToWide() );
 
 		return 1;
 	}
@@ -180,8 +178,8 @@ public:
 		NrpText typen("");
 		IF_OBJECT_NOT_NULL_THEN 
 		{
-			if( object_->getType() < gui::EGUIET_COUNT )
-				typen = object_->getTypeName();
+			if( _object->getType() < gui::EGUIET_COUNT )
+				typen = _object->getTypeName();
 			else
 				typen = "";
 		}
@@ -197,7 +195,7 @@ public:
 		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetEnabled need boolean parameter" ) ) );
 
 		bool enabled = lua_toboolean( L, 2 ) > 0;
-		IF_OBJECT_NOT_NULL_THEN object_->setEnabled( enabled );
+		IF_OBJECT_NOT_NULL_THEN _object->setEnabled( enabled );
 
 		return 1;
 	}
@@ -208,7 +206,7 @@ public:
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetText not need any parameter" ) ) );
 
 		NrpText text("");
-		IF_OBJECT_NOT_NULL_THEN text = object_->getText();
+		IF_OBJECT_NOT_NULL_THEN text = _object->getText();
 
 		lua_pushstring( L, text );
 
@@ -221,7 +219,7 @@ public:
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetSize not need any parameter" ) ) );
 
 		core::recti rectangle; 
-		IF_OBJECT_NOT_NULL_THEN	rectangle = object_->getAbsolutePosition();
+		IF_OBJECT_NOT_NULL_THEN	rectangle = _object->getAbsolutePosition();
 
 		lua_pushinteger( L, rectangle.getWidth() );
 		lua_pushinteger( L, rectangle.getHeight() );
@@ -241,9 +239,9 @@ public:
 		offset.X = lua_tointeger( L, 2 );
 		offset.Y = lua_tointeger( L, 3 );
 
-		core::recti wndRect = object_->getAbsolutePosition();
+		core::recti wndRect = _object->getAbsolutePosition();
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setRelativePosition( wndRect + offset );
+		IF_OBJECT_NOT_NULL_THEN	_object->setRelativePosition( wndRect + offset );
 
 		return 1;
 	}
@@ -255,7 +253,7 @@ public:
 
 		bool visible = lua_toboolean( L, 2 ) > 0;						//принимает булевое значение в качестве луа-параметра
 
-		IF_OBJECT_NOT_NULL_THEN object_->setVisible( visible );		
+		IF_OBJECT_NOT_NULL_THEN _object->setVisible( visible );		
 
 		return 1;
 	}
@@ -266,7 +264,7 @@ public:
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( "::self not need any parameter" ) ) );
 
 		bool visible = false;
-		IF_OBJECT_NOT_NULL_THEN visible = object_->isVisible();
+		IF_OBJECT_NOT_NULL_THEN visible = _object->isVisible();
 
 		lua_pushboolean( L, visible );
 
@@ -280,7 +278,7 @@ public:
 
 		NrpText name( lua_tostring( L, 2 ) );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setName( name.ToWide() );
+		IF_OBJECT_NOT_NULL_THEN	_object->setName( name.ToWide() );
 
 		return 1;
 	}
@@ -291,7 +289,7 @@ public:
 		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetAlpha need int parameter " ) ) );
 
 		int alpha = lua_tointeger( L, 2 );
-		IF_OBJECT_NOT_NULL_THEN	object_->setAlphaBlend( alpha);
+		IF_OBJECT_NOT_NULL_THEN	_object->setAlphaBlend( alpha);
 
 		return 1;
 	}
@@ -302,7 +300,7 @@ public:
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetAlpha not need any parameter" ) ) );
 
 		int alpha = 0;
-		IF_OBJECT_NOT_NULL_THEN alpha = object_->getAlphaBlend();
+		IF_OBJECT_NOT_NULL_THEN alpha = _object->getAlphaBlend();
 
 		lua_pushinteger( L, alpha );
 
@@ -318,13 +316,13 @@ public:
 		{
 			try
 			{
-				object_->remove();
-				object_ = NULL;
+				_object->remove();
+				_object = NULL;
 			}
 			catch(...)
 			{
-				assert( object_ != NULL );
-				object_  = NULL;
+				assert( _object != NULL );
+				_object  = NULL;
 			}
 		}
 
@@ -343,10 +341,10 @@ public:
 		newPos.X = lua_tointeger( L, 2 );
 		newPos.Y = lua_tointeger( L, 3 );
 
-		core::recti wndRect = object_->getAbsolutePosition();
+		core::recti wndRect = _object->getAbsolutePosition();
 		core::recti newRect( newPos.X, newPos.Y, newPos.X + wndRect.getWidth(), newPos.Y + wndRect.getHeight() );
 
-		IF_OBJECT_NOT_NULL_THEN object_->setRelativePosition( newRect );
+		IF_OBJECT_NOT_NULL_THEN _object->setRelativePosition( newRect );
 
 		return 1;
 	}
@@ -365,7 +363,7 @@ public:
 		newRect.LowerRightCorner.X = lua_tointeger( L, 4 );
 		newRect.LowerRightCorner.Y = lua_tointeger( L, 5 );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setRelativePosition( newRect );
+		IF_OBJECT_NOT_NULL_THEN	_object->setRelativePosition( newRect );
 
 		return 1;
 	}

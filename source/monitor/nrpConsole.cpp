@@ -92,7 +92,7 @@ void CNrpConsole::RegisterDefaultCommands_()			//! loads a few default commands 
 	RegisterCommand(new core::IC_Command_ECHO());
 	RegisterCommand(new core::IC_Command_HELP());
 	RegisterCommand(new core::IC_Command_LIST());
-	RegisterCommand(new core::IC_Command_INFO( CNrpEngine::Instance().GetDevice() ) );
+	RegisterCommand(new core::IC_Command_INFO( _nrpEngine.GetDevice() ) );
 	RegisterCommand(new core::IC_Command_ACTIONDATA() );
 	RegisterCommand(new core::IC_Command_SCRIPT() );
 	RegisterCommand(new core::IC_Command_UPDATE() );

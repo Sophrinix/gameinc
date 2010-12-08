@@ -16,11 +16,13 @@ SECTION_NAME SECTION_USERS( L"users" );
 SECTION_NAME SECTION_GENRES( L"genres" );
 SECTION_NAME SECTION_VIDEO( L"video" );
 SECTION_NAME SECTION_SOUND( L"sound" );
+SECTION_NAME SECTION_LANGUGAGES( L"languages" );
 SECTION_NAME SECTION_WORKS( L"works");
 SECTION_NAME SECTION_REKLAMES( L"reklames" );
 SECTION_NAME SECTION_PROJECTS( L"projects" );
 SECTION_NAME SECTION_DEVPROJECTS( L"devProjects" );
 SECTION_NAME SECTION_GAMES( L"games" );
+SECTION_NAME SECTION_PLATFORMS( L"platforms" ); 
 SECTION_NAME SECTION_ENGINES( L"engines" );
 SECTION_NAME SECTION_FUTURE_TECH( L"nexttechs" );
 SECTION_NAME SECTION_REQUIRE_TECH( L"techRequire" );
@@ -51,5 +53,5 @@ NrpText CreateKeyAddon( int index);
 NrpText CreateKeyUser( int index );
 NrpText CreateKeyWork( int index );
 NrpText CreateKeyReklame( int index );
-
+NrpText CreateKeyPlatform( int index );
 }//end namespace nrp

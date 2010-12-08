@@ -52,8 +52,7 @@ typedef core::array< IModificator* > MODIFICATORS;
 typedef core::array< CNrpPlatform* > PLATFORMS;
 
 typedef core::map< NrpText, CNrpRelation* > RELATION_MAP;
-typedef core::map< s32, s32 > REQUIRE_MAP;
-typedef core::map< int, int > KNOWLEDGE_MAP;
+typedef core::map< NrpText, int > KNOWLEDGE_MAP;
 
 template< typename ARRAY_TYPE, typename OBJECT_TYPE >  
 OBJECT_TYPE* FindByName( const ARRAY_TYPE& arrayT, const NrpText& someName )
@@ -68,12 +67,18 @@ OBJECT_TYPE* FindByName( const ARRAY_TYPE& arrayT, const NrpText& someName )
 }
 
 template< typename ARRAY_TYPE, typename OBJECT_TYPE >  
-OBJECT_TYPE* FindByNameAndIntName( const ARRAY_TYPE& arrayT, const NrpText& someName )
+OBJECT_TYPE* FindByNameAndIntName( const ARRAY_TYPE& arrayT, const NrpText& someName, int* position=NULL )
 {
 	for( u32 pos=0; pos < arrayT.size(); pos++ )
 	{
-		if( (*arrayT[ pos ])[ NAME ]== someName || (*arrayT[ pos ])[ INTERNAL_NAME ] == someName  )
+		const OBJECT_TYPE& obj = *arrayT[ pos ];
+		if( obj[ NAME ]== someName || obj[ INTERNAL_NAME ] == someName  )
+		{
+			if( position )
+				*position = pos;
+
 			return arrayT[ pos ];
+		}
 	}
 
 	return NULL;

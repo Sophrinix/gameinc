@@ -35,9 +35,13 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetPlatformsNumber ),
 	LUNA_AUTONAME_FUNCTION(	CLuaGameProject, GetPlatform ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyPlatform ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, AddPlatform ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, RemovePlatform ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLanguagesNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLanguage ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyLanguage ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, AddLanguage ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, RemoveLanguage ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsProjectReady ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, HaveLicense ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, HaveScenario ),
@@ -66,6 +70,9 @@ Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы мет
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetEngineExtend ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLocalization ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCrossPlatformCode ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCpuUse ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetMemoryUse ),
+
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Remove ),
 	{0,0}
@@ -80,7 +87,7 @@ int CLuaGameProject::SetGameEngine( lua_State* L )\
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:SetGameEngine need CNrpGameEngine parameter" );
 
 	CNrpGameEngine* eng = (CNrpGameEngine*)lua_touserdata( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN object_->SetGameEngine( eng );
+	IF_OBJECT_NOT_NULL_THEN _object->SetGameEngine( eng );
 	return 1;	
 }
  
@@ -172,7 +179,10 @@ int CLuaGameProject::SetSoundQuality( lua_State* L )
 { return SetNamedTech_( L, "SetSoundQuality", SOUNDQUALITY ); }	
 
 int CLuaGameProject::GetSoundTechNumber( lua_State* L )
-{ lua_pushinteger( L, GetParam_<int>( L, "GetSoundTechNumber", SOUNDTECHNUMBER, NULL )); return 1; }
+{ 
+	lua_pushinteger( L, GetParam_<int>( L, "GetSoundTechNumber", SOUNDTECHNUMBER, 0 )); 
+	return 1; 
+}
 
 int CLuaGameProject::_TechLuaInitialize( lua_State* L, const NrpText& funcName, OPTION_NAME& paramName )
 {
@@ -231,10 +241,10 @@ int CLuaGameProject::Create( lua_State* L )
 
 	NrpText name = lua_tostring( L, 2 );
 
-	object_ = new CNrpGameProject( name, NULL );
+	_object = new CNrpGameProject( name, NULL );
 
 	lua_pop( L, argc );
-	lua_pushlightuserdata( L, object_ );
+	lua_pushlightuserdata( L, _object );
 	Luna< CLuaGameProject >::constructor( L );
 
 	return 1;
@@ -243,12 +253,12 @@ int CLuaGameProject::Create( lua_State* L )
 int CLuaGameProject::IsGenreIncluded( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsGenreIncluded need GENRE_TYPE parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsGenreIncluded need GenreName parameter" );
 
-	GENRE_TYPE techType = GENRE_TYPE( lua_tointeger( L, 2 ) );
+	CNrpTechnology* genre = _GetObjectFromTable< CNrpTechnology, CLuaTechnology >( L, 2, -1 );
 	bool isIncl = false;
 
-	IF_OBJECT_NOT_NULL_THEN isIncl = object_->IsGenreIncluded( techType );
+	IF_OBJECT_NOT_NULL_THEN isIncl = _object->IsGenreIncluded( genre );
 	lua_pushboolean( L, isIncl );
 
 	return 1;			
@@ -262,7 +272,7 @@ int CLuaGameProject::IsMyGameEngine( lua_State* L )
 	CNrpGameEngine* ge = (CNrpGameEngine*)lua_touserdata( L, 2 );
 	bool isIncl = false;
 
-	IF_OBJECT_NOT_NULL_THEN isIncl = (*object_)[ GAME_ENGINE ] == ge;
+	IF_OBJECT_NOT_NULL_THEN isIncl = (*_object)[ GAME_ENGINE ] == ge;
 	lua_pushboolean( L, isIncl );
 
 	return 1;		
@@ -288,8 +298,8 @@ int CLuaGameProject::SetNamedTech_( lua_State* L, const NrpText& funcName, const
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		(*object_)[ paramName ] = tech;
-		object_->CalculateCodeVolume();
+		(*_object)[ paramName ] = tech;
+		_object->CalculateCodeVolume();
 	}
 
 	return 1;		
@@ -300,30 +310,35 @@ int CLuaGameProject::IsTechInclude( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsTechInclude need ADV_TECH_TYPE parameter" );
 
-	ADV_TECH_TYPE techType = ADV_TECH_TYPE( lua_tointeger( L, 2 ) );
+	CNrpTechnology* tech = _GetObjectFromTable< CNrpTechnology, CLuaTechnology >( L, 2, -1 );
 	bool isIncl = false;
 
-	IF_OBJECT_NOT_NULL_THEN isIncl = object_->IsTechInclude( techType );
+	IF_OBJECT_NOT_NULL_THEN isIncl = _object->IsTechInclude( tech );
 	lua_pushboolean( L, isIncl );
 
 	return 1;			
 }
 
-template< class T >
+template< class Param, class T >
 int CLuaGameProject::SetNumericalTech_( lua_State* L, 
 										const NrpText& funcName, 
-										void (T::*Method)( CNrpTechnology* tehc, int index) )
+										void (T::*Method)( Param* tehc, int index) )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, _ErrStr( NrpText(":") + funcName + " need CNrpTechnology parameter") );
 
-	PNrpTechnology ptrTech = (PNrpTechnology)lua_touserdata( L, 2 );
+	Param* ptrParam = NULL;
+	if( lua_isuserdata( L, 2 ) )
+		ptrParam = (Param*)lua_touserdata( L, 2 );
+	else if( lua_istable( L, 2) )
+		ptrParam = (Param*)(_GetLuaObject( L, 2)->GetSelf());
+
 	int number = lua_tointeger( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		(object_->*Method)( ptrTech, number );
-		object_->CalculateCodeVolume();
+		(_object->*Method)( ptrParam, number );
+		_object->CalculateCodeVolume();
 	}
 	return 1;	
 }
@@ -335,8 +350,8 @@ int CLuaGameProject::Remove( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		delete object_;
-		object_ = NULL;
+		delete _object;
+		_object = NULL;
 	}
 
 	return 1;	
@@ -356,13 +371,10 @@ int CLuaGameProject::IsMyPlatform( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsMyPlatform need CNrpPlatform* parameter" );
-
-	NrpText platformName = lua_tostring( L, 2 );
+	CNrpPlatform* pl = _GetObjectFromTable< CNrpPlatform, CLuaPlatform >( L, 2, -1 );
 	bool isIncl = false;
-
-	IF_OBJECT_NOT_NULL_THEN isIncl = object_->GetPlatform( platformName ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN isIncl = _object->GetPlatform( pl ? (NrpText)(*pl)[ INTERNAL_NAME ] : "" ) != NULL;
 	lua_pushboolean( L, isIncl );
-
 	return 1;			
 }
 
@@ -377,7 +389,7 @@ int nrp::CLuaGameProject::GetNumericalParam_( lua_State* L,
 	int idx = lua_tointeger( L, 2 );
 	A* tech = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN tech = (object_->*Method)( idx );
+	IF_OBJECT_NOT_NULL_THEN tech = (_object->*Method)( idx );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
@@ -396,14 +408,57 @@ int CLuaGameProject::IsMyLanguage( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsMyLanguage need CNrpTechnology* parameter" );
 
-	NrpText langName = lua_tostring( L, 2 );
+	CNrpTechnology* lang = _GetObjectFromTable< CNrpTechnology, CLuaTechnology >( L, 2, -1 );
 	bool isIncl = false;
 
-	IF_OBJECT_NOT_NULL_THEN isIncl = object_->GetLanguage( langName ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN isIncl = _object->GetLanguage( lang ? (NrpText)(*lang)[ INTERNAL_NAME ] : "" ) != NULL;
 	lua_pushboolean( L, isIncl );
 
 	return 1;			
 }
 
+int CLuaGameProject::AddLanguage( lua_State* L )
+{
+	return SetNumericalTech_( L, "AddLanguage", &CNrpGameProject::SetLanguage ); 
+}
+
+int CLuaGameProject::RemoveLanguage( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:RemoveLanguage need CLuaTech parameter" );
+
+	CNrpTechnology* obj = _GetObjectFromTable< CNrpTechnology, CLuaTechnology >( L, 2, -1 );
+	IF_OBJECT_NOT_NULL_THEN _object->RemoveLanguage( obj );
+	
+	return 1;
+}
+
+int CLuaGameProject::AddPlatform( lua_State* L )
+{
+	return SetNumericalTech_( L, "AddPlatform", &CNrpGameProject::SetPlatform ); 
+}
+
+int CLuaGameProject::RemovePlatform( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:RemovePlatform need CLuaPlatform parameter" );
+
+	CNrpPlatform* obj = _GetObjectFromTable< CNrpPlatform, CLuaPlatform >( L, 2, -1 );
+	IF_OBJECT_NOT_NULL_THEN _object->RemovePlatform( obj );
+
+	return 1; 
+}
+
+int CLuaGameProject::GetCpuUse( lua_State* L )
+{
+	lua_pushnumber( L, GetParam_<float>( L, "GetCpuUse", CPU, 0.f ) ); 
+	return 1; 
+}
+
+int CLuaGameProject::GetMemoryUse( lua_State* L )
+{
+	lua_pushnumber( L, GetParam_<float>( L, "GetMemoryUse", RAM, 0.f ) ); 
+	return 1; 
+}
 
 }//namespace nrp

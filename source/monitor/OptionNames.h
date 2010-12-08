@@ -7,7 +7,6 @@ namespace nrp
 OPTION_NAME BALANCE(L"balance");
 OPTION_NAME NAME(L"name");
 OPTION_NAME QUALITY( L"quality" );
-OPTION_NAME TECHTYPE( L"techType" );
 OPTION_NAME READYWORKPERCENT( L"readyWorkPercent" );
 OPTION_NAME TECHNUMBER( L"techNumber" );
 OPTION_NAME USERNUMBER( L"userNumber" );
@@ -41,5 +40,7 @@ OPTION_NAME BOXNUMBER( L"boxNumber" );
 OPTION_NAME DESCRIPTIONPATH( L"descriptionPath" );
 OPTION_NAME LANGNUMBER( "langNumber" );
 OPTION_NAME PLATFORMNUMBER( "platformNumber" );
+OPTION_NAME RAM("ram");
+OPTION_NAME CPU("cpu");
 
 }//end namespace nrp

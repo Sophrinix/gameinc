@@ -55,7 +55,7 @@ bool CNrpLoginScene::OnEvent( const irr::SEvent& event )
 		}
 
 		{
-			gui::IGUIElement* elm = CNrpEngine::Instance().GetGuiEnvironment()->getFocus();
+			gui::IGUIElement* elm = _nrpEngine.GetGuiEnvironment()->getFocus();
 			if( elm && elm == pf )
 				elm->OnEvent( event );
 		}
@@ -68,13 +68,13 @@ bool CNrpLoginScene::OnEvent( const irr::SEvent& event )
 
 void CNrpLoginScene::OnUpdate()
 {
-	video::IVideoDriver* driver = CNrpEngine::Instance().GetVideoDriver(); 
-	scene::ISceneManager* smgr = CNrpEngine::Instance().GetSceneManager();
+	video::IVideoDriver* driver = _nrpEngine.GetVideoDriver(); 
+	scene::ISceneManager* smgr = _nrpEngine.GetSceneManager();
 	
 	driver->beginScene( true, true, 0 );
 
-	CNrpEngine::Instance().GetSceneManager()->drawAll();
-	CNrpEngine::Instance().GetGuiEnvironment()->drawAll();
+	_nrpEngine.GetSceneManager()->drawAll();
+	_nrpEngine.GetGuiEnvironment()->drawAll();
 
 	driver->endScene();
 }
@@ -82,9 +82,9 @@ void CNrpLoginScene::OnUpdate()
 
 void CNrpLoginScene::OnEnter()
 {
-	video::IVideoDriver* driver = CNrpEngine::Instance().GetVideoDriver();
-	scene::ISceneManager* smgr = CNrpEngine::Instance().GetSceneManager();
-	gui::IGUIEnvironment* env = CNrpEngine::Instance().GetGuiEnvironment();
+	video::IVideoDriver* driver =_nrpEngine.GetVideoDriver();
+	scene::ISceneManager* smgr = _nrpEngine.GetSceneManager();
+	gui::IGUIEnvironment* env = _nrpEngine.GetGuiEnvironment();
 
 	core::dimension2du scr_size = driver->getScreenSize();
 	core::position2di offset( scr_size.Width / 2 - 168, 3 * scr_size.Height / 4 );
@@ -151,9 +151,9 @@ void CNrpLoginScene::OnLeave()
 	if( waterNode_ ) 
 		waterNode_->remove();
 
-	CNrpEngine::Instance().GetSceneManager()->setActiveCamera( NULL );
-	CNrpEngine::Instance().GetSceneManager()->clear();
-	CNrpEngine::Instance().GetGuiEnvironment()->clear();
+	_nrpEngine.GetSceneManager()->setActiveCamera( NULL );
+	_nrpEngine.GetSceneManager()->clear();
+	_nrpEngine.GetGuiEnvironment()->clear();
 }
 //////////////////////////////////////////////////////////////////////////
 

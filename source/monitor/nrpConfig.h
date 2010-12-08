@@ -16,7 +16,6 @@
 #include <memory>
 
 #include "INrpObject.h"
-#include "SectionNames.h"
 #include "OptionNames.h"
 #include "nrptext.h"
 

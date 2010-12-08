@@ -8,7 +8,6 @@ namespace nrp
 {
 
 #define LUNA_ILUAPROJECT_HEADER(class)	LUNA_ILUABASEPROJECT_HEADER(class),\
-										LUNA_AUTONAME_FUNCTION(class, GetTechType ),\
 										LUNA_AUTONAME_FUNCTION(class, GetName ),\
 										LUNA_AUTONAME_FUNCTION(class, GetUniq ),\
 										LUNA_AUTONAME_FUNCTION(class, SetName ),\
@@ -25,12 +24,6 @@ public:
 
 	virtual ~ILuaProject(void) {};
 protected:
-
-	int GetTechType( lua_State* L )
-	{ 
-		lua_pushinteger( L, GetParam_<int>( L, "GetTechType", TECHTYPE, PROJECT_TYPE(0) ) );
-		return 1; 
-	}
 
 	int GetWorkPercentDone( lua_State* L )
 	{
@@ -56,7 +49,7 @@ protected:
 		luaL_argcheck(vm, argc == 2, 2, _ErrStr(":SetName need string parameter") );
 
 		NrpText name = lua_tostring( vm, 2 );
-		IF_OBJECT_NOT_NULL_THEN	(*object_)[ NAME ] = name;
+		IF_OBJECT_NOT_NULL_THEN	(*_object)[ NAME ] = name;
 
 		return 1;
 	}

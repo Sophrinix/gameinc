@@ -210,14 +210,14 @@ void Logger::TreatLogEntry(const Log& log)
 
 	if ( log.Device & CON )
 	{
-		irr::gui::CNrpConsole* console = CNrpEngine::Instance().GetConsole();
+		irr::gui::CNrpConsole* console = _nrpEngine.GetConsole();
 		if( console )
 			console->AppendMessage( log.Text.str().c_str() );
 	}
 
 	if( log.Device & NRPETL ) //этот тип надо помещать в список событий
 	{
-		irr::scene::INrpScene* tmpScene = CNrpEngine::Instance().GetCurrentScene();
+		irr::scene::INrpScene* tmpScene = _nrpEngine.GetCurrentScene();
 
 		if( tmpScene )
 		{

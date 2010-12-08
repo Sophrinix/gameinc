@@ -37,7 +37,7 @@ int CLuaAutoScript::AddUserToGameProject( lua_State* L )
 	NrpText moduleName = lua_tostring( L, 4 );
 	assert( userName != NULL && projectName != NULL && moduleName != NULL );
 
-	if( IUser* user = CNrpApplication::Instance().GetUser( userName ) )
+	if( IUser* user = _nrpApp.GetUser( userName ) )
 		if( PNrpCompany cmp = (*user)[ PARENTCOMPANY ].As<PNrpCompany>() )
 			if( INrpDevelopProject* devProject = cmp->GetDevelopProject( projectName ) )
 				if( CNrpProjectModule* module = devProject->GetModule( moduleName ) )
@@ -56,7 +56,7 @@ int CLuaAutoScript::AddUserToInvention( lua_State* L )
 	NrpText userName = lua_tostring( L, 2 );
 	NrpText inventionName = lua_tostring( L, 3 );
 
-	if( IUser* user = CNrpApplication::Instance().GetUser( userName ) )
+	if( IUser* user = _nrpApp.GetUser( userName ) )
 		if( PNrpCompany cmp = (*user)[ PARENTCOMPANY ].As<PNrpCompany>() )
 			if( CNrpInvention* invention = cmp->GetInvention( inventionName ) )
 			{
@@ -74,8 +74,8 @@ int CLuaAutoScript::AddGameEngineToCompany( lua_State* L )
 	NrpText engineName = lua_tostring( L, 2 );
 	NrpText companyName = lua_tostring( L, 3 );
 
-	CNrpGameEngine* engine = CNrpApplication::Instance().GetGameEngine( engineName );
-	PNrpCompany cmp = CNrpApplication::Instance().GetCompany( companyName );
+	CNrpGameEngine* engine = _nrpApp.GetGameEngine( engineName );
+	PNrpCompany cmp = _nrpApp.GetCompany( companyName );
 	assert( cmp != NULL && engine != NULL );
 
 	cmp->AddGameEngine( engine );

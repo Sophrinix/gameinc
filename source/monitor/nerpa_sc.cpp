@@ -19,10 +19,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	Log(LOG) << "Система логов запущена!" << term;
 	CNrpEngine::Instance();
 	
-	CNrpApplication::Instance();
-	CNrpApplication::Instance().Init();
-
-	CNrpEngine::Instance().Run();
+	_nrpApp.Init();
+	_nrpEngine.Run();
 
 	Logger::Stop();
 	//GPrintUndeletedSystemObject();

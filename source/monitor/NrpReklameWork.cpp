@@ -14,8 +14,8 @@ CNrpReklameWork::CNrpReklameWork( const NrpText& typeName,
 				: INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
-	Param( TECHTYPE ) = typeName;
-	Param( GAMENAME ) = gameName;
+	_self[ REKLAMETYPE ] = typeName;
+	_self[ GAMENAME ] = gameName;
 }
 
 void CNrpReklameWork::InitializeOptions_()
@@ -23,10 +23,9 @@ void CNrpReklameWork::InitializeOptions_()
 	Add<int>( NUMBERDAY, 0 );
 	Add<int>( LEVEL, 0 );
 	Add<NrpText>( NAME, "" );
-	Add<NrpText>( TECHTYPE, "" );
 	Add<int>( DAYCOST, 0 );
-	Add<float>( QUALITY, 0 );
-	Add<float>( MAXQUALITY, 0 );
+	Add<float>( QUALITY, 0.f );
+	Add<float>( MAXQUALITY, 0.f );
 	Add<NrpText>( GAMENAME, "" );
 	Add<bool>( FINISHED, false );
 	Add<NrpText>( TEXTURENORMAL, "" );
@@ -49,7 +48,7 @@ CNrpReklameWork::CNrpReklameWork( const CNrpReklameWork& p ) : INrpConfig( CLASS
 	Param( QUALITY ) = p[ QUALITY ];
 	Param( MAXQUALITY ) = p[ MAXQUALITY ];
 	Param( GAMENAME ) = p[ GAMENAME ];
-	Param( TECHTYPE ) = p[ TECHTYPE ];
+	_self[ REKLAMETYPE ] = p[ REKLAMETYPE ];
 	Param( TEXTURENORMAL ) = p[ TEXTURENORMAL ];
 	Param( COMPANYNAME ) = p[ COMPANYNAME ];
 	
@@ -80,7 +79,7 @@ void CNrpReklameWork::Update( const CNrpReklameWork* p )
 
 void CNrpReklameWork::BeginNewDay()
 {
-	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( Text( COMPANYNAME ) );
+	CNrpCompany* cmp = _nrpApp.GetCompany( Text( COMPANYNAME ) );
 	assert( cmp != NULL );
 
 	if( cmp != NULL )
@@ -117,7 +116,7 @@ NrpText CNrpReklameWork::Save( const NrpText& saveFolder )
 	assert( OpFileSystem::IsExist( saveFolder ) );
 	//должно получиться что-то вроде Компания_Продукт.Тип
 	NrpText fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + Text( COMPANYNAME ) + "_";
-	fileName += (Text( GAMENAME ) + "." + Text( TECHTYPE ));
+	fileName += (Text( GAMENAME ) + "." + Text( REKLAMETYPE ));
 	INrpConfig::Save( fileName );
 
 	return fileName;
@@ -125,7 +124,7 @@ NrpText CNrpReklameWork::Save( const NrpText& saveFolder )
 
 bool CNrpReklameWork::Equale( const NrpText& type, const NrpText& gName )
 {
-	return ( Text( TECHTYPE ) == type && Text( GAMENAME ) == gName );
+	return ( Text( REKLAMETYPE ) == type && Text( GAMENAME ) == gName );
 }
 
 NrpText CNrpReklameWork::ClassName()

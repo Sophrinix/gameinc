@@ -59,7 +59,7 @@ NParam& INrpConfig::operator[](OPTION_NAME& key)
 		return *(node->second);
 	}
 	NrpText err = NrpText( "invalid key" ) + NrpText( key );
-	Log(HW) << "error: " << key  << term;
+	Log(HW) << "error: invalid key " << ObjectTypeName() << ":" << key  << term;
 	throw std::exception( err );
 }
 
@@ -71,7 +71,7 @@ const NParam& INrpConfig::operator[](OPTION_NAME& key) const
 		return *(node->second);
 	}
 	NrpText err = NrpText( "invalid key" ) + NrpText( key );
-	Log(HW) << "error: " << key << term;
+	Log(HW) << "error: invalid key " << const_cast< INrpConfig* >( this )->ObjectTypeName()  << ":"  << key << term;
 	throw std::exception( err );
 }
 

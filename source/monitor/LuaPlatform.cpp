@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "LuaPlatform.h"
 #include "NrpPlatform.h"
+#include "NrpTechnology.h"
+#include "LuaTechnology.h"
 
 namespace nrp
 {
@@ -13,6 +15,9 @@ Luna< CLuaPlatform >::RegType CLuaPlatform::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaPlatform, Load ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlatform, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetTexture ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetCpu ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetRam ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, IsTechAvaible ),
 	{0,0}
 };
 
@@ -28,10 +33,10 @@ int CLuaPlatform::Create( lua_State* L )
 
 	NrpText typeName = lua_tostring( L, 2 );
 
-	object_ = new CNrpPlatform( typeName );
+	_object = new CNrpPlatform( typeName );
 
 	lua_pop( L, argc );
-	lua_pushlightuserdata(L, object_ );
+	lua_pushlightuserdata(L, _object );
 	Luna< CLuaPlatform >::constructor( L );
 
 	return 1;
@@ -49,7 +54,7 @@ int CLuaPlatform::Load( lua_State* L )
 
 	NrpText pathTo = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->Load( pathTo );
+	IF_OBJECT_NOT_NULL_THEN _object->Load( pathTo );
 	return 1;
 }
 
@@ -57,6 +62,34 @@ int CLuaPlatform::GetTexture( lua_State* L )
 {
 	lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "") );
 	return 1;
+}
+
+int CLuaPlatform::GetCpu( lua_State* L )
+{
+	lua_pushnumber( L, GetParam_<float>( L, "GetCpu", CPU, 0.f) );
+	return 1;
+}
+
+int CLuaPlatform::GetRam( lua_State* L )
+{
+	lua_pushnumber( L, GetParam_<float>( L, "GetRam", RAM, 0.f) );
+	return 1;
+}
+
+int CLuaPlatform::IsTechAvaible( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:RemovePlatform need CLuaPlatform parameter" );
+
+	CNrpTechnology* obj = _GetObjectFromTable< CNrpTechnology, CLuaTechnology >( L, 2, -1 );
+	assert( obj );
+
+	bool ret = false;
+	IF_OBJECT_NOT_NULL_THEN 
+		if( obj ) ret = ( _object->GetTech( (*obj)[ INTERNAL_NAME ] ) != NULL );
+
+	lua_pushboolean( L, ret );
+	return 1; 
 }
 
 }//end namespace nrp

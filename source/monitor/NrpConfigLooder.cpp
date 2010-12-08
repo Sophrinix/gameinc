@@ -165,7 +165,7 @@ void CNrpConfigLooder::_ReadTime( KeyPair* p )
 
 void CNrpConfigLooder::_ReadUser( KeyPair* p )
 {
-	IUser* user = CNrpApplication::Instance().GetUser( p->GetValue() );
+	IUser* user = _nrpApp.GetUser( p->GetValue() );
 	assert( user != NULL );
 	if( user )
 		_config->Add( p->GetName(), user );
@@ -173,7 +173,7 @@ void CNrpConfigLooder::_ReadUser( KeyPair* p )
 
 void CNrpConfigLooder::_ReadTechnology( KeyPair* p )
 {
-	PNrpTechnology tech = CNrpApplication::Instance().GetTechnology( p->GetValue() );
+	PNrpTechnology tech = _nrpApp.GetTechnology( p->GetValue() );
 	assert( tech != NULL );
 	if( tech )
 		_config->Add( p->GetName(), tech );
@@ -194,7 +194,7 @@ void CNrpConfigLooder::_WriteTechnology( const NParam* prop, const NrpText& key,
 {
 	const CNrpTechnology& tech = *(prop->As<PNrpTechnology>());
 	
-	if( CNrpApplication::Instance().GetTechnology( tech[ NAME ].As<NrpText>() ) )
+	if( _nrpApp.GetTechnology( tech[ NAME ].As<NrpText>() ) )
 	{
 		ini->Set( SECTION_PROPERTIES, key + L":tech", (NrpText)tech[ NAME ] );
 	}

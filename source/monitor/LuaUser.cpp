@@ -56,21 +56,21 @@ int CLuaUser::Create( lua_State *L )
 
 	if( userType == CNrpPlayer::ClassName() )
 	{
-		object_ = new CNrpPlayer( name, NULL );
-		CNrpApplication::Instance().AddUser( object_ );
+		_object = new CNrpPlayer( name, NULL );
+		_nrpApp.AddUser( _object );
 	}
 	else if( userType == CNrpAiUser::ClassName() )
 	{
-		object_ = new CNrpAiUser( name, NULL );
-		CNrpApplication::Instance().AddUser( object_ );
+		_object = new CNrpAiUser( name, NULL );
+		_nrpApp.AddUser( _object );
 	}
 	else 
 	{
-		object_ = new IUser( userType, name );
-		CNrpApplication::Instance().AddUser( object_ );
+		_object = new IUser( userType, name );
+		_nrpApp.AddUser( _object );
 	}
 
-	lua_pushlightuserdata( L, (void*)object_ );
+	lua_pushlightuserdata( L, (void*)_object );
 	return 1;
 }
 
@@ -82,7 +82,7 @@ int CLuaUser::SetSkill( lua_State* L )
 	int skilltype = lua_tointeger(L, 2 );
 	int valuel = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetSkill( skilltype, valuel );
+	IF_OBJECT_NOT_NULL_THEN _object->SetSkill( skilltype, valuel );
 	return 1;
 }
 
@@ -93,7 +93,7 @@ int CLuaUser::SetCharacter( lua_State* L )
 
 	int valuel = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN (*object_)[ CHARACTER ] = valuel;
+	IF_OBJECT_NOT_NULL_THEN (*_object)[ CHARACTER ] = valuel;
 	return 1;	
 }
 
@@ -104,7 +104,7 @@ int CLuaUser::GetTypeName( lua_State* L )
 	
 	NrpText name;
 
-	IF_OBJECT_NOT_NULL_THEN name = object_->ObjectTypeName();
+	IF_OBJECT_NOT_NULL_THEN name = _object->ObjectTypeName();
 
 	lua_pushstring( L, name );
 	return 1;	
@@ -118,7 +118,7 @@ int CLuaUser::GetParam( lua_State* L )
 	NrpText name = lua_tostring( L, 2 );
 	int valuel = 0;
 
-	IF_OBJECT_NOT_NULL_THEN valuel = (*object_)[ name ];
+	IF_OBJECT_NOT_NULL_THEN valuel = (*_object)[ name ];
  
 	lua_pushinteger( L, valuel );
 	return 1;	
@@ -132,7 +132,7 @@ int CLuaUser::IsTypeAs( lua_State* L )
 	NrpText name( lua_tostring( L, 2 ) );
 	bool result = false;
 
-	IF_OBJECT_NOT_NULL_THEN result = ( object_->ObjectTypeName() == name );
+	IF_OBJECT_NOT_NULL_THEN result = ( _object->ObjectTypeName() == name );
 
 	lua_pushboolean( L, result );
 	return 1;	
@@ -145,7 +145,7 @@ int CLuaUser::GetName( lua_State* L )
 
 	NrpText name;
 
-	IF_OBJECT_NOT_NULL_THEN name = (NrpText)(*object_)[ NAME ];
+	IF_OBJECT_NOT_NULL_THEN name = (NrpText)(*_object)[ NAME ];
 
 	lua_pushstring( L, name );
 	return 1;	
@@ -159,7 +159,7 @@ int CLuaUser::SetParam( lua_State* L )
 	NrpText name( lua_tostring( L, 2 ) );
 	int valuel = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetSkill( name, valuel );
+	IF_OBJECT_NOT_NULL_THEN _object->SetSkill( name, valuel );
 	return 1;		
 }
 
@@ -168,10 +168,10 @@ int CLuaUser::GetSkill( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:GetSkill need skillname parameter" );
 
-	int skilltype = lua_tointeger(L, 2 );
+	NrpText skillName = lua_tostring(L, 2 );
 	int valuel = 0;
 
-	IF_OBJECT_NOT_NULL_THEN valuel = object_->GetSkill( skilltype );
+	IF_OBJECT_NOT_NULL_THEN valuel = _object->GetSkill( skillName );
 
 	lua_pushinteger( L, valuel );
 	return 1;
@@ -184,7 +184,7 @@ int CLuaUser::Save( lua_State* L )
 
 	NrpText fileName = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->Save( fileName );
+	IF_OBJECT_NOT_NULL_THEN _object->Save( fileName );
 
 	return 1;	
 }
@@ -197,7 +197,7 @@ int CLuaUser::AddWork( lua_State* L )
 	IWorkingModule* work = (IWorkingModule*)lua_touserdata( L, 2 );
 	assert( work != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddWork( work );
+	IF_OBJECT_NOT_NULL_THEN _object->AddWork( work );
 
 	return 1;		
 }
@@ -209,7 +209,7 @@ int CLuaUser::GetWorkNumber( lua_State* L )
 
 	int valuel = 0;
 
-	IF_OBJECT_NOT_NULL_THEN valuel = (*object_)[ WORKNUMBER ];
+	IF_OBJECT_NOT_NULL_THEN valuel = (*_object)[ WORKNUMBER ];
 
 	lua_pushinteger( L, valuel );
 	return 1;		
@@ -223,7 +223,7 @@ int CLuaUser::RemoveWork( lua_State* L )
 	IWorkingModule* work = (IWorkingModule*)lua_touserdata( L, 2 );
 	assert( work != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN object_->RemoveWork( work );
+	IF_OBJECT_NOT_NULL_THEN _object->RemoveWork( work );
 
 	return 1;		
 }
@@ -236,7 +236,7 @@ int CLuaUser::GetWork( lua_State* L )
 	int index = lua_tointeger(L, 2 );
 	IWorkingModule* work = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN work = object_->GetWork( index );
+	IF_OBJECT_NOT_NULL_THEN work = _object->GetWork( index );
 
 	lua_pushlightuserdata( L, work );
 	return 1;	
@@ -248,7 +248,7 @@ int CLuaUser::GetTexture( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetTexture not need any parameter" );
 
 	NrpText pathName = "";
-	IF_OBJECT_NOT_NULL_THEN pathName = (*object_)[ TEXTURENORMAL ];
+	IF_OBJECT_NOT_NULL_THEN pathName = (*_object)[ TEXTURENORMAL ];
 
 	lua_pushstring( L, pathName );
 	return 1;		
@@ -260,7 +260,7 @@ int CLuaUser::IsFreeUser( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:IsFreeUser not need any parameter" );
 
 	bool noCompany = false;
-	IF_OBJECT_NOT_NULL_THEN noCompany = (*object_)[ PARENTCOMPANY ].As<PNrpCompany>() == NULL;
+	IF_OBJECT_NOT_NULL_THEN noCompany = (*_object)[ PARENTCOMPANY ].As<PNrpCompany>() == NULL;
 
 	lua_pushboolean( L, noCompany );
 	return 1;		
@@ -274,7 +274,7 @@ int CLuaUser::GetRelation( lua_State* L )
 	NrpText name( lua_tostring(L, 2 ) );
 	CNrpRelation* ret = 0;
 
-	IF_OBJECT_NOT_NULL_THEN ret = object_->GetRelation( name );
+	IF_OBJECT_NOT_NULL_THEN ret = _object->GetRelation( name );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, ret );
@@ -291,9 +291,9 @@ int CLuaUser::HaveInvention( lua_State* L )
 	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		for( int k=0; k < (int)(*object_)[ WORKNUMBER ]; k++ )
+		for( int k=0; k < (int)(*_object)[ WORKNUMBER ]; k++ )
 		{
-			if( object_->GetWork( k )->ObjectTypeName() == CNrpInvention::ClassName() )
+			if( _object->GetWork( k )->ObjectTypeName() == CNrpInvention::ClassName() )
 			{
 				ret = true;
 				break;
@@ -315,7 +315,7 @@ int CLuaUser::AddParam( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		(*object_)[ name ] += addvalue;
+		(*_object)[ name ] += addvalue;
 	}
 
 	return 1;	

@@ -17,7 +17,7 @@ int CNrpInvention::_GetRealPrice( CNrpTechnology& tech )
 {
 	double stime, curtime;
 	int errSTime = SystemTimeToVariantTime( &(tech[ STARTDATE ].As<SYSTEMTIME>()), &stime );
-	int errCurrTime = SystemTimeToVariantTime( &(CNrpApplication::Instance()[ CURRENTTIME ].As<SYSTEMTIME>()), &curtime );
+	int errCurrTime = SystemTimeToVariantTime( &(_nrpApp[ CURRENTTIME ].As<SYSTEMTIME>()), &curtime );
 	assert( errSTime > 0 && errCurrTime > 0 );
 	
 	int month = static_cast<int>( stime - curtime ) / 30; //получаем количество месяцев от реального срока появления технологии на рынке
@@ -43,14 +43,13 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp )
 		Param( NAME ) = refTech[ NAME ];
 		Param( INTERNAL_NAME ) = refTech[ INTERNAL_NAME ];
 		Param( TECHGROUP ) = refTech[ TECHGROUP ];
-		Param( TECHTYPE ) = refTech[ TECHTYPE ];
 		Param( BASE_CODE ) = refTech[ BASE_CODE ];
 		Param( ENGINE_CODE ) = refTech[ ENGINE_CODE ];
 		Param( TEXTURENORMAL ) = refTech[ TEXTURENORMAL ];
 		Param( LEVEL ) = refTech[ LEVEL ];
 		Param( QUALITY ) = refTech[ QUALITY ];
 		Param( BASEFILE ) = refTech[ BASEFILE ];
-		Param( USERSTARTDATE ) = CNrpApplication::Instance()[ CURRENTTIME ];
+		Param( USERSTARTDATE ) = _nrpApp[ CURRENTTIME ];
 
 		SYSTEMTIME time;
 		memset( &time, 0, sizeof(SYSTEMTIME) );
@@ -85,7 +84,7 @@ void CNrpInvention::InitializeOptions_()
 void CNrpInvention::CheckParams()
 {
 	int dayFromStart = TimeHelper::GetDaysBetweenDate( Param( USERSTARTDATE ),
-													   CNrpApplication::Instance()[ CURRENTTIME ] ); 
+													   _nrpApp[ CURRENTTIME ] ); 
 
 	//получим скока тратим в день на исследования
 	int moneyInDay = (int)Param( PASSEDPRICE ) / dayFromStart;
@@ -95,7 +94,7 @@ void CNrpInvention::CheckParams()
 		moneyInDay = 1;
 	int dayToFinish = ( (int)Param( REALPRICE ) - (int)Param( PASSEDPRICE) ) / moneyInDay;
 	
-	Param( PROGNOSEDATEFINISH ) = TimeHelper::GetDateWithDay( CNrpApplication::Instance()[ CURRENTTIME ], dayToFinish );
+	Param( PROGNOSEDATEFINISH ) = TimeHelper::GetDateWithDay( _nrpApp[ CURRENTTIME ], dayToFinish );
 
 	Param( DAYLEFT ) = dayToFinish;//сколько дней осталось до завершения работ, при полном освоении финансирования
 	Param( INVENTIONSPEED ) = moneyInDay;
@@ -110,19 +109,19 @@ void CNrpInvention::Update( IUser* ptrUser )
 	PNrpCompany company = Param( PARENTCOMPANY ).As<PNrpCompany>();
 	assert( ptrUser != NULL && company != NULL );
 
-	if( Param( PASSEDPRICE ) < Param( REALPRICE ) )
+	if( _self[ PASSEDPRICE ] < _self[ REALPRICE ] )
 	{
 		int reqSkill = 0;
-		REQUIRE_MAP::Iterator sIter = _skillRequires.getIterator();
+		KNOWLEDGE_MAP::Iterator sIter = _skillRequires.getIterator();
 		
 		for( ; !sIter.atEnd(); sIter++ )
 			reqSkill += ptrUser->GetSkill( sIter->getKey() );
 
-		float genreSkill = ptrUser->GetGenreExperience( Param( TECHTYPE ).As<GENRE_TYPE>() ) / 100.f;
+		float genreSkill = ptrUser->GetGenreExperience( _self[ INTERNAL_NAME ] ) / 100.f;
 
 		if( genreSkill < 0.1f )
 			genreSkill = 0.1f;
-		float genrePref = ptrUser->GetGenrePreferences( Param( TECHTYPE ).As<GENRE_TYPE>() ) / 100.f;
+		float genrePref = ptrUser->GetGenrePreferences( _self[ INTERNAL_NAME ] ) / 100.f;
 		if( genrePref < 0.1f )
 			genrePref = 0.1f;
 
@@ -198,7 +197,7 @@ NrpText CNrpInvention::Save( const NrpText& saveFolder, bool k )
 	
 	sv.Set( SECTION_REQUIRE_TECH, _techRequires );
 	sv.Set( SECTION_REQUIRE_SKILL, _skillRequires );
-	sv.SetArray< USERS >( SECTION_USERS, _users, CreateKeyUser, NAME, false );
+	sv.Set( SECTION_USERS, _users, CreateKeyUser, NAME );
 
 	return fileName;
 }

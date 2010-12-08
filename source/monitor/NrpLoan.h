@@ -10,6 +10,7 @@ OPTION_NAME MONEYPAY( "moneyPay" );
 OPTION_NAME CLOSESHTRAF( "closeShtraf" );
 OPTION_NAME ID( "id" );
 OPTION_NAME MONTHLEFT( "monthLeft" );
+OPTION_NAME LOANTYPE( "loanType" );
 
 class CNrpLoan : public INrpConfig
 {

@@ -31,7 +31,7 @@ int CLuaTexture::GetSize( lua_State *L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTexture:GetSize not need any parameter");
 
 	core::dimension2di size;
-	IF_OBJECT_NOT_NULL_THEN size = object_->getSize();
+	IF_OBJECT_NOT_NULL_THEN size = _object->getSize();
 
 	lua_pushinteger( L, size.Width );
 	lua_pushinteger( L, size.Height );
@@ -46,7 +46,7 @@ int CLuaTexture::GetWidth( lua_State *L )
 
 	int width = 0;
 
-	IF_OBJECT_NOT_NULL_THEN width = object_->getSize().Width;
+	IF_OBJECT_NOT_NULL_THEN width = _object->getSize().Width;
 	lua_pushinteger( L, width );
 
 	return 1;
@@ -59,7 +59,7 @@ int CLuaTexture::GetHeight( lua_State *L )
 
 	int height = 0;
 
-	IF_OBJECT_NOT_NULL_THEN height = object_->getSize().Height;
+	IF_OBJECT_NOT_NULL_THEN height = _object->getSize().Height;
 	lua_pushinteger( L, height );
 
 	return 1;
@@ -72,7 +72,7 @@ int CLuaTexture::Drop( lua_State *L )
 
 	int height = 0;
 
-	IF_OBJECT_NOT_NULL_THEN object_->drop();
+	IF_OBJECT_NOT_NULL_THEN _object->drop();
 
 	return 1;
 }

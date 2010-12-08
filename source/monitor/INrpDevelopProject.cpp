@@ -37,7 +37,6 @@ void INrpDevelopProject::InitializeOptions_()
 	Add<int>( MODULE_NUMBER, 0 );
 	Add<float>( READYWORKPERCENT, 0 );
 	Add<bool>( PROJECTREADY, false );
-	Add<int>( TECHTYPE, 0 );
 	Add<NrpText>( TEXTURENORMAL, "" );
 	Add<float>( FAMOUS, 0.f );
 }

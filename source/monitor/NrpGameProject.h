@@ -44,18 +44,24 @@ public:
 	void SetGameEngine( CNrpGameEngine* gameEng );
 	CNrpTechnology* GetGenre( int index );
 	void SetGenre( CNrpTechnology* genre, int number );
-	bool IsGenreIncluded( GENRE_TYPE typen );
-	bool IsTechInclude( ADV_TECH_TYPE typen );
+	bool IsGenreIncluded( const CNrpTechnology* checkGenre ) const;
+	bool IsTechInclude( const CNrpTechnology* checkTech );
 	void SetTechnology( CNrpTechnology* ptrTech, int index );
 	void SetVideoTech( CNrpTechnology* ptrTech, int index );
+
 	void SetPlatform( CNrpPlatform* platform, int index=-1 );
 	CNrpPlatform* GetPlatform( int index );
 	CNrpPlatform* GetPlatform( const NrpText& name );
+	void RemovePlatform( CNrpPlatform* platform );
+
 	CNrpTechnology* GetVideoTech( int index );
 	CNrpTechnology* GetTechnology( int index );
+	
 	void SetLanguage( CNrpTechnology* ptrLang, int index=-1 );
 	CNrpTechnology* GetLanguage( int index );
 	CNrpTechnology* GetLanguage( const NrpText& name );
+	void RemoveLanguage( CNrpTechnology* ptrLang );
+
 	void SetSoundTech( CNrpTechnology* ptrTech, int index );
 	CNrpTechnology* GetSoundTech( int index );
 	NrpText Save( const NrpText& folderSave );
@@ -84,7 +90,6 @@ private:
 	void _SetTech( CNrpTechnology* ptrTech, int index, TECHS& listd, OPTION_NAME optname );
 	void _GetAllTech( TECHS& techList );
 	void _SaveTech( const OPTION_NAME& name, const NrpText& saveFolder, IniFile* ini );
-	void _LoadTechs( const SECTION_NAME& section, NrpText (*func)(int index), int maxVal, TECHS& arr, IniFile* ini );
 };
 
 typedef CNrpGameProject* PNrpGameProject;

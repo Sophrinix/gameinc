@@ -40,8 +40,7 @@ scene::ISceneNode* waterNode_=NULL;
 
 bool CNrpMainScene::InitWater_()												//сцена воды
 {
-	CNrpEngine& v_eng = CNrpEngine::Instance();
-	scene::ISceneManager* smgr = v_eng.GetSceneManager();
+	scene::ISceneManager* smgr = _nrpEngine.GetSceneManager();
 
 	f32 koeff = 2;						
 	
@@ -67,13 +66,11 @@ bool CNrpMainScene::InitWater_()												//сцена воды
 
 void CNrpMainScene::RenderScene_()										//рендеринг сцены			
 {
-	CNrpEngine& v_eng = CNrpEngine::Instance();
-
 	if( _options[ "render3d" ] )
-		v_eng.GetSceneManager()->drawAll();								    //отрисовка общей графики
+		_nrpEngine.GetSceneManager()->drawAll();								    //отрисовка общей графики
 
 	if( _options[ "renderGui" ] )
-		v_eng.GetGuiEnvironment()->drawAll();								//рисуем интерфейс пользователя
+		_nrpEngine.GetGuiEnvironment()->drawAll();								//рисуем интерфейс пользователя
 }
 
 CNrpMainScene::~CNrpMainScene(void)
@@ -83,11 +80,10 @@ CNrpMainScene::~CNrpMainScene(void)
 //получение объекта сцены, который выбра пользователем
 void CNrpMainScene::GetNodeAndIntersectionFromCursor_( scene::ISceneNode*& node, core::vector3df& point, bool &doubleClick )
 {
-	CNrpEngine& v_eng = CNrpEngine::Instance();
-	ISceneManager* smgr = v_eng.GetSceneManager();
+	ISceneManager* smgr = _nrpEngine.GetSceneManager();
 
 	//координаты курсора на экране
-	core::position2di pos = v_eng.GetDevice()->getCursorControl()->getPosition();
+	core::position2di pos = _nrpEngine.GetDevice()->getCursorControl()->getPosition();
 	//получаем луч для расчетов
 	core::line3df line = smgr->getSceneCollisionManager()->getRayFromScreenCoordinates( pos, smgr->getActiveCamera() );		
 	//здесь будет выбранный треугольник
@@ -161,7 +157,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 				case EMIE_LMOUSE_LEFT_UP:
 				{		
 					//попробуем найти объект сцены к которому попытались обратиться
-					gui::IGUIEnvironment* guienv = CNrpEngine::Instance().GetGuiEnvironment();
+					gui::IGUIEnvironment* guienv = _nrpEngine.GetGuiEnvironment();
 					if( guienv->isHovered( guienv->getRootGUIElement() ) ) //проверяем на пересечение если курсор не находится над гуи
 					{
 						core::vector3df pnt;
@@ -206,7 +202,7 @@ void CNrpMainScene::OnUpdate()
 {
 	try
 	{
-		video::IVideoDriver* driver = CNrpEngine::Instance().GetVideoDriver();
+		video::IVideoDriver* driver = _nrpEngine.GetVideoDriver();
 		
 		//вызываем событие луа до начала сцены
 		DoLuaFunctionsByType<void>( SCENE_BEFORE_BEGIN );
@@ -271,8 +267,7 @@ void CNrpMainScene::OnUpdate()
 
 bool CNrpMainScene::IsObjectChildOfScene_( scene::ISceneNode* node )
 {
-	const core::list< scene::ISceneNode* >& childs = CNrpEngine::Instance().GetSceneManager()->
-																			getRootSceneNode()->getChildren();
+	const core::list< scene::ISceneNode* >& childs = _nrpEngine.GetSceneManager()->getRootSceneNode()->getChildren();
 
 	core::list< scene::ISceneNode* >::ConstIterator pIter = childs.begin();
 	for(; pIter != childs.end(); pIter++ )

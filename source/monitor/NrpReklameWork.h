@@ -3,8 +3,9 @@
 
 namespace nrp
 {
-OPTION_NAME MAXQUALITY( "maxQuality" );
-OPTION_NAME TYPEOBJECT( "typeObject" );
+OPTION_NAME MAXQUALITY( L"maxQuality" );
+OPTION_NAME TYPEOBJECT( L"typeObject" );
+OPTION_NAME REKLAMETYPE( L"reklametype" );
 
 class CNrpReklameWork : public INrpConfig
 {

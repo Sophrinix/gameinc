@@ -14,10 +14,10 @@ public:
 	CNrpGameEngine( const NrpText& name );
 	CNrpGameEngine( const NrpText& fileName, bool load );
 
-	void AddGenre( GENRE_TYPE typen );
+	void AddGenre( const NrpText& typen );
 	int GetGenreCount() { return _avgenres.size(); }
-	GENRE_TYPE GetGenre( int index );
-	bool IsGenreAvailble( GENRE_TYPE typen );
+	const NrpText& GetGenre( int index );
+	bool IsGenreAvailble( const NrpText& typen );
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& loadFolder );
 
@@ -26,7 +26,7 @@ public:
 	static NrpText ClassName();
 
 private:
-	REQUIRE_MAP _avgenres;
+	KNOWLEDGE_MAP _avgenres;
 
 	void _InitialyzeOptions();
 };

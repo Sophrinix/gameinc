@@ -122,7 +122,7 @@ int CreateTerrainShader( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 7, 7, "Function CreateTerrain need 7 parameter");
 
-	scene::ISceneManager* smgr = CNrpEngine::Instance().GetSceneManager();
+	scene::ISceneManager* smgr = _nrpEngine.GetSceneManager();
 	video::IVideoDriver* driver = smgr->getVideoDriver();
 
 	NrpText vertexFilename = lua_tostring(vm, 1);
@@ -134,7 +134,7 @@ int CreateTerrainShader( lua_State *vm )
 	NrpText seaFloorFilename = lua_tostring(vm, 6);	
 	float waterPosY = (float)lua_tonumber( vm, 7 );
 
-	video::CNrpTerrainMaterial* terra_shader = new video::CNrpTerrainMaterial( CNrpEngine::Instance().GetDevice(), 
+	video::CNrpTerrainMaterial* terra_shader = new video::CNrpTerrainMaterial( _nrpEngine.GetDevice(), 
 																						 terrain, 
 																						 driver->getTexture( seaFloorFilename ),
 																						 waterPosY );
@@ -194,7 +194,7 @@ int GetGuiEnvironment( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 0, 0, "Function NrpGetGuiEnvironment not need any parameter");
 
-	lua_pushlightuserdata( vm, (void*)CNrpEngine::Instance().GetGuiEnvironment() );
+	lua_pushlightuserdata( vm, (void*)_nrpEngine.GetGuiEnvironment() );
 	Luna< CLuaGuiEnvironment >::constructor( vm );
 
 	return 1;
@@ -216,7 +216,7 @@ int GetVideoDriver( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 0, 0, "Function GetVideoDriver not need any parameter");
 
-	lua_pushlightuserdata( vm, (void*)CNrpEngine::Instance().GetVideoDriver() );
+	lua_pushlightuserdata( vm, (void*)_nrpEngine.GetVideoDriver() );
 	Luna< CLuaDriver >::constructor( vm );
 
 	return 1;
@@ -227,7 +227,7 @@ int GetSceneManager( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 0, 0, "Function GetSceneManager not need any parameter");
 
-	lua_pushlightuserdata( vm, (void*)CNrpEngine::Instance().GetSceneManager() );
+	lua_pushlightuserdata( vm, (void*)_nrpEngine.GetSceneManager() );
 	Luna< CLuaSceneManager >::constructor( vm );
 
 	return 1;
@@ -241,7 +241,7 @@ int AddScene( lua_State* vm )
 	NrpText name = lua_tostring( vm, 1 );
 	NrpText fileName = lua_tostring( vm, 2 );
 
-	CNrpEngine::Instance().AddScene( name, fileName );
+	_nrpEngine.AddScene( name, fileName );
 
 	return 1;
 }
@@ -253,7 +253,7 @@ int SetNextScene( lua_State* vm )
 
 	NrpText name = lua_tostring( vm, 1 );
 
-	CNrpEngine::Instance().SetStatus( CNrpEngine::LOAD_SCENE, (void*)name.ToStr() );
+	_nrpEngine.SetStatus( CNrpEngine::LOAD_SCENE, (void*)name.ToStr() );
 
 	return 1;
 }
@@ -263,7 +263,7 @@ int InitializeLoginScene( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 0, 0, "Function InitializeLoginScene need 1 parameter");
 
-	CNrpEngine::Instance().InitializeScene( CNrpEngine::LOGIN_SCENE );
+	_nrpEngine.InitializeScene( CNrpEngine::LOGIN_SCENE );
 
 	return 1;
 }
@@ -273,7 +273,7 @@ int InitializeWorkScene( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 0, 0, "Function InitializeWorkScene need 1 parameter");
 
-	CNrpEngine::Instance().InitializeScene( CNrpEngine::WORK_SCENE );
+	_nrpEngine.InitializeScene( CNrpEngine::WORK_SCENE );
 
 	return 1;
 }
@@ -286,7 +286,7 @@ int SetSceneOption( lua_State* vm )
 	NrpText name = lua_tostring( vm, 1 );
 	bool amount = lua_tointeger( vm, 2 ) > 0;
 
-	CNrpEngine::Instance().GetCurrentScene()->SetOption( name, amount );
+	_nrpEngine.GetCurrentScene()->SetOption( name, amount );
 
 	return 1;
 }
@@ -309,7 +309,7 @@ int ApplicationClose( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 0, 0, "Function ApplicationClose not need any parameter");
 
-	CNrpEngine::Instance().SetStatus( CNrpEngine::CLOSE, NULL );
+	_nrpEngine.SetStatus( CNrpEngine::CLOSE, NULL );
 
 	return 1;
 }
@@ -319,7 +319,7 @@ int ApplicationSave( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 0, 0, "Function ApplicationClose not need any parameter");
 
-	CNrpApplication::Instance().Save();
+	_nrpApp.Save();
 
 	return 1;
 }
@@ -329,7 +329,7 @@ int GetApplication( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 0, 0, "Function GetApplication not need any parameter");
 
-	lua_pushlightuserdata( vm, (void*)&CNrpApplication::Instance() );
+	lua_pushlightuserdata( vm, (void*)&_nrpApp );
 	Luna< CLuaApplication >::constructor( vm );
 
 	return 1;	

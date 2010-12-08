@@ -31,7 +31,7 @@ int CLuaMiniMap::SetTexture( lua_State *L )
 
 	NrpText filename = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetTexture( CNrpEngine::Instance().GetVideoDriver()->getTexture( filename ) );
+	IF_OBJECT_NOT_NULL_THEN _object->SetTexture( _nrpEngine.GetVideoDriver()->getTexture( filename ) );
 
 	return 1;
 }
@@ -43,7 +43,7 @@ int CLuaMiniMap::GetAngleOffset( lua_State *L )
 
 	f32 offset = 0;
 
-	IF_OBJECT_NOT_NULL_THEN offset = object_->GetAngleOffset();
+	IF_OBJECT_NOT_NULL_THEN offset = _object->GetAngleOffset();
 	lua_pushnumber( L, offset );
 
 	return 1;
@@ -56,7 +56,7 @@ int CLuaMiniMap::SetOnRotateAction( lua_State *L )
 
 	NrpText name = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetOnRotateAction( name );
+	IF_OBJECT_NOT_NULL_THEN _object->SetOnRotateAction( name );
 
 	return 1;
 }

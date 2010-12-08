@@ -29,13 +29,18 @@ public:
 	int GetScenario( lua_State* L );
 	int SetScenario( lua_State* L );
 	int GetLicense( lua_State* L );
+
 	int GetPlatformsNumber( lua_State* L );
 	int GetPlatform( lua_State* L );
 	int IsMyPlatform( lua_State* L );
+	int AddPlatform( lua_State* L );
+	int RemovePlatform( lua_State* L );
 
 	int GetLanguagesNumber( lua_State* L );
 	int GetLanguage( lua_State* L );
 	int IsMyLanguage( lua_State* L );
+	int AddLanguage( lua_State* L );
+	int RemoveLanguage( lua_State* L );
 
 	int IsProjectReady( lua_State* L );
 	int HaveLicense( lua_State* L );
@@ -63,15 +68,18 @@ public:
 	int GetEngineExtend( lua_State* L );
 	int GetLocalization( lua_State* L );
 	int GetCrossPlatformCode( lua_State* L );
+	int GetCpuUse( lua_State* L );
+	int GetMemoryUse( lua_State* L );
+
 	int Create( lua_State* L );
 	int Remove( lua_State* L );
 															
 private:
 	int SetNamedTech_( lua_State* L, const NrpText& funcName, const NrpText& paramName );
 	
-	template< class T > int SetNumericalTech_( lua_State* L,
+	template< class Param, class T > int SetNumericalTech_( lua_State* L,
 											   const NrpText& funcName, 
-											   void (T::*Method)( CNrpTechnology* tehc, int index) );
+											   void (T::*Method)( Param* tehc, int index) );
 
 	template< class B, class A, class T > int GetNumericalParam_( lua_State* L,
 											   const NrpText& funcName, 

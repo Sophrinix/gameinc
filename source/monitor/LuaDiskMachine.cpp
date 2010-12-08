@@ -36,8 +36,8 @@ int CLuaDiskMachine::Create( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaDiskMachine:Create not need any parameter" );
 
-	object_ = new CNrpDiskMachine();
-	lua_pushlightuserdata( L, object_ );
+	_object = new CNrpDiskMachine();
+	lua_pushlightuserdata( L, _object );
 
 	return 1;	
 }
@@ -47,8 +47,8 @@ int CLuaDiskMachine::Remove( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaDiskMachine:Remove not need any parameter" );
 
-	IF_OBJECT_NOT_NULL_THEN delete object_;
-	object_ = NULL;
+	IF_OBJECT_NOT_NULL_THEN delete _object;
+	_object = NULL;
 
 	return 1;	
 }
@@ -65,7 +65,7 @@ int CLuaDiskMachine::Load( lua_State* L )
 
 	NrpText fileName = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->Load( fileName );
+	IF_OBJECT_NOT_NULL_THEN _object->Load( fileName );
 
 	return 1;	
 }
@@ -76,7 +76,7 @@ int CLuaDiskMachine::IsLoaded( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaDiskMachine::IsLoaded not need any parameter");
 
 	bool loaded = false; 
-	IF_OBJECT_NOT_NULL_THEN loaded = CNrpPlant::Instance().GetDiskMachine( (*object_)[ NAME ].As<NrpText>() ) != NULL;
+	IF_OBJECT_NOT_NULL_THEN loaded = CNrpPlant::Instance().GetDiskMachine( (*_object)[ NAME ].As<NrpText>() ) != NULL;
 
 	lua_pushboolean( L, loaded );
 	return 1;		
@@ -119,8 +119,8 @@ int CLuaDiskMachine::GetDiskProduced( lua_State* L )
 	NrpText company = lua_tostring( L, 2 );
 
 	int ret = 0;
-	IF_OBJECT_NOT_NULL_THEN ret = object_->IsExist( DISKPRODUCED + company ) 
-									? (*object_)[ DISKPRODUCED + company ]
+	IF_OBJECT_NOT_NULL_THEN ret = _object->IsExist( DISKPRODUCED + company ) 
+									? (*_object)[ DISKPRODUCED + company ]
 									: 0 ;
 
 	lua_pushinteger( L, ret );

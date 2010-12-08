@@ -15,6 +15,7 @@ public:
 	int AddUserToInvention( lua_State* L );
 	int AddGameEngineToCompany( lua_State* L );
 	int AddUserToGameProject( lua_State* L );
+	//int __index( lua_State* L ) { return 1; };
 
 	static const char* ClassName();
 };

@@ -88,13 +88,13 @@ void CNrpPlant::Load( const NrpText& saveFolder )
 
 void CNrpPlant::AddWork( CNrpPlantWork* work )
 {
-	CNrpCompany* cmp = CNrpApplication::Instance().GetCompany( work->Param( COMPANYNAME ) );
+	CNrpCompany* cmp = _nrpApp.GetCompany( work->Param( COMPANYNAME ) );
 	assert( cmp != NULL );
 
 	if( cmp != NULL )
 		_works.push_back( new CNrpPlantWork( *work ) );
 
-	Param( WORKNUMBER ) = static_cast< int >( _works.size() );
+	_self[ WORKNUMBER ] = static_cast< int >( _works.size() );
 }
 
 //начало нового дня на фабрике
@@ -113,7 +113,7 @@ void CNrpPlant::BeginNewDay()
 		 }
 	}
 	//обновим значение текущих заданий
-	Param( WORKNUMBER ) = static_cast< int >( _works.size() );
+	_self[ WORKNUMBER ] = static_cast< int >( _works.size() );
 
 	//обработаем зажпния по рекламе игр
 	for( int k=0; k < (int)_reklameWorks.size(); k++ )
@@ -122,7 +122,7 @@ void CNrpPlant::BeginNewDay()
 		//не кончился ли срок рекламирования товара
 		if( _reklameWorks[ k ]->Param( FINISHED ) )
 		{
-			CNrpApplication::Instance().DoLuaFunctionsByType( APP_REKLAME_FINISHED, _reklameWorks[ k ] );
+			_nrpApp.DoLuaFunctionsByType( APP_REKLAME_FINISHED, _reklameWorks[ k ] );
 			delete _reklameWorks[ k ];
 			//если кончился, то надо удалить его из списка активных заданий
 			_reklameWorks.erase( k );
@@ -130,7 +130,7 @@ void CNrpPlant::BeginNewDay()
 		}
 	}
 	//и обновить число текущих рекламных кампаний
-	Param( REKLAMENUMBER ) = static_cast< int >( _reklameWorks.size() );
+	_self[ REKLAMENUMBER ] = static_cast< int >( _reklameWorks.size() );
 }
 
 CNrpReklameWork* CNrpPlant::CreateReklame( const NrpText& type, 
@@ -159,13 +159,13 @@ bool CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
 	assert( pReklame != NULL );
 
 	bool ret = false;
-	if( GetBaseReklame( pReklame->Param( TECHTYPE ).As<NrpText>() ) == NULL )
+	if( GetBaseReklame( (NrpText)(*pReklame)[ REKLAMETYPE ] ) == NULL )
 	{
 		baseReklame_.push_back( pReklame );
 		ret = true;
 	}
 
-	Param( BASEREKLAMENUMBER ) = static_cast< int >( baseReklame_.size() );
+	_self[ BASEREKLAMENUMBER ] = static_cast< int >( baseReklame_.size() );
 	return ret;
 }
 
@@ -174,7 +174,7 @@ CNrpReklameWork* CNrpPlant::GetBaseReklame( const NrpText& name )
 	assert( name.size() != 0 );
 
 	for( u32 i=0; i < baseReklame_.size(); i++ ) 
-		if( baseReklame_[ i ]->Param( TECHTYPE ) == name )
+		if( (*baseReklame_[ i ])[ REKLAMETYPE ] == name )
 			return baseReklame_[ i ];
 
 	return NULL;
@@ -182,8 +182,7 @@ CNrpReklameWork* CNrpPlant::GetBaseReklame( const NrpText& name )
 
 void CNrpPlant::AddReklame( CNrpReklameWork* reklame )
 {
-	CNrpReklameWork* rWork = GetReklame( reklame->Param( TECHTYPE ), 
-										 reklame->Param( GAMENAME ) );
+	CNrpReklameWork* rWork = GetReklame( (*reklame)[ REKLAMETYPE ], (*reklame)[ GAMENAME ] );
 
 	if( rWork != NULL )
 	{

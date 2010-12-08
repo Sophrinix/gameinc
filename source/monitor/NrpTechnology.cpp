@@ -85,13 +85,13 @@ void CNrpTechnology::SetEmployerSkillRequire( int skill_type, int valuel )
 
 int CNrpTechnology::GetEngineTechRequire( int tech_type )
 {
-	REQUIRE_MAP::Node* node = _techRequires.find( tech_type );
+	KNOWLEDGE_MAP::Node* node = _techRequires.find( tech_type );
 	return node ? node->getValue() : 0;
 }
 
 int CNrpTechnology::GetEployerSkillRequire( int skil_require )
 {
-	REQUIRE_MAP::Node* node = _skillRequires.find( skil_require );
+	KNOWLEDGE_MAP::Node* node = _skillRequires.find( skil_require );
 	return node ? node->getValue() : 0;
 }
 
@@ -120,7 +120,7 @@ void CNrpTechnology::Load( const NrpText& fileName )
 	rv.Get( SECTION_REQUIRE_SKILL, _skillRequires );
 
 	if( Param( STATUS ) == (int)TS_READY )
-		rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, (int)Param( NEXTTECHNUMBER ), _futureTech );
+		rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, (int)_self[ NEXTTECHNUMBER ], _futureTech );
 }
 
 float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
@@ -129,9 +129,9 @@ float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
 		return 0;
 	
 	int minSkill = 40;
-	int minSkillName = 0;
+	NrpText minSkillName = 0;
 	float posibility = 0;
-	REQUIRE_MAP::Iterator sIter = _skillRequires.getIterator();
+	KNOWLEDGE_MAP::Iterator sIter = _skillRequires.getIterator();
 	for( ; !sIter.atEnd(); sIter++ )
 	{
 		int skillValue = ptrUser->GetSkill( sIter->getKey() );

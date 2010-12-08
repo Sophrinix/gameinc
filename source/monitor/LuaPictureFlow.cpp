@@ -42,12 +42,12 @@ int CLuaPictureFlow::AddItem( lua_State *L )	//добавляет текст в списко отображе
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		NrpText texturePath( lua_tostring( L, 2 ) );
-		video::ITexture* texture = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturePath );
+		video::ITexture* texture = _nrpEngine.GetVideoDriver()->getTexture( texturePath );
 
 		NrpText text( lua_tostring( L, 3 ) ); 
 		void* object = lua_touserdata( L, 4 );
 	
-		int ret = object_->addItem( texture, text.ToWide(), object );			
+		int ret = _object->addItem( texture, text.ToWide(), object );			
 		lua_pushinteger( L, ret );
 	}
 
@@ -61,7 +61,7 @@ int CLuaPictureFlow::GetSelected( lua_State *L )
 
 	int selected = -1;
 
-	IF_OBJECT_NOT_NULL_THEN selected = object_->getSelected();
+	IF_OBJECT_NOT_NULL_THEN selected = _object->getSelected();
 	lua_pushinteger( L, selected );
 
 	return 1;
@@ -74,7 +74,7 @@ int CLuaPictureFlow::SetSelected( lua_State *L )
 
 	int selected = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setSelected( selected );			
+	IF_OBJECT_NOT_NULL_THEN	_object->setSelected( selected );			
 
 	return 1;
 }
@@ -84,7 +84,7 @@ int CLuaPictureFlow::Clear( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPictureFlow::Clear not need any parameter");
 
-	IF_OBJECT_NOT_NULL_THEN	object_->clear();			
+	IF_OBJECT_NOT_NULL_THEN	_object->clear();			
 
 	return 1;
 }
@@ -98,9 +98,9 @@ int CLuaPictureFlow::GetSelectedObject( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		int selected = object_->getSelected();
+		int selected = _object->getSelected();
 		if( selected >= 0 )
-			selObject = (void*)object_->getObject( selected );
+			selObject = (void*)_object->getObject( selected );
 	}
 	lua_pushlightuserdata( L, selObject );
 
@@ -114,7 +114,7 @@ int CLuaPictureFlow::SetPictureRect( lua_State* L )
 
 	core::recti rectangle( lua_tointeger( L, 2 ), lua_tointeger( L, 3 ), lua_tointeger( L, 4 ), lua_tointeger( L, 5) );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setPictureRect( rectangle );
+	IF_OBJECT_NOT_NULL_THEN	_object->setPictureRect( rectangle );
 
 	return 1;
 }
@@ -128,9 +128,9 @@ int CLuaPictureFlow::GetSelectedItem( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		int selected = object_->getSelected();
+		int selected = _object->getSelected();
 		if( selected >= 0 )
-			text = object_->getListItem( selected );
+			text = _object->getListItem( selected );
 	}
 
 	lua_pushstring( L, text );
@@ -144,7 +144,7 @@ int CLuaPictureFlow::SetDrawBorder( lua_State* L )
 
 	bool drawBorder = lua_toboolean( L, 2 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setDrawBackground( drawBorder );			
+	IF_OBJECT_NOT_NULL_THEN	_object->setDrawBackground( drawBorder );			
 
 	return 1;
 }
@@ -163,9 +163,9 @@ int CLuaPictureFlow::SetItemTexture( lua_State* L )
 	{
 		int index = lua_tointeger( L, 2 );
 		NrpText texturePath = lua_tostring( L, 3 );
-		video::ITexture* texture = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturePath );
+		video::ITexture* texture = _nrpEngine.GetVideoDriver()->getTexture( texturePath );
 
-		object_->setItemTexture( index, texture );			
+		_object->setItemTexture( index, texture );			
 	}
 
 	return 1;
@@ -179,7 +179,7 @@ int CLuaPictureFlow::SetItemBlend( lua_State* L )
 	int index = lua_tointeger( L, 2 );
 	int blend = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setItemBlend( index, blend );			
+	IF_OBJECT_NOT_NULL_THEN	_object->setItemBlend( index, blend );			
 
 	return 1;
 }

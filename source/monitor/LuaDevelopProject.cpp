@@ -36,7 +36,7 @@ int CLuaDevelopProject::GetModule( lua_State* L )
 
 	CNrpProjectModule* prj = NULL;
 	int index = lua_tointeger( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN prj = object_->GetModule( index );
+	IF_OBJECT_NOT_NULL_THEN prj = _object->GetModule( index );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );

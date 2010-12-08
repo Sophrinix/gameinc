@@ -32,7 +32,7 @@ void CLuaCamera::FindRtsAnimator_()
 {
 	anim_ = NULL;
 
-	core::list< scene::ISceneNodeAnimator* >  anims = object_->getAnimators();
+	core::list< scene::ISceneNodeAnimator* >  anims = _object->getAnimators();
 	core::list< scene::ISceneNodeAnimator* >::Iterator animator = anims.begin();
 
 	for(; animator != anims.end(); animator++ )
@@ -137,7 +137,7 @@ int CLuaCamera::AddAnimator( lua_State* L )
 
 	scene::ISceneNodeAnimator*  anim = (scene::ISceneNodeAnimator*)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->addAnimator( anim );
+	IF_OBJECT_NOT_NULL_THEN	_object->addAnimator( anim );
 
 	return 1;
 }
@@ -149,7 +149,7 @@ int CLuaCamera::SetFarValue( lua_State* L )
 
 	float amount = (float)lua_tonumber( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setFarValue( amount );
+	IF_OBJECT_NOT_NULL_THEN	_object->setFarValue( amount );
 
 	return 1;
 }
@@ -164,7 +164,7 @@ int CLuaCamera::SetPosition( lua_State* L )
 	pos.Y = (float)lua_tonumber( L, 3 );
 	pos.Z = (float)lua_tonumber( L, 4 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setPosition( pos );
+	IF_OBJECT_NOT_NULL_THEN	_object->setPosition( pos );
 
 	return 1;
 }
@@ -179,7 +179,7 @@ int CLuaCamera::SetTarget( lua_State* L )
 	pos.Y = (float)lua_tonumber( L, 3 );
 	pos.Z = (float)lua_tonumber( L, 4 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setTarget( pos );
+	IF_OBJECT_NOT_NULL_THEN	_object->setTarget( pos );
 
 	return 1;
 }

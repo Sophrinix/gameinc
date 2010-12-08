@@ -46,7 +46,7 @@ int CLuaDevelopModule::GetOptionAsInt( lua_State* L )
 	NrpText opName = lua_tostring( L, 2 );
 
 	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = (*object_)[ opName ];
+	IF_OBJECT_NOT_NULL_THEN	result = (*_object)[ opName ];
 	lua_pushinteger( L, result );
 	return 1;	
 }
@@ -60,7 +60,7 @@ int CLuaDevelopModule::GetEmployerPosibility( lua_State* L )
 	PUser puser = (PUser)lua_touserdata( L, 2 );
 	assert( puser != NULL );
 	if( puser != NULL )
-		IF_OBJECT_NOT_NULL_THEN	posilbleValue = object_->GetEmployerPosibility( puser );
+		IF_OBJECT_NOT_NULL_THEN	posilbleValue = _object->GetEmployerPosibility( puser );
 
 	lua_pushnumber( L, posilbleValue );
 	return 1;	
@@ -73,8 +73,8 @@ int CLuaDevelopModule::Remove( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		delete object_;
-		object_ = NULL;
+		delete _object;
+		_object = NULL;
 	}
 
 	return 1;	
@@ -98,7 +98,7 @@ int CLuaDevelopModule::GetParent( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaDevelopModule:GetParent not need parameter");
 
 	INrpDevelopProject* prj = NULL;
-	IF_OBJECT_NOT_NULL_THEN prj = (*object_)[ PARENT ].As<INrpDevelopProject*>();
+	IF_OBJECT_NOT_NULL_THEN prj = (*_object)[ PARENT ].As<INrpDevelopProject*>();
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );

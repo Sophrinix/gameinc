@@ -12,22 +12,21 @@ namespace nrp
 {
 CLASS_NAME CLASS_PROJECTMODULE( "CNrpProjectModule" );
 
-CNrpProjectModule::CNrpProjectModule( CNrpTechnology* pTech, INrpProject* pProject )
-	: IWorkingModule( (*pTech)[ TECHGROUP ].As<PROJECT_TYPE>(), CLASS_PROJECTMODULE )
+CNrpProjectModule::CNrpProjectModule( CNrpTechnology* pTech, INrpDevelopProject* pProject )
+	: IWorkingModule( PROJECT_TYPE( (int)(*pTech)[ TECHGROUP ] ), CLASS_PROJECTMODULE )
 {
 	InitializeOptions_();
 
 	CNrpTechnology& refTech = *pTech;
-	Param( NAME ) = refTech[ NAME ];
-	Param( TECHGROUP ) = refTech[ TECHGROUP ];
-	Param( TECHTYPE ) = refTech[ TECHTYPE ];
-	Param( BASE_CODE ) = refTech[ BASE_CODE ];
-	Param( ENGINE_CODE ) = refTech[ ENGINE_CODE ];
-	Param( INTERNAL_NAME ) = refTech[ INTERNAL_NAME ];
-	Param( TEXTURENORMAL ) = refTech[ TEXTURENORMAL ];
-	Param( LEVEL ) = refTech[ LEVEL ];
-	Param( PARENT ) = pProject;
-	Param( QUALITY ) = refTech[ QUALITY ];
+	_self[ NAME ] = refTech[ NAME ];
+	_self[ TECHGROUP ] = refTech[ TECHGROUP ];
+	_self[ BASE_CODE ] = refTech[ BASE_CODE ];
+	_self[ ENGINE_CODE ] = refTech[ ENGINE_CODE ];
+	_self[ INTERNAL_NAME ] = refTech[ INTERNAL_NAME ];
+	_self[ TEXTURENORMAL ] = refTech[ TEXTURENORMAL ];
+	_self[ LEVEL ] = refTech[ LEVEL ];
+	_self[ PARENT ] = pProject;
+	_self[ QUALITY ] = refTech[ QUALITY ];
 
 	CopyMapTo( _techRequires, pTech->GetTechRequires() );
 	CopyMapTo( _skillRequires, pTech->GetSkillRequires() );
@@ -37,33 +36,35 @@ CNrpProjectModule::CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject* pPr
 	: IWorkingModule( type, CLASS_PROJECTMODULE )
 {
 	InitializeOptions_();
-	Param( TECHTYPE ) = type;
-	Param( PARENT ) = pProject;
+	_self[ TECHGROUP ] = static_cast< int >( type );
+	_self[ PARENT ] = pProject;
 }
 
 CNrpProjectModule::CNrpProjectModule() : IWorkingModule( PROJECT_TYPE(0), CLASS_PROJECTMODULE )
 {}
 
-CNrpProjectModule::CNrpProjectModule( CNrpPlatform* platform, INrpProject* project )
-: IWorkingModule( (*platform)[ TECHGROUP ].As<PROJECT_TYPE>(), CLASS_PROJECTMODULE )
+CNrpProjectModule::CNrpProjectModule( CNrpPlatform* platform, INrpDevelopProject* project )
+: IWorkingModule( PROJECT_TYPE( (int)(*platform)[ TECHGROUP ] ), CLASS_PROJECTMODULE )
 {
 	InitializeOptions_();
 
 	CNrpPlatform& refPl = *platform;
-	Param( NAME ) = NrpText::LuaString( "#PLATFORM_PORTING" ) + (NrpText)refPl[ NAME ];
-	Param( TECHGROUP ) = refPl[ TECHGROUP ];
-	Param( TECHTYPE ) = refPl[ TECHTYPE ];
-	Param( BASE_CODE ) = refPl[ BASE_CODE ];
-	Param( ENGINE_CODE ) = refPl[ ENGINE_CODE ];
-	Param( INTERNAL_NAME ) = refPl[ INTERNAL_NAME ];
-	Param( TEXTURENORMAL ) = refPl[ TEXTURENORMAL ];
-	Param( LEVEL ) = refPl[ LEVEL ];
-	Param( PARENT ) = project;
-	Param( QUALITY ) = refPl[ QUALITY ];
+	_self[ NAME ] = NrpText::LuaString( "#PLATFORM_PORTING" ) + (NrpText)refPl[ NAME ];
+	_self[ TECHGROUP ] = refPl[ TECHGROUP ];
+	_self[ BASE_CODE ] = refPl[ BASE_CODE ];
+	_self[ ENGINE_CODE ] = refPl[ ENGINE_CODE ];
+	_self[ INTERNAL_NAME ] = refPl[ INTERNAL_NAME ];
+	_self[ TEXTURENORMAL ] = refPl[ TEXTURENORMAL ];
+	_self[ LEVEL ] = refPl[ LEVEL ];
+	_self[ PARENT ] = project;
+	_self[ QUALITY ] = refPl[ QUALITY ];
 
 	const TECHS& techs = platform->GetTechsList();
 	for( s32 i=0; i < techs.size(); i++ )
-		 _techRequires[ (int)(*techs[ i ])[  TECHTYPE ] ] = 100;
+	{
+		const NrpText& name = (*techs[ i ])[ INTERNAL_NAME ];
+		 _techRequires[ name ] = 100;
+	}
 }
 
 CNrpProjectModule::~CNrpProjectModule(void)
@@ -100,10 +101,10 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 	INrpDevelopProject* parent = Param( PARENT ).As<INrpDevelopProject*>();
 	assert( parent != NULL );
 
-	if( Param( CODEPASSED ) < Param( CODEVOLUME) )
+	if( _self[ CODEPASSED ] < _self[ CODEVOLUME] )
 	{
 		int reqSkill = 0;
-		REQUIRE_MAP::Iterator sIter = _skillRequires.getIterator();
+		KNOWLEDGE_MAP::Iterator sIter = _skillRequires.getIterator();
 		float teamKoeff = _GetWorkKoeffForUser( ptrUser );
 		for( ; !sIter.atEnd(); sIter++ )
 			reqSkill += ptrUser->GetSkill( sIter->getKey() );
@@ -114,11 +115,11 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 		//коэффициент команды нужен из-за того, что отимальный размер команды 5, а дальнейший рост 
 		//приводит к ухудшению производительности каждого из членов команды,
 		//хотя общая растет
-		float genreSkill = teamKoeff * ptrUser->GetGenreExperience( Param( TECHTYPE ).As<GENRE_TYPE>() ) / 100.f;
+		float genreSkill = teamKoeff * ptrUser->GetGenreExperience( _self[ INTERNAL_NAME ] ) / 100.f;
 
 		if( genreSkill < 0.1f )
 			genreSkill = 0.1f;
-		float genrePref = teamKoeff * ptrUser->GetGenrePreferences( Param( TECHTYPE ).As<GENRE_TYPE>() ) / 100.f;
+		float genrePref = teamKoeff * ptrUser->GetGenrePreferences( _self[ INTERNAL_NAME ] ) / 100.f;
 		
 		if( genrePref < 0.1f )
 			genrePref = 0.1f;

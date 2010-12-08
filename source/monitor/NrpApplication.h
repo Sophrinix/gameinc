@@ -14,6 +14,7 @@ OPTION_NAME SAVEDIR_INVENTIONS( L"saveDirInvention" );
 OPTION_NAME SAVEDIR_COMPANIES( L"saveDirCompanies" );
 OPTION_NAME SAVEDIR_DEVPR( L"saveDirDevProjects" );
 OPTION_NAME SAVEDIR_GAMES( L"saveDirGames" );
+OPTION_NAME SAVEDIR_PLATFORMS( L"platforms" );
 OPTION_NAME SAVEDIR_PROJECTS( L"saveDirProjects" );
 OPTION_NAME SAVEDIR_ENGINES( L"saveDirEngines" );
 OPTION_NAME SAVEDIR_PLANT( L"saveDirPlant" );
@@ -144,6 +145,9 @@ private:
 	void _InitialyzeSaveDirectories( const NrpText& profileName );
 	void _UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );
 	void _CreateDirectoriesMapForSave();
+	int _GetTechsByGroup( int type, TECHS& arrayt );
 };
+
+#define _nrpApp CNrpApplication::Instance()
 
 }//namespace nrp

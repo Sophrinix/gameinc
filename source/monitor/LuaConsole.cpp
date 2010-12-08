@@ -30,9 +30,9 @@ int CLuaConsole::ToggleVisible( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( gui::IGUIElement* ptr = object_->getParent() )
-			ptr->bringToFront( object_ );
-		object_->ToggleVisible();
+		if( gui::IGUIElement* ptr = _object->getParent() )
+			ptr->bringToFront( _object );
+		_object->ToggleVisible();
 	}
 
 	return 1;
@@ -43,7 +43,7 @@ int CLuaConsole::Draw( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaConsole::Draw not need any parameter");
 
-	IF_OBJECT_NOT_NULL_THEN object_->draw();
+	IF_OBJECT_NOT_NULL_THEN _object->draw();
 
 	return 1;
 }

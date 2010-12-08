@@ -47,7 +47,7 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 	Add<int>( LOCALIZATION, 0 );
 	Add<float>( FAMOUS, 0 );
 
-	Param( NAME ) = name;
+	_self[ NAME ] = name;
 }
 
 void CNrpDevelopGame::_AddModulesFrom( const CNrpTechnology* tech, int baseCode )
@@ -67,7 +67,6 @@ void CNrpDevelopGame::_AddModulesFrom( const TARRAY& arrtech, int baseCode )
 	{
 		T* ptr = arrtech[ i ];
 
-		assert( ptr );
 		if( ptr )
 		{
 			CNrpProjectModule* nTech = new CNrpProjectModule( ptr, this );
@@ -83,14 +82,14 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	CNrpGameProject& refPr = *nProject;
 	_InitializeOptions( nProject->Text( NAME ) );
     //компания, которая делает это модуль
-	Param( PARENTCOMPANY ) = ptrCompany;
-	assert( nProject->Param( PLATFORMNUMBER ) != (int)0 );
-	Param( PLATFORMNUMBER ) = refPr[ PLATFORMNUMBER ];
-	Param( GENRE_MODULE_NUMBER ) = refPr[ GENRE_MODULE_NUMBER ];
+	_self[ PARENTCOMPANY ] = ptrCompany;
+	assert( (*nProject)[ PLATFORMNUMBER ] != (int)0 );
+	_self[ PLATFORMNUMBER ] = refPr[ PLATFORMNUMBER ];
+	_self[ GENRE_MODULE_NUMBER ] = refPr[ GENRE_MODULE_NUMBER ];
 	int bcv = refPr[ ENGINE_CODEVOLUME ];
 
 	PNrpGameEngine ge = refPr[ GAME_ENGINE ].As<PNrpGameEngine>();
-	Param( GAME_ENGINE ) = ge;
+	_self[ GAME_ENGINE ] = ge;
 
 	CNrpProjectModule* extEngine = new CNrpProjectModule( PT_ENGINDEEXTEND, this );
 	(*extEngine)[ NAME ] = Text( NAME ) + " Расширение движка";
@@ -99,15 +98,14 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	(*extEngine)[ BASE_CODE ] = 1.f;
 	_modules.push_back( extEngine );
 	
-	Param( PREV_GAME ) = refPr[ PREV_GAME ];
-	Param( BASE_CODEVOLUME ) = refPr[ BASE_CODEVOLUME ];
-	Param( CODEVOLUME ) = refPr[ CODEVOLUME ];
-	Param( TECHTYPE ) = refPr[ TECHTYPE ];
-	Param( SCENARIO ) = refPr[ SCENARIO ];
-	Param( GLICENSE ) = refPr[ GLICENSE ];
-	Param( BASEQUALITY ) = refPr[ BASEQUALITY ];
-	Param( PROJECTREADY ) = false;
-	Param( QUALITY ) = int(0);
+	_self[ PREV_GAME ] = refPr[ PREV_GAME ];
+	_self[ BASE_CODEVOLUME ] = refPr[ BASE_CODEVOLUME ];
+	_self[ CODEVOLUME ] = refPr[ CODEVOLUME ];
+	_self[ SCENARIO ] = refPr[ SCENARIO ];
+	_self[ GLICENSE ] = refPr[ GLICENSE ];
+	_self[ BASEQUALITY ] = refPr[ BASEQUALITY ];
+	_self[ PROJECTREADY ] = false;
+	_self[ QUALITY ] = int(0);
 
 	_AddModulesFrom( refPr[ SCRIPTENGINE ].As<CNrpTechnology*>(), bcv );
 	_AddModulesFrom( refPr[ MINIGAMEENGINE ].As<CNrpTechnology*>(), bcv );
@@ -121,8 +119,8 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	_AddModulesFrom< CNrpTechnology >( refPr.GetLanguageTechList(), bcv );
 	_AddModulesFrom< CNrpPlatform >( refPr.GetPlatformsList(), bcv );
 
-	Param( PROJECTSTATUS ) = NrpText( "develop" );
-	Param( MODULE_NUMBER ) = static_cast< int >( _modules.size() );
+	_self[ PROJECTSTATUS ] = NrpText( "develop" );
+	_self[ MODULE_NUMBER ] = static_cast< int >( _modules.size() );
 }
 
 CNrpDevelopGame::CNrpDevelopGame( const NrpText& name, CNrpCompany* ptrCompany )
@@ -148,13 +146,12 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
 	{
 		 SetDeveloper( uList[ k ] );
 		 float growExp = (int)(*module)[ CODEVOLUME ] / (float)Param( BASE_CODEVOLUME );
-		 GENRE_TYPE techType = (*GetGenre( 0 ))[ TECHTYPE ].As<GENRE_TYPE>();
 		 //опыт пользователя растет по мере выполнения компонентов
 		 //а если у пользователя не было опыта в этом жанре, то он появляется
-		 uList[ k ]->IncreaseExperience( techType, static_cast< int >( growExp ) );
+		 uList[ k ]->IncreaseExperience( (*GetGenre( 0 ))[ INTERNAL_NAME ], static_cast< int >( growExp ) );
 	}
 
-	CNrpApplication::Instance().DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
+	_nrpApp.DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
 }
 
 NrpText CNrpDevelopGame::Save( const NrpText& folderSave )
@@ -215,7 +212,7 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 	}
 
 	NrpText name = rf.Get( SECTION_PROPERTIES, GAME_ENGINE, NrpText("") );
-	Param( GAME_ENGINE ) = CNrpApplication::Instance().GetGameEngine( name );
+	Param( GAME_ENGINE ) = _nrpApp.GetGameEngine( name );
 
 	name = rf.Get( SECTION_PROPERTIES, SCENARIO, NrpText("") );
 	PNrpScenario scenario = new CNrpScenario( name );
@@ -259,7 +256,7 @@ CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index )
 	int position = 0;
 	for( u32 i=0; i < _modules.size(); i++ )
 	{
-		 if( _modules[ i ]->Param( TECHGROUP ).As<GENRE_TYPE>() == PT_GENRE && position == index )
+		 if( (int)(*_modules[ i ])[ TECHGROUP ] == PT_GENRE && position == index )
 			 return _modules[ i ];
 		 else
 			 position++;

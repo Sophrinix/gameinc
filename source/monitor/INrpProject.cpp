@@ -8,8 +8,7 @@ INrpProject::INrpProject( const NrpText& className, const NrpText& systemName ) 
 {
 	Add( NAME, systemName );
 	Add( INTERNAL_NAME, systemName );
-	Add( BALANCE, (int)0 );
-	Add( TECHTYPE, (int)PT_UNKNOWN );
+	Add( TECHGROUP, (int)PT_UNKNOWN );
 }
 
 INrpProject::~INrpProject(void)

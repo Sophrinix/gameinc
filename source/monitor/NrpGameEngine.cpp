@@ -14,7 +14,7 @@ CNrpGameEngine::CNrpGameEngine( const NrpText& name ) : INrpProject( CLASS_GAMEE
 {
 	_InitialyzeOptions();
 
-	Param( NAME ) = name;
+	_self[ NAME ] = name;
 }
 
 void CNrpGameEngine::_InitialyzeOptions()
@@ -30,6 +30,7 @@ void CNrpGameEngine::_InitialyzeOptions()
 	Add<PNrpCompany>( PARENTCOMPANY, NULL );
 	Add<NrpText>( TEXTURENORMAL, "" );
 	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	Add( CPU, 0.f );
 }
 
 CNrpGameEngine::CNrpGameEngine( const NrpText& fileName, bool load )
@@ -45,26 +46,26 @@ CNrpGameEngine::~CNrpGameEngine(void)
 }
 
 //! добавить жанр двига... тестовая функция( жанры будут настледоваться от проекта )
-void CNrpGameEngine::AddGenre( GENRE_TYPE typen )
+void CNrpGameEngine::AddGenre( const NrpText& name )
 {
-	if( _avgenres.find( typen ) == NULL )
-		_avgenres[ typen ] = 1;
+	if( _avgenres.find( name ) == NULL )
+		_avgenres[ name ] = 1;
 
-	Param( AVGENRE_COUNT ) = static_cast< int >( _avgenres.size() );
+	_self[ AVGENRE_COUNT ] = static_cast< int >( _avgenres.size() );
 }
 
-bool CNrpGameEngine::IsGenreAvailble( GENRE_TYPE typen )
+bool CNrpGameEngine::IsGenreAvailble( const NrpText& name )
 {
-	return (_avgenres.find( typen ) != NULL );
+	return (_avgenres.find( name ) != NULL );
 }
 
-nrp::GENRE_TYPE CNrpGameEngine::GetGenre( int index )
+const NrpText& CNrpGameEngine::GetGenre( int index )
 {
-	REQUIRE_MAP::Iterator pIter = _avgenres.getIterator();
+	KNOWLEDGE_MAP::Iterator pIter = _avgenres.getIterator();
 
 	for( int i=0; pIter.atEnd(), i < index; pIter++, i++ );
 
-	return pIter.atEnd() ? GT_UNKNOWN : GENRE_TYPE( pIter->getKey() );
+	return pIter.atEnd() ? "" : pIter->getKey();
 }
 
 NrpText CNrpGameEngine::Save( const NrpText& saveFolder )

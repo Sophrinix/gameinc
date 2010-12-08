@@ -36,7 +36,7 @@ int CLuaDriver::GetScreenSize( lua_State *L )
 
 	core::dimension2di size(0, 0);
 
-	IF_OBJECT_NOT_NULL_THEN size = object_->getScreenSize();
+	IF_OBJECT_NOT_NULL_THEN size = _object->getScreenSize();
 	lua_pushinteger( L, size.Width );
 	lua_pushinteger( L, size.Height );
 
@@ -51,7 +51,7 @@ int CLuaDriver::GetTexture( lua_State *L )
 	NrpText fileName = lua_tostring( L, 2 );
 
 	video::ITexture* txs = NULL;
-	IF_OBJECT_NOT_NULL_THEN txs = object_->getTexture( fileName );
+	IF_OBJECT_NOT_NULL_THEN txs = _object->getTexture( fileName );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, txs );
@@ -70,7 +70,7 @@ int CLuaDriver::AddTexture( lua_State *L )
 	NrpText fileName = lua_tostring( L, 4 );
 
 	video::ITexture* txs = NULL;
-	IF_OBJECT_NOT_NULL_THEN txs = object_->addTexture( core::dimension2du( width, height ), fileName );
+	IF_OBJECT_NOT_NULL_THEN txs = _object->addTexture( core::dimension2du( width, height ), fileName );
 	lua_pushlightuserdata( L, txs );
 
 	return 1;
@@ -85,8 +85,8 @@ int CLuaDriver::RemoveTexture( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		video::ITexture* txs = object_->getTexture( fileName );
-		object_->removeTexture( txs );
+		video::ITexture* txs = _object->getTexture( fileName );
+		_object->removeTexture( txs );
 	}
 
 	return 1;
@@ -102,7 +102,7 @@ int CLuaDriver::AddRenderTargetTexture( lua_State* L )
 	NrpText fileName = lua_tostring( L, 4 );
 
 	video::ITexture* txs = NULL;
-	IF_OBJECT_NOT_NULL_THEN txs = object_->addRenderTargetTexture( core::dimension2du( width, height ), fileName, video::ECF_A8R8G8B8 );
+	IF_OBJECT_NOT_NULL_THEN txs = _object->addRenderTargetTexture( core::dimension2du( width, height ), fileName, video::ECF_A8R8G8B8 );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, txs );
@@ -121,7 +121,7 @@ int CLuaDriver::SetRenderTarget( lua_State* L )
 	bool clearZBuffer = lua_toboolean( L, 4 ) > 0;
 	video::SColor color( lua_tointeger( L, 5 ), lua_tointeger( L, 6 ), lua_tointeger( L, 7 ), lua_tointeger( L, 8) );
 
-	IF_OBJECT_NOT_NULL_THEN object_->setRenderTarget( txs, clearBackBuffer, clearZBuffer, color );
+	IF_OBJECT_NOT_NULL_THEN _object->setRenderTarget( txs, clearBackBuffer, clearZBuffer, color );
 
 	return 1;
 }

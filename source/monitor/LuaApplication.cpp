@@ -92,12 +92,12 @@ int CLuaApplication::UpdateGameTime( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		bool needUpdate = (*object_)[ GAME_TIME ].As<CNrpGameTime*>()->Update();
+		bool needUpdate = (*_object)[ GAME_TIME ].As<CNrpGameTime*>()->Update();
 
 		wchar_t text[ 32 ] = { 0 };
-		gui::IGUIEnvironment* env = CNrpEngine::Instance().GetGuiEnvironment();
+		gui::IGUIEnvironment* env = _nrpEngine.GetGuiEnvironment();
 		gui::IGUIElement* elm = env->getRootGUIElement()->getElementFromId( idDateLabel, true );
-		SYSTEMTIME& time = (*object_)[ CURRENTTIME ];
+		SYSTEMTIME& time = (*_object)[ CURRENTTIME ];
 		if( elm && needUpdate )
 		{
 			swprintf_s( text, 31, L"%4d.%02d.%02d  %02d:%02d", time.wYear, time.wMonth, time.wDay, 
@@ -137,8 +137,8 @@ int CLuaApplication::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, 
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( rem ) object_->RemoveLuaFunction( typea, fName );
-		else object_->AddLuaFunction( typea, fName );
+		if( rem ) _object->RemoveLuaFunction( typea, fName );
+		else _object->AddLuaFunction( typea, fName );
 
 #ifdef _DEBUG
 		Log(HW) << NrpText(rem ? "remove " : "added ") << "application:" << fName << term;
@@ -176,12 +176,12 @@ int CLuaApplication::GetTech( lua_State* L )
 		if( lua_isnumber( L, 2 ) > 0 )
 		{
 			int techNumber = lua_tointeger( L, 2 );
-			tech = object_->GetTechnology( techNumber );
+			tech = _object->GetTechnology( techNumber );
 		}
 		else if( lua_isstring( L, 2 ) > 0 )
 		{
 			NrpText name( lua_tostring( L, 2 ) );
-			tech = object_->GetTechnology( name );	
+			tech = _object->GetTechnology( name );	
 		}
 	}
 
@@ -199,7 +199,7 @@ int CLuaApplication::AddPublicTechnology( lua_State* L )
 
 	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->AddTechnology( tech );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddTechnology( tech );
 
 	return 1;
 }
@@ -217,7 +217,7 @@ int CLuaApplication::GetUser( lua_State* L )
 
 	int userNumber = lua_tointeger( L, 2 );
 	IUser* user = NULL;
-	IF_OBJECT_NOT_NULL_THEN	user = object_->GetUser( userNumber );
+	IF_OBJECT_NOT_NULL_THEN	user = _object->GetUser( userNumber );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
@@ -235,10 +235,10 @@ int CLuaApplication::GetUserByName( lua_State* L )
 	IUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		int userNum = (*object_)[ USERNUMBER ];
+		int userNum = (*_object)[ USERNUMBER ];
 		for( int k = 0; k < userNum; k++ )
 		{
-			IUser* ptrUser = object_->GetUser( k );
+			IUser* ptrUser = _object->GetUser( k );
 			if( (*ptrUser)[ NAME ] == userName )
 			{
 				user = ptrUser;
@@ -259,7 +259,7 @@ int CLuaApplication::RemoveUser( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:RemoveUser need IUser* parameter" );
 
 	IUser* user = (IUser*)lua_touserdata( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN	object_->RemoveUser( user );
+	IF_OBJECT_NOT_NULL_THEN	_object->RemoveUser( user );
 	return 1;	
 }
 
@@ -283,7 +283,7 @@ int CLuaApplication::CreateProfile( lua_State* L )
 	NrpText userName( lua_tostring( L, 2 ) );
 	NrpText companyName( lua_tostring( L, 3 ) );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->CreateProfile( userName, companyName );
+	IF_OBJECT_NOT_NULL_THEN	_object->CreateProfile( userName, companyName );
 	return 1;	
 }
 
@@ -292,7 +292,7 @@ int CLuaApplication::ResetData( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:ResetData not need any parameter" );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->ResetData();
+	IF_OBJECT_NOT_NULL_THEN	_object->ResetData();
 	return 1;
 }
 
@@ -304,7 +304,7 @@ int CLuaApplication::LoadProfile( lua_State* L )
 	NrpText name( lua_tostring( L, 2 ) );
 	NrpText company( lua_tostring( L, 3 ) );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->Load( name, company );
+	IF_OBJECT_NOT_NULL_THEN	_object->Load( name, company );
 
 	return 1;	
 }
@@ -314,7 +314,7 @@ int CLuaApplication::CreateNewFreeUsers( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:UpdateUsers not need parameter" );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->CreateNewFreeUsers();
+	IF_OBJECT_NOT_NULL_THEN	_object->CreateNewFreeUsers();
 
 	return 1;		
 }
@@ -324,7 +324,7 @@ int CLuaApplication::GetCompanyNumber( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetCompanyNumber need int parameter" );
 
-	IF_OBJECT_NOT_NULL_THEN	lua_pushinteger( L, (int)(*object_)[ COMPANIESNUMBER ] );
+	IF_OBJECT_NOT_NULL_THEN	lua_pushinteger( L, (int)(*_object)[ COMPANIESNUMBER ] );
 	return 1;
 }
 
@@ -336,7 +336,7 @@ int CLuaApplication::GetCompany( lua_State* L )
 	int cmpNumber = lua_tointeger( L, 2 );
 	CNrpCompany* ptrCompany = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	ptrCompany = object_->GetCompany( cmpNumber );
+	IF_OBJECT_NOT_NULL_THEN	ptrCompany = _object->GetCompany( cmpNumber );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, ptrCompany );
@@ -352,7 +352,7 @@ int CLuaApplication::GetCompanyByName( lua_State* L )
 	NrpText cmpName( lua_tostring( L, 2 ) );
 	CNrpCompany* ptrCompany = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	ptrCompany = object_->GetCompany( cmpName );
+	IF_OBJECT_NOT_NULL_THEN	ptrCompany = _object->GetCompany( cmpName );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, ptrCompany );
@@ -365,7 +365,7 @@ int CLuaApplication::GetGameBoxAddonNumber( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetGameBoxAddonNumber not need any parameter" );
 
-	IF_OBJECT_NOT_NULL_THEN	lua_pushinteger( L, (*object_)[ BOXADDONNUMBER ] );
+	IF_OBJECT_NOT_NULL_THEN	lua_pushinteger( L, (*_object)[ BOXADDONNUMBER ] );
 	return 1;
 }
 
@@ -376,7 +376,7 @@ int CLuaApplication::GetGameBoxAddon( lua_State* L )
 
 	int addonNumber = lua_tointeger( L, 2 );
 	CNrpTechnology* tech = NULL;
-	IF_OBJECT_NOT_NULL_THEN	tech = object_->GetBoxAddon( addonNumber );
+	IF_OBJECT_NOT_NULL_THEN	tech = _object->GetBoxAddon( addonNumber );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
@@ -395,7 +395,7 @@ int CLuaApplication::LoadGameBoxAddon( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		CNrpTechnology* tech = new CNrpTechnology( techIniFile );
-		ret = object_->AddBoxAddon( tech );
+		ret = _object->AddBoxAddon( tech );
 	}
 
 	lua_pushboolean( L, ret );
@@ -410,7 +410,7 @@ int CLuaApplication::AddGameBoxAddon( lua_State* L )
 	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
 	assert( tech != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->AddBoxAddon( tech );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddBoxAddon( tech );
 
 	return 1;	
 }
@@ -424,11 +424,11 @@ int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		NrpText pathToFile = (*object_)[ SAVEDIR ];
+		NrpText pathToFile = (*_object)[ SAVEDIR ];
 		pathToFile.append( profileName + "/profile.ini" );
 		
 		IniFile rv( pathToFile );
-		(*object_)[ CURRENTTIME ] = rv.Get( SECTION_PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME() );
+		(*_object)[ CURRENTTIME ] = rv.Get( SECTION_PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME() );
 	}
 
 	return 1;	
@@ -439,12 +439,12 @@ int CLuaApplication::LoadBoxAddonsPrice( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:LoadBoxAddonsPrice not need any parameter" );
 
-	NrpText boxAddonsIni = (NrpText)(*object_)[ SAVEDIR ]+(NrpText)(*object_)[ PROFILENAME ] + "/boxaddons.ini";
+	NrpText boxAddonsIni = (NrpText)(*_object)[ SAVEDIR ]+(NrpText)(*_object)[ PROFILENAME ] + "/boxaddons.ini";
 	IniFile rv( boxAddonsIni );
 
-	for( int k=0; k < (int)(*object_)[ BOXADDONNUMBER ]; k++ )
+	for( int k=0; k < (int)(*_object)[ BOXADDONNUMBER ]; k++ )
 	{
-		CNrpTechnology& tech = *(*object_).GetBoxAddon( k );
+		CNrpTechnology& tech = *(*_object).GetBoxAddon( k );
 		float price = rv.Get( "prices", tech[ NAME ], (float)tech[ PRICE ] );
 		tech[ PRICE ] = price;
 	}
@@ -459,7 +459,7 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpApplication& applic = *object_; 
+		CNrpApplication& applic = *_object; 
 		NrpText boxAddonsIni = (NrpText)applic[ SAVEDIR ] + (NrpText)applic[ PROFILENAME ]+ "/boxaddons.ini";
 		IniFile sv( boxAddonsIni );
 		for( int k=0; k < (int)applic[ BOXADDONNUMBER ]; k++ )
@@ -489,12 +489,12 @@ int CLuaApplication::GetGame( lua_State* L )
 	{
 		int index = lua_tointeger( L, 2 );
 		assert( index >= 0 );
-		IF_OBJECT_NOT_NULL_THEN	game = object_->GetGame( index );
+		IF_OBJECT_NOT_NULL_THEN	game = _object->GetGame( index );
 	}
 	else if( lua_isstring( L, 2 ) )
 	{
 		NrpText name = lua_tostring( L, 2 );
-		IF_OBJECT_NOT_NULL_THEN game = object_->GetGame( name );
+		IF_OBJECT_NOT_NULL_THEN game = _object->GetGame( name );
 	}
 
 	lua_pop( L, argc );
@@ -511,7 +511,7 @@ int CLuaApplication::AddGameToMarket( lua_State* L )
 	CNrpGame* game = (CNrpGame*)lua_touserdata( L, 2 );
 	assert( game != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->AddGameToMarket( game );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddGameToMarket( game );
 
 	return 1;	
 }
@@ -525,7 +525,7 @@ int CLuaApplication::LoadScreenshots( lua_State* L )
 	if( !imageListName.size() )
 		return 1;
 
-	IF_OBJECT_NOT_NULL_THEN object_->LoadScreenshot( imageListName );
+	IF_OBJECT_NOT_NULL_THEN _object->LoadScreenshot( imageListName );
 
 	return 1;		
 }
@@ -536,7 +536,7 @@ int CLuaApplication::GetGameTime( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetGameTime not need any parameter" );
 
 	SYSTEMTIME time;
-	IF_OBJECT_NOT_NULL_THEN time = (*object_)[ CURRENTTIME ];
+	IF_OBJECT_NOT_NULL_THEN time = (*_object)[ CURRENTTIME ];
 
 	lua_pushinteger( L, time.wYear );
 	lua_pushinteger( L, time.wMonth );
@@ -556,7 +556,7 @@ int CLuaApplication::GetInvention( lua_State* L )
 	NrpText companyName( lua_tostring( L, 3 ) );
 	CNrpInvention* inv = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN inv = object_->GetInvention( inventionName, companyName );
+	IF_OBJECT_NOT_NULL_THEN inv = _object->GetInvention( inventionName, companyName );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, inv );
@@ -584,7 +584,7 @@ int CLuaApplication::GetPda( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetGameTime not need any parameter" );
 
 	CNrpPda* pda = NULL;
-	IF_OBJECT_NOT_NULL_THEN pda = (*object_)[ PDA ].As<CNrpPda*>();
+	IF_OBJECT_NOT_NULL_THEN pda = (*_object)[ PDA ].As<CNrpPda*>();
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, pda );
@@ -599,7 +599,7 @@ int CLuaApplication::GetPauseBetweenStep( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetPauseBetweenStep not need any parameter" );
 
 	int pause = 0;
-	IF_OBJECT_NOT_NULL_THEN pause = (*object_)[ PAUSEBTWSTEP ];
+	IF_OBJECT_NOT_NULL_THEN pause = (*_object)[ PAUSEBTWSTEP ];
 	
 	lua_pushinteger( L, pause );
 
@@ -616,7 +616,7 @@ int CLuaApplication::SetPauseBetweenStep( lua_State* L )
 	if( pause <= 0 )
 		return 1;
 
-	IF_OBJECT_NOT_NULL_THEN (*object_)[ PAUSEBTWSTEP ] = pause;
+	IF_OBJECT_NOT_NULL_THEN (*_object)[ PAUSEBTWSTEP ] = pause;
 
 	return 1;	
 }
@@ -639,7 +639,7 @@ int CLuaApplication::GetPlatform( lua_State* L )
 
 	int index = lua_tointeger( L, 2 );
 	CNrpPlatform* plt = NULL;
-	IF_OBJECT_NOT_NULL_THEN plt = object_->GetPlatform( index );
+	IF_OBJECT_NOT_NULL_THEN plt = _object->GetPlatform( index );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, plt );
@@ -661,11 +661,11 @@ int CLuaApplication::LoadPlatform( lua_State* L )
 		IniFile r( pathTo );
 
 		NrpText plName = r.Get( SECTION_PROPERTIES, "internalname::string", NrpText("") );
-		if( !object_->GetPlatform( plName ) )
+		if( !_object->GetPlatform( plName ) )
 		{
 			CNrpPlatform* plt = new CNrpPlatform( pathTo );
 			plt->Load( pathTo );
-			ret = object_->AddPlatform( plt );
+			ret = _object->AddPlatform( plt );
 		}
 	}
 

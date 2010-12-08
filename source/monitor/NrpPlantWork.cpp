@@ -70,7 +70,7 @@ CNrpPlantWork::CNrpPlantWork( const NrpText& fileName, bool load ) : INrpConfig(
 void CNrpPlantWork::Load( const NrpText& fileName )
 {
 	INrpConfig::Load( fileName );
-	CNrpGame* pGame = CNrpApplication::Instance().GetGame( Text( GAMENAME ) );
+	CNrpGame* pGame = _nrpApp.GetGame( Text( GAMENAME ) );
 	assert( pGame != NULL );
 	_self[ PARENT ] = pGame;
 

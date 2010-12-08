@@ -39,7 +39,7 @@ int CLuaScrollBar::GetUpButton( lua_State* L  )
 
 	void* btn = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN btn = (void*)object_->getUpButton();
+	IF_OBJECT_NOT_NULL_THEN btn = (void*)_object->getUpButton();
 	lua_pushlightuserdata( L, btn );
 
 	return 1;
@@ -52,7 +52,7 @@ int CLuaScrollBar::GetDownButton( lua_State* L  )
 
 	void* btn = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN btn = (void*)object_->getDownButton();
+	IF_OBJECT_NOT_NULL_THEN btn = (void*)_object->getDownButton();
 	lua_pushlightuserdata( L, btn );
 
 	return 1;
@@ -66,7 +66,7 @@ int CLuaScrollBar::GetPos(  lua_State* L )
 
 	int pos = 0;
 
-	IF_OBJECT_NOT_NULL_THEN pos = object_->getPos();
+	IF_OBJECT_NOT_NULL_THEN pos = _object->getPos();
 	lua_pushinteger( L, pos );
 
 	return 1;
@@ -79,7 +79,7 @@ int CLuaScrollBar::SetMin( lua_State* L )
 
 	int amount = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->setMin( amount );
+	IF_OBJECT_NOT_NULL_THEN _object->setMin( amount );
 
 	return 1;
 }
@@ -91,7 +91,7 @@ int CLuaScrollBar::SetMax( lua_State* L )
 
 	int amount = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->setMax( amount );
+	IF_OBJECT_NOT_NULL_THEN _object->setMax( amount );
 
 	return 1;
 }
@@ -103,7 +103,7 @@ int CLuaScrollBar::SetTexture( lua_State *L )
 
 	NrpText filename = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->setTexture( CNrpEngine::Instance().GetVideoDriver()->getTexture( filename ) );
+	IF_OBJECT_NOT_NULL_THEN _object->setTexture( _nrpEngine.GetVideoDriver()->getTexture( filename ) );
 
 	return 1;
 }
@@ -115,7 +115,7 @@ int CLuaScrollBar::SetAction( lua_State *L )
 
 	NrpText name = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->setAction( name );
+	IF_OBJECT_NOT_NULL_THEN _object->setAction( name );
 
 	return 1;
 }
@@ -127,7 +127,7 @@ int CLuaScrollBar::SetSliderTexture( lua_State* L )
 
 	NrpText filename = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->setSliderTexture( CNrpEngine::Instance().GetVideoDriver()->getTexture( filename ) );
+	IF_OBJECT_NOT_NULL_THEN _object->setSliderTexture( _nrpEngine.GetVideoDriver()->getTexture( filename ) );
 
 	return 1;
 }

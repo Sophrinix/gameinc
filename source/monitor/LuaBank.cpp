@@ -36,7 +36,7 @@ int CLuaBank::GetMaxCompanyLoan( lua_State* L )
 	NrpText companyName = lua_tostring( L, 2 );
 
 	int sum = 0;
-	IF_OBJECT_NOT_NULL_THEN sum = object_->GetMaxCompanyLoan( companyName );
+	IF_OBJECT_NOT_NULL_THEN sum = _object->GetMaxCompanyLoan( companyName );
 
 	lua_pushinteger( L, sum );
 
@@ -58,7 +58,7 @@ int CLuaBank::GetLoanID( lua_State* L )
 	int id = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpLoan* loan = object_->GetLoan( pos );
+		CNrpLoan* loan = _object->GetLoan( pos );
 		if( loan )
 			id = (*loan)[ ID ];
 	}
@@ -77,7 +77,7 @@ int CLuaBank::GetLoanCompanyName( lua_State* L )
 	NrpText name( "" );
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpLoan* loan = object_->FindLoadByID( id );
+		CNrpLoan* loan = _object->FindLoadByID( id );
 		if( loan )
 			name = (NrpText)(*loan)[ COMPANYNAME ];
 	}
@@ -96,7 +96,7 @@ template< class T > T CLuaBank::GetLoanParam_( lua_State* L, NrpText& funcName, 
 	T paramd;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpLoan* loan = object_->FindLoadByID( id );
+		CNrpLoan* loan = _object->FindLoadByID( id );
 		if( loan )
 			paramd = (*loan)[ name ].As<T>();
 	}
@@ -141,7 +141,7 @@ int CLuaBank::CreateLoan( lua_State* L )
 	int percent = lua_tointeger( L, 4 );
 	int month = lua_tointeger( L, 5 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->CreateLoan( name, money, percent, month );
+	IF_OBJECT_NOT_NULL_THEN	_object->CreateLoan( name, money, percent, month );
 
 	return 1;
 }

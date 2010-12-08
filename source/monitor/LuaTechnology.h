@@ -17,7 +17,6 @@ public:
 	static const char* ClassName();
 
 	CLuaTechnology(lua_State *L);		
-	int SetTechType( lua_State* L );
 	int SetBaseCode( lua_State* L );
 	int SetAddingEngineCode( lua_State* L );
 	int SetEngineTechRequire( lua_State* L );

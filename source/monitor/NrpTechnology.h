@@ -45,8 +45,8 @@ public:
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& fileName );
 
-	const REQUIRE_MAP& GetTechRequires() { return _techRequires; }
-	const REQUIRE_MAP& GetSkillRequires() { return _skillRequires; }
+	const KNOWLEDGE_MAP& GetTechRequires() { return _techRequires; }
+	const KNOWLEDGE_MAP& GetSkillRequires() { return _skillRequires; }
 
 	static NrpText ClassName();
 protected:
@@ -55,8 +55,8 @@ protected:
 
 	void _InitializeOptions();
 
-	REQUIRE_MAP _techRequires;
-	REQUIRE_MAP _skillRequires;
+	KNOWLEDGE_MAP _techRequires;
+	KNOWLEDGE_MAP _skillRequires;
 	STRINGS _futureTech;
 }; 
 

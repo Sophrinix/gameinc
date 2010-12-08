@@ -30,7 +30,7 @@ int CLuaEdit::SetOverrideColor( lua_State* L )
 
 	int ovColor = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setOverrideColor( ovColor );
+	IF_OBJECT_NOT_NULL_THEN	_object->setOverrideColor( ovColor );
 
 	return 1;
 }
@@ -42,7 +42,7 @@ int CLuaEdit::SetPasswordBox( lua_State* L )
 
 	bool isPassBox = lua_toboolean( L, 2 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setPasswordBox( isPassBox );
+	IF_OBJECT_NOT_NULL_THEN	_object->setPasswordBox( isPassBox );
 
 	return 1;
 }

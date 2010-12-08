@@ -65,7 +65,7 @@ int CLuaSceneManager::GetActiveCamera( lua_State *vm )
 	luaL_argcheck(vm, argc == 1, 1, "Function CLuaSceneManager:GetActiveCamera not need any parameter");
 
 	void* cam = NULL;
-	IF_OBJECT_NOT_NULL_THEN cam = (void*)object_->getActiveCamera();
+	IF_OBJECT_NOT_NULL_THEN cam = (void*)_object->getActiveCamera();
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, cam );
@@ -84,7 +84,7 @@ int CLuaSceneManager::AddTerrainSceneNode( lua_State* vm )
 	scene::ITerrainSceneNode* terrain = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		terrain = object_->addTerrainSceneNode( heightMapFile );
+		terrain = _object->addTerrainSceneNode( heightMapFile );
 		terrain->setMaterialFlag( video::EMF_LIGHTING, false );
 		terrain->setName( name.ToWide() );
 	}
@@ -110,9 +110,9 @@ int CLuaSceneManager::AddSkyDomeSceneNode( lua_State* vm )
 	scene::ISceneNode* sky = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		video::ITexture* skyTexture = object_->getVideoDriver()->getTexture( strSkyTxs );
+		video::ITexture* skyTexture = _object->getVideoDriver()->getTexture( strSkyTxs );
 
-		sky = object_->addSkyDomeSceneNode( skyTexture, horiRes, vertRes, txsPercentage, sphPercentage, radius );
+		sky = _object->addSkyDomeSceneNode( skyTexture, horiRes, vertRes, txsPercentage, sphPercentage, radius );
 	}
 
 	lua_pushlightuserdata(vm, (void*)sky);  // And set the global name of this pointer
@@ -129,7 +129,7 @@ int CLuaSceneManager::AddCameraSceneNode( lua_State* vm )
 
 	scene::ICameraSceneNode* cam = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN cam = object_->addCameraSceneNode( parent );
+	IF_OBJECT_NOT_NULL_THEN cam = _object->addCameraSceneNode( parent );
 
 	lua_pushlightuserdata(vm, (void*)cam);  // And set the global name of this pointer
 
@@ -143,7 +143,7 @@ int CLuaSceneManager::GetRootSceneNode( lua_State* vm )
 
 	void* node = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN node = (void*)object_->getRootSceneNode();
+	IF_OBJECT_NOT_NULL_THEN node = (void*)_object->getRootSceneNode();
 	lua_pushlightuserdata( vm, node );
 
 	return 1;
@@ -156,7 +156,7 @@ int CLuaSceneManager::SetActiveCamera( lua_State* vm )
 
 	scene::ICameraSceneNode* cam = (scene::ICameraSceneNode*)lua_touserdata(vm, 2);	
 
-	IF_OBJECT_NOT_NULL_THEN object_->setActiveCamera( cam );  // And set the global name of this pointer
+	IF_OBJECT_NOT_NULL_THEN _object->setActiveCamera( cam );  // And set the global name of this pointer
 
 	return 1;
 }
@@ -171,7 +171,7 @@ int CLuaSceneManager::AddNerpaCameraAnimator( lua_State* vm )
 	float zoomSpeed = (float)lua_tonumber( vm, 4 );
 	float translateSpeed = (float)lua_tonumber( vm, 5 );
 
-	scene::CNrpCameraAnimator* anim = new scene::CNrpCameraAnimator(	CNrpEngine::Instance().GetDevice()->getCursorControl(),
+	scene::CNrpCameraAnimator* anim = new scene::CNrpCameraAnimator(	_nrpEngine.GetDevice()->getCursorControl(),
 																		angle,
 																		rotateSpeed,		//скорость поворота
 																		zoomSpeed,		//скорость зума
@@ -192,7 +192,7 @@ int CLuaSceneManager::CreateTerrainTriangleSelector( lua_State* vm )
 
 	scene::ITriangleSelector* selector = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN selector = object_->createTerrainTriangleSelector( node, amount );
+	IF_OBJECT_NOT_NULL_THEN selector = _object->createTerrainTriangleSelector( node, amount );
 
 	lua_pushlightuserdata( vm, (void*)selector );
 
@@ -224,7 +224,7 @@ int CLuaSceneManager::CreateCollisionResponseAnimator( lua_State* vm )
 	
 	scene::ISceneNodeAnimator* anim = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN anim = object_->createCollisionResponseAnimator(  selector, node, 
+	IF_OBJECT_NOT_NULL_THEN anim = _object->createCollisionResponseAnimator(  selector, node, 
 																			  elipsoidRadius, gravity, 
 																			  elipsoidTranslation);
 
@@ -243,7 +243,7 @@ int CLuaSceneManager::DrawProgress( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		scene::CLoadingScreen ld( object_->getVideoDriver(), CNrpEngine::Instance().GetGuiEnvironment()->getFont( "font_14" ) );
+		scene::CLoadingScreen ld( _object->getVideoDriver(), _nrpEngine.GetGuiEnvironment()->getFont( "font_14" ) );
 		ld.render( progress, text.ToWide() );
 	}
 
@@ -305,7 +305,7 @@ int CLuaSceneManager::AddCubeSceneNode( lua_State* vm )
 	
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		cube = object_->addCubeSceneNode();
+		cube = _object->addCubeSceneNode();
 		cube->setName( name.ToStr() );
 	}
 
@@ -323,7 +323,7 @@ int CLuaSceneManager::GetSceneNodeByName( lua_State* vm )
 
 	scene::ISceneNode* node = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN node = object_->getSceneNodeFromName( name );
+	IF_OBJECT_NOT_NULL_THEN node = _object->getSceneNodeFromName( name );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, node );
@@ -340,7 +340,7 @@ int CLuaSceneManager::AddSceneFunction( lua_State* vm )
 	int typef = lua_tointeger( vm, 2 );
 	NrpText name = lua_tostring( vm, 3 );
 
-	CNrpEngine::Instance().GetCurrentScene()->AddLuaFunction( typef, name );
+	_nrpEngine.GetCurrentScene()->AddLuaFunction( typef, name );
 
 	return 1;
 }
@@ -353,7 +353,7 @@ int CLuaSceneManager::RemoveSceneFunction( lua_State* vm )
 	int typef = lua_tointeger( vm, 2 );
 	NrpText name = lua_tostring( vm, 3 );
 
-	CNrpEngine::Instance().GetCurrentScene()->RemoveLuaFunction( typef, name );
+	_nrpEngine.GetCurrentScene()->RemoveLuaFunction( typef, name );
 
 	return 1;
 }
@@ -363,7 +363,7 @@ int CLuaSceneManager::GetCurrentWorldPosition( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 1, 1, "Function CLuaSceneManager:GetCurrentWorldPosition need any parameter ");
 
-	core::vector3df position = CNrpEngine::Instance().GetCurrentScene()->GetCurrentWorldPosition();
+	core::vector3df position = _nrpEngine.GetCurrentScene()->GetCurrentWorldPosition();
 
 	lua_pushnumber( vm, position.X );
 	lua_pushnumber( vm, position.Y );
@@ -381,7 +381,7 @@ int CLuaSceneManager::CreateTriangleSelectorFromBoundingBox(lua_State* vm )
 
 	scene::ITriangleSelector* selector = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN selector = object_->createTriangleSelectorFromBoundingBox( node );
+	IF_OBJECT_NOT_NULL_THEN selector = _object->createTriangleSelectorFromBoundingBox( node );
 
 	lua_pushlightuserdata( vm, selector );
 
@@ -393,7 +393,7 @@ int CLuaSceneManager::GetSelectedNode( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 1, 1, "Function CLuaSceneManager:GetCurrentWorldPosition need any parameter ");
 
-	scene::ISceneNode* node = CNrpEngine::Instance().GetCurrentScene()->GetSelectedNode();
+	scene::ISceneNode* node = _nrpEngine.GetCurrentScene()->GetSelectedNode();
 
 	lua_pushlightuserdata( vm, node );
 
@@ -411,11 +411,11 @@ int CLuaSceneManager::AddTextSceneNode( lua_State* vm )
 	scene::ISceneNode* node = (scene::ISceneNode*)lua_touserdata( vm, 8 );
 	core::vector3df position( (f32)lua_tonumber( vm, 9 ), (f32)lua_tonumber( vm, 10 ), (f32)lua_tonumber( vm, 11 ) );
 	int id = lua_tointeger( vm, 12 );
-	gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( NrpText( "font_" ) + NrpText( fontSize ) );
+	gui::IGUIFont* font = _nrpEngine.GetGuiEnvironment()->getFont( NrpText( "font_" ) + NrpText( fontSize ) );
 
 	scene::ITextSceneNode* textNode = NULL;
 	
-	IF_OBJECT_NOT_NULL_THEN textNode = object_->addTextSceneNode( font, text.ToWide(), color, node, position, id );
+	IF_OBJECT_NOT_NULL_THEN textNode = _object->addTextSceneNode( font, text.ToWide(), color, node, position, id );
 
 	lua_pushlightuserdata( vm, textNode );
 
@@ -439,8 +439,8 @@ int CLuaSceneManager::GetRayFromCursorCollisionWithTerrains( lua_State* vm )
 	//это флаг пересечения
 	bool isCollision = false;
 
-	scene::ISceneManager* smgr = CNrpEngine::Instance().GetSceneManager();
-	core::position2di pos = CNrpEngine::Instance().GetDevice()->getCursorControl()->getPosition();
+	scene::ISceneManager* smgr = _nrpEngine.GetSceneManager();
+	core::position2di pos = _nrpEngine.GetDevice()->getCursorControl()->getPosition();
 	core::line3df line = smgr->getSceneCollisionManager()->getRayFromScreenCoordinates( pos, smgr->getActiveCamera() );		
 
 	//получим все террайны от сцены
@@ -504,7 +504,7 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 		//при существующем ноде прислали пустую строку ( надо удалить текстнод из отрисовки )
 		if( text.size() && textNode != NULL )
 		{
-			object_->addToDeletionQueue( textNode );
+			_object->addToDeletionQueue( textNode );
 			return 1;
 		}
 
@@ -517,8 +517,8 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 			else
 			{
 				//иначе надо создать новый текстнод и присвоить ему этот текст
-				gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( "font_12" );
-				object_->addTextSceneNode( font, text.ToWide(), 0xff000000, ptrNode, core::vector3df( 0, 0, 0 ) );
+				gui::IGUIFont* font = _nrpEngine.GetGuiEnvironment()->getFont( "font_12" );
+				_object->addTextSceneNode( font, text.ToWide(), 0xff000000, ptrNode, core::vector3df( 0, 0, 0 ) );
 			}
 		}
 
@@ -550,7 +550,7 @@ int CLuaSceneManager::AddToDeletionQueue( lua_State* vm )
 
 	scene::ISceneNode* ptrNode = (scene::ISceneNode*)lua_touserdata( vm, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->addToDeletionQueue( ptrNode );
+	IF_OBJECT_NOT_NULL_THEN _object->addToDeletionQueue( ptrNode );
 
 	return 1;
 }
@@ -560,7 +560,7 @@ int CLuaSceneManager::RenderScene( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaSceneManager:RenderScene not need any parameter");
 
-	IF_OBJECT_NOT_NULL_THEN object_->drawAll();
+	IF_OBJECT_NOT_NULL_THEN _object->drawAll();
 
 	return 2;	
 }
@@ -574,7 +574,7 @@ int CLuaSceneManager::LoadIrrlichtScene( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		object_->loadScene( fileName );
+		_object->loadScene( fileName );
 	}
 
 	return 1;	
@@ -588,7 +588,7 @@ int CLuaSceneManager::GetSceneNodeByID( lua_State* vm )
 	int id = lua_tointeger( vm, 2 );
 	scene::ISceneNode* node = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN node = object_->getSceneNodeFromId( id );
+	IF_OBJECT_NOT_NULL_THEN node = _object->getSceneNodeFromId( id );
 
 	lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, node );
@@ -605,7 +605,7 @@ int CLuaSceneManager::SetSelectedNode( lua_State* L )
 	int id = lua_tointeger( L, 2 );
 	scene::ISceneNode* node = NULL;
 
-	CNrpEngine::Instance().GetCurrentScene()->SetSelectedNode( node );
+	_nrpEngine.GetCurrentScene()->SetSelectedNode( node );
 
 	return 1;
 }
@@ -617,7 +617,7 @@ int CLuaSceneManager::RemoveAllNodes( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		object_->getRootSceneNode()->removeAll();
+		_object->getRootSceneNode()->removeAll();
 	}
 
 	return 2;		

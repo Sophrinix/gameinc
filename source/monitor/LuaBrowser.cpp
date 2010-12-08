@@ -36,7 +36,7 @@ int CLuaBrowser::Show( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		irr::gui::CNrpBrowserWindow& wnd = object_->GetBrowserWindow( dimension2du( 512, 512 ) );
+		irr::gui::CNrpBrowserWindow& wnd = _object->GetBrowserWindow( dimension2du( 512, 512 ) );
 		wnd.setVisible( true );
 	}
 
@@ -58,9 +58,9 @@ int CLuaBrowser::Navigate( lua_State* L )
 		//если путь относительный надо его привести к абсолютному... иначи геко споткнется
 		//и не сможет обработать страницу
 		if( advpath.findFirst( L':' ) == -1 )
-			advpath = (NrpText)CNrpApplication::Instance()[ WORKDIR ] + advpath;
+			advpath = (NrpText)_nrpApp[ WORKDIR ] + advpath;
 
-		object_->Navigate( NrpText("file://") + advpath );
+		_object->Navigate( NrpText("file://") + advpath );
 	}
 
 	return 1;	
@@ -73,7 +73,7 @@ int CLuaBrowser::Hide( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		irr::gui::CNrpBrowserWindow& wnd = object_->GetBrowserWindow();
+		irr::gui::CNrpBrowserWindow& wnd = _object->GetBrowserWindow();
 		wnd.setVisible( false );
 	}
 
@@ -88,7 +88,7 @@ int CLuaBrowser::Move( lua_State *L )
 	position2di pos( lua_tointeger( L, 2 ), lua_tointeger( L, 3 ) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		object_->GetBrowserWindow().setRelativePosition( pos );
+		_object->GetBrowserWindow().setRelativePosition( pos );
 	}
 
 	return 1;
@@ -100,7 +100,7 @@ int CLuaBrowser::GetWindow( lua_State *L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaBrowser::GetWindow not need any parameter");
 
 	irr::gui::CNrpBrowserWindow* wnd = NULL;
-	IF_OBJECT_NOT_NULL_THEN wnd = &(object_->GetBrowserWindow());
+	IF_OBJECT_NOT_NULL_THEN wnd = &(_object->GetBrowserWindow());
 
 	lua_pushlightuserdata( L, wnd );
 	return 1;	

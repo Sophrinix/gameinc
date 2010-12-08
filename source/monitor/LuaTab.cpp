@@ -33,8 +33,8 @@ int CLuaTab::SetFontFromSize( lua_State *L )
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		irr::gui::IGUIFont* font = CNrpEngine::Instance().GetGuiEnvironment()->getFont( NrpText("font_") + NrpText( size ) );
-		object_->setRFont( font );
+		irr::gui::IGUIFont* font = _nrpEngine.GetGuiEnvironment()->getFont( NrpText("font_") + NrpText( size ) );
+		_object->setRFont( font );
 	}
 
 	return 1;
@@ -50,7 +50,7 @@ int CLuaTab::SetTextColor( lua_State *L )
 							  lua_tointeger( L, 4 ),
 							  lua_tointeger( L, 5 ) );
 
-	IF_OBJECT_NOT_NULL_THEN object_->setTextColor( color );
+	IF_OBJECT_NOT_NULL_THEN _object->setTextColor( color );
 
 	return 1;
 }

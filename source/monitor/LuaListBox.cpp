@@ -33,7 +33,7 @@ int CLuaListBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 	NrpText text( lua_tostring( L, 2 ) );
 	void* object = lua_touserdata( L, 3 );
 	
-	IF_OBJECT_NOT_NULL_THEN	object_->addItem( text.ToWide(), (u32)object );			
+	IF_OBJECT_NOT_NULL_THEN	_object->addItem( text.ToWide(), (u32)object );			
 
 	return 1;
 }
@@ -47,9 +47,9 @@ int CLuaListBox::GetSelectedObject( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		int selected = object_->getSelected();
+		int selected = _object->getSelected();
 		if( selected >= 0 )
-			selObject = (void*)object_->getIcon( selected );
+			selObject = (void*)_object->getIcon( selected );
 	}
 	lua_pushlightuserdata( L, selObject );
 

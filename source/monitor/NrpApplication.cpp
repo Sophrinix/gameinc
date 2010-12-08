@@ -61,6 +61,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add<NrpText>( SAVEDIR_COMPANIES, "" );
 	Add<NrpText>( SAVEDIR_DEVPR, "" );
 	Add<NrpText>( SAVEDIR_GAMES, "" );
+	Add<NrpText>( SAVEDIR_PLATFORMS, "" );
 	Add<NrpText>( SAVEDIR_PROJECTS, "" );
 	Add<NrpText>( SAVEDIR_ENGINES, "" );
 	Add<NrpText>( SAVEDIR_USERS, "" );
@@ -69,7 +70,6 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add<NrpText>( SAVEDIR_PROFILE, "" );
 	Add<NrpText>( SAVEDIR_TECHS, "" );
 	Add( SYSTEMINI, NrpText( "config/system.ini" ) );
-	Add( PLATFORMNUMBER, (int)0 );
 
 	IniFile rv( (NrpText)Param( SYSTEMINI ) );
 	Add( PROFILENAME, rv.Get( SECTION_OPTIONS, "currentProfile", NrpText( "dalerank" ) ) );
@@ -81,6 +81,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add( ENGINES_NUMBER, (int)0 );
 	Add( DEVELOPPROJECTS_NUMBER, 0 );
 	Add( PROJECTNUMBER, (int)0 );
+	Add( PLATFORMNUMBER, (int)0 );
 	Add<PNrpCompany>( PLAYERCOMPANY, NULL );
 	Add( INVENTIONSNUMBER, (int)0 );
 	Add( MINIMUM_USER_SALARY, (int)250 );
@@ -199,6 +200,7 @@ void CNrpApplication::_CreateDirectoriesMapForSave()
 	OpFileSystem::CreateDirectory( Param( SAVEDIR_COMPANIES ) );
 	OpFileSystem::CreateDirectory( Param( SAVEDIR_DEVPR ) );
 	OpFileSystem::CreateDirectory( Param( SAVEDIR_GAMES ) );
+	OpFileSystem::CreateDirectory( _self[ SAVEDIR_PLATFORMS] );
 	OpFileSystem::CreateDirectory( Param( SAVEDIR_PROJECTS ) );
 	OpFileSystem::CreateDirectory( Param( SAVEDIR_ENGINES ) );
 	OpFileSystem::CreateDirectory( Param( SAVEDIR_PLANT ) );
@@ -211,7 +213,7 @@ void CNrpApplication::Save()
 	NrpText profileIni = (NrpText)Param( SAVEDIR_PROFILE ) + "profile.ini";
 
 	OpFileSystem::Remove( prevSaveFolder );
-	OpFileSystem::Move( Param( SAVEDIR_PROFILE ), prevSaveFolder );
+	OpFileSystem::Move( _self[ SAVEDIR_PROFILE ], prevSaveFolder );
 
 	_CreateDirectoriesMapForSave();
 
@@ -220,39 +222,39 @@ void CNrpApplication::Save()
 
 	INrpConfig::Save( profileIni );
 
-	sv.Set( SECTION_OPTIONS, "currentProfile", (NrpText)Param( PROFILENAME ) );
-	sv.Set( SECTION_OPTIONS, "currentCompany", (NrpText)Param( PROFILECOMPANY ) );
+	sv.Set( SECTION_OPTIONS, "currentProfile", (NrpText)_self[ PROFILENAME ] );
+	sv.Set( SECTION_OPTIONS, "currentCompany", (NrpText)_self[ PROFILECOMPANY ] );
 	
 	for( u32 i=0; i < _companies.size(); i++ )
 	{
-		_companies[ i ]->Save( Param( SAVEDIR_COMPANIES ) );
-		sv.Set( SECTION_COMPANIES, CreateKeyCompany( i ), (NrpText)_companies[ i ]->Param( NAME ) );
+		_companies[ i ]->Save( _self[ SAVEDIR_COMPANIES ] );
+		sv.Set( SECTION_COMPANIES, CreateKeyCompany( i ), (NrpText)(*_companies[ i ])[ NAME ]);
 	}
 
 	for( u32 i=0; i < _devProjects.size(); i++ )
 	{
-		NrpText saveFile = _devProjects[ i ]->Save( Param( SAVEDIR_DEVPR ) );
+		NrpText saveFile = _devProjects[ i ]->Save( _self[ SAVEDIR_DEVPR ] );
 		sv.Set( SECTION_DEVPROJECTS, CreateKeyType(i), _devProjects[ i ]->ObjectTypeName() );
 		sv.Set( SECTION_DEVPROJECTS, CreateKeyProject(i), saveFile );
 	}
 
 	for( u32 i=0; i < _projects.size(); i++ )
 	{
-		NrpText saveFile = _projects[ i ]->Save( Param( SAVEDIR_PROJECTS ) );
+		NrpText saveFile = _projects[ i ]->Save( _self[ SAVEDIR_PROJECTS ] );
 		sv.Set( SECTION_DEVPROJECTS, CreateKeyType(i), _projects[ i ]->ObjectTypeName() );
 		sv.Set( SECTION_PROJECTS, CreateKeyProject(i), saveFile );
 	}
 
 	for( u32 i=0; i < _users.size(); i++ )
 	{
-		_users[ i ]->Save( Param( SAVEDIR_USERS ) );
+		_users[ i ]->Save( _self[ SAVEDIR_USERS ] );
 		sv.Set( SECTION_USERS, CreateKeyType(i),_users[ i ]->ObjectTypeName() );
 		sv.Set( SECTION_USERS, CreateKeyUser(i), (NrpText)_users[ i ]->Param( NAME ) );
 	}
 
 	for( u32 i=0; i < _technologies.size(); i++ )
 	{
-		NrpText saveFile = _technologies[ i ]->Save( Param( SAVEDIR_TECHS ) );
+		NrpText saveFile = _technologies[ i ]->Save( _self[ SAVEDIR_TECHS ] );
 		sv.Set( SECTION_TECHS, CreateKeyTech(i), saveFile );
 	}
 
@@ -265,14 +267,20 @@ void CNrpApplication::Save()
 
 	for( u32 i=0; i < _engines.size(); i++ )
 	{
-		NrpText saveFolder = _engines[ i ]->Save( Param( SAVEDIR_ENGINES ) );
+		NrpText saveFolder = _engines[ i ]->Save( _self[ SAVEDIR_ENGINES ] );
 		sv.Set( SECTION_ENGINES, CreateKeyEngine(i), saveFolder );
 	}
 
 	for( u32 i=0; i < _games.size(); i++ )
 	{
-		NrpText saveDir = _games[ i ]->Save( Param( SAVEDIR_GAMES ) );
+		NrpText saveDir = _games[ i ]->Save( _self[ SAVEDIR_GAMES ] );
 		sv.Set( SECTION_GAMES, CreateKeyGame( i ), saveDir );
+	}
+
+	for( u32 i=0; i < _platforms.size(); i++ )
+	{
+		NrpText saveDir = _platforms[ i ]->Save( _self[ SAVEDIR_PLATFORMS ] );
+		sv.Set( SECTION_PLATFORMS, CreateKeyPlatform( i ), saveDir );
 	}
 }
 
@@ -312,7 +320,8 @@ void CNrpApplication::_InitialyzeSaveDirectories( const NrpText& profileName )
 	Param( SAVEDIR_INVENTIONS ) = profileDir + "inventions/";
 	Param( SAVEDIR_COMPANIES ) = profileDir + "companies/";
 	Param( SAVEDIR_DEVPR ) = profileDir + "devProjects/";
-	Param( SAVEDIR_GAMES ) = profileDir + "games/";
+	_self[ SAVEDIR_GAMES ] = profileDir + "games/";
+	_self[ SAVEDIR_PLATFORMS ] = profileDir + "platforms/";
 	Param( SAVEDIR_ENGINES ) = profileDir + "engines/";
 	Param( SAVEDIR_PROJECTS ) = profileDir + "projects/";
 	Param( SAVEDIR_PLANT ) = profileDir + "plant/";
@@ -334,11 +343,18 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 
 	IniFile rv( profileIni );
 
-	for( int i=0; i < (int)Param( TECHNUMBER ); i++ )
+	for( int i=0; i < (int)_self[ TECHNUMBER ]; i++ )
 	{
 		NrpText fileName = rv.Get( SECTION_TECHS, CreateKeyTech(i), NrpText("") );
 		CNrpTechnology* tech = new CNrpTechnology( fileName ); //loading
 		_technologies.push_back( tech );
+	}
+
+	for( int i=0; i < (int)_self[ PLATFORMNUMBER ]; i++ )
+	{
+		NrpText fileName = rv.Get( SECTION_PLATFORMS, CreateKeyPlatform(i), NrpText("") );
+		CNrpPlatform* plt = new CNrpPlatform( fileName ); //loading
+		_platforms.push_back( plt );
 	}
 
 	for( int i=0; i < (int)Param( ENGINES_NUMBER ); i++ )
@@ -636,8 +652,8 @@ void CNrpApplication::Init()
 	heConfig[ BASEDIR ] = OpFileSystem::CheckEndSlash( Param( WORKDIR ) ) + (NrpText)heConfig[ BASEDIR ];
 
 	//ожидаем подгрузки видео
-	CNrpEngine::Instance().InitVideo();
-	CNrpEngine::Instance().InitConsole();
+	_nrpEngine.InitVideo();
+	_nrpEngine.InitConsole();
 
 	HTMLEngine::Instance();
 }
@@ -697,9 +713,20 @@ void CNrpApplication::UpdateGameRatings( CNrpGame* ptrGame, bool firstTime )
 		ptrGame->SetValue<int>( STARTADVFUNCRATING, GetGameRating_( ptrGame, GRT_ADVFUNC ) ); */
 }
 
+int CNrpApplication::_GetTechsByGroup( int type, TECHS& arrayt )
+{
+	for( u32 i=0; i < _technologies.size(); i++ )
+		if( (*_technologies[ i ])[ TECHGROUP ] == type )
+			arrayt.push_back( _technologies[ i ] );
+
+	return arrayt.size();
+}
+
 IUser* CNrpApplication::_CreateRandomUser( NrpText userType )
 {
-	int randomParams = 1 + rand() % (GT_COUNT % 100);//сколько параметров будем создавать
+	TECHS genres;
+	_GetTechsByGroup( PT_GENRE, genres );
+	int randomParams = 1 + rand() % genres.size();//сколько параметров будем создавать
 	int maxParamValue = 1 + rand() % 100;//максимальное значение параметров
 
 	std::map< NrpText, int > skillMap;
@@ -727,8 +754,8 @@ IUser* CNrpApplication::_CreateRandomUser( NrpText userType )
 	refUser[ STABILITY ] = rand() % maxParamValue;
 	refUser[ CHARACTER ] = rand() % maxParamValue;
 
-	if( refUser[ WANTMONEY ] < Param( MINIMUM_USER_SALARY ) )
-		refUser[ WANTMONEY ] = Param( MINIMUM_USER_SALARY );
+	if( refUser[ WANTMONEY ] < _self[ MINIMUM_USER_SALARY ] )
+		refUser[ WANTMONEY ] = _self[ MINIMUM_USER_SALARY ];
 
 	char name[64] = { 0 };
 	snprintf( name, 64, "media/face/face%03d.png", rand() % 2 );
@@ -736,9 +763,9 @@ IUser* CNrpApplication::_CreateRandomUser( NrpText userType )
 
 	for( size_t cnt=0; cnt < randomParams; cnt++ )
 	{
-		int rMax = GT_COUNT%100;
-		ptrUser->SetGenreExperience( static_cast< GENRE_TYPE >( rand() % rMax ), rand() % maxParamValue );
-		ptrUser->SetGenrePreferences( static_cast< GENRE_TYPE >( rand() % rMax ), rand() % maxParamValue );
+		NrpText genreName = (*genres[ rand() % genres.size() ])[ INTERNAL_NAME ];
+		ptrUser->SetGenreExperience( genreName, rand() % maxParamValue );
+		ptrUser->SetGenrePreferences( genreName, rand() % maxParamValue );
 	} 
 
 	return ptrUser;
@@ -782,7 +809,7 @@ CNrpTechnology* CNrpApplication::GetBoxAddon( const NrpText& name )
 void CNrpApplication::AddGameToMarket( CNrpGame* game )
 {
 	assert( game != NULL );
-	if( !game || game-Param( GAMEISSALING ) )
+	if( !game || game->Param( GAMEISSALING ) )
 		return;
 
 	CNrpGame& refGame = *game;

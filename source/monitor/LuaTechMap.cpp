@@ -46,7 +46,7 @@ int CLuaTechMap::SetImage( lua_State *L )							//получает имя файла с текстурой
 	rectangle.LowerRightCorner.X = lua_tointeger( L, 4 );
 	rectangle.LowerRightCorner.Y = lua_tointeger( L, 5 );
 
-	//video::ITexture* txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath.c_str() ); //грузим текстуру в видеокарту
+	//video::ITexture* txs = _nrpEngine.GetVideoDriver()->getTexture( texturepath.c_str() ); //грузим текстуру в видеокарту
 	//table_->setImage( txs, rectangle );								//размещаем текстуру в кнопке			
 
 	return 1;
@@ -76,12 +76,12 @@ int CLuaTechMap::AddTechnology( lua_State *L )
 		{
 			NrpText internalName = lua_tostring( L, 3 );
 
-			object_->AddTechnology( parentt, internalName );
+			_object->AddTechnology( parentt, internalName );
 		}
 		else if( lua_islightuserdata( L, 3 ) )
 		{
 			CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 3 );
-	     	object_->AddTechnology( parentt, tech );
+	     	_object->AddTechnology( parentt, tech );
 		}
 		else 
 			assert( false );
@@ -101,7 +101,7 @@ int CLuaTechMap::AddLuaFunction( lua_State* L )
 	if( !funcName.size() )
 		return 1;
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddLuaFunction( funcType, funcName );
+	IF_OBJECT_NOT_NULL_THEN _object->AddLuaFunction( funcType, funcName );
 
 	return 1;		
 }
@@ -112,7 +112,7 @@ int CLuaTechMap::GetSelectedObjectType( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObjectType not need parameter");
 
 	int type = -1;
-	IF_OBJECT_NOT_NULL_THEN type = object_->GetSelectedObjectType();
+	IF_OBJECT_NOT_NULL_THEN type = _object->GetSelectedObjectType();
 
 	lua_pushinteger( L, type );
 	return 1;
@@ -124,7 +124,7 @@ int CLuaTechMap::GetSelectedObject( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObject not need parameter");
 
 	CNrpTechnology* ptr = NULL;
-	IF_OBJECT_NOT_NULL_THEN ptr = object_->GetSelectedObject();
+	IF_OBJECT_NOT_NULL_THEN ptr = _object->GetSelectedObject();
 
 	lua_pushlightuserdata( L, ptr );
 	return 1;
@@ -136,7 +136,7 @@ int CLuaTechMap::GetSelectedObjectName( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObjectName not need parameter");
 
 	NrpText name;
-	IF_OBJECT_NOT_NULL_THEN name = object_->GetSelectedObjectName();
+	IF_OBJECT_NOT_NULL_THEN name = _object->GetSelectedObjectName();
 
 	lua_pushstring( L, name );
 	return 1;
@@ -148,7 +148,7 @@ int CLuaTechMap::SetDrawBack( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechMap::SetBackgroundVisible need boolean parameter");
 
 	bool visible = lua_toboolean( L, 2 ) > 0;
-	IF_OBJECT_NOT_NULL_THEN object_->SetDrawBack( visible );
+	IF_OBJECT_NOT_NULL_THEN _object->SetDrawBack( visible );
 
 	return 1;
 }

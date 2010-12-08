@@ -30,7 +30,7 @@ HTMLEngine::HTMLEngine()
 	//критическая секция нужна для предотвращения споров за текстуру
 	InitializeCriticalSectionAndSpinCount(&rasterCs_, 1000);
 
-	irr::video::IVideoDriver *driver = CNrpEngine::Instance().GetVideoDriver();
+	irr::video::IVideoDriver *driver = _nrpEngine.GetVideoDriver();
 	//мозлибе для работы нужно знать, где хранятся конфииг веб-движка
 	NrpText profileBaseDir = CNrpHtmlEngineConfig::Instance()[ BASEDIR ];
 	HWND w = (HWND)driver->getExposedVideoData().OpenGLWin32.HWnd;
@@ -73,10 +73,10 @@ gui::CNrpBrowserWindow& HTMLEngine::GetBrowserWindow(irr::core::dimension2du siz
 		size_t width = llmozlib_->getBrowserWidth(browserWindowId_);
 		size_t height = llmozlib_->getBrowserHeight(browserWindowId_);
  		
-		irr::video::IVideoDriver *driver = CNrpEngine::Instance().GetVideoDriver();
+		irr::video::IVideoDriver *driver = _nrpEngine.GetVideoDriver();
 		pageTexture_ = driver->addTexture( core::dimension2du( width, height ) , "htmlPageTexture" );
 
- 		browserWindow_ = new gui::CNrpBrowserWindow( CNrpEngine::Instance().GetGuiEnvironment(), NULL, -1, core::position2di( 0, 0 ), size );
+ 		browserWindow_ = new gui::CNrpBrowserWindow( _nrpEngine.GetGuiEnvironment(), NULL, -1, core::position2di( 0, 0 ), size );
 
 		llmozlib_->focusBrowser(browserWindowId_, true);
 		browserWindow_->SetTexture( pageTexture_ );

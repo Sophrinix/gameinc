@@ -43,7 +43,7 @@ int CLuaPlantWork::GetPrice( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPlantWork:GetPrice not need parameter" );
 
 	int fPrice = 0;
-	IF_OBJECT_NOT_NULL_THEN fPrice = (*object_)[ FINALPRICE ];
+	IF_OBJECT_NOT_NULL_THEN fPrice = (*_object)[ FINALPRICE ];
 
 	lua_pushinteger( L, fPrice ); 
 	return 1;	
@@ -56,10 +56,10 @@ int CLuaPlantWork::Create( lua_State* L )
 
 	NrpText name = lua_tostring( L, 2 );
 
-	object_ = new CNrpPlantWork( name );
+	_object = new CNrpPlantWork( name );
 
 	lua_pop( L, argc );
-	lua_pushlightuserdata( L, object_ );
+	lua_pushlightuserdata( L, _object );
 	Luna< CLuaPlantWork >::constructor( L );
 	return 1;	
 }
@@ -75,7 +75,7 @@ int CLuaPlantWork::SetProduceType( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlantWork:SetPoduceType need CNrpDiskMachine* parameter" );
 
 	CNrpDiskMachine* dm = (CNrpDiskMachine*)lua_touserdata( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN (*object_)[ PRODUCETYPE ] = dm;
+	IF_OBJECT_NOT_NULL_THEN (*_object)[ PRODUCETYPE ] = dm;
 
 	return 1;		
 }
@@ -88,7 +88,7 @@ int CLuaPlantWork::GetRentPrice( lua_State* L )
 	int rPrice = 0;
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		PNrpDiskMachine dm = (*object_)[ PRODUCETYPE ].As<PNrpDiskMachine>();
+		PNrpDiskMachine dm = (*_object)[ PRODUCETYPE ].As<PNrpDiskMachine>();
 		if( dm )
 			rPrice = (*dm)[ RENTPRICE ];
 	}
@@ -105,7 +105,7 @@ int CLuaPlantWork::GetHourPerfomance( lua_State* L )
 	int hPerfomance = 0;
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		PNrpDiskMachine dm = (*object_)[ PRODUCETYPE ].As<PNrpDiskMachine>();
+		PNrpDiskMachine dm = (*_object)[ PRODUCETYPE ].As<PNrpDiskMachine>();
 		if( dm )
 			hPerfomance = (*dm)[ DISKPERHOUR ];
 	}
@@ -122,7 +122,7 @@ int CLuaPlantWork::GetHourPrice( lua_State* L )
 	int hPrice = 0;
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		PNrpDiskMachine dm = (*object_)[ PRODUCETYPE ].As<PNrpDiskMachine>();
+		PNrpDiskMachine dm = (*_object)[ PRODUCETYPE ].As<PNrpDiskMachine>();
 		if( dm )
 			hPrice = (*dm)[PRICEPERHOUR];
 	}
@@ -137,7 +137,7 @@ int CLuaPlantWork::GetNumberMachine( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPlantWork:GetNumberMachine not need parameter" );
 
 	int nMachine = 0;
-	IF_OBJECT_NOT_NULL_THEN nMachine = (*object_)[ NUMBERMACHINE ];
+	IF_OBJECT_NOT_NULL_THEN nMachine = (*_object)[ NUMBERMACHINE ];
 
 	lua_pushinteger( L, nMachine ); 
 	return 1;	
@@ -149,7 +149,7 @@ int CLuaPlantWork::GetNumberDay( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPlantWork:GetNumberDay not need parameter" );
 
 	int nMachine = 0;
-	IF_OBJECT_NOT_NULL_THEN nMachine = (*object_)[NUMBERDAY];
+	IF_OBJECT_NOT_NULL_THEN nMachine = (*_object)[NUMBERDAY];
 
 	lua_pushinteger( L, nMachine ); 
 	return 1;	
@@ -161,7 +161,7 @@ int CLuaPlantWork::GetNumberDisk( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPlantWork:GetNumberDay not need parameter" );
 
 	int nDisk = 0;
-	IF_OBJECT_NOT_NULL_THEN nDisk = (*object_)[DISKNUMBER];
+	IF_OBJECT_NOT_NULL_THEN nDisk = (*_object)[DISKNUMBER];
 
 	lua_pushinteger( L, nDisk ); 
 	return 1;	
@@ -173,7 +173,7 @@ int CLuaPlantWork::GetDiskPrice( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPlantWork:GetNumberDay not need parameter" );
 
 	float dskPrice = 0;
-	IF_OBJECT_NOT_NULL_THEN dskPrice = (*object_)[DISKPRICE];
+	IF_OBJECT_NOT_NULL_THEN dskPrice = (*_object)[DISKPRICE];
 
 	lua_pushnumber( L, dskPrice ); 
 	return 1;	
@@ -185,7 +185,7 @@ int CLuaPlantWork::SetNumberMachine( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlantWork:SetNumberMachine not need parameter" );
 
 	int nMachine = lua_tointeger( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN (*object_)[ NUMBERMACHINE ] = nMachine;
+	IF_OBJECT_NOT_NULL_THEN (*_object)[ NUMBERMACHINE ] = nMachine;
 
 	return 1;	
 }
@@ -196,7 +196,7 @@ int CLuaPlantWork::SetNumberDay( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlantWork:SetNumberDay not need parameter" );
 
 	int nDay = lua_tointeger( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN (*object_)[ NUMBERDAY ] = nDay;
+	IF_OBJECT_NOT_NULL_THEN (*_object)[ NUMBERDAY ] = nDay;
 
 	return 1;	
 }
@@ -206,8 +206,8 @@ int CLuaPlantWork::Remove( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPlantWork:Remove not need any parameter" );
 
-	delete object_;
-	object_ = NULL;
+	delete _object;
+	_object = NULL;
 
 	return 1;	
 }
@@ -218,7 +218,7 @@ int CLuaPlantWork::SetGame( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlantWork:SetPoduceType need CNrpDiskMachine* parameter" );
 
 	CNrpGame* dm = (CNrpGame*)lua_touserdata( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN (*object_)[ PARENT ] = dm;
+	IF_OBJECT_NOT_NULL_THEN (*_object)[ PARENT ] = dm;
 
 	return 1;		
 }
@@ -231,7 +231,7 @@ int CLuaPlantWork::GetAdvPrice( lua_State* L )
 	float addonPrice = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGame game = (*object_)[ PARENT ].As<PNrpGame>();
+		PNrpGame game = (*_object)[ PARENT ].As<PNrpGame>();
 		if( game )
 		{
 			PNrpGameBox box = (*game)[ GBOX ].As< PNrpGameBox>();
@@ -250,7 +250,7 @@ int CLuaPlantWork::GetDiskInDay( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaPlantWork:GetDiskInDay not need parameter" );
 
 	int nDisk = 0;
-	IF_OBJECT_NOT_NULL_THEN nDisk = (*object_)[ DISKINDAY ];
+	IF_OBJECT_NOT_NULL_THEN nDisk = (*_object)[ DISKINDAY ];
 
 	lua_pushinteger( L, nDisk ); 
 	return 1;	

@@ -35,7 +35,7 @@ int CLuaComponentListBox::AddItem( lua_State *L )	//добавляет текст в списко ото
 	INrpObject* object = (INrpObject*)lua_touserdata( L, 3 );
 	
 	int ret = -1;
-	IF_OBJECT_NOT_NULL_THEN	ret = object_->addItem( text.ToWide(), object, -1 );			
+	IF_OBJECT_NOT_NULL_THEN	ret = _object->addItem( text.ToWide(), object, -1 );			
 
 	lua_pushinteger( L, ret );
 	return 1;
@@ -50,9 +50,9 @@ int CLuaComponentListBox::GetSelectedObject( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		int selected = object_->getSelected();
+		int selected = _object->getSelected();
 		if( selected >= 0 )
-			selObject = object_->getSelectedObject();
+			selObject = _object->getSelectedObject();
 	}
 	lua_pushlightuserdata( L, selObject );
 

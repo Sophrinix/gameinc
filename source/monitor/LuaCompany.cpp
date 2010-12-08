@@ -66,7 +66,7 @@ int CLuaCompany::Create( lua_State* L )
 	NrpText name = lua_tostring( L, 2 );
 	NrpText ceo = lua_tostring( L, 3 );
 
-	PUser user = CNrpApplication::Instance().GetUser( ceo );
+	PUser user = _nrpApp.GetUser( ceo );
  
 	assert( user != NULL );
 
@@ -75,10 +75,10 @@ int CLuaCompany::Create( lua_State* L )
 		Log(HW) << "не удалось найти пользователя с именем" << ceo << term;
 		return 1;
 	}
-	object_ = new CNrpCompany( name, user );
-	CNrpApplication::Instance().AddCompany( object_ );
+	_object = new CNrpCompany( name, user );
+	_nrpApp.AddCompany( _object );
 
-	lua_pushlightuserdata( L, object_ );
+	lua_pushlightuserdata( L, _object );
 	return 1;
 }
 
@@ -92,7 +92,7 @@ int CLuaCompany::SetCEO( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		(*object_)[ nrp::CEO ] = user;
+		(*_object)[ nrp::CEO ] = user;
 	}
 
 	return 1;
@@ -129,7 +129,7 @@ int CLuaCompany::GetEngine( lua_State* L )
 
 	int idx = lua_tointeger( L, 2 );
 	CNrpGameEngine* eng = NULL;
-	IF_OBJECT_NOT_NULL_THEN	eng = object_->GetGameEngine( idx );
+	IF_OBJECT_NOT_NULL_THEN	eng = _object->GetGameEngine( idx );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, eng );
@@ -145,7 +145,7 @@ int CLuaCompany::AddGameEngine( lua_State* L )
 
 	CNrpGameEngine* ptrGameEng = (CNrpGameEngine*)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->AddGameEngine( ptrGameEng );
+	IF_OBJECT_NOT_NULL_THEN _object->AddGameEngine( ptrGameEng );
 
 	return 1;
 }
@@ -163,7 +163,7 @@ int CLuaCompany::GetTech( lua_State* L )
 
 	int index = lua_tointeger( L, 2 );
 	CNrpTechnology* tech = NULL;
-	IF_OBJECT_NOT_NULL_THEN	tech = object_->GetTechnology( index );
+	IF_OBJECT_NOT_NULL_THEN	tech = _object->GetTechnology( index );
 
 	lua_pushlightuserdata( L, tech );
 	return 1;
@@ -174,16 +174,22 @@ int CLuaCompany::CreateDevelopGame( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetTech need CNrpGameProject* parameter" );
 
-	CNrpGameProject* ptrData = (CNrpGameProject*)lua_touserdata( L, 2 );
+	CNrpGameProject* ptrData = NULL;
+	
+	if( lua_isuserdata( L, 2 ) )
+		ptrData = (CNrpGameProject*)lua_touserdata( L, 2 );
+	else if( lua_istable( L, 2) )
+		ptrData = (CNrpGameProject*)(_GetLuaObject( L, 2, -1)->GetSelf());
+
 	assert( ptrData != NULL );
 
 	INrpDevelopProject* result = NULL;
 	
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		result = new CNrpDevelopGame( ptrData, object_ );
-		CNrpApplication::Instance().AddDevelopProject( result );
-		object_->AddDevelopProject( result );
+		result = new CNrpDevelopGame( ptrData, _object );
+		_nrpApp.AddDevelopProject( result );
+		_object->AddDevelopProject( result );
 	}
 
 	lua_pop( L, argc );
@@ -200,7 +206,7 @@ int CLuaCompany::AddUser( lua_State* L )
 	IUser* ptrData = (IUser*)lua_touserdata( L, 2 );
 	assert( ptrData != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->AddUser( ptrData );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddUser( ptrData );
 
 	return 1;		
 }
@@ -218,7 +224,7 @@ int CLuaCompany::GetInvention( lua_State* L )
 
 	int index = lua_tointeger( L, 2 );
 	CNrpInvention* inv = NULL;
-	IF_OBJECT_NOT_NULL_THEN	inv = object_->GetInvention( index );
+	IF_OBJECT_NOT_NULL_THEN	inv = _object->GetInvention( index );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, inv );
@@ -234,7 +240,7 @@ int CLuaCompany::GetUser( lua_State* L )
 
 	int index = lua_tointeger( L, 2 );
 	IUser* user = NULL;
-	IF_OBJECT_NOT_NULL_THEN	user = object_->GetUser( index );
+	IF_OBJECT_NOT_NULL_THEN	user = _object->GetUser( index );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
@@ -256,7 +262,7 @@ int CLuaCompany::GetProject( lua_State* L )
 
 	int index = lua_tointeger( L, 2 );
 	INrpProject* prj = NULL;
-	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetProject( index );
+	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetProject( index );
 
 	lua_pushlightuserdata( L, prj );
 	return 1;	
@@ -269,7 +275,7 @@ int CLuaCompany::GetProjectByName( lua_State* L )
 
 	NrpText name( lua_tostring( L, 2 ) );
 	INrpProject* prj = NULL;
-	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetProject( name );
+	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetProject( name );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
@@ -284,7 +290,7 @@ int CLuaCompany::AddToPortfelle( lua_State* L )
 
 	INrpConfig* ptrObject = (INrpConfig*)lua_touserdata( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->AddToPortfelle( ptrObject );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddToPortfelle( ptrObject );
 
 	return 1;
 }
@@ -303,7 +309,7 @@ int CLuaCompany::GetFromPortfelle( lua_State* L )
 	int index = lua_tointeger( L, 2 );
 	INrpConfig* prj = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetFromPortfelle( index );
+	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetFromPortfelle( index );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
@@ -320,7 +326,7 @@ int CLuaCompany::GetDevProject( lua_State* L )
 	int index = lua_tointeger( L, 2 );
 	INrpProject* prj = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetDevelopProject( index );
+	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetDevelopProject( index );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
@@ -337,7 +343,7 @@ int CLuaCompany::GetGame( lua_State* L )
 	int index = lua_tointeger( L, 2 );
 	INrpConfig* prj = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	prj = object_->GetGame( index );
+	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetGame( index );
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
@@ -365,7 +371,7 @@ int CLuaCompany::StartInvention( lua_State* L )
 
 	NrpText name = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	CNrpApplication::Instance().AddInvention( name, object_ );
+	IF_OBJECT_NOT_NULL_THEN	_nrpApp.AddInvention( name, _object );
 
 	return 1;	
 }
@@ -377,7 +383,7 @@ int CLuaCompany::RemoveUser( lua_State* L )
 
 	NrpText name = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->RemoveUser( name );
+	IF_OBJECT_NOT_NULL_THEN	_object->RemoveUser( name );
 
 	return 1;		
 }
@@ -389,7 +395,7 @@ int CLuaCompany::AddBalance( lua_State* L )
 
 	int valuel = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	(*object_)[ BALANCE ] += valuel;
+	IF_OBJECT_NOT_NULL_THEN	(*_object)[ BALANCE ] += valuel;
 
 	return 1;		
 }

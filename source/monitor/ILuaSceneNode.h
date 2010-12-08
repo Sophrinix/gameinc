@@ -40,7 +40,7 @@ public:
 		NrpText text;
 		IF_OBJECT_NOT_NULL_THEN
 		{
-			switch( object_->getType() )
+			switch( _object->getType() )
 			{
 			case scene::ESNT_TERRAIN:	text = L"Terrain";	break;
 			case scene::ESNT_MESH:		text = L"Mesh";		break;		
@@ -65,7 +65,7 @@ public:
 		int level = lua_tointeger( L, 2 );
 		NrpText fileTexture = lua_tostring( L, 3 );						//принимает булевое значение в качестве луа-параметра
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setMaterialTexture( level, object_->getSceneManager()->getVideoDriver()->getTexture( fileTexture ) );									
+		IF_OBJECT_NOT_NULL_THEN	_object->setMaterialTexture( level, _object->getSceneManager()->getVideoDriver()->getTexture( fileTexture ) );									
 
 		return 1;	
 	}
@@ -78,7 +78,7 @@ public:
 		video::E_MATERIAL_FLAG flagName = (video::E_MATERIAL_FLAG)lua_tointeger( L, 2 );						//принимает булевое значение в качестве луа-параметра
 		bool flagValue = lua_toboolean( L, 3 ) > 0;
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setMaterialFlag( flagName, flagValue );									
+		IF_OBJECT_NOT_NULL_THEN	_object->setMaterialFlag( flagName, flagValue );									
 
 		return 1;	
 	}
@@ -92,7 +92,7 @@ public:
 
 		IF_OBJECT_NOT_NULL_THEN
 		{
-			object_->setTriangleSelector( selector );
+			_object->setTriangleSelector( selector );
 			selector->drop();
 		}
 
@@ -108,7 +108,7 @@ public:
 	
 		IF_OBJECT_NOT_NULL_THEN 
 			if( IsChildOfCurrentScene_() )
-				name = object_->getName();
+				name = _object->getName();
 
 		lua_pushstring( L, name );									
 
@@ -122,7 +122,7 @@ public:
 
 		NrpText name = lua_tostring( L, 2 );						
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setName( name.ToStr() );									
+		IF_OBJECT_NOT_NULL_THEN	_object->setName( name.ToStr() );									
 
 		return 1;	
 	}
@@ -132,7 +132,7 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( ":Remove not need any parameter" ) );
 
-		IF_OBJECT_NOT_NULL_THEN	object_->remove();
+		IF_OBJECT_NOT_NULL_THEN	_object->remove();
 
 		return 1;
 	}
@@ -143,7 +143,7 @@ public:
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( ":GetVisible not need any parameter" ) );
 
 		bool visible = false;
-		IF_OBJECT_NOT_NULL_THEN visible = object_->isVisible();
+		IF_OBJECT_NOT_NULL_THEN visible = _object->isVisible();
 		lua_pushboolean( L, visible );
 
 		return 1;
@@ -156,7 +156,7 @@ public:
 
 		bool visible = lua_toboolean( L, 2 ) > 0;						//принимает булевое значение в качестве луа-параметра
 
-		IF_OBJECT_NOT_NULL_THEN	object_->setVisible( visible );							
+		IF_OBJECT_NOT_NULL_THEN	_object->setVisible( visible );							
 
 		return 1;
 	}
@@ -167,7 +167,7 @@ public:
 		luaL_argcheck(L, argc == 1, 1, _ErrStr(":GetPosition not need any parameter" ) );
 
 		core::vector3df pos;
-		IF_OBJECT_NOT_NULL_THEN pos = object_->getPosition();
+		IF_OBJECT_NOT_NULL_THEN pos = _object->getPosition();
 		lua_pushnumber( L, pos.X );
 		lua_pushnumber( L, pos.Y );
 		lua_pushnumber( L, pos.Z );
@@ -184,7 +184,7 @@ public:
 		rot.X = (float)lua_tonumber( L, 2 );
 		rot.Y = (float)lua_tonumber( L, 3 );
 		rot.Z = (float)lua_tonumber( L, 4 );
-		IF_OBJECT_NOT_NULL_THEN object_->setRotation( rot );
+		IF_OBJECT_NOT_NULL_THEN _object->setRotation( rot );
 
 		return 1;
 	}
@@ -198,7 +198,7 @@ public:
 		scale.X = (float)lua_tonumber( L, 2 );
 		scale.Y = (float)lua_tonumber( L, 3 );
 		scale.Z = (float)lua_tonumber( L, 4 );
-		IF_OBJECT_NOT_NULL_THEN object_->setScale( scale );
+		IF_OBJECT_NOT_NULL_THEN _object->setScale( scale );
 
 		return 1;
 	}
@@ -212,7 +212,7 @@ public:
 		pos.X = (float)lua_tonumber( L, 2 );
 		pos.Y = (float)lua_tonumber( L, 3 );
 		pos.Z = (float)lua_tonumber( L, 4 );
-		IF_OBJECT_NOT_NULL_THEN object_->setPosition( pos );
+		IF_OBJECT_NOT_NULL_THEN _object->setPosition( pos );
 
 		return 1;
 	}

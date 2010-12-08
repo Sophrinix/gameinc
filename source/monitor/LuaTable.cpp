@@ -52,7 +52,7 @@ int CLuaTable::SetImage( lua_State *L )							//получает имя файла с текстурой, 
 	{
 		video::ITexture* txs = NULL;
 		if( texturepath != NULL )
-			txs = CNrpEngine::Instance().GetVideoDriver()->getTexture( texturepath ); //грузим текстуру в видеокарту
+			txs = _nrpEngine.GetVideoDriver()->getTexture( texturepath ); //грузим текстуру в видеокарту
 		//object_->setImage( txs, rectangle );								//размещаем текстуру в кнопке			
 	}
 
@@ -77,7 +77,7 @@ int CLuaTable::AddRow( lua_State *L )
 
 	int index = lua_tointeger( L, 2 );
 	
-	IF_OBJECT_NOT_NULL_THEN object_->addRow( index );
+	IF_OBJECT_NOT_NULL_THEN _object->addRow( index );
 
 	return 1;	
 }
@@ -90,7 +90,7 @@ int CLuaTable::AddColumn( lua_State *L )
 	NrpText text( lua_tostring( L, 2 ) );
 	int index = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->addColumn( text.ToWide(), index );
+	IF_OBJECT_NOT_NULL_THEN _object->addColumn( text.ToWide(), index );
 
 	return 1;	
 }
@@ -103,7 +103,7 @@ int CLuaTable::SetColumnWidth( lua_State *L )
 	int index = lua_tointeger( L, 2 );
 	int width = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->setColumnWidth( index, width );
+	IF_OBJECT_NOT_NULL_THEN _object->setColumnWidth( index, width );
 
 	return 1;	
 }
@@ -119,7 +119,7 @@ int CLuaTable::SetCellText( lua_State *L )
 
 	video::SColor color( lua_tointeger( L, 5 ), lua_tointeger( L, 6 ), lua_tointeger( L, 7 ), lua_tointeger( L, 8 ) );
 
-	IF_OBJECT_NOT_NULL_THEN	object_->setCellText( aRow, aCol, text.ToWide(), video::SColor( color ) );
+	IF_OBJECT_NOT_NULL_THEN	_object->setCellText( aRow, aCol, text.ToWide(), video::SColor( color ) );
 
 	return 1;
 }
@@ -131,7 +131,7 @@ int CLuaTable::GetRowCount( lua_State *L )
 
 	int rowCount=-9999;
 
-	IF_OBJECT_NOT_NULL_THEN  rowCount = object_->getRowCount();
+	IF_OBJECT_NOT_NULL_THEN  rowCount = _object->getRowCount();
 	lua_pushinteger( L, rowCount );
 
 	return 1;		
@@ -144,7 +144,7 @@ int CLuaTable::GetColumnCount( lua_State *L )
 
 	int rowCount=-9999;
 
-	IF_OBJECT_NOT_NULL_THEN  rowCount = object_->getColumnCount();
+	IF_OBJECT_NOT_NULL_THEN  rowCount = _object->getColumnCount();
 	lua_pushinteger( L, rowCount );
 
 	return 1;	
@@ -157,7 +157,7 @@ int CLuaTable::RemoveColumn( lua_State *L )
 
 	int pos=lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN  object_->removeColumn( pos );
+	IF_OBJECT_NOT_NULL_THEN  _object->removeColumn( pos );
 	
 	return 1;	
 }
@@ -168,7 +168,7 @@ int CLuaTable::SetRowHeight( lua_State *L )
 
 	int height = lua_tointeger( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN object_->SetItemHeight( height );
+	IF_OBJECT_NOT_NULL_THEN _object->SetItemHeight( height );
 	return 1;	
 }
 
@@ -177,7 +177,7 @@ int CLuaTable::ClearRows( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaButton::ClearRows not need parameter");
 
-	IF_OBJECT_NOT_NULL_THEN  object_->clearRows();
+	IF_OBJECT_NOT_NULL_THEN  _object->clearRows();
 
 	return 1;	
 }
