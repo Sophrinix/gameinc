@@ -174,12 +174,7 @@ int CLuaCompany::CreateDevelopGame( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetTech need CNrpGameProject* parameter" );
 
-	CNrpGameProject* ptrData = NULL;
-	
-	if( lua_isuserdata( L, 2 ) )
-		ptrData = (CNrpGameProject*)lua_touserdata( L, 2 );
-	else if( lua_istable( L, 2) )
-		ptrData = (CNrpGameProject*)(_GetLuaObject( L, 2, -1)->GetSelf());
+	CNrpGameProject* ptrData = _GetLuaObject< CNrpGameProject, ILuaObject >( L, 2, true);
 
 	assert( ptrData != NULL );
 
@@ -288,7 +283,7 @@ int CLuaCompany::AddToPortfelle( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:AddToPortfelle need INrpConfig* parameter" );
 
-	INrpConfig* ptrObject = (INrpConfig*)lua_touserdata( L, 2 );
+	INrpConfig* ptrObject = _GetLuaObject< INrpConfig, ILuaObject >( L, 2, true );
 
 	IF_OBJECT_NOT_NULL_THEN	_object->AddToPortfelle( ptrObject );
 

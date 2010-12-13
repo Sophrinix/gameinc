@@ -105,11 +105,7 @@ int CLuaLinkBox::SetData( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetData need void* parameter");
 
-	void* data = NULL;
-	if( lua_isuserdata( L, 2 ) )
-		data = lua_touserdata( L, 2 );
-	else if( lua_istable( L, 2 ) )
-		data = (void*)(_GetLuaObject(L, 2, -1)->GetSelf())
+	void* data = _GetLuaObject<void, ILuaObject>(L, 2, true);
 
 	IF_OBJECT_NOT_NULL_THEN	_object->SetData( data );
 

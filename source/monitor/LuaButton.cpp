@@ -75,7 +75,7 @@ int CLuaButton::SetImage_( lua_State* L, const NrpText& funcName, TYPE_IMAGE typ
 
 	video::ITexture* txs = _nrpEngine.GetVideoDriver()->getTexture( texturepath );
 
-	rectangle = _ReadRect( L, 2 );
+	rectangle = _ReadRect( L, 2, NULL );
 	if( rectangle == core::recti( 0, 0, 0, 0) && ( txs != NULL ) )
 		rectangle = core::recti( 0, 0, txs->getSize().Width, txs->getSize().Height );
 

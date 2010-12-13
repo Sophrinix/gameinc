@@ -33,6 +33,7 @@ void CNrpPlatform::_InitialyzeOptions()
 	Add( SELLDEVICE, 0 );
 	Add( TEXTURENORMAL, NrpText() );
 	Add( TECHNUMBER, 0 );
+	Add( BASE_CODE, 0.f );
 }
 
 NrpText CNrpPlatform::ClassName()

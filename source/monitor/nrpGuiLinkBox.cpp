@@ -202,30 +202,17 @@ void CNrpGuiLinkBox::draw()
 		btnState = EGBS_BUTTON_UP;
 	}
 
+	video::SColor color( AlphaBlend, AlphaBlend, AlphaBlend, AlphaBlend );
+	video::SColor colors[4] = { color, color, color, color };	
+
 	if( texImage != NULL )
 	{
-		driver->draw2DImage( texImage, AbsoluteRect, txsRect, &AbsoluteClippingRect, 0, true  );	
-
-		if( isHovered )
-		{
-			if( AlphaBlend < 0xff )	AlphaBlend+=core::s32_min( 3, 0xff - AlphaBlend );
-		}
-		else
-		{
-			if( AlphaBlend > 5 ) AlphaBlend-=core::s32_min( 3, AlphaBlend - 5 );
-		}
-
-		if( AlphaBlend <= 0xff && AlphaBlend >= 5 && hoveredImage_ != NULL )
-		{
-			video::SColor color( AlphaBlend, 0xff, 0xff, 0xff );
-			video::SColor colors[4] = { color, color, color, color };		
-			driver->draw2DImage( hoveredImage_, AbsoluteRect, hoveredImageRect_, &AbsoluteClippingRect, colors, true  );	
-		}
+		driver->draw2DImage( texImage, AbsoluteRect, txsRect, &AbsoluteClippingRect, colors, true  );		
 	}
 	else if( border_ )
 	{		
 		if( _defaultImage )
-			driver->draw2DImage( _defaultImage, AbsoluteRect, _defaultImageRect, &AbsoluteClippingRect, 0, true  );
+			driver->draw2DImage( _defaultImage, AbsoluteRect, _defaultImageRect, &AbsoluteClippingRect, colors, true );
 		else
 		{
 			core::recti imgRect = rect;

@@ -73,25 +73,25 @@ CNrpTechnology::~CNrpTechnology(void)
 {
 }
 
-void CNrpTechnology::SetEngineTechRequire( int tech_type, int valuel )
+void CNrpTechnology::SetEngineTechRequire( const NrpText& techName, int valuel )
 {
-	_techRequires[ tech_type ] = valuel;
+	_techRequires[ techName ] = valuel;
 }
 
-void CNrpTechnology::SetEmployerSkillRequire( int skill_type, int valuel )
+void CNrpTechnology::SetEmployerSkillRequire( const NrpText& skillName, int valuel )
 {
-	_skillRequires[ skill_type ] = valuel;
+	_skillRequires[ skillName ] = valuel;
 }
 
-int CNrpTechnology::GetEngineTechRequire( int tech_type )
+int CNrpTechnology::GetEngineTechRequire( const NrpText& name )
 {
-	KNOWLEDGE_MAP::Node* node = _techRequires.find( tech_type );
+	KNOWLEDGE_MAP::Node* node = _techRequires.find( name );
 	return node ? node->getValue() : 0;
 }
 
-int CNrpTechnology::GetEployerSkillRequire( int skil_require )
+int CNrpTechnology::GetEployerSkillRequire( const NrpText& name )
 {
-	KNOWLEDGE_MAP::Node* node = _skillRequires.find( skil_require );
+	KNOWLEDGE_MAP::Node* node = _skillRequires.find( name );
 	return node ? node->getValue() : 0;
 }
 

@@ -94,7 +94,7 @@ int CLuaPlant::AddProduceWork( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::AddProduceWork need CNrpPlantWork* parameter");
 
-	CNrpPlantWork* plantWork = _GetObjectFromTable< CNrpPlantWork, CLuaPlantWork >( L, 2, -1 );
+	CNrpPlantWork* plantWork = _GetLuaObject< CNrpPlantWork, CLuaPlantWork >( L, 2, true );
 	assert( plantWork != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN _object->AddWork( plantWork );

@@ -729,11 +729,11 @@ IUser* CNrpApplication::_CreateRandomUser( NrpText userType )
 	int randomParams = 1 + rand() % genres.size();//сколько параметров будем создавать
 	int maxParamValue = 1 + rand() % 100;//максимальное значение параметров
 
-	std::map< NrpText, int > skillMap;
-	skillMap[ "coder" ] = SKL_CODING;
-	skillMap[ "designer" ] = SKL_DRAWING;
-	skillMap[ "composer" ] = SKL_SOUND;
-	skillMap[ "tester" ] = SKL_TESTING;
+	std::map< NrpText, NrpText > skillMap;
+	skillMap[ "coder" ] = "skill_coding";
+	skillMap[ "designer" ] = "skill_drawing";
+	skillMap[ "composer" ] = "skill_sound";
+	skillMap[ "tester" ] = "skill_testing";
 
 	NrpText userName;
 

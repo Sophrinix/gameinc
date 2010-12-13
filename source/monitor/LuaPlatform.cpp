@@ -81,7 +81,7 @@ int CLuaPlatform::IsTechAvaible( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:RemovePlatform need CLuaPlatform parameter" );
 
-	CNrpTechnology* obj = _GetObjectFromTable< CNrpTechnology, CLuaTechnology >( L, 2, -1 );
+	CNrpTechnology* obj = _GetLuaObject< CNrpTechnology, CLuaTechnology >( L, 2, false );
 	assert( obj );
 
 	bool ret = false;

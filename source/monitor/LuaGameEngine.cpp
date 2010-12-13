@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "LuaGameEngine.h"
 #include "NrpGameEngine.h"
+#include "NrpTechnology.h"
+#include "LuaTechnology.h"
 #include "NrpApplication.h"
 
 using namespace irr;
@@ -18,6 +20,7 @@ Luna< CLuaGameEngine >::RegType CLuaGameEngine::methods[] =			//реализуемы метод
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetGenreModuleNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetAdvancedTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetCodeVolume ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, IsMyGenre ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetName ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTexture ),
@@ -117,5 +120,19 @@ int CLuaGameEngine::GetAdvancedTechNumber( lua_State* L )
 const char* CLuaGameEngine::ClassName()
 {
 	return ( CLASS_LUAGAMEENGINE );
+}
+
+int CLuaGameEngine::IsMyGenre( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameEngine:IsMyGenre need CLuaTech parameter" );
+
+	CNrpTechnology* genre = _GetLuaObject< CNrpTechnology, CLuaTechnology >( L, 2 );
+
+	bool ret = false;
+	IF_OBJECT_NOT_NULL_THEN  ret = _object->IsGenreAvailble( (*genre)[ INTERNAL_NAME ] );
+
+	lua_pushboolean( L, ret );
+	return 1;
 }
 }//namespace nrp

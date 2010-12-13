@@ -17,6 +17,7 @@ public:
 	int SetGenreModuleNumber( lua_State* L );
 	int GetGenreModuleNumber( lua_State* L );
 	int GetAdvancedTechNumber( lua_State* L );
+	int IsMyGenre( lua_State* L );
 	int SetCodeVolume( lua_State *L );
 	int GetName( lua_State* L );
 	int Create( lua_State* L );

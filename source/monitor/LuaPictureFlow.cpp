@@ -45,7 +45,7 @@ int CLuaPictureFlow::AddItem( lua_State *L )	//добавляет текст в списко отображе
 		video::ITexture* texture = _nrpEngine.GetVideoDriver()->getTexture( texturePath );
 
 		NrpText text( lua_tostring( L, 3 ) ); 
-		void* object = lua_touserdata( L, 4 );
+		void* object = _GetLuaObject< void, ILuaObject >( L, 4, true );
 	
 		int ret = _object->addItem( texture, text.ToWide(), object );			
 		lua_pushinteger( L, ret );

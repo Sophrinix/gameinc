@@ -22,20 +22,10 @@ template < class ObjectType > class ILuaObject : public INrpObject
 private:
 	ILuaObject() {};
 
+	static NrpText ClassName() { return L"ILuaObject"; }
+
 protected:
 	ObjectType* _object;
-
-	irr::core::recti _ReadRect( lua_State* vm, size_t startParam )
-	{
-		irr::core::recti rectangle( 0, 0, 0, 0 );
-
-		rectangle.UpperLeftCorner.X = lua_tointeger( vm, startParam );
-		rectangle.UpperLeftCorner.Y = lua_tointeger( vm, startParam + 1 );
-		rectangle.LowerRightCorner.X = lua_tointeger( vm, startParam + 2 );
-		rectangle.LowerRightCorner.Y = lua_tointeger( vm, startParam + 3 );
-
-		return rectangle;
-	}
 
 	NrpText _ErrStr( const char* str )
 	{
@@ -53,36 +43,79 @@ protected:
 	}
 
 	template< class RETCLASS, class T>
-	RETCLASS* _GetObjectFromTable( lua_State* L, int index, int retIndex )
+	RETCLASS* _GetLuaObject( lua_State* L, int index, bool force=false )
 	{
-		assert( lua_istable(L, index) );
-		if (!lua_istable(L, index))
-			return 0;
+		RETCLASS* ret = NULL;
+		if( lua_isuserdata(L, index) )
+		{
+			ret = (RETCLASS*)lua_touserdata(L, index);
+		}
+		else if( lua_istable(L, index ) )
+		{
+			lua_pushnumber(L, 0); 	// ’отим получить значени в нулевой €чейке таблицы
+			lua_gettable(L, index); // get the class table (i.e, self)
 
-		lua_pushnumber(L, 0); 	// ’отим получить значени в нулевой €чейке таблицы
-		lua_gettable(L, index); // get the class table (i.e, self)
+			if( force )
+			{
+				ILuaObject** obj = (ILuaObject**)lua_touserdata( L, -1 );
+				ret = (RETCLASS*)(*obj)->GetSelf();
+			}
+			else
+			{
+				T** obj = (T**)luaL_checkudata(L, -1, T::ClassName());
+				ret = (RETCLASS*)(*obj)->GetSelf();
+			}
 
-		T** obj = (T**)(luaL_checkudata(L, retIndex, T::ClassName()));
-		lua_remove(L, -1);
+			lua_remove(L, -1);	
+		}
 
-		return (RETCLASS*)(*obj)->GetSelf();
+		return ret;
 	}
 
-	ILuaObject* _GetLuaObject( lua_State* L, int index, int retIndex )
+	int _ReadParam( lua_State* vm, int index, int mult, int start )
 	{
-		assert( lua_istable(L, index) );
-		if (!lua_istable(L, index))
-			return 0;
+		int ret = 0;
+		if( lua_isstring( vm, index ) )
+		{
+			NrpText percent = lua_tostring( vm, index );
 
-		lua_pushnumber( L, 0 );
-		lua_gettable( L, index );
+			if( percent.lastChar() == L'+' )
+				percent.erase( percent.size() - 1 );
+			else
+				start = 0;
+			
+			if( percent.lastChar() == L'%' )
+			{
+				percent.erase( percent.size() - 1 );
+				ret = start + static_cast< int >( percent.ToInt() / 100.f * mult );
+			}
+			else
+			{
+				ret = start + percent.ToInt();
+			}
+		}
+		else if( lua_isnumber( vm, index ) )
+		{
+			ret = lua_tointeger( vm, index );
+		}
 
-		//lua_Debug ar;
-		//lua_getinfo( L, ">S", &ar );
-		ILuaObject** obj = (ILuaObject**)lua_touserdata(L, retIndex);
-		lua_remove(L, -1);
+		return ret;
+	}
 
-		return *obj;
+	irr::core::recti _ReadRect( lua_State* vm, int startParam, const gui::IGUIElement* elm )
+	{
+		irr::core::dimension2di sized( 0, 0 );
+		if( elm )
+			sized = elm->getRelativePosition().getSize();
+
+		irr::core::recti rectangle( 0, 0, 0, 0 );
+
+		rectangle.UpperLeftCorner.X = _ReadParam( vm, startParam, sized.Width, 0 );
+		rectangle.UpperLeftCorner.Y = _ReadParam( vm, startParam + 1, sized.Height, 0 );
+		rectangle.LowerRightCorner.X = _ReadParam( vm, startParam + 2, sized.Width, rectangle.UpperLeftCorner.X );
+		rectangle.LowerRightCorner.Y = _ReadParam( vm, startParam + 3, sized.Height, rectangle.UpperLeftCorner.Y );
+
+		return rectangle;
 	}
 	
 public:
@@ -94,14 +127,7 @@ public:
 
 	ILuaObject(lua_State *L, const NrpText& className) : INrpObject( className, "" ) 
 	{
-		if( lua_islightuserdata( L, 1 ) )
-		{
-			_object = (ObjectType*)lua_touserdata(L, 1);
-		}
-		else if( lua_istable( L, 1 ) )
-		{
-			_object = _GetLuaObject( L, 1, -1 )->_object;
-		}
+		_object = _GetLuaObject<ObjectType, ILuaObject>( L, 1, true );
 
 		if( _object == NULL )
 			DebugReport( __FILEW__, __LINE__, _ErrEmptyObject() );

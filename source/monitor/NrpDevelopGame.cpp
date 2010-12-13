@@ -93,7 +93,7 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 
 	CNrpProjectModule* extEngine = new CNrpProjectModule( PT_ENGINDEEXTEND, this );
 	(*extEngine)[ NAME ] = Text( NAME ) + " Расширение движка";
-	(*extEngine).SetEmployerSkillRequire( SKL_CODING, (*ge)[ SKILL_CODING ] );
+	(*extEngine).SetEmployerSkillRequire( SKILL_CODING, (*ge)[ SKILL_CODING ] );
 	(*extEngine)[ CODEVOLUME ] = refPr[ ENGINE_CODEVOLUME ];
 	(*extEngine)[ BASE_CODE ] = 1.f;
 	_modules.push_back( extEngine );

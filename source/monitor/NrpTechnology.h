@@ -31,11 +31,11 @@ public:
 	CNrpTechnology( const NrpText& fileTech );
 	~CNrpTechnology(void);
 
-	void SetEngineTechRequire( int tech_type, int valuel );
-	void SetEmployerSkillRequire( int skill_type, int valuel );
+	void SetEngineTechRequire( const NrpText&, int valuel );
+	void SetEmployerSkillRequire( const NrpText&, int valuel );
 
-	int GetEngineTechRequire( int tech_type );
-	int GetEployerSkillRequire( int skil_require );
+	int GetEngineTechRequire( const NrpText& techName );
+	int GetEployerSkillRequire( const NrpText& skillName );
 
 	const NrpText GetFutureTech( size_t index );
 	void AddFutureTech( const NrpText& techName );
