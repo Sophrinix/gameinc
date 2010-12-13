@@ -1,0 +1,5 @@
+[options]
+language0=xtras/languages/lang_english/item.lang
+languageNumber=3
+language1=xtras/languages/lang_germany/item.lang
+language2=xtras/languages/lang_russian/item.lang

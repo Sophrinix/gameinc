@@ -2,7 +2,7 @@
 priceinday:int=100
 quality:float=0.001
 maxquality:float=0.1
-techtype:string=paper
+reklametype:string=paper
 name:string=#STR_PAPER
 startdate:time=y=1980 m=01 d=01 h=0 mi=0
 level:int=1

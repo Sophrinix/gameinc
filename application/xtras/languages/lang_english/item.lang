@@ -1,0 +1,24 @@
+[properties]
+balance:int=0
+basecode:float=0.05
+codepassed:int=0
+company:string=
+componentlider:string=
+descriptionpath:string=
+enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
+enginecode:float=0.0
+lastworker:string=
+level:int=0
+moduleerrornumber:int=0
+name:string=#TRANSLATE_LANG_ENGLISH
+internalname:string=lang_english
+price:float=0
+quality:int=100
+readyworkpercent:float=0
+startdate:time=y=1980 m=01 d=01 h=00 mi=00 s=0
+techgroup:int=#PT_LANGUAGE
+techtype:int=#LANG_ENGLISH
+texturehover:string=
+texturenormal:string=xtras/languages/lang_english/image.png
+volumecode:int=0
+nexttechnumber:int=0

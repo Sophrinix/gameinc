@@ -1,7 +1,0 @@
-autoscript:AddUserToGameProject("Patrick Keat", "Название игры", "Выводить звук через спикер")
-autoscript:AddUserToGameProject("Justin Dunce", "Название игры", "Выводить звук через спикер")
-autoscript:AddUserToGameProject("Dominic Miln", "Название игры", "Выводить звук через спикер")
-autoscript:AddUserToGameProject("Thomas Raleigh", "Название игры", "Выводить звук через спикер")
-autoscript:AddUserToGameProject("Steven Nevill", "Название игры", "Выводить звук через спикер")
-autoscript:AddUserToGameProject("Bryan MacAdam", "Название игры", "Выводить звук через спикер")
-autoscript:AddUserToGameProject("James Freeman", "Название игры", "Выводить звук через спикер")

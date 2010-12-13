@@ -22,6 +22,7 @@ IncludeScript("monitor")
 IncludeScript("pda")
 IncludeScript("journals")
 IncludeScript("diskManager")
+IncludeScript("saleManager")
 --------------------------------------------
 
 --создание рабочей сцены 

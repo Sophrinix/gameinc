@@ -2,6 +2,7 @@
 avgenrecount:int=1
 balance:int=0
 company:string=
+cpu:float=0.0001
 genremodulenumber:int=2
 name:string=SimpleEngine
 internalName:string=simple_engine
@@ -14,5 +15,5 @@ timeactual:int=0
 volumecode:int=10000
 textureNormal:string=xtras/engines/simpleEngine/image.jpg
 advTechNumber:int=2
-[avaibleGenre]
-301=1
+[genres]
+genre_skill=1

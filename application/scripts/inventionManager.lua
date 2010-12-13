@@ -220,8 +220,8 @@ end
 
 local lastTimeUpdate = 0
 function UpdateLabelValue()
-	if base.GetTickCount() - lastTimeUpdate > 1000 then
-		lastTimeUpdate = base.GetTickCount()
+	if base.os.clock() - lastTimeUpdate > 0 then
+		lastTimeUpdate = base.os.clock()
 		localUpdateLabels()
 	end
 end

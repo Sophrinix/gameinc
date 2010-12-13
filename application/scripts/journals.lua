@@ -24,7 +24,9 @@ local function ShowAvaibleGames()
 	local game = nil
 	for i=1, applic:GetGamesNumber() do
 		game = applic:GetGame( i-1 )
-		lbxGames:AddItem( game:GetName(), game:Self() )
+		if game:IsSaling() then
+			lbxGames:AddItem( game:GetName(), game:Self() )
+		end
 	end	
 end
 

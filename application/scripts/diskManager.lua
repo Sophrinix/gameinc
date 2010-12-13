@@ -40,10 +40,10 @@ local addons = { }
 
 local function localGetAddinMachine()
 	if numberMachine < 10 then return 1 
-	elseif numberMachine > 10 and numberMachine < 30 then return 5 
-	elseif numberMachine > 30 and numberMachine < 100 then return 10 
-	elseif numberMachine > 100 and numberMachine < 500 then return 50 
-	elseif numberMachine > 500 then return 100 end
+	elseif numberMachine >= 10 and numberMachine < 30 then return 5 
+	elseif numberMachine >= 30 and numberMachine < 100 then return 10 
+	elseif numberMachine >= 100 and numberMachine < 500 then return 50 
+	elseif numberMachine >= 500 then return 100 end
 end
 
 local function UpdateAddons( ptrGame )
@@ -175,9 +175,22 @@ function Show()
 	guienv:AddButton( scrWidth / 2 + 10, scrHeight - 50, scrWidth - 10, scrHeight - 10, wndDPP:Self(), -1, "Выход" ):SetAction( "./diskManager.Hide()" )
 end
 
+local function localGetFinalDiscount()
+	local discount = currentDiskMachine:GetDiscount() + currentDiskMachine:GetLineDiscount() * produceDiskWork:GetNumberMachine()
+	if discount > currentDiskMachine:GetMaxDiscount() then
+		discount = currentDiskMachine:GetMaxDiscount()
+	end
+	
+	return discount
+end
+
+local function localGetFinalPrice()
+	
+	return produceDiskWork:GetPrice() * ( 1 - localGetFinalDiscount() )
+end
 
 local function UpdateLabels()
-	local machines = produceDiskWork:GetNumberMachine();
+	local machines = produceDiskWork:GetNumberMachine()
 	
 	labelPricePrint:SetText( "Плата за размещение: $"..produceDiskWork:GetRentPrice() )
 	labelPerfomance:SetText( "Производительность:"..produceDiskWork:GetHourPerfomance().." (шт/час)" )
@@ -186,17 +199,13 @@ local function UpdateLabels()
 	labelNumberDay:SetText( "Дней производства:"..produceDiskWork:GetNumberDay().." (дн)" )
 	labelDiskNumber:SetText(  "Количество дисков:"..produceDiskWork:GetNumberDisk().." шт" ) 
 	labelDiskPrice:SetText( "Цена одного диска: $"..base.string.format( "%.2f", produceDiskWork:GetDiskPrice() ) )  
-	
-	local discount = currentDiskMachine:GetDiscount() + currentDiskMachine:GetLineDiscount() * machines
-	local finalPrice = produceDiskWork:GetPrice() * ( 1 - discount )
-	labelFinalPrice:SetText( "Общая стоимость: $"..base.string.format( "%d", finalPrice ) )
-	
+	labelFinalPrice:SetText( "Общая стоимость: $"..base.string.format( "%d", localGetFinalPrice() ) )
 	labelAdvPrice:SetText( "Цены дополнительных вещей: $"..base.string.format( "%.2f", produceDiskWork:GetAdvPrice() ) )
 	labelDiskInDay:SetText( "Всего дисков за день:"..produceDiskWork:GetDiskInDay().." шт" )
 	labelPricePrintAll:SetText( "Стоимость аренды: $"..produceDiskWork:GetRentPrice() * machines )
 	labelPerfomanceAll:SetText( "Производительность (шт\час):"..produceDiskWork:GetHourPerfomance() * machines ) 
 	labelPriceHourAll:SetText( "Стоимость работы ($\час):"..produceDiskWork:GetHourPrice() * machines )
-	labelRelationWithPlant:SetText( "Скидка производителя: "..base.string.format( "%d", discount * 100 ).."%" )
+	labelRelationWithPlant:SetText( "Скидка производителя: "..base.string.format( "%d", localGetFinalDiscount() * 100 ).."%" )
 end
 
 function IncDayNumber()
@@ -250,9 +259,10 @@ function CloseQueryAddWork()
 end
 
 function QueryAddWork()
-	local discount = currentDiskMachine:GetDiscount() + currentDiskMachine:GetLineDiscount() * produceDiskWork:GetNumberMachine()
-	local finalPrice = produceDiskWork:GetPrice() * ( 1 - discount )
-	guienv:MessageBox( "Размещение заказа стоит "..finalPrice.."$. Продолжить?", true, true, "./diskManager.AddWork()", "./diskManager.CloseQueryAddWork()" )
+	local dd = base.string.format( "%d", localGetFinalPrice() )
+	guienv:MessageBox(  "Размещение заказа стоит "..dd.."$. Продолжить?", 
+						true, true, 
+						"./diskManager.AddWork()", "./diskManager.CloseQueryAddWork()" )
 end
 
 function localChangeProducerDiscount()
@@ -280,15 +290,12 @@ function localChangeProducerDiscount()
 	end
 end
 
-function AddWork()
-	local discount = currentDiskMachine:GetDiscount() + currentDiskMachine:GetLineDiscount() * produceDiskWork:GetNumberMachine()
-	local finalPrice = produceDiskWork:GetPrice() * ( 1 - discount )
-	
+function AddWork()	
 	--изменим отношение производителя к игроку за размещение заказа
 	localChangeProducerDiscount()
 	
-	company:AddBalance( -finalPrice )
-	plant:AddProduceWork( produceDiskWork:Self() )
+	company:AddBalance( -localGetFinalPrice() )
+	plant:AddProduceWork( produceDiskWork )
 	
 	produceDiskWork:Remove()
 	wndDPP:Remove()

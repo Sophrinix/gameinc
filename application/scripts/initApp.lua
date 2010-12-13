@@ -1,5 +1,6 @@
 require("elmid")
-IncludeScript("logdefs")
+IncludeScript( "logdefs" )
+IncludeScript( "genres" )
 IncludeScript( "NerpaActionType" )
 IncludeScript( "localization/russian" )
 IncludeScript( "globalVariableInitialize" )

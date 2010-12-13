@@ -206,7 +206,7 @@ local function localCreateBoxImagePictureFlow()
 end
 
 function MiniBox()
-	local elm = base.CLuaElement( wndGBM:Self() )
+	local elm = base.CLuaElement( wndGBM )
 	elm:RemoveChilds()
 	currentGame:CreateBox( 10 )
 	textureForBox = "media/textures/miniBox.png"
@@ -218,7 +218,7 @@ function SetGame()
 	local btn = base.CLuaButton( base.NrpGetSender() )
 	currentGame = company:GetGame( btn:GetText() )
 	
-	local elm = base.CLuaElement( wndGBM:Self() )
+	local elm = base.CLuaElement( wndGBM )
 	elm:RemoveChilds()
 	
 	local btn = guienv:AddButton( scrWidth / 4 - 50, scrHeight / 4 - 50, 
@@ -276,12 +276,12 @@ function LinkLeftMouseButtonUp()
 	local elm = base.CLuaElement( base.NrpGetSender() )
 	
 	if elm:Empty() == 0 and elm:GetTypeName() == "CNrpGuiLinkBox" then
-		local linkt = base.CLuaLinkBox( elm:Self() ) 
+		local linkt = base.CLuaLinkBox( elm ) 
 		local boxAddon = base.CLuaTech( linkt:GetData() )
 	
 		if linkt:IsDraggable() and linkt:IsEnabled() 
 		then
-			guienv:SetDragObject( linkt:Self() )
+			guienv:SetDragObject( linkt )
 			currentAddon = base.CLuaTech( linkt:GetData() )
 		end
 	end

@@ -1,11 +1,14 @@
-[options]
-name:string=commodore
+[properties]
+name:string=Commodore
 ram:float=0.064
 cpu:float=0.001
-startTime:time=y=1982 m=00 d=00 h=00 mi=00
-endTime:time=y=1994 m=00 d=00 h=00 mi=00
+baseCode:float=2.8
+internalname:string=platform_commodore
+startdate:time=y=1982 m=01 d=01 h=00 mi=00
+enddate:time=y=1994 m=01 d=01 h=00 mi=00
 rwidth:int=320
 rheight:int=200
 video:string=черно-белая и цветная
 sound:string=
 selldevice:int=120000
+textureNormal:string=xtras/platforms/commodore/image.png

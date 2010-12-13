@@ -1,10 +1,20 @@
-[options]
+[properties]
 name:string=apple2
 ram:float=0.048
 cpu:float=0.001
-startTime:time=y=1982 m=00 d=00 h=00 mi=00
-endTime:time=y=1994 m=00 d=00 h=00 mi=00
+baseCode:float=2.3
+internalname:string=platform_apple2
+startdate:time=y=1982 m=01 d=01 h=00 mi=00
+enddate:time=y=1994 m=01 d=01 h=00 mi=00
 rwidth:int=280
 rheight:int=192
-video:string=черно-белая и цветная
-sound:string=
+techNumber:int=2
+textureNormal:string=xtras/platforms/apple2/image.png
+techNumber:int=3
+[techs]
+type_0=CNrpTechnology
+tech_0=video_textoutput
+type_1=CNrpTechnology
+tech_1=sound_speaker
+type_2=CNrpTechnology
+tech_2=video_4bitcolor

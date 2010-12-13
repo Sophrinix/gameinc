@@ -16,7 +16,7 @@ price:float=0
 quality:int=10
 readyworkpercent:float=0
 startdate:time=y=1982 m=01 d=01 h=00 mi=00 s=0
-techgroup:int=#PT_SCENARIOQUALITY
+techgroup:int=#PT_SCENARIO
 techtype:int=#SCNQ_SELFWRITE
 texturehover:string=
 texturenormal:string=xtras/technology/scnq_writeself/image.png

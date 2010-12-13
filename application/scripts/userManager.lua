@@ -57,8 +57,8 @@ local function ShowUsersParameters( lbx, user )
 	lbx:AddItem( "Устойчивость=" .. user:GetParam( "stability" ), nil )
 	lbx:AddItem( "Характер=" .. user:GetParam( "character" ), nil )	
 	
-	if user:GetSkill( base.SKL_CODING ) > 0 then 
-		lbx:AddItem( "Программирование=" .. user:GetSkill( base.SKL_CODING ), nil )	
+	if user:GetSkill( base.SKILL_CODING ) > 0 then 
+		lbx:AddItem( "Программирование=" .. user:GetSkill( base.SKILL_CODING ), nil )	
 	end
 end
 
@@ -169,7 +169,7 @@ function GetMoneyForFireEmp()
 	--в неё снова
 	-- получим текущее значение отношения рабочего к компании
 	local relation = currentEmployer:GetRelation( company:GetName() ) 
-	relation:SetValue( "rel_value", relation:GetValue( "rel_value" ) * 0.8 ) 
+	relation:Set( "rel_value", relation:GetValue( "rel_value" ) * 0.8 ) 
 	--также это вызовет некоторое снижение отношения к компании
 	--у его друзей, чем выше показатель отношения между людьми
 	--тем больше зависимость падения отношения к компании у друга
@@ -183,7 +183,7 @@ function NoGetMoneyForFireEmp()
 	company:RemoveUser( currentEmployer:GetName() )
 	
 	local relation = currentEmployer:GetRelation( company:GetName() ) 
-	relation:SetValue( "rel_value", realtion:GetValue( "rel_value" ) * 0.3 ) 
+	relation:Set( "rel_value", realtion:GetValue( "rel_value" ) * 0.3 ) 
 	--расчет возможности что уволенный человек забрал
 	--какие-то данные или испортил разрабатываемый модуль,
 	--передал разработку в другую компанию, чем увеличил прогресс 

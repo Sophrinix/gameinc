@@ -2,7 +2,7 @@
 priceinday:int=5000
 quality:float=0.01
 maxquality:float=0.6
-techtype:string=radio
+reklametype:string=radio
 name:string=Радио
 level:int=1
 startdate:time=y=1980 m=01 d=01 h=0 mi=0

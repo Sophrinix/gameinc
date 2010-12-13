@@ -2,7 +2,7 @@
 priceinday:int=1000
 quality:float=0.005
 maxquality:float=0.3
-techtype:string=magazine
+reklametype:string=magazine
 name:string=Журналы
 level:int=1
 startdate:time=y=1980 m=01 d=01 h=0 mi=0

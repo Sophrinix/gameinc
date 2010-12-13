@@ -1,11 +1,14 @@
-[options]
+[properties]
 name:string=Sony PlayStation
 ram:float=3.0
 cpu:float=0.034
-startTime:time=y=1994 m=10 d=00 h=00 mi=00
-endTime:time=y=2006 m=00 d=00 h=00 mi=00
+baseCode:float=2.5
+internalname:string=platform_sonyplaystation
+startdate:time=y=1994 m=10 d=01 h=00 mi=00
+enddate:time=y=2006 m=01 d=01 h=00 mi=00
 rwidth:int=320
 rheight:int=240
 video:string=256k colors
 sound:string=16bit sound
 selldevice:int=102000000
+textureNormal:string=xtras/platforms/playstation/image.png

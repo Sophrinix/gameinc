@@ -1,0 +1,21 @@
+[properties]
+name:string=IBM PC
+ram:float=0.640
+cpu:float=0.005
+baseCode:float=0.1
+internalname:string=platform_gameboycolor
+startdate:time=y=1981 m=01 d=01 h=00 mi=00
+enddate:time=y=1987 m=01 d=01 h=00 mi=00
+rwidth:int=160
+rheight:int=144
+sound:string=mono
+selldevice:int=24000000
+textureNormal:string=xtras/platforms/ibmpc/image.png
+techNumber:int=3
+[techs]
+type_0=CNrpTechnology
+tech_0=video_textoutput
+type_1=CNrpTechnology
+tech_1=sound_speaker
+type_2=CNrpTechnology
+tech_2=video_4bitcolor

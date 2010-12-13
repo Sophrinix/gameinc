@@ -1,5 +1,5 @@
 --ѕодключаем скрипт создани€ стартовых условий новой игры
-IncludeScript("swork_startDefinition")
+IncludeScript("startDefinition")
 IncludeScript("updates")
 
 --переменные дл€ работы
@@ -36,7 +36,12 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	sloginResetDataForNewGame()
 	
 	CreateStuffLists()
+	updates.CheckNewTechs()
+	updates.CheckLanguages()
 	updates.CheckGameBoxAddons()
+	updates.CheckPlatforms( false )
+	updates.CheckDiskMachines()
+	updates.CheckNewReklames()
 	
 	--создание рабочих
 	applic:CreateNewFreeUsers()
@@ -79,6 +84,14 @@ function slogin_CreateNewGame( ptr )
 end
 
 function slogin_ContinueLastGame( ptr )
+
+	local lastProfile = applic:GetCurrentProfile()
+	
+	local profile = io.open( "/save/"..lastProfile.."/profile.ini", "r" )
+	if profile == nil then
+		guienv:MessageBox( "Ќет сохраненных игр", false, false, "", "" )
+		return 0
+	end
 	--устанавливаем текущее времс€
 	applic:LoadGameTimeFromProfile( applic:GetCurrentProfile() )
 	

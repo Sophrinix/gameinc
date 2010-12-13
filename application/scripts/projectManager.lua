@@ -43,7 +43,7 @@ local function localCreateProjectsComboBox()
 			if pt == base.PT_GAME then return base.STR_GAME else return base.STR_ENGINE end
 		end
 		
-		comboxProjects:AddItem( dd( ptrProject:GetTechType() ) .. ":" .. ptrProject:GetName(), ptrProject:Self() )	
+		comboxProjects:AddItem( dd( ptrProject:GetUniq() ) .. ":" .. ptrProject:GetName(), ptrProject:Self() )	
 	end
 end
 
@@ -219,9 +219,9 @@ function ComboBoxItemSelected()
 	elseif cmbx:Self() == comboxProjects:Self() then
 		currentProject = base.CLuaDevelopProject( cmbx:GetSelectedObject() )
 		
-		if currentProject:GetTechType() == base.PT_GAME then
+		if currentProject:GetTechGroup() == base.PT_GAME then
 			ShowUnworkedGameProjectComponent()
-		elseif currentProject:GetTechType() == base.PT_GAMEENGINE then
+		elseif currentProject:GetTechGroup() == base.PT_GAMEENGINE then
 			ShowUnworkedEngineProjectComponent()
 		end
 	end
