@@ -2,13 +2,14 @@
 name:string=3DO Interactive Multiplayer 
 ram:float=3.0
 cpu:float=0.075
+enginecode:float=0.1
 baseCode:float=1
 internalname:string=platform_3do
 startdate:time=y=1993 m=01 d=01 h=00 mi=00
 enddate:time=y=1995 m=01 d=01 h=00 mi=00
-rwidth:int=640
-rheight:int=480
-sound:string=16bit sound
+;rwidth:int=640
+;rheight:int=480
+;sound:string=16bit sound
 selldevice:int=3000000
 textureNormal:string=xtras/platforms/3do/image.png
 techNumber:int=6

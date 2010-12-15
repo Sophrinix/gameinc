@@ -3,12 +3,13 @@ name:string=vectrex
 ram:float=0.009
 cpu:float=0.002
 baseCode:float=0.2
+enginecode:float=0.1
 internalname:string=platform_vectrex
 startdate:time=y=1982 m=01 d=01 h=00 mi=00
 enddate:time=y=1984 m=01 d=01 h=00 mi=00
-rwidth:int=240
-rheight:int=140
-video:string=черно-белая и цветная
-sound:string=
+;rwidth:int=240
+;rheight:int=140
+;video:string=черно-белая и цветная
+;sound:string=
 selldevice:int=100000
 textureNormal:string=xtras/platforms/vectrex/image.png

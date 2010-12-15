@@ -3,12 +3,13 @@ name:string=Sony PlayStation 2
 ram:float=32.00
 cpu:float=0.294
 baseCode:float=3.4
+enginecode:float=0.1
 internalname:string=platform_playstation2
 startdate:time=y=2000 m=01 d=01 h=00 mi=00
 enddate:time=y=2008 m=01 d=01 h=00 mi=00
-rwidth:int=720
-rheight:int=576
-video:string=24bit
-sound:string=3d, decoder mpeg
+;rwidth:int=720
+;rheight:int=576
+;video:string=24bit
+;sound:string=3d, decoder mpeg
 selldevice:int=140000000
 textureNormal:string=xtras/platforms/plastation2/image.png

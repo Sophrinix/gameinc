@@ -1,6 +1,6 @@
 [options]
 tech0=xtras/technology/advtech_help/item.tech
-techNumber=39
+techNumber=44
 tech1=xtras/technology/advtech_joystick/item.tech
 tech2=xtras/technology/advtech_memory/item.tech
 tech3=xtras/technology/advtech_mouse/item.tech
@@ -37,5 +37,10 @@ tech33=xtras/technology/scnq_writeself/item.tech
 tech34=xtras/technology/sndq_writeself/item.tech
 tech35=xtras/technology/sound_speaker/item.tech
 tech36=xtras/technology/techscript_configfile/item.tech
-tech37=xtras/technology/video_textoutput/item.tech
-tech38=xtras/technology/vidq_selfrender/item.tech
+tech37=xtras/technology/video_16bit_color/item.tech
+tech38=xtras/technology/video_24bit_color/item.tech
+tech39=xtras/technology/video_4bit_color/item.tech
+tech40=xtras/technology/video_8bit_color/item.tech
+tech41=xtras/technology/video_grayscale/item.tech
+tech42=xtras/technology/video_textoutput/item.tech
+tech43=xtras/technology/vidq_selfrender/item.tech

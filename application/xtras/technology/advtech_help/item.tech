@@ -3,11 +3,10 @@ balance:int=1000
 basecode:float=0.4
 codepassed:int=0
 company:string=
-componentlider:string=
 descriptionpath:string=
 enddate:time=y=2019 m=05 d=01 h=00 mi=00 s=0
 enginecode:float=0.2
-lastworker:string=
+lastworker:user=
 level:int=0
 moduleerrornumber:int=0
 name:string=#TRANSLATE_ADVTECH_HELP
@@ -17,11 +16,10 @@ quality:int=100
 readyworkpercent:float=0
 startdate:time=y=1984 m=05 d=01 h=00 mi=00 s=0
 techgroup:int=#PT_ADVTECH
-techtype:int=#ADV_HELP
 texturehover:string=
 texturenormal:string=xtras/technology/advtech_help/image.png
 volumecode:int=0
 nexttechnumber:int=0
 [techRequire]
 [skillRequire]
-#SKL_CODING=5
+skill_coding=5

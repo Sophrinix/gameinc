@@ -3,12 +3,13 @@ name:string=arcadia
 ram:float=0.001
 cpu:float=0.004
 baseCode:float=0.76
+enginecode:float=0.1
 internalname:string=platform_arcadia
 startdate:time=y=1982 m=01 d=01 h=00 mi=00
 enddate:time=y=1984 m=01 d=01 h=00 mi=00
-rwidth:int=128
-rheight:int=128
-video:string=цветная и черно-белая
-sound:string=
+;rwidth:int=128
+;rheight:int=128
+;video:string=цветная и черно-белая
+;sound:string=
 selldevice:int=50000
 textureNormal:string=xtras/platforms/arcadia/image.png

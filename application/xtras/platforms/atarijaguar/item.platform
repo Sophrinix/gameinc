@@ -3,12 +3,13 @@ name:string=Atari Jaguar
 ram:float=2.0
 cpu:float=0.068
 baseCode:float=0.66
+enginecode:float=0.1
 internalname:string=platform_atarijaguar
 startdate:time=y=1993 m=01 d=01 h=00 mi=00
 enddate:time=y=1995 m=01 d=01 h=00 mi=00
-rwidth:int=640
-rheight:int=480
-video:string=256k colors
-sound:string=
+;rwidth:int=640
+;rheight:int=480
+;video:string=256k colors
+;sound:string=
 selldevice:int=500000
 textureNormal:string=xtras/platforms/atarijaguar/image.png

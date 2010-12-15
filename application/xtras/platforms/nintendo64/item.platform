@@ -3,12 +3,13 @@ name:string=Nintendo 64
 ram:float=4.5
 cpu:float=0.155
 baseCode:float=1.2
+enginecode:float=0.1
 internalname:string=platform_nintendo64
 startdate:time=y=1996 m=01 d=01 h=00 mi=00
 enddate:time=y=1999 m=01 d=01 h=00 mi=00
-rwidth:int=640
-rheight:int=480
-video:string=16M colors
-sound:string=24bit sound
+;rwidth:int=640
+;rheight:int=480
+;video:string=16M colors
+;sound:string=24bit sound
 selldevice:int=33000000
 textureNormal:string=xtras/platforms/nintendo64/image.png

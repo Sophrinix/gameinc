@@ -6,5 +6,5 @@ startdate:time=y=1983 m=01 d=02 h=0 mi=0
 enddate:time=y=2010 m=00 d=00 h=0 mi=0 s=0
 level:int=15
 price:float=0.2
-texturehiver:string=
+texturehover:string=
 texturenormal:string=xtras/gameboxaddon/maika/image.png

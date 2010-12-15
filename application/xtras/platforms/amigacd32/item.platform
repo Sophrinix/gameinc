@@ -3,12 +3,13 @@ name:string=Amiga CD32
 ram:float=1.0
 cpu:float=0.0143
 baseCode:float=0.8
+enginecode:float=0.1
 internalname:string=platform_amigacd32
 startdate:time=y=1993 m=01 d=01 h=00 mi=00
 enddate:time=y=1995 m=01 d=01 h=00 mi=00
-rwidth:int=320
-rheight:int=240
-sound:string=14,битный звук
+;rwidth:int=320
+;rheight:int=240
+;sound:string=14,битный звук
 selldevice:int=200000
 textureNormal:string=xtras/platforms/amigacd32/image.png
 techNumber:int=6

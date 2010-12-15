@@ -3,11 +3,10 @@ balance:int=1000
 basecode:float=0.5
 codepassed:int=0
 company:string=
-componentlider:string=
 descriptionpath:string=
 enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
 enginecode:float=0.2
-lastworker:string=
+lastworker:user=
 level:int=0
 moduleerrornumber:int=0
 name:string=#TRANSLATE_ST_VIDEO_4BIT
@@ -27,3 +26,4 @@ tech_0=video_8bitcolor
 video_4bitcolor=15
 [skillRequire]
 skill_video=15
+skill_coding=5

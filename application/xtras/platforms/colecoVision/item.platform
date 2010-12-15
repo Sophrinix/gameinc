@@ -3,12 +3,13 @@ name:string=ColecoVision
 ram:float=0.016
 cpu:float=0.004
 baseCode:float=1.1
+enginecode:float=0.1
 internalname:string=platform_colecovision
 startdate:time=y=1982 m=01 d=01 h=00 mi=00
 enddate:time=y=1984 m=01 d=01 h=00 mi=00
-rwidth:int=256
-rheight:int=192
-video:string=цветная и черно-белая
-sound:string=
+;rwidth:int=256
+;rheight:int=192
+;video:string=цветная и черно-белая
+;sound:string=
 selldevice:int=6000000
 textureNormal:string=xtras/platforms/colecovision/image.png

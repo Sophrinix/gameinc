@@ -87,7 +87,7 @@ function slogin_ContinueLastGame( ptr )
 
 	local lastProfile = applic:GetCurrentProfile()
 	
-	local profile = io.open( "/save/"..lastProfile.."/profile.ini", "r" )
+	local profile = io.open( "save/"..lastProfile.."/profile.ini", "r" )
 	if profile == nil then
 		guienv:MessageBox( "Нет сохраненных игр", false, false, "", "" )
 		return 0

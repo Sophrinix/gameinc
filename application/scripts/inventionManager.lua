@@ -120,7 +120,7 @@ function CloseWindowUserAdding()
 end
 
 function AddSelectedUserToInvention()
-	currentInvention:AddUser( selectedUser:Self() )
+	currentInvention:AddUser( selectedUser )
 	
 	guienv:MessageBox( base.string.format( "%s будет участвовать в проекте %s исследовательского отдела", 
 											selectedUser:GetName(), currentInvention:GetName() ), true, false,

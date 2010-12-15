@@ -3,13 +3,14 @@ name:string=Dendy
 ram:float=0.049
 cpu:float=0.006
 baseCode:float=3.0
+enginecode:float=0.1
 internalname:string=platform_dendy
 startdate:time=y=1982 m=01 d=01 h=00 mi=00
 enddate:time=y=2003 m=01 d=01 h=00 mi=00
 internalname:string=platform_dendy
-rwidth:int=260
-rheight:int=240
-video:string=черно-белая и цветная
-sound:string=
+;rwidth:int=260
+;rheight:int=240
+;video:string=черно-белая и цветная
+;sound:string=
 selldevice:int=60000000
 textureNormal:string=xtras/platforms/dendy/image.png

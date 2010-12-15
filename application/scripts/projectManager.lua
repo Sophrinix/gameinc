@@ -35,7 +35,7 @@ local windowUserInfo = nil
 local function localCreateProjectsComboBox()
 	comboxProjects = guienv:AddComboBox( "", 140, 60, 140 + 300, 80, -1, windowProjectManager:Self() )
 	--пробежимся по всем проектам компании
-	LogScript({src=SCRIPT, dev=OUTPUT_ALL}, "Company DevProject number="..company:GetDevProjectNumber() )
+	LogScript( "Company DevProject number="..company:GetDevProjectNumber() )
 	for i=1, company:GetDevProjectNumber() do
 		local ptrProject = company:GetDevProject( i-1 )
 		
@@ -43,7 +43,7 @@ local function localCreateProjectsComboBox()
 			if pt == base.PT_GAME then return base.STR_GAME else return base.STR_ENGINE end
 		end
 		
-		comboxProjects:AddItem( dd( ptrProject:GetUniq() ) .. ":" .. ptrProject:GetName(), ptrProject:Self() )	
+		comboxProjects:AddItem( dd( ptrProject:GetTechGroup() ) .. ":" .. ptrProject:GetName(), ptrProject )	
 	end
 end
 
@@ -95,7 +95,7 @@ local function ShowAvaibleCompanyUsers()
 	comboxUsers:Clear()
 	for i=1, company:GetUserNumber() do
 		local user = company:GetUser( i-1 )
-		if modeUserView == user:GetTypeName() then
+		if user and modeUserView == user:GetTypeName() then
 			comboxUsers:AddItem( user:GetName(), user:Self() )
 		end
 	end
@@ -168,7 +168,7 @@ end
 function ListBoxItemSelected()
 	selectedListBox = base.CLuaComponentListBox( base.NrpGetSender() )
 	currentComponent = base.CLuaDevelopModule( selectedListBox:GetSelectedObject() )
-	LogScript({src=base.SCRIPT, dev=OUTPUT_ALL}, "!!!!!!!!!!!! CurrentComponent "..currentComponent:GetName() )
+	LogScript( "!!!!!!!!!!!! CurrentComponent "..currentComponent:GetName() )
 
 	if selectedListBox:Self() == lbxComponents:Self() then
 		localBtnToggleTask:SetText( "Добавить задание" )
@@ -193,7 +193,7 @@ end
 
 function ToggleComponentLider()
 	if selectedListBox:Self() == lbxComponents:Self() then
-		LogScript({src=base.SCRIPT, dev=OUTPUT_ALL}, "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
+		LogScript( "PROJECT-MANAGER:Add component to "..currentEmployer:GetName() )
 		if currentComponent ~= nil and currentComponent:Empty() == 0 then
 			currentEmployer:AddWork( currentComponent:Self() )	
 			if currentComponent:GetEmployerPosibility( currentEmployer:Self() ) < 0.4 then
@@ -201,7 +201,7 @@ function ToggleComponentLider()
 			end
 		end
 	else
-		LogScript({src=base.SCRIPT, dev=OUTPUT_ALL}, "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
+		LogScript( "PROJECT-MANAGER:Remove component from "..currentEmployer:GetName() )
 		if currentComponent:Empty() == 0 then
 			currentEmployer:RemoveWork( currentComponent:Self() )
 		end

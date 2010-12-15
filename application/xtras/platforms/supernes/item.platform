@@ -3,12 +3,13 @@ name:string=Super Nintendo Entertaiment System
 ram:float=0.196
 cpu:float=0.002
 baseCode:float=3.2
+enginecode:float=0.1
 internalname:string=platform_supernes
 startdate:time=y=1990 m=10 d=01 h=00 mi=00
 enddate:time=y=2000 m=01 d=01 h=00 mi=00
-rwidth:int=512
-rheight:int=448
-video:string=15бит цвет
-sound:string=
+;rwidth:int=512
+;rheight:int=448
+;video:string=15бит цвет
+;sound:string=
 selldevice:int=49000000
 textureNormal:string=xtras/platforms/supernes/image.png

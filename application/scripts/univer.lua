@@ -144,13 +144,13 @@ function UpEmployer()
 		return 0
 	end
 	
-	company:AddUser( userToUp:Self() )
+	company:AddUser( userToUp )
 	guienv:AddToDeletionQueue( windowg:Self() )
 	ShowAvaibleEmployers()
 end
 
 function UpContractUser()
-	company:AddUser( userToUp:Self() )
+	company:AddUser( userToUp )
 	ShowAvaibleEmployers()
 end
 

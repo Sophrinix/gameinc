@@ -3,12 +3,13 @@ name:string=Sega Saturn
 ram:float=5.0
 cpu:float=0.120
 baseCode:float=0.3
+enginecode:float=0.1
 internalname:string=platform_segasaturn
 startdate:time=y=1994 m=01 d=01 h=00 mi=00
 enddate:time=y=1996 m=01 d=01 h=00 mi=00
-rwidth:int=640
-rheight:int=480
-video:string=16M colors
-sound:string=24bit sound
+;rwidth:int=640
+;rheight:int=480
+;video:string=16M colors
+;sound:string=24bit sound
 selldevice:int=9500000
 textureNormal:string=xtras/platforms/segasaturn/image.png

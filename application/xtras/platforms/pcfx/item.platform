@@ -3,12 +3,13 @@ name:string=NEC PC-FX
 ram:float=4.0
 cpu:float=0.022
 baseCode:float=0.52
+enginecode:float=0.1
 internalname:string=platform_necpcfx
 startdate:time=y=1994 m=01 d=01 h=00 mi=00
 enddate:time=y=1995 m=01 d=01 h=00 mi=00
-rwidth:int=320
-rheight:int=240
-video:string=256k colors
-sound:string=16bit sound
+;rwidth:int=320
+;rheight:int=240
+;video:string=256k colors
+;sound:string=16bit sound
 selldevice:int=100000
 textureNormal:string=xtras/platforms/pcfx/image.png

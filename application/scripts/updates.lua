@@ -87,9 +87,9 @@ function CheckLanguages()
 		--провер€ем попадание врмененного интервала аддона в текущее врем€
 		local tech = base.CLuaTech( nil )
 		tech:Create( 0 )
-		tech:SetStatus( TS_READY )
+		tech:SetStatus( base.TS_READY )
 		tech:Load( tmpLangIni )
-		applic:AddPublicTechnology( tech:Self() ) 
+		applic:AddPublicTechnology( tech ) 
 	end --for
 end
 
@@ -235,7 +235,7 @@ function CheckNewGames()
 			Log( "find new game in "..gameIniFile )
 			if game:Empty() == 1 then
 				game:Create( gameIniFile )
-				applic:AddGameToMarket( game:Self() )
+				applic:AddGameToMarket( game )
 				base.pda.Show( "Ќа рынке по€вилась нова€ игра "..game:GetName() )
 			else
 				base.LogDebug("»гра "..game:GetName().." уже кем-то создана")
@@ -248,7 +248,7 @@ function CheckNewTechs()
 	base.LogDebug( "!!!!!!!!Start update technologies" )
 	local iniFile = base.CLuaIniFile( nil, fileTechs )
 
-	local plNumber = iniFile:ReadInteger( "options", "techNumber", 0 )
+	local plNumber = iniFile:ReadInteger( "Options", "techNumber", 0 )
     local plIniFile = ""
     local currentDate = GetCurrentDate()
 	
@@ -269,12 +269,12 @@ function CheckNewTechs()
 			base.LogScript( "find new tech... is "..techName )
 			if tech:Empty() == 1 then
 				tech:Create( 0 )
-				tech:SetStatus( TS_READY )
+				tech:SetStatus( base.TS_READY )
 				tech:Load( plIniFile )
 	
 				base.LogScript("!!!!!! LOAD TECH FROM "..plIniFile )
 				--добавим технологию в игру
-				applic:AddPublicTechnology( tech:Self() ) 
+				applic:AddPublicTechnology( tech ) 
 				
 				if base.pda then
 					base.pda.Show( "Ќа рынке по€вилась нова€ технологи€ "..tech:GetName() )

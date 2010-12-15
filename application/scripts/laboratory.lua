@@ -81,14 +81,14 @@ local function CreateTechSequence( tech )
 			--исследования не ведутся
 			if techInvention:Empty() == 1 then
 				--добавляем как неизвестную технологию
-				techMap:AddTechnology( tech:Self(), internalName )
+				techMap:AddTechnology( tech, internalName )
 			else 
-				techMap:AddTechnology( tech:Self(), techInvention:Self() )			
+				techMap:AddTechnology( tech, techInvention )			
 			end
 		else
 			--такая технология есть на рынке и надо построить
 			--дерево потомков
-			techMap:AddTechnology( tech:Self(), futureTech:Self() )		
+			techMap:AddTechnology( tech, futureTech )		
 			CreateTechSequence( futureTech )
 		end
 	end
@@ -116,7 +116,7 @@ local function CreateWindow( typef )
 	    tech = applic:GetTech( i-1 )
 		
 		if tech:GetTechGroup() == typef and not tech:HaveRequireTech() then
-			techMap:AddTechnology( nil, tech:Self() )
+			techMap:AddTechnology( nil, tech )
 			CreateTechSequence( tech )
 		end
 	end

@@ -3,12 +3,13 @@ name:string=Game Boy
 ram:float=0.128
 cpu:float=0.004
 baseCode:float=0.99
+enginecode:float=0.1
 internalname:string=platform_gameboy
 startdate:time=y=1989 m=01 d=01 h=00 mi=00
 enddate:time=y=1998 m=01 d=01 h=00 mi=00
-rwidth:int=160
-rheight:int=144
-video:string=черно-белая
-sound:string=
+;rwidth:int=160
+;rheight:int=144
+;video:string=черно-белая
+;sound:string=
 selldevice:int=120000000
 textureNormal:string=xtras/platforms/gameboy/image.png

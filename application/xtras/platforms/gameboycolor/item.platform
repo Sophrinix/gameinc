@@ -3,12 +3,13 @@ name:string=Game Boy Color
 ram:float=0.384
 cpu:float=0.008
 baseCode:float=1.1
+enginecode:float=0.1
 internalname:string=platform_gameboycolor
 startdate:time=y=1998 m=01 d=01 h=00 mi=00
 enddate:time=y=2001 m=01 d=01 h=00 mi=00
-rwidth:int=160
-rheight:int=144
-video:string=цветная 32к
-sound:string=mono
+;rwidth:int=160
+;rheight:int=144
+;video:string=цветная 32к
+;sound:string=mono
 selldevice:int=118000000
 textureNormal:string=xtras/platforms/gameboycolor/image.png

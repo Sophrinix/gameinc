@@ -3,12 +3,13 @@ name:string=FM Towns Marty
 ram:float=2.0
 cpu:float=0.025
 baseCode:float=0.62
+enginecode:float=0.1
 internalname:string=platform_fmtownsmarty
 startdate:time=y=1991 m=10 d=01 h=00 mi=00
 enddate:time=y=1994 m=01 d=01 h=00 mi=00
-rwidth:int=640
-rheight:int=480
-video:string=32768 colors
-sound:string=
+;rwidth:int=640
+;rheight:int=480
+;video:string=32768 colors
+;sound:string=
 selldevice:int=6000000
 textureNormal:string=xtras/platforms/fmtownsmarty/image.png

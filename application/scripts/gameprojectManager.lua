@@ -338,12 +338,12 @@ end
 function CreateProjectGame()
 	project:SetName( gameName ) 
 	
-	if company:GetProjectByName( gameName ):Empty() == 1 then
-		prj = company:CreateDevelopGame( project )
-		company:AddToPortfelle( prj )
-		sworkUpdateCompanyPortfelle()
+	if company:CreateDevelopGame( project ) ~= nil then
+		--company:AddToPortfelle( prj )
+		--sworkUpdateCompanyPortfelle()
+		guienv:MessageBox( "Вы завершили создание проекта игры " .. gameName, false, false, "", "" )
 	else
-		guienv:ShowMessage( "Уже есть проект с таким именем" )
+		guienv:MessageBox( "Уже есть проект с таким именем", false, false, "", "" )
 	end
 end
 
@@ -728,7 +728,10 @@ function LeftMouseButtonUp()
 end
 
 function NextPage()
-	if step == "name" then localShowEnginePage(); return 
+	if step == "name" then 
+		gameName = editGameName:GetText()
+		localShowEnginePage(); 
+		return 
 	elseif step == "engine" then localShowGenrePage(); return 
 	elseif step == "genre" then localShowScenarioPage(); return
 	elseif step == "scenario" then localShowTechPage(); return
@@ -741,7 +744,7 @@ end
 function PrevPage()
 	if step == "engine" then 
 		localShowChangeNamePage()
-		gameName = editGameName:GetText()
+		editGameName:SetText( gameName )
 		return 
 	elseif step == "genre" then localShowEnginePage(); return
 	elseif step == "scenario" then localShowGenrePage(); return
