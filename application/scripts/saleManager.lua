@@ -48,10 +48,10 @@ function AnonceGame()
 	end
 	
 	local btnOk = guienv:AddButton( 10, 240 - 40, 190, 240, windowAnonce:Self(), -1, "Начать продажи" )
-	btnOk:SetAction( "sworkWindowShopStartGameSaling" )
+	btnOk:SetAction( "./saleManager.StartGameSaling()" )
 	
 	local btnCancel = guienv:AddButton( 210, 240 - 40, 390, 240, windowAnonce:Self(), -1, "Выход" )
-	btnCancel:SetAction( "sworkWindowShopCloseAnonceGame" )
+	btnCancel:SetAction( "./saleManager.CloseAnonceGame()" )
 end
 
 local function localUpdateCurrentGameParams()
@@ -77,7 +77,7 @@ function UpdateGameParams()
 	end
 end
 
-function GameInSaleWindowListboxChanged()
+function ListboxChanged()
     if base.GetNrpSender() == listboxGames:Self() then
 		selectedGame:SetObject( listboxGames:GetSelectedObject() )
 		localUpdateCurrentGameParams()
@@ -98,9 +98,11 @@ end
 
 function Show()
 	company = applic:GetPlayerCompany()
-	mainWindow = guienv:AddWindow( "media/maps/winowShop_select.png", 
+
+	mainWindow = guienv:AddWindow( "media/textures/gameInSale.png", 
 								   0, 0, scrWidth, scrHeight, 
 								   -1, guienv:GetRootGUIElement() )
+	mainWindow:SetDrawBody( false )
 	mainWindow:GetCloseButton():SetVisible( false )
 	mainWindow:SetDraggable( false )
 	
@@ -109,53 +111,52 @@ function Show()
 	
 	--добавим окно с листбоксом
 	--в листбоксе поместим список игр, которые щас в продаже
-	listboxGames = guienv:AddComponentListBox( 20, 20, scrWidth / 2 - 10, scrHeight - 20, -1, mainWindow:Self() )
+	listboxGames = guienv:AddComponentListBox( 45, 320, 327, 590, -1, mainWindow )
 	localAddGames()
 	
-	--расположим кнопку "Анонсировать игру", по которой можно поместить игру на рынок
-	buttonAnonceGame = guienv:AddButton( scrWidth / 2, scrHeight -50, scrWidth - 20, scrHeight - 20, 
-										 mainWindow:Self(), -1, "Анонсировать игру" )
-	buttonAnonceGame:SetAction( "./saleManager.AnonceGame()" )
-	
 	--расположим изображение игры справа от списка
-	imageGamePreview = guienv:AddImage( scrWidth / 2 + 20, 20, scrWidth - 20, scrHeight / 2 - 20, mainWindow:Self(), -1, "" )
+	imageGamePreview = guienv:AddImage( 20, 20, 304, 204, mainWindow, -1, "" )
 	
 	--расположим под изображением основные параметры продаж
 	--название игры
-	local hw = scrWidth / 2 + 20
-	local hh = scrHeight / 2 + 20
-	labelGameName = guienv:AddLabel( "Название: ", hw + 20, hh + 20, scrWidth - 20, hh + 40, -1, mainWindow:Self() )
+	local pos = { x=390, y=45 }
+	local size = { w="560+", h="30+", ww=560, hh=30 }
+ 	labelGameName = guienv:AddLabel( "Название: ", pos.x, pos.y, size.w, size.h, -1, mainWindow )
+ 	pos.y = pos.y + size.hh
 	
 	--продаж за прошлый месяц
-	labelLastMonthSale = guienv:AddLabel( "Продаж за прошлый месяц:", hw + 20, hh + 50, 
-												   scrWidth - 20, hh + 70, -1, mainWindow:Self() )
+	labelLastMonthSale = guienv:AddLabel( "Продаж за прошлый месяц:", pos.x, pos.y, size.w, size.h, -1, mainWindow )
+	pos.y = pos.y + size.hh
 	--продаж за текущий месяц
-	labelCurrentMonthSale = guienv:AddLabel( "Продаж за этот месяц:", hw + 20, hh + 80, 
-													  scrWidth - 20, hh + 100, -1, mainWindow:Self() )
+	labelCurrentMonthSale = guienv:AddLabel( "Продаж за этот месяц:", pos.x, pos.y, size.w, size.h, -1, mainWindow )
+	pos.y = pos.y + size.hh
 	--всего продано копий
-	labelAllTimeSale = guienv:AddLabel( "Продаж за все время:", hw + 20, hh + 110, 
-													  scrWidth - 20, hh + 130, -1, mainWindow:Self() )
+	labelAllTimeSale = guienv:AddLabel( "Продаж за все время:", pos.x, pos.y, size.w, size.h, -1, mainWindow )
+	pos.y = pos.y + size.hh
 	--текущий рэйтинг игры
-	prgRating = guienv:AddProgressBar( mainWindow:Self(), hw + 20, hh + 140, 
-													scrWidth - 20, hh + 160, -1 )
+	prgRating = guienv:AddProgressBar( mainWindow, pos.x, pos.y, size.w, size.h, -1 )
+	pos.y = pos.y + size.hh
 	--prgRating:SetImage( )
 	--prgRating:SetFillImage( )
 
 	--цена игры с возможностью изменять цену
-	btnDecreaseGamePrice = guienv:AddButton( hw + 20, hh + 170, hw + 40, hh + 190, 
-									mainWindow:Self(), -1, "-" )
+	btnDecreaseGamePrice = guienv:AddButton( pos.x, pos.y, size.h, size.h, mainWindow, -1, "-" )
 	btnDecreaseGamePrice:SetAction( "./saleManager.DecreasePrice" ) 
 									
-	labelGamePrice = guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", hw + 40, hh + 170, 
-													    scrWidth - 40, hh + 190, -1, mainWindow:Self() )
+	labelGamePrice = guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", pos.x + size.hh, pos.y, 
+																size.w, size.h, -1, mainWindow )
 													 
-	btnIncreaseGamePrice = guienv:AddButton( scrWidth - 40, hh + 170, scrWidth - 20, hh + 190, 
-									mainWindow:Self(), -1, "+" )
+	btnIncreaseGamePrice = guienv:AddButton( pos.x + size.ww - size.hh, pos.y, pos.x + size.ww, size.h, 
+											 mainWindow, -1, "+" )
 	btnIncreaseGamePrice:SetAction( "./saleManager.IncreasePrice()" ) 	
 	
-			--adding closeButton
+		--расположим кнопку "Анонсировать игру", по которой можно поместить игру на рынок
+	buttonAnonceGame = guienv:AddButton( pos.x, 380, size.w, size.h, mainWindow, -1, "Анонсировать игру" )
+	buttonAnonceGame:SetAction( "./saleManager.AnonceGame()" )
+	
+	--adding closeButton
 	button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			"button_down", mainWindow:Self(), -1, "",
+		 			"button_down", mainWindow, -1, "",
 					"./saleManager.Hide()" )
 
 end
@@ -176,4 +177,10 @@ end
 function IncreasePrice()
 	selectedGame:SetPrice( selectedGame:GetPrice() + 1 )
 	labelGamePrice:SetText( "#TRANSLATE_TEXT_PRICE:" .. selectedGame:GetPrice() )
+end
+
+function Hide()
+	mainWindow:Remove()
+	--guienv:FadeAction( base.FADE_TIME, false, false )			
+	--guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeExitAction()" )	
 end

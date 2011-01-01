@@ -16,6 +16,7 @@ IncludeScript("projectManager")
 IncludeScript("gameboxManager")
 IncludeScript("plant")
 IncludeScript("laboratory" )
+IncludeScript("devRoom" )
 IncludeScript("office")
 IncludeScript("gameprojectManager")
 IncludeScript("monitor")
@@ -23,6 +24,10 @@ IncludeScript("pda")
 IncludeScript("journals")
 IncludeScript("diskManager")
 IncludeScript("saleManager")
+IncludeScript("safe")
+IncludeScript( "testDef" )
+IncludeScript( "testerComp" )
+IncludeScript( "monthTopGame" )
 --------------------------------------------
 
 --создание рабочей сцены 

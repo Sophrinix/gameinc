@@ -61,6 +61,10 @@ function DecreaseInvestiment()
 end
 
 local function localFillListInvnentionStuff()
+	if currentInvention == nil then
+		return
+	end
+	
 	listInventionStuff:Clear()
 	
 	for i=1, currentInvention:GetUserNumber() do
@@ -82,6 +86,7 @@ end
 local function localShowUserAvaibleForInvention( listbox )
 	listbox:Clear()
 	company = applic:GetPlayerCompany()
+	
 	for i=1, company:GetUserNumber() do
 		local user = company:GetUser( i-1 )
 		

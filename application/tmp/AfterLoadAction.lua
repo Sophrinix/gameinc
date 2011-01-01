@@ -1,0 +1,7 @@
+autoscript:AddUserToGameProject("Alexander Archibald", "raspaun1", "raspaun1 Расширение движка")
+autoscript:AddUserToGameProject("Jack Nevill", "raspaun1", "raspaun1 Расширение движка")
+autoscript:AddUserToGameProject("Alex Simon", "raspaun1", "raspaun1 Расширение движка")
+autoscript:AddUserToGameProject("Jonathan Keat", "raspaun1", "Рисовать самим")
+autoscript:AddUserToGameProject("Wyatt Hoggarth", "raspaun1", "Рисовать самим")
+autoscript:AddUserToGameProject("Jesse Philips", "raspaun1", "Рисовать самим")
+autoscript:AddUserToInvention("James Kelly" , "TRANSLATE_ST_VIDEO_8BIT")

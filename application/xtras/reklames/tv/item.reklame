@@ -1,5 +1,5 @@
 [properties]
-reklametype:string=tv
+internalname:string=tv
 name:string=Телевидение
 quality:float=0.04
 level:int=1

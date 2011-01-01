@@ -180,7 +180,7 @@ local function localGetGameFamous( value )
 end
 
 local function localUpdateLabels()
-	labelName:SetText( currentWork:GetTypeName() )
+	labelName:SetText( currentWork:GetUniq() )
 	local text = base.STR_DAYLEFT .. "  " .. realCampany:GetNumberDay()
 	
 	if addingDays > 0 then 
@@ -197,7 +197,7 @@ end
 function SelectNewWork()
 	currentWork = base.CLuaReklame( picflowReklames:GetSelectedObject() )
 	selectedGame = base.CLuaDevelopProject( lbxGames:GetSelectedObject() )
-	currentWork:SetReklameObject( selectedGame:Self() )
+	currentWork:SetReklameObject( selectedGame )
 	addingDays = 0	
 	
 	local vis = selectedGame:Empty() == 0
@@ -205,7 +205,7 @@ function SelectNewWork()
 	btnIncDayNumber:SetVisible( vis )
 	btnDecDayNumber:SetVisible( vis )
 
-	realCampany = plant:GetReklame( currentWork:GetTypeName(), selectedGame:GetName() )
+	realCampany = plant:GetReklame( currentWork:GetUniq(), selectedGame:GetName() )
 	localUpdateLabels()		
 end
 

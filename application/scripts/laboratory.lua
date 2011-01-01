@@ -177,7 +177,8 @@ end
 
 function AssignInvention()
 	local inventionName = techMap:GetSelectedObjectName()
-	company:StartInvention( inventionName )
+	local loadFile = base.updates.FindInventionLoadFile( inventionName )
+	company:StartInvention( loadFile )
 	
 	base.inventionManager.Show( inventionName, company:GetName() )
 	windowMap:Remove()

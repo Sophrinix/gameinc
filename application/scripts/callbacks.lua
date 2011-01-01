@@ -1,4 +1,5 @@
 local plant = NrpGetPlant()
+local labelSpeed = nil
 
 function sworkAppDayChange( ptr )
 	local company = applic:GetPlayerCompany()
@@ -98,22 +99,23 @@ function sworkKeyboardEvent( ptr )
 	local event = CLuaEvent( ptr )
 	local charInput = event:GetChar()
 	local keyDown = event:IsKeyDown()
-	if  keyDown and charInput == "+" then
+	if  keyDown and ( charInput == "+" or charInput == "-" ) then
+		if labelSpeed then labelSpeed:Remove() end
 		local spd = applic:GetPauseBetweenStep()
-		if spd > 100 then
-			applic:SetPauseBetweenStep( spd - 100 )
-			local lb = guienv:AddLabel( "Скорость игры "..spd, scrWidth / 2 - 100, scrHeight / 2 - 50, 
-										 scrWidth / 2 + 100, scrHeight / 2 + 50, -1, guienv:GetRootGUIElement() )
-			guienv:AddBlenderAnimator( lb:Self(), 255, 10, 2000, false, false, true )
-		end 
-	elseif  keyDown and charInput == "-" then
-		local spd = applic:GetPauseBetweenStep()
-		if spd < 1000 then
-			applic:SetPauseBetweenStep( spd + 100 )
-			local lb = guienv:AddLabel( "Скорость игры "..spd, scrWidth / 2 - 100, scrHeight / 2 - 50, 
-					  					scrWidth / 2 + 100, scrHeight / 2 + 50, -1, guienv:GetRootGUIElement() )
-			guienv:AddBlenderAnimator( lb:Self(), 255, 10, 2000, false, false, true )
-		end 
+		
+		if charInput == "+" then 
+			if spd > 100 then applic:SetPauseBetweenStep( spd - 100 ) end
+		else 
+			if spd < 1000 then applic:SetPauseBetweenStep( spd + 100 ) end
+		end
+		
+		local dd = ( 1000 - applic:GetPauseBetweenStep() ) / 100
+		labelSpeed = guienv:AddLabel( "Скорость игры " .. dd,
+									  scrWidth / 2 - 100, scrHeight / 2 - 50, 
+									  scrWidth / 2 + 100, scrHeight / 2 + 50, -1, 
+									  guienv:GetRootGUIElement() )
+									  
+		guienv:AddBlenderAnimator( labelSpeed, 255, 10, 2000, false, true, false )
 	end
 end
 

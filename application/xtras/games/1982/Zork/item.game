@@ -1,0 +1,40 @@
+[properties]
+name:string=Zork
+internalname:string=Zork
+owner:string=Infocom, Inc.
+startdate:time=y=1982 m=09 d=08 h=0 mi=0
+description:string=desc.htm
+enddate:time=y=1985 m=08 d=02 h=0 mi=0
+moneyDevelop:int=200000
+cash:int=500000
+copySell:int=70000
+startrating:int=80
+startGameRating:int=80
+startGraphicRating:int=80
+startGenreRating:int=80
+startSoundRating:int=80
+startBugRating:int=80
+startAdvFuncRating:int=80
+localizationRating:int=80
+gameEngine:string=alpha_engine2
+platformnumber:int=6
+descriptionpath:string=xtras/games/1982/Zork/desc.htm
+recense:string=xtras/games/1982/Zork/recense.htm
+texturenormal:string=xtras/games/1982/Zork/image.png
+readyWorkPercent:float=1
+genreModuleNumber:int=1
+moduleNumber:int=1
+famous:float=0.5
+gameIsSaling:bool=false
+imageName:string=
+[platforms]
+platform_0=platform_amigacd32
+platform_1=platform_apple2
+platform_2=platform_atari2600
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_amstradgx4000
+[genres]
+genre_0=genre_adventure
+[techs]
+tech_0=tech_keyboard

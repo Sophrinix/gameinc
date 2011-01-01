@@ -1,3 +1,4 @@
 [options]
+name0=simple_engine
 engine0=xtras/engines/simpleEngine/item.engine
 engineNumber=1

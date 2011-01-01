@@ -4,7 +4,6 @@ module( "gameprojectManager" )
 
 local button = base.button
 local applic = base.applic
-local company = nil
 local guienv = base.guienv
 local Log = base.LogScript
 local scrWidth = base.scrWidth
@@ -12,7 +11,7 @@ local scrHeight = base.scrHeight
 
 local project = nil
 local projectWindow = nil
-
+local company = nil
 local labelCodeVolume = nil
 local gameName = "withoutName"
 local editGameName = nil
@@ -22,6 +21,12 @@ local prgProjectQuality = nil
 local step = "name"
 local sizeLinkBox = 80
 local mainWindow = nil
+local links = nil
+local dragLink = nil
+local lastData = nil
+
+local REMOVE = true
+local ADD = false
 
 local function localSetLinkBoxOption( lnkx, typer, userdata, textureName, draggable, enabled, defTexture )
 	lnkx:SetModuleType( typer )
@@ -44,21 +49,13 @@ local function SetLuaFuncToLinkBox( lbo, funcName )
 end
 
 local function localCreateLigthingBetweenElements( link )
-	local parentE = base.CLuaElement( link:GetParent() )
-	
+	Log( "localCreateLigthingBetweenElements elements"..#links )
 	--проидемся по вкладке
-	for i=1, parentE:GetChildCount() do
-		--найдем все линкбоксы
-		local child = base.CLuaElement( parentE:GetChild( i-1 ) )
-		
+	for i=1, #links do
 		--проверим их на соответствие с заданным типом
-		if child:GetTypeName() == base.ELEMENT_GUILINKBOX then
-			local tmpLink = base.CLuaLinkBox( child )
-		   
-			if tmpLink:GetModuleType() == link:GetModuleType() and not tmpLink:IsDraggable() then
-				guienv:AddLigthing( child, link, "media/textures/larrow.png", 10 )
-			end	
-		end	
+		if links[ i ]:GetModuleType() == link:GetModuleType() and not links[ i ]:IsDraggable() then
+				guienv:AddLigthing( links[ i ], link, "media/textures/larrow.png", 10 )		
+	    end	
 	end
 end
 
@@ -69,6 +66,8 @@ end
 
 local function localUpdateProjectWindow( pageName )
     step = pageName
+    links = nil --удаляем старую таблицу
+    links = {} --создаем пустую таблицу
     local gw, gh = projectWindow:GetSize()
 	base.CLuaElement( projectWindow ):RemoveChilds()
 	button.StretchOne( 0, gh - 30, 30, gh, "", projectWindow, -1, "", "./gameprojectManager.PrevPage()" )
@@ -77,31 +76,48 @@ end
 
 local function localShowChangeNamePage()
     localUpdateProjectWindow( "name" )
-    local gw, gh = projectWindow:GetSize()
-	editGameName = guienv:AddEdit( "Название игры", gw / 2 + 20, gh / 2, gw - 20,  gh / 2 + 40,  -1, projectWindow )
+	editGameName = guienv:AddEdit( "Название игры", "55%", "50%", "90%", "60%", -1, projectWindow )
 	editGameName:SetFont( "font_16" )
+end
+
+local function FlickLinkBox( parentr, textr, group, datar, draggable, enabled, lmouseAct, rmouseAct, defImage, luaFunc )
+	
+	local linkModule = guienv:AddLinkBox( textr, 0, 0, sizeLinkBox, sizeLinkBox, -1, parentr )
+	
+	local texture = ""
+	if datar then
+		texture = datar:GetTexture()
+	end
+	
+	localSetLinkBoxOption( linkModule, group, datar, texture, draggable, enabled, defImage )
+	
+	if lmouseAct then
+		linkModule:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, lmouseAct )
+	end
+	
+	if rmouseAct then
+		linkModule:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, lrouseAct )
+	end
+	
+	if luaFunc then
+		SetLuaFuncToLinkBox( linkModule, luaFunc )
+	end
+	
+	base.table.insert( links, linkModule )
+	
+	return linkModule
 end
 
 local function localShowAvaibleEngines()
 	local maxEngine = company:GetEnginesNumber()
-	local xoffset = 0
-	local rowCount = 0	
+	
+	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 4, -1, projectWindow )
 	
 	for i=1, maxEngine do
 		local gameeng = company:GetEngine( i-1 )
-		local linkModule = guienv:AddLinkBox( "Движок ".. i .."/"..maxEngine .. "\r(" .. gameeng:GetName() .. ")", 
-															scrWidth / 2 + xoffset, sizeLinkBox * (rowCount+1), 
-															scrWidth / 2 + xoffset + sizeLinkBox, sizeLinkBox * (rowCount+2), 
-															-1, projectWindow )
-		localSetLinkBoxOption( linkModule, base.PT_GAMEENGINE, gameeng, 
-							   gameeng:GetTexture(), true, not project:IsMyGameEngine( gameeng ) )
-							   
-		linkModule:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameprojectManager.LeftMouseButtonUp()" )
-		rowCount = rowCount + 1
-		if rowCount * 50 > 450 then
-			xoffset = 0
-			rowCount = 0
-		end
+		FlickLinkBox( flick, base.string.format( "Движок %d/%d \r( %s )", i, maxEngine, gameeng:GetName() ),
+					  gameeng:GetTechGroup(), gameeng, true, not project:IsMyGameEngine( gameeng ), 
+					  "./gameprojectManager.LeftMouseButtonUp()", nil, nil, nil )			   
 	end
 end
 
@@ -111,45 +127,39 @@ local function localShowEnginePage()
 
 	local ge = project:GetGameEngine()
 	--create linkbox for gameEngine
-	local linkModule = guienv:AddLinkBox( "", 80, 80, 80 + 80, 80 + 80, -1, projectWindow )
-	localSetLinkBoxOption( linkModule, base.PT_GAMEENGINE, ge, ge:GetTexture(), 
-	                       false, true, "media/buttons/GameNoEngine.png" )
-	--set function for resolve input for linkbox	
-	SetLuaFuncToLinkBox( linkModule, "./gameprojectManager.SetVideoEngine()" )
 	
-	linkModule = guienv:AddLinkBox( "Продолжение", 80, 200, 80 + 80, 200 + 80, -1, projectWindow )
-	localSetLinkBoxOption( linkModule, base.PT_GAME, nil, "", false, true )
+	local lnk = FlickLinkBox( projectWindow, "",  base.PT_GAMEENGINE, ge, false, true, 
+							  nil, nil,
+							  "media/buttons/GameNoEngine.png",
+							  "./gameprojectManager.SetVideoEngine()" )
+	lnk:SetPosition( "25%", "33%" )
+	
+	lnk = FlickLinkBox( projectWindow, "Продолжение", base.PT_GAME, nil, false, true, 
+						nil, nil, nil, nil )
+	lnk:SetPosition( "25%", "50%" )
 	
 	ShowParams()
 end
 
 local function ShowAvaibleGenreModules()
-	local maxCompanyTech = company:GetTechNumber()
-	local showedTech = 0
-	local yrOffset = 20
+	
+	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 
 	for i=1, applic:GetTechNumber() do
 		local tech = applic:GetTech( i-1) 
 		local tg = tech:GetTechGroup()
 		local techCompany = tech:GetCompany()
 		
-		if techCompany:Empty() == 1 or techCompany:GetName() == companyName then	
-			if tech:GetTechGroup() == base.PT_GENRE then
-				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, yrOffset + showedTech * sizeLinkBox, 
-													  scrWidth / 2 + sizeLinkBox, yrOffset + (showedTech + 1) * sizeLinkBox, -1, projectWindow )
-													  
-				localSetLinkBoxOption( linkModule, base.PT_GENRE, tech, tech:GetTexture(), 
-									   true, not project:IsGenreIncluded( tech ), "media/buttons/genreNoImage2.png" )	
-									   
-				linkModule:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameprojectManager.LeftMouseButtonUp()" )
-				
-				if project:GetGameEngine():IsMyGenre( tech ) then
-					linkModule:SetAlpha( 0xff )
-				else
-					linkModule:SetAlpha( 0x80 )
-				end
-				showedTech = showedTech + 1
-				yrOffset = yrOffset + 10
+		if (techCompany:Empty() == 1 or techCompany:GetName() == companyName) and tech:GetTechGroup() == base.PT_GENRE then
+			local lnk = FlickLinkBox( flick, tech:GetName(), tech:GetTechGroup(), tech, 
+									  true, not project:IsMyTech( tech ),
+									  "./gameprojectManager.LeftMouseButtonUp()", nil,  
+									  "media/buttons/genreNoImage2.png" )												  
+						
+			if project:GetGameEngine():IsMyTech( tech ) then
+				lnk:SetAlpha( 0xff )
+			else
+				lnk:SetAlpha( 0x80 )
 			end
 		end
 	end	
@@ -159,40 +169,33 @@ local function localShowGenrePage()
 	localUpdateProjectWindow( "genre" )
 	ShowAvaibleGenreModules()
 	
-	local maxModuleNumber = project:GetGenreModuleNumber()
+	local maxModuleNumber = project:GetGameEngine():GetGenreModuleNumber()
+	local flick = guienv:AddFlick( "5%", "5%", "45%", "95%", 3, -1, projectWindow )
 
 	for i=1, maxModuleNumber do
-		local genre = project:GetGenre( i-1 )
-		local linkModule = guienv:AddLinkBox( "Модуль " .. i .. "/" .. maxModuleNumber.."\n"..genre:GetName(), 
-												 80, 20 + (i-1) * sizeLinkBox, 
-												 80 + sizeLinkBox, 20 + i * sizeLinkBox, 
-												 9100+(i-1), projectWindow )
-		localSetLinkBoxOption( linkModule, base.PT_GENRE, genre, genre:GetTexture(), 
-						       false, true, "media/buttons/genreNoImage2.png" )		
-		
-		SetLuaFuncToLinkBox( linkModule, "./gameprojectManager.SetGenre()" )
+		local genre = project:GetTech( i-1, base.PT_GENRE )
+		FlickLinkBox( flick, "Модуль " .. i .. "/" .. maxModuleNumber.."\n"..genre:GetName(), 
+					  base.PT_GENRE, genre, 
+					  false, true, nil, nil,  
+					  "media/buttons/genreNoImage2.png",
+					  "./gameprojectManager.SetGenre()" )
 	end
 end
 
 local function ShowAvaibleVideoQualityAndVideoTech()
-	local showedTech = 0
+	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 
 	for i=1, applic:GetTechNumber() do
 		local tech = applic:GetTech( i-1 )
 		local tg = tech:GetTechGroup()
 		local techCompany = tech:GetCompany()
 		
-		if techCompany:Empty() == 1 or techCompany:GetName() == companyName then		
-			if tg == base.PT_VIDEOTECH or tg == base.PT_VIDEOQUALITY then
-				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 20 + showedTech * sizeLinkBox, 
-													  scrWidth / 2 + sizeLinkBox, 20 + (showedTech + 1) * sizeLinkBox, -1, projectWindow )
-													  
-				localSetLinkBoxOption( linkModule, tg, tech, tech:GetTexture(), 
-									   true, not project:IsTechInclude( tech ), "" )			
-
-				linkModule:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameprojectManager.LeftMouseButtonUp()" )
-				showedTech = showedTech + 1
-			end
+		if (techCompany:Empty() == 1 or techCompany:GetName() == companyName) and 
+			( tg == base.PT_VIDEOTECH or tg == base.PT_VIDEOQUALITY ) then
+			 FlickLinkBox( flick, tech:GetName(), tech:GetTechGroup(), tech, 
+						   true, not project:IsMyTech( tech ),
+						   "./gameprojectManager.LeftMouseButtonUp()", nil, 
+						   nil )
 		end
 	end	
 	--Log("SCRIPT-CREATEVTP:ShowAvaibleVideoQualityAndVideoTech public = " .. showedTech )
@@ -200,63 +203,49 @@ end
 
 local function ShowAvaibleSoundQualityAndSoundTech()
 	local companyName = company:GetName()
-	local showedTech = 0
+	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 
 	for i=1, applic:GetTechNumber() do
 		local tech = applic:GetTech( i-1 )
 		local tg = tech:GetTechGroup()
 		local techCompany = tech:GetCompany()
 		
-		if techCompany:Empty() == 1 or techCompany:GetName() == companyName then
-			if tg == base.PT_SOUNDTECH or tg == base.PT_SOUNDQUALITY then
-				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 200 + showedTech * sizeLinkBox, 
-													   scrWidth / 2 + sizeLinkBox, 200 + (showedTech +1) * sizeLinkBox, -1, projectWindow )
-													   
-				localSetLinkBoxOption( linkModule, tg, tech, tech:GetTexture(), 
-									   true, not project:IsTechInclude( tech ), "" )	
-									   								   
-				linkModule:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameprojectManager.LeftMouseButtonUp()" )
-				showedTech = showedTech + 1
-			end
+		if (techCompany:Empty() == 1 or techCompany:GetName() == companyName) and 
+			(tg == base.PT_SOUNDTECH or tg == base.PT_SOUNDQUALITY ) then
+				 FlickLinkBox( flick, tech:GetName(), tech:GetTechGroup(), tech, 
+						   true, not project:IsMyTech( tech ),
+						   "./gameprojectManager.LeftMouseButtonUp()", nil, 
+						   nil )
 		end
 	end	
-	Log( "SCRIPT-CREATEVTP:ShowAvaibleSoundQualityAndSoundTech public = " .. showedTech )
 end
 
 local function localShowSoundPage()
 	localUpdateProjectWindow( "sound" )
 	ShowAvaibleSoundQualityAndSoundTech()
 		
-	local sq = project:GetSoundQuality()
-	local linkModule = guienv:AddLinkBox( "", sizeLinkBox, 20, sizeLinkBox + sizeLinkBox, 20 + sizeLinkBox, -1, projectWindow )
+	local flick = guienv:AddFlick( "5%", "5%", "45%", "95%", 3, -1, projectWindow )
 	
-	localSetLinkBoxOption( linkModule, base.PT_SOUNDQUALITY, sq, sq:GetTexture(), 
-						   false, true, "media/buttons/SoundQualityNoImage.png" )
-						   
-	if sq:Empty() == 0 then	linkModule:SetText( sq:GetName() )	end
-	SetLuaFuncToLinkBox( linkModule, "./gameprojectManager.SetSoundQuality()" )
+	local sq = project:GetSoundQuality()
+	FlickLinkBox( flick, sq:GetName(), base.PT_SOUNDQUALITY, sq, false, true,
+				  nil, nil, 
+				  "media/buttons/SoundQualityNoImage.png",
+				  "./gameprojectManager.SetSoundQuality()" )
 
-	local xoffset = 20
-	local maxProjectSoundTech = project:GetSoundTechNumber()
-	local showeddLinks = 0
+	local maxProjectSoundTech = project:GetNumber( base.PT_SOUNDTECH )
 	
 	for i=0, maxProjectSoundTech do
-		local tech = project:GetSoundTech( i )
-		local linkAdv = guienv:AddLinkBox( "Sound " .. i .. "/" .. maxProjectSoundTech, 
-											xoffset, 120 + showeddLinks * sizeLinkBox, 
-											xoffset + sizeLinkBox, 120 + sizeLinkBox + showeddLinks * sizeLinkBox, 
-											9500 + i, projectWindow )
-		localSetLinkBoxOption( linkAdv, base.PT_SOUNDTECH, tech, tech:GetTexture(), 
-						       false, true, "media/buttons/soundTechNoImage.png" )
-
-		if tech:Empty() == 0 then linkAdv:SetText( tech:GetName() )	end
-		SetLuaFuncToLinkBox( linkAdv, "./gameprojectManager.SetSoundTech()" )
-		showeddLinks = showeddLinks + 1
+		local tech = project:GetTech( i, base.PT_SOUNDTECH )
+		local name = "Sound " .. i .. "/" .. maxProjectSoundTech
 		
-		if (20 + showeddLinks * sizeLinkBox) > 500 then
-			showeddLinks = 0
-			xoffset = xoffset + sizeLinkBox + 10
+		if tech:Empty() == 0 then
+			name = tech:GetName()
 		end
+
+		FlickLinkBox( flick, name, base.PT_SOUNDTECH, tech, false, true,
+					  nil, nil, 
+					  "media/buttons/soundTechNoImage.png",
+					  "./gameprojectManager.SetSoundTech()" )
 	end	
 	ShowParams()
 end
@@ -265,69 +254,63 @@ local function localShowVideoPage()
 	localUpdateProjectWindow( "video" )
 	ShowAvaibleVideoQualityAndVideoTech()
 	
-	local vq = project:GetVideoQuality()
-	local linkModule = guienv:AddLinkBox( "", 80, 20, 80 + sizeLinkBox, 20 + sizeLinkBox, -1, projectWindow )
-	localSetLinkBoxOption( linkModule, base.PT_VIDEOQUALITY, vq, vq:GetTexture(), 
-						   false, true, "media/buttons/qualityGraphicNoImage.png" )
-	if vq:Empty() == 0 then	linkModule:SetText( vq:GetName() )	end
-	SetLuaFuncToLinkBox( linkModule, "./gameprojectManager.SetVideoQuality()" )
+	local flick = guienv:AddFlick( "5%", "5%", "45%", "95%", 3, -1, projectWindow )
 	
-	local xoffset = 20
-	local maxProjectVideoTech = project:GetVideoTechNumber()
-	local showeddLinks = 0
+	local vq = project:GetVideoQuality()
+	FlickLinkBox( flick, vq:GetName(), base.PT_VIDEOQUALITY, vq, false, true,
+				  nil, nil, 
+				  "media/buttons/SoundQualityNoImage.png",
+				  "./gameprojectManager.SetVideoQuality()" )
+							  	
+	local maxProjectVideoTech = project:GetNumber( base.PT_VIDEOTECH )
 	
 	for i=0, maxProjectVideoTech do
-		local tech = project:GetVideoTech( i )
-		local linkAdv = guienv:AddLinkBox( "Видео " .. i .. "/" .. maxProjectVideoTech,
-											xoffset, 120 + showeddLinks * sizeLinkBox, 
-											xoffset + sizeLinkBox, 120 + (showeddLinks + 1) * sizeLinkBox, 
-											9400 + i, projectWindow )
-
-		localSetLinkBoxOption( linkAdv, base.PT_VIDEOTECH, tech, tech:GetTexture(),		
-							   false, true, "media/buttons/videoTechNoImage.png" )
-		if tech:Empty() == 0 then linkAdv:SetText( tech:GetName() )	end
-		SetLuaFuncToLinkBox( linkAdv, "./gameprojectManager.SetVideoTech()" )
+		local tech = project:GetTech( i, base.PT_VIDEOTECH )
+		local name = "Видео " .. i .. "/" .. maxProjectVideoTech
 		
-		showeddLinks = showeddLinks + 1
-		
-		if (20 + showeddLinks * sizeLinkBox) > 500 then
-			showeddLinks = 0
-			xoffset = xoffset + 90
-		end
+		if tech:Empty() == 0 then name = tech:GetName() end
+		FlickLinkBox( flick, name,
+					  base.PT_VIDEOTECH, tech, false, true, 
+					  nil, nil,
+					  "media/buttons/videoTechNoImage.png",
+					  "./gameprojectManager.SetVideoTech()" )
 	end	
+
 	ShowParams()
 end
 
 local function localShowEndPage()
 	localUpdateProjectWindow( "end" )
+
+	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 	
-	local pw, ph = projectWindow:GetSize()
-	local sizel = "10%+"
-	local linkModule = guienv:AddLinkBox( base.STR_ENGINE, "55%", "20%", sizel, sizel, -1, projectWindow )
-	linkModule:SetData( project:GetGameEngine() )
-	linkModule:SetTexture( project:GetGameEngine():GetTexture() )
+	FlickLinkBox( flick, base.STR_ENGINE, 0, project:GetGameEngine(),
+				  false, false, nil, nil, nil, nil )
 	
-	linkModule:SetObject( guienv:AddLinkBox( base.STR_GENRE, "55%", "40%", sizel, sizel, -1, projectWindow ) )
-	linkModule:SetData( project:GetGenre( 0 ) )
-	linkModule:SetTexture( project:GetGenre( 0 ):GetTexture() )
+	FlickLinkBox( flick, base.STR_GENRE, 0, project:GetTech( 0, base.PT_GENRE ), 
+				  false, false, nil, nil, nil, nil ) 
 	
-	linkModule:SetObject( guienv:AddLinkBox( base.STR_CONTENT, "55%", "60%", sizel, sizel, -1, projectWindow ) )
+	local lnk = FlickLinkBox( flick, base.STR_CONTENT, 0, nil,
+							   false, false, nil, nil, nil, nil )
 	if project:HaveLicense() or project:HaveScenario() then 
 	   if project:HaveLicense() then
-			linkModule:SetTexture( project:GetLicense():GetTexture() ) 
+			lnk:SetTexture( project:GetLicense():GetTexture() ) 
 	   else
-			linkModule:SetTexture( project:GetScenario():GetTexture() ) 
+			lnk:SetTexture( project:GetScenario():GetTexture() ) 
 	   end
 	end
 	
-	linkModule:SetObject( guienv:AddLinkBox( base.STR_PLATFORMS, "75%", "20%", sizel, sizel, -1, projectWindow ) )
-	if project:GetPlatformsNumber() > 0 then 
-		linkModule:SetData( linkModule  ) 
+	lnk = FlickLinkBox( flick, base.STR_PLATFORMS, 0, nil, 
+						 false, false, nil, nil, nil, nil )
+						 
+	if project:GetNumber( base.PT_PLATFORM ) > 0 then 
+		lnk:SetTexture( "media/textures/havePlatform.png"  ) 
 	end
 	
-	linkModule:SetObject( guienv:AddLinkBox( base.STR_LOCALIZATION, "75%", "40%", sizel, sizel, -1, projectWindow ) )
-	if project:GetLanguagesNumber() > 0 then 
-		linkModule:SetData( linkModule ) 
+	lnk = FlickLinkBox( flick, base.STR_LOCALIZATION, 0, nil, 
+						 false, false, nil, nil, nil, nil )
+	if project:GetNumber( base.PT_LANGUAGE ) > 0 then 
+		lnk:SetTexture( "media/textures/haveLangs.png" ) 
 	end
 	
 	local button = guienv:AddButton( "55%", "80%", "95%", "90%", projectWindow, -1, base.STR_FINISH )
@@ -349,26 +332,21 @@ end
 
 local function ShowAvaibleScriptAndMiniGames()
 	local companyName = company:GetName()
-	local showeddLinks = 0
 	local maxPublicTech = applic:GetTechNumber()
+	
+	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 	
 	for i=1, maxPublicTech do
 		local tech = applic:GetTech( i-1 )
 		local techCompany = tech:GetCompany()
 		local tg = tech:GetTechGroup()
 		
-		if techCompany:Empty() == 1 or techCompany:GetName() == companyName then
-			if tg == base.PT_SCRIPTS or tg == base.PT_MINIGAME or tg == base.PT_PHYSIC or tg == base.PT_ADVTECH then
-				--Log("SCRIPT-CREATEGP:ShowAvaibleScriptLevel element = " .. i .. " " .. 20 + showeddLinks * sizeLinkBox )
-				
-				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 20 + showeddLinks * sizeLinkBox, 
-													  scrWidth / 2 + sizeLinkBox, 20 + (showeddLinks + 1 ) * sizeLinkBox, -1, projectWindow )
-													  
-				localSetLinkBoxOption( linkModule, tg, tech, tech:GetTexture(), 
-									   true, not project:IsTechInclude( tech ), "" )												  
-				linkModule:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameprojectManager.LeftMouseButtonUp()" )
-				showeddLinks = showeddLinks + 1
-			end
+		if (techCompany:Empty() == 1 or techCompany:GetName() == companyName) and
+			(tg == base.PT_SCRIPTS or tg == base.PT_MINIGAME or tg == base.PT_PHYSIC or tg == base.PT_ADVTECH) then	
+				FlickLinkBox( flick, tech:GetName(), tech:GetTechGroup(), tech, 
+						      true, not project:IsMyTech( tech ),
+						      "./gameprojectManager.LeftMouseButtonUp()", nil, 
+						      nil )
 		end
 	end	
 	--Log("SCRIPT-CREATEGP:ShowAvaibleScriptLevel public script = " .. showeddLinks )
@@ -378,51 +356,46 @@ local function localShowTechPage()
 	localUpdateProjectWindow( "tech" )
 	ShowAvaibleScriptAndMiniGames()
 	
+	local flick = guienv:AddFlick( "5%", "5%", "45%", "95%", 3, -1, projectWindow )
+
 	local se = project:GetScriptEngine()
-	local linkScript = guienv:AddLinkBox( "Скрипты", 20, 20, 20 + sizeLinkBox, 20 + sizeLinkBox, -1, projectWindow )
-	localSetLinkBoxOption( linkScript, base.PT_SCRIPTS, se, se:GetTexture(), 
-	                       false, true, "media/buttons/scriptsNoImage.png" )
+	local lnk = FlickLinkBox(  flick, "Скрипты", base.PT_SCRIPTS, se,  
+							   false, true, 
+							   nil, nil, 
+							   "media/buttons/scriptsNoImage.png",
+							   "./gameprojectManager.SetScriptEngine()"  )
 	                       
-	if se:Empty() == 0 then linkScript:SetText( se:GetName() )	end
-	SetLuaFuncToLinkBox( linkScript, "./gameprojectManager.SetScriptEngine()" )
+	if se:Empty() == 0 then lnk:SetText( se:GetName() )	end
 	
 	local mg = project:GetMiniGameEngine()
-	local linkMiniGames = guienv:AddLinkBox( "", 20, 120, 20 + sizeLinkBox, 120 + sizeLinkBox, -1, projectWindow )
-	localSetLinkBoxOption( linkMiniGames, base.PT_MINIGAME, mg, mg:GetTexture(), 
-	                       false, true, "media/buttons/minigameNoImage.png" )
-
-	if mg:Empty() == 0 then	linkMiniGames:SetText( mg:GetName() ) end
-	SetLuaFuncToLinkBox( linkMiniGames, "./gameprojectManager.SetMiniGameEngine()" )
+	lnk = FlickLinkBox(  flick, "Миниигры", base.PT_MINIGAME, mg,  
+						 false, true, 
+						 nil, nil, 
+						 "media/buttons/minigameNoImage.png",
+						 "./gameprojectManager.SetMiniGameEngine()"  )
+							   
+	if mg:Empty() == 0 then	lnk:SetText( mg:GetName() ) end
 
 
 	local ph = project:GetPhysicEngine()
-	local linkPhis = guienv:AddLinkBox( "", 20, 220, 20 + sizeLinkBox, 220 + sizeLinkBox, -1, projectWindow )
-	localSetLinkBoxOption( linkPhis, base.PT_PHYSIC, ph, ph:GetTexture(), 
-	                       false, true, "media/buttons/physicNoImage.tga" )
+	lnk = FlickLinkBox( flick, "Физика", base.PT_PHYSIC, ph,  
+						false, true, 
+						nil, nil, 
+						"media/buttons/physicNoImage.png",
+						"./gameprojectManager.SetPhysicEngine()"  )
+						 
+	if ph:Empty() == 0 then lnk:SetText( ph:GetName() ) end
 
-	if ph:Empty() == 0 then linkPhis:SetText( ph:GetName() ) end
-	SetLuaFuncToLinkBox( linkPhis, "./gameprojectManager.SetPhysicEngine()" )
-
-	local showeddLinks = 0
-	local xoffset = 120
-	local maxProjectAdvTech = project:GetGameEngine():GetAdvancedTechNumber()
-    
+	local maxProjectAdvTech = project:GetGameEngine():GetTechNumber()    
 	for i=1, maxProjectAdvTech do
-		local tech = project:GetAdvTech( i-1 )
-		local linkAdv = guienv:AddLinkBox( tech:GetName(), xoffset, 20 + showeddLinks * sizeLinkBox, 
-										   xoffset + sizeLinkBox, 20 + (showeddLinks + 1) * sizeLinkBox, 9200 + i, projectWindow )
-
-		localSetLinkBoxOption( linkAdv, base.PT_ADVTECH, tech, tech:GetTexture(), 
-	                           false, true, "media/buttons/advTechNoImage.png" )
-
-		SetLuaFuncToLinkBox( linkAdv, "./gameprojectManager.SetAdvTech()" )
-		showeddLinks = showeddLinks + 1
-		
-		if showeddLinks * sizeLinkBox > 300 then
-			showeddLinks = 0
-			xoffset = xoffset + sizeLinkBox
-		end
+		local tech = project:GetTech( i-1, base.PT_ADVTECH )
+		FlickLinkBox( flick, tech:GetName(), base.PT_ADVTECH, tech, 
+					  false, true, 
+					  nil, nil, 
+					  "media/buttons/advTechNoImage.png",
+					  "./gameprojectManager.SetAdvTech()" )
 	end
+	
 	ShowParams()
 end
 
@@ -430,9 +403,8 @@ local function localShowPlatformPage()
 	localUpdateProjectWindow( "platform" )
 
 	local ge = project:GetGameEngine()
-	local sw, sh = projectWindow:GetSize()
-	picFlowLang = guienv:AddPictureFlow( 20, 20, sw - 20, sh / 2 - 20, -1, projectWindow )	
-	picFlowPlatform = guienv:AddPictureFlow( 20, sh / 2 + 20, sw - 20, sh - 20, -1, projectWindow )
+	picFlowLang = guienv:AddPictureFlow( "5%", "5%", "95%", "45%", -1, projectWindow )	
+	picFlowPlatform = guienv:AddPictureFlow( "5%", "55%", "95%", "95%", -1, projectWindow )
 		
 	for i=1, applic:GetTechNumber() do
 		local tech = applic:GetTech( i-1 )
@@ -440,7 +412,7 @@ local function localShowPlatformPage()
 		if tech:GetTechGroup() == base.PT_LANGUAGE then
 			picFlowLang:AddItem( tech:GetTexture(), tech:GetName(), tech )
 			
-			if not project:IsMyLanguage( tech ) then
+			if not project:IsMyTech( tech ) then
 				picFlowLang:SetItemBlend( index, 0xC0 )
 			else
 				picFlowLang:SetItemBlend( index, 0xFF )
@@ -463,32 +435,20 @@ end
 local function ShowAvaibleScenarioAndLicense()
 	local companyName = applic:GetPlayerCompany():GetName()
 	local maxScenarioNum = applic:GetTechNumber()
-	local showedLinks = 0
 	
+	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )	
 	
 	for i=1, maxScenarioNum do
 		local tech = applic:GetTech( i-1 )
 		local techCompany = tech:GetCompany()
 		local tg = tech:GetTechGroup()
 		
-		if techCompany:Empty() == 1 or techCompany:GetName() == companyName then
-			if tg == base.PT_SCENARIO or tg == base.PT_LICENSE then
-				Log("SCRIPT:ShowAvaibleScenarioAndLicense public scenario = " .. tech:GetName() )
-				
-				local linkModule = guienv:AddLinkBox( tech:GetName(), scrWidth / 2, 10 + showedLinks * sizeLinkBox, 
-													  scrWidth / 2 + sizeLinkBox, 10 + (showedLinks + 1) * sizeLinkBox, -1, projectWindow )
-													   
-				localSetLinkBoxOption( linkModule, tg, tech, tech:GetTexture(), true, true, "" )
-									  
-				if tg == base.PT_SCENARIO then
-					linkModule:SetEnabled( not project:IsTechInclude( tech ) ) 
-				else
-					linkModule:SetEnabled( not project:IsLicenseIncluded( tech:GetName() ) ) 
-				end
-				
-				linkModule:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameprojectManager.LeftMouseButtonUp()" )
-				showedLinks = showedLinks + 1
-			end
+		if (techCompany:Empty() == 1 or techCompany:GetName() == companyName) and
+			( tg == base.PT_SCENARIO or tg == base.PT_LICENSE ) then
+				FlickLinkBox( flick, tech:GetName(), tech:GetTechGroup(), tech,
+							  true, not project:IsMyTech( tech ), 
+							  "./gameprojectManager.LeftMouseButtonUp()", nil,
+							  nil, nil )							  
 		end
 	end
 end
@@ -496,24 +456,29 @@ end
 local function localShowScenarioPage()
 	localUpdateProjectWindow( "scenario" )
 	ShowAvaibleScenarioAndLicense()
+	
+	local flick = guienv:AddFlick( "5%", "5%", "45%", "95%", 3, -1, projectWindow )
 	--Log("SCRIPT-CREATESL:CreateScenarioLicensePage start " )
 
 	local tech = project:GetScenario()
-	local linkScenario = guienv:AddLinkBox( base.STR_SCENARIO, 100, 40, 100 + sizeLinkBox, 40 + sizeLinkBox, -1, projectWindow )
-	localSetLinkBoxOption( linkScenario, base.PT_SCENARIO, tech, tech:GetTexture(),		
-						   false, not project:HaveLicense(), "media/buttons/scenarioNoImage.jpg" )
-	if tech:Empty() == 0 then linkScenario:SetText( tech:GetName() ) end
-	linkScenario:SetDraggable( false )
-	SetLuaFuncToLinkBox( linkScenario, "./gameprojectManager.SetScenario()" )
+	local lnk = FlickLinkBox( flick, base.STR_SCENARIO, base.PT_SCENARIO, tech, 	
+							  false, not project:HaveLicense(), 
+							  nil, nil,
+							  "media/buttons/scenarioNoImage.jpg",
+							  "./gameprojectManager.SetScenario()" )
+
+	if tech:Empty() == 0 then lnk:SetText( tech:GetName() ) end
+	lnk:SetVisible( not project:HaveLicense() )
 	
 	local lic = project:GetLicense()
-	local linkLicense = guienv:AddLinkBox( base.STR_LICENSE, 100, 200, 100 + sizeLinkBox, 200 + sizeLinkBox, -1, projectWindow )
-	localSetLinkBoxOption( linkLicense, base.PT_LICENSE, lic, lic:GetTexture(),		
-						   false, not project:HaveScenario(), "media/buttons/licenseNoImage.jpg" )
+	local lnk = FlickLinkBox( flick, base.STR_LICENSE, base.PT_LICENSE, lic, 		
+							  false, not project:HaveScenario(), 
+							  nil, nil, 
+							  "media/buttons/licenseNoImage.jpg",
+							  "./gameprojectManager.SetLicense()" )
 						   
 	if lic:Empty() == 0 then linkLicense:SetText( lic:GetName() ) end
-	linkLicense:SetVisible( not project:HaveScenario() )
-	SetLuaFuncToLinkBox( linkLicense, "./gameprojectManager.SetLicense()" )
+	lnk:SetVisible( not project:HaveScenario() )
 	
 	--Log( "SCRIPT-CREATESL:CreateScenarioLicensePage end " )
 	ShowParams()
@@ -539,15 +504,23 @@ end
 
 function SetVideoTech()
 	local sender = base.CLuaLinkBox( base.NrpGetSender() )
-	local id = sender:GetID() % 100
-	project:SetVideoTech( sender:GetData(), id )
+	
+	if sender:GetData() == nil then
+		project:RemoveTech( lastData )
+	else 
+		project:AddTech( sender:GetData() )
+	end
 	localShowVideoPage()
 end
 
 function SetSoundTech()
 	local sender = base.CLuaLinkBox( base.NrpGetSender() )
-	local id = sender:GetID() % 100
-	project:SetSoundTech( sender:GetData(), id )
+		
+	if sender:GetData() == nil then
+		project:RemoveTech( lastData )
+	else 
+		project:AddTech( sender:GetData() )
+	end
 	localShowSoundPage()
 end
 
@@ -571,8 +544,13 @@ end
 
 function SetAdvTech()
 	local sender = base.CLuaLinkBox( base.NrpGetSender() )
-	local id = (sender:GetID() % 100) - 1
-	project:SetAdvTech( sender:GetData(), id )
+
+	if sender:GetData() == nil then
+		project:RemoveTech( lastData )
+	else 
+		project:AddTech( sender:GetData() )
+	end
+	
 	localShowTechPage()
 end
 
@@ -584,8 +562,11 @@ end
 
 function SetGenre()
 	local sender = base.CLuaLinkBox( base.NrpGetSender() )
-	local id = sender:GetID() - 9100
-	project:SetGenre(sender:GetData(), id )
+	if sender:GetData() == nil then
+		project:RemoveTech( lastData )
+	else 
+		project:AddTech( sender:GetData() )
+	end
 	localShowGenrePage()
 end
 
@@ -596,18 +577,18 @@ end
 local function localCheckPlatformsForProject( pl )
 	local result = true
 	local vTechAv = {}
-	for i=1, project:GetVideoTechNumber() do
-		local tech = project:GetVideoTech( i-1 )
+	for i=1, project:GetNumber( base.PT_VIDEOTECH ) do
+		local tech = project:GetTech( i-1, base.PT_VIDEOTECH )
 		vTechAv[ i ] = { name=tech:GetName(), avaible=false }
-		vTechAv[ i ].avaible = pl:IsTechAvaible( tech )
+		vTechAv[ i ].avaible = pl:IsMyTech( tech )
 		result = result and vTechAv[ i ].avaible
 	end
 	
 	local sTechAv = {}
-	for i=1, project:GetSoundTechNumber() do
-		local tech = project:GetSoundTech( i-1 )
+	for i=1, project:GetNumber( base.PT_SOUNDTECH ) do
+		local tech = project:GetTech( i-1, base.PT_SOUNDTECH )
 		sTechAv[ i ] = { name=tech:GetName(), avaible=false }
-		sTechAv[ i ].avaible = pl:IsTechAvaible( tech )
+		sTechAv[ i ].avaible = pl:IsMyTech( tech )
 		result = result and sTechAv[ i ].avaible
 	end
 	
@@ -626,12 +607,12 @@ function ItemSelected()
 		local lang = base.CLuaTech( lbx:GetSelectedObject() )
 		
 		--уже есть язык, надо убрать его из списка
-		if project:IsMyLanguage( lang ) then 
-			project:RemoveLanguage( lang )
+		if project:IsMyTech( lang ) then 
+			project:RemoveTech( lang )
 			lbx:SetItemBlend( selIndex, 0xC0 )	
 		--такого языка нет в игре, надо бы добавить
 		else 
-			project:AddLanguage( lang, nil )	
+			project:AddTech( lang )	
 			lbx:SetItemBlend( selIndex, 0xff )
 		end		
 	elseif picFlowPlatform:Self() == lbx:Self() then
@@ -643,7 +624,7 @@ function ItemSelected()
 			lbx:SetItemBlend( selIndex, 0xC0 )				
 		else
 			if localCheckPlatformsForProject( platform ) then
-				project:AddPlatform( platform, nil )
+				project:AddPlatform( platform )
 				lbx:SetItemBlend( selIndex, 0xff )			
 			end
 		end	
@@ -665,6 +646,8 @@ function Show()
 		mainWindow:SetDraggable( false )
 		mainWindow:SetVisible( false )
 		mainWindow:GetCloseButton():SetVisible( false )
+		
+		dragLink = guienv:AddLinkBox( "", 0, 0, sizeLinkBox, sizeLinkBox, -1, mainWindow )
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 60, scrWidth - 20, scrHeight, 
@@ -698,6 +681,7 @@ end
 
 function RightMouseButtonUp()
 	local link = base.CLuaLinkBox( base.NrpGetSender() ) 
+	lastData = link:GetData()
 	link:SetData( nil )
 	link:SetTexture( "media/buttons/LinkBoxNoImage.png" )
 end
@@ -711,8 +695,13 @@ function LeftMouseButtonUp()
 		
 		if link:IsDraggable() then
 			if link:IsEnabled() then
-				guienv:SetDragObject( link )
-				localCreateLigthingBetweenElements( link )
+				dragLink:SetData( link:GetData() )
+				dragLink:SetTexture( link:GetTexture() )
+				dragLink:SetModuleType( link:GetModuleType() )
+				guienv:SetDragObject( dragLink )
+				dragLink:SetVisible( true )
+				
+				localCreateLigthingBetweenElements( dragLink )
 			end
 		else
 			if link:GetModuleType() == linkRecv:GetModuleType() then
@@ -721,9 +710,11 @@ function LeftMouseButtonUp()
 			end
 			
 			guienv:SetDragObject( nil )
+			dragLink:SetVisible( false )
 		end
 	else
 		guienv:SetDragObject( nil )
+		dragLink:SetVisible( false )
 	end
 end
 

@@ -1,8 +1,14 @@
 [options]
+name0=
 diskMachine0=xtras/diskmachines/dm1/item.dm
 diskMachineNumber=6
+name1=
 diskMachine1=xtras/diskmachines/dm2/item.dm
+name2=
 diskMachine2=xtras/diskmachines/dm3/item.dm
+name3=
 diskMachine3=xtras/diskmachines/dm4/item.dm
+name4=
 diskMachine4=xtras/diskmachines/dm5/item.dm
+name5=
 diskMachine5=xtras/diskmachines/dm6/item.dm

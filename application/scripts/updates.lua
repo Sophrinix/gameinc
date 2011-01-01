@@ -37,6 +37,18 @@ local function GetCurrentDate()
 	return base.os.time( {year=cYear, month=cMonth, day=cDay} )
 end
 
+function FindInventionLoadFile( inventionName )
+	
+	local iniFile = base.CLuaIniFile( nil, fileTechs )
+	local techNumber = iniFile:ReadInteger( "options", "techNumber", 0 ) 
+	
+	for i=1, techNumber do
+		if iniFile:ReadString( "options", "name"..(i-1), "" ) == inventionName then
+			return 	iniFile:ReadString( "options", "tech"..(i-1), "" )	
+		end
+	end
+end
+
 function CheckPlatforms( showPdaForNewPlatform )
 	local iniFile = base.CLuaIniFile( nil, filePlatforms )
 	
@@ -201,7 +213,7 @@ function CheckNewReklames( showPdaForNewReklame )
 		--если уже можно показывать пользователю рекламу
 		if GetDate( tmpReklameIni, "startdate:time" ) <= curTime then --1
 			--попрoбуем загрузить рекламу в двигло...
-			local rName = GetString( tmpReklameIni, "reklametype:string" )
+			local rName = GetString( tmpReklameIni, "internalname:string" )
 			local itNew = plant:LoadBaseReklame( rName, tmpReklameIni )
 			
 			if showPdaForNewReklame and itNew then

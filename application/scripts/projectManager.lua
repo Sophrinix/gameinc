@@ -90,7 +90,7 @@ local function ShowWindowUserInfo( userPtr )
 end
 
 local function ShowAvaibleCompanyUsers()
-	local company = applic:GetPlayerCompany()
+	company = applic:GetPlayerCompany()
 	
 	comboxUsers:Clear()
 	for i=1, company:GetUserNumber() do
@@ -185,7 +185,7 @@ local function ShowUnworkedGameProjectComponent()
 	for i=1, currentProject:GetModuleNumber() do
 	    local module = currentProject:GetModule( i-1 )
 		if module:Empty() == 0 then 
-		  lbxComponents:AddItem( module:GetName(), module:Self() )	
+		  lbxComponents:AddItem( module:GetName(), module )	
 		  lbxComponents:SetItemTextColor( i-1, 0xff, 0xff, 0xff, 0xff )
 		end
 	end

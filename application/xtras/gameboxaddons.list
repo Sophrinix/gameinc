@@ -1,6 +1,10 @@
 [options]
+name0=boxaddon_card
 addon0=xtras/gameboxaddon/card/item.addon
 addonNumber=4
+name1=boxaddon_maika
 addon1=xtras/gameboxaddon/maika/item.addon
+name2=boxaddon_pen
 addon2=xtras/gameboxaddon/pen/item.addon
+name3=boxaddon_placat
 addon3=xtras/gameboxaddon/placat/item.addon

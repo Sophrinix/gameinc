@@ -1,0 +1,38 @@
+[properties]
+name:string=Andromeda Conquest
+internalname:string=AndromedConquest
+owner:string=Data East
+startdate:time=y=1982 m=09 d=02 h=0 mi=0
+description:string=desc.htm
+enddate:time=y=1985 m=08 d=02 h=0 mi=0
+moneyDevelop:int=200000
+cash:int=400000
+copySell:int=20000
+startrating:int=80
+startGameRating:int=80
+startGraphicRating:int=80
+startGenreRating:int=80
+startSoundRating:int=80
+startBugRating:int=80
+startAdvFuncRating:int=80
+localizationRating:int=80
+gameEngine:string=alpha_engine2
+platformnumber:int=4
+descriptionpath:string=xtras/games/1982/AndromedConquest/desc.htm
+recense:string=xtras/games/1982/AndromedConquest/recense.htm
+texturenormal:string=xtras/games/1982/AndromedConquest/image.png
+readyWorkPercent:float=1
+genreModuleNumber:int=1
+moduleNumber:int=1
+famous:float=0.5
+gameIsSaling:bool=false
+imageName:string=
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_dos
+platform_2=platform_atari2600
+platform_3=platform_commodore
+[genres]
+genre_0=genre_strategy
+[techs]
+tech_0=tech_keyboard

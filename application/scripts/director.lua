@@ -25,18 +25,21 @@ function Show( ptr )
 		mainWindow:GetCloseButton():SetVisible( false )
 		
 		--adding closeButton
-		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", mainWindow:Self(), -1, "",
+		button.Stretch( "95%", "95%", "100%", "100%", 
+		 			    "button_down", 
+		 			    mainWindow:Self(), -1, "",
 						"./director.Hide()" )
 	end	
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_DIRECTORS_ROOM )
 	
-	button.EqualeTexture( 0, 227, "newProject", mainWindow:Self(), -1, "", "./projectSelect.Show()")
+	button.EqualeTexture( 0, 227, "newProject", mainWindow, -1, "", "./projectSelect.Show()")
 	--employers manager
-	button.EqualeTexture( 805, 238, "employersManager", mainWindow:Self(), -1, "", "./userManager.Show()" )
+	button.EqualeTexture( 805, 238, "employersManager", mainWindow, -1, "", "./userManager.Show()" )
 	--project manager
-	button.EqualeTexture( 612, 251, "projectManager", mainWindow:Self(), -1, "", "./monitor.Show()" )
+	button.EqualeTexture( 612, 251, "projectManager", mainWindow, -1, "", "./monitor.Show()" )
+	
+	button.EqualeTexture( 750, 233, "button_safe", mainWindow, -1, "", "./safe.Show()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "director.FadeEnterAction()" )

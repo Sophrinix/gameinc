@@ -28,6 +28,10 @@ function Hide()
 	guienv:AddTimer( base.AFADE_TIME, "office.FadeExitAction()" )	
 end
 
+function OpenLabRoom()
+	base.inventionManager.Show( "", base.applic:GetPlayerCompany():GetName() )
+end
+
 function Show()
 	if receptionWindow then
 		receptionWindow:SetVisible( true )
@@ -46,30 +50,10 @@ function Show()
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_RECEPTION )
 	--directors room
-	button.EqualeTexture( 448, 242, "director", receptionWindow:Self(), -1, "", "./director.Show()" )
-	--[[
-	local showEmployers = sceneManager:GetSceneNodeByName( "employerManageNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showEmployers:Self() )
-	showEmployers:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( showEmployers:Self(), "employerManageNode" )
-	
-	local showProjectManager = sceneManager:GetSceneNodeByName( "projectManagerNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showProjectManager:Self() )
-	showProjectManager:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( showProjectManager:Self(), "projectManagerNode" )
-	
-	local showInventionManager = sceneManager:GetSceneNodeByName( "inventionManagerNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( showInventionManager:Self() )
-	showInventionManager:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( showInventionManager:Self(), "inventionManagerNode" )
-		
-	local exitN = sceneManager:GetSceneNodeByName( "exitOfficeNode" )
-	selector = sceneManager:CreateTriangleSelectorFromBoundingBox( exitN:Self() )
-	exitN:SetTriangleSelector( selector )
-	sceneManager:SetMarkText( exitN:Self(), "exit" )
-	
-	sceneManager:AddSceneFunction( SCENE_LMOUSE_DOUBLE_CLICK, "sworkSelectObjectOnOfficeScene" )
-	--]]
+	button.EqualeTexture( 448, 242, "director", receptionWindow, -1, "director", "./director.Show()" )
+	button.EqualeTexture( 355, 249, "developers", receptionWindow, -1, "devRoom", "./devRoom.Show()" )
+	button.EqualeTexture( 0, 157, "button_laboratory", receptionWindow, -1, "devRoom", "./office.OpenLabRoom()" )
+	--
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "office.FadeEnterAction()" )
