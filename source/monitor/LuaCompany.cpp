@@ -182,14 +182,18 @@ int CLuaCompany::CreateDevelopGame( lua_State* L )
 	
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		result = new CNrpDevelopGame( ptrData, _object );
-		_nrpApp.AddDevelopProject( result );
-		_object->AddDevelopProject( result );
+		if( !_object->GetDevelopProject( (*ptrData)[ NAME ] ) )
+		{
+			result = new CNrpDevelopGame( ptrData, _object );
+			_nrpApp.AddDevelopProject( result );
+			_object->AddDevelopProject( result );
+
+			lua_pop( L, argc );
+			lua_pushlightuserdata( L, result );
+			Luna< CLuaGameProject >::constructor( L );
+		}
 	}
 
-	lua_pop( L, argc );
-	lua_pushlightuserdata( L, result );
-	Luna< CLuaGameProject >::constructor( L );
 	return 1;	
 }
 
@@ -198,7 +202,7 @@ int CLuaCompany::AddUser( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:AddUser need IUser* parameter" );
 
-	IUser* ptrData = (IUser*)lua_touserdata( L, 2 );
+	IUser* ptrData = _GetLuaObject< IUser, CLuaUser >( L, 2, false );
 	assert( ptrData != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN	_object->AddUser( ptrData );
@@ -364,9 +368,9 @@ int CLuaCompany::StartInvention( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:StartInvention need CNrptechnology parameter" );
 
-	NrpText name = lua_tostring( L, 2 );
+	NrpText fileName = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	_nrpApp.AddInvention( name, _object );
+	IF_OBJECT_NOT_NULL_THEN	_nrpApp.AddInvention( fileName, _object );
 
 	return 1;	
 }

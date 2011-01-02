@@ -4,6 +4,7 @@
 #include "NrpTechMap.h"
 #include <irrlicht.h>
 #include "NrpTechnology.h"
+#include "LuaTechnology.h"
 
 using namespace irr;
 
@@ -68,23 +69,20 @@ int CLuaTechMap::AddTechnology( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaTechMap::AddTechnology need parent tech, child tech parameter");
 
-	CNrpTechnology* parentt =  (CNrpTechnology*)lua_touserdata( L, 2 );
+	CNrpTechnology* parentt = _GetLuaObject< CNrpTechnology, CLuaTechnology >( L, 2, false );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( lua_isstring( L, 3 ) > 0 )
+		if( lua_isstring( L, 3 ) )
 		{
 			NrpText internalName = lua_tostring( L, 3 );
-
 			_object->AddTechnology( parentt, internalName );
 		}
-		else if( lua_islightuserdata( L, 3 ) )
+		else
 		{
-			CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 3 );
+			CNrpTechnology* tech = _GetLuaObject< CNrpTechnology, ILuaObject >( L, 3, true );
 	     	_object->AddTechnology( parentt, tech );
 		}
-		else 
-			assert( false );
 	}
 	
 	return 1;	

@@ -6,7 +6,7 @@ namespace nrp
 class CNrpScenario : public INrpProject
 {
 public:
-	CNrpScenario( const NrpText& name );
+	CNrpScenario( const NrpText& saveFile );
 	~CNrpScenario(void);
 
 	NrpText Save( const NrpText& pathTo );

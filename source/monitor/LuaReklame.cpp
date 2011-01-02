@@ -17,7 +17,6 @@ Luna< CLuaReklame >::RegType CLuaReklame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetQuality ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, Remove ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetLevel ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetTypeName ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetNumberDay ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetNumberDay ),
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, Create ),
@@ -71,7 +70,7 @@ int CLuaReklame::SetReklameObject( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaReklame:SetReklameObject need INrpConfig* parameter" );
 
-	INrpConfig* reklameObject = (INrpConfig*)lua_touserdata( L, 2 );
+	INrpConfig* reklameObject = _GetLuaObject< INrpConfig, ILuaProject >( L, 2, true );
 	assert( reklameObject );
 
 	IF_OBJECT_NOT_NULL_THEN
@@ -79,7 +78,7 @@ int CLuaReklame::SetReklameObject( lua_State* L )
 		if( reklameObject )
 		{
 			(*_object)[ GAMENAME ] = (*reklameObject)[ NAME ];
-			(*_object)[ TYPEOBJECT ] = (*reklameObject)[ ObjectTypeName() ];
+			(*_object)[ TYPEOBJECT ] = reklameObject->ObjectTypeName();
 			(*_object)[ COMPANYNAME ] = (*reklameObject)[ COMPANYNAME ];
 		}
 	}
@@ -90,7 +89,6 @@ int CLuaReklame::SetReklameObject( lua_State* L )
 int CLuaReklame::GetQuality( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetQuality", QUALITY, 0 ) ); return 1; }
 int CLuaReklame::GetLevel( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) ); return 1; }
 int CLuaReklame::GetNumberDay( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, "GetNumberDay", NUMBERDAY, 0 ) ); return 1; }
-int CLuaReklame::GetTypeName( lua_State* L ) { lua_pushstring( L, GetParam_<NrpText>( L, "GetTypeName", REKLAMETYPE, "" ) ); return 1; }
 int CLuaReklame::SetNumberDay( lua_State* L ) {	SetParam_<int, lua_Integer>( L, "SetNumberDay", NUMBERDAY, lua_tointeger );	return 1; }
 int CLuaReklame::GetTexture( lua_State* L ) { lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "" ) ); return 1; }
 int CLuaReklame::GetPrice( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, "GetPrice", BALANCE, 0 ) ); return 1; }

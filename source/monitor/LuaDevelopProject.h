@@ -19,6 +19,7 @@ public:
 	int GetModuleNumber( lua_State* L );
 	int GetModule( lua_State* L );
 	int GetFamous( lua_State* L );
+	int GetWorkPercentDone( lua_State* L );
 };
 
 }//namespace nrp

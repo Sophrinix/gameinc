@@ -17,7 +17,7 @@ Luna< CLuaPlatform >::RegType CLuaPlatform::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetCpu ),
 	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetRam ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlatform, IsTechAvaible ),
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, IsMyTech ),
 	{0,0}
 };
 
@@ -76,7 +76,7 @@ int CLuaPlatform::GetRam( lua_State* L )
 	return 1;
 }
 
-int CLuaPlatform::IsTechAvaible( lua_State* L )
+int CLuaPlatform::IsMyTech( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:RemovePlatform need CLuaPlatform parameter" );

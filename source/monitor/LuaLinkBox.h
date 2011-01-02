@@ -1,14 +1,7 @@
 #pragma once
 
 #include "ILuaGuiElement.h"
-
-namespace irr
-{
-	namespace gui
-	{
-		class CNrpGuiLinkBox;
-	}
-}
+#include "nrpGuiLinkBox.h"
 
 namespace nrp
 {

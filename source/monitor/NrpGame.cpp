@@ -31,6 +31,7 @@ void CNrpGame::InitializeOptions_()
 	Add<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
 	Add<int>( MONEYONDEVELOP, 0 );
 	Add<int>( CASH, 0 );
+	Add<NrpText>( OWNER, "" );
 	Add<int>( COPYSELL, 0 );
 	Add<int>( STARTRATING, 0 );
 	Add<int>( STARTGAMERATING, 0 );

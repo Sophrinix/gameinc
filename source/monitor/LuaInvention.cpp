@@ -65,7 +65,7 @@ int CLuaInvention::AddUser( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaInvention::AddUser not need parameter");
 
-	IUser* user = (IUser*)lua_touserdata( L, 2 ); 
+	IUser* user = _GetLuaObject< IUser, CLuaUser >( L, 2, false ); 
 	IF_OBJECT_NOT_NULL_THEN	_object->AddUser( user );
 
 	return 1;	

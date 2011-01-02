@@ -5,9 +5,11 @@ namespace nrp
 {
 CLASS_NAME CLASS_LICENSE( "CNrpLicense" );
 
-CNrpLicense::CNrpLicense( const NrpText& name) : INrpProject( CLASS_LICENSE, "" )
+CNrpLicense::CNrpLicense( const NrpText& saveFile ) : INrpProject( CLASS_LICENSE, "" )
 {
-	Add<NrpText>( NAME, name );
+	Add<NrpText>( NAME, "" );
+
+	Load( saveFile );
 }
 
 CNrpLicense::~CNrpLicense(void)

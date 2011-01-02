@@ -7,6 +7,7 @@
 #include "HTMLEngine.h"
 #include "NrpBrowserWindow.h"
 #include "Nrp2dPictureFlow.h"
+#include "NrpGuiFlick.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -128,9 +129,14 @@ void CNrpLoginScene::OnEnter()
 */
 	env->addImage( driver->getTexture("media/textures/splash.png"), core::position2di( 0, 0 ) );
 
+	//gui::CNrpGuiFlick* flick = new gui::CNrpGuiFlick( env, env->getRootGUIElement(), core::recti( 0, 0, 400, 400 ) );
+
 	// ύττεκς fade-in
 	fader_ = env->addInOutFader();
 	fader_->fadeIn( 5000 );
+
+	//for( int i=0; i < 20; i++)
+	//	env->addImage( driver->getTexture( "media/agt_runit.png" ), core::vector2di( 0, 0 ), true, flick );
 }
 //////////////////////////////////////////////////////////////////////////
 

@@ -22,7 +22,7 @@ namespace nrp
 {
 CLASS_NAME CLASS_USER( "IUser" );
 
-IUser::IUser(const NrpText& className, const NrpText& systemName ) : INrpConfig( className, systemName )
+IUser::IUser(const NrpText& className, const NrpText& systemName ) : INrpConfig( className.size() ? className : CLASS_USER, systemName )
 {
 	assert( systemName.size() );
 	Add<NrpText>( NAME, systemName );
@@ -30,6 +30,7 @@ IUser::IUser(const NrpText& className, const NrpText& systemName ) : INrpConfig(
 	Add<int>( CODE_QUALITY, 0 );
 	Add<int>( KNOWLEDGE_LEVEL, 0 );
 	Add<NrpText>( INTERNAL_NAME, systemName );
+	Add<NrpText>( TECHGROUP, className );
 	Add<int>( TALANT, 0 );
 	Add<int>( STAMINA, 0 );
 	Add<int>( MOOD, 0 );
@@ -47,6 +48,7 @@ IUser::IUser(const NrpText& className, const NrpText& systemName ) : INrpConfig(
 	Add<PNrpCompany>( PARENTCOMPANY, NULL );
 	Add<int>( EXPERIENCE, 0 );
 	Add<NrpText>( TEXTURENORMAL, "" );
+	Add<int>( ALL_SKILL_SUMM, 0 );
 }
 
 IUser::~IUser(void)
@@ -73,7 +75,7 @@ void IUser::CalculateWantSalary_()
 
 	sum += (int)Param( CODE_QUALITY ) * 10;
 
-	Param( WANTMONEY ) = (int)sum;
+	_self[ WANTMONEY ] = (int)sum;
 
 	CalculateKnowledgeLevel_();
 }
@@ -81,14 +83,26 @@ void IUser::CalculateWantSalary_()
 void IUser::CalculateKnowledgeLevel_()
 {
 	int sum = 0;
+	int allKnowledge = 0;
 	KNOWLEDGE_MAP::Iterator pIter = knowledges_.getIterator();
 	for( ; !pIter.atEnd(); pIter++)
 	{
-				sum += pIter->getValue();
-				sum /= 2;
+		sum += pIter->getValue();
+		sum /= 2;
+
+		allKnowledge += pIter->getValue();
 	}
-	
-	Param( KNOWLEDGE_LEVEL ) = sum;
+
+	pIter = genreExperience_.getIterator();
+	for( ; !pIter.atEnd(); pIter++ )
+		allKnowledge += pIter->getValue();
+
+	pIter = genrePreferences_.getIterator();
+	for( ; !pIter.atEnd(); pIter++ )
+		allKnowledge += pIter->getValue();
+
+	_self[ ALL_SKILL_SUMM ] = allKnowledge;
+	_self[ KNOWLEDGE_LEVEL ] = sum;
 }
 
 int IUser::GetSkill( const NrpText& name )
@@ -107,23 +121,15 @@ NrpText IUser::Save( const NrpText& folderPath )
 		
 		IniFile sv( fileName );
 
-		KNOWLEDGE_MAP::Iterator gnrIter = genrePreferences_.getIterator();
-		for( ; !gnrIter.atEnd(); gnrIter++ )
-			sv.Set( "genrePreference", gnrIter->getKey(), gnrIter->getValue() );
-		
-		KNOWLEDGE_MAP::Iterator gnrExp = genreExperience_.getIterator();
-		for( ; !gnrExp.atEnd(); gnrExp++ )
-			sv.Set( "genreExperience", gnrExp->getKey(), gnrExp->getValue() );
-
-		KNOWLEDGE_MAP::Iterator knIter = knowledges_.getIterator();
-		for( ; !knIter.atEnd(); knIter++ )
-			sv.Set( "knowledges", knIter->getKey(), knIter->getValue() );
+		sv.Set( SECTION_GENREPREFERENCE, genrePreferences_ );
+		sv.Set( SECTION_GENREEXPIRIENCE, genreExperience_ );	
+		sv.Set( SECTION_KNOWLEDGES, knowledges_ );
 
 		for( u32 i=0; i < works_.size(); i++ )
 		{
 			if( CNrpProjectModule* prjModule = dynamic_cast< CNrpProjectModule* >( works_[ i ] )  )
 			{
-				NrpText projectName = (*prjModule)[ PARENT ].As<INrpProject*>()->Text( NAME );
+				NrpText projectName = (*prjModule)[ PARENT ].As<INrpDevelopProject*>()->Text( NAME );
 				NrpText name = (*prjModule)[NAME];
 				sv.Set( SECTION_WORKS, CreateKeyWork( i ), "project" );
 				sv.Set( SECTION_WORKS, CreateKeyProject( i ), projectName );
@@ -155,7 +161,9 @@ void IUser::Load( const NrpText& fileName )
 	assert( ((NrpText)_self[ NAME ]).size() > 0 );
 
 	IniFile rv( fileName );
-	rv.Get( "knowledges", knowledges_ );
+	rv.Get( SECTION_KNOWLEDGES, knowledges_ );
+	rv.Get( SECTION_GENREPREFERENCE, genrePreferences_ );
+	rv.Get( SECTION_GENREEXPIRIENCE, genreExperience_ );
 
 	for( int k=0; k < (int)_self[ WORKNUMBER ]; k++ )
 	{
@@ -179,19 +187,7 @@ void IUser::Load( const NrpText& fileName )
 		}
 	}
 
-/*	NAMEVALUE_MAP::iterator gnrIter = genrePreferences_.begin();
-	for( ; gnrIter != genrePreferences_.end(); ++gnrIter )
-	IniFile::Write( "genrePreference", gnrIter->first, gnrIter->second, fileName );
-
-	NAMEVALUE_MAP::iterator gnrExp = genreExperience_.begin();
-	for( ; gnrExp != genreExperience_.end(); ++gnrExp )
-		IniFile::Write( "genreExperience", gnrExp->first, gnrExp->second, fileName );
-
-	TECH_LIST::iterator tlIter = techWorks_.begin();
-	//for( ; tlIter != techWorks_.end(); ++tlIter )
-	//	IniFile::Write( "knowledges", tlIter->first, tlIter->second, fileName );
-
-	PropertyArray::iterator paIter = GetProperties().begin();
+/*	PropertyArray::iterator paIter = GetProperties().begin();
 	for( ; paIter != GetProperties().end(); ++paIter)
 	{
 		INrpProperty* prop = paIter->second;
@@ -201,6 +197,8 @@ void IUser::Load( const NrpText& fileName )
 		if( prop->GetValueType() == typeid( NrpText ).name() )
 			IniFile::Write( PROPERTIES, paIter->first, ((CNrpProperty<NrpText>*)prop)->GetValue(), fileName );
 	}*/
+
+	CalculateKnowledgeLevel_();
 }
 
 void IUser::AddWork( IWorkingModule* module, bool toFront )

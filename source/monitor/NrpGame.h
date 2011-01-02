@@ -30,6 +30,7 @@ OPTION_NAME GAMEISSALING( L"gameIsSaling" );
 OPTION_NAME GAMEIMAGELIST( L"gameImageList" );
 OPTION_NAME VIEWIMAGE( L"viewImage" );
 OPTION_NAME GAMERETAILER( L"gameRetailer" );
+OPTION_NAME OWNER( "owner" );
 
 class CNrpGame : public INrpConfig
 {

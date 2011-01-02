@@ -32,7 +32,7 @@ int CLuaComponentListBox::AddItem( lua_State *L )	//добавляет текст в списко ото
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaComponentListBox::AddItem need 2 parameter");
 
 	NrpText text( lua_tostring( L, 2 ) );
-	INrpObject* object = (INrpObject*)lua_touserdata( L, 3 );
+	INrpObject* object = _GetLuaObject< INrpObject, ILuaObject >( L, 3, true );
 	
 	int ret = -1;
 	IF_OBJECT_NOT_NULL_THEN	ret = _object->addItem( text.ToWide(), object, -1 );			
@@ -54,8 +54,8 @@ int CLuaComponentListBox::GetSelectedObject( lua_State* L )
 		if( selected >= 0 )
 			selObject = _object->getSelectedObject();
 	}
-	lua_pushlightuserdata( L, selObject );
 
+	lua_pushlightuserdata( L, selObject );
 	return 1;
 }
 

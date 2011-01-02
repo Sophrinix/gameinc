@@ -5,9 +5,11 @@ namespace nrp
 {
 CLASS_NAME CLASS_SCENARIO( "CNrpScenario" );
 
-CNrpScenario::CNrpScenario( const NrpText& name ) : INrpProject( CLASS_SCENARIO, "" )
+CNrpScenario::CNrpScenario( const NrpText& saveFile ) : INrpProject( CLASS_SCENARIO, "" )
 {
-	Add<NrpText>( NAME, name );
+	Add<NrpText>( NAME, "" );
+
+	Load( saveFile );
 }
 
 CNrpScenario::~CNrpScenario(void)

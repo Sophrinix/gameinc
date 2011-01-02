@@ -42,39 +42,27 @@ public:
 	~CNrpGameProject(void);
 
 	void SetGameEngine( CNrpGameEngine* gameEng );
-	CNrpTechnology* GetGenre( int index );
-	void SetGenre( CNrpTechnology* genre, int number );
-	bool IsGenreIncluded( const CNrpTechnology* checkGenre ) const;
-	bool IsTechInclude( const CNrpTechnology* checkTech );
-	void SetTechnology( CNrpTechnology* ptrTech, int index );
-	void SetVideoTech( CNrpTechnology* ptrTech, int index );
 
-	void SetPlatform( CNrpPlatform* platform, int index=-1 );
+	CNrpTechnology* GetTech( PROJECT_TYPE type, int index );
+	CNrpTechnology* GetTech( PROJECT_TYPE type, const NrpText& Name );
+	void AddTech( const CNrpTechnology* tech );
+	void RemoveTech( const CNrpTechnology* tech );
+	bool IsMyTech( const CNrpTechnology* tech );
+	TECHS& GetTechs( PROJECT_TYPE type );
+
+	void AddPlatform( const CNrpPlatform* platform );
 	CNrpPlatform* GetPlatform( int index );
 	CNrpPlatform* GetPlatform( const NrpText& name );
+	CNrpPlatform* GetPlatform( PROJECT_TYPE type, int index );
+
 	void RemovePlatform( CNrpPlatform* platform );
 
-	CNrpTechnology* GetVideoTech( int index );
-	CNrpTechnology* GetTechnology( int index );
-	
-	void SetLanguage( CNrpTechnology* ptrLang, int index=-1 );
-	CNrpTechnology* GetLanguage( int index );
-	CNrpTechnology* GetLanguage( const NrpText& name );
-	void RemoveLanguage( CNrpTechnology* ptrLang );
-
-	void SetSoundTech( CNrpTechnology* ptrTech, int index );
-	CNrpTechnology* GetSoundTech( int index );
 	NrpText Save( const NrpText& folderSave );
 	void Load( const NrpText& loadFolder );
 
 	void CalculateCodeVolume();
 
-	const TECHS& GetTechList() { return _technologies; }
-	const TECHS& GetGenreList() { return _genres; }
-	const TECHS& GetVideoTechList() { return _video; }
-	const TECHS& GetSoundTechList() { return _sound; }
-	const TECHS& GetLanguageTechList() { return _languages; }
-	const PLATFORMS& GetPlatformsList() { return _platforms; }
+	const PLATFORMS& GetPlatforms() { return _platforms; }
 
 	static NrpText ClassName();
 private:
@@ -87,9 +75,10 @@ private:
 	TECHS _languages;
 	TECHS _sound;
 
-	void _SetTech( CNrpTechnology* ptrTech, int index, TECHS& listd, OPTION_NAME optname );
 	void _GetAllTech( TECHS& techList );
 	void _SaveTech( const OPTION_NAME& name, const NrpText& saveFolder, IniFile* ini );
+	float _CalcEngineBaseCode( float& quality );
+	float _CalcFinalCodeVolume( float baseCode );
 };
 
 typedef CNrpGameProject* PNrpGameProject;

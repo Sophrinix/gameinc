@@ -65,7 +65,8 @@ int CLuaComboBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaComboBox::AddItem need 2 parameter");
 
 	NrpText text( lua_tostring( L, 2 ) );
-	void* object = lua_touserdata( L, 3 );
+	void* object = _GetLuaObject< void, ILuaObject >( L, 3, true );
+	assert( object != NULL );
 	
 	IF_OBJECT_NOT_NULL_THEN	_object->addItem( text.ToWide(), (u32)object );			
 

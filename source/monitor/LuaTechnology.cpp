@@ -197,7 +197,7 @@ int CLuaTechnology::SetStatus( lua_State* L )
 
 int CLuaTechnology::GetStatus( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<TECH_STATUS>( L, "GetStatus", STATUS, TS_UNKNOWN) );
+	lua_pushinteger( L, GetParam_<int>( L, "GetStatus", STATUS, (int)TS_UNKNOWN) );
 	return 1;
 }
 

@@ -2,6 +2,8 @@
 #include "NrpGuiLigthing.h"
 #include "nrpGUIEnvironment.h"
 
+#include <assert.h>
+
 namespace irr
 {
 
@@ -44,6 +46,12 @@ void CNrpGuiLigthing::_CreateNewPositions( s32 radius, s32 step )
 						 static_cast< float >(_elm1->getAbsolutePosition().getCenter().Y ), 
 						 static_cast< float >(_elm2->getAbsolutePosition().getCenter().X ),
 						 static_cast< float >(_elm2->getAbsolutePosition().getCenter().Y ) );
+
+	if( image_ )
+	{
+		_length = aLine.getLength() / 12 + 1;
+	}
+
 	core::vector2df aVector = aLine.getUnitVector();
 	for( s32 k=_positions.size(); k < _length; k++ )
 	{
@@ -55,8 +63,12 @@ void CNrpGuiLigthing::_CreateNewPositions( s32 radius, s32 step )
 
 void CNrpGuiLigthing::_UpdateImagePositions()
 {
+	assert( _elm1 && _elm2 );
+	if( !_elm1 || !_elm2 )
+		return;
+
 	_positions.clear();
-	if( _positions.empty() )
+	if( _positions.empty()  )
 	{
 		_positions.push_back( _elm1->getAbsolutePosition().getCenter() ); 
 	}

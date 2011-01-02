@@ -87,6 +87,7 @@ public:
 	int AddTextRunner( lua_State* vm );
 	int BringToFront( lua_State* L );
 	int AddLigthing( lua_State* L );
+	int AddFlick( lua_State* L );
 	static const char* ClassName();
 };
 

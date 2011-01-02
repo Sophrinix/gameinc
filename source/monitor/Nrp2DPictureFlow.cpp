@@ -10,28 +10,30 @@ namespace irr
 namespace gui
 {
 
-video::ITexture* CNrp2DPictureFlow::CNrpImageDescription::CreateDownTexture_( video::IVideoDriver* driver, 
-																			   video::ITexture* pTxr )
+video::ITexture* CNrp2DPictureFlow::CNrpImageDescription::CreateTextures_( video::IVideoDriver* driver )
 {
 	video::ITexture* resultt = NULL;
 
-	if( pTxr != NULL )
-	{
-		NrpText name = NrpText( pTxr->getName().getPath().c_str() ) + NrpText( "toDown" );
-		resultt = driver->addTexture( core::dimension2du( pTxr->getSize().Width, pTxr->getSize().Height * DEFAULT_SMOOTH ), 
-									  name, pTxr->getColorFormat() );
+	if( texture_ == NULL && _pathToTexture.size() )
+		texture_ = driver->getTexture( _pathToTexture.ToStr() );
 
-		u32* pTxrData = (u32*)pTxr->lock();
+	if( texture_ != NULL )
+	{
+		NrpText name = NrpText( texture_->getName().getPath().c_str() ) + NrpText( "toDown" );
+		resultt = driver->addTexture( core::dimension2du( texture_->getSize().Width, texture_->getSize().Height * DEFAULT_SMOOTH ), 
+									  name, texture_->getColorFormat() );
+
+		u32* pTxrData = (u32*)texture_->lock();
 		u32* resultTxrData = (u32*)resultt->lock();
 		for( size_t k=0; k < resultt->getSize().Height; k++ )
 		{
-			int offsetPtxr = ( pTxr->getSize().Height - k - 1 ) * pTxr->getSize().Width;
+			int offsetPtxr = ( texture_->getSize().Height - k - 1 ) * texture_->getSize().Width;
 			int offsetResult = k * resultt->getSize().Width;
-			int pith = pTxr->getPitch();
-			memcpy( resultTxrData+offsetResult, pTxrData+offsetPtxr, pTxr->getPitch() );
+			int pith = texture_->getPitch();
+			memcpy( resultTxrData+offsetResult, pTxrData+offsetPtxr, texture_->getPitch() );
 		}
 
-		pTxr->unlock();
+		texture_->unlock();
 		resultt->unlock();
 	}
 
@@ -50,13 +52,22 @@ CNrp2DPictureFlow::CNrp2DPictureFlow( IGUIEnvironment* env,
 	int minSize = min( rectangle.getWidth(), rectangle.getHeight() );
 	_pictureRect = core::recti( 0, 0, minSize * 0.5f, minSize * 0.5f );
 	_drawBackground = true;
+	_lastTimeTexturesUpdate = 0;
+}
+
+u32 CNrp2DPictureFlow::addItem( const wchar_t* pathToTexture, const wchar_t* text, void* object )
+{
+	u32 resultt = addItem( NULL, text );
+	_images[ resultt ]->object = object;
+	_images[ resultt ]->SetTexture( pathToTexture );
+	return resultt;
 }
 
 u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text )
 {
 	CNrpImageDescription* descr = new CNrpImageDescription();
 	_images.push_back( descr );
-	descr->SetTexture( Environment->getVideoDriver(), texture ); 
+	descr->SetTexture( texture ); 
 	
 	descr->rectangle = core::recti( 0, 0, 0, 0 );
 
@@ -179,6 +190,12 @@ void CNrp2DPictureFlow::draw()
 	if( !IsVisible )
 		return;
 
+	if( GetTickCount() - _lastTimeTexturesUpdate > 250 )
+	{
+		_UpdateTextures();
+		_lastTimeTexturesUpdate = GetTickCount();
+	}
+
 	_UpdatePositions();
 
 	if( _drawBackground )
@@ -196,6 +213,17 @@ void CNrp2DPictureFlow::draw()
 			_DrawPairImage( _images[ _activeIndex ] );
 	}
 	IGUIListBox::draw();
+}
+
+void CNrp2DPictureFlow::_UpdateTextures()
+{
+	for( size_t k=0; k < _images.size(); k++ )
+		if( !_images[ k ]->IsLoaded() )
+		{
+			_images[ k ]->UpdateTextures( Environment->getVideoDriver() );
+			_UpdateImages();
+			break;
+		}
 }
 
 void CNrp2DPictureFlow::_UpdatePositions()
@@ -379,7 +407,7 @@ void CNrp2DPictureFlow::setItemTexture( u32 index, video::ITexture* texture )
 {
 	assert( index < _images.size() );
 	if( index < _images.size() )
-		_images[ index ]->SetTexture( Environment->getVideoDriver(), texture );
+		_images[ index ]->SetTexture( texture );
 }
 
 void CNrp2DPictureFlow::setItemBlend( u32 index, int blend )

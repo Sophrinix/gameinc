@@ -17,7 +17,7 @@ public:
 	int GetTexture( lua_State* L );
 	int GetCpu( lua_State* L );
 	int GetRam( lua_State* L );
-	int IsTechAvaible( lua_State* L );
+	int IsMyTech( lua_State* L );
 };
 
 }//end namespace nrp

@@ -338,8 +338,8 @@ void CNrpScript::AddActionToTemporaryScript( const NrpText& fileName, const NrpT
 {
 	NrpText fn = NrpText("tmp/") + fileName + ".lua";
 	IWriteFile* file = _nrpEngine.GetFileSystem()->createAndWriteFile( fn, true );
-	file->write( action.ToWide(), action.size() );
-	file->write( L"\n", 1 );
+	file->write( const_cast< NrpText& >( action ).ToStr(), action.size() );
+	file->write( "\n", 1 );
 	file->drop();		
 }
 

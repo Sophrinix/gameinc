@@ -19,35 +19,42 @@ Luna< CLuaDevelopModule >::RegType CLuaDevelopModule::methods[] =			//реализуемы
 {
 	LUNA_ILUAPROJECT_HEADER( CLuaDevelopModule ),
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetTechGroup ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetOptionAsInt ),
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetOption ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetEmployerPosibility ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, Remove ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetLevel ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetParent ),
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetPercentDone ),
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetQuality ),
 	{0,0}
 };
 
 CLuaDevelopModule::CLuaDevelopModule(lua_State *L) : ILuaProject( L, CLASS_DEVELOPMODULE )							//конструктор
 {}
 
-int CLuaDevelopModule::GetTechGroup( lua_State* L ) 
-{ 
-	lua_pushinteger( L, GetParam_<int>( L, "GetTechGroup", TECHGROUP, 0 ) ); 
-	return 1; 
-}
-
-int CLuaDevelopModule::GetOptionAsInt( lua_State* L )
+int CLuaDevelopModule::GetOption( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaDevelopModule::GetOptionAsInt need int parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaDevelopModule::GetOption need option name as parameter");
 
 	NrpText opName = lua_tostring( L, 2 );
 
-	int result = 0;
-	IF_OBJECT_NOT_NULL_THEN	result = (*_object)[ opName ];
-	lua_pushinteger( L, result );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		NParam& param = (*_object)[ opName ];
+		if( param.Is<int>() )
+			lua_pushinteger( L, (int)param );
+		else if( param.Is<NrpText>() )
+			lua_pushstring( L, (NrpText)param );
+		else if( param.Is<float>() )
+			lua_pushnumber( L, (float)param );
+		else 
+		{
+			assert( false && "param type unknown" );
+			lua_pushnil( L );
+		}
+	}
 	return 1;	
 }
 
@@ -78,6 +85,19 @@ int CLuaDevelopModule::Remove( lua_State* L )
 	}
 
 	return 1;	
+}
+
+int CLuaDevelopModule::GetPercentDone( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<float>( L, "GetPercentDone", READYWORKPERCENT, 0 ) * 100 );
+	return 1;
+}
+
+int CLuaDevelopModule::GetQuality( lua_State* L )
+{
+	int tmpQuality = GetParam_<int>( L, "GetQuality", QUALITY, 0 ) * GetParam_<float>( L, "GetPercentDone", READYWORKPERCENT, 0 );
+	lua_pushinteger( L, tmpQuality );
+	return 1;
 }
 
 int CLuaDevelopModule::GetLevel( lua_State* L )

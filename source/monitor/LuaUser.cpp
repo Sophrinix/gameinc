@@ -104,7 +104,7 @@ int CLuaUser::GetTypeName( lua_State* L )
 	
 	NrpText name;
 
-	IF_OBJECT_NOT_NULL_THEN name = _object->ObjectTypeName();
+	IF_OBJECT_NOT_NULL_THEN name = (*_object)[ TECHGROUP ];
 
 	lua_pushstring( L, name );
 	return 1;	

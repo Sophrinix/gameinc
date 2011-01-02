@@ -39,7 +39,7 @@ public:
 		return GetDaysBetweenDate( begin, end ) / 30;
 	}
 
-	static SYSTEMTIME GetDateWithDay( SYSTEMTIME& start, int dayNumber )
+	static SYSTEMTIME DatePlusDay( SYSTEMTIME& start, int dayNumber )
 	{
 		double time;
 		int errCurrTime = SystemTimeToVariantTime( &start, &time );

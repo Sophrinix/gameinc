@@ -14,7 +14,6 @@ OPTION_NAME TALANT( L"talant" ); /*< Талант. от этого параметра зависит скорость
 OPTION_NAME STAMINA( L"stamina" );/*< Усталость. При значении ниже 90% умножается на codeSpeed_, для получения конечного значения */
 OPTION_NAME MAXMOOD( L"maxMood" );/*! Максимальный уровень настроения, рассчитывается в начале дня */
 OPTION_NAME MOOD( L"mood" );/*< Настроение. При низком настроении может уволиться */
-OPTION_NAME POPULARITY( L"popularity" );/*< изветность разработчика */
 OPTION_NAME SALARY( L"salary" );/*< зарплата разработчика*/
 OPTION_NAME WANTMONEY( L"wantMoney" ); /*! Зарплата, которой будет доволен работник */
 OPTION_NAME STABILITY( L"stability");/*< скорость падения усталости */
@@ -30,6 +29,7 @@ OPTION_NAME HANGRY( L"hangry" ); /*! Чуство голода*/
 OPTION_NAME COLLECTIVINTEGRATION( L"collectivintegration" ); /*! Умение работать в коллективе*/
 OPTION_NAME TIMEMANAGMENT( L"timeManagment" ); /*!  Управление временем, от этого параметра зависит реальное время потраченное на разарботку */
 OPTION_NAME EXPERIENCE( L"experience" );
+OPTION_NAME ALL_SKILL_SUMM( L"allSkillSumm" );
 
 class IUserAction;
 class CNrpTechnology; 

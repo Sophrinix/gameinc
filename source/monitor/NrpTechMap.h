@@ -64,7 +64,7 @@ public:
 		for( size_t pos=0; pos < techs_.size(); pos++ )
 		{
 			 offset = techs_[ pos ]->RootCell( xpos+1, offset );
-			 offset += techs_.size() > 1 ? 1 : 0;
+			 offset += (techs_.size() > 0 ? 1 : 0);
 		}
 		
 		return offset;

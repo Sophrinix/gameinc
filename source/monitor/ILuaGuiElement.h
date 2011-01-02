@@ -337,14 +337,17 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 3, 3, _ErrStr( NrpText( ":SetPosition need 2 parameter" ) ) );
 
-		core::position2di newPos;
-		newPos.X = lua_tointeger( L, 2 );
-		newPos.Y = lua_tointeger( L, 3 );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			gui::IGUIElement* elm = _object->getParent();
+			core::dimension2di sides = elm ? elm->getAbsolutePosition().getSize() : core::dimension2di( 0, 0);
 
-		core::recti wndRect = _object->getAbsolutePosition();
-		core::recti newRect( newPos.X, newPos.Y, newPos.X + wndRect.getWidth(), newPos.Y + wndRect.getHeight() );
+			core::position2di newPos;
+			newPos.X = _ReadParam( L, 2, sides.Width, _object->getRelativePosition().UpperLeftCorner.X );
+			newPos.Y = _ReadParam( L, 3, sides.Height, _object->getRelativePosition().UpperLeftCorner.Y );
 
-		IF_OBJECT_NOT_NULL_THEN _object->setRelativePosition( newRect );
+			_object->setRelativePosition( newPos );
+		}
 
 		return 1;
 	}

@@ -14,7 +14,7 @@ CNrpReklameWork::CNrpReklameWork( const NrpText& typeName,
 				: INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
-	_self[ REKLAMETYPE ] = typeName;
+	_self[ INTERNAL_NAME ] = typeName;
 	_self[ GAMENAME ] = gameName;
 }
 
@@ -32,6 +32,8 @@ void CNrpReklameWork::InitializeOptions_()
 	Add<int>( BALANCE, 0 );
 	Add<NrpText>( COMPANYNAME, "" );
 	Add<NrpText>( TYPEOBJECT, "" );
+	Add<int>( POPULARITY, 0 );
+	Add<NrpText>( INTERNAL_NAME, "" );
 
 	SYSTEMTIME rt;
 	memset( &rt, 0, sizeof( rt ) );
@@ -41,16 +43,16 @@ void CNrpReklameWork::InitializeOptions_()
 CNrpReklameWork::CNrpReklameWork( const CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
-	Param( NUMBERDAY ) = p[ NUMBERDAY ];
-	Param( LEVEL ) = p[ LEVEL ];
-	Param( NAME ) = p[ NAME ];
-	Param( DAYCOST ) = p[ DAYCOST ];
-	Param( QUALITY ) = p[ QUALITY ];
-	Param( MAXQUALITY ) = p[ MAXQUALITY ];
-	Param( GAMENAME ) = p[ GAMENAME ];
-	_self[ REKLAMETYPE ] = p[ REKLAMETYPE ];
-	Param( TEXTURENORMAL ) = p[ TEXTURENORMAL ];
-	Param( COMPANYNAME ) = p[ COMPANYNAME ];
+	_self[ NUMBERDAY ] = p[ NUMBERDAY ];
+	_self[ LEVEL ] = p[ LEVEL ];
+	_self[ NAME ] = p[ NAME ];
+	_self[ DAYCOST ] = p[ DAYCOST ];
+	_self[ QUALITY ] = p[ QUALITY ];
+	_self[ MAXQUALITY ] = p[ MAXQUALITY ];
+	_self[ GAMENAME ] = p[ GAMENAME ];
+	_self[ INTERNAL_NAME ] = p[ INTERNAL_NAME ];
+	_self[ TEXTURENORMAL ] = p[ TEXTURENORMAL ];
+	_self[ COMPANYNAME ] = p[ COMPANYNAME ];
 	
 	//надо проверять корректность загруженных данных
 	assert( Text( GAMENAME ).size() );
@@ -116,7 +118,7 @@ NrpText CNrpReklameWork::Save( const NrpText& saveFolder )
 	assert( OpFileSystem::IsExist( saveFolder ) );
 	//должно получиться что-то вроде Компания_Продукт.Тип
 	NrpText fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + Text( COMPANYNAME ) + "_";
-	fileName += (Text( GAMENAME ) + "." + Text( REKLAMETYPE ));
+	fileName += (Text( GAMENAME ) + "." + Text( INTERNAL_NAME ));
 	INrpConfig::Save( fileName );
 
 	return fileName;
@@ -124,7 +126,7 @@ NrpText CNrpReklameWork::Save( const NrpText& saveFolder )
 
 bool CNrpReklameWork::Equale( const NrpText& type, const NrpText& gName )
 {
-	return ( Text( REKLAMETYPE ) == type && Text( GAMENAME ) == gName );
+	return ( Text( INTERNAL_NAME ) == type && Text( GAMENAME ) == gName );
 }
 
 NrpText CNrpReklameWork::ClassName()

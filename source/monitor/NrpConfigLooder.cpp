@@ -59,7 +59,7 @@ CNrpConfigLooder::~CNrpConfigLooder(void)
 
 void CNrpConfigLooder::_WriteInt( const NParam* prop, const NrpText& key, IniFile* ini )
 {
-	ini->Set( SECTION_PROPERTIES, key + L":int", (int)prop );
+	ini->Set( SECTION_PROPERTIES, key + L":int", (int)(*prop) );
 }
 
 void CNrpConfigLooder::Save( const NrpText& fileName ) 
@@ -80,9 +80,9 @@ void CNrpConfigLooder::Save( const NrpText& fileName )
 		WRITERS_MAP::Node* wIter = _writers.find( prop->GetType() );
 
 		if( wIter )
-			_WriteUnknown( prop, paIter->first, ini.get() );
+			(this->*(wIter->getValue()))( prop, paIter->first, ini.get() );		
 		else
-			(this->*(wIter->getValue()))( prop, paIter->first, ini.get() );
+			_WriteUnknown( prop, paIter->first, ini.get() );		
 	}
 }
 
@@ -97,14 +97,17 @@ void CNrpConfigLooder::Load( const NrpText& fileName )
 	NrpText readLine( buffer );
 	while( readLine.size() )
 	{
-		KeyPair pairt( readLine );
+		if( readLine.find( L";" ) != 0 )
+		{
+			KeyPair pairt( readLine );
 
-		READERS_MAP::Node* rIter = _readers.find( pairt.GetType() );
-		assert( rIter );
-		if( rIter )
-			(this->*(rIter->getValue()))( &pairt );
-				
-		memcpy( buffer, buffer + wcslen(buffer) + 1, MAX_BUFFER );  
+			READERS_MAP::Node* rIter = _readers.find( pairt.GetType() );
+			assert( rIter );
+			if( rIter )
+				(this->*(rIter->getValue()))( &pairt );
+		}
+
+		memcpy( buffer, buffer + wcslen(buffer) + 1, MAX_BUFFER );  		
 		readLine = buffer;
 	}
 }
@@ -140,35 +143,37 @@ void CNrpConfigLooder::_InitWriters()
 
 void CNrpConfigLooder::_ReadInt( KeyPair* p )
 {
-	_config->Add( p->GetName(), static_cast< int >( NrpText::LuaNumber( p->GetValue() ) ) );	
+	(*_config)[ p->GetName() ] = static_cast< int >( NrpText::LuaNumber( p->GetValue() ) );	
 }
 
 void CNrpConfigLooder::_ReadFloat( KeyPair* p )
 {
-	_config->Add( p->GetName(), static_cast< float >( NrpText::LuaNumber( p->GetValue() ) ) );	
+	(*_config)[ p->GetName() ] = static_cast< float >( NrpText::LuaNumber( p->GetValue() ) );	
 }
 
 void CNrpConfigLooder::_ReadBool( KeyPair* p )
 {
-	_config->Add( p->GetName(), p->GetValue().ToBool() );
+	(*_config)[ p->GetName() ] = p->GetValue().ToBool();
 }
 
 void CNrpConfigLooder::_ReadString( KeyPair* p )
 {
-	_config->Add( p->GetName(), NrpText::LuaString( p->GetValue() ) );
+	(*_config)[ p->GetName() ] = NrpText::LuaString( p->GetValue() );
 }
 
 void CNrpConfigLooder::_ReadTime( KeyPair* p )
 {
-	_config->Add( p->GetName(), p->GetValue().ToTime() );
+	(*_config)[ p->GetName() ] = p->GetValue().ToTime();
 }
 
 void CNrpConfigLooder::_ReadUser( KeyPair* p )
 {
 	IUser* user = _nrpApp.GetUser( p->GetValue() );
-	assert( user != NULL );
+
 	if( user )
-		_config->Add( p->GetName(), user );
+		(*_config)[ p->GetName() ] = user;
+	else
+		Log(HW) << "User NULL from " << p->GetValue();
 }
 
 void CNrpConfigLooder::_ReadTechnology( KeyPair* p )
@@ -176,7 +181,7 @@ void CNrpConfigLooder::_ReadTechnology( KeyPair* p )
 	PNrpTechnology tech = _nrpApp.GetTechnology( p->GetValue() );
 	assert( tech != NULL );
 	if( tech )
-		_config->Add( p->GetName(), tech );
+		(*_config)[ p->GetName() ] = tech;
 }
 
 void CNrpConfigLooder::_WriteUnknown( const NParam* prop, const NrpText& key, IniFile* ini )
@@ -210,7 +215,7 @@ void CNrpConfigLooder::_WriteUser( const NParam* prop, const NrpText& key,
 
 void CNrpConfigLooder::_WriteFloat( const NParam* prop, const NrpText& key, IniFile* ini )
 {
-	ini->Set( SECTION_PROPERTIES, key + ":float", prop->As<float>() );
+	ini->Set( SECTION_PROPERTIES, key + ":float", (float)*prop );
 }
 
 void CNrpConfigLooder::_WriteTime( const NParam* prop, const NrpText& key, IniFile* ini )
@@ -220,7 +225,7 @@ void CNrpConfigLooder::_WriteTime( const NParam* prop, const NrpText& key, IniFi
 
 void CNrpConfigLooder::_WriteString( const NParam* prop, const NrpText& key, IniFile* ini)
 {
-	ini->Set( SECTION_PROPERTIES, key + L":string", prop->As<NrpText>() );
+	ini->Set( SECTION_PROPERTIES, key + L":string", (NrpText)*prop );
 }
 
 void CNrpConfigLooder::_WriteBool( const NParam* prop, const NrpText& key, 

@@ -108,13 +108,12 @@ void CNrpCompany::AddUser( IUser* user )
 		_employers.push_back( user );
 		(*user)[ SALARY ] = (*user)[ WANTMONEY ];
 		(*user)[ PARENTCOMPANY ] = this;
-		Param( USERNUMBER ) = static_cast< int >( _employers.size() );
+		_self[ USERNUMBER ] = static_cast< int >( _employers.size() );
 	}
 }
 
 IUser* CNrpCompany::GetUser( int index ) const
 {
-	assert( index >=0 && index < (int)_employers.size() );
 	return index < (int)_employers.size() ? _employers[ index ] : NULL;
 }
 
@@ -156,7 +155,7 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 {
 	IniFile rv( fileName );
 
-	int maxCond = (int)Param( condition );
+	int maxCond = (int)_self[ condition ];
 	for( int i=0; i < maxCond; i++ )
 	{
 		NrpText type = rv.Get( section, CreateKeyType(i), NrpText() );
@@ -167,7 +166,7 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		{
 			AddGameEngine( _nrpApp.GetGameEngine( rName ) );
 		}
-		else if( type == IUser::ClassName() )
+		else if( type == IUser::ClassName() || type == L"coder" || type == L"designer" || type == L"composer" || type == L"tester" )
 		{
 			AddUser( _nrpApp.GetUser( rName ) );
 		}
@@ -182,6 +181,10 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		else if( type == CNrpInvention::ClassName() )
 		{
 			AddInvention( _nrpApp.GetInvention( rName, Text( NAME ) ) );
+		}
+		else if( type == CNrpDevelopGame::ClassName() )
+		{
+			AddDevelopProject( _nrpApp.GetDevelopProject( rName ) );
 		}
 		/*else if( type == INrpProject::ClassName() )
 		{
@@ -215,11 +218,11 @@ void CNrpCompany::Load( const NrpText& loadFolder )
 	_LoadArray( SECTION_GAMES, loadFile, GAMENUMBER );
 	_LoadArray( SECTION_INVENTIONS, loadFile, INVENTIONSNUMBER );
 	//_LoadArray( SECTION_PROJECTS, loadFile, PROJECTNUMBER );
-	//_LoadArray( SECTION_DEVPROJECTS, loadFile, DEVELOPPROJECTS_NUMBER );
+	_LoadArray( SECTION_DEVPROJECTS, loadFile, DEVELOPPROJECTS_NUMBER );
 
 	IniFile rv( loadFile );
 
-	int maxObj = (int)Param( OBJECTSINPORTFELLE );
+	int maxObj = (int)_self[ OBJECTSINPORTFELLE ];
 	for( int k=0; k < maxObj; k++ )
 	{
 		NrpText typeName = rv.Get( SECTION_PORTFELLE, CreateKeyType( k ), NrpText() );
@@ -351,11 +354,11 @@ void CNrpCompany::AddDevelopProject( INrpDevelopProject* ptrDevProject )
 	if( ptrDevProject == NULL )
 		return;
 
-	if( FindByNameAndIntName< DEVPROJECTS, INrpDevelopProject >( _devProjects, ptrDevProject->Text( NAME ) ) )
+	if( FindByNameAndIntName< DEVPROJECTS, INrpDevelopProject >( _devProjects, ptrDevProject->Text( NAME ) ) == NULL )
 		_devProjects.push_back( ptrDevProject );
 
-	Param( DEVELOPPROJECTS_NUMBER ) == static_cast< int >( _devProjects.size() );
-	ptrDevProject->Param( COMPANYNAME ) = Text( NAME );
+	_self[ DEVELOPPROJECTS_NUMBER ] = static_cast< int >( _devProjects.size() );
+	(*ptrDevProject)[ COMPANYNAME ] = _self[ NAME ];
 }
 
 INrpDevelopProject* CNrpCompany::GetDevelopProject( const NrpText& name ) const
@@ -381,7 +384,7 @@ void CNrpCompany::RemoveDevelopProject( const NrpText& name )
 		if( _devProjects[ i ]->Equale( name ) )
 			_devProjects.erase( i );
 
-	Param( DEVELOPPROJECTS_NUMBER ) = static_cast< int >( _devProjects.size() );
+	_self[ DEVELOPPROJECTS_NUMBER ] = static_cast< int >( _devProjects.size() );
 	_nrpApp.RemoveDevelopProject( name );
 }
 
@@ -401,7 +404,8 @@ void CNrpCompany::AddInvention( CNrpInvention* const inv )
 	if( inv && FindByNameAndIntName<INVENTIONS, CNrpInvention>( _inventions, inv->Text( NAME ) ) == NULL )
 	{
 		_inventions.push_back( inv );
-		Param( INVENTIONSNUMBER ) = static_cast< int >( _inventions.size() );
+		(*inv)[ PARENTCOMPANY ] = this;
+		_self[ INVENTIONSNUMBER ] = static_cast< int >( _inventions.size() );
 	}
 }
 

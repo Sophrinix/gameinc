@@ -13,7 +13,7 @@ OPTION_NAME SELLDEVICE("selldevice");
 class CNrpPlatform : public INrpProject
 {
 public:
-	CNrpPlatform( const NrpText& name );
+	CNrpPlatform( const NrpText& fileName );
 	~CNrpPlatform(void);
 
 	NrpText Save( const NrpText& pathTo );

@@ -31,6 +31,9 @@ SECTION_NAME SECTION_MODULES( L"modules" );
 SECTION_NAME SECTION_ADDONS( L"addons" );
 SECTION_NAME SECTION_IMAGES( L"images" );
 SECTION_NAME SECTION_BOXIMAGES( L"imagesBox" );
+SECTION_NAME SECTION_GENREPREFERENCE( L"genrePreference" );
+SECTION_NAME SECTION_GENREEXPIRIENCE( L"genreExperience" );
+SECTION_NAME SECTION_KNOWLEDGES( L"knowledges" );
 
 NrpText CreateKeyImage( int index );
 NrpText CreateKeyBoxImage( int index );

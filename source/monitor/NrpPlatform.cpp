@@ -9,9 +9,11 @@ namespace nrp
 {
 CLASS_NAME CLASS_PLATFORM( "CNrpPlatform" );
 
-CNrpPlatform::CNrpPlatform( const NrpText& name ) : INrpProject( CLASS_PLATFORM, name )
+CNrpPlatform::CNrpPlatform( const NrpText& fileName ) : INrpProject( CLASS_PLATFORM, "" )
 {
 	_InitialyzeOptions();
+
+	Load( fileName );
 }
 
 CNrpPlatform::CNrpPlatform( void ) : INrpProject( CLASS_PLATFORM, CLASS_PLATFORM )
@@ -34,6 +36,12 @@ void CNrpPlatform::_InitialyzeOptions()
 	Add( TEXTURENORMAL, NrpText() );
 	Add( TECHNUMBER, 0 );
 	Add( BASE_CODE, 0.f );
+	Add( ENGINE_CODE, 0.f );
+	Add( LEVEL, 0 );
+	Add( QUALITY, 100 );
+	Add( STARTDATE, SYSTEMTIME() );
+	Add( ENDDATE, SYSTEMTIME() );
+
 }
 
 NrpText CNrpPlatform::ClassName()
@@ -45,7 +53,7 @@ NrpText CNrpPlatform::Save( const NrpText& pathTo )
 {
 	assert( OpFileSystem::IsExist(pathTo) );
 
-	NrpText localFolder = OpFileSystem::CheckEndSlash( pathTo + Text( NAME ) );
+	NrpText localFolder = OpFileSystem::CheckEndSlash( pathTo + Text( INTERNAL_NAME ) );
 
 	OpFileSystem::CreateDirectory( localFolder );
 

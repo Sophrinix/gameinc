@@ -92,7 +92,7 @@ public:
 
 	//! Reads attributes of the element
 	virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options);
-	void setOverrideColor(video::SColor color);
+	virtual void setOverrideColor(video::SColor color);
 
 	inline void enableOverrideColor( bool bvalue ) { overrideColorEnabled_ = bvalue; }
 
@@ -102,6 +102,7 @@ public:
 
 	virtual void setOnClickAction( const NrpText& funcname ) { onClickAction_ = funcname; }
 	virtual nrp::NrpText& getOnClickAction() { return onClickAction_; }
+
 protected:
 
 	struct ButtonSprite

@@ -6,7 +6,7 @@ namespace nrp
 class CNrpLicense : public INrpProject
 {
 public:
-	CNrpLicense(const NrpText& name);
+	CNrpLicense(const NrpText& saveFile );
 	~CNrpLicense(void);
 	NrpText Save( const NrpText& pathTo );
 	void Load( const NrpText& pathTo );

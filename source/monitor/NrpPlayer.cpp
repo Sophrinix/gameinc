@@ -8,12 +8,13 @@ CLASS_NAME CLASS_REALPLAYER("RealPlayer");
 CNrpPlayer::CNrpPlayer( const NrpText& name, CNrpCompany* ptrCmp ) : IUser( CLASS_REALPLAYER, name )
 {
 	assert( name.size() > 0 );
-	Param( NAME ) = name;
+	_self[ NAME ] = name;
 }
 
-CNrpPlayer::CNrpPlayer( const NrpText& fileName ) : IUser( CLASS_REALPLAYER, NrpText("") )
+CNrpPlayer::CNrpPlayer( const NrpText& fileName ) : IUser( CLASS_REALPLAYER, fileName )
 {
 	Load( fileName );
+	assert( ((NrpText)_self[ NAME ]).size() > 0 );
 }
 
 CNrpPlayer::~CNrpPlayer(void)

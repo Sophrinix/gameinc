@@ -18,6 +18,11 @@ CLASS_NAME CLASS_HUDCONFIG( L"CNrpHUDConfig" );
 
 CNrpHUDConfig::CNrpHUDConfig() : INrpConfig(CLASS_HUDCONFIG, CLASS_HUDCONFIG)
 {		
+	Add( FONT_SIMPLE, NrpText("") );
+	Add( FONT_TOOLTIP, NrpText("") );
+	for( int i=0; i < 50; i++ )
+		Add( NrpText(L"font_") + NrpText( i ), NrpText("") );
+
 	Load( L"config/hud.ini" );
 }
 //////////////////////////////////////////////////////////////////////////

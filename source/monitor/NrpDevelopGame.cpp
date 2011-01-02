@@ -39,8 +39,8 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 	Add<int>( BASEQUALITY, 0 );
 	Add<int>( QUALITY, 0 );
 	Add<int>( CODEVOLUME, 0 );
-	Add<CNrpScenario*>( SCENARIO, NULL );
-	Add<CNrpLicense*>( GLICENSE, NULL );
+	Add<PNrpScenario>( SCENARIO, NULL );
+	Add<PNrpLicense>( GLICENSE, NULL );
 	Add<int>( MONEYONDEVELOP, 0 );
 	Add<int>( PLATFORMNUMBER, 0 );
 	Add<int>( GENRE_MODULE_NUMBER, 0 );
@@ -48,6 +48,7 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 	Add<float>( FAMOUS, 0 );
 
 	_self[ NAME ] = name;
+	_self[ TECHGROUP ] = static_cast< int >( PT_GAME );
 }
 
 void CNrpDevelopGame::_AddModulesFrom( const CNrpTechnology* tech, int baseCode )
@@ -91,8 +92,9 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	PNrpGameEngine ge = refPr[ GAME_ENGINE ].As<PNrpGameEngine>();
 	_self[ GAME_ENGINE ] = ge;
 
-	CNrpProjectModule* extEngine = new CNrpProjectModule( PT_ENGINDEEXTEND, this );
+	CNrpProjectModule* extEngine = new CNrpProjectModule( PT_PLUGIN, this );
 	(*extEngine)[ NAME ] = Text( NAME ) + " Расширение движка";
+	(*extEngine)[ INTERNAL_NAME ] = Text( NAME ) + "_extent";
 	(*extEngine).SetEmployerSkillRequire( SKILL_CODING, (*ge)[ SKILL_CODING ] );
 	(*extEngine)[ CODEVOLUME ] = refPr[ ENGINE_CODEVOLUME ];
 	(*extEngine)[ BASE_CODE ] = 1.f;
@@ -112,12 +114,12 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	_AddModulesFrom( refPr[ PHYSICSENGINE ].As<CNrpTechnology*>(), bcv );
 	_AddModulesFrom( refPr[ GRAPHICQUALITY ].As<CNrpTechnology*>(), bcv);
 	_AddModulesFrom( refPr[ SOUNDQUALITY ].As<CNrpTechnology*>(), bcv );
-	_AddModulesFrom< CNrpTechnology >( refPr.GetTechList(), bcv );
-	_AddModulesFrom< CNrpTechnology >( refPr.GetGenreList(), bcv );
-	_AddModulesFrom< CNrpTechnology >( refPr.GetVideoTechList(), bcv );
-	_AddModulesFrom< CNrpTechnology >( refPr.GetSoundTechList(), bcv );
-	_AddModulesFrom< CNrpTechnology >( refPr.GetLanguageTechList(), bcv );
-	_AddModulesFrom< CNrpPlatform >( refPr.GetPlatformsList(), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetTechs( PT_ADVTECH ), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetTechs( PT_GENRE ), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetTechs( PT_VIDEOTECH ), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetTechs( PT_SOUNDTECH ), bcv );
+	_AddModulesFrom< CNrpTechnology >( refPr.GetTechs( PT_LANGUAGE ), bcv );
+	_AddModulesFrom< CNrpPlatform >( refPr.GetPlatforms(), bcv );
 
 	_self[ PROJECTSTATUS ] = NrpText( "develop" );
 	_self[ MODULE_NUMBER ] = static_cast< int >( _modules.size() );
@@ -168,26 +170,26 @@ NrpText CNrpDevelopGame::Save( const NrpText& folderSave )
 
 	for( u32 i=0; i < _modules.size(); i++ )
 	{
-		_modules[ i ]->Save( localFolder );
-		sf.Set( SECTION_MODULES, CreateKeyModule(i), _modules[ i ]->Text( NAME ) );
+		NrpText saveFile = _modules[ i ]->Save( localFolder );
+		sf.Set( SECTION_MODULES, CreateKeyModule(i), saveFile );
 	}
 
-	if( PNrpGameEngine ge = Param( GAME_ENGINE ).As<PNrpGameEngine>() )
-		sf.Set( SECTION_PROPERTIES, GAME_ENGINE, ge->Text( NAME ) );
+	if( PNrpGameEngine ge = _self[ GAME_ENGINE ].As<PNrpGameEngine>() )
+		sf.Set( SECTION_PROPERTIES, GAME_ENGINE, (NrpText)(*ge)[ INTERNAL_NAME ] );
 
-	if( PNrpScenario sxn = Param( SCENARIO ).As<PNrpScenario>() )
+	if( PNrpScenario sxn = _self[ SCENARIO ].As<PNrpScenario>() )
 	{
-		sf.Set( SECTION_PROPERTIES, SCENARIO, sxn->Text(NAME) );
-		sxn->Save( localFolder + SCENARIO + ".ini" );
+		NrpText saveFile = sxn->Save( localFolder );
+		sf.Set( SECTION_PROPERTIES, SCENARIO, saveFile );
 	}
 
-	if( PNrpLicense sln = Param( GLICENSE ).As<PNrpLicense>() )
+	if( PNrpLicense sln = _self[ GLICENSE ].As<PNrpLicense>() )
 	{
-		sf.Set( SECTION_PROPERTIES, GLICENSE, sln->Text(NAME) );
-		sln->Save( localFolder + GLICENSE + ".ini");
+		NrpText saveFile = sln->Save( localFolder );
+		sf.Set( SECTION_PROPERTIES, GLICENSE, saveFile );
 	}
 
-	return folderSave;
+	return localFolder;
 }
 
 void CNrpDevelopGame::Load( const NrpText& loadFolder )
@@ -202,27 +204,20 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 
 	for( int i=0; i < (int)Param( MODULE_NUMBER ); ++i )
 	{
-		NrpText name = rf.Get( SECTION_MODULES, CreateKeyModule(i), NrpText("") );
-		if( name.size() )
-		{
-			CNrpProjectModule* tech = new CNrpProjectModule( PROJECT_TYPE( 0 ), this );
-			tech->Load( myFolder + name + ".devmod" );
-			_modules.push_back( tech );		
-		}
+		NrpText saveFile = rf.Get( SECTION_MODULES, CreateKeyModule(i), NrpText("") );
+		CNrpProjectModule* tech = new CNrpProjectModule( PROJECT_TYPE( 0 ), this );
+		tech->Load( saveFile );
+		_modules.push_back( tech );		
 	}
 
-	NrpText name = rf.Get( SECTION_PROPERTIES, GAME_ENGINE, NrpText("") );
-	Param( GAME_ENGINE ) = _nrpApp.GetGameEngine( name );
+	NrpText saveFile = rf.Get( SECTION_PROPERTIES, GAME_ENGINE, NrpText("") );
+	_self[ GAME_ENGINE ] = _nrpApp.GetGameEngine( saveFile );
 
-	name = rf.Get( SECTION_PROPERTIES, SCENARIO, NrpText("") );
-	PNrpScenario scenario = new CNrpScenario( name );
-	scenario->Load( myFolder + SCENARIO + ".ini" ); 
-	Param( SCENARIO ) = scenario;
+	saveFile = rf.Get( SECTION_PROPERTIES, SCENARIO, NrpText("") );
+	_self[ SCENARIO ] = new CNrpScenario( saveFile );
 
-	name = rf.Get( SECTION_PROPERTIES, GLICENSE, NrpText("") );
-	PNrpLicense license = new CNrpLicense( name );
-	license->Load( myFolder + GLICENSE + ".ini" );
-	Param( GLICENSE ) = license;
+	saveFile = rf.Get( SECTION_PROPERTIES, GLICENSE, NrpText("") );
+	_self[ GLICENSE ] = new CNrpLicense( saveFile );
 }
 
 bool CNrpDevelopGame::IsReady()

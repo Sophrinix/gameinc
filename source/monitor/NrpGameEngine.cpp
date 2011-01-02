@@ -20,6 +20,7 @@ CNrpGameEngine::CNrpGameEngine( const NrpText& name ) : INrpProject( CLASS_GAMEE
 void CNrpGameEngine::_InitialyzeOptions()
 {
 	Add<int>( AVGENRE_COUNT, 0 );
+	Add<int>( BALANCE, 0 );
 	Add<NrpText>( INTERNAL_NAME, "" ); 
 	Add<int>( TIME_ACTUAL, 0 );
 	Add<int>( GENRE_MODULE_NUMBER, 0 );
@@ -31,6 +32,9 @@ void CNrpGameEngine::_InitialyzeOptions()
 	Add<NrpText>( TEXTURENORMAL, "" );
 	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	Add( CPU, 0.f );
+	Add( ADVTECHNUMBER, 0 );
+
+	_self[ TECHGROUP ] = static_cast< int >( PT_GAMEENGINE );
 }
 
 CNrpGameEngine::CNrpGameEngine( const NrpText& fileName, bool load )
@@ -48,20 +52,20 @@ CNrpGameEngine::~CNrpGameEngine(void)
 //! добавить жанр двига... тестовая функция( жанры будут настледоваться от проекта )
 void CNrpGameEngine::AddGenre( const NrpText& name )
 {
-	if( _avgenres.find( name ) == NULL )
-		_avgenres[ name ] = 1;
+	if( _techs.find( name ) == NULL )
+		_techs[ name ] = 1;
 
-	_self[ AVGENRE_COUNT ] = static_cast< int >( _avgenres.size() );
+	_self[ AVGENRE_COUNT ] = static_cast< int >( _techs.size() );
 }
 
-bool CNrpGameEngine::IsGenreAvailble( const NrpText& name )
+bool CNrpGameEngine::IsMyTech( const NrpText& name )
 {
-	return (_avgenres.find( name ) != NULL );
+	return (_techs.find( name ) != NULL );
 }
 
 const NrpText& CNrpGameEngine::GetGenre( int index )
 {
-	KNOWLEDGE_MAP::Iterator pIter = _avgenres.getIterator();
+	KNOWLEDGE_MAP::Iterator pIter = _techs.getIterator();
 
 	for( int i=0; pIter.atEnd(), i < index; pIter++, i++ );
 
@@ -80,7 +84,7 @@ NrpText CNrpGameEngine::Save( const NrpText& saveFolder )
 	INrpProject::Save( saveFile );
 
 	IniFile sv( saveFile );
-	sv.Set( SECTION_GENRES, _avgenres );
+	sv.Set( SECTION_GENRES, _techs );
 
 	return localFolder;
 }
@@ -92,7 +96,7 @@ void CNrpGameEngine::Load( const NrpText& loadFolder )
 
 	IniFile rv( loadFile );
 
-	rv.Get( SECTION_GENRES, _avgenres );
+	rv.Get( SECTION_GENRES, _techs );
 }
 
 NrpText CNrpGameEngine::ClassName()

@@ -203,9 +203,6 @@ public:
 	operator const float&() const { return As<float>(); }
 	operator const NrpText&() const { return As<NrpText>(); }
 
-	bool operator < ( const NParam& a ) const { return _value.get() < a._value.get(); }
-	bool operator == ( const NParam& a ) const { return _value.get() == a._value.get(); }
-
 	template<typename T> bool operator !=( const T& a ) const { return As<T>() != a; }
 	template<typename T> bool operator >=( const T& b ) const { return As<T>() >= b; }
 
@@ -248,7 +245,7 @@ public:
 
 	NrpText GetType()
 	{
-		if( _value.get() )
+		if( _value.get() == NULL )
 			return NrpText( L"void" );
 
 		return NrpText( _value->GetType().name() );
@@ -264,6 +261,9 @@ public:
 	
 	virtual ~NParam(){}
 private:
+	bool operator < ( const NParam& a ) const { return false; }
+	bool operator == ( const NParam& a ) const { return false; }
+
 	mutable APtrParam _value;
 	NrpText _name;
 

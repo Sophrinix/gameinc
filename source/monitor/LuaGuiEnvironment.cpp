@@ -27,6 +27,8 @@
 #include "LuaTechMap.h"
 #include "LuaSceneNode.h"
 #include "LuaTab.h"
+#include "NrpGuiFlick.h"
+#include "LuaElement.h"
 
 using namespace irr;
 
@@ -80,6 +82,7 @@ Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] =
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTimer ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextRunner ),
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLigthing ),
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddFlick ),
 	{0,0}
 };
 
@@ -91,7 +94,7 @@ int CLuaGuiEnvironment::RemoveAnimators( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":RemoveAnimators not need any parameter") ) );
 
-	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( L, 2 );
+	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 2, true );
 
 	IF_OBJECT_NOT_NULL_THEN _object->RemoveAnimators( elm );
 
@@ -104,7 +107,7 @@ int CLuaGuiEnvironment::AddTable( lua_State *vm )
 	luaL_argcheck(vm, argc == 7, 7, _ErrStr(":AddTable need 7 parameter") );
 
 	s32 id = lua_tointeger( vm, 6 );
-	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 7 );
+	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 7, true );
 	core::recti rectangle = _ReadRect( vm, 2, parentElem );
 
 	gui::IGUITable* table = NULL;
@@ -164,7 +167,7 @@ int CLuaGuiEnvironment::AddBlenderAnimator( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddBlenderAnimator need 7 parameter");
 
-	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 2 );
+	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
 	s32 minb = lua_tointeger( vm, 3 );
 	s32 maxb = lua_tointeger( vm, 4 );
 	f32 stepb = static_cast< f32 >( lua_tonumber( vm, 5 ));
@@ -444,7 +447,7 @@ int CLuaGuiEnvironment::AddMoveAnimator( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddMoveAnimator need 7 parameter");
 
-	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 2 );	
+	gui::IGUIElement* parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );	
 	
 	core::position2di pos;
 	pos.X = lua_tointeger( vm, 3 );
@@ -472,7 +475,7 @@ int CLuaGuiEnvironment::AddToDeletionQueue( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 2, 2, "Function CLuaGuiEnvironment:AddToDeletionQueue need 2 parameter");
 
-	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( vm, 2 );	
+	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );	
 
 	IF_OBJECT_NOT_NULL_THEN _object->addToDeletionQueue( elm );
 
@@ -505,7 +508,7 @@ int CLuaGuiEnvironment::AddTextTimeAnimator( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 2, 2, "Function CLuaGuiEnvironment:AddTextTimeAnimator need 1 parameter");
 
-	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 2 );	
+	gui::IGUIElement* parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );	
 
 	gui::IGUIAnimator* anim = NULL;
 
@@ -521,7 +524,7 @@ int CLuaGuiEnvironment::AddDestructor( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaGuiEnvironment:AddDestructor need 2 parameter");
 
-	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( vm, 2 );	
+	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );	
 	int time = lua_tointeger( vm, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN _object->AddDestructor( elm, time );
@@ -572,7 +575,7 @@ int CLuaGuiEnvironment::AddTab( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 4, 4, "Function CLuaGuiEnvironment:AddTab need 3 parameter");
 
-	gui::IGUITabControl* parent = (gui::IGUITabControl*)lua_touserdata( vm, 2 );	
+	gui::IGUITabControl* parent = _GetLuaObject< gui::IGUITabControl, ILuaObject >( vm, 2, true );	
 	NrpText name( lua_tostring( vm, 3 ) ); 
 	int id = lua_tointeger( vm, 4 );
 
@@ -619,7 +622,7 @@ int CLuaGuiEnvironment::AddCursorPosAnimator( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 4, 4, "Function CLuaGuiEnvironment:AddCursorPosAnimator need 3 parameter");
 
-	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 2 );
+	gui::IGUIElement* parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
 	core::position2di offset( lua_tointeger( vm, 3), lua_tointeger( vm, 4 ) );
 
 	gui::IGUIAnimator* anim = NULL;
@@ -817,7 +820,7 @@ int CLuaGuiEnvironment::BringToFront( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGuiEnvironment:BringToFront need element parameter" );
 
-	gui::IGUIElement* elm = (gui::IGUIElement*)lua_touserdata( L, 2 );
+	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 2, true );
 	assert( elm != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN
@@ -872,6 +875,7 @@ int CLuaGuiEnvironment::AddLigthing( lua_State* L )
 
 	gui::IGUIElement* p1 = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 2, true );
 	gui::IGUIElement* p2 = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 3, true );
+	assert( p1 && p2 );
 	NrpText textureName( lua_tostring( L, 4 ) );
 	int timeToDeath = lua_tointeger( L, 5 );
 
@@ -890,4 +894,25 @@ const char* CLuaGuiEnvironment::ClassName()
 {
 	return ( CLASS_LUAGUI );
 }
+
+int CLuaGuiEnvironment::AddFlick( lua_State* L )
+{
+	int argc = lua_gettop( L );
+	luaL_argcheck( L, argc == 8, 8, "Function  CLuaGuiEnvironment:AddTechMap need 7 parameter");
+
+	s32 id = lua_tointeger( L, 7 );
+	u32 column = static_cast< u32 >( lua_tointeger( L, 6 ) );
+	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 8, true );
+	core::recti rectangle = _ReadRect( L, 2, parentElem );
+
+	gui::CNrpGuiFlick* elm = NULL;
+	IF_OBJECT_NOT_NULL_THEN elm = new gui::CNrpGuiFlick( _object, parentElem, rectangle, column, id );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, elm );
+	Luna< CLuaElement >::constructor( L );
+
+	return 1;
+}
+
 }//namespace nrp

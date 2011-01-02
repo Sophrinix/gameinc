@@ -23,6 +23,8 @@ class CNrp2DPictureFlow : public IGUIListBox
 			texture_ = NULL;
 			downTexture_ = NULL;
 			blend = 0xff;
+			_textureLoaded = false;
+			_pathToTexture = L"";
 		}
 
 		~CNrpImageDescription()
@@ -31,7 +33,13 @@ class CNrp2DPictureFlow : public IGUIListBox
 			downTexture_->drop();
 		}
 
-		void SetTexture( video::IVideoDriver* driver, video::ITexture* ptx )
+		void SetTexture( const NrpText& pathTo )
+		{
+			_pathToTexture = pathTo;
+			SetTexture( NULL );
+		}
+
+		void SetTexture( video::ITexture* ptx )
 		{
 			if( texture_ )
 				texture_->drop();
@@ -41,17 +49,28 @@ class CNrp2DPictureFlow : public IGUIListBox
 				texture_->grab();
 
 			if( downTexture_ )
+			{
 				downTexture_->drop();
+				downTexture_ = NULL;
+			}
 
-			downTexture_ = CreateDownTexture_( driver, ptx );
+			_textureLoaded = false;	
 		}
 
 		video::ITexture* GetTexture() { return texture_; }
 		video::ITexture* GetDownTexture() { return downTexture_; }
+		bool IsLoaded() { return _textureLoaded; }
+		void UpdateTextures( video::IVideoDriver* driver ) 
+		{ 
+			downTexture_ = CreateTextures_( driver ); 
+			_textureLoaded = true;
+		}
 	private:
-		video::ITexture* CreateDownTexture_( video::IVideoDriver* driver, video::ITexture* ptx );
+		video::ITexture* CreateTextures_( video::IVideoDriver* driver );
 		video::ITexture* texture_;
 		video::ITexture* downTexture_;
+		NrpText _pathToTexture; 
+		bool _textureLoaded;
 	};
 
 	CNrp2DPictureFlow();
@@ -65,6 +84,7 @@ public:
 	u32 addItem( video::ITexture* texture, const wchar_t* text );
 	u32 addItem( const wchar_t* text);
 	u32 addItem( video::ITexture* texture, const wchar_t* text, void* object );
+	u32 addItem( const wchar_t* pathToTexture, const wchar_t* text, void* object );
 	void setItemTexture( u32 index, video::ITexture* texture );
 	void setItemBlend( u32 index, int blend );
 	void removeItem(u32 index);
@@ -95,7 +115,7 @@ private:
 	void setItem(u32 index, const wchar_t* text, s32 icon) {}
 	void setItemOverrideColor(u32 index, const video::SColor &color) {}
 	void setItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType, const video::SColor &color) {};
-	u32 addItem(const wchar_t* text, s32 icon) { return 0; }
+	u32 addItem( const wchar_t* text, s32 icon ) { return 0; }
 	s32 getIcon(u32 index) const { return 0; }
 	void setSpriteBank(IGUISpriteBank* bank) {}
 	void setAutoScrollEnabled(bool scroll) {}
@@ -112,12 +132,14 @@ private:
 	core::recti _CorrectRect( video::ITexture* texture, const core::recti& rectangle );
 	void _DrawAny( video::ITexture* txs, const core::recti& rectabgle, video::SColor* colors );
 	core::recti _GetDownRect( const core::rectf& rectangle );
+	void _UpdateTextures();
 	s32 _activeIndex;
 	s32 _lastTimeKey;
 	core::array< CNrpImageDescription* > _images;
 
 	bool _drawBackground;
 	core::recti _pictureRect;
+	unsigned int _lastTimeTexturesUpdate;
 };
 
 }//end namespace gui

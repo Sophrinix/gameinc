@@ -166,9 +166,7 @@ public:
 
 	virtual int DebugReport( const NrpText& fileName, int lineNumber, const NrpText& text )
 	{
-#ifdef _DEBUG
 		Log(HW) << fileName << ":" << lineNumber << " Error" << text;
-#endif
 		return 1;
 	}
 };

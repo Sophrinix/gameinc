@@ -17,6 +17,7 @@ Luna< CLuaDevelopProject >::RegType CLuaDevelopProject::methods[] =			//реализуе
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModuleNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModule ),
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetFamous ),
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetWorkPercentDone ),
 	{0,0}
 };
 
@@ -53,5 +54,11 @@ int CLuaDevelopProject::GetFamous( lua_State* L )
 const char* CLuaDevelopProject::ClassName()
 {
 	return ( CLASS_LUADEVPROJECT );
+}
+
+int CLuaDevelopProject::GetWorkPercentDone( lua_State* L )
+{
+	lua_pushnumber( L, GetParam_<float>( L, "GetWorkPercentDone", READYWORKPERCENT, 0 ) );
+	return 1;
 }
 }//namespace nrp

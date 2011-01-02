@@ -20,7 +20,6 @@ public:
 	int GetQuality( lua_State* L );
 	int GetLevel( lua_State* L );
 	int Load( lua_State* L );
-	int GetTypeName( lua_State* L );
 	int GetNumberDay( lua_State* L );
 	int SetNumberDay( lua_State* L );
 	int GetPrice( lua_State* L );

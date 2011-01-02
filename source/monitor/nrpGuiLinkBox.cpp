@@ -239,12 +239,6 @@ void CNrpGuiLinkBox::draw()
 	IGUIElement::draw();
 }
 
-void CNrpGuiLinkBox::setRelativePosition( const core::recti& rectangle )
-{
-	if( isDraggable_ )
-		IGUIButton::setRelativePosition( rectangle );
-}
-
 void CNrpGuiLinkBox::SetData( void* data )
 {
 	data_ = data;

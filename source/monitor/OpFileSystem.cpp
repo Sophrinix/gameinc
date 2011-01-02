@@ -62,23 +62,30 @@ void OpFileSystem::Move( const NrpText& pathOld, const NrpText& pathNew )
 	NrpText mStr2 = RemoveEndSlash( workDir + pathNew );
 
 	SHFILEOPSTRUCTW sh;
-	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );
+	memset( &sh, 0, sizeof( SHFILEOPSTRUCTW ) );
 	sh.hwnd   = _nrpEngine.GetWindowHandle(); //Äëÿ BCB sh.hwnd=FormX->Handle;
 	sh.wFunc  = FO_MOVE;
 
 	wchar_t from[ MAX_PATH ] = { 0 };
-	wcsncpy_s( from, MAX_PATH-1, mStr.ToWide(), mStr.size() );
+	int iSize = mStr.size();
+	wcsncpy_s( from, MAX_PATH-1, mStr.ToWide(), iSize );
+	from[ iSize ] = 0;
+	from[ iSize+1 ] = 0;
 
+	iSize = mStr2.size();
 	wchar_t to[ MAX_PATH ] = { 0 };
-	wcsncpy_s( to, MAX_PATH - 1, mStr2.ToWide(), mStr2.size() );
+	wcsncpy_s( to, MAX_PATH-1, mStr2.ToWide(), iSize );
+	to[ iSize ] = 0;
+	to[ iSize+1 ] = 0;
 
 	sh.pFrom  = from;
 	sh.pTo    = to;
-	sh.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;
+	sh.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR;//FOF_SILENT;
 	sh.hNameMappings = 0;
 	sh.lpszProgressTitle = NULL;
 
-	SHFileOperationW(&sh);
+	int j = SHFileOperationW(&sh);
+	j = GetLastError();
 }
 
 void OpFileSystem::Copy( const NrpText& pathOld, const NrpText& pathNew )
@@ -87,14 +94,22 @@ void OpFileSystem::Copy( const NrpText& pathOld, const NrpText& pathNew )
 			mStr2 = RemoveEndSlash( pathNew );
 
 	SHFILEOPSTRUCTW sh;
-	memset( &sh, 0, sizeof( SHFILEOPSTRUCT ) );
+	memset( &sh, 0, sizeof( SHFILEOPSTRUCTW ) );
 	sh.hwnd   = _nrpEngine.GetWindowHandle(); //Äëÿ BCB sh.hwnd=FormX->Handle;
 	sh.wFunc  = FO_COPY;
-	wchar_t from[ MAX_PATH ] = { 0 };
-	wcsncpy_s( from, MAX_PATH-1, mStr.ToWide(), mStr.size() );
 
+	wchar_t from[ MAX_PATH ] = { 0 };
+	int iSize = mStr.size();
+	wcsncpy_s( from, MAX_PATH-1, mStr.ToWide(), iSize );
+	from[ iSize ] = 0;
+	from[ iSize+1 ] = 0;
+
+	iSize = mStr2.size();
 	wchar_t to[ MAX_PATH ] = { 0 };
-	wcsncpy_s( to, MAX_PATH-1, mStr2.ToWide(), mStr2.size() );
+	wcsncpy_s( to, MAX_PATH-1, mStr2.ToWide(), iSize );
+	to[ iSize ] = 0;
+	to[ iSize+1 ] = 0;
+
 	sh.pFrom  = from;
 	sh.pTo    = to;
 	sh.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;
@@ -130,7 +145,11 @@ void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory,
 				{
 					if( _wcsicmp( itemName.ToWide(), fdata.name ) == 0 )
 					{
-						ini->Set( L"options", templateName + NrpText( (int)number ), CheckEndSlash( directory )+ fdata.name );
+						NrpText fileName = CheckEndSlash( directory )+ fdata.name;
+						IniFile rv( fileName );
+
+						ini->Set( L"options", NrpText( "name" ) + NrpText( (int)number ), rv.Get( "properties", "internalname:string", NrpText( "" ) ) );
+						ini->Set( L"options", templateName + NrpText( (int)number ), fileName );
 						number++;
 						ini->Set( L"options", templateName + L"Number", number );
 					}
@@ -165,7 +184,7 @@ NrpText OpFileSystem::RemoveEndSlash( NrpText pathTo )
 void OpFileSystem::CreateDirectory( NrpText pathTo )
 {
 	pathTo = CheckEndSlash( pathTo );
-	if( IsExist( pathTo ) )
+	if( !IsExist( pathTo ) )
 		::CreateDirectoryW( pathTo, NULL );
 
 	assert( IsExist( pathTo ) );

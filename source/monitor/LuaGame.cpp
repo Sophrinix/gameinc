@@ -10,6 +10,8 @@
 #include "LuaTechnology.h"
 #include "LuaCompany.h"
 #include "NrpHistory.h"
+#include "timeHelpers.h"
+#include "NrpApplication.h"
 
 using namespace irr;
 
@@ -46,6 +48,7 @@ Luna< CLuaGame >::RegType CLuaGame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetCompany ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetDescriptionLink ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetAllTimeProfit ),
 	{0,0}
 };
 
@@ -290,7 +293,7 @@ int CLuaGame::GetViewImage( lua_State* L )
 int CLuaGame::GetCurrentMonthSales( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetLastMonthSales not need any parameters" );
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetCurrentMonthSales not need any parameters" );
 
 	int lastMonthSales = 0;
 	IF_OBJECT_NOT_NULL_THEN
@@ -323,9 +326,23 @@ int CLuaGame::GetLastMonthSales( lua_State* L )
 	return 1;
 }
 
+float CLuaGame::_GetRelativeTime()
+{
+	int fMonth = TimeHelper::GetMonthBetweenDate( (*_object)[ STARTDATE ], (*_object)[ ENDDATE ] );//полное количество месяцев жизни игры
+	int cMonth = TimeHelper::GetMonthBetweenDate( (*_object)[ STARTDATE ], _nrpApp[ CURRENTTIME ] );//текущее количество месяцев жизни игры
+	return ( cMonth < fMonth ) ? ( cMonth / (float)fMonth ) : 1;
+}
+
 int CLuaGame::GetAllTimeSales( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetAllTimeSales", COPYSELL, 0 ) );
+	int copySell = 0;
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		copySell = GetParam_<int>( L, "GetAllTimeSales", COPYSELL, 0 );
+		copySell *= _GetRelativeTime();
+
+		lua_pushinteger( L, copySell );
+	}
 	return 1;		
 }
 
@@ -401,4 +418,18 @@ const char* CLuaGame::ClassName()
 {
 	return ( CLASS_LUAGAME );
 }
+
+int CLuaGame::GetAllTimeProfit( lua_State* L )
+{
+	int profit = 0;
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		profit = GetParam_<int>( L, "GetAllTimeProfit", CASH, 0 );
+		profit *= _GetRelativeTime();
+
+		lua_pushinteger( L, profit );
+	}
+	return 1;		
+}
+
 }//namespace nrp

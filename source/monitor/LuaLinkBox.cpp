@@ -52,9 +52,10 @@ int CLuaLinkBox::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool
 			_object->AddLuaFunction( id, fName );
 		else 
 			_object->RemoveLuaFunction( id, fName );
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaLinkBox::SetModuleType( lua_State* L )
@@ -131,11 +132,13 @@ int CLuaLinkBox::GetData( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaLinkBox::GetData not need parameter");
 
-	void* md = NULL;
-
-	IF_OBJECT_NOT_NULL_THEN	md = _object->GetData();
-
-	lua_pushlightuserdata( L, md );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		if( _object->GetData() )
+			lua_pushlightuserdata( L, _object->GetData() );
+		else
+			lua_pushnil( L );
+	}
 
 	return 1;		
 }

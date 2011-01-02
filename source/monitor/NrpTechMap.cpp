@@ -928,17 +928,19 @@ void CNrpTechMap::draw()
 				video::ITexture* txs = NULL;
 				int minSize = min( textRect.getWidth(), textRect.getHeight() );
 				core::dimension2di txsSize( minSize, minSize );
+				video::SColor alphaColor = 0xFFFFFFFF;
 				if( cell.assignTech != NULL && cell.assignTech->GetTechnology() )
 				{
 					const CNrpTechnology& refTech = *(cell.assignTech->GetTechnology());
 					txs = driver->getTexture( refTech[ TEXTURENORMAL ].As<NrpText>() );
 					txsSize = txs->getOriginalSize();
 					// draw item text
-					if( TS_INDEVELOP == refTech[ STATUS ].As<TECH_STATUS>() )
+					if( TS_INDEVELOP == refTech[ STATUS ].As<int>() )
 					{
 						text.append( "\n(" );
 						text.append( static_cast< int >( refTech[ READYWORKPERCENT ].As<float>() ) );
 						text.append( ")" );
+						alphaColor = 0x80808080;
 					}
 				}
 
@@ -952,6 +954,7 @@ void CNrpTechMap::draw()
 					core::dimension2du hsize( static_cast< u32 >( txsSize.Width * scaleWidth ),
 											  static_cast< u32 >( txsSize.Height * scaleWidth ) );
 
+					video::SColor colors[ ] = { alphaColor, alphaColor, alphaColor, alphaColor };
 					core::recti scaleTextRect( textRect.getCenter().X - hsize.Width, textRect.getCenter().Y - hsize.Height,
 											   textRect.getCenter().X + hsize.Width, textRect.getCenter().Y + hsize.Height	);
 					if( txs )
@@ -959,9 +962,10 @@ void CNrpTechMap::draw()
 						core::recti rr = scaleTextRect;
 						rr.UpperLeftCorner -= core::position2di( 2, 2 );
 						rr.LowerRightCorner += core::position2di( 2, 2 );
-						driver->draw2DRectangle( rr, 0xff000000, 0xff000000, 0xffffffff, 0xffffffff, &AbsoluteClippingRect );
+						driver->draw2DRectangle( rr, colors[ 0 ], colors[ 1 ], colors[ 2 ], colors[ 3 ], &AbsoluteClippingRect );
 
-						driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ), &AbsoluteClippingRect, NULL, true );
+						driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ), 
+											&AbsoluteClippingRect, colors, true );
 					}
 					else
 						if( cell.assignTech )
@@ -1339,7 +1343,9 @@ void CNrpTechMap::RelocateTable_()
 	for( size_t pos=0; pos < techMap_.size(); pos++ )
 	{
 		 ypos = techMap_[ pos ]->RootCell( 0, ypos );
-		 ypos += !(techMap_[ pos ]->GetTechnology()->Param( NEXTTECHNUMBER ));
+		 const CNrpTechnology& refTech = *techMap_[ pos ]->GetTechnology(); 
+		// OutputDebugString( (NrpText)refTech[ NAME ] );
+		 ypos += !(int)refTech[ NEXTTECHNUMBER ];
 	}
 
 	clear();
@@ -1370,7 +1376,7 @@ int CNrpTechMap::GetSelectedObjectType()
 {
 	CNrpTechnology* tech = Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology();
 	
-	return ( tech == NULL ? TS_PROJECT : tech->Param( STATUS ).As<TECH_STATUS>() );
+	return ( tech == NULL ? TS_PROJECT : tech->Param( STATUS ).As<int>() );
 }
 
 } // end namespace gui

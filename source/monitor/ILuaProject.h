@@ -11,7 +11,7 @@ namespace nrp
 										LUNA_AUTONAME_FUNCTION(class, GetName ),\
 										LUNA_AUTONAME_FUNCTION(class, GetUniq ),\
 										LUNA_AUTONAME_FUNCTION(class, SetName ),\
-										LUNA_AUTONAME_FUNCTION(class, GetWorkPercentDone )
+										LUNA_AUTONAME_FUNCTION(class, GetTechGroup )
 
 template< class T > class ILuaProject : public ILuaBaseProject< T >
 {
@@ -25,9 +25,9 @@ public:
 	virtual ~ILuaProject(void) {};
 protected:
 
-	int GetWorkPercentDone( lua_State* L )
+	int GetTechGroup( lua_State* L )
 	{
-		lua_pushnumber( L, GetParam_<float>( L, "GetWorkPercentDone", READYWORKPERCENT, 0 ) );
+		lua_pushnumber( L, GetParam_<int>( L, "GetTechGroup", TECHGROUP, 0 ) );
 		return 1; 
 	}
 

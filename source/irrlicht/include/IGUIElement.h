@@ -833,7 +833,7 @@ public:
 
 protected:
 	// not virtual because needed in constructor
-	void addChildToEnd(IGUIElement* child)
+	virtual void addChildToEnd(IGUIElement* child)
 	{
 		if (child)
 		{

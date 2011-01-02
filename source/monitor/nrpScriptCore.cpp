@@ -178,8 +178,6 @@ int ScriptLog( lua_State *vm )
 	myLog.Sev = (SeverityLevel)lua_tointeger(vm, -1);
 	lua_pop(vm, 1);
 
-	NrpText msgText1 = lua_tostring(vm, 2);
-
 	for (int nArg = 2; nArg <= argc; nArg ++)
 	{		
 		NrpText param = lua_tostring(vm, nArg);

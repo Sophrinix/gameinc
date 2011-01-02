@@ -26,10 +26,10 @@ CNrpTechnology::CNrpTechnology( CNrpInvention* invention ) : INrpProject( CLASS_
 {
 	_InitializeOptions();
 
-	Param( STATUS ) = TS_READY;
-	Load( invention->Text( BASEFILE ) );
-	Param( PARENTCOMPANY ) = invention->Param( PARENTCOMPANY );
-	Param( STARTDATE ) = invention->Param( ENDDATE );
+	_self[ STATUS ] = static_cast< int >( TS_READY );
+	Load( (*invention)[ BASEFILE ] );
+	_self[ PARENTCOMPANY ] = (*invention)[ PARENTCOMPANY ];
+	_self[ STARTDATE ] = (*invention)[ ENDDATE ];
 }
 
 CNrpTechnology::CNrpTechnology( const NrpText& fileTech ) : INrpProject( CLASS_TECHNOLOGY, "" )
@@ -41,8 +41,9 @@ CNrpTechnology::CNrpTechnology( const NrpText& fileTech ) : INrpProject( CLASS_T
 
 CNrpTechnology::CNrpTechnology( const CNrpTechnology& p ) : INrpProject( CLASS_TECHNOLOGY, "" )
 {
-
+	int k=0;
 }
+
 void CNrpTechnology::_InitializeOptions()
 {
 	Add<NrpText>( NAME, "" );
@@ -64,7 +65,12 @@ void CNrpTechnology::_InitializeOptions()
 	Add<NrpText>( DESCRIPTIONPATH, "" );
 	Add<float>( INTEREST, 1 );
 	Add<int>( STATUS, TS_UNKNOWN );
-
+	Add<int>( BALANCE, 0 );
+	Add<int>( CODEPASSED, 0 );
+	Add<IUser*>( COMPONENTLIDER, NULL );
+	Add<int>( ERRORNUMBER, 0 );
+	Add<float>( READYWORKPERCENT, 0.f );
+	Add<int>( CODEVOLUME, 0 );
 	Add<int>( NEXTTECHNUMBER, 0 );
 	Add<PNrpTechnology>( REQUIRETECH, NULL );
 }
@@ -114,12 +120,12 @@ NrpText CNrpTechnology::Save( const NrpText& saveFolder )
 void CNrpTechnology::Load( const NrpText& fileName )
 {
 	INrpProject::Load( fileName );
-	Param( BASEFILE ) = fileName;
+	_self[ BASEFILE ] = fileName;
 	IniFile rv( fileName );
 	rv.Get( SECTION_REQUIRE_TECH, _techRequires );
 	rv.Get( SECTION_REQUIRE_SKILL, _skillRequires );
 
-	if( Param( STATUS ) == (int)TS_READY )
+	if( _self[ STATUS ] == (int)TS_READY )
 		rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, (int)_self[ NEXTTECHNUMBER ], _futureTech );
 }
 

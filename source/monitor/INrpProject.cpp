@@ -6,8 +6,8 @@ namespace nrp
 	
 INrpProject::INrpProject( const NrpText& className, const NrpText& systemName ) : INrpConfig( className, systemName )
 {
-	Add( NAME, systemName );
-	Add( INTERNAL_NAME, systemName );
+	Add( NAME, NrpText("") );
+	Add( INTERNAL_NAME, NrpText("") );
 	Add( TECHGROUP, (int)PT_UNKNOWN );
 }
 

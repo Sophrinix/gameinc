@@ -22,6 +22,7 @@
 #include "OpFileSystem.h"
 #include "IniFile.h"
 #include "LuaPlatform.h"
+#include "LuaTechnology.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -197,7 +198,7 @@ int CLuaApplication::AddPublicTechnology( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetTech need CNrpTechnology* parameter" );
 
-	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
+	CNrpTechnology* tech = _GetLuaObject< CNrpTechnology, CLuaTechnology >( L, 2, false );
 
 	IF_OBJECT_NOT_NULL_THEN	_object->AddTechnology( tech );
 
@@ -508,7 +509,7 @@ int CLuaApplication::AddGameToMarket( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:AddGameToMarket need CnrpGame* parameter" );
 
-	CNrpGame* game = (CNrpGame*)lua_touserdata( L, 2 );
+	CNrpGame* game = _GetLuaObject< CNrpGame, CLuaGame >( L, 2, false );
 	assert( game != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN	_object->AddGameToMarket( game );

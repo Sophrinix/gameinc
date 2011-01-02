@@ -81,6 +81,7 @@ void CNrpProjectModule::InitializeOptions_()
 	Add<int>( CODEPASSED, 0 );
 	Add<int>( ERRORNUMBER, 0 );
 	Add<int>( USERNUMBER, 0 );
+	Add<int>( MONEYONDEVELOP, 0 );
 	Remove( PARENT );
 	Add<INrpDevelopProject*>( PARENT, NULL );
 }
@@ -101,7 +102,7 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 	INrpDevelopProject* parent = Param( PARENT ).As<INrpDevelopProject*>();
 	assert( parent != NULL );
 
-	if( _self[ CODEPASSED ] < _self[ CODEVOLUME] )
+	if( (int)_self[ CODEPASSED ] < (int)_self[ CODEVOLUME] )
 	{
 		int reqSkill = 0;
 		KNOWLEDGE_MAP::Iterator sIter = _skillRequires.getIterator();
@@ -125,18 +126,18 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 			genrePref = 0.1f;
 
 
-		int codePassed = (int)Param( CODEPASSED ) + static_cast< int >(reqSkill * (genrePref + genreSkill));
-		if( (int)Param( CODEVOLUME ) <= codePassed )
-			codePassed = Param( CODEVOLUME);
+		int codePassed = (int)_self[ CODEPASSED ] + static_cast< int >(reqSkill * (genrePref + genreSkill));
+		if( (int)_self[ CODEVOLUME ] <= codePassed )
+			codePassed = _self[ CODEVOLUME ];
 
-		Param( CODEPASSED ) = codePassed;
-		Param( READYWORKPERCENT ) = codePassed / static_cast< float >( (int)Param( CODEVOLUME ) );
+		_self[ CODEPASSED ] = codePassed;
+		_self[ READYWORKPERCENT ] = codePassed / static_cast< float >( (int)_self[ CODEVOLUME ] );
 		int quality = Param( QUALITY );
-		Param( QUALITY ) = static_cast< int >( quality + (int)(*ptrUser)[ CODE_QUALITY ] / 2 );
-		Param( MONEYONDEVELOP ) += (int)(*ptrUser)[ SALARY ] / (20*9);
+		_self[ QUALITY ] = static_cast< int >( quality + (int)(*ptrUser)[ CODE_QUALITY ] / 2 );
+		_self[ MONEYONDEVELOP ] += (int)(*ptrUser)[ SALARY ] / (20*9);
 	}
 
-	if( Param( READYWORKPERCENT ) >= 1.f )
+	if( _self[ READYWORKPERCENT ] >= 1.f )
 		parent->ModuleFinished( this );
 }
 
@@ -150,7 +151,7 @@ NrpText CNrpProjectModule::Save( const NrpText& saveFolder )
 {
 	OpFileSystem::CreateDirectory( saveFolder );
 
-	NrpText fileName = saveFolder + Text( NAME ) + ".devmod";
+	NrpText fileName = saveFolder + Text( INTERNAL_NAME ) + ".devmod";
 	assert( !OpFileSystem::IsExist( fileName ) );
 
 	INrpProject::Save( fileName );
@@ -159,7 +160,7 @@ NrpText CNrpProjectModule::Save( const NrpText& saveFolder )
 	sv.Set( SECTION_REQUIRE_TECH, _techRequires );
 	sv.Set( SECTION_REQUIRE_SKILL, _skillRequires );
 
-	return saveFolder;
+	return fileName;
 }
 
 void CNrpProjectModule::Load( const NrpText& fileName )

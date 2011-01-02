@@ -15,9 +15,9 @@ public:
 	CNrpGameEngine( const NrpText& fileName, bool load );
 
 	void AddGenre( const NrpText& typen );
-	int GetGenreCount() { return _avgenres.size(); }
+	int GetGenreCount() { return _techs.size(); }
 	const NrpText& GetGenre( int index );
-	bool IsGenreAvailble( const NrpText& typen );
+	bool IsMyTech( const NrpText& typen );
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& loadFolder );
 
@@ -26,7 +26,7 @@ public:
 	static NrpText ClassName();
 
 private:
-	KNOWLEDGE_MAP _avgenres;
+	KNOWLEDGE_MAP _techs;
 
 	void _InitialyzeOptions();
 };

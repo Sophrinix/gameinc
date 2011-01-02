@@ -58,8 +58,6 @@ public:
 		moduleType_ = typen;
 	}
 
-	void setRelativePosition( const core::recti& rectangle );
-
 	gui::EGUI_ELEMENT_TYPE getType();
 
 	virtual const c8* getTypeName() const

@@ -159,7 +159,7 @@ bool CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
 	assert( pReklame != NULL );
 
 	bool ret = false;
-	if( GetBaseReklame( (NrpText)(*pReklame)[ REKLAMETYPE ] ) == NULL )
+	if( GetBaseReklame( (NrpText)(*pReklame)[ INTERNAL_NAME ] ) == NULL )
 	{
 		baseReklame_.push_back( pReklame );
 		ret = true;
@@ -174,7 +174,7 @@ CNrpReklameWork* CNrpPlant::GetBaseReklame( const NrpText& name )
 	assert( name.size() != 0 );
 
 	for( u32 i=0; i < baseReklame_.size(); i++ ) 
-		if( (*baseReklame_[ i ])[ REKLAMETYPE ] == name )
+		if( (*baseReklame_[ i ])[ INTERNAL_NAME ] == name )
 			return baseReklame_[ i ];
 
 	return NULL;
@@ -182,7 +182,7 @@ CNrpReklameWork* CNrpPlant::GetBaseReklame( const NrpText& name )
 
 void CNrpPlant::AddReklame( CNrpReklameWork* reklame )
 {
-	CNrpReklameWork* rWork = GetReklame( (*reklame)[ REKLAMETYPE ], (*reklame)[ GAMENAME ] );
+	CNrpReklameWork* rWork = GetReklame( (*reklame)[ INTERNAL_NAME ], (*reklame)[ GAMENAME ] );
 
 	if( rWork != NULL )
 	{

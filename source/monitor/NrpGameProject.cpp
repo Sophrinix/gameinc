@@ -17,6 +17,19 @@ namespace nrp
 {
 CLASS_NAME CLASS_GAMEPROJECT( "CNrpGameProject" );
 
+NrpText _GetNameFromType( PROJECT_TYPE type )
+{
+	switch( type )
+	{
+	case PT_ADVTECH: return ADVTECHNUMBER;
+	case PT_GENRE: return GENRE_MODULE_NUMBER;
+	case PT_VIDEOTECH: return VIDEOTECHNUMBER;
+	case PT_SOUNDTECH: return SOUNDTECHNUMBER;
+	case PT_LANGUAGE: return LANGNUMBER;
+	default: assert( false ); return "error";
+	}
+}
+
 CNrpGameProject::CNrpGameProject( const NrpText& name, CNrpCompany* ptrCompany )
 : INrpProject( CLASS_GAMEPROJECT, name )
 {
@@ -42,32 +55,19 @@ void CNrpGameProject::SetGameEngine( CNrpGameEngine* gameEng )
 	_self[ BASEQUALITY ] = gameEng ? (int)(*gameEng)[ QUALITY ] : 0;
 
 	_genres.clear();
-	for( int i=0; i < modNumber; i++ )
-		_genres.push_back( NULL );
 
 	CalculateCodeVolume();
 }
 
-bool CNrpGameProject::IsGenreIncluded( const CNrpTechnology* checkGenre ) const
-{
-	for( u32 i=0; i < _genres.size(); i++)
-		if( _genres[ i ] == checkGenre )
-			return true;
-
-	return false;
-}
-
-void CNrpGameProject::CalculateCodeVolume()
+float CNrpGameProject::_CalcEngineBaseCode( float& quality )
 {
 	float baseCode = static_cast<float>( (int)Param( BASE_CODEVOLUME ) );
-
-	float summ = 0;
 	float engCoeff = 1;
-	int quality = 0;
 
 	TECHS rt;
 	_GetAllTech( rt );
 
+	//Подсчитываем влияние модулей на размер проекта
 	for( u32 i=0; i < rt.size(); i++)
 		if( rt[ i ] != NULL )
 		{
@@ -76,118 +76,110 @@ void CNrpGameProject::CalculateCodeVolume()
 			quality /= 2;
 		}
 
-	baseCode *= engCoeff;
-	_self[ ENGINE_CODEVOLUME ] = static_cast< int >( baseCode );
+	//Подсчитаем вличение платформ на размер проекта
+	for( u32 i=0; i < _platforms.size(); i++ )
+		if( _platforms[ i ] )
+			engCoeff += (float)(*_platforms[ i ])[ ENGINE_CODE ];
 
+	return baseCode;
+}
+
+float CNrpGameProject::_CalcFinalCodeVolume( float baseCode )
+{
+	float summ = 0;
+
+	TECHS rt;
+	_GetAllTech( rt );
+	//Подсчитаем окончательный размер проекта
 	for( u32 i=0; i < rt.size(); i++)
 		if( rt[ i ] != NULL ) 
-		{
-			float codeVol = (*rt[ i ])[ BASE_CODE ] * baseCode;
-			summ += codeVol;
-		}
+			summ +=  (*rt[ i ])[ BASE_CODE ] * baseCode;
+
+	for( u32 i=0; i < _platforms.size(); i++ )
+		if( _platforms[ i ] )
+			summ += (float)(*_platforms[ i ])[ BASE_CODE ];
 
 	summ += baseCode;
 	float langSupCode = (int)_self[ LANGNUMBER ] * summ * 0.05f;
 	_self[ LANGUAGESUPPORTCODE ] = static_cast< int >( langSupCode );
 	summ += langSupCode;
 
-	float platformSupCode = (int)_self[ PLATFORMNUMBER ] * summ * 0.1f;
-	_self[ PLATFORMSUPPORTCODE ] = static_cast< int >( platformSupCode );
-	summ += platformSupCode;
+	return summ;
+}
+
+void CNrpGameProject::CalculateCodeVolume()
+{
+	float quality = 0;
+
+	float baseCode = _CalcEngineBaseCode( quality );
+	float summ = _CalcFinalCodeVolume( baseCode );
+
+	_self[ ENGINE_CODEVOLUME ] = static_cast< int >( baseCode );
 	
 	bool projectReady = _self[ GAME_ENGINE ].As<PNrpGameEngine>() != NULL;
-	projectReady &= ( _self[ SCENARIO ].As<PNrpTechnology>() != NULL || _self[ GLICENSE ].As<PNrpTechnology>() != NULL );
+	projectReady &= ( _self[ SCENARIO ].As<PNrpScenario>() != NULL || _self[ GLICENSE ].As<PNrpLicense>() != NULL );
 	projectReady &= ( (int)_self[ LANGNUMBER ] >0 && (int)_self[ PLATFORMNUMBER ] > 0 );
-	projectReady &= ( GetGenre( 0 ) != NULL );
+	projectReady &= ( GetTech( PT_GENRE, 0 ) != NULL );
 	
 	_self[ CODEVOLUME ] = static_cast< int >( summ );
-	_self[ QUALITY ] = quality; 
+	_self[ QUALITY ] = static_cast< int >( quality ); 
 	_self[ PROJECTREADY ] = projectReady;
 }
 
-void CNrpGameProject::SetGenre( CNrpTechnology* genre, int number )
+void CNrpGameProject::AddTech( const CNrpTechnology* tech )
 {
-	if( number >= (int)_genres.size() )
+	assert( tech );
+	if( !tech )
 		return;
 
-	if( !genre )
-		_genres[ number ] = NULL;
-	else
-	{	
-		const NrpText& genreName = (*genre)[ INTERNAL_NAME ];
+	PROJECT_TYPE type = static_cast< PROJECT_TYPE >( (int)(*tech)[ TECHGROUP ] ); 
+	TECHS& arr = GetTechs( type );
 
-		if( _self[ GAME_ENGINE ].As<PNrpGameEngine>()->IsGenreAvailble( genreName ) &&
-			!IsGenreIncluded( genre ) )
-			_genres[ number ] = genre;
+	if( PT_GENRE == type )
+	{	
+		PNrpGameEngine ge = _self[ GAME_ENGINE ].As<PNrpGameEngine>();
+		if( (int)arr.size() >= (int)(*ge)[ GENRE_MODULE_NUMBER ] || 
+			!ge->IsMyTech( (*tech)[ INTERNAL_NAME ] ) )
+			return;
 	}
 
+	if( !IsMyTech( tech ) ) 
+		arr.push_back( const_cast< CNrpTechnology* >( tech ) );
+
+	_self[ _GetNameFromType( type ) ] = static_cast< int >( arr.size() );
 	CalculateCodeVolume();
 }
 
-CNrpTechnology* CNrpGameProject::GetGenre( int index )
+void CNrpGameProject::RemoveTech( const CNrpTechnology* tech )
 {
-	return index < (int)_genres.size() ? _genres[ index ] : NULL;
+	assert( tech );
+	if( !tech )
+		return;
+	PROJECT_TYPE type = static_cast< PROJECT_TYPE >( (int)(*tech)[ TECHGROUP ] );
+	TECHS& arr = GetTechs( type );
+
+	for( u32 i=0; i < arr.size(); i++ )
+		if( tech == arr[ i ] )
+		{
+			arr.erase( i );
+			break;
+		}
+
+	_self[ _GetNameFromType( type ) ] = static_cast< int >( arr.size() );
+	CalculateCodeVolume();
 }
 
-bool CNrpGameProject::IsTechInclude( const CNrpTechnology* checkTech ) 
+
+bool CNrpGameProject::IsMyTech( const CNrpTechnology* checkTech )
 {
 	TECHS rt;
 	_GetAllTech( rt );
 
 	for( u32 i=0; i < rt.size(); i++)
-		if( rt[ i ] == checkTech )
+		if( checkTech == rt[ i ] )
 			return true;
 
 	return false;
-}
-
-void CNrpGameProject::_SetTech( CNrpTechnology* ptrTech, int index, TECHS& listd, OPTION_NAME optname )
-{
-	if( index >= (int)listd.size() )
-	{
-		if( ptrTech )
-			listd.push_back( ptrTech );
-	}
-	else
-	{
-		if( !ptrTech )
-			listd.erase( index );
-		else
-			listd[ index ] = ptrTech;
-	}
-	
-	_self[ optname ] = static_cast< int >( listd.size() );
-	CalculateCodeVolume();
-}
-
-void CNrpGameProject::SetTechnology( CNrpTechnology* ptrTech, int index )
-{
-	_SetTech( ptrTech, index, _technologies, ADVTECHNUMBER );
-}
-
-CNrpTechnology* CNrpGameProject::GetTechnology( int index )
-{
-	return ( index < (int)_technologies.size() ) ? _technologies[ index ] : NULL;
-}
-
-void CNrpGameProject::SetVideoTech( CNrpTechnology* ptrTech, int index )
-{
-	_SetTech( ptrTech, index, _video, VIDEOTECHNUMBER );
-}
-
-CNrpTechnology* CNrpGameProject::GetVideoTech( int index )
-{
-	return index < (int)_video.size() ? _video[ index ] : NULL;
-}
-
-CNrpTechnology* CNrpGameProject::GetSoundTech( int index )
-{
-	return index < (int)_sound.size() ? _sound[ index ] : NULL;
-}
-
-void CNrpGameProject::SetSoundTech( CNrpTechnology* ptrTech, int index )
-{
-	_SetTech( ptrTech, index, _sound, SOUNDTECHNUMBER );
 }
 
 NrpText CNrpGameProject::Save( const NrpText& folderSave )
@@ -282,8 +274,8 @@ void CNrpGameProject::_InitializeOptions( const NrpText& name )
 	Add( PREV_GAME, (PNrpGame)NULL );
 	Add( CODEVOLUME, (int)0 );
 	Add( BASE_CODEVOLUME, (int)0 );
-	Add<PNrpTechnology>( SCENARIO, NULL );
-	Add<PNrpTechnology>( GLICENSE, NULL ); 
+	Add<PNrpScenario>( SCENARIO, NULL );
+	Add<PNrpLicense>( GLICENSE, NULL ); 
 	Add<PNrpTechnology>( SCRIPTENGINE, NULL );
 	Add<PNrpTechnology>( MINIGAMEENGINE, NULL );
 	Add<PNrpTechnology>( PHYSICSENGINE, NULL );
@@ -320,12 +312,11 @@ void CNrpGameProject::_GetAllTech( TECHS& techList )
 	techList.push_back( Param(GRAPHICQUALITY) );
 	techList.push_back( Param(SOUNDQUALITY) );
 	techList.push_back( Param(ENGINEEXTENDED ));
-	techList.push_back( Param(LOCALIZATION) );
-	techList.push_back( Param(CROSSPLATFORMCODE) );
 
 	AddArrayTo< TECHS >( techList, _video );
 	AddArrayTo< TECHS >( techList, _genres );
 	AddArrayTo< TECHS >( techList, _sound );
+	AddArrayTo< TECHS >( techList, _languages );
 }
 
 NrpText CNrpGameProject::ClassName()
@@ -335,8 +326,8 @@ NrpText CNrpGameProject::ClassName()
 
 CNrpPlatform* CNrpGameProject::GetPlatform( int index )
 {
-	assert( index < _platforms.size() );
-	return index < _platforms.size() ? _platforms[ index ] : NULL; 
+	assert( index < (int)_platforms.size() );
+	return index < (int)_platforms.size() ? _platforms[ index ] : NULL; 
 }
 
 CNrpPlatform* CNrpGameProject::GetPlatform( const NrpText& name )
@@ -344,45 +335,17 @@ CNrpPlatform* CNrpGameProject::GetPlatform( const NrpText& name )
 	return FindByNameAndIntName<PLATFORMS, CNrpPlatform>( _platforms, name );
 }
 
-void CNrpGameProject::SetPlatform( CNrpPlatform* platform, int index/*=-1 */ )
+CNrpPlatform* CNrpGameProject::GetPlatform( PROJECT_TYPE type, int index )
 {
-	if( FindByNameAndIntName<PLATFORMS, CNrpPlatform>( _platforms, (*platform)[ INTERNAL_NAME ] ) == NULL )
+	return GetPlatform( index );
+}
+
+void CNrpGameProject::AddPlatform( const CNrpPlatform* platform )
+{
+	if( NULL == FindByNameAndIntName<PLATFORMS, CNrpPlatform>( _platforms, (*platform)[ INTERNAL_NAME ] ) )
 	{
-		_platforms.push_back( platform );
+		_platforms.push_back( const_cast< CNrpPlatform* >( platform ) );
 		_self[ PLATFORMNUMBER ] = static_cast< int >( _platforms.size() );
-	}
-}
-
-void CNrpGameProject::SetLanguage( CNrpTechnology* language, int index/*=-1 */ )
-{
-	if( FindByNameAndIntName<TECHS, CNrpTechnology>( _languages, (*language)[ INTERNAL_NAME ] ) == NULL )
-	{
-		_languages.push_back( language );
-		_self[ LANGNUMBER ] = static_cast< int >( _languages.size() );
-	}
-}
-
-CNrpTechnology* CNrpGameProject::GetLanguage( int index )
-{
-	assert( index < _languages.size() );
-	return index < _languages.size() ? _languages[ index ] : NULL;
-}
-
-CNrpTechnology* CNrpGameProject::GetLanguage( const NrpText& name )
-{
-	return FindByNameAndIntName<TECHS, CNrpTechnology>( _languages, name );
-}
-
-void CNrpGameProject::RemoveLanguage( CNrpTechnology* ptrLang )
-{
-	int pos = -1;
-	assert( ptrLang );
-	if( !ptrLang ) 
-		return;
-	if( FindByNameAndIntName<TECHS, CNrpTechnology>( _languages, (*ptrLang)[ INTERNAL_NAME ], &pos ) != NULL )
-	{
-		_languages.erase( pos );
-		_self[ LANGNUMBER ] = static_cast< int >( _languages.size() );
 	}
 }
 
@@ -397,6 +360,33 @@ void CNrpGameProject::RemovePlatform( CNrpPlatform* platform )
 		_platforms.erase( pos );
 		_self[ PLATFORMNUMBER ] = static_cast< int >( _platforms.size() );
 	}
+}
+
+TECHS nullTech;
+TECHS& CNrpGameProject::GetTechs( PROJECT_TYPE type )
+{
+	switch( type ) 
+	{
+	case PT_ADVTECH: return _technologies;
+	case PT_GENRE: return _genres;
+	case PT_VIDEOTECH: return _video;
+	case PT_SOUNDTECH: return _sound;
+	case PT_LANGUAGE: return _languages;
+	default: return nullTech;
+	}
+}
+
+CNrpTechnology* CNrpGameProject::GetTech( PROJECT_TYPE type, int index )
+{
+	const TECHS& arr = GetTechs( type );
+	return index < (int)arr.size() ? arr[ index ] : NULL; 
+}
+
+CNrpTechnology* CNrpGameProject::GetTech( PROJECT_TYPE type, const NrpText& name )
+{
+	const TECHS& arr = GetTechs( type );
+	
+	return FindByNameAndIntName< TECHS, CNrpTechnology >( arr, name );
 }
 
 }//end namespace nrp

@@ -42,5 +42,6 @@ OPTION_NAME LANGNUMBER( "langNumber" );
 OPTION_NAME PLATFORMNUMBER( "platformNumber" );
 OPTION_NAME RAM("ram");
 OPTION_NAME CPU("cpu");
+OPTION_NAME POPULARITY( L"popularity" );/*< изветность разработчика */
 
 }//end namespace nrp

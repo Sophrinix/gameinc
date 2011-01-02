@@ -13,15 +13,14 @@ CLASS_NAME CLASS_LUAGAMEENGINE( "CLuaGameEngine" );
 
 Luna< CLuaGameEngine >::RegType CLuaGameEngine::methods[] =			//реализуемы методы
 {
-	LUNA_ILUAOBJECT_HEADER( CLuaGameEngine ),
+	LUNA_ILUAPROJECT_HEADER( CLuaGameEngine ),
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, AddGenre ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetGenreModuleNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetGenreModuleNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetAdvancedTechNumber ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTechNumber ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetCodeVolume ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, IsMyGenre ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetName ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, IsMyTech ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Create ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTexture ),
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Load ),
@@ -99,19 +98,13 @@ int CLuaGameEngine::SetCodeVolume( lua_State *L )
 	return 1;
 }
 
-int CLuaGameEngine::GetName( lua_State* L )
-{
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetName", NAME, "") );
-	return 1;
-}
-
 int CLuaGameEngine::GetTexture( lua_State* L )
 {
 	lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "") );
 	return 1;
 }
 
-int CLuaGameEngine::GetAdvancedTechNumber( lua_State* L )
+int CLuaGameEngine::GetTechNumber( lua_State* L )
 {
 	lua_pushinteger( L, GetParam_<int>( L, "GetAdvancedTechNumber", ADVTECHNUMBER, 0 ) ) ;
 	return 1;
@@ -122,7 +115,7 @@ const char* CLuaGameEngine::ClassName()
 	return ( CLASS_LUAGAMEENGINE );
 }
 
-int CLuaGameEngine::IsMyGenre( lua_State* L )
+int CLuaGameEngine::IsMyTech( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameEngine:IsMyGenre need CLuaTech parameter" );
@@ -130,7 +123,7 @@ int CLuaGameEngine::IsMyGenre( lua_State* L )
 	CNrpTechnology* genre = _GetLuaObject< CNrpTechnology, CLuaTechnology >( L, 2 );
 
 	bool ret = false;
-	IF_OBJECT_NOT_NULL_THEN  ret = _object->IsGenreAvailble( (*genre)[ INTERNAL_NAME ] );
+	IF_OBJECT_NOT_NULL_THEN  ret = _object->IsMyTech( (*genre)[ INTERNAL_NAME ] );
 
 	lua_pushboolean( L, ret );
 	return 1;
