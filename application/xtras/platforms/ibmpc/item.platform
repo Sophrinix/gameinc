@@ -4,7 +4,7 @@ ram:float=0.640
 cpu:float=0.005
 baseCode:float=0.1
 enginecode:float=0.1
-internalname:string=platform_gameboycolor
+internalname:string=platform_dos
 startdate:time=y=1981 m=01 d=01 h=00 mi=00
 enddate:time=y=1987 m=01 d=01 h=00 mi=00
 ;rwidth:int=160
