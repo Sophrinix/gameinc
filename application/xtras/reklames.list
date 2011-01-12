@@ -1,10 +1,10 @@
 [options]
-name0=
+name0=magazine
 reklame0=xtras/reklames/magazine/item.reklame
 reklameNumber=4
-name1=
+name1=paper
 reklame1=xtras/reklames/paper/item.reklame
-name2=
+name2=radio
 reklame2=xtras/reklames/radio/item.reklame
-name3=
+name3=tv
 reklame3=xtras/reklames/tv/item.reklame
