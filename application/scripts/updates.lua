@@ -248,7 +248,9 @@ function CheckNewGames()
 			if game:Empty() == 1 then
 				game:Create( gameIniFile )
 				applic:AddGameToMarket( game )
-				base.pda.Show( "На рынке появилась новая игра "..game:GetName() )
+				if base.pda then
+					base.pda.Show( "На рынке появилась новая игра "..game:GetName() )
+				end
 			else
 				base.LogDebug("Игра "..game:GetName().." уже кем-то создана")
 			end

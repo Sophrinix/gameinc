@@ -37,6 +37,7 @@
 #include "nrpHUDConfig.h"
 #include "NrpConsoleConfig.h"
 #include "NrpPlatform.h"
+#include "NrpBridge.h"
 
 #include <io.h>
 #include <errno.h>
@@ -88,6 +89,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add<CNrpPda*>( PDA, new CNrpPda() );
 	Add<CNrpGameTime*>( GAME_TIME, new CNrpGameTime( this ) );
 	Add( PAUSEBTWSTEP, 100 );
+	Add<CNrpBridge*>( BRIDGE, NULL );
 
 	srand( GetTickCount() );
 }
@@ -429,7 +431,16 @@ void CNrpApplication::LoadScreenshot( const NrpText& fileName )
 	for( size_t i=0; i < imageListNumber; i++ )
 	{
 		NrpText scrFile = rv.Get( SECTION_OPTIONS, CreateKeyScreenshot( i ), NrpText("") );
-		_screenshots.push_back( new CNrpScreenshot( scrFile ) );
+
+		CNrpScreenshot* pScr = new CNrpScreenshot( scrFile );
+		
+		if( FindByNameAndIntName< SCREENSHOTS, CNrpScreenshot>( _screenshots, (*pScr)[ INTERNAL_NAME ], NULL ) == NULL )
+			_screenshots.push_back( pScr );
+		else
+		{
+			Log( HW ) << "duplicate name screenshot " << (NrpText)(*pScr)[ INTERNAL_NAME ] << " from " << scrFile << term;
+			assert( false );
+		}
 	}
 }
 
@@ -515,7 +526,9 @@ int CNrpApplication::_GetFreePlatformNumberForGame( CNrpGame* game )
 
 int CNrpApplication::_GetSalesNumber( CNrpGame* game )
 {
+	assert( game );
 	CNrpCompany* cmp = game->Param( PARENTCOMPANY ).As<CNrpCompany*>();
+	
 	assert( cmp );
 	if( !cmp )
 		return 0;
@@ -577,11 +590,11 @@ void CNrpApplication::_UpdateMarketGames()
 {
 	for( u32 i=0; i < _games.size(); i++ )
 	{
-		CNrpGame* rGame = _games[ i ];
-		if( !rGame->Param( GAMEISSALING ) )
+		CNrpGame& rGame = *_games[ i ];
+		if( !(bool)rGame[ GAMEISSALING ] || (bool)rGame[ NPC_GAME ] )
 			continue;
 
-		rGame->GameBoxSaling( _GetSalesNumber( rGame ) );
+		rGame.GameBoxSaling( _GetSalesNumber( &rGame ) );
 	}
 }
 
@@ -825,11 +838,13 @@ void CNrpApplication::AddGameToMarket( CNrpGame* game )
 		CNrpTechnology* tech = GetTechnology( genreName );
 		assert( tech );
 		if( tech != NULL )
-			(*tech)[ INTEREST ] = -(int)refGame[ STARTGAMERATING ] / 1000.f;
+			(*tech)[ INTEREST ] -= (int)refGame[ STARTGAMERATING ] / 1000.f * (float)(*tech)[ INTEREST ];
+
+		Log(HW) << "techName " << (NrpText)(*tech)[ NAME ] << ": Interest " << (float)(*tech)[ INTEREST ] << term;
 	}
 
 	_games.push_back( game );
-	Param( GAMENUMBER ) = static_cast< int >( _games.size() );
+	_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
 }
 
 //интерес к жанру меняется в противоположную сторону на 10% от рейтинга игры
@@ -905,7 +920,7 @@ NrpText CNrpApplication::GetFreeInternalName( CNrpGame* game )
 
 CNrpScreenshot* CNrpApplication::GetScreenshot( const NrpText& name )
 {
-	return FindByName< SCREENSHOTS, CNrpScreenshot >( _screenshots, name );
+	return FindByNameAndIntName< SCREENSHOTS, CNrpScreenshot >( _screenshots, name, NULL );
 }
 
 CNrpGame* CNrpApplication::GetGame( const NrpText& name )

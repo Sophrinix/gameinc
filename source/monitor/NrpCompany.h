@@ -3,14 +3,19 @@
 #include "nrpArrays.h"
 
 namespace nrp
-{
-OPTION_NAME CEO("ceo");
-OPTION_NAME ENGINES_NUMBER( "engineNumber" );
-OPTION_NAME PROJECTNUMBER( "projectNumber" );
-OPTION_NAME GAMENUMBER( "gameNumber" );
-OPTION_NAME OBJECTSINPORTFELLE( "objectInPortfelle" );
-OPTION_NAME DEVELOPPROJECTS_NUMBER( "developProjectsNumber" );
-OPTION_NAME INVENTIONSNUMBER( "inventionsNumber" );
+{ 
+OPTION_NAME CEO( L"ceo");
+OPTION_NAME ENGINES_NUMBER( L"engineNumber" );
+OPTION_NAME PROJECTNUMBER( L"projectNumber" );
+OPTION_NAME GAMENUMBER( L"gameNumber" );
+OPTION_NAME OBJECTSINPORTFELLE( L"objectInPortfelle" );
+OPTION_NAME DEVELOPPROJECTS_NUMBER( L"developProjectsNumber" );
+OPTION_NAME INVENTIONSNUMBER( L"inventionsNumber" );
+OPTION_NAME SELF_CAPITAL( L"selfCapital" );
+OPTION_NAME OTHER_CAPITAL( L"otherCapital" );
+OPTION_NAME MONEY_ON_PIE( L"moneyOnPie" );
+OPTION_NAME PIE_COST( L"pieCost" );
+OPTION_NAME PIE_NUMBER( L"pieNumber" );
 
 class CNrpCompany : public INrpConfig
 {

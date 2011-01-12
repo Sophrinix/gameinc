@@ -57,4 +57,6 @@ NrpText CreateKeyUser( int index );
 NrpText CreateKeyWork( int index );
 NrpText CreateKeyReklame( int index );
 NrpText CreateKeyPlatform( int index );
+NrpText CreateSectionStep( int index );
+
 }//end namespace nrp

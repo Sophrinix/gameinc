@@ -93,10 +93,10 @@ local function localCreateWindowForBoxAddedAddons()
 	
 	guienv:AddLabel( "Выбор обложки для коробки:", 
 					 scrWidth / 2 + 10, 20, scrWidth - 10, 40, 
-					 -1, wndGBM:Self() )
+					 -1, wndGBM )
 	wndBoxPreview = guienv:AddWindow( textureForBox, 
 					   				  20, 80 + scrHeight * 0.2, scrWidth - 300, scrHeight - 20, 
-									  -1, wndGBM:Self() )
+									  -1, wndGBM )
 				
 	wndBoxPreview:SetDrawBody( false )									  
 	wndBoxPreview:SetDraggable( false )

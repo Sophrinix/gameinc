@@ -36,12 +36,14 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	sloginResetDataForNewGame()
 	
 	CreateStuffLists()
+	applic:LoadScreenshots( updates.fileScreenshots )
 	updates.CheckNewTechs()
 	updates.CheckLanguages()
 	updates.CheckGameBoxAddons()
 	updates.CheckPlatforms( false )
 	updates.CheckDiskMachines()
 	updates.CheckNewReklames()
+	updates.CheckNewGames()
 	
 	--создание рабочих
 	applic:CreateNewFreeUsers()

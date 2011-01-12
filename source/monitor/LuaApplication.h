@@ -67,6 +67,7 @@ public:
 
 	int GetPauseBetweenStep( lua_State* L );
 	int SetPauseBetweenStep( lua_State* L );
+
 private:
 	int AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool rem );
 };

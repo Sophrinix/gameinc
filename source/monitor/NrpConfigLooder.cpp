@@ -68,6 +68,7 @@ void CNrpConfigLooder::Save( const NrpText& fileName )
 	ini->Set( "test", "test", NrpText("test") );
 
 	assert( OpFileSystem::IsExist( fileName ) );
+	_fileName = fileName;
 
 	INrpConfig::PARAMS::iterator paIter = _config->_params.begin();
 
@@ -89,6 +90,8 @@ void CNrpConfigLooder::Save( const NrpText& fileName )
 void CNrpConfigLooder::Load( const NrpText& fileName )
 {
 	assert( OpFileSystem::IsExist( fileName ) );
+
+	_fileName = fileName;
 	const size_t MAX_BUFFER = 32000;
 	wchar_t buffer[ MAX_BUFFER ];
 	memset( buffer, 0, MAX_BUFFER );
@@ -123,7 +126,7 @@ void CNrpConfigLooder::_InitReaders()
 	_readers[ "tech" ] = &CNrpConfigLooder::_ReadTechnology;
 	_readers[ "unknown" ] = &CNrpConfigLooder::_ReadUnknown;
 	_readers[ "dim2u" ] = &CNrpConfigLooder::_ReadDim2u;
-
+	_readers[ "path" ] = &CNrpConfigLooder::_ReadPath;
 }
 
 void CNrpConfigLooder::_InitWriters()
@@ -139,6 +142,19 @@ void CNrpConfigLooder::_InitWriters()
 	_writers[ typeid( float ).name() ] = &CNrpConfigLooder::_WriteFloat;
 	_writers[ typeid( PUser ).name() ] = &CNrpConfigLooder::_WriteUser;
 	_writers[ typeid( CNrpTechnology ).name() ] = &CNrpConfigLooder::_WriteTechnology;
+}
+
+void CNrpConfigLooder::_ReadPath( KeyPair* p )
+{
+	if( _fileName.ToWide()[ 0 ] == L'$' )
+	{
+		//yet not work
+		assert( false );
+	}
+
+	NrpText myDir = OpFileSystem::UpDir( _fileName );
+
+	(*_config)[ p->GetName() ] = OpFileSystem::CheckFile( myDir,  p->GetValue() );	
 }
 
 void CNrpConfigLooder::_ReadInt( KeyPair* p )

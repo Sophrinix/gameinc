@@ -41,7 +41,7 @@ Luna< CLuaGame >::RegType CLuaGame::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaGame, SetViewImage ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetViewImage ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetLastMonthSales ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetCurrentMonthSales ),
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetLastMonthProfit ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetAllTimeSales ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetPrice ),
 	LUNA_AUTONAME_FUNCTION( CLuaGame, SetPrice ),
@@ -230,7 +230,7 @@ int CLuaGame::GetImagePath_( lua_State* L, const NrpText& funcName, OPTION_NAME&
 			int maxImage = (*imageList)[ nameParam ];
 			if( maxImage > 0)
 			{
-				const CNrpScreenshot::STRING_LIST& pvm = (nameParam == IMAGESBOXNUMBER) 
+				const STRINGS& pvm = (nameParam == IMAGESBOXNUMBER) 
 															? imageList->GetBoxImages() 
 															: imageList->GetImages();
 				pathTexture = pvm[ index < 0 ? (rand() % maxImage) : index ];
@@ -290,22 +290,24 @@ int CLuaGame::GetViewImage( lua_State* L )
 	return 1;	
 }
 
-int CLuaGame::GetCurrentMonthSales( lua_State* L )
+int CLuaGame::GetLastMonthProfit( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetCurrentMonthSales not need any parameters" );
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetLastMonthProfit not need any parameters" );
 
-	int lastMonthSales = 0;
 	IF_OBJECT_NOT_NULL_THEN
-		if( (int)(*_object->GetHistory())[ HISTORY_SIZE ] > 0 )
+	{
+		int sales = 0;
+		if( CNrpHistory* history = _object->GetHistory() )
 		{
-			//CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
-			//pIter--;
-			//lastMonthSales = pIter->second->numberSale;	
+			if( CNrpHistoryStep* step = history->GetLast() )
+				lua_pushinteger( L, (*step)[ BALANCE ] );
 		}
+		else
+			lua_pushnil( L );		
+	}
 
-		lua_pushinteger( L, lastMonthSales );
-		return 1;
+	return 1;
 }
 
 int CLuaGame::GetLastMonthSales( lua_State* L )
@@ -313,35 +315,32 @@ int CLuaGame::GetLastMonthSales( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetLastMonthSales not need any parameters" );
 
-	int lastMonthSales = 0;
 	IF_OBJECT_NOT_NULL_THEN
-		if( (int)(*_object->GetHistory())[ HISTORY_SIZE ] > 0 )
+	{
+		int sales = 0;
+		if( CNrpHistory* history = _object->GetHistory() )
 		{
-			//CNrpGame::SALE_HISTORY_MAP::const_iterator pIter = object_->GetSalesHistory().end();
-			//pIter--; pIter--;
-			//lastMonthSales = pIter->second->numberSale;	
+			if( CNrpHistoryStep* step = history->GetLast() )
+				lua_pushinteger( L, (*step)[ BOXNUMBER ] );
 		}
+		else
+			lua_pushnil( L );		
+	}
 
-	lua_pushinteger( L, lastMonthSales );
 	return 1;
-}
-
-float CLuaGame::_GetRelativeTime()
-{
-	int fMonth = TimeHelper::GetMonthBetweenDate( (*_object)[ STARTDATE ], (*_object)[ ENDDATE ] );//полное количество месяцев жизни игры
-	int cMonth = TimeHelper::GetMonthBetweenDate( (*_object)[ STARTDATE ], _nrpApp[ CURRENTTIME ] );//текущее количество месяцев жизни игры
-	return ( cMonth < fMonth ) ? ( cMonth / (float)fMonth ) : 1;
 }
 
 int CLuaGame::GetAllTimeSales( lua_State* L )
 {
-	int copySell = 0;
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetAllTimeSales not need parameter" );
+
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		copySell = GetParam_<int>( L, "GetAllTimeSales", COPYSELL, 0 );
-		copySell *= _GetRelativeTime();
-
-		lua_pushinteger( L, copySell );
+		if( CNrpHistory* history = _object->GetHistory() )
+			lua_pushinteger( L, history->GetSummFor( BOXNUMBER, _nrpApp[ CURRENTTIME ] ) );
+		else
+			lua_pushnil( L );
 	}
 	return 1;		
 }
@@ -354,7 +353,7 @@ int CLuaGame::GetPrice( lua_State* L )
 	int price = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-			PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
+		PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
 		assert( box != NULL );
 		if( box != NULL )
 			price = (*box)[ PRICE ];
@@ -403,7 +402,10 @@ int CLuaGame::Create( lua_State* L )
 	NrpText fileName = lua_tostring( L, 2 );
 
 	if( fileName != NULL )
+	{
 		_object = new CNrpGame( fileName  );
+		(*_object)[ NPC_GAME ] = true;
+	}
 
 	return 1;		
 }
@@ -421,13 +423,15 @@ const char* CLuaGame::ClassName()
 
 int CLuaGame::GetAllTimeProfit( lua_State* L )
 {
-	int profit = 0;
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetAllTimeProfit not need parameter" );
+
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		profit = GetParam_<int>( L, "GetAllTimeProfit", CASH, 0 );
-		profit *= _GetRelativeTime();
-
-		lua_pushinteger( L, profit );
+		if( CNrpHistory* history = _object->GetHistory() )
+			lua_pushinteger( L, history->GetSummFor( BALANCE, _nrpApp[ CURRENTTIME ] ) );
+		else
+			lua_pushnil( L );
 	}
 	return 1;		
 }

@@ -232,7 +232,7 @@ NrpText OpFileSystem::UpDir( const NrpText& pathTo )
 {
 	assert( IsExist( pathTo ) );
 	if( !pathTo.size() )
-		return "";
+		return L"";
 
 	NrpText pathToAny = RemoveEndSlash( pathTo );
 	int index = pathToAny.findLast( L'\\' );
@@ -243,7 +243,23 @@ NrpText OpFileSystem::UpDir( const NrpText& pathTo )
 		return pathToAny.subString( 0, index+1 );
 
 	assert( IsExist( pathTo ) );
-	return "";
+	return L"";
+}
+
+NrpText OpFileSystem::CheckFile( const NrpText& dir, const NrpText& fileName )
+{
+	assert( IsExist( dir ) );
+	if( !fileName.size() )
+		return L"";
+
+	if( IsExist( fileName ) )
+		return fileName;
+
+	NrpText finalName = CheckEndSlash( dir ) + fileName; 
+	if( IsExist( finalName ) )
+		return finalName;
+
+	return fileName;
 }
 
 }//end namespace nrp

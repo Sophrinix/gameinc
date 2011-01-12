@@ -5,6 +5,9 @@
 #include "nrpConfig.h"
 #include "NrpGame.h"
 
+#define SCREENSHOTNAME( index ) "scr_" + NrpText( index ) + ".png"
+#define SPLASHSHOTNAME( index ) "spl_" + NrpText( index ) + ".png"
+
 namespace nrp
 {
 CLASS_NAME CLASS_IMAGEGAMELIST( "CNrpGameImageList" );
@@ -17,12 +20,12 @@ CNrpScreenshot::CNrpScreenshot(void) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
 CNrpScreenshot::CNrpScreenshot( const CNrpScreenshot& a ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
 {
 	InitializeOptions_();
-	Param( NAME ) = a[ NAME ];
+	_self[ INTERNAL_NAME ] = a[ INTERNAL_NAME ];
 
 	_imagesPath = a._imagesPath;
 	_imagesBoxPath = a._imagesBoxPath;
-	Param( IMAGESNUMBER ) = static_cast< int >( _imagesPath.size() );
-	Param( IMAGESBOXNUMBER ) = static_cast< int >( _imagesBoxPath.size() );
+	_self[ IMAGESNUMBER ] = static_cast< int >( _imagesPath.size() );
+	_self[ IMAGESBOXNUMBER ] = static_cast< int >( _imagesBoxPath.size() );
 }
 
 CNrpScreenshot::CNrpScreenshot( const NrpText& fileName ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
@@ -37,7 +40,7 @@ CNrpScreenshot::~CNrpScreenshot(void)
 
 bool CNrpScreenshot::IsMyYear( int year )
 {
-	return Param( STARTDATE ).As<SYSTEMTIME>().wYear <= year;
+	return _self[ STARTDATE ].As<SYSTEMTIME>().wYear <= year;
 }
 
 int CNrpScreenshot::GetEqualeRating( CNrpGame* game )
@@ -56,22 +59,41 @@ void CNrpScreenshot::Load( const NrpText& fileName )
 	INrpConfig::Load( fileName );
 	IniFile rv( fileName );
 
-	for( int k=0; k < (int)Param( IMAGESNUMBER ); k++ )
-		_imagesPath.push_back( rv.Get( SECTION_IMAGES, CreateKeyImage(k), NrpText("") ) );
+	assert( ((NrpText)_self[ INTERNAL_NAME ]).size() );
 
-	for( int k=0; k < (int)Param( IMAGESBOXNUMBER ); k++ )
-		_imagesBoxPath.push_back( rv.Get( SECTION_BOXIMAGES, CreateKeyBoxImage(k), NrpText("") ) );
+	NrpText folder = OpFileSystem::UpDir( fileName );
+	//найдем все скриншоты игры
+	int k = 0;
+	NrpText imageName = folder + SCREENSHOTNAME( k );
+	while( OpFileSystem::IsExist( imageName ) )
+	{
+		_imagesPath.push_back( imageName );
+		k++;
+		imageName = folder + SCREENSHOTNAME( k );
+	}
+	_self[ IMAGESNUMBER ] = static_cast< int >( _imagesPath.size() );
+	//найдем все скриншоты заставок
+	k = 0;
+	imageName = folder + SPLASHSHOTNAME( k );
+	while( OpFileSystem::IsExist( imageName ) )
+	{
+		_imagesBoxPath.push_back( imageName );
+		k++;
+		imageName = folder + SCREENSHOTNAME( k );
+	}
+	_self[ IMAGESBOXNUMBER ] = static_cast< int >( _imagesBoxPath.size() );
 
-	for( int i=0; i < (int)Param( GENRE_MODULE_NUMBER ); ++i )
-		_genres.push_back( rv.Get( SECTION_GENRES, CreateKeyGenre(i), NrpText("") ) );
+
+	rv.Get( SECTION_GENRES, CreateKeyGenre,(int)_self[ GENRE_MODULE_NUMBER ], _genres );
 }
 
 void CNrpScreenshot::InitializeOptions_()
 {
-	Add<NrpText>( NAME, "" );
+	Add<NrpText>( INTERNAL_NAME, "" );
 	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
 	Add<int>( IMAGESNUMBER, 0 );
 	Add<int>( IMAGESBOXNUMBER, 0 );
+	Add<NrpText>( NAME, "" );
 	Add<int>( GENRE_MODULE_NUMBER, 0 );
 }
 

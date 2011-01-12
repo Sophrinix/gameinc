@@ -78,12 +78,17 @@ void CNrpBank::CreateLoan( const NrpText& name, int money, int percent, int mont
 	_loans.push_back( loan );
 	(*cmp)[ BALANCE ] += money;
 
-	Param( LOANNUMBER ) = static_cast< int >( _loans.size() ); 
+	_self[ LOANNUMBER ] = static_cast< int >( _loans.size() ); 
 }
 
 NrpText CNrpBank::ClassName()
 {
 	return CLASS_BANK;
+}
+
+int CNrpBank::GetLoan( const NrpText& name )
+{
+	return 0;
 }
 
 }//namespace nrp

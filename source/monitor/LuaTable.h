@@ -30,6 +30,7 @@ public:
 	int GetColumnCount( lua_State *L );
 	int RemoveColumn( lua_State *L );
 	int ClearRows( lua_State* L);
+	int GetActiveColumn( lua_State* L );
 };
 
 }//namespace nrp

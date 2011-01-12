@@ -27,7 +27,7 @@ IncludeScript("saleManager")
 IncludeScript("safe")
 IncludeScript( "testDef" )
 IncludeScript( "testerComp" )
-IncludeScript( "monthTopGame" )
+IncludeScript( "topGame" )
 --------------------------------------------
 
 --создание рабочей сцены 

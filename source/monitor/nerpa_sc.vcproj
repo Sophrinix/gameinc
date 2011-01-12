@@ -1561,10 +1561,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\monthTopGame.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\NerpaActionType.lua"
 				>
 			</File>
@@ -1641,6 +1637,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\topGame.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\tutorial.lua"
 				>
 			</File>
@@ -1682,6 +1682,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpApplication.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpBridge.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpBridge.h"
 				>
 			</File>
 			<File

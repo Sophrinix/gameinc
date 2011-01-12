@@ -19,7 +19,7 @@ local buttonAnonceGame = nil
 local imageGamePreview = nil
 local labelGameName = nil
 local labelLastMonthSale = nil
-local labelCurrentMonthSale = nil
+local labelProfit = nil
 local labelAllTimeSale = nil
 local prgRating = nil
 local btnDecreaseGamePrice = nil
@@ -57,17 +57,20 @@ end
 local function localUpdateCurrentGameParams()
 	labelGameName:SetText( "Название: " .. selectedGame:GetName() )
 	labelLastMonthSale:SetText( "Продаж за прошлый месяц:" .. selectedGame:GetLastMonthSales() )
-	labelCurrentMonthSale:SetText( "Продаж за этот месяц:" .. selectedGame:GetCurrentMonthSales() )
+	labelProfit:SetText( "Прибыль:" .. selectedGame:GetAllTimeProfit() )
 	labelAllTimeSale:SetText( "Продаж за все время:" .. selectedGame:GetAllTimeSales() )
 	--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
-	labelGamePrice:SetText( "Цена:" .. selectedGame:GetPrice() )
-	
+		
 	if selectedGame:GetCompany():Self() == company:Self() then
 		btnDecreaseGamePrice:SetVisible( true )
 		btnIncreaseGamePrice:SetVisible( true )		
+		labelGamePrice:SetText( "Цена:" .. selectedGame:GetPrice() )
 	else
 		btnDecreaseGamePrice:SetVisible( false )
 		btnIncreaseGamePrice:SetVisible( false )			
+		
+		local price = selectedGame:GetAllTimeProfit() / selectedGame:GetAllTimeSales()
+		labelGamePrice:SetText( "Цена:" .. base.string.format( "%0.2f", price ) )
 	end
 end
 
@@ -78,8 +81,8 @@ function UpdateGameParams()
 end
 
 function ListboxChanged()
-    if base.GetNrpSender() == listboxGames:Self() then
-		selectedGame:SetObject( listboxGames:GetSelectedObject() )
+    if base.NrpGetSender() == listboxGames:Self() then
+		selectedGame = base.CLuaGame( listboxGames:GetSelectedObject() )
 		localUpdateCurrentGameParams()
     end
 end
@@ -128,7 +131,7 @@ function Show()
 	labelLastMonthSale = guienv:AddLabel( "Продаж за прошлый месяц:", pos.x, pos.y, size.w, size.h, -1, mainWindow )
 	pos.y = pos.y + size.hh
 	--продаж за текущий месяц
-	labelCurrentMonthSale = guienv:AddLabel( "Продаж за этот месяц:", pos.x, pos.y, size.w, size.h, -1, mainWindow )
+	labelProfit = guienv:AddLabel( "Продаж за этот месяц:", pos.x, pos.y, size.w, size.h, -1, mainWindow )
 	pos.y = pos.y + size.hh
 	--всего продано копий
 	labelAllTimeSale = guienv:AddLabel( "Продаж за все время:", pos.x, pos.y, size.w, size.h, -1, mainWindow )

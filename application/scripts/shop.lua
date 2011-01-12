@@ -48,10 +48,10 @@ function Show()
 	button.EqualeTexture( 147, 333, "gameInSale", mainWindow:Self(), -1, "", "./saleManager.Show()")
 	
 	--топ-лист месяца
-	button.EqualeTexture( 703, 67, "toplistmonth", mainWindow:Self(), -1, "", "./monthTopGame.Show()" )
+	button.EqualeTexture( 703, 67, "toplistmonth", mainWindow:Self(), -1, "", "./topGame.Show( topGame.TIME_MONTH )" )
 
 	--топ-лист за все время
-	button.EqualeTexture( 119, 94, "toplisttime", mainWindow:Self(), -1, "", "./allTimeTopGame.Show()")
+	button.EqualeTexture( 119, 94, "toplisttime", mainWindow:Self(), -1, "", "./topGame.Show( topGame.TIME_LIFE )")
 
 	--игровые журналы
 	button.EqualeTexture( 861, 268, "showMagazines", mainWindow:Self(), -1, "", "./journals.Show()" )

@@ -23,6 +23,7 @@ public:
 	static NrpText GetExtension( const NrpText& pathTo );
 	static NrpText UpDir( const NrpText& pathTo );
 	static NrpText RemoveEndSlash( NrpText pathTo );
+	static NrpText CheckFile( const NrpText& dir, const NrpText& fileName );
 };
 
 }//end namespace nrp

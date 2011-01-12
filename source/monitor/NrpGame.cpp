@@ -13,6 +13,7 @@
 #include "NrpHistory.h"
 #include "NrpGameEngine.h"
 #include "IniFile.h"
+#include "timeHelpers.h"
 
 #include <errno.h>
 #include <OleAuto.h>
@@ -21,7 +22,7 @@ namespace nrp
 {
 CLASS_NAME CLASS_NRPGAME( "CNrpGame" );
 	
-void CNrpGame::InitializeOptions_()
+void CNrpGame::_InitializeOptions()
 {
 	Add<PNrpCompany>( PARENTCOMPANY, NULL );
 	Add<NrpText>( COMPANYNAME, "" );
@@ -62,12 +63,14 @@ void CNrpGame::InitializeOptions_()
 	Add<NrpText>( TEXTURENORMAL, "" );
 	Add<float>( READYWORKPERCENT, 1.f );
 	Add<NrpText>( VIEWIMAGE, "" );
+	Add<NrpText>( RECENSE, "" );
+	Add<bool>( NPC_GAME, false );
 	_history = NULL;
 }
 
 CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpConfig( CLASS_NRPGAME, devGame->Text( NAME ) )
 {
-	InitializeOptions_();
+	_InitializeOptions();
 
 	assert( devGame );
 	CNrpDevelopGame& refGame = *devGame;
@@ -108,7 +111,7 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpCo
 
 CNrpGame::CNrpGame( const NrpText& fileName ) : INrpConfig( CLASS_NRPGAME, fileName )
 {
-	InitializeOptions_();
+	_InitializeOptions();
 	Load( fileName );
 }
 
@@ -148,6 +151,10 @@ NrpText CNrpGame::Save( const NrpText& saveFolder )
 	for( u32 i=0; i < _genres.size(); i++ )
 		sv.Set( SECTION_GENRES, CreateKeyGenre(i),_genres[ i ] );
 
+	assert( _history );
+	if( _history )
+		_history->Save( localFolder + "game.history" );
+
 	return localFolder;
 }
 
@@ -180,10 +187,10 @@ void CNrpGame::Load( const NrpText& loadPath )
 
 	INrpConfig::Load( loadFile );
 	IniFile rv( loadFile );
-	for( int i=0; i < (int)Param( MODULE_NUMBER ); ++i )
+	for( int i=0; i < (int)_self[ MODULE_NUMBER ]; ++i )
 		_techs.push_back( rv.Get( SECTION_TECHS, CreateKeyTech(i), NrpText("") ) );
 
-	for( int i=0; i < (int)Param( GENRE_MODULE_NUMBER ); ++i )
+	for( int i=0; i < (int)_self[ GENRE_MODULE_NUMBER ]; ++i )
 		_genres.push_back( rv.Get( SECTION_GENRES, CreateKeyGenre(i), NrpText("") ) );
 
 	NrpText boxIni = loadFolder + "box.ini";
@@ -191,13 +198,41 @@ void CNrpGame::Load( const NrpText& loadPath )
 	{
 		PNrpGameBox box = new CNrpGameBox( this );
 		box->Load( boxIni );
-		Param( GBOX ) = box;
+		_self[ GBOX ] = box;
 	}
+
+	NrpText historyIni = loadFolder + "game.history";
+	if( OpFileSystem::IsExist( historyIni ) )
+		_history = new CNrpHistory( historyIni );
+	else
+		_CreateHistory();
 
 	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( Text( INTERNAL_NAME ) );
 	assert( pgList != NULL );
 	if( pgList != NULL )
-		Param( GAMEIMAGELIST ) = pgList;
+		_self[ GAMEIMAGELIST ] = pgList;
+}
+
+void CNrpGame::_CreateHistory()
+{
+	_history = new CNrpHistory();
+	assert( _history );
+
+	int fMonth = TimeHelper::GetMonthBetweenDate( _self[ STARTDATE ], _self[ ENDDATE ] );//полное количество месяцев жизни игры
+	int sale = _self[ COPYSELL ];
+	int profit = _self[ CASH ];
+
+	//стандартный расчет для продаж игры
+	//продажи максимальны на старте и уменьшаются с каждым месяцем
+	float step = 1.f / fMonth;
+	for( int i=0; i < fMonth; i++ )
+	{
+		CNrpHistoryStep* historyStep = _history->AddStep( TimeHelper::DatePlusDay( _self[ STARTDATE ], 30 * i ) );
+		//вычисляем коеффициент продаж в этом месяце
+		float percent = ( 1 - i * step ) * step * 2;
+		(*historyStep)[ BOXNUMBER ] = static_cast< int >( sale * percent );
+		(*historyStep)[ BALANCE ] = static_cast< int >( profit * percent );
+	}
 }
 
 float CNrpGame::GetAuthorFamous()
@@ -261,9 +296,6 @@ bool CNrpGame::IsGenreAvaible( const NrpText& name )
 
 CNrpHistory* CNrpGame::GetHistory()
 {
-	if( !_history )
-		_history = new CNrpHistory();
-
 	return _history;
 }
 

@@ -30,7 +30,9 @@ OPTION_NAME GAMEISSALING( L"gameIsSaling" );
 OPTION_NAME GAMEIMAGELIST( L"gameImageList" );
 OPTION_NAME VIEWIMAGE( L"viewImage" );
 OPTION_NAME GAMERETAILER( L"gameRetailer" );
-OPTION_NAME OWNER( "owner" );
+OPTION_NAME OWNER( L"owner" );
+OPTION_NAME RECENSE( L"recense" );
+OPTION_NAME NPC_GAME( L"npcGame" );
 
 class CNrpGame : public INrpConfig
 {
@@ -56,9 +58,11 @@ public:
 
 	static NrpText ClassName();
 private:
-	void InitializeOptions_();
+	void _InitializeOptions();
+	void _CreateHistory();
+
 	CNrpGame();;
-	
+
 	STRINGS _developers;
 	STRINGS _genres;
 	STRINGS _techs;

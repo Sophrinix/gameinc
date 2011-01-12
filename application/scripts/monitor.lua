@@ -11,6 +11,7 @@ local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
 
 local mainWindow = nil
+local width = 80
 
 function Hide()
 	mainWindow:Remove()
@@ -25,23 +26,16 @@ function Show()
 		mainWindow:SetDraggable( false )
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 60, scrWidth - 20, scrHeight, 
-		 			    "poweroff", mainWindow:Self(), -1, "",
+		 			    "poweroff", mainWindow, -1, "",
 						"./monitor.Hide()" )
 	else
 		mainWindow:SetVisible( true )
 		return
 	end
 	
-	local offsetX = 150
-	local width = 90
-	button.Stretch( offsetX, width, offsetX + width, width+width, "m_inDevelop", mainWindow:Self(), -1, 
-					base.STR_DEVPROJECTS, "./projectManager.Show()" )
-					
-	offsetX = offsetX + 20 + width					
-	button.Stretch( offsetX, width, offsetX + width, width+width, "m_buhgalter", mainWindow:Self(), -1, 
-					base.STR_BUHGALTERIA, "./buhgalter.Show()" )
-
-	offsetX = offsetX + 20 + width					
-	button.Stretch( offsetX, width, offsetX + width, width+width, "m_personal", mainWindow:Self(), -1, 
-					base.STR_PERSONAL, "./userManager.Show()" )
+	local flick = guienv:AddFlick( 150, 90, scrWidth - 150, scrHeight - 90, 4, -1, mainWindow )
+	
+	button.Stretch( 0, 0, width, width, "m_inDevelop", flick, -1, base.STR_DEVPROJECTS, "./projectManager.Show()" )
+	button.Stretch( 0, 0, width, width, "m_buhgalter", flick, -1, base.STR_BUHGALTERIA, "./buhgalter.Show()" )
+	button.Stretch( 0, 0, width, width, "m_personal", flick, -1, base.STR_PERSONAL, "./userManager.Show()" )
 end

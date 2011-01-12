@@ -34,15 +34,15 @@ public:
 		return fBegin == fEnd ? 0 : (fBegin < fEnd ? -1 : 1) ;
 	}
 
-	static int GetMonthBetweenDate( SYSTEMTIME& begin, SYSTEMTIME& end )
+	static int GetMonthBetweenDate( const SYSTEMTIME& begin, const SYSTEMTIME& end )
 	{
 		return GetDaysBetweenDate( begin, end ) / 30;
 	}
 
-	static SYSTEMTIME DatePlusDay( SYSTEMTIME& start, int dayNumber )
+	static SYSTEMTIME DatePlusDay( const SYSTEMTIME& start, int dayNumber )
 	{
 		double time;
-		int errCurrTime = SystemTimeToVariantTime( &start, &time );
+		int errCurrTime = SystemTimeToVariantTime( &const_cast< SYSTEMTIME& >( start ), &time );
 		assert( errCurrTime > 0 );
 
 		time += dayNumber;

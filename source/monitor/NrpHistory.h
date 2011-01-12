@@ -21,23 +21,29 @@ public:
 	}
 };
 
+typedef std::map< int, CNrpHistoryStep* > HISTORY_MAP;
+
 class CNrpHistory :	public INrpConfig
 {
 public:
 	NrpText Save( const NrpText& fileName );
 	void Load( const NrpText& fileName );
 
-	CNrpHistoryStep* GetStep( const SYSTEMTIME& time, bool aprocimateData );
 	CNrpHistoryStep* GetStep( const SYSTEMTIME& time );
+	CNrpHistoryStep* GetLast();
+	CNrpHistoryStep* GetFirst();
 
-	CNrpHistoryStep* AddStep( SYSTEMTIME& time );
+	CNrpHistoryStep* AddStep( const SYSTEMTIME& time );
 
+	int GetSummFor( const OPTION_NAME& name, const SYSTEMTIME& time );
+
+	CNrpHistory( const NrpText& fileName );
 	CNrpHistory();
 	~CNrpHistory(void);
 private:
+	void _InitialyzeOptions();
 
-	typedef core::map< int, CNrpHistoryStep* > SALE_HISTORY_MAP;
-	SALE_HISTORY_MAP _steps;
+	HISTORY_MAP _steps;
 };
 
 }//end namespace nrp

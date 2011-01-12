@@ -36,7 +36,7 @@ public:
 	int GetAllTimeProfit( lua_State* L );
 	int GetPrice( lua_State* L );
 	int SetPrice( lua_State* L );
-	int GetCurrentMonthSales( lua_State* L );
+	int GetLastMonthProfit( lua_State* L );
 	int GetCompany( lua_State* L );
 	int GetDescriptionLink( lua_State* L );
 private:
@@ -44,7 +44,6 @@ private:
 		                                     const NrpText& funcName, 
 											 OPTION_NAME& name, R defValue );
 	int GetImagePath_( lua_State* L, const NrpText& funcName, OPTION_NAME& nameParam );
-	float _GetRelativeTime();
 };
 
 }//namespace nrp

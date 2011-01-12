@@ -27,6 +27,7 @@ Luna< CLuaTable >::RegType CLuaTable::methods[] =			//реализуемы методы
 	LUNA_AUTONAME_FUNCTION( CLuaTable, RemoveColumn ),
 	LUNA_AUTONAME_FUNCTION( CLuaTable, SetRowHeight ),
 	LUNA_AUTONAME_FUNCTION( CLuaTable, ClearRows ),
+	LUNA_AUTONAME_FUNCTION( CLuaTable, GetActiveColumn ),
 	{0,0}
 };
 
@@ -186,4 +187,15 @@ const char* CLuaTable::ClassName()
 {
 	return ( CLASS_LUATABLE );
 }
+
+int CLuaTable::GetActiveColumn( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaButton::ClearRows not need parameter");
+
+	IF_OBJECT_NOT_NULL_THEN	lua_pushinteger( L, _object->getActiveColumn() );
+
+	return 1;	
+}
+
 }//namespace nrp

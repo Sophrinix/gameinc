@@ -13,6 +13,7 @@ public:
 	static CNrpBank& Instance();
 
 	CNrpLoan* GetLoan( u32 index ) { return _loans[ index ]; }
+	int GetLoan( const NrpText& name );
 	size_t GetMaxCompanyLoan( const NrpText& companyName );
 	CNrpLoan* FindLoadByID( u32 id );
 	void CreateLoan( const NrpText& name, int money, int percent, int month );

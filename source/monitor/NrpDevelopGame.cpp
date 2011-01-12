@@ -147,10 +147,13 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
 	for( size_t k=0; k < uList.size(); k++ )
 	{
 		 SetDeveloper( uList[ k ] );
-		 float growExp = (int)(*module)[ CODEVOLUME ] / (float)Param( BASE_CODEVOLUME );
+		 float growExp = (int)(*module)[ CODEVOLUME ] / (int)_self[ BASE_CODEVOLUME ];
 		 //опыт пользователя растет по мере выполнения компонентов
 		 //а если у пользователя не было опыта в этом жанре, то он появляется
-		 uList[ k ]->IncreaseExperience( (*GetGenre( 0 ))[ INTERNAL_NAME ], static_cast< int >( growExp ) );
+		 if( CNrpTechnology* genre = GetGenre( 0 ) )
+			 uList[ k ]->IncreaseExperience( (*genre)[ INTERNAL_NAME ], static_cast< int >( growExp ) );
+		 else
+			 assert( genre );
 	}
 
 	_nrpApp.DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
@@ -251,10 +254,13 @@ CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index )
 	int position = 0;
 	for( u32 i=0; i < _modules.size(); i++ )
 	{
-		 if( (int)(*_modules[ i ])[ TECHGROUP ] == PT_GENRE && position == index )
-			 return _modules[ i ];
-		 else
-			 position++;
+		if( (int)(*_modules[ i ])[ TECHGROUP ] == PT_GENRE )
+		{
+			if( position == index )
+				return _modules[ i ];
+			else
+				position++;
+		}
 	}
 
 	return NULL;

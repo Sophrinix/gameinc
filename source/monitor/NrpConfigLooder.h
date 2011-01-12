@@ -54,6 +54,8 @@ private:
 	void _WriteUser( const NParam*, const NrpText& , IniFile*  );
 	void _WriteUnknown( const NParam*,  const NrpText& , IniFile*  );
 	void _WriteTechnology( const NParam*, const NrpText&, IniFile* );
+	void _ReadPath( KeyPair* p );
 	INrpConfig* _config;
+	NrpText _fileName;
 };
 }//end namespace nrp

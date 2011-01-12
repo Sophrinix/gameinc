@@ -31,6 +31,8 @@ OPTION_NAME PDA( L"pda" );
 OPTION_NAME SYSTEMINI( L"systemIni" );
 OPTION_NAME GAME_TIME( L"objectGameTime" );
 OPTION_NAME PAUSEBTWSTEP( L"pausebtwstep" );
+OPTION_NAME BRIDGE( L"bridge" );
+OPTION_NAME TAX( L"tax" );
 
 class IUser;
 class INrpProject;
@@ -41,6 +43,7 @@ class CNrpDiskMachine;
 class CNrpGameEngine;
 class CNrpInvention;
 class INrpDevelopProject;
+class CNrpBridge;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
@@ -75,6 +78,7 @@ public:
 
 	CNrpGame* GetGame( const NrpText& name );
 	CNrpGame* GetGame( u32 index );
+	const GAMES& GetGames() { return _games; }
 	void AddGame( CNrpGame* ptrGame );
 
 	void AddProject( nrp::INrpProject* project );

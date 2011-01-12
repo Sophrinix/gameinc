@@ -1,5 +1,6 @@
 #pragma once
 #include "nrpConfig.h"
+#include "nrpArrays.h"
 
 namespace nrp
 {
@@ -11,13 +12,11 @@ class CNrpGame;
 class CNrpScreenshot : public INrpConfig
 {
 public:
-	typedef core::array< NrpText > STRING_LIST;
-
 	CNrpScreenshot( const NrpText& fileName );
 	~CNrpScreenshot(void);
 
-	const STRING_LIST& GetBoxImages() { return _imagesBoxPath; }
-	const STRING_LIST& GetImages() { return _imagesPath; }
+	const STRINGS& GetBoxImages() { return _imagesBoxPath; }
+	const STRINGS& GetImages() { return _imagesPath; }
 
 	int GetEqualeRating( CNrpGame* game );
 	bool IsMyYear( int year );
@@ -28,9 +27,9 @@ private:
 	CNrpScreenshot();
 	CNrpScreenshot( const CNrpScreenshot& a );
 
-	STRING_LIST _imagesPath;
-	STRING_LIST _imagesBoxPath;
-	STRING_LIST _genres;
+	STRINGS _imagesPath;
+	STRINGS _imagesBoxPath;
+	STRINGS _genres;
 
 	void Load( const NrpText& fileName );
 	NrpText Save( const NrpText& fileName ) { return ""; };
