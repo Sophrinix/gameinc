@@ -1,0 +1,34 @@
+[properties]
+name:string=Big Top
+internalname:string=game_bigtop
+owner:string=Funtastic, Inc.
+startdate:time=y=1983 m=03 d=02 h=0 mi=0
+enddate:time=y=1985 m=01 d=02 h=0 mi=0
+moneyDevelop:int=200000
+cash:int=28000000
+copySell:int=180000
+startrating:int=64
+startGameRating:int=64
+startGraphicRating:int=70
+startGenreRating:int=60
+startSoundRating:int=64
+startBugRating:int=80
+startAdvFuncRating:int=80
+localizationRating:int=80
+gameEngine:string=alpha_engine2
+platformnumber:int=1
+descriptionpath:string=xtras/games/1983/Big top/desc.htm
+recense:string=xtras/games/1983/Big top/recense.htm
+texturenormal:string=xtras/games/1983/Big top/images/spl_0.png
+readyWorkPercent:float=1
+genreModuleNumber:int=1
+moduleNumber:int=1
+famous:float=0.5
+gameIsSaling:bool=false
+;imageName:string=
+[platforms]
+platform_0=platform_dos
+[genres]
+genre_0=genre_arcade
+[techs]
+tech_0=tech_keyboard

@@ -1,0 +1,5 @@
+[PROPERTIES]
+internalname:string=game_bigtop
+genreModuleNumber:int=1
+[genres]
+genre_0=genre_arcade

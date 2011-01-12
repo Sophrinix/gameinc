@@ -1,0 +1,6 @@
+[PROPERTIES]
+internalname:string=game_centipede
+genreModuleNumber:int=2
+[genres]
+genre_0=genre_arcade
+genre_1=genre_action
