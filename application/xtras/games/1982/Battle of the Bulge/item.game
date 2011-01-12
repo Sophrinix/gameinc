@@ -3,10 +3,10 @@ name:string=Battle of the Bulge
 internalname:string=BattleOfTheBulge
 owner:string=Strategic Simulations, Inc.
 startdate:time=y=1982 m=10 d=02 h=0 mi=0
-description:string=desc.htm
+descriptionPath:string=desc.htm
 enddate:time=y=1985 m=08 d=02 h=0 mi=0
 moneyDevelop:int=200000
-cash:int=400000
+cash:int=4400000
 copySell:int=30000
 startrating:int=80
 startGameRating:int=80
@@ -26,7 +26,7 @@ genreModuleNumber:int=1
 moduleNumber:int=1
 famous:float=0.5
 gameIsSaling:bool=false
-imageName:string=
+;imageName:string=
 [platforms]
 platform_0=platform_apple2
 platform_1=platform_dos

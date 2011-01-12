@@ -3,10 +3,10 @@ name:string=Burger Time
 internalname:string=BurgerTime
 owner:string=Data East
 startdate:time=y=1982 m=08 d=02 h=0 mi=0
-description:string=desc.htm
+descriptionPath:string=desc.htm
 enddate:time=y=1985 m=08 d=02 h=0 mi=0
 moneyDevelop:int=200000
-cash:int=500000
+cash:int=1500000
 copySell:int=50000
 startrating:int=80
 startGameRating:int=80
@@ -26,7 +26,7 @@ genreModuleNumber:int=2
 moduleNumber:int=1
 famous:float=0.5
 gameIsSaling:bool=false
-imageName:string=
+;imageName:string=
 [platforms]
 platform_0=platform_dos
 [genres]

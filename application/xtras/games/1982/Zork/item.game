@@ -1,12 +1,12 @@
 [properties]
 name:string=Zork
-internalname:string=Zork
+internalname:string=game_Zork
 owner:string=Infocom, Inc.
 startdate:time=y=1982 m=09 d=08 h=0 mi=0
-description:string=desc.htm
+descriptionPath:string=desc.htm
 enddate:time=y=1985 m=08 d=02 h=0 mi=0
 moneyDevelop:int=200000
-cash:int=500000
+cash:int=3500000
 copySell:int=70000
 startrating:int=80
 startGameRating:int=80
@@ -26,7 +26,7 @@ genreModuleNumber:int=1
 moduleNumber:int=1
 famous:float=0.5
 gameIsSaling:bool=false
-imageName:string=
+;imageName:string=
 [platforms]
 platform_0=platform_amigacd32
 platform_1=platform_apple2
@@ -35,6 +35,6 @@ platform_3=platform_commodore
 platform_4=platform_dos
 platform_5=platform_amstradgx4000
 [genres]
-genre_0=genre_adventure
+genre_0=genre_quest
 [techs]
 tech_0=tech_keyboard
