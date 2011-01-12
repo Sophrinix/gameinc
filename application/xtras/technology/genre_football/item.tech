@@ -1,23 +1,23 @@
 [properties]
-balance:int=120000
+balance:int=1500000
 basecode:float=0.3
 codepassed:int=0
 company:string=
-descriptionpath:string=desc.htm
+descriptionpath:string=
 enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
 enginecode:float=0.3
 lastworker:user=
 level:int=0
 moduleerrornumber:int=0
-name:string=#TRANSLATE_GT_SCROLL
-internalName:string=genre_scroll
+name:string=#TRANSLATE_GT_FOOTBAL
+internalname:string=genre_football
 price:float=0
 quality:int=100
 readyworkpercent:float=0
-startdate:time=y=1984 m=01 d=01 h=00 mi=00 s=0
+startdate:time=y=1980 m=01 d=01 h=00 mi=00 s=0
 techgroup:int=#PT_GENRE
 texturehover:string=
-texturenormal:string=image.png
+texturenormal:string=xtras/technology/genre_football/image.png
 volumecode:int=0
 nexttechnumber:int=0
 [skillRequire]
