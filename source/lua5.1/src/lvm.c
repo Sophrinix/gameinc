@@ -4,7 +4,6 @@
 ** See Copyright Notice in lua.h
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -137,7 +136,18 @@ void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
     const TValue *tm;
     if (ttistable(t)) {  /* `t' is a table? */
       Table *h = hvalue(t);
-      TValue *oldval = luaH_set(L, h, key); /* do a primitive set */
+      TValue *oldval;	// AA -- Have to declare this here
+
+	  // AA - Our new code here
+	  tm = fasttm(L, h->metatable, TM_SETINDEX);
+	  if(tm != NULL)  {
+		if (ttisfunction(tm)) {
+		  callTM(L, tm, t, key, val);
+		  return;
+		}
+	  }
+
+      oldval = luaH_set(L, h, key); /* do a primitive set */
       if (!ttisnil(oldval) ||  /* result is no nil? */
           (tm = fasttm(L, h->metatable, TM_NEWINDEX)) == NULL) { /* or no TM? */
         setobj2t(L, oldval, val);
@@ -156,7 +166,6 @@ void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
   }
   luaG_runerror(L, "loop in settable");
 }
-
 
 static int call_binTM (lua_State *L, const TValue *p1, const TValue *p2,
                        StkId res, TMS event) {
@@ -360,6 +369,7 @@ static void Logic (lua_State *L, StkId ra, const TValue *rb,
 }
 #endif
 
+
 /*
 ** some macros for common tasks in `luaV_execute'
 */
@@ -409,8 +419,6 @@ static void Logic (lua_State *L, StkId ra, const TValue *rb,
           Protect(Logic(L, ra, rb, rc, tm)); \
       }
 #endif
-
-
 
 void luaV_execute (lua_State *L, int nexeccalls) {
   LClosure *cl;
