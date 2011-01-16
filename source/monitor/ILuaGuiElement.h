@@ -9,34 +9,34 @@
 namespace nrp
 {
 
-#define LUNA_ILUAGUIELEMENT_HEADER(class)	LUNA_ILUAOBJECT_HEADER(class),\
-											LUNA_AUTONAME_FUNCTION(class, SetVisible),\
-											LUNA_AUTONAME_FUNCTION(class, GetVisible),\
-											LUNA_AUTONAME_FUNCTION(class, SetName ),\
-											LUNA_AUTONAME_FUNCTION(class, SetAlpha ),\
-											LUNA_AUTONAME_FUNCTION(class, GetAlpha ),\
-											LUNA_AUTONAME_FUNCTION(class, Remove ),\
-											LUNA_AUTONAME_FUNCTION(class, SetPosition ),\
-											LUNA_AUTONAME_FUNCTION(class, SetRect ),\
-											LUNA_AUTONAME_FUNCTION(class, MoveRelative ),\
-											LUNA_AUTONAME_FUNCTION(class, GetSize ),\
-											LUNA_AUTONAME_FUNCTION(class, GetParent ),\
-											LUNA_AUTONAME_FUNCTION(class, SetText),\
-											LUNA_AUTONAME_FUNCTION(class, GetText),\
-											LUNA_AUTONAME_FUNCTION(class, GetTypeName ),\
-											LUNA_AUTONAME_FUNCTION(class, GetID),\
-											LUNA_AUTONAME_FUNCTION(class, GetRelativePosition ),\
-											LUNA_AUTONAME_FUNCTION(class, SetEnabled ),\
-											LUNA_AUTONAME_FUNCTION(class, IsEnabled ),\
-											LUNA_AUTONAME_FUNCTION(class, GetChildCount ),\
-											LUNA_AUTONAME_FUNCTION(class, GetChild ),\
-											LUNA_AUTONAME_FUNCTION(class, RemoveChilds ),\
+#define LUNA_ILUAGUIELEMENT_HEADER(class)	LUNA_ILUAOBJECT_HEADER(class)\
+											LUNA_AUTONAME_FUNCTION(class, SetVisible)\
+											LUNA_AUTONAME_FUNCTION(class, GetVisible)\
+											LUNA_AUTONAME_FUNCTION(class, SetName )\
+											LUNA_AUTONAME_FUNCTION(class, SetAlpha )\
+											LUNA_AUTONAME_FUNCTION(class, GetAlpha )\
+											LUNA_AUTONAME_FUNCTION(class, Remove )\
+											LUNA_AUTONAME_FUNCTION(class, SetPosition )\
+											LUNA_AUTONAME_FUNCTION(class, SetRect )\
+											LUNA_AUTONAME_FUNCTION(class, MoveRelative )\
+											LUNA_AUTONAME_FUNCTION(class, GetSize )\
+											LUNA_AUTONAME_FUNCTION(class, GetParent )\
+											LUNA_AUTONAME_FUNCTION(class, SetText)\
+											LUNA_AUTONAME_FUNCTION(class, GetText)\
+											LUNA_AUTONAME_FUNCTION(class, GetTypeName )\
+											LUNA_AUTONAME_FUNCTION(class, GetID)\
+											LUNA_AUTONAME_FUNCTION(class, GetRelativePosition )\
+											LUNA_AUTONAME_FUNCTION(class, SetEnabled )\
+											LUNA_AUTONAME_FUNCTION(class, IsEnabled )\
+											LUNA_AUTONAME_FUNCTION(class, GetChildCount )\
+											LUNA_AUTONAME_FUNCTION(class, GetChild )\
+											LUNA_AUTONAME_FUNCTION(class, RemoveChilds )\
 											LUNA_AUTONAME_FUNCTION(class, SetFont )
 
 template< class T > class ILuaGuiElement : public ILuaObject< T >
 {
 public:
-	ILuaGuiElement(lua_State *L, NrpText luaName) : ILuaObject( L, luaName )
+	ILuaGuiElement(lua_State *L, NrpText luaName, bool exist) : ILuaObject( L, luaName, exist )
 	{}
 
 	int GetChildCount( lua_State* L )
@@ -370,7 +370,6 @@ public:
 
 		return 1;
 	}
-
 };
 
 }//namespace nrp

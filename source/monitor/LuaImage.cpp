@@ -11,17 +11,18 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAIMAGE("CLuaImage");
 
-Luna< CLuaImage >::RegType CLuaImage::methods[] =			//реализуемыe методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaImage ),
+BEGIN_LUNA_METHODS(CLuaImage)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaImage )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaImage, SetImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaImage, SetScaleImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaImage, SetUseAlphaChannel ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaImage, SetImage )
+	LUNA_AUTONAME_FUNCTION( CLuaImage, SetScaleImage )
+	LUNA_AUTONAME_FUNCTION( CLuaImage, SetUseAlphaChannel )
+END_LUNA_METHODS
 
-CLuaImage::CLuaImage(lua_State *L)	: ILuaGuiElement(L, CLASS_LUAIMAGE )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaImage)
+END_LUNA_PROPERTIES
+
+CLuaImage::CLuaImage(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAIMAGE, ex )							//конструктор
 {}
 
 int CLuaImage::SetImage( lua_State *L )								

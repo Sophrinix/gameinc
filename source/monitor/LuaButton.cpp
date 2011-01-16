@@ -15,23 +15,25 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUABUTTON( "CLuaButton" );
 
-Luna< CLuaButton >::RegType CLuaButton::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaButton ),
+BEGIN_LUNA_METHODS(CLuaButton)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaButton )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaButton, SetImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaButton, SetHoveredImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaButton, SetPressedImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaButton, SetAction ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaButton, SetImage )
+	LUNA_AUTONAME_FUNCTION( CLuaButton, SetHoveredImage )
+	LUNA_AUTONAME_FUNCTION( CLuaButton, SetPressedImage )
+	LUNA_AUTONAME_FUNCTION( CLuaButton, SetAction )
+END_LUNA_METHODS
+
+BEGIN_LUNA_PROPERTIES(CLuaButton)
+END_LUNA_PROPERTIES
+
 
 const char* CLuaButton::ClassName()
 {
 	return 	( CLASS_LUABUTTON );
 }
 
-CLuaButton::CLuaButton(lua_State *L)	: ILuaGuiElement(L, CLASS_LUABUTTON )							//конструктор
+CLuaButton::CLuaButton(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUABUTTON, ex )							//конструктор
 {}
 
 int CLuaButton::SetImage( lua_State *L )							//получает имя файла с текстурой, область из которой надо брать кнопку

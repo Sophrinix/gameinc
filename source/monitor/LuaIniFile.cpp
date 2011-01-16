@@ -2,26 +2,29 @@
 #include "LuaIniFile.h"
 #include "IniFile.h"
 #include <assert.h>
+#include "../lua5.1/src/lstate.h"
 
 namespace nrp
 {
 CLASS_NAME CLASS_LUAINIFILE( "CLuaIniFile" );
 
-Luna< CLuaIniFile >::RegType CLuaIniFile::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaIniFile ),
+BEGIN_LUNA_METHODS(CLuaIniFile)
+	LUNA_ILUAOBJECT_HEADER( CLuaIniFile )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadInteger ),
-	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadString ),
-	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadFloat ),
-	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadTime ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadInteger )
+	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadString )
+	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadFloat )
+	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadTime )
+END_LUNA_METHODS
 
-CLuaIniFile::CLuaIniFile(lua_State *L)	: ILuaObject(L, CLASS_LUAINIFILE)	//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaIniFile)
+END_LUNA_PROPERTIES
+
+CLuaIniFile::CLuaIniFile(lua_State *L,bool ex)	: ILuaObject(L, CLASS_LUAINIFILE, ex)	//конструктор
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaIniFile::CLuaIniFile need string parameter");
+
+	luaL_argcheck(L, argc == 5, 5, "Function CLuaIniFile::CLuaIniFile need string parameter");
 
 	NrpText fn = lua_tostring( L, 2 );
 

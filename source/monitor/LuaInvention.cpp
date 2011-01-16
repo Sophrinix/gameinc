@@ -14,36 +14,37 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAINVENTION( "CLuaInvention" );
 
-Luna< CLuaInvention >::RegType CLuaInvention::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAPROJECT_HEADER( CLuaInvention ),
+BEGIN_LUNA_METHODS(CLuaInvention)
+	LUNA_ILUAPROJECT_HEADER( CLuaInvention )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, AddUser ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, Load ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, Remove ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetLevel ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetStatus ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetDescriptionLink ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetInvestiment ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, SetInvestiment ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetSpeed ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPrognoseDateFinish ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, CheckParams ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUserNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUser ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPassedMoney ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetDayLeft ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, IsValid ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetCompany ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetInternalName ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetMonthPay ),
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, ClearMonthPay ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, AddUser )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, Load )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, Remove )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetLevel )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetStatus )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetDescriptionLink )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetInvestiment )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, SetInvestiment )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetSpeed )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPrognoseDateFinish )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, CheckParams )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUserNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUser )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPassedMoney )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetDayLeft )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, IsValid )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetCompany )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetInternalName )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetMonthPay )
+	LUNA_AUTONAME_FUNCTION( CLuaInvention, ClearMonthPay )
+END_LUNA_METHODS
 
-CLuaInvention::CLuaInvention(lua_State *L) : ILuaProject( L, "CLuaInvention" )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaInvention)
+END_LUNA_PROPERTIES
+
+CLuaInvention::CLuaInvention(lua_State *L, bool ex) : ILuaProject( L, CLASS_LUAINVENTION, ex )							//конструктор
 {}
 
 int CLuaInvention::Create( lua_State* L )

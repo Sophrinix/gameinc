@@ -19,13 +19,13 @@ namespace nrp
 class CLuaGuiEnvironment : public ILuaObject<irr::gui::CNrpGUIEnvironment>
 {
 public:
-	static Luna<CLuaGuiEnvironment>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaGuiEnvironment)
 
 	//! Конструктор 
 	/*!
 		\param ptr указатель на пользовательские данные, которые ассоциируются с фабрикой
 	*/
-	CLuaGuiEnvironment(lua_State *L);
+	CLuaGuiEnvironment(lua_State *L, bool);
 	//! Функция возвращает в луа-скрипт главный элемент
 	/*! В скрипте параметров нет*/
 	int GetRootGUIElement( lua_State *vm );

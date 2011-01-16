@@ -16,9 +16,9 @@ namespace nrp
 class CLuaEdit : public ILuaGuiElement<irr::gui::IGUIEditBox>
 {
 public:
-	static Luna<CLuaEdit>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaEdit)				//методы обертки
 
-	CLuaEdit(lua_State *L);		
+	CLuaEdit(lua_State *L, bool);		
 																//нажатии на эту кнопку
 	int SetOverrideColor( lua_State* L );
 	int SetPasswordBox( lua_State* L );

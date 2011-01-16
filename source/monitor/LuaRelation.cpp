@@ -5,16 +5,17 @@ namespace nrp
 {
 CLASS_NAME CLASS_RELATION( "CLuaRelation" );
 
-Luna< CLuaRelation >::RegType CLuaRelation::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaRelation ),
+BEGIN_LUNA_METHODS(CLuaRelation)
+	LUNA_ILUAOBJECT_HEADER( CLuaRelation )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaRelation, Set ),
-	LUNA_AUTONAME_FUNCTION( CLuaRelation, Get ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaRelation, Set )
+	LUNA_AUTONAME_FUNCTION( CLuaRelation, Get )
+END_LUNA_METHODS
 
-CLuaRelation::CLuaRelation(lua_State *L) : ILuaObject(L, "CLuaRelation")
+BEGIN_LUNA_PROPERTIES(CLuaRelation)
+END_LUNA_PROPERTIES
+
+CLuaRelation::CLuaRelation(lua_State *L, bool ex) : ILuaObject(L, CLASS_RELATION, ex)
 {}
 
 int CLuaRelation::Set( lua_State *L )

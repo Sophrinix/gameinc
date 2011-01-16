@@ -6,20 +6,20 @@
 namespace nrp
 {
 
-#define LUNA_ILUALISTBOX_HEADER(class)	LUNA_ILUAGUIELEMENT_HEADER(class),\
-										LUNA_AUTONAME_FUNCTION(class, SetItemBgColor ),\
-										LUNA_AUTONAME_FUNCTION(class, SetFontFromSize ),\
-										LUNA_AUTONAME_FUNCTION(class, SetItemTextColor ),\
-										LUNA_AUTONAME_FUNCTION(class, GetSelected ),\
-										LUNA_AUTONAME_FUNCTION(class, SetSelected ),\
-										LUNA_AUTONAME_FUNCTION(class, Clear ),\
+#define LUNA_ILUALISTBOX_HEADER(class)	LUNA_ILUAGUIELEMENT_HEADER(class)\
+										LUNA_AUTONAME_FUNCTION(class, SetItemBgColor )\
+										LUNA_AUTONAME_FUNCTION(class, SetFontFromSize )\
+										LUNA_AUTONAME_FUNCTION(class, SetItemTextColor )\
+										LUNA_AUTONAME_FUNCTION(class, GetSelected )\
+										LUNA_AUTONAME_FUNCTION(class, SetSelected )\
+										LUNA_AUTONAME_FUNCTION(class, Clear )\
 										LUNA_AUTONAME_FUNCTION(class, SetItemHeigth )
 
 template< class T >
 class ILuaListBox : public ILuaGuiElement<T>
 {
 public:
-	ILuaListBox(lua_State *L, const NrpText& luaName) : ILuaGuiElement( L, luaName )
+	ILuaListBox(lua_State *L, const NrpText& luaName, bool ex) : ILuaGuiElement( L, luaName, ex )
 	{
 
 	}

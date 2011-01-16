@@ -10,23 +10,24 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUACAMERA( "CLuaCamera" );
 
-Luna< CLuaCamera >::RegType CLuaCamera::methods[] = 
-{
-	LUNA_ILUASCENENODE_HEADER( CLuaCamera ),
+BEGIN_LUNA_METHODS(CLuaCamera)
+	LUNA_ILUASCENENODE_HEADER( CLuaCamera )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaCamera, GetZoom ),
-	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetZoom ),
-	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetRotate ),
-	LUNA_AUTONAME_FUNCTION( CLuaCamera, GetRotate ),
-	LUNA_AUTONAME_FUNCTION( CLuaCamera, AddAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetFarValue ),
-	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetPosition ),
-	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetTarget ),
-	LUNA_AUTONAME_FUNCTION( CLuaCamera, AddTerrain ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaCamera, GetZoom )
+	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetZoom )
+	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetRotate )
+	LUNA_AUTONAME_FUNCTION( CLuaCamera, GetRotate )
+	LUNA_AUTONAME_FUNCTION( CLuaCamera, AddAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetFarValue )
+	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetPosition )
+	LUNA_AUTONAME_FUNCTION( CLuaCamera, SetTarget )
+	LUNA_AUTONAME_FUNCTION( CLuaCamera, AddTerrain )
+END_LUNA_METHODS
+
+BEGIN_LUNA_PROPERTIES(CLuaCamera)
+END_LUNA_PROPERTIES
 
 void CLuaCamera::FindRtsAnimator_()
 {
@@ -43,7 +44,7 @@ void CLuaCamera::FindRtsAnimator_()
 		}
 }
 
-CLuaCamera::CLuaCamera(lua_State *L) : ILuaSceneNode( L, CLASS_LUACAMERA )
+CLuaCamera::CLuaCamera(lua_State *L, bool ex) : ILuaSceneNode( L, CLASS_LUACAMERA, ex )
 {
 	IF_OBJECT_NOT_NULL_THEN FindRtsAnimator_();
 }

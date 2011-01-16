@@ -33,55 +33,56 @@ namespace nrp
 {
 CLASS_NAME CLASS_CLUAPPLICATION( "CLuaApplication" );
 
-Luna< CLuaApplication >::RegType CLuaApplication::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaApplication ),
+BEGIN_LUNA_METHODS(CLuaApplication)
+	LUNA_ILUAOBJECT_HEADER( CLuaApplication )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompany ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyByName ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetBank ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlayerCompany ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatformNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatform ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadPlatform ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddLuaFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveLuaFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTechNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddPublicTechnology ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUser ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserByName ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveUser ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCurrentProfile ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCurrentProfileCompany ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateProfile ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, ResetData ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadProfile ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateNewFreeUsers ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddonNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddon ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameBoxAddon ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameBoxAddon ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameTimeFromProfile ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, SaveBoxAddonsPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadBoxAddonsPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGamesNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGame ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameToMarket ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadScreenshots ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameTime ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetInvention ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateDirectorySnapshot ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPda ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPauseBetweenStep ),
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, SetPauseBetweenStep ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompany )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyByName )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetBank )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatformNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatform )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadPlatform )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTechNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTech )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddPublicTechnology )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUser )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserByName )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveUser )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCurrentProfile )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCurrentProfileCompany )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateProfile )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, ResetData )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadProfile )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateNewFreeUsers )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddonNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddon )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameBoxAddon )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameBoxAddon )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameTimeFromProfile )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, SaveBoxAddonsPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadBoxAddonsPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGamesNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGame )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameToMarket )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadScreenshots )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameTime )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetInvention )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateDirectorySnapshot )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPda )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPauseBetweenStep )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, SetPauseBetweenStep )
+END_LUNA_METHODS
 
-CLuaApplication::CLuaApplication(lua_State *L)	: ILuaProject(L, CLASS_CLUAPPLICATION )	//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaApplication)
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "playerCompany", GetPlayerCompany, PureFunction )
+END_LUNA_PROPERTIES
+
+CLuaApplication::CLuaApplication(lua_State *L, bool ex)	: ILuaProject(L, CLASS_CLUAPPLICATION, ex )	//конструктор
 {}
 
 int CLuaApplication::UpdateGameTime( lua_State* L )

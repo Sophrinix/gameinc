@@ -15,10 +15,10 @@ namespace nrp
 class CLuaProgressBar : public ILuaGuiElement<irr::gui::CNrpProgressBar>
 {
 public:
-	static Luna<CLuaProgressBar>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaProgressBar)
 	static const char* ClassName();
 
-	CLuaProgressBar(lua_State *L);		
+	CLuaProgressBar(lua_State *L, bool);		
 	int SetPosition( lua_State* L );
 	int SetImage( lua_State* L );
 	int SetFillImage( lua_State* L );

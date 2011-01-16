@@ -14,9 +14,9 @@ namespace nrp
 class CLuaConsole : public ILuaGuiElement<irr::gui::CNrpConsole>
 {
 public:
-	static Luna<CLuaConsole>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaConsole)
 
-	CLuaConsole(lua_State *L);
+	CLuaConsole(lua_State *L, bool);
 	int ToggleVisible( lua_State *L );
 	int Draw( lua_State* L );
 

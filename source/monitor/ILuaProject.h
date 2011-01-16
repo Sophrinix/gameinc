@@ -7,17 +7,17 @@
 namespace nrp
 {
 
-#define LUNA_ILUAPROJECT_HEADER(class)	LUNA_ILUABASEPROJECT_HEADER(class),\
-										LUNA_AUTONAME_FUNCTION(class, GetName ),\
-										LUNA_AUTONAME_FUNCTION(class, GetUniq ),\
-										LUNA_AUTONAME_FUNCTION(class, SetName ),\
+#define LUNA_ILUAPROJECT_HEADER(class)	LUNA_ILUABASEPROJECT_HEADER(class)\
+										LUNA_AUTONAME_FUNCTION(class, GetName )\
+										LUNA_AUTONAME_FUNCTION(class, GetUniq )\
+										LUNA_AUTONAME_FUNCTION(class, SetName )\
 										LUNA_AUTONAME_FUNCTION(class, GetTechGroup )
 
 template< class T > class ILuaProject : public ILuaBaseProject< T >
 {
 public:
 
-	ILuaProject(lua_State *L, const NrpText& luaName) : ILuaBaseProject( L, luaName )
+	ILuaProject(lua_State *L, const NrpText& luaName, bool ex) : ILuaBaseProject( L, luaName, ex )
 	{
 
 	}

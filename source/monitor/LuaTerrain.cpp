@@ -9,19 +9,20 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUATERRAIN( "CLuaTerrain" );
 
-Luna< CLuaTerrain >::RegType CLuaTerrain::methods[] = 
-{
-	LUNA_ILUASCENENODE_HEADER( CLuaTerrain ),
+BEGIN_LUNA_METHODS(CLuaTerrain)
+	LUNA_ILUASCENENODE_HEADER( CLuaTerrain )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaTerrain, ScaleTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaTerrain, SetMaterialType ),
-	LUNA_AUTONAME_FUNCTION( CLuaTerrain, GetSideProjSize ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaTerrain, ScaleTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaTerrain, SetMaterialType )
+	LUNA_AUTONAME_FUNCTION( CLuaTerrain, GetSideProjSize )
+END_LUNA_METHODS
 
-CLuaTerrain::CLuaTerrain(lua_State *L) : ILuaSceneNode(L, "CLuaTerrain")
+BEGIN_LUNA_PROPERTIES(CLuaTerrain)
+END_LUNA_PROPERTIES
+
+CLuaTerrain::CLuaTerrain(lua_State *L, bool ex) : ILuaSceneNode(L, CLASS_LUATERRAIN, ex)
 {}
 
 CLuaTerrain::~CLuaTerrain()

@@ -16,10 +16,10 @@ namespace nrp
 class CLuaTab : public ILuaGuiElement<irr::gui::IGUITab>
 {
 public:
-	static Luna<CLuaTab>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaTab)
 	static const char* ClassName();
 
-	CLuaTab(lua_State *L);
+	CLuaTab(lua_State *L, bool);
 	int SetFontFromSize( lua_State *L );
 	int SetTextColor( lua_State *L );
 };

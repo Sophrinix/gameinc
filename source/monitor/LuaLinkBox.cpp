@@ -11,26 +11,27 @@ namespace nrp
 {
 CLASS_NAME CLASS_LINKBOX( "CLuaLinkBox" );
 
-Luna< CLuaLinkBox >::RegType CLuaLinkBox::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaLinkBox ),
+BEGIN_LUNA_METHODS(CLuaLinkBox)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaLinkBox )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, AddLuaFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, RemoveLuaFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetModuleType ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetModuleType ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetDraggable ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, IsDraggable ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetData ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetData ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, HaveData ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetDefaultTexture ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, AddLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, RemoveLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetModuleType )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetModuleType )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetDraggable )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, IsDraggable )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetData )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetData )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, HaveData )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetDefaultTexture )
+END_LUNA_METHODS
 
-CLuaLinkBox::CLuaLinkBox(lua_State *L)	: ILuaGuiElement(L, CLASS_LINKBOX )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaLinkBox)
+END_LUNA_PROPERTIES
+
+CLuaLinkBox::CLuaLinkBox(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LINKBOX, ex )							//конструктор
 {}
 
 int CLuaLinkBox::AddLuaFunction( lua_State *L )									//устанавливает имя новой функции для этой кнопки	

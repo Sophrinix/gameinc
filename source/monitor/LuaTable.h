@@ -15,10 +15,10 @@ namespace nrp
 class CLuaTable : public ILuaGuiElement<irr::gui::IGUITable>
 {
 public:
-	static Luna<CLuaTable>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaTable)
 	static const char* ClassName();
 
-	CLuaTable(lua_State *L);									
+	CLuaTable(lua_State *L, bool);									
 	int SetImage( lua_State *L );							//привязка к текстуре в обычном состоянии
 	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при 
 	int AddRow( lua_State *L );

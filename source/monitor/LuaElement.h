@@ -16,9 +16,9 @@ namespace nrp
 class CLuaElement : public ILuaGuiElement<irr::gui::IGUIElement>
 {
 public:
-	static Luna<CLuaElement>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaElement)
 
-	CLuaElement(lua_State *L);	
+	CLuaElement(lua_State *L, bool );	
 	static const char* ClassName();
 };
 

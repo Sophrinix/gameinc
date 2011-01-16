@@ -13,10 +13,11 @@ namespace nrp
 class CLuaDevelopModule : public ILuaProject<nrp::CNrpProjectModule>
 {
 public:
-	static Luna<CLuaDevelopModule>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaDevelopModule)
 	static const char* ClassName();
 
-	CLuaDevelopModule(lua_State *L);		
+	CLuaDevelopModule(lua_State *L, bool );		
 	int GetLevel( lua_State* L );
 	int GetOption( lua_State* L );
 	int GetPercentDone( lua_State* L );

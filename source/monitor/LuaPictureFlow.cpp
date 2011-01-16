@@ -14,24 +14,25 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAPICTUREFLOW( "CLuaPictureFlow" );
 
-Luna< CLuaPictureFlow >::RegType CLuaPictureFlow::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaPictureFlow ),
+BEGIN_LUNA_METHODS(CLuaPictureFlow)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaPictureFlow )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, AddItem ),
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelected ),
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetSelected ),
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, Clear ),
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelectedObject ),
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelectedItem ),
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetPictureRect ),
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetDrawBorder ),
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetItemTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetItemBlend ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, AddItem )
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelected )
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetSelected )
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, Clear )
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelectedObject )
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, GetSelectedItem )
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetPictureRect )
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetDrawBorder )
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetItemTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetItemBlend )
+END_LUNA_METHODS
 
-CLuaPictureFlow::CLuaPictureFlow(lua_State *L)	: ILuaGuiElement(L, CLASS_LUAPICTUREFLOW )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaPictureFlow)
+END_LUNA_PROPERTIES
+
+CLuaPictureFlow::CLuaPictureFlow(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAPICTUREFLOW, ex )							//конструктор
 {}
 
 int CLuaPictureFlow::AddItem( lua_State *L )	//добавляет текст в списко отображения

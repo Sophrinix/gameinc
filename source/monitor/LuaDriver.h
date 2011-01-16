@@ -20,14 +20,14 @@ namespace nrp
 class CLuaDriver : public ILuaObject<irr::video::IVideoDriver>
 {
 public:
-	static Luna<CLuaDriver>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaDriver)
 	static const char* ClassName();
 
 	//! Конструктор
 	/*!
 		\param указатель на реальный видео драйвер
 	*/
-	CLuaDriver(lua_State *L);
+	CLuaDriver(lua_State *L, bool ex);
 
 	//! Выдает размеры экрана в формате ширина-высота
 	int GetScreenSize( lua_State *L );

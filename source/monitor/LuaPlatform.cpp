@@ -8,20 +8,21 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAPLATFORM( "CLuaPlatform" );
 
-Luna< CLuaPlatform >::RegType CLuaPlatform::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAPROJECT_HEADER( CLuaPlatform ),
+BEGIN_LUNA_METHODS(CLuaPlatform)
+	LUNA_ILUAPROJECT_HEADER( CLuaPlatform )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaPlatform, Load ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlatform, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetCpu ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetRam ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlatform, IsMyTech ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, Load )
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetCpu )
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, GetRam )
+	LUNA_AUTONAME_FUNCTION( CLuaPlatform, IsMyTech )
+END_LUNA_METHODS
 
-CLuaPlatform::CLuaPlatform(lua_State* L) : ILuaProject<CNrpPlatform>(L, CLASS_LUAPLATFORM)
+BEGIN_LUNA_PROPERTIES(CLuaPlatform)
+END_LUNA_PROPERTIES
+
+CLuaPlatform::CLuaPlatform(lua_State* L, bool ex) : ILuaProject<CNrpPlatform>(L, CLASS_LUAPLATFORM, ex )
 {
 	
 }

@@ -9,20 +9,21 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAEVENT( "CLuaEvent" );
 
-Luna< CLuaEvent >::RegType CLuaEvent::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaEvent ),
+BEGIN_LUNA_METHODS( CLuaEvent )
+	LUNA_ILUAOBJECT_HEADER( CLuaEvent )
 	/*  */
-	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetUserData1 ),
-	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetLogText ),
-	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetTime ),
-	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetChar ),
-	LUNA_AUTONAME_FUNCTION( CLuaEvent, IsKeyDown ),
-	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetGuiCaller ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetUserData1 )
+	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetLogText )
+	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetTime )
+	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetChar )
+	LUNA_AUTONAME_FUNCTION( CLuaEvent, IsKeyDown )
+	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetGuiCaller )
+END_LUNA_METHODS
 
-CLuaEvent::CLuaEvent(lua_State *L) : ILuaObject(L, "CLuaEvent") {}
+BEGIN_LUNA_PROPERTIES(CLuaEvent)
+END_LUNA_PROPERTIES
+
+CLuaEvent::CLuaEvent(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAEVENT, ex) {}
 
 int CLuaEvent::GetUserData1( lua_State* L )
 {

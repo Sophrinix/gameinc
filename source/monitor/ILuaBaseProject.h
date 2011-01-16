@@ -11,7 +11,7 @@ template< class T > class ILuaBaseProject : public ILuaObject< T >
 {
 public:
 
-	ILuaBaseProject(lua_State *L, const NrpText& luaName) : ILuaObject( L, luaName )
+	ILuaBaseProject(lua_State *L, const NrpText& luaName, bool ex) : ILuaObject( L, luaName, ex )
 	{
 
 	}

@@ -11,17 +11,18 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAMINIMAP( "CLuaMiniMap" );
 
-Luna< CLuaMiniMap >::RegType CLuaMiniMap::methods[] = 
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaMiniMap ),
+BEGIN_LUNA_METHODS(CLuaMiniMap)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaMiniMap )
 	/** **/
-	LUNA_AUTONAME_FUNCTION( CLuaMiniMap, SetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaMiniMap, GetAngleOffset ),
-	LUNA_AUTONAME_FUNCTION( CLuaMiniMap, SetOnRotateAction ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaMiniMap, SetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaMiniMap, GetAngleOffset )
+	LUNA_AUTONAME_FUNCTION( CLuaMiniMap, SetOnRotateAction )
+END_LUNA_METHODS
 
-CLuaMiniMap::CLuaMiniMap(lua_State *L) : ILuaGuiElement(L, "CLuaMiniMap")
+BEGIN_LUNA_PROPERTIES(CLuaMiniMap)
+END_LUNA_PROPERTIES
+
+CLuaMiniMap::CLuaMiniMap(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUAMINIMAP, ex)
 {}
 
 int CLuaMiniMap::SetTexture( lua_State *L )

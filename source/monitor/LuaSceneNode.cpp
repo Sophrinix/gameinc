@@ -10,16 +10,17 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUASCENENODE( "CLuaSceneNode" );
 
-Luna< CLuaSceneNode >::RegType CLuaSceneNode::methods[] =			//реализуемы методы
-{
-	LUNA_ILUASCENENODE_HEADER( CLuaSceneNode ),
+BEGIN_LUNA_METHODS(CLuaSceneNode)
+	LUNA_ILUASCENENODE_HEADER( CLuaSceneNode )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	{0,0}
-};
+END_LUNA_METHODS
 
-CLuaSceneNode::CLuaSceneNode(lua_State *L)	: ILuaSceneNode(L, "CLuaSceneNode")							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaSceneNode)
+END_LUNA_PROPERTIES
+
+CLuaSceneNode::CLuaSceneNode(lua_State *L, bool ex)	: ILuaSceneNode(L, CLASS_LUASCENENODE, ex)							//конструктор
 {}
 
 bool CLuaSceneNode::IsChildOfCurrentScene_()

@@ -15,10 +15,10 @@ namespace nrp
 class CLuaTechMap : public ILuaGuiElement<irr::gui::CNrpTechMap>
 {
 public:
-	static Luna<CLuaTechMap>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaTechMap)
 	static const char* ClassName();
 
-	CLuaTechMap(lua_State *L);									
+	CLuaTechMap(lua_State *L, bool);									
 	int SetImage( lua_State *L );							//привязка к текстуре в обычном состоянии
 	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при 
 	int AddLuaFunction( lua_State* L );

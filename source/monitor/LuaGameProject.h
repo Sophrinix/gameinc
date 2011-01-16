@@ -13,10 +13,11 @@ namespace nrp
 class CLuaGameProject : public ILuaProject<nrp::CNrpGameProject>
 {
 public:
-	static Luna<CLuaGameProject>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaGameProject)
 	static const char* ClassName();
 
-	CLuaGameProject(lua_State *L);		
+	CLuaGameProject(lua_State *L, bool);		
 	int SetGameEngine( lua_State* L); 
 	int GetGameEngine( lua_State* L ); 
 	int IsMyGameEngine( lua_State* L );

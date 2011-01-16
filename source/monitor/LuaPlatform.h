@@ -7,10 +7,11 @@ namespace nrp
 class CLuaPlatform : public ILuaProject<nrp::CNrpPlatform>
 {
 public:
-	static Luna<CLuaPlatform>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaPlatform)
 	static const char* ClassName();
 
-	CLuaPlatform(lua_State *L);		
+	CLuaPlatform(lua_State *L, bool );		
 
 	int Load( lua_State* L );
 	int Create( lua_State* L );

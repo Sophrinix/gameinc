@@ -15,9 +15,9 @@ namespace nrp
 class CLuaChart : public ILuaGuiElement<irr::gui::CChartCtrl>
 {
 public:
-	static Luna<CLuaChart>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaChart)		//методы обертки
 
-	CLuaChart(lua_State *L);		
+	CLuaChart(lua_State *L, bool);		
 
 	int SetAxisAutomatic( lua_State *L); 
 	int Update( lua_State *L); 

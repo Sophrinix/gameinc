@@ -10,18 +10,19 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUADEVPROJECT( "CLuaDevelopProject" );
 
-Luna< CLuaDevelopProject >::RegType CLuaDevelopProject::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAPROJECT_HEADER( CLuaDevelopProject ),
+BEGIN_LUNA_METHODS(CLuaDevelopProject)
+	LUNA_ILUAPROJECT_HEADER( CLuaDevelopProject )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModuleNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModule ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetFamous ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetWorkPercentDone ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModuleNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModule )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetFamous )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetWorkPercentDone )
+END_LUNA_METHODS
 
-CLuaDevelopProject::CLuaDevelopProject(lua_State *L)	: ILuaProject(L, CLASS_LUADEVPROJECT)							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaDevelopProject)
+END_LUNA_PROPERTIES 
+
+CLuaDevelopProject::CLuaDevelopProject(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUADEVPROJECT, ex)							//конструктор
 {}
 
 int CLuaDevelopProject::GetModuleNumber( lua_State* L )

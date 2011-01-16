@@ -9,9 +9,9 @@ class CNrpPlant;
 class CLuaPlant : public ILuaBaseProject<CNrpPlant>
 {
 public:
-	static Luna<CLuaPlant>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaPlant)
 
-	CLuaPlant(lua_State *L);		
+	CLuaPlant(lua_State *L, bool);		
 	int Load( lua_State* L );
 	int GetBaseReklameNumber( lua_State* L );
 	int GetBaseReklame( lua_State* L );

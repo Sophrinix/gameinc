@@ -9,14 +9,15 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAPROJECT( "CLuaProject" );
 
-Luna< CLuaProject >::RegType CLuaProject::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAPROJECT_HEADER( CLuaProject ),
+BEGIN_LUNA_METHODS(CLuaProject)
+	LUNA_ILUAPROJECT_HEADER( CLuaProject )
 	/*   */
-	{0,0}
-};
+END_LUNA_METHODS
 
-CLuaProject::CLuaProject(lua_State *L)	: ILuaProject(L, "CLuaProject")							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaProject)
+END_LUNA_PROPERTIES
+
+CLuaProject::CLuaProject(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUAPROJECT, ex)							//конструктор
 {}
 
 const char* CLuaProject::ClassName()

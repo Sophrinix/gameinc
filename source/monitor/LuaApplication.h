@@ -14,10 +14,11 @@ namespace nrp
 class CLuaApplication : public ILuaProject<nrp::CNrpApplication>
 {
 public:
-	static Luna<CLuaApplication>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaApplication)
 	static const char* ClassName();
 
-	CLuaApplication(lua_State *L);		
+	CLuaApplication(lua_State *L, bool ex);		
 
 	int GetCompanyNumber( lua_State* L );
 	int GetCompany( lua_State* L );

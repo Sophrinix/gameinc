@@ -12,10 +12,11 @@ namespace nrp
 class CLuaInvention : public ILuaProject<nrp::CNrpInvention>
 {
 public:
-	static Luna<CLuaInvention>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaInvention)
 	static const char* ClassName();
 
-	CLuaInvention(lua_State *L);		
+	CLuaInvention(lua_State *L, bool );		
 	int AddUser( lua_State* L );
 	int Load( lua_State* L );
 	int Remove( lua_State* L );

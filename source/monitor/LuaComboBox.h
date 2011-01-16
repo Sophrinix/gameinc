@@ -28,9 +28,9 @@ namespace nrp
 class CLuaComboBox : public ILuaGuiElement<irr::gui::IGUIComboBox>
 {
 public:
-	static Luna<CLuaComboBox>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS( CLuaComboBox )
 
-	CLuaComboBox(lua_State *L);		
+	CLuaComboBox(lua_State *L, bool);		
 	
 	int SetImage( lua_State *L );							//привязка к текстуре в обычном состоянии
 	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при 
@@ -40,6 +40,8 @@ public:
 	int GetSelected( lua_State *L );
 	int GetSelectedObject( lua_State *L );
 	int SetSelected( lua_State *L );
+	int GetItemCount( lua_State* L );
+	int GetItem( lua_State* L );
 	static const char* ClassName();
 };
 

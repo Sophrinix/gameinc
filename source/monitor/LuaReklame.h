@@ -13,10 +13,11 @@ namespace nrp
 class CLuaReklame : public ILuaProject<nrp::CNrpReklameWork>
 {
 public:
-	static Luna<CLuaReklame>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaReklame)
 	static const char* ClassName();
 
-	CLuaReklame(lua_State *L);		
+	CLuaReklame(lua_State *L, bool );		
 	int GetQuality( lua_State* L );
 	int GetLevel( lua_State* L );
 	int Load( lua_State* L );

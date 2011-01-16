@@ -36,57 +36,58 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAGUI( "CLuaGuiEnvironment" );
 
-Luna< CLuaGuiEnvironment >::RegType CLuaGuiEnvironment::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaGuiEnvironment ),
+BEGIN_LUNA_METHODS( CLuaGuiEnvironment )
+	LUNA_ILUAOBJECT_HEADER( CLuaGuiEnvironment )
 	/*    */
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetRootGUIElement ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddWindow ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddBlenderAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddHoveredAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextTimeAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddMiniMap ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddButton ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddScrollBar ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLuaAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetElementByID ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetElementByName ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddCircleScrollBar ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddRectAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTable ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTechMap ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddGlobalMap ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddChart ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddComboBox ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLabel ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddMoveAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddToDeletionQueue ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddEdit ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddProgressBar ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTabControl ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTab ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLinkBox ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddCursorPosAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, RemoveAnimators ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetFocusedElement ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SetDragObject ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetDragObject ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddComponentListBox ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, MessageBox ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddListBox ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddPictureFlow ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, FadeAction ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddDestructor ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, BringToFront ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTimer ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextRunner ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLigthing ),
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddFlick ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetRootGUIElement )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddWindow )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddBlenderAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddHoveredAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextTimeAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddMiniMap )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddButton )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddScrollBar )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLuaAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetElementByID )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetElementByName )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddCircleScrollBar )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddRectAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTable )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTechMap )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddGlobalMap )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddChart )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddComboBox )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLabel )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddMoveAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddToDeletionQueue )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddEdit )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddImage )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddProgressBar )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTabControl )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTab )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLinkBox )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddCursorPosAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, RemoveAnimators )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetFocusedElement )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SetDragObject )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetDragObject )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddComponentListBox )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, MessageBox )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddListBox )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddPictureFlow )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, FadeAction )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddDestructor )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, BringToFront )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTimer )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextRunner )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLigthing )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddFlick )
+END_LUNA_METHODS
 
-CLuaGuiEnvironment::CLuaGuiEnvironment(lua_State *L) : ILuaObject(L, CLASS_LUAGUI )
+BEGIN_LUNA_PROPERTIES(CLuaGuiEnvironment)
+END_LUNA_PROPERTIES
+
+CLuaGuiEnvironment::CLuaGuiEnvironment(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAGUI, ex )
 {}
 
 int CLuaGuiEnvironment::RemoveAnimators( lua_State* L )

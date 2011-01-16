@@ -7,25 +7,25 @@
 namespace nrp
 {
 
-#define LUNA_ILUASCENENODE_HEADER(class)	LUNA_ILUAOBJECT_HEADER(class),\
-											LUNA_AUTONAME_FUNCTION(class, SetVisible ),\
-											LUNA_AUTONAME_FUNCTION(class, GetVisible ),\
-											LUNA_AUTONAME_FUNCTION(class, SetPosition ),\
-											LUNA_AUTONAME_FUNCTION(class, SetScale ),\
-											LUNA_AUTONAME_FUNCTION(class, SetRotation ),\
-											LUNA_AUTONAME_FUNCTION(class, GetPosition ),\
-											LUNA_AUTONAME_FUNCTION(class, Remove ),\
-											LUNA_AUTONAME_FUNCTION(class, SetName ),\
-											LUNA_AUTONAME_FUNCTION(class, GetName ),\
-											LUNA_AUTONAME_FUNCTION(class, GetTypeName ),\
-											LUNA_AUTONAME_FUNCTION(class, SetMaterialFlag ),\
-											LUNA_AUTONAME_FUNCTION(class, SetTriangleSelector),\
+#define LUNA_ILUASCENENODE_HEADER(class)	LUNA_ILUAOBJECT_HEADER(class)\
+											LUNA_AUTONAME_FUNCTION(class, SetVisible )\
+											LUNA_AUTONAME_FUNCTION(class, GetVisible )\
+											LUNA_AUTONAME_FUNCTION(class, SetPosition )\
+											LUNA_AUTONAME_FUNCTION(class, SetScale )\
+											LUNA_AUTONAME_FUNCTION(class, SetRotation )\
+											LUNA_AUTONAME_FUNCTION(class, GetPosition )\
+											LUNA_AUTONAME_FUNCTION(class, Remove )\
+											LUNA_AUTONAME_FUNCTION(class, SetName )\
+											LUNA_AUTONAME_FUNCTION(class, GetName )\
+											LUNA_AUTONAME_FUNCTION(class, GetTypeName )\
+											LUNA_AUTONAME_FUNCTION(class, SetMaterialFlag )\
+											LUNA_AUTONAME_FUNCTION(class, SetTriangleSelector)\
 											LUNA_AUTONAME_FUNCTION(class, SetMaterialTexture )
 
 template< class T > class ILuaSceneNode : public ILuaObject< T >
 {
 public:
-	ILuaSceneNode(lua_State *L, stringw luaName) : ILuaObject( L, luaName )
+	ILuaSceneNode(lua_State *L, stringw luaName, bool ex) : ILuaObject( L, luaName, ex )
 	{
 
 	}

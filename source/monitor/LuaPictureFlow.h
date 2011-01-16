@@ -16,10 +16,10 @@ namespace nrp
 class CLuaPictureFlow : public ILuaGuiElement<irr::gui::CNrp2DPictureFlow>
 {
 public:
-	static Luna<CLuaPictureFlow>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaPictureFlow)
 	static const char* ClassName();
 
-	CLuaPictureFlow(lua_State *L);		
+	CLuaPictureFlow(lua_State *L, bool);		
 	
 	int AddItem( lua_State *L );
 	int GetSelected( lua_State *L );

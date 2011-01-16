@@ -20,42 +20,43 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUACOMPANY( "CLuaCompany" );
 
-Luna< CLuaCompany >::RegType CLuaCompany::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaCompany ),
+BEGIN_LUNA_METHODS(CLuaCompany)
+	LUNA_ILUAOBJECT_HEADER( CLuaCompany )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, SetCEO ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetName ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetBalance ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetEnginesNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddBalance ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddGameEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTechNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateDevelopGame ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProjectNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProject ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, RemoveUser ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUserNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUser ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProject ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectByName ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddToPortfelle ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetObjectsInPortfelle ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetFromPortfelle ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGameNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGame ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, StartInvention ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetInventionNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetInvention ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, SetCEO )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetName )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetBalance )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetEnginesNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddBalance )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddGameEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTechNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateDevelopGame )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProjectNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProject )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, RemoveUser )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUserNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUser )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProject )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectByName )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddToPortfelle )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetObjectsInPortfelle )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetFromPortfelle )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGameNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGame )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, StartInvention )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetInventionNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetInvention )
+END_LUNA_METHODS
 
-CLuaCompany::CLuaCompany(lua_State *L)	: ILuaProject(L, "CLuaCompany")	//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaCompany)
+END_LUNA_PROPERTIES
+
+CLuaCompany::CLuaCompany(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUACOMPANY, ex)	//конструктор
 {}
 
 int CLuaCompany::Create( lua_State* L )

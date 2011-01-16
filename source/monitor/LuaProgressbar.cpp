@@ -12,17 +12,18 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAPROGRESBAR( "CLuaProgressBar" );
 
-Luna< CLuaProgressBar >::RegType CLuaProgressBar::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaProgressBar ),
+BEGIN_LUNA_METHODS(CLuaProgressBar)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaProgressBar )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaProgressBar, SetPosition ),
-	LUNA_AUTONAME_FUNCTION( CLuaProgressBar, SetImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaProgressBar, SetFillImage ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaProgressBar, SetPosition )
+	LUNA_AUTONAME_FUNCTION( CLuaProgressBar, SetImage )
+	LUNA_AUTONAME_FUNCTION( CLuaProgressBar, SetFillImage )
+END_LUNA_METHODS
 
-CLuaProgressBar::CLuaProgressBar(lua_State *L)	: ILuaGuiElement(L, CLASS_LUAPROGRESBAR )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaProgressBar)
+END_LUNA_PROPERTIES
+
+CLuaProgressBar::CLuaProgressBar(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAPROGRESBAR, ex )							//конструктор
 {}
 
 int CLuaProgressBar::SetPosition( lua_State* L )

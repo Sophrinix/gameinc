@@ -1,6 +1,5 @@
 #pragma once
 
-#include <lua.hpp>
 #include <luna.h>
 #include <rect.h>
 #include <assert.h>
@@ -10,9 +9,21 @@
 
 #define IF_OBJECT_NOT_NULL_THEN if( _object == NULL ) DebugReport( __FILEW__, __LINE__, "Access null object" ); else
 
-#define LUNA_ILUAOBJECT_HEADER(class) LUNA_AUTONAME_FUNCTION(class,	SetObject),\
-									  LUNA_AUTONAME_FUNCTION(class, Self),\
+//методы и свойства обертки
+#define DEFINE_PROPERTIES_AND_METHODS(class)	static Luna<class>::FunctionType methods[]; static Luna<class>::PropertyType props[];
+			
+
+#define LUNA_ILUAOBJECT_HEADER(class) LUNA_AUTONAME_FUNCTION(class,	SetObject)\
+									  LUNA_AUTONAME_FUNCTION(class, Self)\
 									  LUNA_AUTONAME_FUNCTION(class, Empty)
+
+
+			//реализуемы методы
+#define BEGIN_LUNA_METHODS(class) Luna<class>::FunctionType class::methods[]={
+#define END_LUNA_METHODS {0,0} };
+
+#define BEGIN_LUNA_PROPERTIES(class) Luna<class>::PropertyType class::props[]={
+#define END_LUNA_PROPERTIES {0} };
 
 namespace nrp
 {
@@ -117,21 +128,29 @@ protected:
 
 		return rectangle;
 	}
+
+	bool _isExisting; // This is used by Luna to see whether it's been created by createFromExisting.  Don't set it.
+	bool _isPrecious; // This is used to tell Luna not to garbage collect the object, in case other objects might reference it.  Set it in your classes constructor.
 	
 public:
+
+	bool IsExist() { return _isExisting; }
+	bool IsPrecious() { return _isPrecious; }
 
 	ObjectType* GetSelf()
 	{
 		return _object;
 	}
 
-	ILuaObject(lua_State *L, const NrpText& className) : INrpObject( className, "" ) 
+	ILuaObject(lua_State *L, const NrpText& className, bool exist ) : INrpObject( className, "" ) 
 	{
 		_object = _GetLuaObject<ObjectType, ILuaObject>( L, 1, true );
 
 		if( _object == NULL )
 			DebugReport( __FILEW__, __LINE__, _ErrEmptyObject() );
 
+		_isExisting = exist;
+		_isPrecious = false;
 	}
 
 	virtual int SetObject(lua_State *L)
@@ -168,6 +187,11 @@ public:
 	{
 		Log(HW) << fileName << ":" << lineNumber << " Error" << text;
 		return 1;
+	}
+
+	int PureFunction( lua_State* )
+	{
+		return 0;
 	}
 };
 

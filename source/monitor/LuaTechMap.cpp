@@ -12,24 +12,25 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUATECHMAP( "CLuaTechMap" );
 
-Luna< CLuaTechMap >::RegType CLuaTechMap::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaTechMap ),
+BEGIN_LUNA_METHODS(CLuaTechMap)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaTechMap )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetAction ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddTechnology ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddLuaFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectType ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObject ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectName ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetDrawBack ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetImage )
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetAction )
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddTechnology )
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectType )
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObject )
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectName )
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetDrawBack )
+END_LUNA_METHODS
 
-CLuaTechMap::CLuaTechMap(lua_State *L) : ILuaGuiElement(L, CLASS_LUATECHMAP)						//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaTechMap)
+END_LUNA_PROPERTIES
+
+CLuaTechMap::CLuaTechMap(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUATECHMAP, ex)						//конструктор
 {			
 }
 

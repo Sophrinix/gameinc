@@ -9,20 +9,21 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUATEXTURE( "CLuaTexture" );
 
-Luna< CLuaTexture >::RegType CLuaTexture::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaTexture ),
+BEGIN_LUNA_METHODS(CLuaTexture)
+	LUNA_ILUAOBJECT_HEADER( CLuaTexture )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaTexture, GetSize ),
-	LUNA_AUTONAME_FUNCTION( CLuaTexture, GetWidth ),
-	LUNA_AUTONAME_FUNCTION( CLuaTexture, GetHeight ),
-	LUNA_AUTONAME_FUNCTION( CLuaTexture, Drop ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaTexture, GetSize )
+	LUNA_AUTONAME_FUNCTION( CLuaTexture, GetWidth )
+	LUNA_AUTONAME_FUNCTION( CLuaTexture, GetHeight )
+	LUNA_AUTONAME_FUNCTION( CLuaTexture, Drop )
+END_LUNA_METHODS
 
-CLuaTexture::CLuaTexture(lua_State *L) : ILuaObject( L, CLASS_LUATEXTURE )
+BEGIN_LUNA_PROPERTIES(CLuaTexture)
+END_LUNA_PROPERTIES
+
+CLuaTexture::CLuaTexture(lua_State *L, bool ex) : ILuaObject( L, CLASS_LUATEXTURE, ex )
 {}
 
 int CLuaTexture::GetSize( lua_State *L )

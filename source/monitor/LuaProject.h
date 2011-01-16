@@ -13,10 +13,11 @@ namespace nrp
 class CLuaProject : public ILuaProject<nrp::INrpProject>
 {
 public:
-	static Luna<CLuaProject>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaProject)
 	static const char* ClassName();
 
-	CLuaProject(lua_State *L);	
+	CLuaProject(lua_State *L, bool );	
 };
 
 }//namespace nrp

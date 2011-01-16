@@ -14,9 +14,10 @@ class CLuaIniFile : public ILuaObject<nrp::IniFile>
 {
 	IniFile* _ini;
 public:
-	static Luna<CLuaIniFile>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaIniFile)
 
-	CLuaIniFile(lua_State *L);	
+	CLuaIniFile(lua_State *L, bool ex);	
 	~CLuaIniFile();
 	int ReadInteger( lua_State* L );
 	int ReadString( lua_State* L );

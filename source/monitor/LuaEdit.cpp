@@ -11,16 +11,17 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAEDIT( "CLuaEdit" );
 
-Luna< CLuaEdit >::RegType CLuaEdit::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaEdit ),
+BEGIN_LUNA_METHODS(CLuaEdit)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaEdit )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaEdit, SetOverrideColor ),
-	LUNA_AUTONAME_FUNCTION( CLuaEdit, SetPasswordBox ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaEdit, SetOverrideColor )
+	LUNA_AUTONAME_FUNCTION( CLuaEdit, SetPasswordBox )
+END_LUNA_METHODS
 
-CLuaEdit::CLuaEdit(lua_State *L)	: ILuaGuiElement(L, CLASS_LUAEDIT )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaEdit)
+END_LUNA_PROPERTIES
+
+CLuaEdit::CLuaEdit(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAEDIT, ex )							//конструктор
 {}
 
 int CLuaEdit::SetOverrideColor( lua_State* L )

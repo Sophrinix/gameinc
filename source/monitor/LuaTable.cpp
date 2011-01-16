@@ -10,28 +10,29 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUATABLE( "CLuaTable" );
 
-Luna< CLuaTable >::RegType CLuaTable::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaTable ),
+BEGIN_LUNA_METHODS( CLuaTable )
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaTable )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaTable, SetImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, SetAction ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, AddRow),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, AddColumn ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, SetColumnWidth ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, SetCellText ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, GetRowCount ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, GetColumnCount ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, RemoveColumn ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, SetRowHeight ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, ClearRows ),
-	LUNA_AUTONAME_FUNCTION( CLuaTable, GetActiveColumn ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaTable, SetImage )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, SetAction )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, AddRow)
+	LUNA_AUTONAME_FUNCTION( CLuaTable, AddColumn )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, SetColumnWidth )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, SetCellText )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, GetRowCount )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, GetColumnCount )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, RemoveColumn )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, SetRowHeight )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, ClearRows )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, GetActiveColumn )
+END_LUNA_METHODS
 
-CLuaTable::CLuaTable(lua_State *L) : ILuaGuiElement(L, "CLuaTable")						//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaTable)
+END_LUNA_PROPERTIES
+
+CLuaTable::CLuaTable(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUATABLE, ex)						//конструктор
 {			
 }
 

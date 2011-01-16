@@ -11,17 +11,18 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUALABEL( "CLuaLabel" );
 
-Luna< CLuaLabel >::RegType CLuaLabel::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaLabel ),
+BEGIN_LUNA_METHODS(CLuaLabel)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaLabel )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideColor ),
-	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideFont ),
-	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetTextAlignment ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideColor )
+	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideFont )
+	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetTextAlignment )
+END_LUNA_METHODS
 
-CLuaLabel::CLuaLabel(lua_State *L)	: ILuaGuiElement(L, CLASS_LUALABEL )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaLabel)
+END_LUNA_PROPERTIES
+
+CLuaLabel::CLuaLabel(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUALABEL, ex )							//конструктор
 {}
 
 int CLuaLabel::SetOverrideFont( lua_State* L )

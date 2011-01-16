@@ -12,10 +12,10 @@ namespace nrp
 class CLuaUser : public ILuaObject<nrp::IUser>
 {
 public:
-	static Luna<CLuaUser>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaUser)
 	static const char* ClassName();
 
-	CLuaUser(lua_State *L);
+	CLuaUser(lua_State *L, bool );
 
 	int SetSkill( lua_State* L );
 	int GetSkill( lua_State* L );

@@ -16,9 +16,9 @@ namespace nrp
 class CLuaWindow : public ILuaGuiElement<irr::gui::CNrpWindow>
 {
 public:
-	static Luna<CLuaWindow>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaWindow)
 
-	CLuaWindow(lua_State *L);
+	CLuaWindow(lua_State *L, bool exist );
 	int GetCloseButton( lua_State *L );
 	int SetDraggable( lua_State *L );
 	int SetDrawBody( lua_State *L );

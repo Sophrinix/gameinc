@@ -11,23 +11,24 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAGAMEENGINE( "CLuaGameEngine" );
 
-Luna< CLuaGameEngine >::RegType CLuaGameEngine::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAPROJECT_HEADER( CLuaGameEngine ),
+BEGIN_LUNA_METHODS(CLuaGameEngine)
+	LUNA_ILUAPROJECT_HEADER( CLuaGameEngine )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, AddGenre ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetGenreModuleNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetGenreModuleNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTechNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetCodeVolume ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, IsMyTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Load ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, AddGenre )
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetGenreModuleNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetGenreModuleNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTechNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetCodeVolume )
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, IsMyTech )
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Load )
+END_LUNA_METHODS
 
-CLuaGameEngine::CLuaGameEngine(lua_State *L) : ILuaProject(L, "CLuaGameEngine")	//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaGameEngine)
+END_LUNA_PROPERTIES
+
+CLuaGameEngine::CLuaGameEngine(lua_State *L, bool ex) : ILuaProject(L, CLASS_LUAGAMEENGINE, ex)	//конструктор
 {}
 
 int CLuaGameEngine::Create( lua_State* L )

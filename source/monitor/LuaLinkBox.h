@@ -9,9 +9,11 @@ namespace nrp
 class CLuaLinkBox : public ILuaGuiElement<irr::gui::CNrpGuiLinkBox>
 {
 public:
-	static Luna<CLuaLinkBox>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaLinkBox)
+
+
 	static const char* ClassName();
-	CLuaLinkBox(lua_State *L);		
+	CLuaLinkBox(lua_State *L, bool);		
 																//нажатии на эту кнопку
 	int AddLuaFunction( lua_State* L );
 	int RemoveLuaFunction( lua_State* L );

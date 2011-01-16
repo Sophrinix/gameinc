@@ -19,40 +19,41 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAGAME( "CLuaGame" );
 
-Luna< CLuaGame >::RegType CLuaGame::methods[] =			//реализуемы методы
-{
-	LUNA_ILUABASEPROJECT_HEADER( CLuaGame ),
+BEGIN_LUNA_METHODS(CLuaGame)
+	LUNA_ILUABASEPROJECT_HEADER( CLuaGame )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaGame, HaveBox ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetName ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, IsMyBoxAddon ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBoxAddon ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, AddBoxAddon ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxAddonsNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, CreateBox ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBox ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxLevel ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxAddon ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, IsSaling ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImageNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshot ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshotNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, SetViewImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetViewImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetLastMonthSales ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetLastMonthProfit ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetAllTimeSales ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, SetPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetCompany ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetDescriptionLink ),
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetAllTimeProfit ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaGame, HaveBox )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetName )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, IsMyBoxAddon )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBoxAddon )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, AddBoxAddon )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxAddonsNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, CreateBox )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBox )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxLevel )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxAddon )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, IsSaling )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImage )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImageNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshot )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshotNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, SetViewImage )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetViewImage )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetLastMonthSales )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetLastMonthProfit )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetAllTimeSales )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, SetPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetCompany )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetDescriptionLink )
+	LUNA_AUTONAME_FUNCTION( CLuaGame, GetAllTimeProfit )
+END_LUNA_METHODS
 
-CLuaGame::CLuaGame(lua_State *L) : ILuaBaseProject(L, CLASS_LUAGAME )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaGame)
+END_LUNA_PROPERTIES
+
+CLuaGame::CLuaGame(lua_State *L, bool ex) : ILuaBaseProject(L, CLASS_LUAGAME, ex )							//конструктор
 {}
 
 int CLuaGame::HaveBox( lua_State* L )

@@ -13,25 +13,61 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUACOMBOBOX( "CLuaComboBox" );
 
-Luna< CLuaComboBox >::RegType CLuaComboBox::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaComboBox ),
+BEGIN_LUNA_METHODS(CLuaComboBox)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaComboBox )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetImage ),
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetAction ),
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, AddItem ),
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelected ),
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelectedObject ),
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetSelected ),
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, Clear ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetImage )
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetAction )
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, AddItem )
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelected )
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelectedObject )
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetSelected )
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, Clear )
+END_LUNA_METHODS
 
-CLuaComboBox::CLuaComboBox(lua_State *L)	: ILuaGuiElement(L, CLASS_LUACOMBOBOX )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaComboBox)
+	LUNA_AUTONAME_PROPERTY( CLuaComboBox, "itemCount", GetItemCount, PureFunction )
+END_LUNA_PROPERTIES
+
+CLuaComboBox::CLuaComboBox(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUACOMBOBOX, ex )							//конструктор
 {}
 
-int CLuaComboBox::SetImage( lua_State *L )							//получает имя файла с текстурой, область из которой надо брать кнопку
-																	//для текущего состояния
+int CLuaComboBox::GetItemCount( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaComboBox::GetSelected not need any parameter");
+
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		lua_pushinteger( L, _object->getItemCount() );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaComboBox::GetItem( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaComboBox::GetItem need index parameter");
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int selected = _object->getSelected();
+		if( selected >= 0 )
+		{
+			void* ptrData = (void*)_object->getItemData( selected );
+			lua_pushlightuserdata( L, ptrData );
+			return 1;
+		}
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaComboBox::SetImage( lua_State *L )							//получает имя файла с текстурой
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 6, 6, "Function CLuaComboBox::setImage need 5 parameter");

@@ -15,22 +15,23 @@ namespace nrp
 {
 CLASS_NAME CLASS_DEVELOPMODULE( "CLuaDevelopModule" );
 
-Luna< CLuaDevelopModule >::RegType CLuaDevelopModule::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAPROJECT_HEADER( CLuaDevelopModule ),
+BEGIN_LUNA_METHODS(CLuaDevelopModule)
+	LUNA_ILUAPROJECT_HEADER( CLuaDevelopModule )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetOption ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetEmployerPosibility ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, Remove ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetLevel ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetParent ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetPercentDone ),
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetQuality ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetOption )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetEmployerPosibility )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, Remove )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetLevel )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetParent )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetPercentDone )
+	LUNA_AUTONAME_FUNCTION( CLuaDevelopModule, GetQuality )
+END_LUNA_METHODS
 
-CLuaDevelopModule::CLuaDevelopModule(lua_State *L) : ILuaProject( L, CLASS_DEVELOPMODULE )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaDevelopModule)
+END_LUNA_PROPERTIES
+
+CLuaDevelopModule::CLuaDevelopModule(lua_State *L, bool ex) : ILuaProject( L, CLASS_DEVELOPMODULE, ex )							//конструктор
 {}
 
 int CLuaDevelopModule::GetOption( lua_State* L )
@@ -89,14 +90,14 @@ int CLuaDevelopModule::Remove( lua_State* L )
 
 int CLuaDevelopModule::GetPercentDone( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<float>( L, "GetPercentDone", READYWORKPERCENT, 0 ) * 100 );
+	lua_pushnumber( L, GetParam_<float>( L, "GetPercentDone", READYWORKPERCENT, 0 ) * 100 );
 	return 1;
 }
 
 int CLuaDevelopModule::GetQuality( lua_State* L )
 {
-	int tmpQuality = GetParam_<int>( L, "GetQuality", QUALITY, 0 ) * GetParam_<float>( L, "GetPercentDone", READYWORKPERCENT, 0 );
-	lua_pushinteger( L, tmpQuality );
+	float tmpQuality = GetParam_<int>( L, "GetQuality", QUALITY, 0 ) * GetParam_<float>( L, "GetPercentDone", READYWORKPERCENT, 0 );
+	lua_pushnumber( L, tmpQuality );
 	return 1;
 }
 

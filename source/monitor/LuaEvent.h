@@ -12,9 +12,9 @@ namespace nrp
 class CLuaEvent : public ILuaObject<irr::SEvent>
 {
 public:
-	static Luna<CLuaEvent>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaEvent)
 
-	CLuaEvent(lua_State *L);
+	CLuaEvent(lua_State *L, bool ex);
 	int GetUserData1( lua_State* L );
 	int GetLogText( lua_State* L );
 	int GetTime( lua_State* L );

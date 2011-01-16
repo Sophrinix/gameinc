@@ -18,53 +18,54 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAGMEPROJECT( "CLuaGameProject" );
 
-Luna< CLuaGameProject >::RegType CLuaGameProject::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAPROJECT_HEADER( CLuaGameProject ),
+BEGIN_LUNA_METHODS(CLuaGameProject)
+	LUNA_ILUAPROJECT_HEADER( CLuaGameProject )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetGameEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCodeVolume ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyGameEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetGameEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLicense ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetScenario ),
-	LUNA_AUTONAME_FUNCTION(	CLuaGameProject, GetPlatform ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyPlatform ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, AddPlatform ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, RemovePlatform ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsProjectReady ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, HaveLicense ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, HaveScenario ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetScriptEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetScriptEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetMiniGameEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetMiniGameEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetPhysicEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetPhysicEngine ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, AddTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, RemoveTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetVideoQuality ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetVideoQuality ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetSoundQuality ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetSoundQuality ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCodeQuality ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetScenario ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetEngineExtend ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLocalization ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCrossPlatformCode ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCpuUse ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetMemoryUse ),
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetGameEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCodeVolume )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyTech )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyGameEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetGameEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLicense )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetScenario )
+	LUNA_AUTONAME_FUNCTION(	CLuaGameProject, GetPlatform )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyPlatform )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, AddPlatform )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, RemovePlatform )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsProjectReady )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, HaveLicense )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, HaveScenario )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetScriptEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetScriptEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetMiniGameEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetMiniGameEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetPhysicEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetPhysicEngine )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetTech )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, AddTech )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, RemoveTech )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyTech )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetVideoQuality )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetVideoQuality )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetSoundQuality )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetSoundQuality )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCodeQuality )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetScenario )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetEngineExtend )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLocalization )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCrossPlatformCode )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCpuUse )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetMemoryUse )
 
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Remove ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Remove )
+END_LUNA_METHODS
 
-CLuaGameProject::CLuaGameProject(lua_State *L)	: ILuaProject(L, "CLuaGameProject")							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaGameProject)
+END_LUNA_PROPERTIES
+
+CLuaGameProject::CLuaGameProject(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUAGMEPROJECT, ex)							//конструктор
 {}
 
 int CLuaGameProject::SetGameEngine( lua_State* L )\

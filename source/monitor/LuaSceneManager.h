@@ -17,10 +17,10 @@ namespace nrp
 class CLuaSceneManager : public ILuaObject< irr::scene::ISceneManager >
 {
 public:
-	static Luna<CLuaSceneManager>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaSceneManager)
 	static const char* ClassName();
 
-	CLuaSceneManager(lua_State *L);
+	CLuaSceneManager(lua_State *L, bool);
 	int GetActiveCamera( lua_State *vm );
 	int AddTerrainSceneNode( lua_State* vm );
 	int AddSkyDomeSceneNode( lua_State* vm );

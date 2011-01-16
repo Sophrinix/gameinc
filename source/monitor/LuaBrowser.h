@@ -13,9 +13,10 @@ namespace nrp
 class CLuaBrowser : public ILuaProject<nrp::HTMLEngine>
 {
 public:
-	static Luna<CLuaBrowser>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaBrowser)
 
-	CLuaBrowser(lua_State *L);		
+	CLuaBrowser(lua_State *L, bool );		
 	int Show( lua_State* L );
 	int Hide( lua_State* L );
 	int Navigate( lua_State* L );

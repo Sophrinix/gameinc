@@ -10,27 +10,28 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAREKLAME( "CLuaReklame" );
 
-Luna< CLuaReklame >::RegType CLuaReklame::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAPROJECT_HEADER( CLuaReklame ),
+BEGIN_LUNA_METHODS(CLuaReklame)
+	LUNA_ILUAPROJECT_HEADER( CLuaReklame )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetQuality ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, Remove ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetLevel ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetNumberDay ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetNumberDay ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetDayCost ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetFamous ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetReklameObject ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetCompanyName ),
-	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetCompanyName ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetQuality )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, Remove )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetLevel )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetNumberDay )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetNumberDay )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetDayCost )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetFamous )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetReklameObject )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, SetCompanyName )
+	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetCompanyName )
+END_LUNA_METHODS
 
-CLuaReklame::CLuaReklame(lua_State *L) : ILuaProject( L, CLASS_LUAREKLAME )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaReklame)
+END_LUNA_PROPERTIES
+
+CLuaReklame::CLuaReklame(lua_State *L, bool ex) : ILuaProject( L, CLASS_LUAREKLAME, ex )							//конструктор
 {}
 
 int CLuaReklame::Create( lua_State* L )

@@ -15,10 +15,10 @@ namespace nrp
 class CLuaMiniMap : public ILuaGuiElement< irr::gui::CNrpMiniMap >
 {
 public:
-	static Luna<CLuaMiniMap>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaMiniMap)
 	static const char* ClassName();
 
-	CLuaMiniMap(lua_State *L);
+	CLuaMiniMap(lua_State *L, bool);
 	int SetTexture( lua_State *L );
 	int GetAngleOffset( lua_State *L );
 	int SetOnRotateAction( lua_State *L );

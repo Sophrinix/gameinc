@@ -15,9 +15,9 @@ namespace nrp
 class CLuaComponentListBox : public ILuaListBox<irr::gui::CNrpComponentListbox>
 {
 public:
-	static Luna<CLuaComponentListBox>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS( CLuaComponentListBox )				//методы обертки
 
-	CLuaComponentListBox(lua_State *L);		
+	CLuaComponentListBox(lua_State *L, bool);		
 	
 	int AddItem( lua_State *L );
 	int GetSelectedObject( lua_State* L );

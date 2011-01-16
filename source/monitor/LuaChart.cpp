@@ -13,20 +13,21 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUACHART( "CLuaChart" );
 
-Luna< CLuaChart >::RegType CLuaChart::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaChart ),
+BEGIN_LUNA_METHODS(CLuaChart)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaChart )
 	/*    */
-	LUNA_AUTONAME_FUNCTION( CLuaChart, SetAxisAutomatic ),
-	LUNA_AUTONAME_FUNCTION( CLuaChart, Update ),
-	LUNA_AUTONAME_FUNCTION( CLuaChart, AddSerie ),
-	LUNA_AUTONAME_FUNCTION( CLuaChart, AddPoint ),
-	LUNA_AUTONAME_FUNCTION( CLuaChart, UpdateData ),
-	LUNA_AUTONAME_FUNCTION( CLuaChart, SetOffsetPoints ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaChart, SetAxisAutomatic )
+	LUNA_AUTONAME_FUNCTION( CLuaChart, Update )
+	LUNA_AUTONAME_FUNCTION( CLuaChart, AddSerie )
+	LUNA_AUTONAME_FUNCTION( CLuaChart, AddPoint )
+	LUNA_AUTONAME_FUNCTION( CLuaChart, UpdateData )
+	LUNA_AUTONAME_FUNCTION( CLuaChart, SetOffsetPoints )
+END_LUNA_METHODS
 
-CLuaChart::CLuaChart(lua_State *L)	: ILuaGuiElement(L, "CLuaChart")							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaChart)
+END_LUNA_PROPERTIES
+
+CLuaChart::CLuaChart(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUACHART, ex)							//конструктор
 {}
 
 int CLuaChart::SetAxisAutomatic( lua_State *L )

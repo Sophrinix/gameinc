@@ -18,45 +18,46 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUASCENEMANAGER( "CLuaSceneManager" );
 
-Luna< CLuaSceneManager >::RegType CLuaSceneManager::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaSceneManager ),
+BEGIN_LUNA_METHODS(CLuaSceneManager)
+	LUNA_ILUAOBJECT_HEADER( CLuaSceneManager )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetActiveCamera ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddTerrainSceneNode ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddSkyDomeSceneNode ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddCameraSceneNode ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddCubeSceneNode ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetRootSceneNode ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddTextSceneNode ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetSceneNodeByName ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetCurrentWorldPosition ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetSelectedNode ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetActiveCamera ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddNerpaCameraAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, CreateTerrainTriangleSelector ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, CreateTriangleSelectorFromBoundingBox ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, CreateCollisionResponseAnimator ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, DrawProgress ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetWorldSize ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, LinkTerrain ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddSceneFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RemoveSceneFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetRayFromCursorCollisionWithTerrains ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetMarkText ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetMarkText ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddToDeletionQueue ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RenderScene ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, LoadIrrlichtScene ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetSceneNodeByID ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RemoveAllNodes ),
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetSelectedNode ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetActiveCamera )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddTerrainSceneNode )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddSkyDomeSceneNode )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddCameraSceneNode )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddCubeSceneNode )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetRootSceneNode )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddTextSceneNode )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetSceneNodeByName )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetCurrentWorldPosition )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetSelectedNode )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetActiveCamera )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddNerpaCameraAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, CreateTerrainTriangleSelector )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, CreateTriangleSelectorFromBoundingBox )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, CreateCollisionResponseAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, DrawProgress )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetWorldSize )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, LinkTerrain )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddSceneFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RemoveSceneFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetRayFromCursorCollisionWithTerrains )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetMarkText )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetMarkText )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddToDeletionQueue )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RenderScene )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, LoadIrrlichtScene )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetSceneNodeByID )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RemoveAllNodes )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetSelectedNode )
+END_LUNA_METHODS
 
-CLuaSceneManager::CLuaSceneManager(lua_State *L) : ILuaObject(L, "CLuaSceneManager")
+BEGIN_LUNA_PROPERTIES(CLuaSceneManager)
+END_LUNA_PROPERTIES
+
+CLuaSceneManager::CLuaSceneManager(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUASCENEMANAGER, ex)
 {}
 
 int CLuaSceneManager::GetActiveCamera( lua_State *vm )

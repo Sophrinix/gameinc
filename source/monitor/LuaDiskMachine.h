@@ -11,10 +11,10 @@ class CNrpDiskMachine;
 class CLuaDiskMachine : public ILuaBaseProject< nrp::CNrpDiskMachine >
 {
 public:
-	static Luna<CLuaDiskMachine>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaDiskMachine)
 	static const char* ClassName();
 
-	CLuaDiskMachine(lua_State *L);
+	CLuaDiskMachine(lua_State *L, bool );
 	int Create( lua_State* L );
 	int Remove( lua_State* L );
 	int Load( lua_State* L );

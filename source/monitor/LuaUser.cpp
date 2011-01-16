@@ -18,33 +18,34 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAUSER( "CLuaUser" );
 
-Luna< CLuaUser >::RegType CLuaUser::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaUser ),
+BEGIN_LUNA_METHODS(CLuaUser)
+	LUNA_ILUAOBJECT_HEADER( CLuaUser )
 	/*  */
-	LUNA_AUTONAME_FUNCTION( CLuaUser, SetSkill ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetSkill ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, SetCharacter ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTypeName ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetParam ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, SetParam ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, AddParam ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, IsTypeAs ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetName ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, Save ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, AddWork ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWorkNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, RemoveWork ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWork ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, IsFreeUser ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetRelation ),
-	LUNA_AUTONAME_FUNCTION( CLuaUser, HaveInvention ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaUser, SetSkill )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetSkill )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, SetCharacter )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTypeName )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetParam )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, SetParam )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, AddParam )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, IsTypeAs )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetName )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, Save )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, AddWork )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWorkNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, RemoveWork )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWork )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, IsFreeUser )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, GetRelation )
+	LUNA_AUTONAME_FUNCTION( CLuaUser, HaveInvention )
+END_LUNA_METHODS
 
-CLuaUser::CLuaUser(lua_State *L) : ILuaObject(L, CLASS_LUAUSER) {}
+BEGIN_LUNA_PROPERTIES(CLuaUser)
+END_LUNA_PROPERTIES
+
+CLuaUser::CLuaUser(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAUSER, ex) {}
 
 int CLuaUser::Create( lua_State *L )
 {

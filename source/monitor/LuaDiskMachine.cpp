@@ -11,25 +11,26 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUADISKMACHINE("CLuaDiskMachine");
 
-Luna< CLuaDiskMachine >::RegType CLuaDiskMachine::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaDiskMachine ),
+BEGIN_LUNA_METHODS(CLuaDiskMachine)
+	LUNA_ILUAOBJECT_HEADER( CLuaDiskMachine )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Load ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, IsLoaded ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetName ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Remove ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetDiscount ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetLineDiscount ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, SetDiscount ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetMaxDiscount ),
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetDiskProduced ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Load )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, IsLoaded )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetName )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Remove )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetDiscount )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetLineDiscount )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, SetDiscount )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetMaxDiscount )
+	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetDiskProduced )
+END_LUNA_METHODS
+
+BEGIN_LUNA_PROPERTIES(CLuaDiskMachine)
+END_LUNA_PROPERTIES
 
 int CLuaDiskMachine::Create( lua_State* L )
 {
@@ -53,7 +54,7 @@ int CLuaDiskMachine::Remove( lua_State* L )
 	return 1;	
 }
 
-CLuaDiskMachine::CLuaDiskMachine( lua_State *L ) : ILuaBaseProject( L, CLASS_LUADISKMACHINE )
+CLuaDiskMachine::CLuaDiskMachine( lua_State *L, bool ex ) : ILuaBaseProject( L, CLASS_LUADISKMACHINE, ex )
 {
 
 }

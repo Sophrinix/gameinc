@@ -13,10 +13,10 @@ namespace nrp
 class CLuaBank : public ILuaProject<nrp::CNrpBank>
 {
 public:
-	static Luna<CLuaBank>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaBank)
 	static const char* ClassName();
 
-	CLuaBank(lua_State *L);		
+	CLuaBank(lua_State *L, bool );		
 	int GetMaxCompanyLoan( lua_State* L );
 	int GetLoansNumber( lua_State* L );
 	int GetLoanID( lua_State* L );

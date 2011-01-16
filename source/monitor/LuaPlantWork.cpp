@@ -12,30 +12,31 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAPLANTWORK("CLuaPlantWork");
 
-Luna< CLuaPlantWork >::RegType CLuaPlantWork::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaPlantWork ),
+BEGIN_LUNA_METHODS(CLuaPlantWork)
+	LUNA_ILUAOBJECT_HEADER( CLuaPlantWork )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, Remove ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, SetProduceType ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetRentPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetHourPerfomance ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetHourPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetNumberMachine ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetNumberDay ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetNumberDisk ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, SetNumberMachine ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, SetNumberDay ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetDiskPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, SetGame ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetAdvPrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetDiskInDay ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, Remove )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, SetProduceType )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetRentPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetHourPerfomance )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetHourPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetNumberMachine )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetNumberDay )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetNumberDisk )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, SetNumberMachine )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, SetNumberDay )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetDiskPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, SetGame )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetAdvPrice )
+	LUNA_AUTONAME_FUNCTION( CLuaPlantWork, GetDiskInDay )
+END_LUNA_METHODS
+
+BEGIN_LUNA_PROPERTIES(CLuaPlantWork)
+END_LUNA_PROPERTIES
 
 int CLuaPlantWork::GetPrice( lua_State* L )
 {
@@ -64,7 +65,7 @@ int CLuaPlantWork::Create( lua_State* L )
 	return 1;	
 }
 
-CLuaPlantWork::CLuaPlantWork( lua_State *L ) : ILuaObject( L, CLASS_LUAPLANTWORK )
+CLuaPlantWork::CLuaPlantWork( lua_State *L, bool ex ) : ILuaObject( L, CLASS_LUAPLANTWORK, ex )
 {
 
 }

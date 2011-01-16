@@ -15,10 +15,10 @@ namespace nrp
 class CLuaListBox : public ILuaListBox<irr::gui::IGUIListBox>
 {
 public:	
-	static Luna<CLuaListBox>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaListBox)
 	static const char* ClassName();
 
-	CLuaListBox(lua_State *L);		
+	CLuaListBox(lua_State *L, bool);		
 
 	int AddItem( lua_State *L );
 	int GetSelectedObject( lua_State* L );

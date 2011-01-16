@@ -15,10 +15,10 @@ namespace nrp
 class CLuaScrollBar : public ILuaGuiElement< irr::gui::CNrpScrollBar >
 {
 public:
-	static Luna<CLuaScrollBar>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS( CLuaScrollBar )
 	static const char* ClassName();
 
-	CLuaScrollBar(lua_State *L);
+	CLuaScrollBar(lua_State *L, bool );
 	int SetTexture( lua_State *L );
 	int SetAction( lua_State *L );
 	int SetMax( lua_State* L );

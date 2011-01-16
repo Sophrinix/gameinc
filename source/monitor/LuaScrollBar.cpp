@@ -12,24 +12,25 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUASCROLLBAR( "CLuaScrollBar" );
 
-Luna< CLuaScrollBar >::RegType CLuaScrollBar::methods[] = 
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaScrollBar ),
+BEGIN_LUNA_METHODS(CLuaScrollBar)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaScrollBar )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetAction ),
-	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetMin ),
-	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetMax ),
-	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, GetPos ),
-	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, GetUpButton ),
-	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, GetDownButton ),
-	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetSliderTexture ), 
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetAction )
+	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetMin )
+	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetMax )
+	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, GetPos )
+	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, GetUpButton )
+	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, GetDownButton )
+	LUNA_AUTONAME_FUNCTION( CLuaScrollBar, SetSliderTexture )
+END_LUNA_METHODS
 
-CLuaScrollBar::CLuaScrollBar(lua_State *L) : ILuaGuiElement(L, "CLuaScrollBar")
+BEGIN_LUNA_PROPERTIES(CLuaScrollBar)
+END_LUNA_PROPERTIES
+
+CLuaScrollBar::CLuaScrollBar(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUASCROLLBAR, ex)
 {}
 
 int CLuaScrollBar::GetUpButton( lua_State* L  )

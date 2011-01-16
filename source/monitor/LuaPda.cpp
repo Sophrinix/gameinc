@@ -7,21 +7,22 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAPDA( "CLuaPda" );
 
-Luna< CLuaPda >::RegType CLuaPda::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaPda ),
+BEGIN_LUNA_METHODS(CLuaPda)
+	LUNA_ILUAOBJECT_HEADER( CLuaPda )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaPda, GetMessage ),
-	LUNA_AUTONAME_FUNCTION( CLuaPda, GetTimeStr ),
-	LUNA_AUTONAME_FUNCTION( CLuaPda, Next ),
-	LUNA_AUTONAME_FUNCTION( CLuaPda, Prev ),
-	LUNA_AUTONAME_FUNCTION( CLuaPda, AddMessage ),
-	LUNA_AUTONAME_FUNCTION( CLuaPda, Save ),
-	LUNA_AUTONAME_FUNCTION( CLuaPda, Load ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaPda, GetMessage )
+	LUNA_AUTONAME_FUNCTION( CLuaPda, GetTimeStr )
+	LUNA_AUTONAME_FUNCTION( CLuaPda, Next )
+	LUNA_AUTONAME_FUNCTION( CLuaPda, Prev )
+	LUNA_AUTONAME_FUNCTION( CLuaPda, AddMessage )
+	LUNA_AUTONAME_FUNCTION( CLuaPda, Save )
+	LUNA_AUTONAME_FUNCTION( CLuaPda, Load )
+END_LUNA_METHODS
 
-CLuaPda::CLuaPda(lua_State *L) : ILuaObject(L, "CLuaPda")
+BEGIN_LUNA_PROPERTIES(CLuaPda)
+END_LUNA_PROPERTIES
+
+CLuaPda::CLuaPda(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAPDA, ex)
 {}
 
 int CLuaPda::GetMessage( lua_State *L )

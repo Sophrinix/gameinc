@@ -9,10 +9,11 @@ class CNrpGame;
 class CLuaGame : public ILuaBaseProject<nrp::CNrpGame>
 {
 public:
-	static Luna<CLuaGame>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaGame)				
 	static const char* ClassName();
 
-	CLuaGame(lua_State *L);		
+	CLuaGame(lua_State *L, bool );		
 	int Create( lua_State* L );
 	int HaveBox( lua_State* L );
 	int GetName( lua_State* L );

@@ -14,19 +14,20 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUABROWSER( "CLuaBrowser" );
 
-Luna< CLuaBrowser >::RegType CLuaBrowser::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaBrowser ),
+BEGIN_LUNA_METHODS(CLuaBrowser)
+	LUNA_ILUAOBJECT_HEADER( CLuaBrowser )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Show ),
-	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Hide ),
-	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Navigate ),
-	LUNA_AUTONAME_FUNCTION( CLuaBrowser, GetWindow ),
-	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Move ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Show )
+	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Hide )
+	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Navigate )
+	LUNA_AUTONAME_FUNCTION( CLuaBrowser, GetWindow )
+	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Move )
+END_LUNA_METHODS
 
-CLuaBrowser::CLuaBrowser(lua_State *L)	: ILuaProject(L, CLASS_LUABROWSER )	//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaBrowser)
+END_LUNA_PROPERTIES
+
+CLuaBrowser::CLuaBrowser(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUABROWSER, ex )	//конструктор
 {}
 
 int CLuaBrowser::Show( lua_State* L )

@@ -9,23 +9,24 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUABANK( "CLuaBank" );
 
-Luna< CLuaBank >::RegType CLuaBank::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaBank ),
+BEGIN_LUNA_METHODS(CLuaBank)
+	LUNA_ILUAOBJECT_HEADER( CLuaBank )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaBank, GetMaxCompanyLoan ),
-	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoansNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanID ),
-	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanStartSumm ),
-	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanCompanyName ),
-	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanMoneyToClose ),
-	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanMoneyPerMonth ),
-	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanMonthToEnd ),
-	LUNA_AUTONAME_FUNCTION( CLuaBank, CreateLoan ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetMaxCompanyLoan )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoansNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanID )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanStartSumm )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanCompanyName )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanMoneyToClose )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanMoneyPerMonth )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanMonthToEnd )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, CreateLoan )
+END_LUNA_METHODS
 
-CLuaBank::CLuaBank(lua_State *L)	: ILuaProject(L, CLASS_LUABANK)	//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaBank)
+END_LUNA_PROPERTIES
+
+CLuaBank::CLuaBank(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUABANK, ex)	//конструктор
 {}
 
 int CLuaBank::GetMaxCompanyLoan( lua_State* L )

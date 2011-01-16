@@ -16,10 +16,10 @@ namespace nrp
 class CLuaSceneNode : public ILuaSceneNode< irr::scene::ISceneNode >
 {
 public:
-	static Luna<CLuaSceneNode>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaSceneNode)
 	static const char* ClassName();
 
-	CLuaSceneNode(lua_State *L);		
+	CLuaSceneNode(lua_State *L, bool);		
 private:
 	irr::scene::ISceneNode* GetTextSceneNode_();
 	bool IsChildOfCurrentScene_();

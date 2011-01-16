@@ -12,16 +12,17 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUATAB( "CLuaTab" );
 
-Luna< CLuaTab >::RegType CLuaTab::methods[] = 
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaTab ),
+BEGIN_LUNA_METHODS(CLuaTab)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaTab )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaTab, SetFontFromSize ),
-	LUNA_AUTONAME_FUNCTION( CLuaTab, SetTextColor ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaTab, SetFontFromSize )
+	LUNA_AUTONAME_FUNCTION( CLuaTab, SetTextColor )
+END_LUNA_METHODS
 
-CLuaTab::CLuaTab(lua_State *L) : ILuaGuiElement(L, "CLuaTab")
+BEGIN_LUNA_PROPERTIES(CLuaTab)
+END_LUNA_PROPERTIES
+
+CLuaTab::CLuaTab(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUATAB, ex)
 {}
 
 int CLuaTab::SetFontFromSize( lua_State *L )

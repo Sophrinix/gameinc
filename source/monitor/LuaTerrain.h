@@ -15,11 +15,11 @@ namespace nrp
 class CLuaTerrain : public ILuaSceneNode< irr::scene::ITerrainSceneNode >
 {
 public:
-	static Luna<CLuaTerrain>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaTerrain)
 	static const char* ClassName();
 
 	// Initialize the pointer
-	CLuaTerrain(lua_State *L);
+	CLuaTerrain(lua_State *L, bool);
 
 	int ScaleTexture( lua_State *L );
 	int SetMaterialType( lua_State *L );

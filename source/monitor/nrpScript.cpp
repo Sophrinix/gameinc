@@ -263,9 +263,9 @@ void CNrpScript::DoFile( const NrpText& fileName )
 		// убрать из стека сообщение об ошибке
 		lua_pop(vm_, -1);
 		if( errMsg.size() )
-			Log(SCRIPT, FATAL)  << "Неизвестная ошибка скрипта \"" << fileName << term;
+			Log(SCRIPT, FATAL)  << errMsg << term;
 		else
-			Log(SCRIPT, FATAL)  << errMsg  << term;
+			Log(SCRIPT, FATAL)  << "Неизвестная ошибка скрипта \"" << fileName  << term;
 	}
 }
 

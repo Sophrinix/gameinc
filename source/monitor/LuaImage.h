@@ -20,7 +20,7 @@ namespace nrp
 class CLuaImage : public ILuaGuiElement<irr::gui::IGUIImage>
 {
 public:
-	static Luna<CLuaImage>::RegType methods[];				
+	DEFINE_PROPERTIES_AND_METHODS(CLuaImage)
 
 	//! Конструктор
 	/*!
@@ -28,7 +28,7 @@ public:
 		\param height	высота изображения
 		\param name		имя элемента
 	*/
-	CLuaImage(lua_State *L);
+	CLuaImage(lua_State *L, bool);
 
 	//! Установка текстуры для отображения
 	/*!

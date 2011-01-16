@@ -13,16 +13,17 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUALISTBOX( "CLuaListBox" );
 
-Luna< CLuaListBox >::RegType CLuaListBox::methods[] =			//реализуемы методы
-{
-	LUNA_ILUALISTBOX_HEADER( CLuaListBox ),
+BEGIN_LUNA_METHODS(CLuaListBox)
+	LUNA_ILUALISTBOX_HEADER( CLuaListBox )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaListBox, AddItem ),
-	LUNA_AUTONAME_FUNCTION( CLuaListBox, GetSelectedObject ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaListBox, AddItem )
+	LUNA_AUTONAME_FUNCTION( CLuaListBox, GetSelectedObject )
+END_LUNA_METHODS
 
-CLuaListBox::CLuaListBox(lua_State *L)	: ILuaListBox(L, CLASS_LUALISTBOX )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaListBox)
+END_LUNA_PROPERTIES
+
+CLuaListBox::CLuaListBox(lua_State *L, bool ex)	: ILuaListBox(L, CLASS_LUALISTBOX, ex )							//конструктор
 {}
 
 int CLuaListBox::AddItem( lua_State *L )	//добавляет текст в списко отображения

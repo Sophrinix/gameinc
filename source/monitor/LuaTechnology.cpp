@@ -15,36 +15,37 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUATECH( L"CLuaTech" );
 
-Luna< CLuaTechnology >::RegType CLuaTechnology::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAPROJECT_HEADER( CLuaTechnology ),
+BEGIN_LUNA_METHODS(CLuaTechnology)
+	LUNA_ILUAPROJECT_HEADER( CLuaTechnology )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetBaseCode ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetAddingEngineCode ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEngineTechRequire ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEmployerSkillRequire ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTechGroup ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetOptionAsInt ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetQuality ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Load ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Remove ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetLevel ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Create ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveRequireTech ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechInternalName ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetStatus ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetStatus ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetDescriptionLink ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetCompany ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetCompany ),
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetInternalName ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetBaseCode )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetAddingEngineCode )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEngineTechRequire )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEmployerSkillRequire )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTechGroup )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetOptionAsInt )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetQuality )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Load )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Remove )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetLevel )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Create )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveRequireTech )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechInternalName )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetStatus )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetStatus )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetDescriptionLink )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetCompany )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetCompany )
+	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetInternalName )
+END_LUNA_METHODS
 
-CLuaTechnology::CLuaTechnology(lua_State *L) : ILuaProject( L, CLASS_LUATECH )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaTechnology)
+END_LUNA_PROPERTIES
+
+CLuaTechnology::CLuaTechnology(lua_State *L, bool ex) : ILuaProject( L, CLASS_LUATECH, ex )							//конструктор
 {}
 
 int CLuaTechnology::GetTechGroup( lua_State* L ) 

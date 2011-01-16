@@ -9,10 +9,11 @@ class CNrpGameBox;
 class CLuaGameBox : public ILuaObject<nrp::CNrpGameBox>
 {
 public:
-	static Luna<CLuaGameBox>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaGameBox)
 	static const char* ClassName();
 
-	CLuaGameBox(lua_State *L);		
+	CLuaGameBox(lua_State *L, bool );		
 };
 
 }//namespace nrp

@@ -9,10 +9,10 @@ class CNrpPlantWork;
 class CLuaPlantWork : public ILuaObject< nrp::CNrpPlantWork >
 {
 public:
-	static Luna<CLuaPlantWork>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaPlantWork)
 	static const char* ClassName();
 
-	CLuaPlantWork(lua_State *L);
+	CLuaPlantWork(lua_State *L, bool );
 	int Create( lua_State* L );
 	int Remove( lua_State* L );
 	int SetProduceType( lua_State* L );

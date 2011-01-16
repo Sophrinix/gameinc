@@ -15,26 +15,27 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAPLANT( "CLuaPlant" );
 
-Luna< CLuaPlant >::RegType CLuaPlant::methods[] =			//реализуемы методы
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaPlant ),
+BEGIN_LUNA_METHODS(CLuaPlant)
+	LUNA_ILUAOBJECT_HEADER( CLuaPlant )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, Load ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddProduceWork ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadBaseReklame ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadReklamePrice ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddReklameWork ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, Save ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetReklame ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklame ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklameNumber ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadDiskMachine ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetDiskMachine ),
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetDiskMachineNumber ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, Load )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddProduceWork )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadBaseReklame )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadReklamePrice )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddReklameWork )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, Save )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetReklame )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklame )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklameNumber )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadDiskMachine )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetDiskMachine )
+	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetDiskMachineNumber )
+END_LUNA_METHODS
 
-CLuaPlant::CLuaPlant(lua_State *L)	: ILuaBaseProject(L, CLASS_LUAPLANT )							//конструктор
+BEGIN_LUNA_PROPERTIES(CLuaPlant)
+END_LUNA_PROPERTIES
+
+CLuaPlant::CLuaPlant(lua_State *L, bool ex)	: ILuaBaseProject(L, CLASS_LUAPLANT, ex )							//конструктор
 {}
 
 int CLuaPlant::Load( lua_State* L )

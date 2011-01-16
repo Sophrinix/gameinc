@@ -13,19 +13,21 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAAUTOSCRIPT( "CLuaAutoScript" );
 
-Luna< CLuaAutoScript >::RegType CLuaAutoScript::methods[] = 
-{
-	LUNA_AUTONAME_FUNCTION( CLuaAutoScript, AddUserToInvention ),
-	LUNA_AUTONAME_FUNCTION( CLuaAutoScript, AddUserToGameProject ),
-	LUNA_AUTONAME_FUNCTION( CLuaAutoScript, AddGameEngineToCompany ),
+BEGIN_LUNA_METHODS(CLuaAutoScript)
+	LUNA_AUTONAME_FUNCTION( CLuaAutoScript, AddUserToInvention )
+	LUNA_AUTONAME_FUNCTION( CLuaAutoScript, AddUserToGameProject )
+	LUNA_AUTONAME_FUNCTION( CLuaAutoScript, AddGameEngineToCompany )
 	/************************************************************************/
 	/*                                                                      */
-	/************************************************************************/
-	{0,0}
-};
+END_LUNA_METHODS
 
-CLuaAutoScript::CLuaAutoScript(lua_State *L)
-{}
+BEGIN_LUNA_PROPERTIES(CLuaAutoScript)
+END_LUNA_PROPERTIES
+
+CLuaAutoScript::CLuaAutoScript(lua_State *L, bool ex )
+{
+	_isExisting = ex;
+}
 
 int CLuaAutoScript::AddUserToGameProject( lua_State* L )
 {

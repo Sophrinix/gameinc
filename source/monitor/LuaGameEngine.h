@@ -9,10 +9,11 @@ namespace nrp
 class CLuaGameEngine : public ILuaProject<nrp::CNrpGameEngine>
 {
 public:
-	static Luna<CLuaGameEngine>::RegType methods[];				//методы обертки
+	//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaGameEngine)
 	static const char* ClassName();
 
-	CLuaGameEngine(lua_State *L);		
+	CLuaGameEngine(lua_State *L, bool );		
 	int AddGenre( lua_State* L );
 	int SetGenreModuleNumber( lua_State* L );
 	int GetGenreModuleNumber( lua_State* L );

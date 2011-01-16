@@ -12,20 +12,21 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUAWINDOW( "CLuaWindow" );
 
-Luna< CLuaWindow >::RegType CLuaWindow::methods[] = 
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaWindow ),
+BEGIN_LUNA_METHODS(CLuaWindow)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaWindow )
 	/*                */
-	LUNA_AUTONAME_FUNCTION( CLuaWindow, GetCloseButton ),
-	LUNA_AUTONAME_FUNCTION( CLuaWindow, SetDraggable ),
-	LUNA_AUTONAME_FUNCTION( CLuaWindow, SetDrawBody ),
-	LUNA_AUTONAME_FUNCTION( CLuaWindow, AddLuaFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaWindow, RemoveLuaFunction ),
-	LUNA_AUTONAME_FUNCTION( CLuaWindow, Draw ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaWindow, GetCloseButton )
+	LUNA_AUTONAME_FUNCTION( CLuaWindow, SetDraggable )
+	LUNA_AUTONAME_FUNCTION( CLuaWindow, SetDrawBody )
+	LUNA_AUTONAME_FUNCTION( CLuaWindow, AddLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaWindow, RemoveLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaWindow, Draw )
+END_LUNA_METHODS
 
-CLuaWindow::CLuaWindow(lua_State *L) : ILuaGuiElement(L, CLASS_LUAWINDOW )
+BEGIN_LUNA_PROPERTIES(CLuaWindow)
+END_LUNA_PROPERTIES
+
+CLuaWindow::CLuaWindow(lua_State *L, bool exist) : ILuaGuiElement(L, CLASS_LUAWINDOW, exist )
 {}
 
 int CLuaWindow::GetCloseButton( lua_State *L )

@@ -11,16 +11,17 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUACONSOLE( "CLuaConsole" );
 
-Luna< CLuaConsole >::RegType CLuaConsole::methods[] = 
-{
-	LUNA_ILUAGUIELEMENT_HEADER( CLuaConsole ),
+BEGIN_LUNA_METHODS(CLuaConsole)
+	LUNA_ILUAGUIELEMENT_HEADER( CLuaConsole )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaConsole, ToggleVisible ),
-	LUNA_AUTONAME_FUNCTION( CLuaConsole, Draw ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaConsole, ToggleVisible )
+	LUNA_AUTONAME_FUNCTION( CLuaConsole, Draw )
+END_LUNA_METHODS
 
-CLuaConsole::CLuaConsole(lua_State *L) : ILuaGuiElement(L, "CLuaConsole")
+BEGIN_LUNA_PROPERTIES(CLuaConsole)
+END_LUNA_PROPERTIES
+
+CLuaConsole::CLuaConsole(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUACONSOLE, ex)
 {}
 
 int CLuaConsole::ToggleVisible( lua_State *L )

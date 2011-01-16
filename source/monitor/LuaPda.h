@@ -8,10 +8,10 @@ class CNrpPda;
 class CLuaPda : public ILuaObject<CNrpPda>
 {
 public:
-	static Luna<CLuaPda>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaPda)
 	static const char* ClassName();
 
-	CLuaPda(lua_State *L);
+	CLuaPda(lua_State *L, bool );
 	int GetMessage( lua_State* L );
 	int GetTimeStr( lua_State* L );
 	int Next( lua_State* L );

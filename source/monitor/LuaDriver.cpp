@@ -11,22 +11,23 @@ namespace nrp
 {
 CLASS_NAME CLASS_LUADRIVER( "CLuaDriver" );
 
-Luna< CLuaDriver >::RegType CLuaDriver::methods[] = 
-{
-	LUNA_ILUAOBJECT_HEADER( CLuaDriver ),
+BEGIN_LUNA_METHODS(CLuaDriver)
+	LUNA_ILUAOBJECT_HEADER( CLuaDriver )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	LUNA_AUTONAME_FUNCTION( CLuaDriver, GetScreenSize ),
-	LUNA_AUTONAME_FUNCTION( CLuaDriver, GetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaDriver, AddTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaDriver, AddRenderTargetTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaDriver, RemoveTexture ),
-	LUNA_AUTONAME_FUNCTION( CLuaDriver, SetRenderTarget ),
-	{0,0}
-};
+	LUNA_AUTONAME_FUNCTION( CLuaDriver, GetScreenSize )
+	LUNA_AUTONAME_FUNCTION( CLuaDriver, GetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaDriver, AddTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaDriver, AddRenderTargetTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaDriver, RemoveTexture )
+	LUNA_AUTONAME_FUNCTION( CLuaDriver, SetRenderTarget )
+END_LUNA_METHODS
 
-CLuaDriver::CLuaDriver(lua_State *L) : ILuaObject(L, "CLuaDriver")
+BEGIN_LUNA_PROPERTIES(CLuaDriver)
+END_LUNA_PROPERTIES
+
+CLuaDriver::CLuaDriver(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUADRIVER, ex)
 {}
 
 int CLuaDriver::GetScreenSize( lua_State *L )

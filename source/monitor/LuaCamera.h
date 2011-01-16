@@ -17,10 +17,10 @@ namespace nrp
 class CLuaCamera : public ILuaSceneNode< irr::scene::ICameraSceneNode >
 {
 public:
-	static Luna<CLuaCamera>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaCamera)
 	static const char* ClassName();
 
-	CLuaCamera(lua_State *L);
+	CLuaCamera(lua_State *L, bool);
 
 	int GetZoom( lua_State *L );
 	int SetZoom( lua_State *L );

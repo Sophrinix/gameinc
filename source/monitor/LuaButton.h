@@ -27,9 +27,9 @@ namespace nrp
 class CLuaButton : public ILuaGuiElement<irr::gui::IGUIButton>
 {
 public:
-	static Luna<CLuaButton>::RegType methods[];				//методы обертки
+	DEFINE_PROPERTIES_AND_METHODS(CLuaButton)				//методы обертки
 
-	CLuaButton(lua_State *L);		
+	CLuaButton(lua_State *L, bool);		
 	int SetImage( lua_State *L );							//привязка к текстуре в обычном состоянии
 	int SetHoveredImage( lua_State *L );					//привязка к текстуре в ховеред состоянии
 	int SetPressedImage( lua_State *L );					//привязка к текстуре в нажатом состоянии

@@ -15,10 +15,10 @@ namespace nrp
 class CLuaTexture : public ILuaObject<irr::video::ITexture>
 {
 public:
-	static Luna<CLuaTexture>::RegType methods[];
+	DEFINE_PROPERTIES_AND_METHODS(CLuaTexture)
 	static const char* ClassName();
 
-	CLuaTexture(lua_State *L);
+	CLuaTexture(lua_State *L, bool );
 	int GetSize( lua_State *L );
 	int GetWidth( lua_State *L );
 	int GetHeight( lua_State *L );
