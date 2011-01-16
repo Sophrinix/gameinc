@@ -8,6 +8,37 @@
 //и тут
 #define LUNA_AUTONAME_PROPERTY(class, name, getr, setr) {name, &class::getr, &class::setr},
 
+static void DumpStack(lua_State *L) 
+{   
+    int i, type;   
+    int top = lua_gettop(L);   
+	char dd[ MAX_PATH ];
+    OutputDebugString("++++++++++++\n");   
+    for(i=-1; i >= (-top); --i) { /* repeat for each level */   
+        type = lua_type(L, i); 
+		snprintf( dd, MAX_PATH, "pos bottom: %d: pos top: %d: = ",top+i+1,i );
+        OutputDebugString( dd );   
+        switch (type) {   
+        case LUA_TSTRING:   
+            snprintf( dd, MAX_PATH, "'%s'\n", lua_tostring(L, i));  
+			OutputDebugString( dd );   
+            break;   
+        case LUA_TBOOLEAN:   
+			OutputDebugString(  lua_toboolean(L, i)? "true":"false" );   
+            break;   
+        case LUA_TNUMBER:   
+            snprintf( dd, MAX_PATH, "%g\n", lua_tonumber(L, i));   
+			OutputDebugString( dd );   
+            break;   
+        default:                 /* all other values */   
+            snprintf( dd, MAX_PATH, "%s\n", lua_typename(L, type));   
+			OutputDebugString( dd );   
+            break;   
+        }   
+    }   
+    OutputDebugString("++++++++++++\n");   
+}  
+
 // convenience macros
 template < class T > class Luna 
 {
@@ -145,7 +176,7 @@ static int      constructor(lua_State * L)
 	lua_newtable(L);
 
 	int newtable = lua_gettop(L);
-
+...................................
 	lua_pushnumber(L, 0);
 
 	T **a = (T **) lua_newuserdata(L, sizeof(T *));
@@ -312,15 +343,14 @@ static int      property_getter(lua_State * L)
 	lua_pushvalue(L, 2); //_eScript.DumpStack();
 	lua_rawget(L, -2); //_eScript.DumpStack();
 
-	if (lua_isnumber(L, -1)) {
-
+	if (lua_isnumber(L, -1)) 
+	{
 	    int _index = static_cast< int >( lua_tonumber(L, -1) );
 
 	    lua_pushnumber(L, 0);
 	    lua_rawget(L, 1);
 
-	    T             **obj =
-		static_cast < T ** >(lua_touserdata(L, -1));
+	    T **obj = static_cast < T ** >(lua_touserdata(L, -1));
 
 	    lua_pushvalue(L, 3);
 
@@ -329,7 +359,6 @@ static int      property_getter(lua_State * L)
 		int result = ((*obj)->*(T::props[_index].getter)) (L);
 
 	    return result;
-
 	}
 	// PUSH NIL 
 	lua_pushnil(L);
@@ -384,14 +413,10 @@ static int      property_setter(lua_State * L)
 */
 static int      function_dispatch(lua_State * L) 
 {
-
 	int             i = (int) lua_tonumber(L, lua_upvalueindex(1));
-
 	lua_pushnumber(L, 0);
 	lua_rawget(L, 1);
-
 	T             **obj = static_cast < T ** >(lua_touserdata(L, -1));
-
 	lua_pop(L, 1);
 
 	return ((*obj)->*(T::methods[i].function)) (L);
