@@ -215,7 +215,8 @@ void CNrpApplication::Save()
 	NrpText profileIni = (NrpText)_self[ SAVEDIR_PROFILE ] + "profile.ini";
 
 	OpFileSystem::Remove( prevSaveFolder );
-	OpFileSystem::Move( _self[ SAVEDIR_PROFILE ], prevSaveFolder );
+	OpFileSystem::Copy( _self[ SAVEDIR_PROFILE ], prevSaveFolder );
+	OpFileSystem::Remove( _self[ SAVEDIR_PROFILE ] );
 
 	_CreateDirectoriesMapForSave();
 
@@ -838,9 +839,12 @@ void CNrpApplication::AddGameToMarket( CNrpGame* game )
 		CNrpTechnology* tech = GetTechnology( genreName );
 		assert( tech );
 		if( tech != NULL )
+		{
 			(*tech)[ INTEREST ] -= (int)refGame[ STARTGAMERATING ] / 1000.f * (float)(*tech)[ INTEREST ];
-
-		Log(HW) << "techName " << (NrpText)(*tech)[ NAME ] << ": Interest " << (float)(*tech)[ INTEREST ] << term;
+#ifdef _DEBUG
+			Log(HW) << "techName " << (NrpText)(*tech)[ NAME ] << ": Interest " << (float)(*tech)[ INTEREST ] << term;
+#endif
+		}
 	}
 
 	_games.push_back( game );

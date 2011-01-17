@@ -24,7 +24,7 @@ CLuaIniFile::CLuaIniFile(lua_State *L,bool ex)	: ILuaObject(L, CLASS_LUAINIFILE,
 {
 	int argc = lua_gettop(L);
 
-	luaL_argcheck(L, argc == 5, 5, "Function CLuaIniFile::CLuaIniFile need string parameter");
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaIniFile::CLuaIniFile need string parameter");
 
 	NrpText fn = lua_tostring( L, 2 );
 

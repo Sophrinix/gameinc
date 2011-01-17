@@ -22,6 +22,7 @@ BEGIN_LUNA_METHODS(CLuaComboBox)
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelected )
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelectedObject )
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetSelected )
+	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetItem )
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, Clear )
 END_LUNA_METHODS
 
@@ -34,9 +35,6 @@ CLuaComboBox::CLuaComboBox(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAC
 
 int CLuaComboBox::GetItemCount( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaComboBox::GetSelected not need any parameter");
-
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		lua_pushinteger( L, _object->getItemCount() );

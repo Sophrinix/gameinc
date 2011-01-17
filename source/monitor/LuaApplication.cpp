@@ -40,7 +40,6 @@ BEGIN_LUNA_METHODS(CLuaApplication)
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompany )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyByName )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetBank )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatformNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatform )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadPlatform )
@@ -80,6 +79,7 @@ END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaApplication)
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "playerCompany", GetPlayerCompany, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "bank", GetBank, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaApplication::CLuaApplication(lua_State *L, bool ex)	: ILuaProject(L, CLASS_CLUAPPLICATION, ex )	//конструктор
@@ -113,19 +113,29 @@ int CLuaApplication::UpdateGameTime( lua_State* L )
 
 int CLuaApplication::GetBank( lua_State* L )
 {
-	PNrpBank bank = GetParam_<PNrpBank>(L, "GetBank", BANK, NULL );
-	lua_pop( L, lua_gettop( L ) );
-	lua_pushlightuserdata( L, bank );
-	Luna< CLuaBank >::constructor( L );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pop( L, lua_gettop( L ) );
+		lua_pushlightuserdata( L, (*_object)[ BANK ].As<PNrpBank>() );
+		Luna< CLuaBank >::constructor( L );
+		return 1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 
 int CLuaApplication::GetPlayerCompany( lua_State* L )
 {
-	PNrpCompany cmp = GetParam_<PNrpCompany>( L, "GetPlayerCompany", PLAYERCOMPANY, NULL );
-	lua_pop( L, lua_gettop( L ) );
-	lua_pushlightuserdata( L, cmp );
-	Luna< CLuaCompany >::constructor( L );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pop( L, lua_gettop( L ) );
+		lua_pushlightuserdata( L, (*_object)[ PLAYERCOMPANY ].As<PNrpCompany>() );
+		Luna< CLuaCompany >::constructor( L );
+		return 1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 

@@ -32,7 +32,7 @@ void OpFileSystem::Remove( const NrpText& pathTo )
 		assert( IsExist( mStr ) );
 		if( IsExist( mStr ) )
 		{
-			hFile = _wfindfirst( ( mStr+ NrpText("\\*.*") ).ToWide(), &fdata);
+			hFile = _wfindfirst( ( mStr+ NrpText("*.*") ).ToWide(), &fdata);
 			while( hFile > 0 )
 			{
 				if ( !( wcscmp( fdata.name, L".") == 0 || wcscmp( fdata.name, L".." ) == 0 ) )// это удалять не надо
@@ -51,72 +51,46 @@ void OpFileSystem::Remove( const NrpText& pathTo )
 		}
 
 		_findclose( hFile );
-		RemoveDirectoryW( mStr.ToWide() );
+		RemoveDirectoryW( RemoveEndSlash( mStr ).ToWide() );
 	}
-}
-
-void OpFileSystem::Move( const NrpText& pathOld, const NrpText& pathNew )
-{
-	NrpText workDir = _nrpApp[ WORKDIR ];
-	NrpText mStr = RemoveEndSlash( workDir + pathOld );
-	NrpText mStr2 = RemoveEndSlash( workDir + pathNew );
-
-	SHFILEOPSTRUCTW sh;
-	memset( &sh, 0, sizeof( SHFILEOPSTRUCTW ) );
-	sh.hwnd   = _nrpEngine.GetWindowHandle(); //Для BCB sh.hwnd=FormX->Handle;
-	sh.wFunc  = FO_MOVE;
-
-	wchar_t from[ MAX_PATH ] = { 0 };
-	int iSize = mStr.size();
-	wcsncpy_s( from, MAX_PATH-1, mStr.ToWide(), iSize );
-	from[ iSize ] = 0;
-	from[ iSize+1 ] = 0;
-
-	iSize = mStr2.size();
-	wchar_t to[ MAX_PATH ] = { 0 };
-	wcsncpy_s( to, MAX_PATH-1, mStr2.ToWide(), iSize );
-	to[ iSize ] = 0;
-	to[ iSize+1 ] = 0;
-
-	sh.pFrom  = from;
-	sh.pTo    = to;
-	sh.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR;//FOF_SILENT;
-	sh.hNameMappings = 0;
-	sh.lpszProgressTitle = NULL;
-
-	int j = SHFileOperationW(&sh);
-	j = GetLastError();
 }
 
 void OpFileSystem::Copy( const NrpText& pathOld, const NrpText& pathNew )
 {
-	NrpText mStr = RemoveEndSlash( pathOld ), 
-			mStr2 = RemoveEndSlash( pathNew );
+	NrpText newfile;
+	intptr_t hFile;
 
-	SHFILEOPSTRUCTW sh;
-	memset( &sh, 0, sizeof( SHFILEOPSTRUCTW ) );
-	sh.hwnd   = _nrpEngine.GetWindowHandle(); //Для BCB sh.hwnd=FormX->Handle;
-	sh.wFunc  = FO_COPY;
+	if( !IsExist( pathNew ) )
+		CreateDirectory( pathNew );
 
-	wchar_t from[ MAX_PATH ] = { 0 };
-	int iSize = mStr.size();
-	wcsncpy_s( from, MAX_PATH-1, mStr.ToWide(), iSize );
-	from[ iSize ] = 0;
-	from[ iSize+1 ] = 0;
+	_wfinddata_t fdata;
+	assert( IsExist( pathOld ) );
+	if( IsExist( pathOld ) )
+	{
+		hFile = _wfindfirst( ( CheckEndSlash( pathOld )+ NrpText("*.*") ).ToWide(), &fdata);
+		while( hFile > 0 )
+		{
+			if ( fdata.attrib & _A_SUBDIR )  // если нашли папку
+			{
+				if( !(wcscmp( fdata.name, L"." ) == 0 || wcscmp( fdata.name, L".." ) == 0) )
+				{
+					Copy( CheckEndSlash( pathOld ) + NrpText( fdata.name ),
+						  CheckEndSlash( pathNew ) + NrpText( fdata.name ) );// Рекурсивный вызов
+				}
+			}
+			else // если нашли файл
+			{
+				newfile = CheckEndSlash( pathNew ) + fdata.name;
+			    CopyFileW( ( CheckEndSlash( pathOld ) + fdata.name ).ToWide(), newfile.ToWide(), true);
+			}
 
-	iSize = mStr2.size();
-	wchar_t to[ MAX_PATH ] = { 0 };
-	wcsncpy_s( to, MAX_PATH-1, mStr2.ToWide(), iSize );
-	to[ iSize ] = 0;
-	to[ iSize+1 ] = 0;
+			if( _wfindnext( hFile, &fdata) != 0 )
+				break;
+		}
 
-	sh.pFrom  = from;
-	sh.pTo    = to;
-	sh.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;
-	sh.hNameMappings = 0;
-	sh.lpszProgressTitle = NULL;
-
-	SHFileOperationW(&sh);
+		_findclose( hFile );
+	}
+	return;
 }
 
 void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory,
