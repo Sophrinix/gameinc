@@ -173,14 +173,14 @@ static void     Register(lua_State * L, const char *namespac="")
 */
 static int      constructor(lua_State * L) 
 {
+	T *obj = new T(L, true);
+
 	lua_newtable(L);
 
 	int newtable = lua_gettop(L);
-...................................
-	lua_pushnumber(L, 0);
 
+	lua_pushnumber(L, 0);
 	T **a = (T **) lua_newuserdata(L, sizeof(T *));
-	T *obj = new T(L, true);
 	*a = obj;
 
 	int userdata = lua_gettop(L);
