@@ -433,7 +433,7 @@ local function localShowPlatformPage()
 end
 
 local function ShowAvaibleScenarioAndLicense()
-	local companyName = applic:GetPlayerCompany():GetName()
+	local companyName = applic.playerCompany:GetName()
 	local maxScenarioNum = applic:GetTechNumber()
 	
 	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )	
@@ -638,7 +638,7 @@ function Hide()
 end
 
 function Show()
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	if mainWindow == nil then
 		project = base.CLuaGameProject():Create( "defaultGame" )
 		
@@ -720,9 +720,7 @@ end
 
 function NextPage()
 	if step == "name" then 
-		gameName = editGameName:GetText()
-		localShowEnginePage(); 
-		return 
+		gameName = editGameName:GetText(); localShowEnginePage(); return 
 	elseif step == "engine" then localShowGenrePage(); return 
 	elseif step == "genre" then localShowScenarioPage(); return
 	elseif step == "scenario" then localShowTechPage(); return
@@ -734,9 +732,7 @@ end
 
 function PrevPage()
 	if step == "engine" then 
-		localShowChangeNamePage()
-		editGameName:SetText( gameName )
-		return 
+		localShowChangeNamePage(); editGameName:SetText( gameName ); return 
 	elseif step == "genre" then localShowEnginePage(); return
 	elseif step == "scenario" then localShowGenrePage(); return
 	elseif step == "tech" then localShowScenarioPage(); return 

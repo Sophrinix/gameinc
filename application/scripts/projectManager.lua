@@ -90,7 +90,7 @@ local function ShowWindowUserInfo( userPtr )
 end
 
 local function ShowAvaibleCompanyUsers()
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	
 	comboxUsers:Clear()
 	for i=1, company:GetUserNumber() do
@@ -99,7 +99,10 @@ local function ShowAvaibleCompanyUsers()
 			comboxUsers:AddItem( user:GetName(), user:Self() )
 		end
 	end
-	ShowWindowUserInfo( nil ) 	
+	
+	if comboxUsers.itemCount > 0 then
+		ShowWindowUserInfo( base.CLuaUser( comboxUsers:GetItem( 0 ) ) ) 	
+	end
 end
 
 function UpdateUsersListBox( newMode )
@@ -116,8 +119,7 @@ function Hide()
 end
 
 function Show( ptr )	
-
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	if windowProjectManager == nil then
 		windowProjectManager = guienv:AddWindow( "media/textures/monitor.png", 0, 0, base.scrWidth, base.scrHeight, -1, guienv:GetRootGUIElement() )
 		windowProjectManager:GetCloseButton():SetVisible( false )

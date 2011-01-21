@@ -38,7 +38,7 @@ function sloginResetDataForNewGame()
 	
 	applic:ResetData()
     user:Create( "RealPlayer", applic:GetCurrentProfile() )
-    company = applic:GetPlayerCompany()
+    company = applic.playerCompany
 	company:Create( applic:GetCurrentProfileCompany(), applic:GetCurrentProfile() ) 
 end
 

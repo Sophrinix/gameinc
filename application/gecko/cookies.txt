@@ -3,15 +3,15 @@
 # This is a generated file!  Do not edit.
 # To delete cookies, use the Cookie Manager.
 
-.mixmarket.biz	TRUE	/	FALSE	1326200590	mid333	WfkWyE0rA5ee8BCGSHZwAg==
-#HttpOnly_.facebook.com	TRUE	/	FALSE	1297256645	campaign_click_url	%2Fcampaign%2Fimpression.php%3Fcampaign_id%3D137675572948107%26partner_id%26placement%3Dlike_button%26extra_2%3DRU
-#HttpOnly_.facebook.com	TRUE	/	FALSE	1357736590	datr	lwMrTQ6k5W823mvAvlFbm3g_
 .hotlog.ru	TRUE	/	FALSE	1902921654	hotcli	d9a2869c9b85b22b3594defc7d50
-.openstat.net	TRUE	/	FALSE	1357736645	VISID	CYQFMBPMUEIXXDRZDE
-.mixmarket.biz	TRUE	/	FALSE	1333544590	_UPSID	978425406
+#HttpOnly_.facebook.com	TRUE	/	FALSE	1297943362	campaign_click_url	%2Fcampaign%2Fimpression.php%3Fcampaign_id%3D137675572948107%26partner_id%26placement%3Dlike_button%26extra_2%3DRU
+#HttpOnly_.facebook.com	TRUE	/	FALSE	1357736590	datr	lwMrTQ6k5W823mvAvlFbm3g_
+.openstat.net	TRUE	/	FALSE	1358423362	VISID	CYQFMBPMUEIXXDRZDE
 .mixmarket.biz	TRUE	/	FALSE	1683464590	_PSID	978425405
-.mail.ru	TRUE	/	FALSE	1302613444	VID	1Rcnn021220q
+.mixmarket.biz	TRUE	/	FALSE	1333544590	_UPSID	978425406
+.mixmarket.biz	TRUE	/	FALSE	1326200590	mid333	WfkWyE0rA5ee8BCGSHZwAg==
+.mail.ru	TRUE	/	FALSE	1303300158	VID	1Rcnn021220q
+.rambler.ru	TRUE	/	FALSE	1610024585	ruid	9YUCBpIDK03QAQAAAZBRWw==
 .yadro.ru	TRUE	/	FALSE	1326142791	VID	2lSc5Y3RCBWq
 .spylog.com	TRUE	/	FALSE	1357736608	VISID	CYQFMBPMUEIXXDRZDE
 .vkontakte.ru	TRUE	/	FALSE	1326249297	remixchk	5
-.rambler.ru	TRUE	/	FALSE	1610024585	ruid	9YUCBpIDK03QAQAAAZBRWw==

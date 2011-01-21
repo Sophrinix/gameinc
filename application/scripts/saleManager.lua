@@ -100,7 +100,7 @@ local function localAddGames()
 end
 
 function Show()
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 
 	mainWindow = guienv:AddWindow( "media/textures/gameInSale.png", 
 								   0, 0, scrWidth, scrHeight, 

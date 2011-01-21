@@ -2,7 +2,7 @@ local plant = NrpGetPlant()
 local labelSpeed = nil
 
 function sworkAppDayChange( ptr )
-	local company = applic:GetPlayerCompany()
+	local company = applic.playerCompany
 	
 	local userLabel = CLuaLabel( guienv:GetElementByID( ID_USERNAME_LABEL ) )
 	local name = company:GetName()
@@ -22,7 +22,7 @@ function sworkAppMonthChange()
 end
 
 function PaySalaryToWorkers()
-	local company = applic:GetPlayerCompany()
+	local company = applic.playerCompany
 	
 	local needMoney = 0
 	local user = nil
@@ -38,7 +38,7 @@ function PaySalaryToWorkers()
 end
 
 function PayMoneyToInventions()
-	local company = applic:GetPlayerCompany()
+	local company = applic.playerCompany
 	for index=1, company:GetInventionNumber() do
 		local invention = company:GetInvention( index-1 )
 					

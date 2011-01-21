@@ -86,11 +86,10 @@ function slogin_CreateNewGame( ptr )
 end
 
 function slogin_ContinueLastGame( ptr )
-
 	local lastProfile = applic:GetCurrentProfile()
 	
-	local profile = io.open( "save/"..lastProfile.."/profile.ini", "r" )
-	if profile == nil then
+	local dd = io.open( "save/"..lastProfile.."/profile.ini", "r" )
+	if dd == nil then
 		guienv:MessageBox( "Нет сохраненных игр", false, false, "", "" )
 		return 0
 	end

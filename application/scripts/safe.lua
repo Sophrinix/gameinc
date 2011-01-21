@@ -10,7 +10,7 @@ local scrHeight = base.scrHeight
 local button = base.button
 
 function Show()
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	
 	if mainWindow then
 		mainWindow:SetVisible( true )

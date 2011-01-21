@@ -100,7 +100,7 @@ function HideTechMap()
 end
 
 local function CreateWindow( typef )
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	windowMap = guienv:AddWindow( "media/maps/laboratory_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 	windowMap:SetDraggable( false )
 	windowMap:GetCloseButton():SetVisible( false )

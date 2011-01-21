@@ -14,10 +14,15 @@ local currentGame = nil
 local currentAddon = nil
 local wndBoxPreview = nil
 local wndAvaibleAddons = nil
-local boxImagePictureFlow = nil
 
 local windowImageViewer = nil
-local textureForBox = nil
+local dragLink = nil
+local flickAvaible = nil
+local flickAdded = nil
+local textures = {}
+local btnNextBoxImage = nil
+local btnPrevBoxImage = nil
+local currentBoxIndex = 1
 
 local function CreateElementsForGameSelect()
 	local row = 0
@@ -37,7 +42,7 @@ local function CreateElementsForGameSelect()
 					  		   offset + scrWidth/delimiter * (columnt+1), 
 					  		   offset + scrHeight/delimiter * (row+1),
 							   game:GetScreenshot( -1 ), 
-							   wndGBM:Self(), 
+							   wndGBM, 
 							   -1, "", "./gameboxManager.SetGame()" )
 		  										
 			gameWithoutBox = gameWithoutBox + 1
@@ -47,7 +52,7 @@ local function CreateElementsForGameSelect()
 	if gameWithoutBox == 0 then 
 		local image = guienv:AddImage( scrWidth / 2 - 300, scrHeight / 2 - 300, 
 									   scrWidth / 2 + 300, scrHeight / 2 + 300, 
-									   wndGBM:Self(), -1, "" )
+									   wndGBM, -1, "" )
 		image:SetImage( "media/textures/noGameForCreateBox.png" )
 		image:SetScaleImage( true )
 		image:SetUseAlphaChannel( true )
@@ -79,89 +84,118 @@ function HideWithoutBox()
 	Hide()
 end
 
+function NextBoxImage()
+	if currentBoxIndex == #textures then
+		currentBoxIndex = 1
+	else
+		currentBoxIndex = currentBoxIndex + 1
+	end
+	
+	base.LogScript( textures[ currentBoxIndex ] )
+	
+	wndBoxPreview.texture = textures[ currentBoxIndex ]
+end
+
+function PrevBoxImage()
+	if currentBoxIndex == 1 then
+		currentBoxIndex = #textures
+	else
+		currentBoxIndex = currentBoxIndex - 1
+	end
+	
+	base.LogScript( textures[ currentBoxIndex ] )
+	
+	wndBoxPreview.texture = textures[ currentBoxIndex ]
+end
+
+function SelectBoxImage()
+	wndAvaibleAddons:SetVisible( false )
+	
+	btnNextBoxImage:SetVisible( true )
+	btnPrevBoxImage:SetVisible( true )
+	base.CLuaElement( wndBoxPreview ):RemoveChilds()
+	NextBoxImage()
+	
+	btnNext:SetAction( "./gameboxManager.HideWithBox()" )
+end
+
 function HideWithBox()
-	local pathToImage = currentGame:GetBoxImage(  boxImagePictureFlow:GetSelected() )
-    currentGame:SetViewImage( pathToImage )
+    currentGame:SetViewImage( textures[ currentBoxIndex ] )
     currentGame = nil
     Hide()
 end
 
 local function localCreateWindowForBoxAddedAddons()
-	if wndBoxPreview ~= nil then
-		wndBoxPreview:Remove()
+	if wndBoxPreview == nil	then
+		wndBoxPreview = guienv:AddWindow( "media/textures/gameBox.png", 220, 130, 520, 520, -1, wndGBM )	
+		wndBoxPreview:SetDrawBody( false )									  
+		wndBoxPreview:SetDraggable( false )
+		wndBoxPreview:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameboxManager.ViewerLeftMouseButtonUp()" )
+		flickAdded = guienv:AddFlick( "5%", "5%", "95%", "95%", 3, -1, wndBoxPreview )
+	else
+		flickAdded:Clear()
 	end
-	
-	guienv:AddLabel( "Выбор обложки для коробки:", 
-					 scrWidth / 2 + 10, 20, scrWidth - 10, 40, 
-					 -1, wndGBM )
-	wndBoxPreview = guienv:AddWindow( textureForBox, 
-					   				  20, 80 + scrHeight * 0.2, scrWidth - 300, scrHeight - 20, 
-									  -1, wndGBM )
-				
-	wndBoxPreview:SetDrawBody( false )									  
-	wndBoxPreview:SetDraggable( false )
-	wndBoxPreview:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameboxManager.ViewerLeftMouseButtonUp()" )
-	
-	local w, h = wndBoxPreview:GetSize()
 		
-	for i=1, currentGame:GetBoxAddonsNumber() do
+	local width = 60	
+	for i=1, currentGame.boxAddonsNumber do
 		local tech = currentGame:GetBoxAddon( i-1 )
-		local txsw, txsh = base.driver:GetTexture( tech:GetTexture() ):GetSize()
 
-		local x = base.math.random( w - txsw )
-		local y = base.math.random( h - txsh )
-
-		local lbu = guienv:AddLinkBox( tech:GetName(), 
-													5 + x, 5 + y,
-													5 + x + txsw, 5 + y + txsh,
-													-1, wndBoxPreview:Self() )
-		lbu:SetData( tech:Self() )
+		local lbu = guienv:AddLinkBox( tech:GetName(), 0, 0, width, width, -1, flickAdded )
+		lbu:SetDraggable( true )
+		lbu:SetData( tech )
 		lbu:SetTexture( tech:GetTexture() )
 	    lbu:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, "./gameboxManager.AddonRigthMouseButtonUp()" )
 	end
 end
 
 local function localCreateWindowForBoxAvaibleAddons()
-	if wndAvaibleAddons ~= nil then wndAvaibleAddons:Remove() end
-	
-	wndAvaibleAddons = guienv:AddWindow( "", scrWidth - 200, 5, scrWidth - 5, scrHeight - 50, 
-										 -1, wndGBM:Self() )
-    wndAvaibleAddons:SetDrawBody( false )										 										 
-	wndAvaibleAddons:SetDraggable( false )
-	wndAvaibleAddons:SetText( "Avaible box addon" )
 
-	local xoff = 0
-	local yoff = 0
+	if wndAvaibleAddons == nil then 
+		wndAvaibleAddons = guienv:AddWindow( "media/textures/gameAddons.png", 820, 135, 990, 540, -1, wndGBM )
+		wndAvaibleAddons:SetDrawBody( false )										 										 
+		wndAvaibleAddons:SetDraggable( false )
+		flickAvaible = guienv:AddFlick( "5%", "5%", "95%", "95%", 2, -1, wndAvaibleAddons )
+	else
+		flickAvaible:Clear()
+	end
+	
 	local width = 60	
 	for i=1, applic:GetGameBoxAddonNumber() do
 		local boxAddon = applic:GetGameBoxAddon( i-1 )
 	
-		local linkt = guienv:AddLinkBox( boxAddon:GetName(), 
-	  								     xoff, yoff, 
-						  				 xoff + width, yoff + width, 
-										 -1, wndAvaibleAddons:Self() )
-										 
-		yoff = yoff + width
-		if yoff > scrHeight then
-			xoff = xoff + width
-			yoff = 0
-		end										 
+		local linkt = guienv:AddLinkBox( boxAddon:GetName(), 0, 0, width, width, -1, flickAvaible )
+										 					 
 		linkt:SetDraggable( true )
-		linkt:SetData( boxAddon:Self() )
+		linkt:SetData( boxAddon )
 		linkt:SetTexture( boxAddon:GetTexture() )
 		linkt:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameboxManager.LinkLeftMouseButtonUp()" )
 	end
 end
 
+local function localCreateBoxImage()
+	textures = nil
+	textures = {}
+	for i=1, currentGame:GetBoxImageNumber() do
+		base.table.insert( textures, currentGame:GetBoxImage( i-1 ) )
+	end
+	
+	btnNextBoxImage = button.EqualeTexture( 540, 220, "button_next", wndGBM, -1, ">>", "./gameboxManager.NextBoxImage()" )
+	btnNextBoxImage:SetVisible( false )
+	btnPrevBoxImage = button.EqualeTexture( 120, 220, "button_prev", wndGBM, -1, "<<", "./gameboxManager.PrevBoxImage()" )
+	btnPrevBoxImage:SetVisible( false )
+	currentBoxIndex = 1
+end
+
 local function localCreateBoxViewerAndAddons()
 	localCreateWindowForBoxAddedAddons()
 	localCreateWindowForBoxAvaibleAddons()
+	localCreateBoxImage()
 		
-	local btn = guienv:AddButton( scrWidth - 100, scrHeight - 50, scrWidth - 10, scrHeight - 10, wndGBM:Self(), -1, "Выход" )
-	btn:SetAction( "./gameboxManager.HideWithoutBox()" )	
+	btnExit = guienv:AddButton( scrWidth - 100, scrHeight - 50, scrWidth - 10, scrHeight - 10, wndGBM, -1, "Выход" )
+	btnExit:SetAction( "./gameboxManager.HideWithoutBox()" )	
 	
-	btn = guienv:AddButton( scrWidth - 200, scrHeight - 50, scrWidth - 110, scrHeight - 10, wndGBM:Self(), -1, "Создать" )
-	btn:SetAction( "./gameboxManager.HideWithBox()" )	
+	btnNext = guienv:AddButton( scrWidth - 200, scrHeight - 50, scrWidth - 110, scrHeight - 10, wndGBM, -1, "Создать" )
+	btnNext:SetAction( "./gameboxManager.SelectBoxImage()" )	
 end
 
 --удаление дополнения к коробке
@@ -169,6 +203,7 @@ function AddonRigthMouseButtonUp()
 	local link = base.CLuaLinkBox( base.NrpGetSender() )
 	 
 	local tech = base.CLuaTech( link:GetData() )
+	base.LogScript( tech:GetName() )
 	currentGame:RemoveBoxAddon( tech:GetName() )
 	link:Remove()	
 	
@@ -177,7 +212,11 @@ end
 
 --добавление нового элемента к коробке
 function ViewerLeftMouseButtonUp()
-	local applied = currentGame:AddBoxAddon( currentAddon:Self() )
+	if currentAddon == nil then
+		return 
+	end
+	
+	local applied = currentGame:AddBoxAddon( currentAddon )
 	
 	if not applied then
 		guienv:MessageBox( "Слишком мало места, попробуй другой предмет", false, false, "", "" )
@@ -185,32 +224,22 @@ function ViewerLeftMouseButtonUp()
 	
 	guienv:SetDragObject( nil )
 	currentAddon = nil
+	dragLink:SetVisible( false )
 	
 	localCreateWindowForBoxAddedAddons()	
 end
 
-local function localCreateBoxImagePictureFlow()
-	if boxImagePictureFlow ~= nil then
-		boxImagePictureFlow:Remove()
-	end
+local function localResetWindow()
+	local elm = base.CLuaElement( wndGBM )
+	elm:RemoveChilds()
 	
-	boxImagePictureFlow = guienv:AddPictureFlow(  20, 60, scrWidth - 200, 60 + scrHeight * 0.2, 
-	   									          -1, wndGBM:Self() )
-	boxImagePictureFlow:SetPictureRect( 0, 0, scrHeight * 0.2 - 40,  scrHeight * 0.2 - 40 )
-
-	for i=1, currentGame:GetBoxImageNumber() do
-		boxImagePictureFlow:AddItem( currentGame:GetBoxImage( i-1 ), 
-									 currentGame:GetBoxImage( i-1 ), 
-									 nil )
-	end
+	dragLink = guienv:AddLinkBox( "", 0, 0, 50, 50, -1, wndGBM )
+	dragLink:SetVisible( false )		
 end
 
 function MiniBox()
-	local elm = base.CLuaElement( wndGBM )
-	elm:RemoveChilds()
+	localResetWindow()
 	currentGame:CreateBox( 10 )
-	textureForBox = "media/textures/miniBox.png"
-	localCreateBoxImagePictureFlow()
 	localCreateBoxViewerAndAddons()
 end	
 
@@ -218,36 +247,32 @@ function SetGame()
 	local btn = base.CLuaButton( base.NrpGetSender() )
 	currentGame = company:GetGame( btn:GetText() )
 	
-	local elm = base.CLuaElement( wndGBM )
-	elm:RemoveChilds()
+	localResetWindow()
 	
-	local btn = guienv:AddButton( scrWidth / 4 - 50, scrHeight / 4 - 50, 
-								  scrWidth / 4 + 50, scrHeight / 4 + 50,
-								  wndGBM:Self(), -1, "маленькая" )
+	local flick = guienv:AddFlick( "5%", "5%", "95%", "95%", 3, -1, wndGBM )
+	
+	local btn = guienv:AddButton( 0, 0, 50, 50, flick, -1, "маленькая" )
 	btn:SetImage( 0, 0, 0, 0, "media/textures/boxWithoutImage.png" )						  
 	btn:SetAction( "./gameboxManager.MiniBox()" )
 	
-	btn = guienv:AddButton(  3 * scrWidth / 4 - 75, scrHeight / 4 - 75, 
-							  3 * scrWidth / 4 + 75, scrHeight / 4 + 75, wndGBM:Self(), -1, "средняя" )
+	btn = guienv:AddButton(  0, 0, 75, 75, flick, -1, "средняя" )
 	btn:SetImage( 0, 0, 0, 0, "media/textures/boxWithoutImage.png" )						  
 	btn:SetAction( "./gameboxManager.SelectMiddleBox()" )
 	
-	btn = guienv:AddButton( scrWidth / 4 - 120, 3 * scrHeight / 4 - 120, 
-							 scrWidth / 4 + 120, 3 * scrHeight / 4 + 120, wndGBM:Self(), -1, "большая" )
+	btn = guienv:AddButton( 0, 0, 120, 120, flick, -1, "большая" )
 	btn:SetImage( 0, 0, 0, 0, "media/textures/boxWithoutImage.png" )						  
 	btn:SetAction( "./gameboxManager.SelectBigBox()" )
 	
-	btn = guienv:AddButton( 3 * scrWidth / 4 - 150, 3 * scrHeight / 4 - 150, 
-							 3 * scrWidth / 4 + 150, 3 * scrHeight / 4 + 150, wndGBM:Self(), -1, "мега" )
+	btn = guienv:AddButton( 0, 0, 150, 150, flick, -1, "мега" )
 	btn:SetImage( 0, 0, 0, 0, "media/textures/boxWithoutImage.png" )						  
 	btn:SetAction( "./gameboxManager.SelectMegaBox()" )
 	
-	btn = guienv:AddButton( scrWidth - 200, 10, scrWidth -10, 50, wndGBM:Self(), -1, "Выход" )
+	btn = guienv:AddButton( scrWidth - 200, 10, scrWidth -10, 50, wndGBM, -1, "Выход" )
 	btn:SetAction( "./gameboxManager.Hide()" )	
 end
 
 function Show()
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 
 	if wndGBM == nil then	
 		wndGBM = guienv:AddWindow( "media/maps/plant_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
@@ -258,8 +283,8 @@ function Show()
 		wndGBM:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameboxManager.WindowLeftMouseButtonUp()" )
 		
 		--adding closeButton
-		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", wndGBM:Self(), -1, "",
+		button.Stretch( "80e", "60e", "60+", "60+", 
+		 			    "button_down", wndGBM, -1, "",
 						"./gameboxManager.Hide()" )
 	end
 	
@@ -270,19 +295,23 @@ end
 function WindowLeftMouseButtonUp( ptr )
 	guienv:SetDragObject( nil )
 	currentAddon = nil
+	dragLink:SetVisible( false )
 end
 
 function LinkLeftMouseButtonUp()
 	local elm = base.CLuaElement( base.NrpGetSender() )
 	
-	if elm:Empty() == 0 and elm:GetTypeName() == "CNrpGuiLinkBox" then
+	if elm:Empty() == 0 and elm:GetTypeName() == base.ELEMENT_GUILINKBOX then
 		local linkt = base.CLuaLinkBox( elm ) 
-		local boxAddon = base.CLuaTech( linkt:GetData() )
-	
+		currentAddon = base.CLuaTech( linkt:GetData() )
+	        
 		if linkt:IsDraggable() and linkt:IsEnabled() 
 		then
-			guienv:SetDragObject( linkt )
-			currentAddon = base.CLuaTech( linkt:GetData() )
+			dragLink:SetData( linkt:GetData() )
+			dragLink:SetTexture( linkt:GetTexture() )
+			dragLink:SetModuleType( linkt:GetModuleType() )
+			guienv:SetDragObject( dragLink )
+			dragLink:SetVisible( true )
 		end
 	end
 end

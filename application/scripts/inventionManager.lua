@@ -85,7 +85,7 @@ end
 
 local function localShowUserAvaibleForInvention( listbox )
 	listbox:Clear()
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	
 	for i=1, company:GetUserNumber() do
 		local user = company:GetUser( i-1 )

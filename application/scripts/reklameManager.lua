@@ -102,7 +102,7 @@ function FadeExitAction()
 end
 
 function ShowCampaniesManager()
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	plant = base.NrpGetPlant()
 	
 	if campaniesWindow == nil then

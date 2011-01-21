@@ -132,7 +132,7 @@ end
 
 function Show( typeTop )
 	saveTypeTop = typeTop
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 
 	mainWindow = guienv:AddWindow( "media/textures/chartsMonth.png", 
 								   0, 0, scrWidth, scrHeight, 

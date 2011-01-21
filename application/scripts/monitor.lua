@@ -19,7 +19,7 @@ function Hide()
 end
 
 function Show()
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	if mainWindow == nil then
 		mainWindow = guienv:AddWindow( "media/textures/monitor.png", 0, 0, base.scrWidth, base.scrHeight, -1, guienv:GetRootGUIElement() )
 		mainWindow:GetCloseButton():SetVisible( false )

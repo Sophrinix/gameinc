@@ -33,6 +33,10 @@ local labelPricePrintAll = nil
 local labelPerfomanceAll = nil
 local labelPriceHourAll = nil
 local labelDiskTrash = nil
+local labelGameName = nil 
+
+local windowSelectMachine = nil
+local windowSelectGame = nil
 
 local cmbxGames = nil
 
@@ -54,32 +58,39 @@ local function UpdateAddons( ptrGame )
 		base.table.remove( addons, 1 )
 	end
 	
-	local addonsNumber = game:GetBoxAddonsNumber()
-	for i=1, addonsNumber do
+	for i=1, game.boxAddonsNumber do
 		local addon = game:GetBoxAddon( i-1 )
 		local link = guienv:AddLinkBox( addon:GetName(), 
 					  				    20 + 70 * ( i - 1 ), 20 + scrHeight * 0.75,
 													 20 + 70 * i, 20 + scrHeight * 0.75 + 70,
-													 -1, wndDPP:Self() )
+													 -1, wndDPP )
 		link:SetData( game:GetBoxAddon( i-1 ) )
 		addons[ i ] = link
 	end
 end
 
-local function localAddLabel( text, yoff, left )
-	local offset = scrWidth / 2 + 10
+local function localAddLabel( text, xpos, ypos, ww, hh )
+	if xpos then offset = xpos end
 	
-	if left and left == true then offset = 10 end
-	
-	local lb = guienv:AddLabel( text, offset, yoff, offset + scrWidth / 2 - 20, yoff + 20, -1, wndDPP:Self() )
+	local lb = guienv:AddLabel( text, xpos, yoff, ww, hh, -1, wndDPP )
 	lb:SetOverrideColor( 0xff, 0xff, 0xff, 0xff )	
 	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
-	return lb, yoff + 40
+	return lb, ypos + 40
+end
+
+function SelectGame()
+	windowSelectGame:SetVisible( true )
 end
 
 local function localAddGames()
-	localAddLabel( "Какую игру будем штамповать?", 40 )
-	cmbxGames = guienv:AddPictureFlow( scrWidth / 2 + 10, 60, scrWidth - 10, 60 + 150, -1, wndDPP:Self() )
+	local btn = guienv:AddButton( 100, 400, "150+", "230+", wndDPP, -1, "Выбрать\n игру" )
+	btn:SetAction( "./diskManager.SelectGame()" )
+
+	windowSelectGame = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", -1, wndDPP )
+	windowSelectGame:SetVisible( false )
+	windowSelectGame:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./diskManager.GameSelected()" )
+	
+	cmbxGames = guienv:AddPictureFlow( "5%", "5%", "80%", "80%", -1, windowSelectGame )
 	cmbxGames:SetPictureRect( 0, 0, 140, 140 )
 	cmbxGames:SetDrawBorder( false )
 	
@@ -91,9 +102,19 @@ local function localAddGames()
 	end
 end
 
+function SelectMachine()
+	windowSelectMachine:SetVisible( true )
+end
+
 local function  localAddMachines()
-	localAddLabel( "Выбери тип производства?", 40, true )
-	cmbxProduceType = guienv:AddPictureFlow( 10, 60, scrWidth / 2 - 10, 60 + 150, -1, wndDPP:Self() )
+	local btn = guienv:AddButton( 130, 170, 250, 265, wndDPP, -1, "Выбрать\n производство" )
+	btn:SetAction( "./diskManager.SelectMachine()" )
+	
+	windowSelectMachine = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", -1, wndDPP )
+	windowSelectMachine:SetVisible( false )
+	windowSelectMachine:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./diskManager.MachineSelected()" )
+	
+	cmbxProduceType = guienv:AddPictureFlow( "5%", "5%", "80%", "80%", -1, windowSelectMachine )
 	cmbxProduceType:SetPictureRect( 0, 0, 140, 140 )
 	cmbxProduceType:SetDrawBorder( false )
 	
@@ -104,57 +125,61 @@ local function  localAddMachines()
 end
 
 local function localAddLabels()
-	local yoff = 250
-	--добавим метку цены за наем одного аппарата
-	labelPricePrintAll, yoff = localAddLabel( "Стоимость размещение заказа:", yoff )
-	--Добавим метку производительности аппарата
-	labelPerfomanceAll, yoff = localAddLabel( "Производительность линии (коробок\час):", yoff ) 
-	--добавим метку стоимости работы в час
-	labelPriceHourAll, yoff =  localAddLabel( "Стоимость работы ($\час):", yoff )
-	--добавим метку количества произведенных дисков
-	labelDiskNumber, yoff = localAddLabel( "Количество дисков:", yoff )	
-	--Добавим метку стоимости дополнительных фишек
-	labelAdvPrice, yoff =   localAddLabel(  "Цены дополнительных вещей:", yoff )
+
+	labelGameName, _ = localAddLabel( "???", 270, 60, "400+", "40+" )
 	--добавим метку цены одного диска
-	labelDiskPrice, yoff =  localAddLabel( "Цена одного диска:", yoff )
-	--Добавим метку количества произведенных дисков за день
-	labelDiskInDay, yoff =  localAddLabel(  "Будет произведено в день:", yoff )			
-	--Добавим метку количества произведенных дисков за день
-	labelDiskTrash, yoff =  localAddLabel(  "Вероятность поломки:", yoff )	
+	labelDiskPrice, yoff =  localAddLabel( "???", 330, 330, "140+", "30+" )
 	
 	--добавим метку общей цены за производство
-	labelFinalPrice, yoff = localAddLabel( "Всего:", yoff )
+	labelDiskNumber, yoff = localAddLabel( "???", 330, 490, "140+", "30+" )	
+	
+	labelFinalPrice, yoff = localAddLabel( "Всего:", 330, 400, "140+", "30+" )
+	
+	--добавим метку цены за наем одного аппарата
+	--labelPricePrintAll, yoff = localAddLabel( "Стоимость размещение заказа:", yoff )
+	--Добавим метку производительности аппарата
+	--labelPerfomanceAll, yoff = localAddLabel( "Производительность линии (коробок\час):", yoff ) 
+	--добавим метку стоимости работы в час
+	--labelPriceHourAll, yoff =  localAddLabel( "Стоимость работы ($\час):", yoff )
+	--добавим метку количества произведенных дисков
+	--
+	--Добавим метку стоимости дополнительных фишек
+	--labelAdvPrice, yoff =   localAddLabel(  "Цены дополнительных вещей:", yoff )
+	
+	
+	--Добавим метку количества произведенных дисков за день
+	--labelDiskInDay, yoff =  localAddLabel(  "Будет произведено в день:", yoff )			
+	--Добавим метку количества произведенных дисков за день
+	--labelDiskTrash, yoff =  localAddLabel(  "Вероятность поломки:", yoff )	
 	
 	yoff = 250
 	--добавим кнопки изменения количества аппаратов для производства дисков
 	
-	labelNumberMachine = localAddLabel( "Количество линий сборки:", yoff, true )
-	guienv:AddButton( 10, yoff, 60, yoff + 50, wndDPP:Self(), -1, "+" ):SetAction( "./diskManager.IncMachineNumber()" )	
-	guienv:AddButton( scrWidth / 2 - 60, yoff, scrWidth / 2 - 10, yoff + 50, wndDPP:Self(), -1, "-" ):SetAction( "./diskManager.DecMachineNumber()" )
+	guienv:AddButton( 260, 220, "40+", "30+", wndDPP, -1, "+" ):SetAction( "./diskManager.IncMachineNumber()" )	
+	guienv:AddButton( 260, 250, "40+", "30+", wndDPP, -1, "-" ):SetAction( "./diskManager.DecMachineNumber()" )
 	
-	yoff = yoff + 60
 	--добавим кнопки изменения количества дней производства
-	labelNumberDay = localAddLabel( "Дней производства:", yoff, true )
-	guienv:AddButton( 10, yoff, 60, yoff + 50, wndDPP:Self(), -1, "+" ):SetAction( "./diskManager.IncDayNumber()" )
-	guienv:AddButton( scrWidth / 2 - 60, yoff, scrWidth / 2 - 10, yoff+50, wndDPP:Self(), -1, "-" ):SetAction( "./diskManager.DecDayNumber()" )	 
+	labelNumberDay = localAddLabel( "???", 175, 180, "120+", "30+" )
+	guienv:AddButton( 410, 160, "32+", "32+", wndDPP, -1, "+" ):SetAction( "./diskManager.IncDayNumber()" )
+	guienv:AddButton( 410, 192, "32+", "32+", wndDPP, -1, "-" ):SetAction( "./diskManager.DecDayNumber()" )	 
 	
-	yoff = yoff + 60
+	guienv:AddButton( 480, 220, "190+", "64+", wndDPP, -1, "-" ):SetAction( "./diskManager.SetAntipiratForce()" )
 	--добавим метку цены за наем одного аппарата
-	labelPricePrint, yoff = localAddLabel( "Стоимость аренды:", yoff, true )
-	labelPerfomance, yoff = localAddLabel( "Производительность (коробок\час):", yoff, true ) 
-	labelPriceHour, yoff =  localAddLabel( "Стоимость работы ($\час):", yoff, true )
-	labelRelationWithPlant, yoff = localAddLabel( "Скидка производителя: ", yoff, true )
+	--labelPricePrint, yoff = localAddLabel( "Стоимость аренды:", yoff, true )
+	--labelPerfomance, yoff = localAddLabel( "Производительность (коробок\час):", yoff, true ) 
+	--labelPriceHour, yoff =  localAddLabel( "Стоимость работы ($\час):", yoff, true )
+	--labelRelationWithPlant, yoff = localAddLabel( "Скидка производителя: ", yoff, true )
 end
 
 function Show()
 	numberMachine = 0
 	dayOfProduce = 0
-	company = base.applic:GetPlayerCompany()
+	company = base.applic.playerCompany
 	plant = base.NrpGetPlant()
 	produceDiskWork = base.CLuaPlantWork():Create( company:GetName() )
 	
 	if wndDPP == nil then
-		wndDPP = guienv:AddWindow( "media/maps/plant_Select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		wndDPP = guienv:AddWindow( "media/textures/MachinePlant.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		wndDPP:SetName( base.WINDOW_DISKPRODUCEPLANT_NAME )
 		wndDPP:SetDraggable( false )
 	else
@@ -171,8 +196,8 @@ function Show()
 	
 	localAddLabels()
 	
-	guienv:AddButton( 10, scrHeight - 50, scrWidth / 2 - 10, scrHeight - 10, wndDPP:Self(), -1, "Запустить" ):SetAction( "./diskManager.QueryAddWork()" )
-	guienv:AddButton( scrWidth / 2 + 10, scrHeight - 50, scrWidth - 10, scrHeight - 10, wndDPP:Self(), -1, "Выход" ):SetAction( "./diskManager.Hide()" )
+	guienv:AddButton( 10, scrHeight - 50, scrWidth / 2 - 10, scrHeight - 10, wndDPP, -1, "Запустить" ):SetAction( "./diskManager.QueryAddWork()" )
+	guienv:AddButton( scrWidth / 2 + 10, scrHeight - 50, scrWidth - 10, scrHeight - 10, wndDPP, -1, "Выход" ):SetAction( "./diskManager.Hide()" )
 end
 
 local function localGetFinalDiscount()

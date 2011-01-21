@@ -46,7 +46,7 @@ function Show( ptr )
 	picflowGames:SetDrawBorder( false )
 	
 	local project = nil
-	local company = applic:GetPlayerCompany()
+	local company = applic.playerCompany
 	
 	for i=1, company:GetDevProjectNumber() do
 		project = company:GetDevProject( i-1 )

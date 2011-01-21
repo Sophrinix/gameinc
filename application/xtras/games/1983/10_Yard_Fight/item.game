@@ -3,7 +3,6 @@ name:string=10-Yard Fight
 internalname:string=10_yard_fight
 owner:string=PC Research Inc
 startdate:time=y=1983 m=08 d=02 h=0 mi=0
-description:string=desc.htm
 genre:string=genre_simulator
 enddate:time=y=1985 m=08 d=02 h=0 mi=0
 moneyDevelop:int=200000
@@ -19,9 +18,9 @@ startAdvFuncRating:int=80
 localizationRating:int=80
 gameEngine:string=alpha_engine2
 platformnumber:int=1
-descriptionpath:string=xtras/games/1983/10_Yard_figth/desc.htm
-recense:string=xtras/games/1983/10_Yard_figth/recense.htm
-texturenormal:string=xtras/games/1983/10_Yard_figth/image.png
+descriptionpath:path=desc.htm
+recense:path=recense.htm
+texturenormal:path=image.png
 readyWorkPercent:float=1
 genreModuleNumber:int=2
 moduleNumber:int=1

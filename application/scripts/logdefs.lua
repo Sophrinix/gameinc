@@ -73,4 +73,3 @@ end
 function LogVideo(...)
 		Log({src=VIDEO, dev=ALL}, ...)
 end
-

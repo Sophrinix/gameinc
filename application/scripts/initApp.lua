@@ -1,5 +1,6 @@
+require("logdefs")
 require("elmid")
-IncludeScript( "logdefs" )
+
 IncludeScript( "genres" )
 IncludeScript( "NerpaActionType" )
 IncludeScript( "localization/russian" )
@@ -16,5 +17,3 @@ NrpAddScene( "sceneWork", "scripts/sceneWork.lua" )
 	
 --устнановка начальной сцены
 NrpSetNextScene( "sceneLogin" )
-
---test_OutputDebugString()

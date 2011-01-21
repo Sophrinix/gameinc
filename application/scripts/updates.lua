@@ -1,4 +1,4 @@
-local base = _G
+ local base = _G
 
 module( "updates" )
 

@@ -16,8 +16,8 @@ local windowLoan = nil
 local bankWindow = nil
 
 function Show()
-	bankApp = applic:GetBank()
-	company = applic:GetPlayerCompany()
+	bankApp = applic.bank
+	company = applic.playerCompany
 	
 	if bankWindow then
 		bankWindow:SetVisible( true )

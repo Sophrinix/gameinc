@@ -91,7 +91,7 @@ end
 
 function Show()
 	scrWidth, scrHeight = base.scrWidth, base.scrHeight
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	
 	if windowUserManager == nil or windowUserManager:Empty() == 1 then
 		windowUserManager = guienv:AddWindow( "media/maps/director_cabinet_slider.png", 0, 0, 

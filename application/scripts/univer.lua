@@ -27,7 +27,7 @@ local company = nil
 local usersWindow = {}
 
 function Show()
-	company = applic:GetPlayerCompany()
+	company = applic.playerCompany
 	if univerWindow then
 		univerWindow:SetVisible( true )
 	else

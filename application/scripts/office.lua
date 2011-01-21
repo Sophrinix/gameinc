@@ -29,7 +29,7 @@ function Hide()
 end
 
 function OpenLabRoom()
-	base.inventionManager.Show( "", base.applic:GetPlayerCompany():GetName() )
+	base.inventionManager.Show( "", base.applic.playerCompany:GetName() )
 end
 
 function Show()

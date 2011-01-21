@@ -26,6 +26,9 @@ function EqualeTexture( x, y, texturePrefix, parentr, idr, textr, actionr )
 	local txs = driver:GetTexture( normalPath )
 	local txsw, txsh = txs:GetSize()
 	
+	if txsw == 0 then txsw = 60 end
+	if txsh == 0 then txsh = 60 end
+	
 	local btn = guienv:AddButton( x, y, x + txsw, y + txsh, parentr, idr, textr )
 	SetImagePack( btn, 0, 0, txsw, txsh, normalPath, selectPath )
 	btn:SetAction( actionr )
