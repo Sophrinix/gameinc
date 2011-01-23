@@ -27,7 +27,7 @@ function Show( ptr )
 		mainWindow:GetCloseButton():SetVisible( false )
 		
 		--adding closeButton
-		button.Stretch( "95%", "95%", "100%", "100%", 
+		button.Stretch( "80e", "80e", "10e", "10e", 
 		 			    "button_down", 
 		 			    mainWindow, -1, "",
 						"./devRoom.Hide()" )

@@ -48,7 +48,7 @@ function AnonceGame()
 	end
 	
 	local btnOk = guienv:AddButton( 10, 240 - 40, 190, 240, windowAnonce:Self(), -1, "Начать продажи" )
-	btnOk:SetAction( "./saleManager.StartGameSaling()" )
+	btnOk:SetAction( "./saleManager.StartSaling()" )
 	
 	local btnCancel = guienv:AddButton( 210, 240 - 40, 390, 240, windowAnonce:Self(), -1, "Выход" )
 	btnCancel:SetAction( "./saleManager.CloseAnonceGame()" )
@@ -56,7 +56,7 @@ end
 
 local function localUpdateCurrentGameParams()
 	labelGameName:SetText( "Название: " .. selectedGame:GetName() )
-	labelLastMonthSale:SetText( "Продаж за прошлый месяц:" .. selectedGame:GetLastMonthSales() )
+	labelLastMonthSale:SetText( "Продаж за прошлый месяц:"..selectedGame:GetLastMonthSales() )
 	labelProfit:SetText( "Прибыль:" .. selectedGame:GetAllTimeProfit() )
 	labelAllTimeSale:SetText( "Продаж за все время:" .. selectedGame:GetAllTimeSales() )
 	--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
@@ -168,7 +168,7 @@ function StartSaling()
 	local game = anoncePictureFlow:GetSelectedObject()
 	
 	applic:AddGameToMarket( game )
-	localFillListboxGame()
+	localAddGames()
 	sworkWindowShopCloseAnonceGame()	
 end
 

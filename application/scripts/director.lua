@@ -27,7 +27,7 @@ function Show( ptr )
 		--adding closeButton
 		button.Stretch( "95%", "95%", "100%", "100%", 
 		 			    "button_down", 
-		 			    mainWindow:Self(), -1, "",
+		 			    mainWindow, -1, "",
 						"./director.Hide()" )
 	end	
 	

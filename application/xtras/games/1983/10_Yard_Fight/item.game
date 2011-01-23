@@ -3,7 +3,6 @@ name:string=10-Yard Fight
 internalname:string=10_yard_fight
 owner:string=PC Research Inc
 startdate:time=y=1983 m=08 d=02 h=0 mi=0
-genre:string=genre_simulator
 enddate:time=y=1985 m=08 d=02 h=0 mi=0
 moneyDevelop:int=200000
 cash:int=0

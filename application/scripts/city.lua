@@ -23,19 +23,19 @@ function Show()
 	end	
 	
 	--Office
-	button.EqualeTexture( 730, 43, "office", mainWindow:Self(), -1, "", "./office.Show()" )
+	button.EqualeTexture( 730, 43, "office", mainWindow, -1, "", "./office.Show()" )
 	--shop	
-	button.EqualeTexture( 417, 82, "media", mainWindow:Self(), -1, "", "./shop.Show()" )
+	button.EqualeTexture( 417, 82, "media", mainWindow, -1, "", "./shop.Show()" )
 	--labor
-	button.EqualeTexture( 811, 198, "labor", mainWindow:Self(), -1, "", "./laboratory.Show()" )
+	button.EqualeTexture( 811, 198, "labor", mainWindow, -1, "", "./laboratory.Show()" )
 	--bank
-	button.EqualeTexture( 323, 389, "bank", mainWindow:Self(), -1, "", "./bank.Show()" )
+	button.EqualeTexture( 323, 389, "bank", mainWindow, -1, "", "./bank.Show()" )
 	--plant	
-	button.EqualeTexture( 517, 326, "plant", mainWindow:Self(), -1, "", "./plant.Show()" )
+	button.EqualeTexture( 517, 326, "plant", mainWindow, -1, "", "./plant.Show()" )
 	--pizza	
-	button.EqualeTexture( 105, 42, "pizza", mainWindow:Self(), -1, "", "./pizza.Show()" )
+	button.EqualeTexture( 105, 42, "pizza", mainWindow, -1, "", "./pizza.Show()" )
 	--univer	
-	button.EqualeTexture( 0, 287, "univer", mainWindow:Self(), -1, "", "./univer.Show()" )
+	button.EqualeTexture( 0, 287, "univer", mainWindow, -1, "", "./univer.Show()" )
 	--reklame
-	button.EqualeTexture( 0, 94, "reklame", mainWindow:Self(), -1, "", "./reklameManager.Show()" )
+	button.EqualeTexture( 0, 94, "reklame", mainWindow, -1, "", "./reklameManager.Show()" )
 end
