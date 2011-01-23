@@ -27,7 +27,6 @@ BEGIN_LUNA_METHODS(CLuaGame)
 	LUNA_AUTONAME_FUNCTION( CLuaGame, IsMyBoxAddon )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBoxAddon )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, AddBoxAddon )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxAddonsNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, CreateBox )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBox )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxLevel )
@@ -51,6 +50,7 @@ BEGIN_LUNA_METHODS(CLuaGame)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaGame)
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "boxAddonsNumber", GetBoxAddonsNumber, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaGame::CLuaGame(lua_State *L, bool ex) : ILuaBaseProject(L, CLASS_LUAGAME, ex )							//конструктор
@@ -108,7 +108,7 @@ int CLuaGame::AddBoxAddon( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:AddBoxAddon need CNrpTechnology parameter" );
 
-	CNrpBoxAddon* addon = (CNrpBoxAddon*)lua_touserdata( L, 2 );
+	CNrpBoxAddon* addon = _GetLuaObject< CNrpBoxAddon, ILuaObject >( L, 2, true );
 	assert( addon != NULL );
 
 	bool ret=false;
@@ -126,18 +126,17 @@ int CLuaGame::AddBoxAddon( lua_State* L )
 
 int CLuaGame::GetBoxAddonsNumber( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetGameBoxAddonsNumber not need any parameter" );
-
-	int addonNumber = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
 		if( box != NULL)
-			addonNumber = (*box)[ NUMBERADDON ];
+		{
+			lua_pushinteger( L, (*box)[ NUMBERADDON ] );
+			return 1;
+		}
 	}
 
-	lua_pushinteger( L, addonNumber );
+	lua_pushnil( L );
 	return 1;		
 }
 
@@ -318,11 +317,13 @@ int CLuaGame::GetLastMonthSales( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		int sales = 0;
 		if( CNrpHistory* history = _object->GetHistory() )
 		{
+			int sales = 0;
 			if( CNrpHistoryStep* step = history->GetLast() )
-				lua_pushinteger( L, (*step)[ BOXNUMBER ] );
+				sales = (*step)[ BOXNUMBER ];
+
+			lua_pushinteger( L, sales );
 		}
 		else
 			lua_pushnil( L );		

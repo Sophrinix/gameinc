@@ -109,7 +109,7 @@ void CNrpPlantWork::_CalcParams( NParam& )
 		_self[ GAMENAME ] = (*game)[ NAME ];
 		_self[ DAYCOST ] = priceInDay;
 		_self[ RENTPRICE ] = (int)refDm[ RENTPRICE ] * nM;
-		_self[ COMPANYNAME ] = (*game)[ PARENTCOMPANY ].As<PNrpCompany>()->Text( NAME );
+		_self[ COMPANYNAME ] = (*game)[ COMPANYNAME ];
 	}
 }
 

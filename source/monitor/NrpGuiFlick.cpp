@@ -92,18 +92,18 @@ void CNrpGuiFlick::addChildToEnd( IGUIElement* elm )
 	if( Children.size() < 3 )
 		return;
 
-	s32 sideNum = core::ceil32( core::squareroot( static_cast< float >( Children.size() - 2 ) ) );
+	core::dimension2di side;
+
+	s32 sideNum = core::ceil32( core::squareroot( static_cast< float >(Children.size() - 2) ) );
 	sideNum = (sideNum > _column ? _column : sideNum);
-	core::dimension2di side( AbsoluteRect.getWidth() / sideNum, AbsoluteRect.getHeight() / sideNum );
-	
+	side.Width = AbsoluteRect.getWidth() / sideNum;
+	side.Height = AbsoluteRect.getHeight() / sideNum;
+
 	core::list<IGUIElement*>::Iterator it = Children.begin();
 	for ( s32 i=0; it != Children.end(); ++it, ++i )
 	{
 		if( (*it) == _btnUp || (*it) == _btnDown )
-		{
-			i--;
-			continue;
-		}
+		{	i--; continue; }
 
 		s32 row = i / sideNum;
 		s32 col = i % sideNum;
@@ -113,6 +113,7 @@ void CNrpGuiFlick::addChildToEnd( IGUIElement* elm )
 		(*it)->setRelativePosition( pos );
 	}
 
+		
 	core::recti btnRect = core::recti( AbsoluteRect.getWidth() / 2 - 40, 20, AbsoluteRect.getWidth() / 2 + 40, 60 );
 	_btnUp->setRelativePosition( btnRect );
 	bringToFront( _btnUp );
@@ -148,6 +149,22 @@ bool CNrpGuiFlick::OnEvent( const irr::SEvent& event )
 	}
 
 	return Parent ? Parent->OnEvent(event) : false;
+}
+
+void CNrpGuiFlick::Clear()
+{
+	core::list<IGUIElement*>::Iterator it = Children.begin();
+	for ( ; it != Children.end(); ++it )
+	{
+		if( (*it) == _btnUp || (*it) == _btnDown ) continue;
+
+		if( CNrpGUIEnvironment* env = dynamic_cast< CNrpGUIEnvironment* >( Environment ) )
+			env->addToDeletionQueue( *it );
+	}
+
+	Children.clear();
+	Children.push_back( _btnDown );
+	Children.push_back( _btnUp );
 }
 
 }//namespace gui

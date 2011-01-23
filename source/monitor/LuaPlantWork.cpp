@@ -218,7 +218,7 @@ int CLuaPlantWork::SetGame( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlantWork:SetPoduceType need CNrpDiskMachine* parameter" );
 
-	CNrpGame* dm = (CNrpGame*)lua_touserdata( L, 2 );
+	CNrpGame* dm = _GetLuaObject< CNrpGame, ILuaObject >( L, 2, true );
 	IF_OBJECT_NOT_NULL_THEN (*_object)[ PARENT ] = dm;
 
 	return 1;		

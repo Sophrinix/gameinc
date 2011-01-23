@@ -251,6 +251,7 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( "::SetVisible need bool parameter" ) ) );
 
+		assert( lua_isboolean( L, 2 ) );
 		bool visible = lua_toboolean( L, 2 ) > 0;						//принимает булевое значение в качестве луа-параметра
 
 		IF_OBJECT_NOT_NULL_THEN _object->setVisible( visible );		

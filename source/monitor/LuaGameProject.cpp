@@ -218,8 +218,8 @@ int CLuaGameProject::IsMyTech( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		isIncl = _object->IsMyTech( tech );
-		isIncl |= ( (*_object)[ GLICENSE ] == tech );
-		isIncl |= ( (*_object)[ SCENARIO ] == tech );
+		isIncl |= ( (*_object)[ GLICENSE ] == (CNrpLicense*)tech );
+		isIncl |= ( (*_object)[ SCENARIO ] == (CNrpScenario*)tech );
 	}
 
 	lua_pushboolean( L, isIncl );

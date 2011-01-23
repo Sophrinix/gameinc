@@ -94,14 +94,22 @@ protected:
 				percent.erase( percent.size() - 1 );
 			else
 				start = 0;
-			
-			if( percent.lastChar() == L'%' )
+		
+			wchar_t lastChar = percent.lastChar();
+			switch( lastChar )
+			{
+			case L'%':
+			case L'e':
 			{
 				percent.erase( percent.size() - 1 );
-				ret = start + static_cast< int >( percent.ToInt() / 100.f * mult );
+
+				ret = lastChar == L'%' 
+						? start + static_cast< int >( percent.ToInt() / 100.f * mult )
+						: ret = mult - percent.ToInt();
 			}
-			else
-			{
+			break;
+			
+			default:
 				ret = start + percent.ToInt();
 			}
 		}

@@ -1099,6 +1099,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaFlick.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaFlick.h"
+						>
+					</File>
+					<File
 						RelativePath=".\LuaGuiEnvironment.cpp"
 						>
 					</File>

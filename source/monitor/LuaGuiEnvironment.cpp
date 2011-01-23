@@ -29,6 +29,7 @@
 #include "LuaTab.h"
 #include "NrpGuiFlick.h"
 #include "LuaElement.h"
+#include "LuaFlick.h"
 
 using namespace irr;
 
@@ -911,7 +912,7 @@ int CLuaGuiEnvironment::AddFlick( lua_State* L )
 
 	lua_pop( L, argc );
 	lua_pushlightuserdata( L, elm );
-	Luna< CLuaElement >::constructor( L );
+	Luna< CLuaFlick >::constructor( L );
 
 	return 1;
 }

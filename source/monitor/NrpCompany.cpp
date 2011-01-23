@@ -299,7 +299,9 @@ void CNrpCompany::AddGame( CNrpGame* game )
 	if( game && FindByNameAndIntName< GAMES, CNrpGame >( _games, (*game)[ NAME ] ) == NULL )
 	{
 		_games.push_back( game );
-		Param( GAMENUMBER ) = static_cast< int >( _games.size() );
+		(*game)[ PARENTCOMPANY ] = this;
+		(*game)[ COMPANYNAME ] = _self[ NAME ];
+		_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
 	}
 }
 

@@ -17,7 +17,7 @@ public:
 		if( !IsExist( name ) )
 			Add<T>( name, amount );
 		else
-			Param( name ).As<T>() += amount;
+			_self[ name ].As<T>() += amount;
 	}
 };
 

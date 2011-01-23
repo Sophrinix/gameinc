@@ -866,7 +866,9 @@ float CNrpApplication::GetGameGenreInterest( CNrpGame* game )
 		for( int i=1; i < gm; i++ )
 		{
 			tech = GetTechnology( game->GetGenreName( i ) );	
-			summ += (*tech)[ INTEREST ].As<float>() / i;
+			assert( tech );
+			if( tech )
+				summ += (*tech)[ INTEREST ].As<float>() / i;
 		}
 	}
 	//надо скомпенсировать понижение интереса к жанру, которое принесла
@@ -885,16 +887,16 @@ NrpText CNrpApplication::GetFreeInternalName( CNrpGame* game )
 	SCREENSHOTS	thisYearAndGenreImgs;
 	
 	int minimumRating = 1;
+	int year = _self[ CURRENTTIME ].As<SYSTEMTIME>().wYear;
+	if( CNrpGameEngine* ge = GetGameEngine( (*game)[ GAME_ENGINE ].As<NrpText>() ) )
+		year = (*ge)[ STARTDATE ].As<SYSTEMTIME>().wYear;
+
 	for( u32 i=0; i < _screenshots.size(); i++ )
 	{
-		CNrpGame* alsoMargetGame = GetGame( _screenshots[ i ]->Param( NAME ).As<NrpText>() );
+		CNrpGame* alsoMargetGame = GetGame( (NrpText)_screenshots[ i ]->Param( INTERNAL_NAME ) );
 
 		if( !alsoMargetGame ) 
 		{
-			int year = Param( CURRENTTIME ).As<SYSTEMTIME>().wYear;
-			if( CNrpGameEngine* ge = GetGameEngine( game->Param( GAME_ENGINE ).As<NrpText>() ) )
-				year = ge->Param( STARTDATE ).As<SYSTEMTIME>().wYear;
-
 			if( !_screenshots[ i ]->IsMyYear( year ) )
 				continue;
 			
@@ -903,10 +905,12 @@ NrpText CNrpApplication::GetFreeInternalName( CNrpGame* game )
 			if( !eqRating )
 				continue;
 
-			if( minimumRating > eqRating )
+			if( minimumRating < eqRating )
+			{
 				thisYearAndGenreImgs.clear();
-
-			minimumRating = eqRating;
+				minimumRating = eqRating;
+			}
+			
 			thisYearAndGenreImgs.push_back( _screenshots[ i ] );
 		}
 	}
@@ -914,7 +918,7 @@ NrpText CNrpApplication::GetFreeInternalName( CNrpGame* game )
 	if( thisYearAndGenreImgs.size() )
 	{
 		int randomIndex = rand() % thisYearAndGenreImgs.size();
-		return thisYearAndGenreImgs[ randomIndex ]->Param( NAME );
+		return thisYearAndGenreImgs[ randomIndex ]->Param( INTERNAL_NAME );
 	}
 
 	//!!!!!!!!надо както обработать эту ситуацию!!!!!!!!!!!!!!!!!

@@ -70,28 +70,28 @@ void CNrpGame::_InitializeOptions()
 
 CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpConfig( CLASS_NRPGAME, devGame->Text( NAME ) )
 {
-	_InitializeOptions();
+	_InitializeOptions(); 
 
 	assert( devGame );
 	CNrpDevelopGame& refGame = *devGame;
-	Param( PARENTCOMPANY ) = ptrCompany;
-	Param( COMPANYNAME ) = (*ptrCompany)[ NAME ];
-	Param( NAME ) = refGame[ NAME ];
-	Param( MONEYONDEVELOP ) = refGame[ MONEYONDEVELOP ];
+	_self[ PARENTCOMPANY ] = ptrCompany;
+	_self[ COMPANYNAME ] = (*ptrCompany)[ NAME ];
+	_self[ NAME ] = refGame[ NAME ];
+	_self[ MONEYONDEVELOP ] = refGame[ MONEYONDEVELOP ];
 	CNrpGameEngine* ge = refGame[ GAME_ENGINE ].As<CNrpGameEngine*>();
 	if( ge )
-		Param( GAME_ENGINE ) = (*ge)[ NAME ];
+		_self[ GAME_ENGINE ] = (*ge)[ NAME ];
 
-	Param( FAMOUS ) = refGame[ FAMOUS ];
+	_self[ FAMOUS ] = refGame[ FAMOUS ];
 	assert( refGame[ PLATFORMNUMBER ] != (int)0 );
-	Param( PLATFORMNUMBER ) = refGame[ PLATFORMNUMBER ];
-	Param( USERNUMBER ) = refGame[ USERNUMBER ];
-	Param( PREV_GAME ) = refGame[ NAME ]; 
+	_self[ PLATFORMNUMBER ] = refGame[ PLATFORMNUMBER ];
+	_self[ USERNUMBER ] = refGame[ USERNUMBER ];
+	_self[ PREV_GAME ] = refGame[ NAME ]; 
 	
 	_developers = devGame->GetDevelopers();
 
-	Param( GENRE_MODULE_NUMBER ) = refGame[ GENRE_MODULE_NUMBER ];
-	for( int cnt=0; cnt < (int)Param( GENRE_MODULE_NUMBER ); cnt++ )
+	_self[ GENRE_MODULE_NUMBER ] = refGame[ GENRE_MODULE_NUMBER ];
+	for( int cnt=0; cnt < (int)_self[ GENRE_MODULE_NUMBER ]; cnt++ )
 	{
 		 CNrpTechnology* genre = devGame->GetGenre( cnt );
 		 if( genre )
@@ -103,10 +103,14 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpCo
 		 _techs.push_back( refGame.GetModule( cnt )->Param( INTERNAL_NAME ) );
 
 	_self[ INTERNAL_NAME ] = _nrpApp.GetFreeInternalName( this );
-	CNrpScreenshot* pgList = _nrpApp.GetScreenshot( Param( INTERNAL_NAME ) );
+	assert( ((NrpText)_self[ INTERNAL_NAME ]).size() > 0 );
+
+	CNrpScreenshot* pgList = _nrpApp.GetScreenshot( _self[ INTERNAL_NAME ] );
 	assert( pgList != NULL );
 	if( pgList != NULL )
-		Param( GAMEIMAGELIST ) = pgList;
+		_self[ GAMEIMAGELIST ] = pgList;
+
+	_history = new CNrpHistory();
 }
 
 CNrpGame::CNrpGame( const NrpText& fileName ) : INrpConfig( CLASS_NRPGAME, fileName )
@@ -296,6 +300,7 @@ bool CNrpGame::IsGenreAvaible( const NrpText& name )
 
 CNrpHistory* CNrpGame::GetHistory()
 {
+	assert( _history );
 	return _history;
 }
 

@@ -131,7 +131,11 @@ class NParam
 	NParam() {}
 
 public:
-	NParam(const NParam& copy) : _value(copy._value) {}
+	NParam(const NParam& copy)
+	{
+		_value = copy._value->Duplicate();
+	}
+
 
 	NParam& operator=(const NParam& copy) 
 	{
@@ -227,7 +231,7 @@ public:
 	template<typename T>
 	bool Is()
 	{
-		if( _value.get() )
+		if( !_value.get() )
 		{
 			if (typeid(T) == typeid(void)) return true;
 			return false;

@@ -25,6 +25,7 @@ public:
 	bool OnEvent( const irr::SEvent& event );
 	IGUIElement* GetLast();
 	IGUIElement* GetFirst();
+	void Clear();
 protected:
 	IGUIButton* _btnUp;
 	IGUIButton* _btnDown;

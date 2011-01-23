@@ -82,7 +82,7 @@ void CNrpScreenshot::Load( const NrpText& fileName )
 		imageName = folder + SCREENSHOTNAME( k );
 	}
 	_self[ IMAGESBOXNUMBER ] = static_cast< int >( _imagesBoxPath.size() );
-
+	_self[ NAME ] = _self[ INTERNAL_NAME ];
 
 	rv.Get( SECTION_GENRES, CreateKeyGenre,(int)_self[ GENRE_MODULE_NUMBER ], _genres );
 }

@@ -24,6 +24,7 @@ BEGIN_LUNA_METHODS(CLuaWindow)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaWindow)
+	LUNA_AUTONAME_PROPERTY( CLuaWindow, "texture", GetTexture, SetTexture )
 END_LUNA_PROPERTIES
 
 CLuaWindow::CLuaWindow(lua_State *L, bool exist) : ILuaGuiElement(L, CLASS_LUAWINDOW, exist )
@@ -41,6 +42,35 @@ int CLuaWindow::GetCloseButton( lua_State *L )
 	lua_pushlightuserdata( L, button );
 	Luna< CLuaButton >::constructor( L );
 
+	return 1;
+}
+
+int CLuaWindow::SetTexture( lua_State* L )
+{
+	DumpStack( L );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		if( lua_isstring( L, -1 ) )
+		{
+			NrpText txsPath = lua_tostring( L, -1 );
+			video::ITexture* txs = _nrpEngine.GetVideoDriver()->getTexture( txsPath );
+			_object->setBackgroundTexture( txs );
+		}
+	}
+
+	return 0;
+}
+
+int CLuaWindow::GetTexture( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		video::ITexture* txs = _object->getBackgroundTexture();
+		lua_pushstring( L, txs->getName().getPath().c_str() );
+		return 1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 

@@ -58,6 +58,8 @@ public:
 
 	virtual void setBackgroundTexture( video::ITexture* texture );
 
+	virtual video::ITexture* getBackgroundTexture() { return background_; }
+
 	//! Writes attributes of the element.
 	virtual void serializeAttributes(io::IAttributes* out, io::SAttributeReadWriteOptions* options) const;
 

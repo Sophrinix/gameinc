@@ -59,10 +59,10 @@ bool CNrpGameBox::AddAddon( CNrpBoxAddon* tech )
 		return false;
 	}
 
-	if( (int)(*tech)[ LEVEL ] + _GetAddonSumLevel() < (int)Param( LEVEL ) )
+	if( (int)(*tech)[ LEVEL ] + _GetAddonSumLevel() < (int)_self[ LEVEL ] )
 	{
 		_addons.push_back( tech );
-		Param( NUMBERADDON ) = static_cast< int >( _addons.size() );
+		_self[ NUMBERADDON ] = static_cast< int >( _addons.size() );
 		return true;
 	}
 	
@@ -78,7 +78,7 @@ NrpText CNrpGameBox::Save( const NrpText& fileName )
 {
 	IniFile sv( fileName );
 	for( u32 k=0; k < _addons.size(); k++ )
-		 sv.Set( SECTION_ADDONS, CreateKeyAddon( k ), _addons[ k ]->Text( NAME ) );
+		 sv.Set( SECTION_ADDONS, CreateKeyAddon( k ), (NrpText)(*_addons[ k ])[ INTERNAL_NAME ] );
 
 	INrpConfig::Save( fileName );	
 
@@ -90,12 +90,13 @@ void CNrpGameBox::Load( const NrpText& fileName )
 	INrpConfig::Load(  fileName );
 	IniFile rv( fileName );
 
-	for( int k=0; k < (int)Param( NUMBERADDON ); k++ )
+	for( int k=0; k < (int)_self[ NUMBERADDON ]; k++ )
 	{
 		NrpText addonName = rv.Get( SECTION_ADDONS, CreateKeyAddon( k ), NrpText("") );
 
 		CNrpTechnology* tech = _nrpApp.GetBoxAddon( addonName );
 
+		assert( tech );
 		if( tech )
 			AddAddon( tech );
 	}

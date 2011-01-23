@@ -203,12 +203,12 @@ bool irr::core::IC_Command_SCRIPT::invoke( const array< stringw >& args, CComman
 		{
 			NrpText remover( "package.loaded[ \" " );
 			remover.append( args[ 1 ] );
-			remover.append( " \" ] == false" );
+			remover.append( " \" ] = false" );
 			script.DoString( remover );
 
-			NrpText adder( "IncludeScript( \" " );
+			NrpText adder( "IncludeScript( \"" );
 			adder.append( args[ 1 ] );
-			adder.append( " \" )" );
+			adder.append( "\" )" );
 			script.DoString( adder );
 		}
 		else if( args[ 0 ] == L"-so" )
