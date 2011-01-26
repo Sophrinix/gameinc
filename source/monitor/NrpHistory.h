@@ -12,7 +12,7 @@ public:
 	CNrpHistoryStep( const SYSTEMTIME& time );
 
 	template< class T >
-	void AddValue( const NrpText& name, T& amount )
+	void AddValue( const NrpText& name, T amount )
 	{
 		if( !IsExist( name ) )
 			Add<T>( name, amount );

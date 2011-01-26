@@ -30,6 +30,7 @@ CNrpGuiLigthing::CNrpGuiLigthing( IGUIEnvironment* guienv,
 	_lastTimeUpdate = 0;
 	_length = 40;
 	_startTimeShow = GetTickCount();
+	_imageRect = image_ ?  core::recti( core::position2di( 0, 0 ), image_->getSize() ) : core::recti( 0, 0, 20, 20 );
 	_UpdateImagePositions();
 }
 
@@ -92,7 +93,7 @@ void CNrpGuiLigthing::draw()
 	{
 		video::SColor colors[] = { _opacity, _opacity, _opacity, _opacity };
 		driver->draw2DImage( image_, core::recti( _positions[ k ], core::dimension2du( 12, 12 ) ),
-							 core::recti( core::position2di( 0, 0 ), image_->getSize() ), NULL, colors, true );
+							 _imageRect, NULL, colors, true );
 		//driver->draw2DLine( _positions[ k-1 ], _positions[ k ], video::SColor( 0xff000000 ) );
 	}
 
@@ -123,10 +124,13 @@ void CNrpGuiLigthing::setImage(video::ITexture* image)
 		image_->drop();
 
 	image_ = image;
+	_imageRect = core::recti( 0, 0, 20, 20 );
 
 	if (image_)
+	{
+		_imageRect = core::recti( core::position2di( 0, 0 ), image_->getSize() );
 		image_->grab();
-
+	}
 }
 
 }//namespace gui

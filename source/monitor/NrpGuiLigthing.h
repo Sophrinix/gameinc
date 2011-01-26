@@ -31,6 +31,7 @@ public:
 protected:
 
 	video::ITexture* image_;
+	core::recti _imageRect;
 	gui::IGUIElement* _elm1;
 	gui::IGUIElement* _elm2;
 

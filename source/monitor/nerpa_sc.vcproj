@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="GameDev"
 	ProjectGUID="{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"
 	RootNamespace="nerpa_sc"
@@ -101,7 +101,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
-			WholeProgramOptimization="1"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -121,7 +121,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				EnableIntrinsicFunctions="true"
+				EnableIntrinsicFunctions="false"
 				AdditionalIncludeDirectories="../irrlicht/include;../LLMozLib;../lua5.1/include;../mysql/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="0"
@@ -1693,14 +1693,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NrpBridge.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpBridge.h"
-				>
-			</File>
-			<File
 				RelativePath=".\NrpGameTime.cpp"
 				>
 			</File>
@@ -1874,6 +1866,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpBank.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpBridge.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpBridge.h"
 				>
 			</File>
 			<File

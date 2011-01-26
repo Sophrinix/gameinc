@@ -211,7 +211,7 @@ void CNrpGame::Load( const NrpText& loadPath )
 	else
 		_CreateHistory();
 
-	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( Text( INTERNAL_NAME ) );
+	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( _self[ INTERNAL_NAME ] );
 	assert( pgList != NULL );
 	if( pgList != NULL )
 		_self[ GAMEIMAGELIST ] = pgList;
@@ -266,27 +266,37 @@ NrpText CNrpGame::GetTechName( size_t index )
 
 void CNrpGame::GameBoxSaling( int number )
 {
-	PNrpGameBox gameBox = Param( GBOX ).As<PNrpGameBox>();
+	PNrpGameBox gameBox = _self[ GBOX ].As<PNrpGameBox>();
 	Log(HW) << "gameBox == NULL " << Text( INTERNAL_NAME ) << term;
 
 	if( gameBox != NULL )
 	{
-		int boxNumber = (*gameBox)[ BOXNUMBER ];
+		CNrpGameBox& refBox = *gameBox;
+		int boxNumber = refBox[ BOXNUMBER ];
 		number = number > boxNumber ? boxNumber : number;
 		
-		(*gameBox)[ BOXNUMBER ] -= number;
-		int price = (*gameBox)[ PRICE ];
+		refBox[ BOXNUMBER ] -= number;
+		int price = refBox[ PRICE ];
 
-		Param( CASH ) += price * number;
-		Param( COPYSELL ) += number;
+		_self[ CASH ] += price * number;
+		_self[ COPYSELL ] += number;
 
-		PNrpCompany cmp = Param( PARENTCOMPANY ).As<PNrpCompany>();
+		PNrpCompany cmp = _self[ PARENTCOMPANY ].As<PNrpCompany>();
 		if( cmp )
 			(*cmp)[ BALANCE ] += price * number;
 
 		SYSTEMTIME curTime =_nrpApp[ CURRENTTIME ].As<SYSTEMTIME>();
+
+		assert( _history );
+		if( _history )
+		{
+			if( CNrpHistoryStep* step = _history->AddStep( curTime ) )
+			{
+				step->AddValue( BOXNUMBER, number );
+				step->AddValue( BALANCE,  price * number );
+			}
+		}
 	}
-	//history_->AddStep( CURRENTTIME, number, price * number );
 }
 
 bool CNrpGame::IsGenreAvaible( const NrpText& name )

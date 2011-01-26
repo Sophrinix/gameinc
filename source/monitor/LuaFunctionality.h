@@ -84,7 +84,6 @@ public:
 		if( pIter != luaFunctions_.end() )
 		{
 			delete (*pIter);
-
 			luaFunctions_.erase( pIter );
 		}
 	}

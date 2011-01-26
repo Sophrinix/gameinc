@@ -122,15 +122,15 @@ NrpText CNrpPlantWork::Save( const NrpText& folder )
 
 void CNrpPlantWork::BeginNewDay()
 {
-	Param( NUMBERDAY ) += -1;
-	PNrpGame game = Param( PARENT ).As<PNrpGame>();
+	_self[ NUMBERDAY ] += -1;
+	PNrpGame game = _self[ PARENT ].As<PNrpGame>();
 	assert( game != NULL );
 
 	if( game != NULL )
 	{
 		PNrpGameBox box = (*game)[ GBOX ].As<PNrpGameBox>();
 		PNrpCompany cmp = (*game)[ PARENTCOMPANY ].As<PNrpCompany>();
-		CNrpDiskMachine* dm = Param( PRODUCETYPE ).As<PNrpDiskMachine>();
+		CNrpDiskMachine* dm = _self[ PRODUCETYPE ].As<PNrpDiskMachine>();
 
 		assert( box != NULL && cmp != NULL && dm != NULL );
 
@@ -142,7 +142,7 @@ void CNrpPlantWork::BeginNewDay()
 			(*box)[ BOXNUMBER ] += k;
 			Log(HW) << "Сделано " << k << " коробок с игрой " << game->Text( NAME ) << term;
 
-			if( (int)Param( NUMBERDAY ) < (int)0 )
+			if( (int)_self[ NUMBERDAY ] < 0 )
 			{
 				_self[ FINISHED ] = true;
 				Log(HW) << "Закончено производство коробок с игрой " << game->Text( NAME ) << term;

@@ -51,6 +51,7 @@ NrpText CNrpHistory::Save( const NrpText& fileName )
 	for( int index=0; pIter != _steps.end(); pIter++, index++ )
 	{
 		NrpText section = CreateSectionStep( index );
+		sf.Set( section, KEY_TIME, (int)pIter->first );
 		sf.Set( section, KEY_SALE, (int)pIter->second->Param( BOXNUMBER ) );
 		sf.Set( section, KEY_PROFIT, (int)pIter->second->Param( BALANCE ) );
 	}
@@ -86,6 +87,7 @@ CNrpHistoryStep* CNrpHistory::AddStep( const SYSTEMTIME& time )
 	{
 		CNrpHistoryStep* step = new CNrpHistoryStep( time );
 		_steps[ ret ] = step;
+		_self[ HISTORY_SIZE ] = static_cast< int >( _steps.size() );
 		return step;
 	}
 	else

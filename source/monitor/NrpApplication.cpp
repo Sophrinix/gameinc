@@ -476,7 +476,7 @@ CNrpGameEngine* CNrpApplication::GetGameEngine( const NrpText& name )
 void CNrpApplication::_BeginNewDay()
 {
 	for( u32 i=0; i < _companies.size(); i++)
-		 _companies[ i ]->BeginNewDay( Param( CURRENTTIME ) );
+		 _companies[ i ]->BeginNewDay( _self[ CURRENTTIME ] );
 
 	CNrpPlant::Instance().BeginNewDay();
 	_UpdateMarketGames();
@@ -493,7 +493,7 @@ void CNrpApplication::_UpdateInvention()
 
 		if( (*pInv)[ READYWORKPERCENT ] >= 1.f )
 		{
-			(*pInv )[ ENDDATE ] = Param( CURRENTTIME );
+			(*pInv )[ ENDDATE ] = _self[ CURRENTTIME ];
 			InventionFinished( pInv );
 			k--;
 		}
@@ -528,7 +528,7 @@ int CNrpApplication::_GetFreePlatformNumberForGame( CNrpGame* game )
 int CNrpApplication::_GetSalesNumber( CNrpGame* game )
 {
 	assert( game );
-	CNrpCompany* cmp = game->Param( PARENTCOMPANY ).As<CNrpCompany*>();
+	CNrpCompany* cmp = (*game)[ PARENTCOMPANY ].As<CNrpCompany*>();
 	
 	assert( cmp );
 	if( !cmp )
@@ -545,25 +545,25 @@ int CNrpApplication::_GetSalesNumber( CNrpGame* game )
 		if( (game != tmpGame) && 
 			game->Param( GAMEISSALING ) &&
 			(tmpGame->GetGenreName( 0 ) == game->GetGenreName( 0 )) )
-		  gamesInThisGenre += (int)game->Param( CURRENTGAMERATING ) / 100.f; 
+		  gamesInThisGenre += (int)(*game)[ CURRENTGAMERATING ] / 100.f; 
 	}
 
-	freePlatformNumber -= (int)game->Param( COPYSELL );
+	freePlatformNumber -= (int)(*game)[ COPYSELL ];
 	float userModificator = 1, compannyFamous = 1;
 	if( cmp )
 	{
 		userModificator = cmp->GetUserModificatorForGame( game );
-		compannyFamous = cmp->Param( FAMOUS ); 
+		compannyFamous = (*cmp)[ FAMOUS ]; 
 	}
 
 	float authorFamous = 1;
 	authorFamous = game->GetAuthorFamous();
-	NrpText retailerName = game->Param( GAMERETAILER );
+	NrpText retailerName = (*game)[ GAMERETAILER ];
 	PNrpRetailer retailer = GetRetailer( retailerName );
 
 	float retailerFamous = 0.1f;
 	if( retailer )
-		retailerFamous = retailer->Param( FAMOUS );
+		retailerFamous = (*retailer)[ FAMOUS ];
 
 	float genreInterest = GetGameGenreInterest( game );
 
@@ -573,13 +573,13 @@ int CNrpApplication::_GetSalesNumber( CNrpGame* game )
 	int gameMaySaledToday = (int)((freePlatformNumber*genreInterest) / gamesInThisGenre);
 
 	//повышение продаж игры за счет рекламы игры, известности авторов и личностных модификаторов
-	gameMaySaledToday = static_cast< int >(gameMaySaledToday * ( game->Param( FAMOUS ).As<float>() + userModificator + authorFamous ));
+	gameMaySaledToday = static_cast< int >(gameMaySaledToday * ( (float)(*game)[ FAMOUS ] + userModificator + authorFamous ));
 
 	//коэффициент продаж по известности ретейлера и компании
 	gameMaySaledToday = static_cast< int >( gameMaySaledToday * (compannyFamous + retailerFamous) * 0.5f );
 
 	//коэффициент покупательской способности
-	if( PNrpGameBox box = game->Param( GBOX ).As<PNrpGameBox>() )
+	if( PNrpGameBox box = (*game)[ GBOX ].As<PNrpGameBox>() )
 	{
 		gameMaySaledToday = static_cast< int >( gameMaySaledToday * GetConsumerAbility_( (*box)[ PRICE ] ) );
 	}
@@ -824,6 +824,7 @@ CNrpTechnology* CNrpApplication::GetBoxAddon( const NrpText& name )
 
 void CNrpApplication::AddGameToMarket( CNrpGame* game )
 {
+	
 	assert( game != NULL );
 	if( !game || game->Param( GAMEISSALING ) )
 		return;
@@ -847,8 +848,11 @@ void CNrpApplication::AddGameToMarket( CNrpGame* game )
 		}
 	}
 
-	_games.push_back( game );
-	_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
+	if( FindByNameAndIntName< GAMES, CNrpGame >( _games, refGame[ INTERNAL_NAME ] ) == NULL )
+	{
+		_games.push_back( game );
+		_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
+	}
 }
 
 //интерес к жанру меняется в противоположную сторону на 10% от рейтинга игры
