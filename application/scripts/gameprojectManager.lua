@@ -54,7 +54,7 @@ local function localCreateLigthingBetweenElements( link )
 	for i=1, #links do
 		--проверим их на соответствие с заданным типом
 		if links[ i ]:GetModuleType() == link:GetModuleType() and not links[ i ]:IsDraggable() then
-				guienv:AddLigthing( links[ i ], link, "media/textures/larrow.png", 10 )		
+				guienv:AddLigthing( links[ i ], link, "media/textures/sphere.png", 10 )		
 	    end	
 	end
 end

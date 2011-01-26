@@ -19,9 +19,10 @@ techgroup:int=#PT_GENRE
 texturehover:string=
 texturenormal:string=xtras/technology/genre_control/image.png
 volumecode:int=0
-nexttechnumber:int=2
+nexttechnumber:int=3
 [nexttechs]
-tech_0=genre_lifesim
-tech_1=genre_logic
+tech_0=genre_scroll
+tech_1=genre_simulator
+tech_2=genre_tactic
 [skillRequire]
 skill_coding=10

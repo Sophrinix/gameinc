@@ -31,12 +31,16 @@ local windowAnonce = nil
 local selectedGame = nil
 local lastTimeParamsUpdate = base.os.clock()
 
+local function CloseAnonceGame()
+	windowAnonce:Remove()
+end
+
 function AnonceGame()
-	windowAnonce = guienv:AddWindow( "", scrWidth / 2 - 200, scrHeight / 2 - 120,
-						  				 scrWidth / 2 + 200, scrHeight / 2 + 120, 
-								         -1, guienv:GetRootGUIElement() ) 
+	windowAnonce = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", 
+								     -1, guienv:GetRootGUIElement() ) 
+	windowAnonce:GetCloseButton():SetVisible( false )
 	
-	anoncePictureFlow = guienv:AddPictureFlow( 10, 10, 390, 200, -1, windowAnonce:Self() )
+	anoncePictureFlow = guienv:AddPictureFlow( 10, 10, "10e", "50e", -1, windowAnonce:Self() )
 	anoncePictureFlow:SetPictureRect( 0, 0, 90, 90 )
 	
 	for i=1, company:GetGameNumber() do
@@ -47,10 +51,10 @@ function AnonceGame()
 		end	
 	end
 	
-	local btnOk = guienv:AddButton( 10, 240 - 40, 190, 240, windowAnonce:Self(), -1, "Начать продажи" )
+	local btnOk = guienv:AddButton( "25%", "40e", "24%+", "10e", windowAnonce, -1, "Начать продажи" )
 	btnOk:SetAction( "./saleManager.StartSaling()" )
 	
-	local btnCancel = guienv:AddButton( 210, 240 - 40, 390, 240, windowAnonce:Self(), -1, "Выход" )
+	local btnCancel = guienv:AddButton( "51%", "40e", "24%+", "10e", windowAnonce, -1, "Выход" )
 	btnCancel:SetAction( "./saleManager.CloseAnonceGame()" )
 end
 
@@ -144,7 +148,7 @@ function Show()
 
 	--цена игры с возможностью изменять цену
 	btnDecreaseGamePrice = guienv:AddButton( pos.x, pos.y, size.h, size.h, mainWindow, -1, "-" )
-	btnDecreaseGamePrice:SetAction( "./saleManager.DecreasePrice" ) 
+	btnDecreaseGamePrice:SetAction( "./saleManager.DecreasePrice()" ) 
 									
 	labelGamePrice = guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", pos.x + size.hh, pos.y, 
 																size.w, size.h, -1, mainWindow )
@@ -169,7 +173,7 @@ function StartSaling()
 	
 	applic:AddGameToMarket( game )
 	localAddGames()
-	sworkWindowShopCloseAnonceGame()	
+	CloseAnonceGame()	
 end
 
 function DecreasePrice()
