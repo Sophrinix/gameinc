@@ -18,6 +18,6 @@ readyworkpercent:float=0
 startdate:time=y=1980 m=01 d=01 h=00 mi=00 s=0
 techgroup:int=#PT_LANGUAGE
 texturehover:string=
-texturenormal:string=xtras/languages/lang_english/image.png
+texturenormal:path=image.png
 volumecode:int=0
 nexttechnumber:int=0
