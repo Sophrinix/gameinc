@@ -50,12 +50,8 @@ sceneManager:DrawProgress( 100, "Создаю сцену" )
 guienv:AddTimer( 1000, "city.SetVisible( true )" )
 guienv:AddTimer( 1000, "guienv:FadeAction( 2000, FADE_IN, true )" )
 
-if tutorial.startGameWithTutorial then
-	tutorial.Start()
-end
-
 alwaysOnTopWindow[ 1 ] = mainmenu.GetWindow()
-alwaysOnTopWindow[ 2 ] = CLuaWindow( browser:GetWindow() )
+alwaysOnTopWindow[ 2 ] = CLuaWindow( browser.window )
 alwaysOnTopWindow[ 3 ] = pda.GetWindow()
 
 IncludeScript( "callbacks" )

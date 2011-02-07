@@ -68,3 +68,12 @@ function StretchOne( x1, y1, x2, y2, pathToTexture, parentr, idr, textr, actionr
 	
 	return btn
 end
+
+function ArrowToElement( elm, textureName, time )
+	local x, y = elm:GetCenter()
+	local image = guienv:AddImage( x-64, y-32, x+128, y+64, guienv:GetRootGUIElement(), -1, "" );
+	image:SetImage( textureName )
+	image:SetScaleImage( true )
+	image:SetUseAlphaChannel( true )
+	guienv:AddDestructor( image, time )
+end

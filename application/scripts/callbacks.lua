@@ -95,27 +95,32 @@ function sworkReklameFinished( ptrReklame )
 	pda.Show( "Закончилась рекламная кампания "..reklame:GetName() )
 end
 
+local function localChangeSpeed( charInput )
+	if labelSpeed then labelSpeed:Remove() end
+	
+	local spd = applic:GetPauseBetweenStep()
+	
+	if charInput == "+" then 
+		if spd > 100 then applic:SetPauseBetweenStep( spd - 100 ) end
+	else
+		if spd < 1000 then applic:SetPauseBetweenStep( spd + 100 ) end
+	end
+	
+	local dd = ( 1000 - applic:GetPauseBetweenStep() ) / 100
+	labelSpeed = guienv:AddLabel( "Скорость игры " .. dd,
+								  scrWidth / 2 - 100, scrHeight / 2 - 50, 
+								  scrWidth / 2 + 100, scrHeight / 2 + 50, -1, 
+								  guienv:GetRootGUIElement() )
+								  
+	guienv:AddBlenderAnimator( labelSpeed, 255, 10, 2000, false, true, false )
+end
+
 function sworkKeyboardEvent( ptr )
 	local event = CLuaEvent( ptr )
-	local charInput = event:GetChar()
-	local keyDown = event:IsKeyDown()
-	if  keyDown and ( charInput == "+" or charInput == "-" ) then
-		if labelSpeed then labelSpeed:Remove() end
-		local spd = applic:GetPauseBetweenStep()
-		
-		if charInput == "+" then 
-			if spd > 100 then applic:SetPauseBetweenStep( spd - 100 ) end
-		else 
-			if spd < 1000 then applic:SetPauseBetweenStep( spd + 100 ) end
-		end
-		
-		local dd = ( 1000 - applic:GetPauseBetweenStep() ) / 100
-		labelSpeed = guienv:AddLabel( "Скорость игры " .. dd,
-									  scrWidth / 2 - 100, scrHeight / 2 - 50, 
-									  scrWidth / 2 + 100, scrHeight / 2 + 50, -1, 
-									  guienv:GetRootGUIElement() )
-									  
-		guienv:AddBlenderAnimator( labelSpeed, 255, 10, 2000, false, true, false )
+	local charInput = event.char
+
+	if  event.keyDown and ( charInput == "+" or charInput == "-" ) then
+		localChangeSpeed( charInput )
 	end
 end
 

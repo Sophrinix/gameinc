@@ -2,10 +2,13 @@ local base = _G
 
 module( "reklameManager" ) 
 
+btnReklame = nil
+
 local company = nil
 local plant = nil
 local applic = base.applic
 local button = base.button
+local tutorial = base.tutorial
 local guienv = base.guienv
 local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
@@ -78,8 +81,10 @@ function Show()
 						"./reklameManager.Hide()" )
 	end
 	
+	tutorial.Update( tutorial.STEP_OVERVIEW_REKLAME )
+	
 	--get loan
-	button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow:Self(), -1, "", "./reklameManager.ShowCampaniesManager()" )
+	btnReklame = button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow:Self(), -1, "", "./reklameManager.ShowCampaniesManager()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "reklameManager.FadeEnterAction()" )

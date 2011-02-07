@@ -14,6 +14,15 @@ local company = nil
 local bankApp = nil
 local windowLoan = nil
 local bankWindow = nil
+local tblLoans = nil
+local lbMaxLoan = nil
+local btnGetLoan = nil
+local btnPayLoan = nil
+local edLoan = nil
+
+btnLoan = nil
+btnDebt = nil
+btnBridge = nil
 
 function Show()
 	bankApp = applic.bank
@@ -22,42 +31,41 @@ function Show()
 	if bankWindow then
 		bankWindow:SetVisible( true )
 	else
-		bankWindow = guienv:AddWindow( "media/maps/bank_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		bankWindow = guienv:AddWindow( "media/maps/bank_normal.png", 0, 0, "0e", "0e", -1, guienv:GetRootGUIElement() )
 		bankWindow:SetDraggable( false )
 		bankWindow:GetCloseButton():SetVisible( false )
 		bankWindow:SetVisible( false )
 		
 		--adding closeButton
-		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", bankWindow:Self(), -1, "",
+		button.Stretch( "80e", "80e", "0e", "0e", 
+		 			    "button_down", bankWindow, -1, "",
 						"./bank.Hide()" )
 	end
 	
+	tutorial.Update( tutorial.STEP_OVERVIEW_BANK )
+	
 	--get loan
-	button.EqualeTexture( 80, 402, "loans", bankWindow:Self(), -1, "", "./bank.ShowLoans()" )
+	btnLoan = button.EqualeTexture( 80, 402, "loans", bankWindow, -1, "", "./bank.ShowLoans()" )
 	--deposit	
-	button.EqualeTexture( 258, 301, "deposit", bankWindow:Self(), -1, "", "./bank.ShowDeposits()" )
+	btnDebt = button.EqualeTexture( 258, 301, "deposit", bankWindow, -1, "", "./bank.ShowDeposits()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "bank.FadeEnterAction()" )
 end
 
-function ShowLoans( tabler )
-	local tbl = base.CLuaTable( tabler )
-	tbl:ClearRows()
-	local loansNumber = bank:GetLoansNumber()
-	if loansNumber > 0 then
-		for i=0, loansNumber-1 do
-			local loanID = bank:GetLoanID( i )
-			
-			if bankApp:GetLoanCompanyName( loanID ) == company:GetName() then
-				local idx = tbl:AddRow( tbl:GetRowCount() )
-				tbl:SetCellText( idx, 0, loanID, 0xff, 0xff, 0, 0 )
-				tbl:SetCellText( idx, 1, bank:GetLoanStartSumm( loanID ), 0xff, 0xff, 0, 0 )
-				tbl:SetCellText( idx, 2, bank:GetLoanMoneyToClose( loanID ), 0xff, 0xff, 0, 0 )
-				tbl:SetCellText( idx, 3, bank:GetLoanMoneyPerMonth( loanID ), 0xff, 0xff, 0, 0 )
-				tbl:SetCellText( idx, 4, bank:GetLoanMonthToEnd( loanID ), 0xff, 0xff, 0, 0 )
-			end
+function FillLoansTable( tabler )
+	tabler:ClearRows()
+
+	for i=1, bankApp.loansNumber do
+		local loanID = bankApp:GetLoanID( i-1 )
+		
+		if bankApp:GetLoanCompanyName( loanID ) == company:GetName() then
+			local idx = tabler:AddRow( tabler:GetRowCount() )
+			tabler:SetCellText( idx, 0, loanID, 0xff, 0xff, 0, 0 )
+			tabler:SetCellText( idx, 1, bankApp:GetLoanStartSumm( loanID ), 0xff, 0xff, 0, 0 )
+			tabler:SetCellText( idx, 2, bankApp:GetLoanMoneyToClose( loanID ), 0xff, 0xff, 0, 0 )
+			tabler:SetCellText( idx, 3, bankApp:GetLoanMoneyPerMonth( loanID ), 0xff, 0xff, 0, 0 )
+			tabler:SetCellText( idx, 4, bankApp:GetLoanMonthToEnd( loanID ), 0xff, 0xff, 0, 0 )
 		end
 	end
 end
@@ -70,68 +78,64 @@ end
 function ShowLoans()
 	
 	if windowLoan == nil then
-		windowLoan = guienv:AddWindow( "media/maps/bank_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
+		windowLoan = guienv:AddWindow( "media/maps/bank_select.png", 0, 0, "0e", "0e", -1, guienv:GetRootGUIElement() )
 		windowLoan:SetDraggable( false )
-		windowLoan:GetCloseButton():SetAction( "./bank.HideLoans()" )
+		windowLoan:GetCloseButton():SetVisible( false )
+		
+			--adding closeButton
+		button.Stretch( "80e", "60e", "60+", "60+", 
+		 			    "button_down", windowLoan, -1, "",
+						"./bank.HideLoans()" )
 	else
 		windowLoan:SetVisible( true )	
 	end
 	
-	local summ = bank:GetMaxCompanyLoan( company:GetName() )
-	Log({src=SCRIPT, dev=ODS|CON}, summ )
+	local summ = bankApp:GetMaxCompanyLoan( company:GetName() )
+	base.LogScript( "loan for "..company:GetName().. " is "..summ )
 	
-	local edit = guienv:AddEdit(  summ, 10, 20, 190, 40,
-								  -1, windowLoan:Self() )
+	edLoan = guienv:AddEdit( summ, 10, 20, 190, 40,  -1, windowLoan )
 	
-	local button = guienv:AddButton( 10, 80, 10 + 140, 80 + 20, windowLoan:Self(), -1, "Взять кредит" )
-	button:SetAction( "sworkGetLoan" )
+	btnGetLoan = guienv:AddButton( 10, 80, "140+", "20+", windowLoan, -1, "Взять кредит" )
+	btnGetLoan:SetAction( "./bank.GetLoan()" )
 	
-	button = guienv:AddButton( 160, 80, 160 + 140, 80 + 20, windowLoan:Self(), -1, "Вернуть кредит" )
-	button:SetAction( "sworkReturnLoan" )
+	btnPayLoan = guienv:AddButton( 160, 80, "140+", "20+", windowLoan, -1, "Вернуть кредит" )
+	btnPayLoan:SetAction( "./bank.ReturnLoan()" )
 	
-	local label = guienv:AddLabel( "Доступная сумма: "..summ, 10, 110, 10 + 280, 110 + 20, -1, windowLoan:Self() )
-	label:SetName( WNDLOANACTION_MAXSUM_LABEL )
+	lbMaxLoan = guienv:AddLabel( "Доступная сумма: "..summ, 10, 110, "280+", "20+", -1, windowLoan )
 	
-	local image = guienv:AddImage( 10, 140, scrWidth - 10, scrHeight - 60, windowLoan:Self(), -1, "" )
+	local image = guienv:AddImage( 10, 140, "60e", "60e", windowLoan, -1, "" )
 	image:SetImage( "media/tableLoanBg.png" )
 	image:SetScaleImage( true )
 	image:SetUseAlphaChannel( true )
 
-	local width = 0
-	local height = 0
-	local tabler = guienv:AddTable( 10, 140, scrWidth - 10,  scrHeight - 60, -1, windowLoan:Self() )
-	tabler:SetName( WNDLOANACTION_TABLE )
-	width, height = tabler:GetSize()
+	tblLoans = guienv:AddTable( 10, 140, "10e", "60e", -1, windowLoan )
+	local width, _ = tblLoans:GetSize()
 	
-	tabler:AddColumn( "ID", -1 );
-	tabler:SetColumnWidth( 0, 20 );	
+	tblLoans:AddColumn( "ID", -1 );
+	tblLoans:SetColumnWidth( 0, 20 );	
 	
-	tabler:AddColumn( "Старт", -1 );
-	tabler:SetColumnWidth( 1, width / 4 );	
+	tblLoans:AddColumn( "Старт", -1 );
+	tblLoans:SetColumnWidth( 1, width / 5 );	
 	
-	tabler:AddColumn( "Осталось", -1 );
-	tabler:SetColumnWidth( 2, width / 4 );	
+	tblLoans:AddColumn( "Осталось", -1 );
+	tblLoans:SetColumnWidth( 2, width / 5 );	
 	
-	tabler:AddColumn( "В месяц", -1 );
-	tabler:SetColumnWidth( 3, width / 4 );	
+	tblLoans:AddColumn( "В месяц", -1 );
+	tblLoans:SetColumnWidth( 3, width / 5 );	
 	
-	tabler:AddColumn( "Месяцев", -1 );
-	tabler:SetColumnWidth( 4, width / 4 );	
+	tblLoans:AddColumn( "Месяцев", -1 );
+	tblLoans:SetColumnWidth( 4, width / 5 );	
 	
-	sworkShowLoans( tabler:Self() )
+	FillLoansTable( tblLoans )
 end
 
 function GetLoan()
-
-	local edit = base.CLuaEdit( guienv:GetElementByName( WNDLOANACTION_GETLOAN_EDIT ) )
-	bank:CreateLoan( company:GetName(), edit:GetText(), 14, 10 )
+	bankApp:CreateLoan( company:GetName(), edLoan:GetText(), 14, 10 )
+	FillLoansTable( tblLoans )
 	
-	sworkShowLoans( guienv:GetElementByName( WNDLOANACTION_TABLE ) )
-	
-	local label = base.CLuaLabel( guienv:GetElementByName( WNDLOANACTION_MAXSUM_LABEL ) )
-	local summ = bank:GetMaxCompanyLoan( company:GetName() )
-	Log({src=SCRIPT, dev=ODS|CON}, summ )
-	label:SetText(  "Доступная сумма: "..summ )
+	local summ = bankApp:GetMaxCompanyLoan( company:GetName() )
+	base.LogScript( "loan for "..company:GetName().. " is $"..summ )
+	lbMaxLoan:SetText(  "Доступная сумма: $"..summ )
 end
 
 function FadeEnterAction()

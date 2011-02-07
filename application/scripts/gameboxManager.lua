@@ -160,7 +160,7 @@ local function localCreateWindowForBoxAvaibleAddons()
 	end
 	
 	local width = 60	
-	for i=1, applic:GetGameBoxAddonNumber() do
+	for i=1, applic.boxAddonNumber do
 		local boxAddon = applic:GetGameBoxAddon( i-1 )
 	
 		local linkt = guienv:AddLinkBox( boxAddon:GetName(), 0, 0, width, width, -1, flickAvaible )

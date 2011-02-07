@@ -12,6 +12,10 @@ local scrHeight = base.scrHeight
 local button = base.button
 local tutorial = base.tutorial
 
+btnDirector = nil
+btnDevRoom = nil
+btnResearch = nil
+
 function FadeEnterAction()
 	receptionWindow:SetVisible( true )
 	guienv:FadeAction( base.FADE_TIME, true, true )
@@ -50,9 +54,9 @@ function Show()
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_RECEPTION )
 	--directors room
-	button.EqualeTexture( 448, 242, "director", receptionWindow, -1, "director", "./director.Show()" )
-	button.EqualeTexture( 355, 249, "developers", receptionWindow, -1, "devRoom", "./devRoom.Show()" )
-	button.EqualeTexture( 0, 157, "button_laboratory", receptionWindow, -1, "devRoom", "./office.OpenLabRoom()" )
+	btnDirector = button.EqualeTexture( 448, 242, "director", receptionWindow, -1, "Dbg:Director", "./director.Show()" )
+	btnDevRoom = button.EqualeTexture( 355, 249, "developers", receptionWindow, -1, "Dbg:DevRoom", "./devRoom.Show()" )
+	btnResearch = button.EqualeTexture( 0, 157, "button_laboratory", receptionWindow, -1, "Dbg:Research", "./office.OpenLabRoom()" )
 	--
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			

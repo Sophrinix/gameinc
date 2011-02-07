@@ -37,6 +37,19 @@ local function GetCurrentDate()
 	return base.os.time( {year=cYear, month=cMonth, day=cDay} )
 end
 
+function LoadLinks()
+	applic:LoadLinks( fileDiskMachines, "diskMachine" )
+	applic:LoadLinks( fileIniAddons, "addon" )
+	applic:LoadLinks( fileReklames,	"reklame" )
+	applic:LoadLinks( fileRetailers, "retailer" )
+	--applic:LoadLinks( updates.fileScreenshots, "screenshot" )
+	applic:LoadLinks( fileEngines, "engine" )
+	applic:LoadLinks( fileTechs, "tech" )
+	applic:LoadLinks( fileGames, "game" )									
+	applic:LoadLinks( fileLanguages, "language" )		
+	applic:LoadLinks( filePlatforms, "platform" )	
+end
+
 function FindInventionLoadFile( inventionName )
 	
 	local iniFile = base.CLuaIniFile( nil, fileTechs )

@@ -37,16 +37,16 @@ function sloginResetDataForNewGame()
 	local user = CLuaUser( nil )
 	
 	applic:ResetData()
-    user:Create( "RealPlayer", applic:GetCurrentProfile() )
+    user:Create( "RealPlayer", applic.profile )
     company = applic.playerCompany
-	company:Create( applic:GetCurrentProfileCompany(), applic:GetCurrentProfile() ) 
+	company:Create( applic:GetCurrentProfileCompany(), applic.profile ) 
 end
 
 function sloginAddStartCompanyTechnology()
 	local ge = CLuaGameEngine( nil )
 	ge:Create( "simpleEngine" )
 	ge:Load( "xtras/engines/simpleEngine" )
-	company:AddGameEngine( ge:Self() )
+	company:AddGameEngine( ge )
 	
 	Log({src=SCRIPT, dev=ODS|CON}, "SCRIPT-TEST:Создан движок simpleEngine")
 end
@@ -62,16 +62,16 @@ local function localLoadTechnology( typer, filer )
 end
 
 function sloginAddStartPublicTechnology()
-	localLoadTechnology( PT_GENRE, "xtras/technology/genre_skill/item.tech" )
-	localLoadTechnology( PT_GENRE, "xtras/technology/genre_contact/item.tech" )
-	localLoadTechnology( PT_SOUNDTECH, "xtras/technology/sound_speaker/item.tech" )
-    localLoadTechnology( PT_VIDEOTECH, "xtras/technology/video_textoutput/item.tech" )	
-	localLoadTechnology( PT_ADVTECH, "xtras/technology/advtech_memory/item.tech" )	
-	localLoadTechnology( PT_ADVTECH, "xtras/technology/advtech_joystick/item.tech" )	
-	localLoadTechnology( PT_SCRIPTS, "xtras/technology/techscript_configfile/item.tech" )	
-	localLoadTechnology( PT_MINIGAME, "xtras/technology/minigame_textquest/item.tech" )	
-	localLoadTechnology( PT_PHYSIC, "xtras/technology/phtech_2dconclusion/item.tech" )	
-	localLoadTechnology( PT_SCENARIO, "xtras/technology/scnq_writeself/item.tech" )
-	localLoadTechnology( PT_SOUNDQUALITY, "xtras/technology/sndq_writeself/item.tech" )
-	localLoadTechnology( PT_VIDEOQUALITY, "xtras/technology/vidq_selfrender/item.tech" )
+	localLoadTechnology( PT_GENRE, "genre_skill" )
+	localLoadTechnology( PT_GENRE, "genre_contact" )
+	localLoadTechnology( PT_SOUNDTECH, "sound_speaker" )
+    localLoadTechnology( PT_VIDEOTECH, "video_textoutput" )	
+	localLoadTechnology( PT_ADVTECH, "advtech_memory" )	
+	localLoadTechnology( PT_ADVTECH, "advtech_joystick" )	
+	localLoadTechnology( PT_SCRIPTS, "techscript_configfile" )	
+	localLoadTechnology( PT_MINIGAME, "minigame_textquest" )	
+	localLoadTechnology( PT_PHYSIC, "phtech_2dconclusion" )	
+	localLoadTechnology( PT_SCENARIO, "scnq_writeself" )
+	localLoadTechnology( PT_SOUNDQUALITY, "sndq_writeself" )
+	localLoadTechnology( PT_VIDEOQUALITY, "vidq_selfrender" )
 end

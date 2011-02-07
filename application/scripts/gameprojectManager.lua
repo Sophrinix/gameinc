@@ -145,7 +145,7 @@ local function ShowAvaibleGenreModules()
 	
 	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 
-	for i=1, applic:GetTechNumber() do
+	for i=1, applic.techNumber do
 		local tech = applic:GetTech( i-1) 
 		local tg = tech:GetTechGroup()
 		local techCompany = tech:GetCompany()
@@ -185,7 +185,7 @@ end
 local function ShowAvaibleVideoQualityAndVideoTech()
 	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 
-	for i=1, applic:GetTechNumber() do
+	for i=1, applic.techNumber do
 		local tech = applic:GetTech( i-1 )
 		local tg = tech:GetTechGroup()
 		local techCompany = tech:GetCompany()
@@ -205,7 +205,7 @@ local function ShowAvaibleSoundQualityAndSoundTech()
 	local companyName = company:GetName()
 	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 
-	for i=1, applic:GetTechNumber() do
+	for i=1, applic.techNumber do
 		local tech = applic:GetTech( i-1 )
 		local tg = tech:GetTechGroup()
 		local techCompany = tech:GetCompany()
@@ -332,7 +332,7 @@ end
 
 local function ShowAvaibleScriptAndMiniGames()
 	local companyName = company:GetName()
-	local maxPublicTech = applic:GetTechNumber()
+	local maxPublicTech = applic.techNumber
 	
 	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 	
@@ -406,7 +406,7 @@ local function localShowPlatformPage()
 	picFlowLang = guienv:AddPictureFlow( "5%", "5%", "95%", "45%", -1, projectWindow )	
 	picFlowPlatform = guienv:AddPictureFlow( "5%", "55%", "95%", "95%", -1, projectWindow )
 		
-	for i=1, applic:GetTechNumber() do
+	for i=1, applic.techNumber do
 		local tech = applic:GetTech( i-1 )
 		
 		if tech:GetTechGroup() == base.PT_LANGUAGE then
@@ -420,7 +420,7 @@ local function localShowPlatformPage()
 		end
 	end
 	
-	for i=1, applic:GetPlatformNumber() do
+	for i=1, applic.platformNumber do
 		local platform = applic:GetPlatform( i-1 )
 		local index = picFlowPlatform:AddItem( platform:GetTexture(), platform:GetName(), platform )
 		
@@ -434,7 +434,7 @@ end
 
 local function ShowAvaibleScenarioAndLicense()
 	local companyName = applic.playerCompany:GetName()
-	local maxScenarioNum = applic:GetTechNumber()
+	local maxScenarioNum = applic.techNumber
 	
 	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )	
 	

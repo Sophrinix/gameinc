@@ -12,6 +12,9 @@ local tutorial = base.tutorial
 local company = nil
 local plantWindow = nil
 
+btnBoxCreate = nil
+btnBoxProduce = nil
+
 function FadeEnterAction()
 	plantWindow:SetVisible( true )
 	guienv:FadeAction( base.FADE_TIME, true, true )
@@ -46,9 +49,9 @@ function Show()
 	tutorial.Update( tutorial.STEP_OVERVIEW_PLANT )
 	
 	--box manager
-	button.EqualeTexture( 94, 29, "boxManager", plantWindow:Self(), -1, "", "./gameboxManager.Show()" )
+	btnBoxCreate = button.EqualeTexture( 94, 29, "boxManager", plantWindow:Self(), -1, "", "./gameboxManager.Show()" )
 	--produce
-	button.EqualeTexture( 407, 1, "produce", plantWindow:Self(), -1, "", "./diskManager.Show()" )
+	btnBoxProduce = button.EqualeTexture( 407, 1, "produce", plantWindow:Self(), -1, "", "./diskManager.Show()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "plant.FadeEnterAction()" )

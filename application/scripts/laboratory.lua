@@ -20,6 +20,11 @@ local selectedTech = nil
 local btnOk = nil
 local btnCancel = nil
 
+btnVideo = nil
+btnSound = nil
+btnTech = nil
+btnGenre = nil
+
 function Hide()
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeExitAction()" )	
@@ -35,17 +40,15 @@ function Show()
 		lab:GetCloseButton():SetVisible( false )
 		
 		--adding closeButton
-		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", lab:Self(), -1, "",
-						"./laboratory.Hide()" )
+		button.Stretch( "80e", "80e", "0e", "0e", "button_down", lab, -1, "", "./laboratory.Hide()" )
 	end	
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_LABORATORY )
 	
-	button.EqualeTexture( 545, 330, "techMapVideo", lab:Self(), -1, "", "./laboratory.ShowVideoTechMap()" )
-	button.EqualeTexture( 372, 213, "techMapSound", lab:Self(), -1, "", "./laboratory.ShowSoundTechMap()" )
-	button.EqualeTexture( 749, 222, "techMapAdvTech", lab:Self(), -1, "", "./laboratory.ShowAdvancedTechMap()" )
-	button.EqualeTexture( 73, 202,	"techMapGenre", lab:Self(), -1, "", "./laboratory.ShowGenreTechMap()" )
+	btnVideo = button.EqualeTexture( 545, 330, "techMapVideo", lab, -1, "", "./laboratory.ShowVideoTechMap()" )
+	btnSound = button.EqualeTexture( 372, 213, "techMapSound", lab, -1, "", "./laboratory.ShowSoundTechMap()" )
+	btnTech = button.EqualeTexture( 749, 222,  "techMapAdvTech", lab, -1, "", "./laboratory.ShowAdvancedTechMap()" )
+	btnGenre = button.EqualeTexture( 73, 202,  "techMapGenre", lab, -1, "", "./laboratory.ShowGenreTechMap()" )
 
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeEnterAction()" )
@@ -107,12 +110,12 @@ local function CreateWindow( typef )
 	
 	base.LogScript( "sworkCreateGenreTechMapWindow="..company:GetName() )
 	
-	techMap = guienv:AddTechMap( 10, 40, scrWidth - 10, scrHeight - 10, -1, windowMap:Self() )
+	techMap = guienv:AddTechMap( 10, 40, "10e", "10e", -1, windowMap )
 	techMap:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, "./laboratory.TechSelected()" )
 	techMap:SetDrawBack( false )
 	
 	local tech = nil
-	for i=1, applic:GetTechNumber() do
+	for i=1, applic.techNumber do
 	    tech = applic:GetTech( i-1 )
 		
 		if tech:GetTechGroup() == typef and not tech:HaveRequireTech() then
@@ -122,8 +125,8 @@ local function CreateWindow( typef )
 	end
 	
 	--adding closeButton
-	button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-	 			    "button_down", windowMap:Self(), -1, "",
+	button.Stretch( "80e", "80e", "0e", "0e", 
+	 			    "button_down", windowMap, -1, "",
 					"./laboratory.HideTechMap()" )
 end
 
@@ -168,10 +171,10 @@ function StartInvention()
 	browser:Show()
 	browser:Navigate( "media/html/unknownTechnology.htm" )
 	
-	btnOk = guienv:AddButton( 10, 30, 190, 30 + 20, browser:GetWindow(), -1, "Начать исследования" )
+	btnOk = guienv:AddButton( "5%", 30, "45%+", "20+", browser.window, -1, "Начать исследования" )
 	btnOk:SetAction( "./laboratory.AssignInvention()" )
 	
-	btnCancel = guienv:AddButton( 200, 30, 390, 30 + 20, browser:GetWindow(), -1, "Закрыть" )
+	btnCancel = guienv:AddButton( "55%", 30, "45%+", "20+", browser.window, -1, "Закрыть" )
 	btnCancel:SetAction( "./laboratory.CloseConfirmationWindow()" )
 end
 

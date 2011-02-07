@@ -21,7 +21,7 @@ end
 
 local function localPlantLoadBaseReklame()
 	updates.CheckNewReklames()
-	plant:LoadReklamePrice( applic:GetCurrentProfile() )
+	plant:LoadReklamePrice( applic.profile )
 end
 
 --создание новой игры
@@ -36,6 +36,8 @@ function sloginCreateNewProfileAndStartGame( ptr )
 	sloginResetDataForNewGame()
 	
 	CreateStuffLists()
+	updates.LoadLinks()
+	
 	applic:LoadScreenshots( updates.fileScreenshots )
 	updates.CheckNewTechs()
 	updates.CheckLanguages()
@@ -86,7 +88,7 @@ function slogin_CreateNewGame( ptr )
 end
 
 function slogin_ContinueLastGame( ptr )
-	local lastProfile = applic:GetCurrentProfile()
+	local lastProfile = applic.profile
 	
 	local dd = io.open( "save/"..lastProfile.."/profile.ini", "r" )
 	if dd == nil then
@@ -94,13 +96,16 @@ function slogin_ContinueLastGame( ptr )
 		return 0
 	end
 	--устанавливаем текущее времся
-	applic:LoadGameTimeFromProfile( applic:GetCurrentProfile() )
+	applic:LoadGameTimeFromProfile( applic.profile )
 	
 	--загружаем скриншоты для игр
 	applic:LoadScreenshots( updates.fileScreenshots )
 	
+	--загружаем линки
+	updates.LoadLinks()
+	
 	--загружаем профиль
-	applic:LoadProfile( applic:GetCurrentProfile(), applic:GetCurrentProfileCompany() )
+	applic:LoadProfile( applic.profile, applic:GetCurrentProfileCompany() )
 	
 	--загружаем текущие аддоны для коробки для текущего времени
 	updates.CheckGameBoxAddons()

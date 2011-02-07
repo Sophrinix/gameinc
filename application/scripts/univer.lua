@@ -2,6 +2,8 @@ local base = _G
 
 module( "univer" )
 
+btnDesk = nil
+
 local guienv = base.guienv
 
 local scrWidth = base.scrWidth
@@ -45,7 +47,7 @@ function Show()
 	tutorial.Update( tutorial.STEP_OVERVIEW_UNIVER )
 
 	--stuff plate	
-	button.EqualeTexture( 122, 320, "stuffPlate", univerWindow:Self(), -1, "", "./univer.ShowEmployersWindow()" )
+	btnDesk = button.EqualeTexture( 122, 320, "stuffPlate", univerWindow:Self(), -1, "", "./univer.ShowEmployersWindow()" )
 	
 	--outsourcing
 	button.EqualeTexture( 612, 300, "outsorcing", univerWindow:Self(), -1, "", "./outsourcing.Show()" )
@@ -97,7 +99,7 @@ function ShowUserInfoWindow( x, y, width, height, user )
 end
 
 local function ShowAvaibleEmployers()
-	local maxuser = applic:GetUserNumber()
+	local maxuser = applic.userNumber
 	local hTemp = ( scrHeight - 150 ) / 3
 	
 	local xoffset = 10
