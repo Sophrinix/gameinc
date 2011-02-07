@@ -13,7 +13,7 @@ skillcoding:int=0
 ;techgroup:int=#PT_GAMEENGINE
 timeactual:int=0
 volumecode:int=10000
-textureNormal:string=xtras/engines/simpleEngine/image.jpg
+textureNormal:path=image.jpg
 advTechNumber:int=2
 [genres]
 genre_skill=1
