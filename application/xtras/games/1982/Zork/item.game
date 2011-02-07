@@ -18,11 +18,11 @@ startAdvFuncRating:int=80
 localizationRating:int=80
 gameEngine:string=alpha_engine2
 platformnumber:int=6
-descriptionpath:string=xtras/games/1982/Zork/desc.htm
-recense:string=xtras/games/1982/Zork/recense.htm
-texturenormal:string=xtras/games/1982/Zork/image.png
+descriptionpath:path=desc.htm
+recense:path=recense.htm
+texturenormal:path=image.png
 readyWorkPercent:float=1
-genreModuleNumber:int=1
+genreModuleNumber:int=5
 moduleNumber:int=1
 famous:float=0.5
 gameIsSaling:bool=false
@@ -36,5 +36,9 @@ platform_4=platform_dos
 platform_5=platform_amstradgx4000
 [genres]
 genre_0=genre_quest
+genre_1=genre_place_fantasy
+genre_2=genre_time_history
+genre_3=genre_history_medieval
+genre_4=genre_interactive_fiction
 [techs]
 tech_0=tech_keyboard

@@ -1,6 +1,6 @@
 [properties]
 name:string=Battle of the Bulge
-internalname:string=BattleOfTheBulge
+internalname:string=game_BattleOfTheBulge
 owner:string=Strategic Simulations, Inc.
 startdate:time=y=1982 m=10 d=02 h=0 mi=0
 descriptionPath:string=desc.htm
@@ -18,11 +18,11 @@ startAdvFuncRating:int=80
 localizationRating:int=80
 gameEngine:string=alpha_engine2
 platformnumber:int=4
-descriptionpath:string=xtras/games/1982/Battle of the Bulge/desc.htm
-recense:string=xtras/games/1982/Battle of the Bulge/recense.htm
-texturenormal:string=xtras/games/1982/Battle of the Bulge/image.png
+descriptionpath:path=desc.htm
+recense:path=recense.htm
+texturenormal:path=image.png
 readyWorkPercent:float=1
-genreModuleNumber:int=1
+genreModuleNumber:int=4
 moduleNumber:int=1
 famous:float=0.5
 gameIsSaling:bool=false
@@ -34,5 +34,8 @@ platform_2=platform_atari2600
 platform_3=platform_commodore
 [genres]
 genre_0=genre_strategy
+genre_1=genre_time_history
+genre_2=genre_history_real
+genre_3=genre_war
 [techs]
 tech_0=tech_keyboard

@@ -1,6 +1,6 @@
 [properties]
 name:string=Burger Time
-internalname:string=BurgerTime
+internalname:string=game_BurgerTime
 owner:string=Data East
 startdate:time=y=1982 m=08 d=02 h=0 mi=0
 descriptionPath:string=desc.htm
@@ -18,9 +18,9 @@ startAdvFuncRating:int=80
 localizationRating:int=80
 gameEngine:string=alpha_engine2
 platformnumber:int=1
-descriptionpath:string=xtras/games/1982/BurgerTime/desc.htm
-recense:string=xtras/games/1982/BurgerTime/recense.htm
-texturenormal:string=xtras/games/1982/BurgerTime/image.png
+descriptionpath:path=desc.htm
+recense:path=recense.htm
+texturenormal:path=image.png
 readyWorkPercent:float=1
 genreModuleNumber:int=2
 moduleNumber:int=1
@@ -30,7 +30,7 @@ gameIsSaling:bool=false
 [platforms]
 platform_0=platform_dos
 [genres]
-genre_0=genre_skill
-genre_1=genre_time
+genre_0=genre_action
+genre_1=genre_arcade
 [techs]
 tech_0=tech_keyboard

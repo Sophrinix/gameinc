@@ -1,6 +1,6 @@
 [properties]
 name:string=Novatron
-internalname:string=Novatron
+internalname:string=game_Novatron
 owner:string=VeriSoft Works
 startdate:time=y=1982 m=09 d=08 h=0 mi=0
 descriptionPath:string=desc.htm

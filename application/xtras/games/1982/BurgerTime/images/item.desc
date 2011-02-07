@@ -1,5 +1,5 @@
 [PROPERTIES]
-internalname:string=BurgerTime
+internalname:string=game_BurgerTime
 genreModuleNumber:int=2
 [genres]
 genre_0=genre_skill
