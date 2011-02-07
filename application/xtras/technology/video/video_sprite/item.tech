@@ -1,0 +1,28 @@
+[properties]
+balance:int=71000
+basecode:float=0.3
+codepassed:int=0
+company:string=
+descriptionpath:string=
+enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
+enginecode:float=0.2
+lastworker:user=
+level:int=0
+moduleerrornumber:int=0
+name:string=#TRANSLATE_ST_VIDEO_SRITE
+internalname:string=video_sprite
+price:float=0
+quality:int=100
+readyworkpercent:float=0
+startdate:time=y=1984 m=01 d=01 h=00 mi=00 s=0
+techgroup:int=#PT_VIDEOTECH
+texturehover:string=
+texturenormal:path=image.png
+volumecode:int=0
+nexttechnumber:int=0
+[nexttechs]
+[techRequire]
+video_24bitcolor=30
+[skillRequire]
+skill_video=30
+skill_coding=30
