@@ -6,5 +6,5 @@ internalname:string=magazine
 name:string=Журналы
 level:int=1
 startdate:time=y=1980 m=01 d=01 h=0 mi=0
-texturenormal:string=xtras/reklames/magazine/magazine.png
+texturenormal:path=magazine.png
 popularity:int=55

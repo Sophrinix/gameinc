@@ -6,5 +6,5 @@ internalname:string=paper
 name:string=#STR_PAPER
 startdate:time=y=1980 m=01 d=01 h=0 mi=0
 level:int=1
-texturenormal:string=xtras/reklames/paper/paper.png
+texturenormal:path=paper.png
 popularity:int=22

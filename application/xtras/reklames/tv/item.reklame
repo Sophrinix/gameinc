@@ -7,4 +7,4 @@ popularity:int=88
 maxquality:float=1
 startdate:time=y=1980 m=01 d=01 h=0 mi=0
 priceinday:int=50000
-texturenormal:string=xtras/reklames/tv/tv.png
+texturenormal:path=tv.png
