@@ -1,0 +1,25 @@
+[properties]
+balance:int=1000
+basecode:float=1
+codepassed:int=0
+company:string=
+descriptionpath:string=
+enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
+enginecode:float=0.4
+lastworker:user=
+level:int=0
+moduleerrornumber:int=0
+name:string=#TRANSLATE_MINIGAME_TEXTQUEST
+internalname:string=minigame_textquest
+price:float=0
+quality:int=100
+readyworkpercent:float=0
+startdate:time=y=1982 m=01 d=01 h=00 mi=00 s=0
+techgroup:int=#PT_MINIGAME
+texturehover:string=
+texturenormal:path=image.png
+volumecode:int=0
+nexttechnumber:int=0
+[techRequire]
+[skillRequire]
+skill_coding=10
