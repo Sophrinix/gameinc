@@ -8,4 +8,5 @@ rentprice:int=8000
 maxdiscount:float=0.2
 linediscount:float=0.005
 reject:float=2.0
-texturenormal:string=xtras/diskmachines/dm1/image.png
+internalname:string=diskmachine_dm1
+texturenormal:path=image.png
