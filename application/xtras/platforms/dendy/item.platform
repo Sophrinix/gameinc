@@ -13,4 +13,4 @@ internalname:string=platform_dendy
 ;video:string=черно-белая и цветная
 ;sound:string=
 selldevice:int=60000000
-textureNormal:string=xtras/platforms/dendy/image.png
+textureNormal:path=image.png

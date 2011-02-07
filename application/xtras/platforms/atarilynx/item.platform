@@ -12,4 +12,4 @@ ednddate:time=y=1991 m=01 d=01 h=00 mi=00
 ;video:string=черно-белая и цветная
 ;sound:string=
 selldevice:int=50000
-textureNormal:string=xtras/platforms/atarilynx/image.png
+textureNormal:path=image.png

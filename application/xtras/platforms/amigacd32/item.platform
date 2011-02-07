@@ -11,7 +11,7 @@ enddate:time=y=1995 m=01 d=01 h=00 mi=00
 ;rheight:int=240
 ;sound:string=14,битный звук
 selldevice:int=200000
-textureNormal:string=xtras/platforms/amigacd32/image.png
+textureNormal:path=image.png
 techNumber:int=6
 [techs]
 type_0=CNrpTechnology

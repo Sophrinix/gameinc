@@ -12,4 +12,4 @@ enddate:time=y=2006 m=01 d=01 h=00 mi=00
 ;video:string=256k colors
 ;sound:string=16bit sound
 selldevice:int=102000000
-textureNormal:string=xtras/platforms/playstation/image.png
+textureNormal:path=image.png

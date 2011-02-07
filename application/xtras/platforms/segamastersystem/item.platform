@@ -14,4 +14,4 @@ enddate:time=y=1990 m=01 d=01 h=00 mi=00
 ;video:skill=64 цвета
 ;sound:string=
 selldevice:int=13000000
-textureNormal:string=xtras/platforms/sefamastermind/image.png
+textureNormal:path=image.png

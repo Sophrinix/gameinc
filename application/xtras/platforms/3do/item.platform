@@ -11,7 +11,7 @@ enddate:time=y=1995 m=01 d=01 h=00 mi=00
 ;rheight:int=480
 ;sound:string=16bit sound
 selldevice:int=3000000
-textureNormal:string=xtras/platforms/3do/image.png
+textureNormal:path=image.png
 techNumber:int=6
 [techs]
 type_0=CNrpTechnology

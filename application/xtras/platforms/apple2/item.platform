@@ -10,7 +10,7 @@ enddate:time=y=1994 m=01 d=01 h=00 mi=00
 ;rwidth:int=280
 ;rheight:int=192
 techNumber:int=2
-textureNormal:string=xtras/platforms/apple2/image.png
+textureNormal:path=image.png
 techNumber:int=3
 [techs]
 type_0=CNrpTechnology

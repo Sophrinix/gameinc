@@ -13,4 +13,4 @@ enddate:time=y=1998 m=01 d=01 h=00 mi=00
 ;video:skill=512 colors
 ;video:skill=слои для вывода графики
 selldevice:int=29000000
-textureNormal:string=xtras/platforms/segamegadrive/image.png
+textureNormal:path=image.png

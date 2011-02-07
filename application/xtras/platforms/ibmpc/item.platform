@@ -11,7 +11,7 @@ enddate:time=y=1987 m=01 d=01 h=00 mi=00
 ;rheight:int=144
 ;sound:string=mono
 selldevice:int=24000000
-textureNormal:string=xtras/platforms/ibmpc/image.png
+textureNormal:path=image.png
 techNumber:int=3
 [techs]
 type_0=CNrpTechnology

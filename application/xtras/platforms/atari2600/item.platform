@@ -12,4 +12,4 @@ enddate:time=y=1990 m=01 d=01 h=00 mi=00
 ;video:string=черно-белая и цветная
 ;sound:string=
 selldevice:int=40000000
-textureNormal:string=xtras/platforms/atari2600/image.png
+textureNormal:path=image.png

@@ -12,4 +12,4 @@ enddate:time=y=1990 m=01 d=01 h=00 mi=00
 ;video:string=черно-белая и цветная
 ;video:skill=512 colors
 selldevice:int=10000000
-textureNormal:string=xtras/platforms/necpcengine/image.png
+textureNormal:path=image.png

@@ -11,7 +11,7 @@ enddate:time=y=1992 m=01 d=01 h=00 mi=00
 ;rheight:int=200
 ;sound:string=
 selldevice:int=400000
-textureNormal:string=xtras/platforms/amstradgx4000/image.png
+textureNormal:path=image.png
 techNumber:int=5
 [techs]
 type_0=CNrpTechnology

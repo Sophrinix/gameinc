@@ -12,4 +12,4 @@ enddate:time=y=1995 m=01 d=01 h=00 mi=00
 ;video:string=256k colors
 ;sound:string=
 selldevice:int=500000
-textureNormal:string=xtras/platforms/atarijaguar/image.png
+textureNormal:path=image.png

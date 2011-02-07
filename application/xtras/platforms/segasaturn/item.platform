@@ -12,4 +12,4 @@ enddate:time=y=1996 m=01 d=01 h=00 mi=00
 ;video:string=16M colors
 ;sound:string=24bit sound
 selldevice:int=9500000
-textureNormal:string=xtras/platforms/segasaturn/image.png
+textureNormal:path=image.png

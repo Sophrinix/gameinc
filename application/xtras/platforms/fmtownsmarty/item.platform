@@ -12,4 +12,4 @@ enddate:time=y=1994 m=01 d=01 h=00 mi=00
 ;video:string=32768 colors
 ;sound:string=
 selldevice:int=6000000
-textureNormal:string=xtras/platforms/fmtownsmarty/image.png
+textureNormal:path=image.png

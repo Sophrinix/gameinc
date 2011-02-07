@@ -12,4 +12,4 @@ enddate:time=y=2008 m=01 d=01 h=00 mi=00
 ;video:string=24bit
 ;sound:string=3d, decoder mpeg
 selldevice:int=140000000
-textureNormal:string=xtras/platforms/plastation2/image.png
+textureNormal:path=image.png
