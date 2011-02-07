@@ -1,0 +1,9 @@
+[PROPERTIES]
+internalname:string=game_amazingthing
+genreModuleNumber:int=5
+[genres]
+genre_0=genre_simulator
+genre_1=genre_action
+genre_2=genre_scroll
+genre_3=genre_flight
+genre_4=genre_shooter

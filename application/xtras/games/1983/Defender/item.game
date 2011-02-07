@@ -1,7 +1,7 @@
 [properties]
-name:string=Centipede
-internalname:string=game_centipede
-owner:string=Atari, Inc.
+name:string=Defender
+internalname:string=game_defender
+owner:string=Williams Electronics Inc.
 startdate:time=y=1983 m=03 d=02 h=0 mi=0
 enddate:time=y=1985 m=01 d=02 h=0 mi=0
 moneyDevelop:int=200000
@@ -16,12 +16,12 @@ startBugRating:int=80
 startAdvFuncRating:int=80
 localizationRating:int=80
 gameEngine:string=alpha_engine2
-platformnumber:int=8
+platformnumber:int=7
 descriptionpath:path=desc.htm
 recense:path=recense.htm
 texturenormal:path=images/spl_0.png
 readyWorkPercent:float=1
-genreModuleNumber:int=2
+genreModuleNumber:int=4
 moduleNumber:int=1
 famous:float=0.5
 gameIsSaling:bool=false
@@ -29,14 +29,16 @@ gameIsSaling:bool=false
 [platforms]
 platform_0=platform_apple2
 platform_1=platform_atari2600
-platform_2=platform_atari5200
-platform_3=platform_atari7800
-platform_4=platform_commodore
-platform_5=platform_dos
-platform_6=platform_intellivision
-platfrom_7=platform_colecovision
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_atari5200
+platform_5=platform_intellivision
+platform_6=platform_colecovision
+platfrom_7=
 [genres]
 genre_0=genre_arcade
 genre_1=genre_action
+genre_2=genre_shooter
+genre_3=genre_scroll
 [techs]
 tech_0=tech_keyboard

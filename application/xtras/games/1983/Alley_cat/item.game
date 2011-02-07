@@ -21,7 +21,7 @@ descriptionpath:path=desc.htm
 recense:path=recense.htm
 texturenormal:path=image.png
 readyWorkPercent:float=1
-genreModuleNumber:int=2
+genreModuleNumber:int=5
 moduleNumber:int=1
 famous:float=0.5
 gameIsSaling:bool=false
@@ -31,5 +31,8 @@ platform_0=platform_dos
 [genres]
 genre_0=genre_quest
 genre_1=genre_arcade
+genre_2=genre_animal
+genre_3=genre_animal_cat
+genre_4=genre_action
 [techs]
 tech_0=tech_keyboard

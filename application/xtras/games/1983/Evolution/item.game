@@ -1,7 +1,7 @@
 [properties]
-name:string=Centipede
-internalname:string=game_centipede
-owner:string=Atari, Inc.
+name:string=Evolution
+internalname:string=game_evolution
+owner:string=Sydney Development Corp.
 startdate:time=y=1983 m=03 d=02 h=0 mi=0
 enddate:time=y=1985 m=01 d=02 h=0 mi=0
 moneyDevelop:int=200000
@@ -16,7 +16,7 @@ startBugRating:int=80
 startAdvFuncRating:int=80
 localizationRating:int=80
 gameEngine:string=alpha_engine2
-platformnumber:int=8
+platformnumber:int=5
 descriptionpath:path=desc.htm
 recense:path=recense.htm
 texturenormal:path=images/spl_0.png
@@ -28,13 +28,13 @@ gameIsSaling:bool=false
 ;imageName:string=
 [platforms]
 platform_0=platform_apple2
-platform_1=platform_atari2600
-platform_2=platform_atari5200
-platform_3=platform_atari7800
-platform_4=platform_commodore
-platform_5=platform_dos
-platform_6=platform_intellivision
-platfrom_7=platform_colecovision
+platform_1=platform_commodore
+platform_2=platform_dos
+platform_3=platform_intellivision
+platform_4=platform_colecovision
+platform_5=
+platform_6=
+platfrom_7=
 [genres]
 genre_0=genre_arcade
 genre_1=genre_action

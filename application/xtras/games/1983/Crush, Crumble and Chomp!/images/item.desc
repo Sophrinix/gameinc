@@ -1,0 +1,6 @@
+[PROPERTIES]
+internalname:string=game_crush_crumble_and_chomp
+genreModuleNumber:int=2
+[genres]
+genre_0=genre_strategy
+genre_1=genre_horror

@@ -1,0 +1,7 @@
+[PROPERTIES]
+internalname:string=game_donkeykong
+genreModuleNumber:int=3
+[genres]
+genre_0=genre_arcade
+genre_1=genre_action
+genre_2=genre_platformer

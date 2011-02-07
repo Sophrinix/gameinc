@@ -17,11 +17,11 @@ startAdvFuncRating:int=80
 localizationRating:int=80
 gameEngine:string=alpha_engine2
 platformnumber:int=1
-descriptionpath:string=xtras/games/1983/Big top/desc.htm
-recense:string=xtras/games/1983/Big top/recense.htm
-texturenormal:string=xtras/games/1983/Big top/images/spl_0.png
+descriptionpath:path=desc.htm
+recense:path=recense.htm
+texturenormal:path=images/spl_0.png
 readyWorkPercent:float=1
-genreModuleNumber:int=1
+genreModuleNumber:int=2
 moduleNumber:int=1
 famous:float=0.5
 gameIsSaling:bool=false
@@ -30,5 +30,6 @@ gameIsSaling:bool=false
 platform_0=platform_dos
 [genres]
 genre_0=genre_arcade
+genre_1=genre_platformer
 [techs]
 tech_0=tech_keyboard
