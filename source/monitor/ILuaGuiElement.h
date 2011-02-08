@@ -26,6 +26,7 @@ namespace nrp
 											LUNA_AUTONAME_FUNCTION(class, GetTypeName )\
 											LUNA_AUTONAME_FUNCTION(class, GetID)\
 											LUNA_AUTONAME_FUNCTION(class, GetRelativePosition )\
+											LUNA_AUTONAME_FUNCTION(class, GetCenter)\
 											LUNA_AUTONAME_FUNCTION(class, SetEnabled )\
 											LUNA_AUTONAME_FUNCTION(class, IsEnabled )\
 											LUNA_AUTONAME_FUNCTION(class, GetChildCount )\
@@ -116,6 +117,20 @@ public:
 		lua_pushlightuserdata( L, parent );
 
 		return 1;
+	}
+
+	int GetCenter( lua_State* L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetPosition not need any parameter" ) ) );
+
+		core::position2di pos( 0, 0 );
+
+		IF_OBJECT_NOT_NULL_THEN pos = _object->getRelativePosition().getCenter();
+		lua_pushinteger( L, pos.X );
+		lua_pushinteger( L, pos.Y );
+
+		return 2;
 	}
 
 	int GetRelativePosition( lua_State *L )

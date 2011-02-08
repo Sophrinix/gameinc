@@ -7,6 +7,7 @@
 #include "IUser.h"
 #include "NrpApplication.h"
 #include "LuaCompany.h"
+#include "OpFileSystem.h"
 
 #define NO_POSTFIX
 #define NO_ASSERT
@@ -145,9 +146,12 @@ int CLuaTechnology::Load( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechnology::Load not need parameter");
 
-	NrpText iniFile( lua_tostring( L, 2 ) );
+	NrpText name = lua_tostring( L, 2 );
+	if( !OpFileSystem::IsExist( name ) )
+		name = CNrpApplication::Instance().GetLink( name );
 
-	IF_OBJECT_NOT_NULL_THEN	_object->Load( iniFile );
+	assert( name.size() );
+	IF_OBJECT_NOT_NULL_THEN	_object->Load( name );
 	return 1;	
 }
 

@@ -118,6 +118,10 @@ public:
 	CNrpInvention* GetInvention( const NrpText& name, const NrpText& companyName );
 	void Init();
 
+	void SetLink( const NrpText& name, const NrpText& pathto );
+	NrpText GetLink( const NrpText& name );
+	void LoadLinks( const NrpText& fileName, const NrpText& templateName );
+
 	static NrpText ClassName();
 private:
 	CNrpApplication(void);
@@ -135,6 +139,7 @@ private:
 	ENGINES _engines;
 	PROJECTS _projects;
 	DEVPROJECTS _devProjects;
+	LINK_MAP _links;
 
 	void _BeginNewHour();
 	void _BeginNewDay();

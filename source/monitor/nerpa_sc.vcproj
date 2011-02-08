@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="GameDev"
 	ProjectGUID="{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"
 	RootNamespace="nerpa_sc"
@@ -1489,35 +1489,7 @@
 			Name="Scripts"
 			>
 			<File
-				RelativePath="..\..\application\scripts\bank.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\button.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\callbacks.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\city.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\devRoom.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\director.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\diskManager.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\elmid.lua"
 				>
 			</File>
 			<File
@@ -1525,35 +1497,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\gameboxManager.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\gameprojectManager.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\genres.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\globalVariableInitialize.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\initApp.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\inventionManager.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\journals.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\laboratory.lua"
 				>
 			</File>
 			<File
@@ -1565,15 +1509,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\monitor.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\NerpaActionType.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\office.lua"
 				>
 			</File>
 			<File
@@ -1581,31 +1517,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\plant.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\projectManager.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\projectSelect.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\reklameManager.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\localization\russian.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\safe.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\saleManager.lua"
 				>
 			</File>
 			<File
@@ -1614,10 +1526,6 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\sceneWork.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\shop.lua"
 				>
 			</File>
 			<File
@@ -1641,29 +1549,181 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\testerComp.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\topGame.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\tutorial.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\univer.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\updates.lua"
 				>
 			</File>
-			<File
-				RelativePath="..\..\application\scripts\userManager.lua"
+			<Filter
+				Name="tutorial"
 				>
-			</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorial.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialBank.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialCity.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialDirector.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialLab.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialMedia.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialOffice.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialPlant.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialProjectSelect.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialUniver.lua"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="scenes"
+				>
+				<File
+					RelativePath="..\..\application\scripts\bank.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\city.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\diskManager.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\gameboxManager.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\inventionManager.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\laboratory.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\plant.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\reklameManager.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\univer.lua"
+					>
+				</File>
+				<Filter
+					Name="shop"
+					>
+					<File
+						RelativePath="..\..\application\scripts\journals.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\saleManager.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\shop.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\topGame.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="office"
+					>
+					<File
+						RelativePath="..\..\application\scripts\devRoom.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\director.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gameprojectManager.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\monitor.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\office.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\projectManager.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\projectSelect.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\safe.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\testerComp.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\userManager.lua"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="gui"
+				>
+				<File
+					RelativePath="..\..\application\scripts\button.lua"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="init"
+				>
+				<File
+					RelativePath="..\..\application\scripts\elmid.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\genres.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\initApp.lua"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Logger"

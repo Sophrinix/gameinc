@@ -36,29 +36,23 @@ CLASS_NAME CLASS_CLUAPPLICATION( "CLuaApplication" );
 BEGIN_LUNA_METHODS(CLuaApplication)
 	LUNA_ILUAOBJECT_HEADER( CLuaApplication )
 	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompany )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyByName )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatformNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatform )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadPlatform )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddLuaFunction )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveLuaFunction )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTechNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTech )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddPublicTechnology )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUser )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUserByName )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveUser )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCurrentProfile )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCurrentProfileCompany )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateProfile )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, ResetData )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadProfile )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateNewFreeUsers )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddonNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameBoxAddon )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameBoxAddon )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameBoxAddon )
@@ -75,11 +69,18 @@ BEGIN_LUNA_METHODS(CLuaApplication)
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPda )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPauseBetweenStep )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, SetPauseBetweenStep )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadLinks )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaApplication)
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "playerCompany", GetPlayerCompany, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "bank", GetBank, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "companyNumber", GetCompanyNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "platformNumber", GetPlatformNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "techNumber", GetTechNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "userNumber", GetUserNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "profile", GetCurrentProfile, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "boxAddonNumber", GetGameBoxAddonNumber, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaApplication::CLuaApplication(lua_State *L, bool ex)	: ILuaProject(L, CLASS_CLUAPPLICATION, ex )	//конструктор
@@ -172,7 +173,13 @@ int CLuaApplication::RemoveLuaFunction( lua_State* L )
 
 int CLuaApplication::GetTechNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetTechNumber", TECHNUMBER, 0 ) );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		lua_pushinteger( L, GetParam_<int>( L, "property", TECHNUMBER, 0 ) );
+		return 1;
+	}
+
+	lua_pushnil( L ); 
 	return 1;
 }
 
@@ -218,7 +225,13 @@ int CLuaApplication::AddPublicTechnology( lua_State* L )
 
 int CLuaApplication::GetUserNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetUserNumber", USERNUMBER, 0 ) );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		lua_pushinteger( L, GetParam_<int>( L, "property", USERNUMBER, 0 ) );
+		return 1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -277,7 +290,13 @@ int CLuaApplication::RemoveUser( lua_State* L )
 
 int CLuaApplication::GetCurrentProfile( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetCurrentProfile", PROFILENAME, "" ) );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		lua_pushstring( L, GetParam_<NrpText>( L, "property", PROFILENAME, "" ) );
+		return 1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -333,10 +352,13 @@ int CLuaApplication::CreateNewFreeUsers( lua_State* L )
 
 int CLuaApplication::GetCompanyNumber( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetCompanyNumber need int parameter" );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		lua_pushinteger( L, (int)(*_object)[ COMPANIESNUMBER ] );
+		return 1;
+	}
 
-	IF_OBJECT_NOT_NULL_THEN	lua_pushinteger( L, (int)(*_object)[ COMPANIESNUMBER ] );
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -374,10 +396,13 @@ int CLuaApplication::GetCompanyByName( lua_State* L )
 
 int CLuaApplication::GetGameBoxAddonNumber( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetGameBoxAddonNumber not need any parameter" );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		lua_pushinteger( L, (*_object)[ BOXADDONNUMBER ] );
+		return 1;
+	}
 
-	IF_OBJECT_NOT_NULL_THEN	lua_pushinteger( L, (*_object)[ BOXADDONNUMBER ] );
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -523,7 +548,7 @@ int CLuaApplication::AddGameToMarket( lua_State* L )
 	CNrpGame* game = _GetLuaObject< CNrpGame, CLuaGame >( L, 2, false );
 	assert( game != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN	_object->AddGameToMarket( game );
+	IF_OBJECT_NOT_NULL_THEN _object->AddGameToMarket( game );
 
 	return 1;	
 }
@@ -640,7 +665,13 @@ const char* CLuaApplication::ClassName()
 
 int CLuaApplication::GetPlatformNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetPlatformNumber", PLATFORMNUMBER, 0 ) );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		lua_pushinteger( L, GetParam_<int>( L, "property", PLATFORMNUMBER, 0 ) );
+		return 1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -683,6 +714,18 @@ int CLuaApplication::LoadPlatform( lua_State* L )
 
 	lua_pushboolean( L, ret );
 	return 1;		
+}
+
+int CLuaApplication::LoadLinks( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaApplication:LoadLinks need PathToFile, templateName parameter" );
+
+	NrpText pathTo = lua_tostring( L, 2 );
+	NrpText tmpName = lua_tostring( L, 3 );
+
+	IF_OBJECT_NOT_NULL_THEN _object->LoadLinks( pathTo, tmpName );
+	return 1;
 }
 
 }//namespace nrp  

@@ -33,6 +33,7 @@ private:
 
 	void Load( const NrpText& fileName );
 	NrpText Save( const NrpText& fileName ) { return ""; };
+	bool _AddImage( STRINGS& art, const NrpText& fileName );
 };
 
 }//end namespace nrp

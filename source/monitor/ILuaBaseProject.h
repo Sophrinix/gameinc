@@ -43,8 +43,11 @@ protected:
 
 	template< class T > T GetParam_( lua_State* L, const NrpText& funcName, const NrpText& paramName, T defValue )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText(":") + funcName + " not need parameter" ) );
+		if( funcName != "property" )
+		{
+			int argc = lua_gettop(L);
+			luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText(":") + funcName + " not need parameter" ) );
+		}
 
 		IF_OBJECT_NOT_NULL_THEN	defValue = (*_object)[ paramName ].As<T>();
 		return defValue;

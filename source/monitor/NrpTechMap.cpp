@@ -927,13 +927,13 @@ void CNrpTechMap::draw()
 				NrpText text = cell.BrokenText;
 				video::ITexture* txs = NULL;
 				int minSize = min( textRect.getWidth(), textRect.getHeight() );
-				core::dimension2di txsSize( minSize, minSize );
+				core::dimension2du txsSize( minSize, minSize );
 				video::SColor alphaColor = 0xFFFFFFFF;
 				if( cell.assignTech != NULL && cell.assignTech->GetTechnology() )
 				{
 					const CNrpTechnology& refTech = *(cell.assignTech->GetTechnology());
 					txs = driver->getTexture( refTech[ TEXTURENORMAL ].As<NrpText>() );
-					txsSize = txs->getOriginalSize();
+					txsSize = txs ? txs->getOriginalSize() : core::dimension2du( minSize, minSize );
 					// draw item text
 					if( TS_INDEVELOP == refTech[ STATUS ].As<int>() )
 					{

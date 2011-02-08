@@ -22,7 +22,8 @@ CNrpButton::CNrpButton( IGUIEnvironment* environment,
 						bool noclip)
 			: IGUIButton( environment, parent, id, rectangle), pressed_(false),
 			isPushButton_(false), useAlphaChannel_(false), border_(true),
-			clickTime_(0), spriteBank_(0), overrideFont_(0), image_(0), pressedImage_(0), hoveredImage_(NULL)
+			clickTime_(0), spriteBank_(0), overrideFont_(0), image_(0), pressedImage_(0), hoveredImage_(NULL),
+			_alphaImage( NULL )
 {
 	pressed_ = false;
 	setNotClipped(noclip);
@@ -98,8 +99,7 @@ bool CNrpButton::OnEvent(const SEvent& event)
 	{
 	case EET_KEY_INPUT_EVENT:
 		if (event.KeyInput.PressedDown &&
-			(event.KeyInput.Key == KEY_RETURN || 
-			event.KeyInput.Key == KEY_SPACE))
+			(event.KeyInput.Key == KEY_RETURN || event.KeyInput.Key == KEY_SPACE))
 		{
 			if (!isPushButton_)
 				setPressed(true);
@@ -156,6 +156,19 @@ bool CNrpButton::OnEvent(const SEvent& event)
 	}
 
 	return Parent ? Parent->OnEvent(event) : false;
+}
+
+bool CNrpButton::isPointInside(const core::position2di& point) const
+{
+	bool isMyPoint = AbsoluteClippingRect.isPointInside(point);
+	if( isMyPoint && _alphaImage )
+	{
+		core::position2di relPoint = point - AbsoluteClippingRect.UpperLeftCorner;
+		video::SColor color = _alphaImage->getPixel( relPoint.X, relPoint.Y );
+		isMyPoint = color.getAlpha() > 10;
+	}
+
+	return isMyPoint;
 }
 
 bool CNrpButton::ButtonLMouseUp_( const irr::SEvent& event )
@@ -341,12 +354,33 @@ void CNrpButton::setImage(video::ITexture* image)
 							? core::recti(core::position2d<s32>(0,0), image->getOriginalSize()) 
 							: core::recti( 0, 0, 0, 0 );
 	_SwapImage( image_, image, imageRect_, rectangle );
+	_CreateMask( image );
+}
+
+void CNrpButton::_CreateMask(video::ITexture* image)
+{
+	if( _alphaImage )
+		_alphaImage->drop();
+
+	if( image )
+	{
+		_alphaImage = Environment->getVideoDriver()->createImageFromData ( image->getColorFormat(), 
+			image->getSize(), 
+			image->lock(), 
+			false  //copy mem 
+			); 
+
+		image->unlock();
+	}
+	else 
+		_alphaImage = NULL;
 }
 
 //! Sets the image which should be displayed on the button when it is in its normal state.
 void CNrpButton::setImage(video::ITexture* image, const core::rect<s32>& pos)
 {
 	_SwapImage( image_, image, imageRect_, pos );
+	_CreateMask( image );
 }
 
 //! Sets an image which should be displayed on the button when it is in pressed state. 

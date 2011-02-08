@@ -147,11 +147,11 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
 	for( size_t k=0; k < uList.size(); k++ )
 	{
 		 SetDeveloper( uList[ k ] );
-		 float growExp = (int)(*module)[ CODEVOLUME ] / (int)_self[ BASE_CODEVOLUME ];
+		 int growExp = (int)(*module)[ CODEVOLUME ] / (int)_self[ BASE_CODEVOLUME ];
 		 //опыт пользователя растет по мере выполнения компонентов
 		 //а если у пользователя не было опыта в этом жанре, то он появляется
 		 if( CNrpTechnology* genre = GetGenre( 0 ) )
-			 uList[ k ]->IncreaseExperience( (*genre)[ INTERNAL_NAME ], static_cast< int >( growExp ) );
+			 uList[ k ]->IncreaseExperience( (*genre)[ INTERNAL_NAME ], growExp );
 		 else
 			 assert( genre );
 	}

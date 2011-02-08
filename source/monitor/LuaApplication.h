@@ -33,6 +33,8 @@ public:
 	int AddPlatform( lua_State* L );
 	int LoadPlatform( lua_State* L );
 
+	int LoadLinks( lua_State* L );
+
 	int RemoveLuaFunction( lua_State* L );
 	int AddLuaFunction( lua_State* L );
 	int GetTechNumber( lua_State* L );

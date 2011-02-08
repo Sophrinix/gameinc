@@ -13,7 +13,7 @@ BEGIN_LUNA_METHODS(CLuaBank)
 	LUNA_ILUAOBJECT_HEADER( CLuaBank )
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetMaxCompanyLoan )
-	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoansNumber )
+	
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanID )
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanStartSumm )
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanCompanyName )
@@ -24,6 +24,7 @@ BEGIN_LUNA_METHODS(CLuaBank)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaBank)
+	LUNA_AUTONAME_PROPERTY( CLuaBank, "loansNumber", GetLoansNumber, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaBank::CLuaBank(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUABANK, ex)	//конструктор
@@ -46,7 +47,13 @@ int CLuaBank::GetMaxCompanyLoan( lua_State* L )
 
 int CLuaBank::GetLoansNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_( L, "GetLoansNumber", LOANNUMBER, 0 ));
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		lua_pushinteger( L, GetParam_( L, "property", LOANNUMBER, 0 ));
+		return  1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 

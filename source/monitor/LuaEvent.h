@@ -19,6 +19,7 @@ public:
 	int GetLogText( lua_State* L );
 	int GetTime( lua_State* L );
 	int GetChar( lua_State* L );
+	int GetKey( lua_State* L );
 	int IsKeyDown( lua_State* L );
 	int GetGuiCaller( lua_State* L );
 	static const char* ClassName();

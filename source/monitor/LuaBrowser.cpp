@@ -4,6 +4,7 @@
 #include "HTMLEngine.h"
 #include "NrpBrowserWindow.h"
 #include "NrpApplication.h"
+#include "nrpEngine.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -20,11 +21,11 @@ BEGIN_LUNA_METHODS(CLuaBrowser)
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Show )
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Hide )
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Navigate )
-	LUNA_AUTONAME_FUNCTION( CLuaBrowser, GetWindow )
 	LUNA_AUTONAME_FUNCTION( CLuaBrowser, Move )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaBrowser)
+	LUNA_AUTONAME_PROPERTY( CLuaBrowser, "window", GetWindow, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaBrowser::CLuaBrowser(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUABROWSER, ex )	//конструктор
@@ -86,9 +87,13 @@ int CLuaBrowser::Move( lua_State *L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaBrowser::Move need x, y parameter");
 	
-	position2di pos( lua_tointeger( L, 2 ), lua_tointeger( L, 3 ) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
+		irr::gui::IGUIElement* parent = CNrpEngine::Instance().GetGuiEnvironment()->getRootGUIElement();
+		position2di pos;
+		pos.X = _ReadParam( L, 2, parent->getAbsolutePosition().getWidth(), 0 );
+		pos.Y = _ReadParam( L, 3, parent->getAbsolutePosition().getHeight(), 0 );
+
 		_object->GetBrowserWindow().setRelativePosition( pos );
 	}
 
@@ -97,9 +102,6 @@ int CLuaBrowser::Move( lua_State *L )
 
 int CLuaBrowser::GetWindow( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaBrowser::GetWindow not need any parameter");
-
 	irr::gui::CNrpBrowserWindow* wnd = NULL;
 	IF_OBJECT_NOT_NULL_THEN wnd = &(_object->GetBrowserWindow());
 

@@ -53,6 +53,7 @@ typedef core::array< CNrpPlatform* > PLATFORMS;
 
 typedef core::map< NrpText, CNrpRelation* > RELATION_MAP;
 typedef core::map< NrpText, int > KNOWLEDGE_MAP;
+typedef core::map< NrpText, NrpText > LINK_MAP;
 
 template< typename ARRAY_TYPE, typename OBJECT_TYPE >  
 OBJECT_TYPE* FindByName( const ARRAY_TYPE& arrayT, const NrpText& someName )

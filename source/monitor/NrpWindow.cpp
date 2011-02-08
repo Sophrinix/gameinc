@@ -209,6 +209,14 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 			default:
 				break;
 			}
+		break;
+
+		case EET_KEY_INPUT_EVENT:
+			{
+				DoLuaFunctionsByType( GUIELEMENT_KEY_INPUT, &event );
+			}
+		break;
+
 		default:
 			break;
 		}

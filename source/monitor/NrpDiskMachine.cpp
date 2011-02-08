@@ -18,6 +18,7 @@ CNrpDiskMachine::CNrpDiskMachine(void) : INrpConfig( CLASS_DISKMACHINE, "" )
 	Add<float>( MAXDISCOUNT, 0.f );
 	Add<float>( REJECT, 0.f );
 	Add<float>( LINEDISCOUNT, 0.f );
+	Add<NrpText>( INTERNAL_NAME, "" );
 }
 
 CNrpDiskMachine::~CNrpDiskMachine(void)

@@ -118,7 +118,7 @@ void CNrpInvention::Update( IUser* ptrUser )
 	{
 		float koeff = (int)_self[ INVESTIMENT ] / static_cast< float >( (int)_self[ REALPRICE ] );
 
-		int sumSkill = (int)(*ptrUser)[ ALL_SKILL_SUMM ] * ( koeff + 1 );
+		float sumSkill = (int)(*ptrUser)[ ALL_SKILL_SUMM ] * ( koeff + 1 );
 
 		if( sumSkill < 10 )
 			sumSkill = 10;

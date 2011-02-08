@@ -47,7 +47,7 @@ CNrpBank& CNrpBank::Instance()
 	return *globalBankPointer;
 }
 
-CNrpLoan* CNrpBank::FindLoadByID( u32 id )
+CNrpLoan* CNrpBank::FindLoadByID( int id )
 {
 	for( u32 i=0; i < _loans.size(); i++ )
 		if( (*_loans[ i ])[ ID ] == id )
@@ -64,7 +64,7 @@ void CNrpBank::CreateLoan( const NrpText& name, int money, int percent, int mont
 	endtime = time;
 	endtime.wYear = time.wYear + month / 12;
 	endtime.wMonth = ( time.wMonth + month ) % 12;
-	refLoan[ YEARPERCENT ] = percent;
+	refLoan[ YEARPERCENT ] = static_cast< float >( percent );
 	refLoan[ STARTMONEY ] = money;
 	refLoan[ MONEY ] = money;
 	refLoan[ STARTDATE ] = time;

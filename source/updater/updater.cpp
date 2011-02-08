@@ -20,7 +20,7 @@ bool DownloadFiles ( HINTERNET hFtp, const std::wstring& rootDir )
 	DWORD c = 1024;
 	WIN32_FIND_DATA fd = { 0 }, ft = { 0 };
 
-	if ( !FtpSetCurrentDirectory( hFtp, rootDir.c_str() ) )
+	if ( !FtpSetCurrentDirectoryW( hFtp, rootDir.c_str() ) )
 		wprintf( ( L"Directory " + rootDir + L" are not avaible. Goodbay\n").c_str() );
 
 	HINTERNET hSearch = FtpFindFirstFile( hFtp, NULL, &fd, INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD , 0 );

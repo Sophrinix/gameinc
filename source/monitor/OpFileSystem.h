@@ -3,6 +3,7 @@
 
 namespace nrp
 {
+
 class OpFileSystem
 {
 	OpFileSystem(void);

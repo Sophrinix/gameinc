@@ -319,18 +319,31 @@ void CNrpApplication::_LoadUsers( const NrpText& fileName )
 void CNrpApplication::_InitialyzeSaveDirectories( const NrpText& profileName )
 {
 	NrpText profileDir = OpFileSystem::CheckEndSlash( (NrpText)Param( SAVEDIR ) + profileName );
-	Param( SAVEDIR_PROFILE ) = profileDir;
-	Param( SAVEDIR_INVENTIONS ) = profileDir + "inventions/";
-	Param( SAVEDIR_COMPANIES ) = profileDir + "companies/";
-	Param( SAVEDIR_DEVPR ) = profileDir + "devProjects/";
+	_self[ SAVEDIR_PROFILE ] = profileDir;
+	_self[ SAVEDIR_INVENTIONS ] = profileDir + "inventions/";
+	_self[ SAVEDIR_COMPANIES ] = profileDir + "companies/";
+	_self[ SAVEDIR_DEVPR ] = profileDir + "devProjects/";
 	_self[ SAVEDIR_GAMES ] = profileDir + "games/";
 	_self[ SAVEDIR_PLATFORMS ] = profileDir + "platforms/";
-	Param( SAVEDIR_ENGINES ) = profileDir + "engines/";
-	Param( SAVEDIR_PROJECTS ) = profileDir + "projects/";
-	Param( SAVEDIR_PLANT ) = profileDir + "plant/";
-	Param( SAVEDIR_USERS ) = profileDir + "users/";
-	Param( SAVEINI_PROFILE ) = profileDir + "profile.ini";
-	Param( SAVEDIR_TECHS ) = profileDir + "techs/";
+	_self[ SAVEDIR_ENGINES ] = profileDir + "engines/";
+	_self[ SAVEDIR_PROJECTS ] = profileDir + "projects/";
+	_self[ SAVEDIR_PLANT ] = profileDir + "plant/";
+	_self[ SAVEDIR_USERS ] = profileDir + "users/";
+	_self[ SAVEINI_PROFILE ] = profileDir + "profile.ini";
+	_self[ SAVEDIR_TECHS ] = profileDir + "techs/";
+}
+
+void CNrpApplication::LoadLinks( const NrpText& fileName, const NrpText& templateName )
+{
+	std::auto_ptr<IniFile> ini( new IniFile( fileName ) );
+
+	int number= ini->Get( "options", templateName + L"Number", (int)0 );
+	for( int i=0; i < number; i++ )
+	{
+		NrpText intName = ini->Get( L"options", NrpText( "name" ) + NrpText( (int)i ), NrpText("") );
+		NrpText pathto = ini->Get( L"options", templateName + NrpText( (int)i ), NrpText("") );
+		SetLink( intName, pathto );
+	}
 }
 
 void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyName )
@@ -339,7 +352,7 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 
 	CNrpScript::Instance().TemporaryScript( AFTER_LOAD_SCRIPT, CNrpScript::SA_CREATE );
 
-	NrpText profileIni = Param( SAVEINI_PROFILE );
+	NrpText profileIni = _self[ SAVEINI_PROFILE ];
 	INrpConfig::Load( profileIni );
 
 	_LoadUsers( profileIni );	
@@ -360,7 +373,7 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 		_platforms.push_back( plt );
 	}
 
-	for( int i=0; i < (int)Param( ENGINES_NUMBER ); i++ )
+	for( int i=0; i < (int)_self[ ENGINES_NUMBER ]; i++ )
 	{
 		NrpText saveFolder = rv.Get( SECTION_ENGINES, CreateKeyEngine(i), NrpText("") );
 		_engines.push_back( new CNrpGameEngine( saveFolder, true ) );
@@ -824,7 +837,6 @@ CNrpTechnology* CNrpApplication::GetBoxAddon( const NrpText& name )
 
 void CNrpApplication::AddGameToMarket( CNrpGame* game )
 {
-	
 	assert( game != NULL );
 	if( !game || game->Param( GAMEISSALING ) )
 		return;
@@ -832,24 +844,32 @@ void CNrpApplication::AddGameToMarket( CNrpGame* game )
 	CNrpGame& refGame = *game;
 	refGame[ GAMEISSALING ] = true;
 
-	//когда игра выходит на рынок, то она влияет на него
-	for( int i=0; i < (int)refGame[ GENRE_MODULE_NUMBER ]; i++ )
-	{
-		NrpText genreName = game->GetGenreName( i );
-		//влияние приводит к изменению интереса к жанру игры
-		CNrpTechnology* tech = GetTechnology( genreName );
-		assert( tech );
-		if( tech != NULL )
-		{
-			(*tech)[ INTEREST ] -= (int)refGame[ STARTGAMERATING ] / 1000.f * (float)(*tech)[ INTEREST ];
-#ifdef _DEBUG
-			Log(HW) << "techName " << (NrpText)(*tech)[ NAME ] << ": Interest " << (float)(*tech)[ INTEREST ] << term;
-#endif
-		}
-	}
-
 	if( FindByNameAndIntName< GAMES, CNrpGame >( _games, refGame[ INTERNAL_NAME ] ) == NULL )
 	{
+		//когда игра выходит на рынок, то она влияет на него
+		for( int i=0; i < (int)refGame[ GENRE_MODULE_NUMBER ]; i++ )
+		{
+			NrpText genreName = game->GetGenreName( i );
+			//влияние приводит к изменению интереса к жанру игры
+			CNrpTechnology* tech = GetTechnology( genreName );
+			//такой жанр уже есть на рынке
+			if( tech != NULL )
+			{
+				(*tech)[ INTEREST ] -= (int)refGame[ STARTGAMERATING ] / 1000.f * (float)(*tech)[ INTEREST ];
+				Log(HW) << "techName " << (NrpText)(*tech)[ NAME ] << ": Interest " << (float)(*tech)[ INTEREST ] << term;
+			}
+			else //игры такого жанра на рынке нет, значит надо добавить интереса к игре
+			{
+				NrpText fileName = GetLink( genreName );
+				assert( fileName.size() > 0 );
+				if( fileName.size() > 0 )
+				{
+					CNrpTechnology* newGenre = new CNrpTechnology( fileName );
+					AddTechnology( newGenre );
+				}
+			}
+		}
+
 		_games.push_back( game );
 		_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
 	}
@@ -1001,14 +1021,14 @@ void CNrpApplication::RemoveDevelopProject( const NrpText& name )
 		}
 	}
 
-	Param( DEVELOPPROJECTS_NUMBER ) = static_cast< int >( _devProjects.size() );
+	_self[ DEVELOPPROJECTS_NUMBER ] = static_cast< int >( _devProjects.size() );
 }
 
 void CNrpApplication::AddGame( CNrpGame* ptrGame )
 {
 	assert( ptrGame != NULL );
 	_games.push_back( ptrGame );
-	Param( GAMENUMBER ) = static_cast< int >( _games.size() );
+	_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
 }
 
 void CNrpApplication::AddInvention( const NrpText& fileName, CNrpCompany* parentCompany )
@@ -1114,6 +1134,27 @@ bool CNrpApplication::AddPlatform( CNrpPlatform* platform )
 	}
 
 	return false;
+}
+
+void CNrpApplication::SetLink( const NrpText& name, const NrpText& pathto )
+{
+	assert( !_links.find( name )  );
+	assert( pathto.size() > 0 );
+
+	if( _links.find( name ) == NULL )
+	{
+		_links[ name ] = pathto;
+	}
+}
+
+NrpText CNrpApplication::GetLink( const NrpText& name )
+{
+	LINK_MAP::Node* pIter = _links.find( name );
+	assert( pIter );
+	if( pIter )
+		return pIter->getValue();
+
+	return NrpText();
 }
 
 }//namespace nrp

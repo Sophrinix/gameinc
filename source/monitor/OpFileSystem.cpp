@@ -98,9 +98,8 @@ void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory,
 											const NrpText& templateName,
 											const NrpText& itemName )
 {
-	std::auto_ptr<IniFile> ini( new IniFile( saveFile ) );
+	IniFile ini( saveFile );
 
-	int number= ini->Get( "options", templateName + L"Number", (int)0 );
 	_wfinddata_t fdata;	
 	intptr_t hFile;
 
@@ -122,10 +121,13 @@ void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory,
 						NrpText fileName = CheckEndSlash( directory )+ fdata.name;
 						IniFile rv( fileName );
 
-						ini->Set( L"options", NrpText( "name" ) + NrpText( (int)number ), rv.Get( "properties", "internalname:string", NrpText( "" ) ) );
-						ini->Set( L"options", templateName + NrpText( (int)number ), fileName );
+						int number= ini.Get( "options", templateName + L"Number", (int)0 );
+
+						NrpText intName = rv.Get( "properties", "internalname:string", NrpText( "" ) );
+						ini.Set( L"options", NrpText( "name" ) + NrpText( (int)number ), intName );
+						ini.Set( L"options", templateName + NrpText( (int)number ), fileName );
 						number++;
-						ini->Set( L"options", templateName + L"Number", number );
+						ini.Set( L"options", templateName + L"Number", number );
 					}
 				}
 			
@@ -169,8 +171,8 @@ bool OpFileSystem::IsExist( const NrpText& pathTo )
 	bool ex = ( _waccess( pathTo.ToWide(), 0 ) != -1);
 
 #ifdef _DEBUG
-	if( ! ex )
-		Log(SCRIPT) << "Yказанный файл не существует" <<  pathTo << term;
+	if( !ex )
+		Log(SCRIPT) << "Yказанный файл не существует " <<  pathTo << term;
 #endif
 	return ex;
 }

@@ -103,6 +103,8 @@ public:
 	virtual void setOnClickAction( const NrpText& funcname ) { onClickAction_ = funcname; }
 	virtual nrp::NrpText& getOnClickAction() { return onClickAction_; }
 
+	virtual bool isPointInside(const core::position2d<s32>& point) const;
+
 protected:
 
 	struct ButtonSprite
@@ -130,6 +132,7 @@ protected:
 	video::ITexture* image_;
 	video::ITexture* pressedImage_;
 	video::ITexture* hoveredImage_;
+	video::IImage* _alphaImage;
 
 	core::rect<irr::s32> imageRect_;
 	core::rect<irr::s32> pressedImageRect_;
@@ -141,6 +144,7 @@ protected:
 	bool ButtonLMouseDown_( const irr::SEvent& event );
 	bool ButtonLMouseUp_( const irr::SEvent& event );
 	void _SwapImage( video::ITexture*& dest, video::ITexture* source, core::recti& dstRect, const core::recti& srcRect );
+	void _CreateMask(video::ITexture* image);
 };
 
 }//namespace gui

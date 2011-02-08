@@ -15,15 +15,29 @@ BEGIN_LUNA_METHODS( CLuaEvent )
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetUserData1 )
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetLogText )
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetTime )
-	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetChar )
-	LUNA_AUTONAME_FUNCTION( CLuaEvent, IsKeyDown )
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetGuiCaller )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaEvent)
+	LUNA_AUTONAME_PROPERTY( CLuaEvent, "key", GetKey, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaEvent, "char", GetChar, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaEvent, "keyDown", IsKeyDown, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaEvent::CLuaEvent(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAEVENT, ex) {}
+
+int CLuaEvent::GetKey( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		int ret = _object->KeyInput.Key;
+		lua_pushinteger( L, ret );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
 
 int CLuaEvent::GetUserData1( lua_State* L )
 {
@@ -68,26 +82,26 @@ int CLuaEvent::GetTime( lua_State* L )
 
 int CLuaEvent::GetChar( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaEvent:GetChar not need any parameter");
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		NrpText ret = _object->KeyInput.Char;
+		lua_pushstring( L, ret.ToStr() );
+		return 1;
+	}
 
-	char text[ 10 ] = { 0 };
-	IF_OBJECT_NOT_NULL_THEN	WideCharToMultiByte( CP_ACP, 0, &(_object->KeyInput.Char), 1, text, 1, "", false );
- 
-	lua_pushstring( L, text );
-
+	lua_pushnil( L );
 	return 1;
 }
 
 int CLuaEvent::IsKeyDown( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaEvent:GetChar not need any parameter");
-
-	int isDown = 0;
-	IF_OBJECT_NOT_NULL_THEN	isDown = _object->KeyInput.PressedDown ? 1 : 0;
-	lua_pushboolean( L, isDown );
-
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		lua_pushboolean( L, _object->KeyInput.PressedDown );
+		return 1;
+	}
+	
+	lua_pushnil( L );
 	return 1;	
 }
 

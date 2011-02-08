@@ -144,7 +144,7 @@ int CLuaCompany::AddGameEngine( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:AddGameEngine need CNrpGameEngine parameter" );
 
-	CNrpGameEngine* ptrGameEng = (CNrpGameEngine*)lua_touserdata( L, 2 );
+	CNrpGameEngine* ptrGameEng = _GetLuaObject< CNrpGameEngine, ILuaObject >( L, 2, true );
 
 	IF_OBJECT_NOT_NULL_THEN _object->AddGameEngine( ptrGameEng );
 

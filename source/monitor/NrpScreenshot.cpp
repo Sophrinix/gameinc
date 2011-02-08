@@ -5,8 +5,9 @@
 #include "nrpConfig.h"
 #include "NrpGame.h"
 
-#define SCREENSHOTNAME( index ) "scr_" + NrpText( index ) + ".png"
-#define SPLASHSHOTNAME( index ) "spl_" + NrpText( index ) + ".png"
+#define SCREENSHOTNAME( index, psx ) "scr_" + NrpText( index ) + (psx)
+#define SPLASHSHOTNAME( index, psx ) "spl_" + NrpText( index ) + (psx)
+
 
 namespace nrp
 {
@@ -54,6 +55,17 @@ int CNrpScreenshot::GetEqualeRating( CNrpGame* game )
 	return ( equale * 100 / _genres.size() );
 }
 
+bool CNrpScreenshot::_AddImage( STRINGS& art, const NrpText& fileName )
+{
+	if( OpFileSystem::IsExist( fileName ) )
+	{
+		art.push_back( fileName );
+		return true;
+	}
+
+	return false;
+}
+
 void CNrpScreenshot::Load( const NrpText& fileName )
 {
 	INrpConfig::Load( fileName );
@@ -64,22 +76,28 @@ void CNrpScreenshot::Load( const NrpText& fileName )
 	NrpText folder = OpFileSystem::UpDir( fileName );
 	//найдем все скриншоты игры
 	int k = 0;
-	NrpText imageName = folder + SCREENSHOTNAME( k );
-	while( OpFileSystem::IsExist( imageName ) )
+	bool mayAdded = true;
+	
+	while( mayAdded )
 	{
-		_imagesPath.push_back( imageName );
+		mayAdded = false;
+
+		mayAdded |= _AddImage( _imagesPath, folder + SCREENSHOTNAME( k, ".png" ) );
+		mayAdded |= _AddImage( _imagesPath, folder + SCREENSHOTNAME( k, ".jpg" ) );
+
 		k++;
-		imageName = folder + SCREENSHOTNAME( k );
 	}
 	_self[ IMAGESNUMBER ] = static_cast< int >( _imagesPath.size() );
 	//найдем все скриншоты заставок
 	k = 0;
-	imageName = folder + SPLASHSHOTNAME( k );
-	while( OpFileSystem::IsExist( imageName ) )
+	mayAdded = true;
+	while( mayAdded )
 	{
-		_imagesBoxPath.push_back( imageName );
+		mayAdded = false;
+		mayAdded |= _AddImage( _imagesBoxPath, folder + SPLASHSHOTNAME( k, ".png" ) );
+		mayAdded |= _AddImage( _imagesBoxPath, folder + SPLASHSHOTNAME( k, ".jpg" ) );
+
 		k++;
-		imageName = folder + SCREENSHOTNAME( k );
 	}
 	_self[ IMAGESBOXNUMBER ] = static_cast< int >( _imagesBoxPath.size() );
 	_self[ NAME ] = _self[ INTERNAL_NAME ];
