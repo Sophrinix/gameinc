@@ -13,9 +13,8 @@
 #define DEFINE_PROPERTIES_AND_METHODS(class)	static Luna<class>::FunctionType methods[]; static Luna<class>::PropertyType props[];
 			
 
-#define LUNA_ILUAOBJECT_HEADER(class) LUNA_AUTONAME_FUNCTION(class,	SetObject)\
-									  LUNA_AUTONAME_FUNCTION(class, Self)\
-									  LUNA_AUTONAME_FUNCTION(class, Empty)
+#define LUNA_ILUAOBJECT_PROPERTIES(class) LUNA_AUTONAME_PROPERTY(class,	"object", Self, SetObject)\
+									 	  LUNA_AUTONAME_PROPERTY(class, "empty", Empty, PureFunction )
 
 
 			//реализуемы методы
@@ -65,7 +64,6 @@ protected:
 		{
 			lua_pushnumber(L, 0); 	// ’отим получить значени в нулевой €чейке таблицы
 			lua_gettable(L, index); // get the class table (i.e, self)
-
 			if( force )
 			{
 				ILuaObject** obj = (ILuaObject**)lua_touserdata( L, -1 );
@@ -80,6 +78,32 @@ protected:
 			lua_remove(L, -1);	
 		}
 
+		return ret;
+	}
+
+	int _GetRef( lua_State* vm, int index )
+	{
+		int ret=-1;
+		assert( lua_isfunction(vm, index ) );
+		if( lua_isfunction( vm, index ) )
+		{
+			lua_pushvalue( vm, index );
+			ret = luaL_ref( vm, LUA_REGISTRYINDEX );
+		}
+		else
+		{
+			DumpStack( vm );
+			Traceback( vm );
+
+			if( lua_isstring( vm, index ) )
+			{
+				char dd[ MAX_PATH ];
+				snprintf( dd, MAX_PATH, "need func, btu have string %s \n", lua_tostring( vm, index ) );   
+				OutputDebugString( dd );
+			}
+		}
+
+		assert( ret != -1 );
 		return ret;
 	}
 
@@ -163,7 +187,8 @@ public:
 
 	virtual int SetObject(lua_State *L)
 	{
-		_object = (ObjectType*)lua_touserdata(L, 2);
+		assert( lua_isuserdata( L, -1 ) );
+		_object = (ObjectType*)lua_touserdata(L, -1);
 
 		if( _object == NULL )
 			DebugReport( __FILEW__, __LINE__, _ErrEmptyObject() );
@@ -173,21 +198,13 @@ public:
 
 	virtual int Self( lua_State *L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrNotNeedParam() );
-
 		lua_pushlightuserdata( L, (void*)_object );
-
 		return 1;
 	}
 
 	virtual int Empty( lua_State *L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrNotNeedParam() );
-
-		lua_pushinteger( L, _object == NULL ? 1 : 0 );
-
+		lua_pushboolean( L, _object == NULL );
 		return 1;
 	}
 

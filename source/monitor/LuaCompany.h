@@ -45,6 +45,9 @@ public:
 	int Create( lua_State* L );
 	int GetDevProject( lua_State* L );
 	int StartInvention( lua_State* L );
+	int GetProfitLastYear( lua_State* L );
+	int GetPieCost( lua_State* L );
+	int GetDividend( lua_State* L );
 
 	int GetInventionNumber( lua_State* L );
 	int GetInvention( lua_State* L );

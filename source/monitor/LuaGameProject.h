@@ -20,7 +20,7 @@ public:
 	CLuaGameProject(lua_State *L, bool);		
 	int SetGameEngine( lua_State* L); 
 	int GetGameEngine( lua_State* L ); 
-	int IsMyGameEngine( lua_State* L );
+
 	int GetNumber( lua_State* L );
 
 	int IsMyTech( lua_State* L );
@@ -52,8 +52,6 @@ public:
 	int GetSoundQuality( lua_State* L ); int SetSoundQuality( lua_State* L );
 
 	int GetEngineExtend( lua_State* L );
-	int GetLocalization( lua_State* L );
-	int GetCrossPlatformCode( lua_State* L );
 	int GetCpuUse( lua_State* L );
 	int GetMemoryUse( lua_State* L );
 

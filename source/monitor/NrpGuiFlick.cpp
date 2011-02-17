@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "NrpGuiFlick.h"
 #include "nrpGUIEnvironment.h"
 #include "nrpButton.h"
@@ -18,7 +18,7 @@ namespace gui
 
 //! constructor
 CNrpGuiFlick::CNrpGuiFlick( IGUIEnvironment* guienv, IGUIElement* parent, core::recti rectangle, u32 column, s32 id )
-								  : IGUIListBox( guienv, parent, id, rectangle ), _column( column ) 
+								  : IGUIWindow( guienv, parent, id, rectangle ), _column( column ) 
 {
 	core::recti btnRect( 0, 0, 1, 1 );
 

@@ -84,10 +84,12 @@ void CNrpGUIEnvironment::LoadFonts_()
 }
 //////////////////////////////////////////////////////////////////////////
 
-CNrpGUIEnvironment::CNrpGUIEnvironment( gui::IGUIEnvironment* native_gui )
+CNrpGUIEnvironment::CNrpGUIEnvironment( gui::IGUIEnvironment* native_gui, ICursorControl* cursor )
 {
 	_nativeEnv = native_gui;
-	dragObject_ = NULL;
+	_dragObjectSave = NULL;
+	_dragTexture = NULL;
+	_cursor = cursor;
 	CreateSkin_();
 }
 //////////////////////////////////////////////////////////////////////////
@@ -189,6 +191,26 @@ void CNrpGUIEnvironment::drawAll()
 	_deletionQueue.clear();
 
 	_nativeEnv->drawAll();
+
+	for( u32 i=0; i < _overlay.size(); i++ )
+	{
+		if( _overlay[ i ]->getParent() )
+			_overlay[ i ]->getParent()->bringToFront( _overlay[ i ] );
+		_overlay[ i ]->draw();
+	}
+
+	if( _dragObjectSave )
+	{
+		video::IVideoDriver* driver = _nativeEnv->getVideoDriver();
+		if( _dragTexture )
+		{
+			core::dimension2di size = _dragObjectSave->getAbsolutePosition().getSize();
+			core::position2di pos = _cursor->getPosition() - size / 2;
+			core::recti rectangle( pos, core::dimension2du( size.Width, size.Height ) );
+			driver->draw2DImage( _dragTexture, rectangle, core::recti( core::position2di( 0, 0 ), _dragTexture->getOriginalSize() ),
+				                 0, 0, true );
+		}
+	}
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -249,7 +271,7 @@ irr::gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* caption,
 	return _nativeEnv->addMessageBox( caption, text, modal, flags, parent, id, image );
 }
 
-gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 flags, core::array< const char* >& funcNames )
+gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 flags, core::array< int >& funcRefs )
 {
 	core::dimension2du scrsize = getVideoDriver()->getScreenSize();
 	core::recti rectangle( scrsize.Width / 2 - 200, scrsize.Height / 2 - 100, scrsize.Width / 2 + 200, scrsize.Height / 2 + 100 );
@@ -261,14 +283,14 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 	if( flags & gui::EMBF_YES )
 	{
 		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"Yes", 0 );
-		btn->setOnClickAction( funcNames[ 0 ] );
+		btn->setOnClickAction( funcRefs[ 0 ] );
 	}
 
 	btnRect += core::position2di( rectangle.getWidth() / 2, 0 );
 	if( flags & gui::EMBF_NO )
 	{
 		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"No", 0 );
-		btn->setOnClickAction( NrpText( funcNames[ 1 ] ) );
+		btn->setOnClickAction( funcRefs[ 1 ] );
 	}
 
 	if( flags == 0 )
@@ -276,7 +298,7 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 		CNrpButton* btn = (CNrpButton*)addButton( core::recti( rectangle.getWidth() / 3, rectangle.getHeight() - 50,
 												        	   rectangle.getWidth() * 2 / 3, rectangle.getHeight() - 20 ),
 												  wnd, -1, L"OK", 0 );
-		btn->setOnClickAction( NrpText( funcNames[ 0 ] ) );
+		btn->setOnClickAction( funcRefs[ 0 ] );
 	}
 
 	return wnd;
@@ -662,23 +684,17 @@ void CNrpGUIEnvironment::RemoveAnimators( IGUIElement* elm )
 			addToDeletionQueue( (*it) );
 }
 
-void CNrpGUIEnvironment::setDragObject( IGUIElement* elm )
+void CNrpGUIEnvironment::setDragObject( IGUIElement* elm, video::ITexture* image )
 {
-	if (dragObject_)
-	{
-		RemoveAnimators( dragObject_ );
-		dragObject_->setRelativePosition( dragObjBeginPos_ );
-	}
+	_dragObjectSave = elm;
+	
+	if( _dragTexture )
+		_dragTexture->drop();
 
-	dragObject_ = elm;
-	if (dragObject_)
-	{
-		dragObjBeginPos_ = elm->getRelativePosition().UpperLeftCorner;
-		addCursorPosAnimator( dragObject_, core::position2di( 5, 5 ) );
-		IGUIElement* parent = elm->getParent();
-		if( parent )
-			parent->bringToFront( elm );
-	}
+	_dragTexture = image;
+	if( _dragTexture )
+		_dragTexture->grab();
+	
 }
 
 gui::IGUIListBox* CNrpGUIEnvironment::addComponentListBox( const core::recti& rectangle, gui::IGUIElement* parent, s32 id )
@@ -712,6 +728,12 @@ gui::IGUIAnimator* CNrpGUIEnvironment::addTextRunnerAnimator( IGUIElement* paren
 void CNrpGUIEnvironment::LunchToolTip( IGUIElement* elm )
 {
 
+}
+
+void CNrpGUIEnvironment::AddTopElement( IGUIElement* elm )
+{
+	if( elm )
+		_overlay.push_back( elm );
 }
 
 }//namespace gui

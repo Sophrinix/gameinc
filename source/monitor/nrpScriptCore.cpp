@@ -357,14 +357,12 @@ int ApplicationGetTranslate( lua_State* vm )
 	return 1;
 }
 
-int ApplicationGetSender( lua_State* vm )
+int ApplicationDumpStack( lua_State* vm )
 {
-	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 0, 0, "Function ApplicationGetSender not need parameter");
+	DumpStack( vm );
 
-	lua_pushlightuserdata( vm, CNrpScript::Instance().GetSender() );
-	
 	return 1;
 }
+
 
 }//namespace nrp

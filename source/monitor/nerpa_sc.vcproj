@@ -339,6 +339,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LuaFunctionality.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\LuaFunctionality.h"
 				>
 			</File>
@@ -808,6 +812,26 @@
 					</File>
 					<File
 						RelativePath=".\NrpGuiTimeDestructor.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="layout"
+					>
+					<File
+						RelativePath=".\layout\irrboxlayout.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\layout\irrboxlayout.h"
+						>
+					</File>
+					<File
+						RelativePath=".\layout\irrlayout.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\layout\irrlayout.h"
 						>
 					</File>
 				</Filter>
@@ -1493,19 +1517,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\functions_sceneLogin.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\globalVariableInitialize.lua"
 				>
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\logdefs.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\mainmenu.lua"
 				>
 			</File>
 			<File
@@ -1521,15 +1537,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\sceneLogin.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\sceneWork.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\startDefinition.lua"
 				>
 			</File>
 			<File
@@ -1597,6 +1605,46 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="gui"
+				>
+				<File
+					RelativePath="..\..\application\scripts\button.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\linkbox.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\window.lua"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="init"
+				>
+				<File
+					RelativePath="..\..\application\scripts\elmid.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\genres.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\initApp.lua"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="events"
+				>
+				<File
+					RelativePath="..\..\application\scripts\year1983.lua"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="scenes"
 				>
 				<File
@@ -1604,7 +1652,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\application\scripts\city.lua"
+					RelativePath="..\..\application\scripts\bridge.lua"
 					>
 				</File>
 				<File
@@ -1663,66 +1711,114 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\application\scripts\director.lua"
-						>
-					</File>
-					<File
-						RelativePath="..\..\application\scripts\gameprojectManager.lua"
-						>
-					</File>
-					<File
-						RelativePath="..\..\application\scripts\monitor.lua"
-						>
-					</File>
-					<File
 						RelativePath="..\..\application\scripts\office.lua"
-						>
-					</File>
-					<File
-						RelativePath="..\..\application\scripts\projectManager.lua"
-						>
-					</File>
-					<File
-						RelativePath="..\..\application\scripts\projectSelect.lua"
-						>
-					</File>
-					<File
-						RelativePath="..\..\application\scripts\safe.lua"
 						>
 					</File>
 					<File
 						RelativePath="..\..\application\scripts\testerComp.lua"
 						>
 					</File>
+					<Filter
+						Name="director"
+						>
+						<File
+							RelativePath="..\..\application\scripts\director.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\monitor.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\projectManager.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\projectSelect.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\safe.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\userManager.lua"
+							>
+						</File>
+						<Filter
+							Name="gameProjectManager"
+							>
+							<File
+								RelativePath="..\..\application\scripts\gameprojectManager.lua"
+								>
+							</File>
+							<File
+								RelativePath="..\..\application\scripts\gpmEndPage.lua"
+								>
+							</File>
+							<File
+								RelativePath="..\..\application\scripts\gpmEnginePage.lua"
+								>
+							</File>
+							<File
+								RelativePath="..\..\application\scripts\gpmFunctions.lua"
+								>
+							</File>
+							<File
+								RelativePath="..\..\application\scripts\gpmGenrePage.lua"
+								>
+							</File>
+							<File
+								RelativePath="..\..\application\scripts\gpmPlatformPage.lua"
+								>
+							</File>
+							<File
+								RelativePath="..\..\application\scripts\gpmScenarioPage.lua"
+								>
+							</File>
+							<File
+								RelativePath="..\..\application\scripts\gpmSoundPage.lua"
+								>
+							</File>
+							<File
+								RelativePath="..\..\application\scripts\gpmTechPage.lua"
+								>
+							</File>
+							<File
+								RelativePath="..\..\application\scripts\gpmVideoPage.lua"
+								>
+							</File>
+						</Filter>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="login"
+					>
 					<File
-						RelativePath="..\..\application\scripts\userManager.lua"
+						RelativePath="..\..\application\scripts\LoginFunctions.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\newGame.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\sceneLogin.lua"
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="gui"
-				>
-				<File
-					RelativePath="..\..\application\scripts\button.lua"
+				<Filter
+					Name="city"
 					>
-				</File>
-			</Filter>
-			<Filter
-				Name="init"
-				>
-				<File
-					RelativePath="..\..\application\scripts\elmid.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\genres.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\initApp.lua"
-					>
-				</File>
+					<File
+						RelativePath="..\..\application\scripts\city.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\mainmenu.lua"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

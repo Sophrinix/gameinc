@@ -34,8 +34,6 @@ namespace nrp
 CLASS_NAME CLASS_CLUAPPLICATION( "CLuaApplication" );
 
 BEGIN_LUNA_METHODS(CLuaApplication)
-	LUNA_ILUAOBJECT_HEADER( CLuaApplication )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompany )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyByName )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime )
@@ -59,20 +57,17 @@ BEGIN_LUNA_METHODS(CLuaApplication)
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadGameTimeFromProfile )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, SaveBoxAddonsPrice )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadBoxAddonsPrice )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGamesNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGame )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddGameToMarket )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadScreenshots )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetGameTime )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetInvention )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateDirectorySnapshot )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPda )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPauseBetweenStep )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, SetPauseBetweenStep )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadLinks )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaApplication)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaApplication )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "playerCompany", GetPlayerCompany, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "bank", GetBank, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "companyNumber", GetCompanyNumber, PureFunction )
@@ -81,6 +76,9 @@ BEGIN_LUNA_PROPERTIES(CLuaApplication)
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "userNumber", GetUserNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "profile", GetCurrentProfile, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "boxAddonNumber", GetGameBoxAddonNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "gameNumber", GetGamesNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "pda", GetPda, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "pause", GetPauseBetweenStep, SetPauseBetweenStep )
 END_LUNA_PROPERTIES
 
 CLuaApplication::CLuaApplication(lua_State *L, bool ex)	: ILuaProject(L, CLASS_CLUAPPLICATION, ex )	//конструктор
@@ -146,15 +144,15 @@ int CLuaApplication::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, 
 	luaL_argcheck(L, argc == 3, 3, _ErrStr(funcName + " need string parameter") );
 
 	int typea = lua_tointeger( L, 2 );
-	NrpText fName = lua_tostring( L, 3 );
+	int refFunc = _GetRef( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( rem ) _object->RemoveLuaFunction( typea, fName );
-		else _object->AddLuaFunction( typea, fName );
+		if( rem ) _object->RemoveLuaFunction( typea, refFunc );
+		else _object->AddLuaFunction( typea, refFunc );
 
 #ifdef _DEBUG
-		Log(HW) << NrpText(rem ? "remove " : "added ") << "application:" << fName << term;
+		Log(HW) << NrpText(rem ? "remove " : "added ") << "application:" << refFunc << term;
 #endif
 	}
 
@@ -175,7 +173,7 @@ int CLuaApplication::GetTechNumber( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		lua_pushinteger( L, GetParam_<int>( L, "property", TECHNUMBER, 0 ) );
+		lua_pushinteger( L, GetParam_<int>( L, PROP, TECHNUMBER, 0 ) );
 		return 1;
 	}
 
@@ -227,7 +225,7 @@ int CLuaApplication::GetUserNumber( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		lua_pushinteger( L, GetParam_<int>( L, "property", USERNUMBER, 0 ) );
+		lua_pushinteger( L, GetParam_<int>( L, PROP, USERNUMBER, 0 ) );
 		return 1;
 	}
 
@@ -292,7 +290,7 @@ int CLuaApplication::GetCurrentProfile( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		lua_pushstring( L, GetParam_<NrpText>( L, "property", PROFILENAME, "" ) );
+		lua_pushstring( L, GetParam_<NrpText>( L, PROP, PROFILENAME, "" ) );
 		return 1;
 	}
 
@@ -512,7 +510,7 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 
 int CLuaApplication::GetGamesNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetGamesNumber", GAMENUMBER, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, GAMENUMBER, 0 ) );
 	return 1;
 }
 
@@ -616,46 +614,43 @@ int CLuaApplication::CreateDirectorySnapshot( lua_State* L )
 }
 
 int CLuaApplication::GetPda( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetGameTime not need any parameter" );
+{	
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		pda = (*_object)[ PDA ].As<CNrpPda*>();
 
-	CNrpPda* pda = NULL;
-	IF_OBJECT_NOT_NULL_THEN pda = (*_object)[ PDA ].As<CNrpPda*>();
+		lua_pop( L, argc );
+		lua_pushlightuserdata( L, pda );
+		Luna< CLuaPda >::constructor( L );
+		return 1;
+	}
 
-	lua_pop( L, argc );
-	lua_pushlightuserdata( L, pda );
-	Luna< CLuaPda >::constructor( L );
-
+	lua_pushnil( L );
 	return 1;		
 }
 
 int CLuaApplication::GetPauseBetweenStep( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetPauseBetweenStep not need any parameter" );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int pause = (*_object)[ PAUSEBTWSTEP ];
+		lua_pushinteger( L, pause );
+		return 1;
+	}
 
-	int pause = 0;
-	IF_OBJECT_NOT_NULL_THEN pause = (*_object)[ PAUSEBTWSTEP ];
-	
-	lua_pushinteger( L, pause );
-
+	lua_pushnil( L );
 	return 1;	
 }
 
 int CLuaApplication::SetPauseBetweenStep( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:SetPauseBetweenStep need integer parameter" );
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		(*_object)[ PAUSEBTWSTEP ] =  lua_tointeger( L, -1 );
+	}
 
-	int pause = lua_tointeger( L, 2 );
-	assert( pause > 0  );
-	if( pause <= 0 )
-		return 1;
-
-	IF_OBJECT_NOT_NULL_THEN (*_object)[ PAUSEBTWSTEP ] = pause;
-
-	return 1;	
+	return 0;	
 }
 
 const char* CLuaApplication::ClassName()
@@ -667,7 +662,7 @@ int CLuaApplication::GetPlatformNumber( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		lua_pushinteger( L, GetParam_<int>( L, "property", PLATFORMNUMBER, 0 ) );
+		lua_pushinteger( L, GetParam_<int>( L, PROP, PLATFORMNUMBER, 0 ) );
 		return 1;
 	}
 

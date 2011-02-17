@@ -12,7 +12,6 @@ namespace nrp
 CLASS_NAME CLASS_LUADRIVER( "CLuaDriver" );
 
 BEGIN_LUNA_METHODS(CLuaDriver)
-	LUNA_ILUAOBJECT_HEADER( CLuaDriver )
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
@@ -25,6 +24,7 @@ BEGIN_LUNA_METHODS(CLuaDriver)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaDriver)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaDriver )
 END_LUNA_PROPERTIES
 
 CLuaDriver::CLuaDriver(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUADRIVER, ex)

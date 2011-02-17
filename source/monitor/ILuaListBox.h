@@ -15,6 +15,8 @@ namespace nrp
 										LUNA_AUTONAME_FUNCTION(class, Clear )\
 										LUNA_AUTONAME_FUNCTION(class, SetItemHeigth )
 
+#define LUNA_ILUALISTBOX_PROPERTIES(class) LUNA_ILUAGUIELEMENT_PROPERTIES(class)
+
 template< class T >
 class ILuaListBox : public ILuaGuiElement<T>
 {

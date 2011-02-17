@@ -37,11 +37,15 @@ CNrpBrowserWindow::~CNrpBrowserWindow(void)
 
 bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 {
+	if( !IsVisible )
+		return false;
+
 	switch(event.EventType)
 	{
 	case EET_MOUSE_INPUT_EVENT:
 	{
-		core::position2di mousePos = core::position2di(event.MouseInput.X, event.MouseInput.Y) - image_->getAbsolutePosition().UpperLeftCorner;
+		core::position2di absPos(event.MouseInput.X, event.MouseInput.Y);
+		core::position2di mousePos = absPos - image_->getAbsolutePosition().UpperLeftCorner;
 
 		switch(event.MouseInput.Event)
 		{

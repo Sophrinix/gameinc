@@ -11,7 +11,7 @@ namespace gui
 class CNrpTimer : public IGUIAnimator
 {
 public:
-	CNrpTimer( IGUIEnvironment* environment, IGUIElement* node, size_t time, const NrpText& action );
+	CNrpTimer( IGUIEnvironment* environment, IGUIElement* node, size_t time, int action );
 	~CNrpTimer( void );
 
 	virtual void draw();
@@ -19,7 +19,7 @@ private:
 	size_t _time;
 	size_t _startTime;
 	bool _active;
-	NrpText _action;
+	int _action;
 };
 
 }//namspace gui

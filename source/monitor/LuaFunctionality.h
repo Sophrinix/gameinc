@@ -8,107 +8,35 @@
 	purpose:	Класс работы с виртуальной машиной Lua, размещение 
 				и удаление луа-линков, выполнение луа-линков
 *********************************************************************/
-#pragma once
-#include <irrlicht.h>
-#include "nrpScript.h"
-#include "nrpText.h"
+#ifndef _ILuaFunctionality_H_
+#define _ILuaFunctionality_H_
 
-using irr::core::list;
+#include "nrpText.h"
+#include <map>
 
 class ILuaFunctionality
 {
 protected:
-	typedef struct SFunctionLink
-	{ 
-		int actionType;
-		nrp::NrpText funcName;
-
-		SFunctionLink( int aType, const nrp::NrpText& fName )
-		{
-			actionType = aType;
-			funcName = fName;
-		}
-	} *PFunctionLink;
-
-	typedef list< PFunctionLink > FunctionArray;
-	FunctionArray luaFunctions_;
+	typedef std::map< int, int > FunctionMap;
+	FunctionMap luaFunctions_;
 
 public:
 	ILuaFunctionality(void) {};
-	virtual	~ILuaFunctionality(void) 
-	{
-		FunctionArray::Iterator pIter = luaFunctions_.begin();
+	virtual	~ILuaFunctionality(void);
 
-		if( pIter != luaFunctions_.end() )
-		{
-			delete (*pIter);
-			pIter++;
-		}
-		
-		luaFunctions_.clear();
-	};
-
-
-	FunctionArray::Iterator FindLuaFunction( const int actionType, const nrp::NrpText& funcName )
-	{
-		FunctionArray::Iterator pIter = luaFunctions_.begin();
-
-		for(; pIter != luaFunctions_.end(); pIter++ )				//пробежимся по списку подключенных функций
-		{
-			if( (*pIter)->actionType == actionType &&		//чтобы не было функций с одинаковым типом и именем	
-				(*pIter)->funcName == funcName )
-				return pIter;								//не добавляем одинаколые функции
-		}
-
-		return luaFunctions_.end();
-	}
 	/*
 	Добавление пользовательской функции 
 	*/
-	virtual void AddLuaFunction( const int actionType, const nrp::NrpText& funcName ) 
-	{
-		assert( actionType != 0 );
-		if( FindLuaFunction(actionType, funcName) != luaFunctions_.end() )
-			return;
-
-		luaFunctions_.push_back( new SFunctionLink( actionType, funcName ) );
-	}
+	virtual void AddLuaFunction( int actionType, int funcRef );
 
 	/*
 	Удаление пользовательской функции из списка
 	*/
-	virtual void RemoveLuaFunction( const int actionType, const nrp::NrpText& funcName ) 
-	{
-		FunctionArray::Iterator pIter = FindLuaFunction( actionType, funcName );
+	virtual void RemoveLuaFunction( int actionType, int m );
 
-		if( pIter != luaFunctions_.end() )
-		{
-			delete (*pIter);
-			luaFunctions_.erase( pIter );
-		}
-	}
+	virtual void DoLuaFunctionByRef( int funcType, void* sender, void* param = NULL );
 
-	template< class T > void DoLuaFunctionsByType( int funcType, T* param = NULL )
-	{
-		try
-		{
-			for( FunctionArray::Iterator pIter=luaFunctions_.begin(); 
-				 pIter != luaFunctions_.end(); pIter++ )
-			{
-				if( (*pIter)->actionType == funcType )
-				{
-					nrp::CNrpScript::Instance().SetSender( (void*)param );
-					const wchar_t* tmp = (*pIter)->funcName.ToWide();
-
-					if( *tmp == L'.' && *(tmp+1) == L'/')
-						nrp::CNrpScript::Instance().DoString( tmp+2 );
-					else
-						nrp::CNrpScript::Instance().CallFunction( tmp, (void*)param );
-
-				}
-			}
-		}
-		catch(...)
-		{}
-	}
+	virtual void DoLuaFunctionsByType( int funcType, void* sender, void* param = NULL );
 };
+
+#endif

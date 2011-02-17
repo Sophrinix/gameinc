@@ -5,13 +5,12 @@
 #include <assert.h>
 
 namespace nrp
-{
+{					
 
-#define LUNA_ILUAPROJECT_HEADER(class)	LUNA_ILUABASEPROJECT_HEADER(class)\
-										LUNA_AUTONAME_FUNCTION(class, GetName )\
-										LUNA_AUTONAME_FUNCTION(class, GetUniq )\
-										LUNA_AUTONAME_FUNCTION(class, SetName )\
-										LUNA_AUTONAME_FUNCTION(class, GetTechGroup )
+#define LUNA_ILUAPROJECT_PROPERTIES(class) LUNA_ILUABASEPROJECT_PROPERTIES(class)\
+										LUNA_AUTONAME_PROPERTY(class, "techGroup", GetTechGroup, PureFunction )\
+										LUNA_AUTONAME_PROPERTY(class, "name", GetName, SetName )\
+										LUNA_AUTONAME_PROPERTY(class, "uniq", GetUniq, PureFunction )
 
 template< class T > class ILuaProject : public ILuaBaseProject< T >
 {
@@ -25,31 +24,18 @@ public:
 	virtual ~ILuaProject(void) {};
 protected:
 
-	int GetTechGroup( lua_State* L )
-	{
-		lua_pushnumber( L, GetParam_<int>( L, "GetTechGroup", TECHGROUP, 0 ) );
-		return 1; 
-	}
-
-	int GetName( lua_State* vm )
-	{
-		lua_pushstring( vm, GetParam_<NrpText>( vm, "GetName", NAME, "" ) );
-		return 1;
-	}
-
-	int GetUniq( lua_State* vm )
-	{
-		lua_pushstring( vm, GetParam_<NrpText>( vm, "GetUniq", INTERNAL_NAME, "" ) );
-		return 1;
-	}
+	int GetTechGroup( lua_State* L ) {	lua_pushnumber( L, GetParam_<int>( L, PROP, TECHGROUP, 0 ) ); return 1; }
+	int GetName( lua_State* vm ) { lua_pushstring( vm, GetParam_<NrpText>( vm, PROP, NAME, "" ) ); return 1; }
+	int GetUniq( lua_State* vm ) { lua_pushstring( vm, GetParam_<NrpText>( vm, PROP, INTERNAL_NAME, "" ) ); return 1;	}
 
 	int SetName( lua_State* vm )
 	{
-		int argc = lua_gettop(vm);
-		luaL_argcheck(vm, argc == 2, 2, _ErrStr(":SetName need string parameter") );
-
-		NrpText name = lua_tostring( vm, 2 );
-		IF_OBJECT_NOT_NULL_THEN	(*_object)[ NAME ] = name;
+		assert( lua_isstring( vm, -1 ) );
+		IF_OBJECT_NOT_NULL_THEN	
+		{
+			NrpText name = lua_tostring( vm, -1 );
+			(*_object)[ NAME ] = name;
+		}
 
 		return 1;
 	}

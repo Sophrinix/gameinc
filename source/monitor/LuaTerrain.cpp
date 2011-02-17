@@ -10,7 +10,7 @@ namespace nrp
 CLASS_NAME CLASS_LUATERRAIN( "CLuaTerrain" );
 
 BEGIN_LUNA_METHODS(CLuaTerrain)
-	LUNA_ILUASCENENODE_HEADER( CLuaTerrain )
+	
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
@@ -20,6 +20,7 @@ BEGIN_LUNA_METHODS(CLuaTerrain)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaTerrain)
+	LUNA_ILUASCENENODE_PROPERTIES( CLuaTerrain )
 END_LUNA_PROPERTIES
 
 CLuaTerrain::CLuaTerrain(lua_State *L, bool ex) : ILuaSceneNode(L, CLASS_LUATERRAIN, ex)

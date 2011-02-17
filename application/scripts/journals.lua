@@ -25,7 +25,7 @@ local function ShowAvaibleGames()
 	for i=1, applic:GetGamesNumber() do
 		game = applic:GetGame( i-1 )
 		if game:IsSaling() then
-			lbxGames:AddItem( game:GetName(), game:Self() )
+			lbxGames:AddItem( game:GetName(), game.object )
 		end
 	end	
 end
@@ -41,10 +41,10 @@ function Show()
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", mainWindow:Self(), -1, "",
+		 			    "button_down", mainWindow, -1, "",
 						"./journals.Hide()" )
 						
-		lbxGames = guienv:AddComponentListBox( 320, 50, 730, 520, -1, mainWindow:Self() )						
+		lbxGames = guienv:AddComponentListBox( 320, 50, 730, 520, -1, mainWindow )						
 		--picflowGames = guienv:AddPictureFlow( 60, 10, scrWidth - 10, scrHeight / 3, -1, campaniesWindow:Self() )
 		--picflowGames:SetPictureRect( 0, 0, scrHeight / 3 - 40, scrHeight / 3 - 40 )
 		--picflowGames:SetDrawBorder( false )		

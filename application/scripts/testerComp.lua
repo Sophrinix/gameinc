@@ -77,7 +77,7 @@ function SelectGame()
 	    local dt = testDef.defs[ tg ]
 	    
 	    Log( "module:"..module:GetName() )
-	    if dt and module:Empty() == 0 then
+	    if dt and not module.empty then
 			Log( "module:"..module:GetName().." qua:"..module:GetQuality().."  prc:"..module:GetPercentDone() )
 			local quality = base.math.floor( module:GetQuality() / 100 * (#dt) )
 			

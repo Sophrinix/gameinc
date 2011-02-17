@@ -1,6 +1,7 @@
 #pragma once
 
 #include <irrlicht.h>
+#include "LuaFunctionality.h"
 
 namespace irr
 {
@@ -13,7 +14,7 @@ namespace video
 namespace gui
 {
 
-class CNrpButton : public irr::gui::IGUIButton
+class CNrpButton : public irr::gui::IGUIButton, public ILuaFunctionality
 {
 public:
 
@@ -94,16 +95,17 @@ public:
 	virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options);
 	virtual void setOverrideColor(video::SColor color);
 
-	inline void enableOverrideColor( bool bvalue ) { overrideColorEnabled_ = bvalue; }
+	virtual inline void enableOverrideColor( bool bvalue ) { overrideColorEnabled_ = bvalue; }
 
 	virtual void setScaleImage(bool scaleImage/* =true */ );	
 
 	virtual bool isScalingImage() const;
 
-	virtual void setOnClickAction( const NrpText& funcname ) { onClickAction_ = funcname; }
-	virtual nrp::NrpText& getOnClickAction() { return onClickAction_; }
+	virtual void setOnClickAction( int funcRef );
 
 	virtual bool isPointInside(const core::position2d<s32>& point) const;
+
+	virtual video::ITexture* getImage() { return image_; }
 
 protected:
 
@@ -125,8 +127,6 @@ protected:
 	gui::IGUISpriteBank* spriteBank_;
 	gui::IGUIFont* overrideFont_;
 
-	nrp::NrpText onClickAction_;
-
 	ButtonSprite ButtonSprites[ irr::gui::EGBS_COUNT ];
 
 	video::ITexture* image_;
@@ -141,10 +141,11 @@ protected:
 	irr::video::SColor overrideColor_;
 	bool overrideColorEnabled_;
 
-	bool ButtonLMouseDown_( const irr::SEvent& event );
-	bool ButtonLMouseUp_( const irr::SEvent& event );
+	bool _ButtonLMouseDown( const irr::SEvent& event );
+	bool _ButtonMouseUp( const irr::SEvent& event );
 	void _SwapImage( video::ITexture*& dest, video::ITexture* source, core::recti& dstRect, const core::recti& srcRect );
 	void _CreateMask(video::ITexture* image);
+	void _ClickButton();
 };
 
 }//namespace gui

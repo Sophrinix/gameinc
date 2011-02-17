@@ -42,16 +42,16 @@ function Show()
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", plantWindow:Self(), -1, "",
+		 			    "button_down", plantWindow, -1, "",
 						"./plant.Hide()" )
 	end	
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_PLANT )
 	
 	--box manager
-	btnBoxCreate = button.EqualeTexture( 94, 29, "boxManager", plantWindow:Self(), -1, "", "./gameboxManager.Show()" )
+	btnBoxCreate = button.EqualeTexture( 94, 29, "boxManager", plantWindow, -1, "", "./gameboxManager.Show()" )
 	--produce
-	btnBoxProduce = button.EqualeTexture( 407, 1, "produce", plantWindow:Self(), -1, "", "./diskManager.Show()" )
+	btnBoxProduce = button.EqualeTexture( 407, 1, "produce", plantWindow, -1, "", "./diskManager.Show()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "plant.FadeEnterAction()" )

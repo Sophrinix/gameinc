@@ -9,30 +9,27 @@
 namespace nrp
 {
 
-#define LUNA_ILUAGUIELEMENT_HEADER(class)	LUNA_ILUAOBJECT_HEADER(class)\
-											LUNA_AUTONAME_FUNCTION(class, SetVisible)\
-											LUNA_AUTONAME_FUNCTION(class, GetVisible)\
-											LUNA_AUTONAME_FUNCTION(class, SetName )\
-											LUNA_AUTONAME_FUNCTION(class, SetAlpha )\
-											LUNA_AUTONAME_FUNCTION(class, GetAlpha )\
-											LUNA_AUTONAME_FUNCTION(class, Remove )\
+#define LUNA_ILUAGUIELEMENT_HEADER(class)	LUNA_AUTONAME_FUNCTION(class, Remove )\
 											LUNA_AUTONAME_FUNCTION(class, SetPosition )\
 											LUNA_AUTONAME_FUNCTION(class, SetRect )\
 											LUNA_AUTONAME_FUNCTION(class, MoveRelative )\
-											LUNA_AUTONAME_FUNCTION(class, GetSize )\
-											LUNA_AUTONAME_FUNCTION(class, GetParent )\
-											LUNA_AUTONAME_FUNCTION(class, SetText)\
-											LUNA_AUTONAME_FUNCTION(class, GetText)\
-											LUNA_AUTONAME_FUNCTION(class, GetTypeName )\
-											LUNA_AUTONAME_FUNCTION(class, GetID)\
 											LUNA_AUTONAME_FUNCTION(class, GetRelativePosition )\
-											LUNA_AUTONAME_FUNCTION(class, GetCenter)\
-											LUNA_AUTONAME_FUNCTION(class, SetEnabled )\
-											LUNA_AUTONAME_FUNCTION(class, IsEnabled )\
-											LUNA_AUTONAME_FUNCTION(class, GetChildCount )\
 											LUNA_AUTONAME_FUNCTION(class, GetChild )\
-											LUNA_AUTONAME_FUNCTION(class, RemoveChilds )\
-											LUNA_AUTONAME_FUNCTION(class, SetFont )
+											LUNA_AUTONAME_FUNCTION(class, GetCenter )\
+											LUNA_AUTONAME_FUNCTION(class, RemoveChilds )
+
+#define LUNA_ILUAGUIELEMENT_PROPERTIES(class) LUNA_ILUAOBJECT_PROPERTIES(class)\
+											  LUNA_AUTONAME_PROPERTY(class, "parent", GetParent, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "text", GetText, SetText )\
+											  LUNA_AUTONAME_PROPERTY(class, "visible", GetVisible, SetVisible)\
+											  LUNA_AUTONAME_PROPERTY(class, "enabled", IsEnabled, SetEnabled )\
+											  LUNA_AUTONAME_PROPERTY(class, "alpha", GetAlpha, SetAlpha )\
+											  LUNA_AUTONAME_PROPERTY(class, "size", GetSize, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "typeName", GetTypeName, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "id", GetID, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "font", PureFunction, SetFont )\
+											  LUNA_AUTONAME_PROPERTY(class, "childCount", GetChildCount, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "name", GetName, SetName )
 
 template< class T > class ILuaGuiElement : public ILuaObject< T >
 {
@@ -40,15 +37,30 @@ public:
 	ILuaGuiElement(lua_State *L, NrpText luaName, bool exist) : ILuaObject( L, luaName, exist )
 	{}
 
+	int GetName( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			NrpText name = _object->getName();
+			lua_pushstring( L, name );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
 	int GetChildCount( lua_State* L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetChildCount not need parameter" ) ) );
+		
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			int ret = _object->getChildren().size();
+			lua_pushinteger( L, ret );
+			return 1;
+		}
 
-		int ret = 0;
-		IF_OBJECT_NOT_NULL_THEN ret = _object->getChildren().size();
-
-		lua_pushinteger( L, ret );
+		lua_pushnil( L );
 		return 1;
 	}
 
@@ -75,12 +87,10 @@ public:
 
 	int SetFont( lua_State* L )
 	{	
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetFont need fontName parameter" ) ) );
-		NrpText fontName = lua_tostring( L, 2 );
-
+		assert( lua_isstring( L, -1 ) );
 		IF_OBJECT_NOT_NULL_THEN 
 		{
+			NrpText fontName = lua_tostring( L, -1 );
 			gui::CNrpGUIEnvironment* guienv = dynamic_cast< gui::CNrpGUIEnvironment* >( _nrpEngine.GetGuiEnvironment() ); 
 			_object->setRFont( fontName != NULL ? guienv->getFont( fontName ) : NULL );
 		}
@@ -108,14 +118,13 @@ public:
 
 	int GetParent( lua_State *L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetParent not need any parameter" ) ) );
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushlightuserdata( L, _object->getParent() );
+			return 1;
+		}
 
-		void* parent = NULL;
-
-		IF_OBJECT_NOT_NULL_THEN parent = _object->getParent();
-		lua_pushlightuserdata( L, parent );
-
+		lua_pushnil( L );
 		return 1;
 	}
 
@@ -124,12 +133,14 @@ public:
 		int argc = lua_gettop(L);
 		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetPosition not need any parameter" ) ) );
 
-		core::position2di pos( 0, 0 );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			core::position2di pos = _object->getRelativePosition().getCenter();
+			lua_pushinteger( L, pos.X ); lua_pushinteger( L, pos.Y );
+			return 2;
+		}
 
-		IF_OBJECT_NOT_NULL_THEN pos = _object->getRelativePosition().getCenter();
-		lua_pushinteger( L, pos.X );
-		lua_pushinteger( L, pos.Y );
-
+		lua_pushnil( L ); lua_pushnil( L );
 		return 2;
 	}
 
@@ -149,96 +160,90 @@ public:
 
 	int GetID( lua_State *L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetID not need any parameter" ) ) );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			int id = _object->getID();
+			lua_pushinteger( L, id );
+			return 1;
+		}
 
-		int id = 0;
-
-		IF_OBJECT_NOT_NULL_THEN id = _object->getID();
-		lua_pushinteger( L, id );
-
+		lua_pushnil( L );
 		return 1;
 	}
 
 	int IsEnabled( lua_State *L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":IsEnabled not need any parameter" ) ) );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			bool enabled = _object->isEnabled();
+			lua_pushboolean( L, enabled );
+			return 1;
+		}
 
-		bool enabled = false;
-
-		IF_OBJECT_NOT_NULL_THEN enabled = _object->isEnabled();
-		lua_pushboolean( L, enabled );
-
+		lua_pushnil( L );
 		return 1;
 	}
 
 	int SetText( lua_State *L )									//устанавливает новый текст
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetText need string parameter" ) ) );
-
-		NrpText text( lua_tostring( L, 2 ) );
-
+		assert( lua_isstring( L, -1 ) );
+		NrpText text( lua_tostring( L, -1 ) );
 		IF_OBJECT_NOT_NULL_THEN	_object->setText( text.ToWide() );
-
 		return 1;
 	}
 
 	int GetTypeName( lua_State *L )	
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetTypeName not need any parameter" ) ) );
-
-		NrpText typen("");
 		IF_OBJECT_NOT_NULL_THEN 
 		{
+			NrpText typen("");
+
 			if( _object->getType() < gui::EGUIET_COUNT )
 				typen = _object->getTypeName();
-			else
-				typen = "";
+
+			lua_pushstring( L, typen );
+			return 1;
 		}
 
-		lua_pushstring( L, typen );
-
+		lua_pushnil( L );
 		return 1;
 	}
 
 	int SetEnabled( lua_State *L )	
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetEnabled need boolean parameter" ) ) );
-
-		bool enabled = lua_toboolean( L, 2 ) > 0;
-		IF_OBJECT_NOT_NULL_THEN _object->setEnabled( enabled );
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			bool enabled = lua_toboolean( L, -1 ) > 0;
+			_object->setEnabled( enabled );
+		}
 
 		return 1;
 	}
 
 	int GetText( lua_State *L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetText not need any parameter" ) ) );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			NrpText text = _object->getText();
+			lua_pushstring( L, text );
+			return 1;
+		}
 
-		NrpText text("");
-		IF_OBJECT_NOT_NULL_THEN text = _object->getText();
-
-		lua_pushstring( L, text );
-
+		lua_pushnil( L );
 		return 1;
 	}
 
 	int GetSize( lua_State *L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetSize not need any parameter" ) ) );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			core::recti rectangle = _object->getAbsolutePosition();
+			lua_pushinteger( L, rectangle.getWidth() );
+			lua_pushinteger( L, rectangle.getHeight() );
+			return 2;
+		}
 
-		core::recti rectangle; 
-		IF_OBJECT_NOT_NULL_THEN	rectangle = _object->getAbsolutePosition();
-
-		lua_pushinteger( L, rectangle.getWidth() );
-		lua_pushinteger( L, rectangle.getHeight() );
-
+		lua_pushnil( L ); lua_pushnil( L );
 		return 2;
 	}
 
@@ -263,63 +268,57 @@ public:
 
 	int SetVisible(lua_State *L)							//установка видимости
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( "::SetVisible need bool parameter" ) ) );
-
-		assert( lua_isboolean( L, 2 ) );
-		bool visible = lua_toboolean( L, 2 ) > 0;						//принимает булевое значение в качестве луа-параметра
-
-		IF_OBJECT_NOT_NULL_THEN _object->setVisible( visible );		
-
+		assert( lua_isboolean( L, -1 ) );
+		IF_OBJECT_NOT_NULL_THEN _object->setVisible( lua_toboolean( L, -1 ) > 0 );		
 		return 1;
 	}
 
 	int GetVisible(lua_State *L)							//получение видимости
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( "::self not need any parameter" ) ) );
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushboolean( L, _object->isVisible() );
+			return 1;
+		}
 
-		bool visible = false;
-		IF_OBJECT_NOT_NULL_THEN visible = _object->isVisible();
-
-		lua_pushboolean( L, visible );
-
+		lua_pushnil( L );
 		return 1;
 	}
 
 	int SetName( lua_State* L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetName need string parameter " ) ) );
+		assert( lua_isstring( L, -1 ));
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			NrpText name( lua_tostring( L, -1 ) );
+			_object->setName( name.ToWide() );
+		}
 
-		NrpText name( lua_tostring( L, 2 ) );
-
-		IF_OBJECT_NOT_NULL_THEN	_object->setName( name.ToWide() );
-
-		return 1;
+		return 0;
 	}
 
 	int SetAlpha( lua_State* L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetAlpha need int parameter " ) ) );
-
-		int alpha = lua_tointeger( L, 2 );
-		IF_OBJECT_NOT_NULL_THEN	_object->setAlphaBlend( alpha);
+		assert( lua_isnumber( L, -1 ) );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			int alpha = lua_tointeger( L, -1 );
+			_object->setAlphaBlend( alpha );
+		}
 
 		return 1;
 	}
 
 	int GetAlpha( lua_State* L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetAlpha not need any parameter" ) ) );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			int alpha = _object->getAlphaBlend();
+			lua_pushinteger( L, alpha );
+			return 1;
+		}
 
-		int alpha = 0;
-		IF_OBJECT_NOT_NULL_THEN alpha = _object->getAlphaBlend();
-
-		lua_pushinteger( L, alpha );
-
+		lua_pushnil( L );
 		return 1;
 	}
 

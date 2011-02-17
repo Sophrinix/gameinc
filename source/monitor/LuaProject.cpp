@@ -10,11 +10,10 @@ namespace nrp
 CLASS_NAME CLASS_LUAPROJECT( "CLuaProject" );
 
 BEGIN_LUNA_METHODS(CLuaProject)
-	LUNA_ILUAPROJECT_HEADER( CLuaProject )
-	/*   */
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaProject)
+	LUNA_ILUAPROJECT_PROPERTIES( CLuaProject )
 END_LUNA_PROPERTIES
 
 CLuaProject::CLuaProject(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUAPROJECT, ex)							//конструктор

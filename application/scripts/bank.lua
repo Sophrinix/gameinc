@@ -49,6 +49,8 @@ function Show()
 	--deposit	
 	btnDebt = button.EqualeTexture( 258, 301, "deposit", bankWindow, -1, "", "./bank.ShowDeposits()" )
 	
+	btnBridge = button.EqualeTexture( 300, 300, "", bankWindow, -1, "", "./bridge.Show()" )
+	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "bank.FadeEnterAction()" )
 end
@@ -130,7 +132,7 @@ function ShowLoans()
 end
 
 function GetLoan()
-	bankApp:CreateLoan( company:GetName(), edLoan:GetText(), 14, 10 )
+	bankApp:CreateLoan( company:GetName(), edLoan.text, 14, 10 )
 	FillLoansTable( tblLoans )
 	
 	local summ = bankApp:GetMaxCompanyLoan( company:GetName() )

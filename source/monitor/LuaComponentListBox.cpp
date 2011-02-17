@@ -22,6 +22,7 @@ BEGIN_LUNA_METHODS(CLuaComponentListBox)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaComponentListBox)
+	LUNA_ILUALISTBOX_PROPERTIES( CLuaComponentListBox )
 END_LUNA_PROPERTIES
 
 CLuaComponentListBox::CLuaComponentListBox(lua_State *L, bool ex) : ILuaListBox( L, CLASS_COMPONENTLISTBOX, ex )							//конструктор

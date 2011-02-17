@@ -30,6 +30,7 @@
 #include "NrpGuiFlick.h"
 #include "LuaElement.h"
 #include "LuaFlick.h"
+#include "layout/irrlayout.h"
 
 using namespace irr;
 
@@ -38,8 +39,6 @@ namespace nrp
 CLASS_NAME CLASS_LUAGUI( "CLuaGuiEnvironment" );
 
 BEGIN_LUNA_METHODS( CLuaGuiEnvironment )
-	LUNA_ILUAOBJECT_HEADER( CLuaGuiEnvironment )
-	/*    */
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetRootGUIElement )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddWindow )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddBlenderAnimator )
@@ -69,9 +68,6 @@ BEGIN_LUNA_METHODS( CLuaGuiEnvironment )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLinkBox )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddCursorPosAnimator )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, RemoveAnimators )
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetFocusedElement )
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SetDragObject )
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetDragObject )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddComponentListBox )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, MessageBox )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddListBox )
@@ -83,9 +79,16 @@ BEGIN_LUNA_METHODS( CLuaGuiEnvironment )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextRunner )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLigthing )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddFlick )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLayout )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTopElement )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetDragObject )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SetDragObject )
+
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaGuiEnvironment)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaGuiEnvironment )
+	LUNA_AUTONAME_PROPERTY( CLuaGuiEnvironment, "focus", GetFocusedElement, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaGuiEnvironment::CLuaGuiEnvironment(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAGUI, ex )
@@ -188,7 +191,7 @@ int CLuaGuiEnvironment::AddHoveredAnimator( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddHoveredAnimator need 7 parameter");
 
-	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 2 );
+	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
 	u32 minb = lua_tointeger( vm, 3 );
 	u32 maxb = lua_tointeger( vm, 4 );
 	u32 stepb = lua_tointeger( vm, 5 );
@@ -257,21 +260,40 @@ int CLuaGuiEnvironment::AddMiniMap( lua_State *vm )
 int CLuaGuiEnvironment::AddButton( lua_State *vm )
 {
 	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddButton need 7 parameter");
 
-	gui::IGUIElement* parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 6, true );
-	core::recti rectangle = _ReadRect( vm, 2, parent );
-	s32 id = lua_tointeger( vm, 7 );
-	NrpText text( lua_tostring( vm, 8 ) );
+	gui::IGUIElement* parent = NULL;
+	core::recti rec;
+	NrpText text;
+	s32 id = -1;
+	int action = -1;
+	if( argc == 8 )
+	{
+		luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddButton need 7 parameter");
+		parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 6, true );
+		rec = _ReadRect( vm, 2, parent );
+		id = lua_tointeger( vm, 7 );
+		text = lua_tostring( vm, 8 );
+	}
+	else if( argc == 4 )
+	{
+		luaL_argcheck(vm, argc == 4, 4, "Function CLuaGuiEnvironment:AddButton need 2 parameter");
+		parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 3, true );
+		text = lua_tostring( vm, 2 );
+		action = _GetRef( vm, 4 );
+	}
 
-	gui::IGUIElement* elm = NULL;
-	
-	IF_OBJECT_NOT_NULL_THEN elm = _object->addButton( rectangle,  parent, id, text.ToWide() );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::IGUIButton* elm = _object->addButton( rec,  parent, id, text.ToWide() );
+		if( action > 0 )
+			dynamic_cast< gui::CNrpButton* >( elm )->setOnClickAction( action );
+		lua_pop( vm, argc );
+		lua_pushlightuserdata( vm, (void*)elm );
+		Luna< CLuaButton >::constructor( vm );
+		return 1;
+	}
 
-	lua_pop( vm, argc );
-	lua_pushlightuserdata( vm, (void*)elm );
-	Luna< CLuaButton >::constructor( vm );
-
+	lua_pushnil( vm );
 	return 1;
 }
 
@@ -638,38 +660,47 @@ int CLuaGuiEnvironment::AddCursorPosAnimator( lua_State* vm )
 
 int CLuaGuiEnvironment::GetFocusedElement( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaSceneManager:GetFocusedElement not need any parameter");
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		gui::IGUIElement* elm = _object->getFocus();
+		lua_pushlightuserdata( L, (void*)elm );
+		return 1;
+	}
 
-	gui::IGUIElement* elm = NULL;
-
-	IF_OBJECT_NOT_NULL_THEN elm = _object->getFocus();
-	lua_pushlightuserdata( L, (void*)elm );
-
+	lua_pushnil( L );
 	return 1;
 }
 
 int CLuaGuiEnvironment::SetDragObject( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGuiEnvironment:SetDragObject need ptrUser parameter" );
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaSceneManager:SetDragObject need 2 parameter");
 
-	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 2, true );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 2, true );
+		assert( lua_isstring( L, 3 ) );
+		NrpText texture = lua_tostring( L, 3 );
+		video::ITexture* rr = _object->getVideoDriver()->getTexture( texture );
+		_object->setDragObject( elm, rr );
+	}
 
-	IF_OBJECT_NOT_NULL_THEN _object->setDragObject( elm );
-	return 1;
+	return 0;
 }
 
 int CLuaGuiEnvironment::GetDragObject( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaSceneManager:GetDragObject not need any parameter");
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaSceneManager:GetDragObject not need parameter");
 
-	gui::IGUIElement* elm = NULL;
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		gui::IGUIElement* elm = _object->getDragObject();
+		lua_pushlightuserdata( L, (void*)elm );
+		return 1;
+	}
 
-	IF_OBJECT_NOT_NULL_THEN elm = _object->getDragObject();
-	lua_pushlightuserdata( L, (void*)elm );
-
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -716,15 +747,15 @@ int CLuaGuiEnvironment::AddListBox( lua_State* L )
 int CLuaGuiEnvironment::MessageBox( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	core::array< const char* > funcs; 
+	core::array< int > funcs; 
 	luaL_argcheck(L, argc == 6, 6, "Function CLuaSceneManager:MessageBox need 6 parameter");
 
 	NrpText text( lua_tostring( L, 2 ) );
 	bool btnYesVisible = lua_toboolean( L, 3 )>0;
 	bool btnNoVisible = lua_toboolean( L, 4 )>0;
 
-	funcs.push_back( lua_tostring( L, 5 ) );
-	funcs.push_back( lua_tostring( L, 6 ) );
+	funcs.push_back( _GetRef( L, 5 ) );
+	funcs.push_back( _GetRef( L, 6 ) );
 
 	int flags = (btnYesVisible ? gui::EMBF_YES : 0) | (btnNoVisible ? gui::EMBF_NO : 0 );
 
@@ -841,7 +872,8 @@ int CLuaGuiEnvironment::AddTimer( lua_State* L )
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaGuiEnvironment:FadeOut need int, bool parameter" );
 
 	int time = lua_tointeger( L, 2 );
-	NrpText action( lua_tostring( L, 3 ) );
+	assert( lua_isfunction( L, 3 ) );
+	int action = _GetRef( L, 3 );
 
 	gui::CNrpTimer* timer = NULL;
 	IF_OBJECT_NOT_NULL_THEN 
@@ -915,6 +947,44 @@ int CLuaGuiEnvironment::AddFlick( lua_State* L )
 	Luna< CLuaFlick >::constructor( L );
 
 	return 1;
+}
+
+int CLuaGuiEnvironment::AddLayout( lua_State* L )
+{
+	int argc = lua_gettop( L );
+	luaL_argcheck( L, argc == 8, 8, "Function  CLuaGuiEnvironment:AddLayout need 7 parameter");
+
+	s32 id = lua_tointeger( L, 7 );
+	u32 column = static_cast< u32 >( lua_tointeger( L, 6 ) );
+	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 8, true );
+	core::recti rectangle = _ReadRect( L, 2, parentElem );
+
+	gui::CNrpLayout* elm = NULL;
+	IF_OBJECT_NOT_NULL_THEN elm = new gui::CNrpLayout( _object, parentElem, rectangle, column, id );
+
+	lua_pop( L, argc );
+	lua_pushlightuserdata( L, elm );
+	Luna< CLuaElement >::constructor( L );
+
+	return 1;
+}
+
+int CLuaGuiEnvironment::AddTopElement( lua_State* L )
+{
+	int argc = lua_gettop( L );
+	luaL_argcheck( L, argc == 2, 2, "Function  CLuaGuiEnvironment:AddTopElement need IGuiElement parameter");
+
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 2, true );
+		assert( elm );
+		if( gui::CNrpGUIEnvironment* mg = dynamic_cast< gui::CNrpGUIEnvironment* >( _object ) )
+		{
+			mg->AddTopElement( elm );	
+		}
+	}
+
+	return 0;
 }
 
 }//namespace nrp

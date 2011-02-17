@@ -11,7 +11,6 @@ class CLuaLinkBox : public ILuaGuiElement<irr::gui::CNrpGuiLinkBox>
 public:
 	DEFINE_PROPERTIES_AND_METHODS(CLuaLinkBox)
 
-
 	static const char* ClassName();
 	CLuaLinkBox(lua_State *L, bool);		
 																//нажатии на эту кнопку
@@ -27,6 +26,8 @@ public:
 	int SetData( lua_State* L );
 	int GetData( lua_State* L );
 	int HaveData( lua_State* L );
+	int SetFunction( lua_State* L );
+	int UnsetFunction( lua_State* L );
 
 private:
 	typedef enum { TI_IMAGE=0, TI_HOVER, TI_PRESSED } TYPE_IMAGE;

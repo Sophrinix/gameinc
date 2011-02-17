@@ -25,6 +25,7 @@ BEGIN_LUNA_METHODS(CLuaChart)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaChart)
+	LUNA_ILUAGUIELEMENT_PROPERTIES( CLuaChart )	
 END_LUNA_PROPERTIES
 
 CLuaChart::CLuaChart(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUACHART, ex)							//конструктор

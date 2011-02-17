@@ -11,7 +11,7 @@ namespace gui
 
 const int EGUIET_GUILINK = EGUIET_COUNT + 10;
 
-class CNrpGuiLinkBox : public CNrpButton, public ILuaFunctionality
+class CNrpGuiLinkBox : public CNrpButton
 {
 public:
 
@@ -41,8 +41,6 @@ public:
 	{
 		isDraggable_ = isDraggable;
 	}
-
-	video::ITexture* getImage() { return image_; }
 
 	virtual bool IsDraggable() const { return isDraggable_; }
 
@@ -75,8 +73,8 @@ protected:
 	int moduleType_;
 	bool isDraggable_;
 
-	bool ButtonLMouseUp_( const irr::SEvent& event );
-	bool ButtonLMouseDown_( const irr::SEvent& event );
+	bool _ButtonMouseUp( const irr::SEvent& event );
+	bool _ButtonLMouseDown( const irr::SEvent& event );
 };
 
 }//namespace gui

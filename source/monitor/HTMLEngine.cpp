@@ -260,7 +260,6 @@ void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventI
 		NrpText action = eventIn.getStringValue().c_str();
 		action = DecodeUrl( action.subString( strlen( NRP_NOFOLLOW_SCHEME ), action.size() ) );
 		
-		nrp::CNrpScript::Instance().SetSender( NULL );
 		CNrpScript::Instance().DoString( action );
 		_noFollowLinkExec = false;
 	}

@@ -176,7 +176,7 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 				Dragging = IsDraggable;
 				if (Parent)
 					Parent->bringToFront(this);
-				DoLuaFunctionsByType( GUIELEMENT_LMOUSE_DOWN, &event );
+				DoLuaFunctionsByType( GUIELEMENT_LMOUSE_DOWN, this, (void*)&event );
 				return true;
 			case EMIE_RMOUSE_LEFT_UP:
 			case EMIE_LMOUSE_LEFT_UP:
@@ -184,7 +184,7 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 				DoLuaFunctionsByType( event.MouseInput.Event == EMIE_LMOUSE_LEFT_UP ? 
 											GUIELEMENT_LMOUSE_LEFTUP : 
 											GUIELEMENT_RMOUSE_LEFTUP , 
-									  (void*)&event );
+									  this, (void*)&event );
 				return true;
 			case EMIE_MOUSE_MOVED:
 				if ( !event.MouseInput.isLeftPressed() )
@@ -213,7 +213,7 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 
 		case EET_KEY_INPUT_EVENT:
 			{
-				DoLuaFunctionsByType( GUIELEMENT_KEY_INPUT, &event );
+				DoLuaFunctionsByType( GUIELEMENT_KEY_INPUT, this, (void*)&event );
 			}
 		break;
 
@@ -222,7 +222,7 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 		}
 	}
 
-	return IGUIElement::OnEvent(event);
+	return Parent ? Parent->OnEvent(event) : false;
 }
 
 

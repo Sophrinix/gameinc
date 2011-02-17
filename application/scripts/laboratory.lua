@@ -66,7 +66,7 @@ function FadeExitAction()
 end
 
 local function CreateTechSequence( tech )
-	if tech:Empty() == 1 then
+	if tech.empty then
 		return 
 	end
 	
@@ -76,13 +76,13 @@ local function CreateTechSequence( tech )
 
 		local futureTech = applic:GetTech( internalName );
 		--такой технологии нет на рынке
-		if futureTech:Empty() == 1 then
+		if futureTech.empty then
 			--может у компании ведутся разработки этой технологии,
 			--надо подменить добавляемую технологию
 			local techInvention = applic:GetInvention( internalName, company:GetName() )
 			
 			--исследования не ведутся
-			if techInvention:Empty() == 1 then
+			if techInvention.empty then
 				--добавляем как неизвестную технологию
 				techMap:AddTechnology( tech, internalName )
 			else 

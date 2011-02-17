@@ -10,7 +10,6 @@ namespace nrp
 CLASS_NAME CLASS_LUABANK( "CLuaBank" );
 
 BEGIN_LUNA_METHODS(CLuaBank)
-	LUNA_ILUAOBJECT_HEADER( CLuaBank )
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetMaxCompanyLoan )
 	
@@ -24,6 +23,7 @@ BEGIN_LUNA_METHODS(CLuaBank)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaBank)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaBank )
 	LUNA_AUTONAME_PROPERTY( CLuaBank, "loansNumber", GetLoansNumber, PureFunction )
 END_LUNA_PROPERTIES
 
@@ -49,7 +49,7 @@ int CLuaBank::GetLoansNumber( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		lua_pushinteger( L, GetParam_( L, "property", LOANNUMBER, 0 ));
+		lua_pushinteger( L, GetParam_( L, PROP, LOANNUMBER, 0 ));
 		return  1;
 	}
 

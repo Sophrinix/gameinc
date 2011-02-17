@@ -7,38 +7,32 @@ local driver = base.driver
 local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
 
-local advFuncButtons = { }
-local adminFuncButtons = { }
-local mainMenuButtons = { } 
+local funcLayout = nil
+local adminLayout = nil
+local mainLayout = nil 
 
-local imgTop = 0
-local imgHeight = 32
-local imgWidth = 32
+mainWindow = nil
 
-local mainMenuWindow = nil
-
-function GetWindow()
-	return mainMenuWindow
+function ShowFuncsButtons( vis )
+	mainLayout.visible = not vis
+	adminLayout.visible = false
+	funcLayout.visible = vis
 end
 
-local function AddButton( window, id, x, y, action, pathToTexture )
-		local btn = guienv:AddButton( x, y, x + imgWidth, y + imgHeight, window, id, "" )
-		btn:SetAction( action )
+function ShowAdminButtons( vis )
+	mainLayout.visible = not vis
+	adminLayout.visible = vis
+	funcLayout.visible = false
+end
+
+local function AddButton( window, action, pathToTexture )
+		local btn = guienv:AddButton( 0, 0, 1, 1, window, -1, "" )
+		btn.action = action
 		btn:SetImage( 0, 0, 70, 70, pathToTexture.."_normal.png" )
 		btn:SetHoveredImage( 0, 0, 70, 70, pathToTexture.."_select.png" )
 		btn:SetPressedImage( 0, 0, 70, 70, pathToTexture.."_pressed.png" )
-		btn:SetVisible( false )
 
-		return btn:Self()
-end
-
-local function SetVisibleToArray( ptr, visible )
-	local elm = base.CLuaElement( ptr[ 0 ] )
-	
-	for i=0, #ptr do
-		elm:SetObject( ptr[ i ] )
-		elm:SetVisible( visible )	
-	end
+		return btn
 end
 
 function ToggleConsole()
@@ -46,126 +40,70 @@ function ToggleConsole()
 	con:ToggleVisible()
 end
 
-local function AddAdvancedFunctionButton( menuw )
-	local x = 65
-	
-	local btnCnt = 0
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										  "./mainmenu.ToggleConsole()", "media/top_menu/cmd" )
-	
-	x = x + imgWidth;	btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										  "./userManager.Show()", "media/top_menu/ue" )
-	
-	x = x + imgWidth;	btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										  "sworkToggleGraphicWindowVisible", "media/top_menu/graf" )
-	
-	x = x + imgWidth;	btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										  "sworkSelectModeObjectAction", "media/top_menu/move" )
-	
-	x = x + imgWidth;	btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										  "sworkDrawRegionInSceneAction", "media/top_menu/move" )
-	
+function PureFunction()
 
-	x = 360; btnCnt = btnCnt + 1
-	advFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										  "./mainmenu.ToggleVisibleComanyButtons()", "media/top_menu/back" )
-	
 end
 
-local function AddAdminingFunctionButton( menuw )
-	local x = 65
-	
-	local btnCnt = 0
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										    "sworkWindowReportToggleVisible", "media/top_menu/report" )
+local function AddAdvancedFunctionButton()
+	funcLayout = guienv:AddLayout( "15%", "5%", "80%", "95%", 10, -1, mainWindow ) 	
 
-	x = x + imgWidth; btnCnt = btnCnt + 1
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										    "sworkToggleArchiveWindowVisible", "media/top_menu/targets" )
-	
-	x = x + imgWidth; btnCnt = btnCnt + 1
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										    "sworkToggleHardwareWindowVisible", "media/top_menu/hard" )
+	AddButton( funcLayout, ToggleConsole, "media/top_menu/cmd" )
+	AddButton( funcLayout, base.userManager.Show, "media/top_menu/ue" )
+	AddButton( funcLayout, PureFunction, "media/top_menu/graf" )
+	AddButton( funcLayout, PureFunction, "media/top_menu/move" )
+	AddButton( funcLayout, PureFunction, "media/top_menu/move" )
+	AddButton( funcLayout, function () ShowFuncsButtons( false ) end , "media/top_menu/back" )	
+end
 
-	x = x + imgWidth; btnCnt = btnCnt + 1
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										    "sworkTogglePlayerWindowVisible", "media/top_menu/replay" )
+local function AddAdminingFunctionButton()
+	adminLayout = guienv:AddLayout( "15%", "5%", "80%", "95%", 10, -1, mainWindow ) 	
 
-	x = 360; btnCnt = btnCnt + 1
-	adminFuncButtons[ btnCnt ] = AddButton( menuw:Self(), -1, x, imgTop, 
-										    "AdminingFrameToggleVisible", "media/top_menu/back" )
-
+	AddButton( adminLayout, PureFunction, "media/top_menu/report" )
+	AddButton( adminLayout, PureFunction, "media/top_menu/targets" )
+	AddButton( adminLayout, PureFunction, "media/top_menu/hard" )
+	AddButton( adminLayout, PureFunction, "media/top_menu/replay" )
+	AddButton( adminLayout, function () ShowAdminButtons( false ) end , "media/top_menu/back" )
 end
 
 function Show()
-	local txs = driver:GetTexture( "./media/top_menu/top_nerpa.png")
+	local txs = driver:GetTexture( "media/top_menu/top_nerpa.png")
 	local txsWidth = 0
 	local txsHeight = 0
 	txsWidth, txsHeight = txs:GetSize()
 						  
-	mainMenuWindow = guienv:AddWindow(	"./media/top_menu/top_nerpa.png",
+	mainWindow = guienv:AddWindow(	"media/top_menu/top_nerpa.png",
 			 							scrWidth/2 - txsWidth/2, 0, scrWidth/2 + txsWidth/2, 50,
 										-1,
 										guienv:GetRootGUIElement() )
 																						
-	mainMenuWindow:SetDraggable( false )
-	mainMenuWindow:SetDrawBody( false )
-	guienv:AddHoveredAnimator( mainMenuWindow:Self(), 100, 255, 4, true, false, false )
-
-	local btn = mainMenuWindow:GetCloseButton()
-	btn:SetVisible( false )
+	mainWindow.draggable = false
+	mainWindow.drawBody = false
+	mainWindow.closeButton.visible = false
 	
-	local x = 65
-	local btnCnt = 0
-	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_TRAS_IND, x, imgTop, 
-										    "sworkToggleIndicatorWindowVisible", "media/top_menu/trass" )
+	guienv:AddHoveredAnimator( mainWindow, 100, 255, 4, true, false, false )
+
+
+
+	mainLayout = guienv:AddLayout( "15%", "5%", "70%", "60%", 10, -1, mainWindow ) 
 	
-	x = x + imgWidth;  btnCnt = btnCnt + 1
-	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_START_STOP, x, imgTop, 
-										    "sworkToggleDeviceListenerRejim", "media/top_menu/play" )
-
-	x = x + imgWidth;  btnCnt = btnCnt + 1
-	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_ADMINING, x, imgTop, 
-										    "AdminingFrameToggleVisible", "media/top_menu/settings" )
-
-	x = x + imgWidth;  btnCnt = btnCnt + 1
-	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_FUNC, x, imgTop, 
-										    "./mainmenu.ToggleVisibleComanyButtons()", "media/top_menu/one" )
-	x = 335;  btnCnt = btnCnt + 1
-	--создание метки с часами
-	local timeLabel = guienv:AddLabel( "Время", x - 140, imgTop, x + 40, imgTop + 15, base.ID_DATETIME_LABEL, mainMenuWindow:Self() )
+	AddButton( mainLayout, PureFunction, "media/top_menu/trass" )
+	AddButton( mainLayout, PureFunction, "media/top_menu/play" )
+	AddButton( mainLayout, function () ShowAdminButtons( true ) end, "media/top_menu/settings" )
+	AddButton( mainLayout, function () ShowFuncsButtons( true ) end, "media/top_menu/one" )	
+	AddButton( mainLayout, base.sworkApplicationClose, "media/top_menu/off" )
+	
+	timeLabel = guienv:AddLabel( "Время", "180e", "5%", "130+", "15+", -1, mainLayout )
 	timeLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
-	mainMenuButtons[ btnCnt ] = timeLabel:Self()
-	
-	btnCnt = btnCnt + 1
-	local userLabel = guienv:AddLabel( "UserName", x - 140, imgTop + 17, x + 40, imgTop + 32, base.ID_USERNAME_LABEL, mainMenuWindow:Self() )
+	userLabel = guienv:AddLabel( "UserName", "180e", "50%", "130", "15+", -1, mainLayout )
 	userLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
-	mainMenuButtons[ btnCnt ] = userLabel:Self()
 	
-	x = x + imgWidth; btnCnt = btnCnt + 1
-	mainMenuButtons[ btnCnt ] = AddButton( mainMenuWindow:Self(), ID_QUIT, x, imgTop, 
-										   "sworkApplicationClose", "media/top_menu/off" )
+	AddAdminingFunctionButton()
+	AddAdvancedFunctionButton()
 										   
 	--покажем кнопки главного меню	
-	AddAdminingFunctionButton( mainMenuWindow )
-	AddAdvancedFunctionButton( mainMenuWindow )
-	SetVisibleToArray( mainMenuButtons, true )
-end
-
-function ToggleVisibleComanyButtons()
-	local elm = base.CLuaElement( advFuncButtons[ 0 ] )
-	local visible = not elm:GetVisible()
-	SetVisibleToArray( mainMenuButtons, not visible )
-	SetVisibleToArray( advFuncButtons, visible )	
-end
-
-function ToggleVisibleOptions( ptr )
-	local elm = base.CLuaElement( adminFuncButtons[ 0 ] )
-	local visible = not elm:GetVisible()
-	SetVisibleToArray( mainMenuButtons, not visible )
-	SetVisibleToArray( adminFuncButtons, visible )
+	mainLayout.visible = true
+	adminLayout.visible = false
+	funcLayout.visible = false
+	
+	guienv:AddTopElement( mainWindow )
 end

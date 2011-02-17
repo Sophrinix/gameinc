@@ -12,24 +12,20 @@ namespace nrp
 CLASS_NAME CLASS_LUADISKMACHINE("CLuaDiskMachine");
 
 BEGIN_LUNA_METHODS(CLuaDiskMachine)
-	LUNA_ILUAOBJECT_HEADER( CLuaDiskMachine )
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Create )
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Load )
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, IsLoaded )
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetName )
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, Remove )
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetTexture )
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetDiscount )
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetLineDiscount )
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, SetDiscount )
-	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetMaxDiscount )
 	LUNA_AUTONAME_FUNCTION( CLuaDiskMachine, GetDiskProduced )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaDiskMachine)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaDiskMachine )
+	LUNA_AUTONAME_PROPERTY( CLuaDiskMachine, "name", GetName, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaDiskMachine, "isLoaded", IsLoaded, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaDiskMachine, "texture", GetTexture, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaDiskMachine, "discount", GetDiscount, SetDiscount )
+	LUNA_AUTONAME_PROPERTY( CLuaDiskMachine, "lineDiscount", GetLineDiscount, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaDiskMachine, "maxDiscount", GetMaxDiscount, PureFunction )
 END_LUNA_PROPERTIES
 
 int CLuaDiskMachine::Create( lua_State* L )
@@ -73,43 +69,44 @@ int CLuaDiskMachine::Load( lua_State* L )
 
 int CLuaDiskMachine::IsLoaded( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaDiskMachine::IsLoaded not need any parameter");
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		bool loaded = CNrpPlant::Instance().GetDiskMachine( (*_object)[ NAME ].As<NrpText>() ) != NULL;
+		lua_pushboolean( L, loaded );
+		return 1;
+	}
 
-	bool loaded = false; 
-	IF_OBJECT_NOT_NULL_THEN loaded = CNrpPlant::Instance().GetDiskMachine( (*_object)[ NAME ].As<NrpText>() ) != NULL;
-
-	lua_pushboolean( L, loaded );
+	lua_pushnil(L);
 	return 1;		
 }
 
 int CLuaDiskMachine::GetName( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetName", NAME, "" ) );
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, NAME, "" ) );
 	return 1;		
 }
 
 int CLuaDiskMachine::GetTexture( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetName", TEXTURENORMAL, "" ) );
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "" ) );
 	return 1;		
 }
 
 int CLuaDiskMachine::GetDiscount( lua_State* L )
 {
-	lua_pushnumber( L, GetParam_<float>( L, "GetDiscount", DISCOUNT, 0 ) );
+	lua_pushnumber( L, GetParam_<float>( L, PROP, DISCOUNT, 0 ) );
 	return 1;	
 }
 
 int CLuaDiskMachine::GetLineDiscount( lua_State* L )
 {
-	lua_pushnumber( L, GetParam_<float>( L, "GetLineDiscount", LINEDISCOUNT, 0 ) );
+	lua_pushnumber( L, GetParam_<float>( L, PROP, LINEDISCOUNT, 0 ) );
 	return 1;
 }
 
 int CLuaDiskMachine::SetDiscount( lua_State* L )
 {
-	return SetParam_<float, LUA_NUMBER>( L, "SetDiscount", DISCOUNT, lua_tonumber );	
+	return SetParam_<float, LUA_NUMBER>( L, PROP, DISCOUNT, lua_tonumber );	
 }
 
 int CLuaDiskMachine::GetDiskProduced( lua_State* L )
@@ -130,7 +127,7 @@ int CLuaDiskMachine::GetDiskProduced( lua_State* L )
 
 int CLuaDiskMachine::GetMaxDiscount( lua_State* L )
 {
-	lua_pushnumber( L, GetParam_<float>( L, "GetDiscount", MAXDISCOUNT, 0 ) );
+	lua_pushnumber( L, GetParam_<float>( L, PROP, MAXDISCOUNT, 0 ) );
 	return 1;	
 }
 

@@ -7,17 +7,16 @@ module( "office" )
 local guienv = base.guienv
 local receptionWindow = nil
 
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
 local button = base.button
 local tutorial = base.tutorial
+local window = base.window
 
 btnDirector = nil
 btnDevRoom = nil
 btnResearch = nil
 
 function FadeEnterAction()
-	receptionWindow:SetVisible( true )
+	receptionWindow.visible = true
 	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
@@ -28,37 +27,28 @@ function FadeExitAction()
 end
 
 function Hide()
-	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "office.FadeExitAction()" )	
+	guienv:FadeAction( base.FADE_TIME, false, false)			
+	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
 end
 
 function OpenLabRoom()
-	base.inventionManager.Show( "", base.applic.playerCompany:GetName() )
+	base.inventionManager.Show( "", base.applic.playerCompany.name )
 end
 
 function Show()
 	if receptionWindow then
-		receptionWindow:SetVisible( true )
+		receptionWindow.visible = true
 	else
-		receptionWindow = guienv:AddWindow( "media/maps/reception.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		receptionWindow:GetCloseButton():SetVisible( false )
-		receptionWindow:SetDraggable( false )
-		receptionWindow:SetVisible( false )
-		
-		--adding closeButton
-		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", receptionWindow:Self(), -1, "",
-						"./office.Hide()" )
-		
+		receptionWindow = window.fsWindow( "media/maps/reception.png", Hide )
 	end	
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_RECEPTION )
 	--directors room
-	btnDirector = button.EqualeTexture( 448, 242, "director", receptionWindow, -1, "Dbg:Director", "./director.Show()" )
-	btnDevRoom = button.EqualeTexture( 355, 249, "developers", receptionWindow, -1, "Dbg:DevRoom", "./devRoom.Show()" )
-	btnResearch = button.EqualeTexture( 0, 157, "button_laboratory", receptionWindow, -1, "Dbg:Research", "./office.OpenLabRoom()" )
+	btnDirector = button.EqualeTexture( 448, 242, "director", receptionWindow, -1, "Dbg:Director", base.director.Show )
+	btnDevRoom = button.EqualeTexture( 355, 249, "developers", receptionWindow, -1, "Dbg:DevRoom", base.devRoom.Show )
+	btnResearch = button.EqualeTexture( 0, 157, "button_laboratory", receptionWindow, -1, "Dbg:Research", OpenLabRoom )
 	--
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "office.FadeEnterAction()" )
+	guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
 end

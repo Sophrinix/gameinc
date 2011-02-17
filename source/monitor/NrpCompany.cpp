@@ -20,26 +20,27 @@ CLASS_NAME CLASS_NRPCOMPANY( "CNrpCompany" );
 
 void CNrpCompany::_InitialyzeOptions()
 {
-	Add<int>( BALANCE, 100000 );
+	Add( BALANCE, 100000 );
 	Add<NrpText>( NAME, "" );
 	Add<PUser>( CEO, NULL );
-	Add<int>( ENGINES_NUMBER, 0 );
-	Add<int>( TECHNUMBER, 0 );
-	Add<int>( USERNUMBER, 0 );
-	Add<int>( PROJECTNUMBER, 0 );
-	Add<int>( GAMENUMBER, 0 );
-	Add<int>( OBJECTSINPORTFELLE, 0 );
-	Add<int>( DEVELOPPROJECTS_NUMBER, 0 );
-	Add<float>( FAMOUS, 0.1f );
-	Add<int>( INVENTIONSNUMBER, 0 );
+	Add( ENGINES_NUMBER, 0 );
+	Add( TECHNUMBER, 0 );
+	Add( USERNUMBER, 0 );
+	Add( PROJECTNUMBER, 0 );
+	Add( GAMENUMBER, 0 );
+	Add( OBJECTSINPORTFELLE, 0 );
+	Add( DEVELOPPROJECTS_NUMBER, 0 );
+	Add( FAMOUS, 0.1f );
+	Add( INVENTIONSNUMBER, 0 );
+	Add( PROFIT_LASTYEAR, 0 );
 }
 
 CNrpCompany::CNrpCompany( const NrpText& name, IUser* ceo ) : INrpConfig( CLASS_NRPCOMPANY, name)
 {
 	_InitialyzeOptions();
 
-	Param( NAME ) = name;
-	Param( CEO ) = ceo;
+	_self[ NAME ] = name;
+	_self[ CEO ] = ceo;
 }
 
 CNrpCompany::CNrpCompany( const NrpText& fileName ) : INrpConfig( CLASS_NRPCOMPANY, fileName )
@@ -69,7 +70,7 @@ void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 	if( ptrEng != NULL )
 	{
 		_engines.push_back( ptrEng );
-		Param( ENGINES_NUMBER ) = static_cast< int >( _engines.size() );
+		_self[ ENGINES_NUMBER ] = static_cast< int >( _engines.size() );
 		(*ptrEng)[ COMPANYNAME ] = Text( NAME );
 		(*ptrEng)[ PARENTCOMPANY ] = this;
 	}
@@ -95,7 +96,7 @@ void CNrpCompany::AddProject( INrpProject* ptrProject )
 	if( FindByNameAndIntName< PROJECTS, INrpProject >( _projects, NAME ) == NULL )
 	{
 		_projects.push_back( ptrProject );
-		Param( PROJECTNUMBER ) = static_cast< int >( _projects.size() );
+		_self[ PROJECTNUMBER ] = static_cast< int >( _projects.size() );
 		(*ptrProject)[ COMPANYNAME ] = Text( NAME );
 	}
 }
@@ -208,7 +209,7 @@ void CNrpCompany::Load( const NrpText& loadFolder )
 	NrpText loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + "company.ini";
 	INrpConfig::Load( loadFile );
 
-	PUser ceo = Param( CEO ).As<PUser>();
+	PUser ceo = _self[ CEO ].As<PUser>();
 	if( ceo )
 	    (*ceo)[ PARENTCOMPANY ] = this;
 
@@ -271,7 +272,7 @@ void CNrpCompany::BeginNewDay( const SYSTEMTIME& time )
 				INrpDevelopProject* project = _devProjects[ i ];
 				const PNrpGame game = CreateGame(	(CNrpDevelopGame*)project );
 				RemoveDevelopProject( (*project)[ NAME ] );
-				CNrpApplication::Instance().DoLuaFunctionsByType( APP_PROJECT_FINISHED, game );
+				CNrpApplication::Instance().DoLuaFunctionsByType( APP_PROJECT_FINISHED, this, game );
 				break;
 			}
 		}
@@ -291,7 +292,7 @@ void CNrpCompany::_PaySalaries()
 
 		(*_employers[ cnt ])[ BALANCE ] += salary;
 	}
-	Param( BALANCE ) -= workersSalary;
+	_self[ BALANCE ] -= workersSalary;
 }
 
 void CNrpCompany::AddGame( CNrpGame* game )
@@ -325,7 +326,7 @@ void CNrpCompany::RemoveProject( const NrpText& name )
 		if( _projects[ i ]->Equale( name ) )
 			_projects.erase( i );
 
-	Param( PROJECTNUMBER ) = static_cast< int >( _projects.size() );
+	_self[ PROJECTNUMBER ] = static_cast< int >( _projects.size() );
 }
 
 void CNrpCompany::BeginNewMonth( const SYSTEMTIME& time )
@@ -336,7 +337,7 @@ void CNrpCompany::BeginNewMonth( const SYSTEMTIME& time )
 void CNrpCompany::AddToPortfelle( INrpConfig* const ptrObject )
 {
 	_portfelle.push_back( ptrObject );
-	Param( OBJECTSINPORTFELLE ) = static_cast< int >( _portfelle.size() );
+	_self[ OBJECTSINPORTFELLE ] = static_cast< int >( _portfelle.size() );
 }
 
 INrpConfig* CNrpCompany::GetFromPortfelle( size_t index ) const
@@ -396,7 +397,7 @@ void CNrpCompany::RemoveFromPortfelle( const INrpConfig* ptrObject )
 		if( _portfelle[ i ] == ptrObject )
 			_portfelle.erase( i );
 
-	Param( OBJECTSINPORTFELLE ) = static_cast< int >( _portfelle.size() );
+	_self[ OBJECTSINPORTFELLE ] = static_cast< int >( _portfelle.size() );
 }
 
 void CNrpCompany::AddInvention( CNrpInvention* const inv )
@@ -423,7 +424,7 @@ void CNrpCompany::InventionReleased( const CNrpInvention* inv )
 			//переносом опыта...
 			//в любом случае текущие иследования прекращаются...
 			_nrpApp.InventionCanceled(  _inventions[ p ] );
-			_nrpApp.DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED,  _inventions[ p ] );
+			_nrpApp.DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED, this, _inventions[ p ] );
 			_inventions.erase( p );
 			break;
 		}			
@@ -436,7 +437,7 @@ void CNrpCompany::AddTechnology( CNrpTechnology* tech )
 	if( tech && FindByNameAndIntName< TECHS, CNrpTechnology>( _technologies, tech->Text( NAME ) )== NULL )
 	{
 		_technologies.push_back( tech );
-		Param( TECHNUMBER ) = static_cast< int >( _technologies.size() );
+		_self[ TECHNUMBER ] = static_cast< int >( _technologies.size() );
 	}
 }
 
@@ -468,7 +469,7 @@ void CNrpCompany::RemoveUser( const NrpText& name )
 
 			user->Param( WANTMONEY ) = static_cast< int >( (int)user->Param( SALARY ) * 1.5f );
 			user->Param( PARENTCOMPANY ) = (CNrpCompany*)NULL;
-			Param( USERNUMBER ) =_employers.size();
+			_self[ USERNUMBER ] =_employers.size();
 
 			break;
 		}

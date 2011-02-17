@@ -652,8 +652,8 @@ void CNrpApplication::CreateNewFreeUsers()
 		for( u32 cnt=0; cnt < gIter->getValue()->size(); cnt++ )
 			_users.push_back( (*gIter->getValue())[ cnt ] );
 
-	if( Param( USERNUMBER ) != static_cast< int >( _users.size() ) )
-		DoLuaFunctionsByType<void>( APP_USER_MARKETUPDATE, NULL );
+	if( _self[ USERNUMBER ] != static_cast< int >( _users.size() ) )
+		DoLuaFunctionsByType( APP_USER_MARKETUPDATE, NULL );
 
 	Param( USERNUMBER ) = static_cast< int >( _users.size() );
 }
@@ -661,11 +661,11 @@ void CNrpApplication::CreateNewFreeUsers()
 void CNrpApplication::Init()
 {
 #ifdef _DEBUG
-	Param( WORKDIR ) = OpFileSystem::UpDir( OpFileSystem::UpDir( __argv[ 0 ] ) );
+	_self[ WORKDIR ] = OpFileSystem::UpDir( OpFileSystem::UpDir( __argv[ 0 ] ) );
 #else
-	Param( WORKDIR ) = OpFileSystem::UpDir( __argv[ 0 ] );
+	_self[ WORKDIR ] = OpFileSystem::UpDir( __argv[ 0 ] );
 #endif
-	Param( BANK ) = &CNrpBank::Instance();
+	_self[ BANK ] = &CNrpBank::Instance();
 
 	plugin::CNrpPluginEngine::Instance();
 	//инициализация систем

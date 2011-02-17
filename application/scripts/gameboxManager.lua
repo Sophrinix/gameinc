@@ -199,8 +199,8 @@ local function localCreateBoxViewerAndAddons()
 end
 
 --удаление дополнения к коробке
-function AddonRigthMouseButtonUp()
-	local link = base.CLuaLinkBox( base.NrpGetSender() )
+function AddonRigthMouseButtonUp( mp )
+	local link = base.CLuaLinkBox( mp )
 	 
 	local tech = base.CLuaTech( link:GetData() )
 	base.LogScript( tech:GetName() )
@@ -243,9 +243,9 @@ function MiniBox()
 	localCreateBoxViewerAndAddons()
 end	
 
-function SetGame()
-	local btn = base.CLuaButton( base.NrpGetSender() )
-	currentGame = company:GetGame( btn:GetText() )
+function SetGame( mp )
+	local btn = base.CLuaButton( mp )
+	currentGame = company:GetGame( btn.text )
 	
 	localResetWindow()
 	
@@ -298,10 +298,10 @@ function WindowLeftMouseButtonUp( ptr )
 	dragLink:SetVisible( false )
 end
 
-function LinkLeftMouseButtonUp()
-	local elm = base.CLuaElement( base.NrpGetSender() )
+function LinkLeftMouseButtonUp( mp )
+	local elm = base.CLuaElement( mp )
 	
-	if elm:Empty() == 0 and elm:GetTypeName() == base.ELEMENT_GUILINKBOX then
+	if not elm.empty and elm:GetTypeName() == base.ELEMENT_GUILINKBOX then
 		local linkt = base.CLuaLinkBox( elm ) 
 		currentAddon = base.CLuaTech( linkt:GetData() )
 	        

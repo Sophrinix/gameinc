@@ -16,8 +16,6 @@ namespace nrp
 CLASS_NAME CLASS_LUAPLANT( "CLuaPlant" );
 
 BEGIN_LUNA_METHODS(CLuaPlant)
-	LUNA_ILUAOBJECT_HEADER( CLuaPlant )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, Load )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddProduceWork )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadBaseReklame )
@@ -33,6 +31,7 @@ BEGIN_LUNA_METHODS(CLuaPlant)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaPlant)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaPlant )
 END_LUNA_PROPERTIES
 
 CLuaPlant::CLuaPlant(lua_State *L, bool ex)	: ILuaBaseProject(L, CLASS_LUAPLANT, ex )							//конструктор

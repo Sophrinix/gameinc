@@ -9,7 +9,6 @@ local scrHeight = base.scrHeight
 local appPda = nil
 
 local lbMessage = nil
-local mainWindow = nil
 local animTextRunner = nil
 
 local hw = 192
@@ -17,18 +16,16 @@ local hh = 252
 local offsethh = hh / 3
 local visible = false
 
-function GetWindow()
-	return mainWindow 
-end
+mainWindow = nil
 
 function ToggleVisible()
-	guienv:RemoveAnimators( mainWindow:Self() )
+	guienv:RemoveAnimators( mainWindow )
 	
 	if visible then	
-		guienv:AddMoveAnimator( mainWindow:Self(), 0, scrHeight - offsethh, 
+		guienv:AddMoveAnimator( mainWindow, 0, scrHeight - offsethh, 
 							1, true, true, false )
 	else
-		guienv:AddMoveAnimator( mainWindow:Self(), 0, scrHeight - hh, 
+		guienv:AddMoveAnimator( mainWindow, 0, scrHeight - hh, 
 							1, true, true, false )
 	end
 	
@@ -60,22 +57,24 @@ function Show( textr )
 		mainWindow:SetDraggable( false ) 
 		
 		button.Stretch( 70, 191, 70+53, 191+50, 
-		 			    "pda_down", mainWindow:Self(), -1, "",
-						"./pda.Hide()" )
+		 			    "pda_down", mainWindow, -1, "",
+						Hide )
 						
-		button.Stretch( 10, 190, 40,  240, "suda", mainWindow:Self(), -1, "", "./pda.Prev()" )
-		button.Stretch( hw - 30, 190, hw,  240, "tuda", mainWindow:Self(), -1, "", "./pda.Next()" )
+		button.Stretch( 10, 190, 40,  240, "suda", mainWindow, -1, "", Prev )
+		button.Stretch( hw - 30, 190, hw,  240, "tuda", mainWindow, -1, "", Next )
 						
-		lbMessage = guienv:AddLabel( " ", 30, 30, 162, 252 - 40, -1, mainWindow:Self() )
+		lbMessage = guienv:AddLabel( " ", 30, 30, 162, 252 - 40, -1, mainWindow )
 		lbMessage:SetOverrideFont( "font_7" )
 								 
-		animTextRunner = guienv:AddTextRunner( lbMessage:Self(), "" )
+		animTextRunner = guienv:AddTextRunner( lbMessage, "" )
 		
-		mainWindow:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./pda.ToggleVisible()" )
+		mainWindow:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, ToggleVisible )
 		
 		appPda = base.applic:GetPda()
+		
+		guienv:AddTopElement( mainWindow )
 	else
-		guienv:BringToFront( mainWindow:Self() )
+		guienv:BringToFront( mainWindow )
 	end
 
 	if textr ~= nil then
@@ -84,15 +83,15 @@ function Show( textr )
 		base.CLuaElement( animTextRunner ):SetText( textr )
 	end
 	
-	guienv:RemoveAnimators( mainWindow:Self() )
-	guienv:AddMoveAnimator( mainWindow:Self(), 0, scrHeight - hh, 
+	guienv:RemoveAnimators( mainWindow )
+	guienv:AddMoveAnimator( mainWindow, 0, scrHeight - hh, 
 							1, true, true, false )
 	visible = true
 end
 
 function Hide()
-	guienv:RemoveAnimators( mainWindow:Self() )
-	guienv:AddMoveAnimator( mainWindow:Self(), 0, scrHeight - offsethh, 
+	guienv:RemoveAnimators( mainWindow )
+	guienv:AddMoveAnimator( mainWindow, 0, scrHeight - offsethh, 
 							1, true, true, false )
 	visible = false
 end

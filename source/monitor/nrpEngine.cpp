@@ -134,7 +134,7 @@ bool CNrpEngine::InitVideo()
 	windowHandle_ = FindWindowW( NULL, newCaption.ToWide() );							//заменяем обработчик событий
 	OldWindowProc = (WNDPROC)SetWindowLongW( windowHandle_, GWL_WNDPROC, (long)NewWindowProc);
 
-	guienv_ = new gui::CNrpGUIEnvironment( device_->getGUIEnvironment() );
+	guienv_ = new gui::CNrpGUIEnvironment( device_->getGUIEnvironment(), device_->getCursorControl() );
 
 	device_->setEventReceiver( new CNrpAppEventer( this ) );
 

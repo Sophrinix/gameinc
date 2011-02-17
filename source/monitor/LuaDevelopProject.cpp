@@ -11,8 +11,6 @@ namespace nrp
 CLASS_NAME CLASS_LUADEVPROJECT( "CLuaDevelopProject" );
 
 BEGIN_LUNA_METHODS(CLuaDevelopProject)
-	LUNA_ILUAPROJECT_HEADER( CLuaDevelopProject )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModuleNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModule )
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetFamous )
@@ -20,6 +18,7 @@ BEGIN_LUNA_METHODS(CLuaDevelopProject)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaDevelopProject)
+	LUNA_ILUAPROJECT_PROPERTIES( CLuaDevelopProject )
 END_LUNA_PROPERTIES 
 
 CLuaDevelopProject::CLuaDevelopProject(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUADEVPROJECT, ex)							//конструктор

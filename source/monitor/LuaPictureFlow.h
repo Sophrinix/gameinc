@@ -23,7 +23,7 @@ public:
 	
 	int AddItem( lua_State *L );
 	int GetSelected( lua_State *L );
-	int GetSelectedItem( lua_State* L );
+	int GetSelectedText( lua_State* L );
 	int GetSelectedObject( lua_State* L );
 	int SetSelected( lua_State *L );
 	int SetPictureRect( lua_State* L );

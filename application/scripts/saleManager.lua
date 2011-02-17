@@ -40,14 +40,14 @@ function AnonceGame()
 								     -1, guienv:GetRootGUIElement() ) 
 	windowAnonce:GetCloseButton():SetVisible( false )
 	
-	anoncePictureFlow = guienv:AddPictureFlow( 10, 10, "10e", "50e", -1, windowAnonce:Self() )
+	anoncePictureFlow = guienv:AddPictureFlow( 10, 10, "10e", "50e", -1, windowAnonce )
 	anoncePictureFlow:SetPictureRect( 0, 0, 90, 90 )
 	
 	for i=1, company:GetGameNumber() do
 		local game = company:GetGame( i-1 )
 		
 		if not game:IsSaling() then 
-			anoncePictureFlow:AddItem( game:GetViewImage(), game:GetName(), game:Self() )
+			anoncePictureFlow:AddItem( game:GetViewImage(), game:GetName(), game.object )
 		end	
 	end
 	
@@ -65,7 +65,7 @@ local function localUpdateCurrentGameParams()
 	labelAllTimeSale:SetText( "Продаж за все время:" .. selectedGame:GetAllTimeSales() )
 	--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
 		
-	if selectedGame:GetCompany():Self() == company:Self() then
+	if selectedGame:GetCompany().object == company.object then
 		btnDecreaseGamePrice:SetVisible( true )
 		btnIncreaseGamePrice:SetVisible( true )		
 		labelGamePrice:SetText( "Цена:" .. selectedGame:GetPrice() )
@@ -84,8 +84,8 @@ function UpdateGameParams()
 	end
 end
 
-function ListboxChanged()
-    if base.NrpGetSender() == listboxGames:Self() then
+function ListboxChanged( mp )
+    if mp == listboxGames.object then
 		selectedGame = base.CLuaGame( listboxGames:GetSelectedObject() )
 		localUpdateCurrentGameParams()
     end
@@ -98,7 +98,7 @@ local function localAddGames()
 	for i=1, applic:GetGamesNumber() do
 		game = applic:GetGame( i-1 )
 		if game:IsSaling() then
-			listboxGames:AddItem( game:GetName(), game:Self() )
+			listboxGames:AddItem( game:GetName(), game.object )
 		end
 	end
 end

@@ -26,6 +26,7 @@ NrpText _GetNameFromType( PROJECT_TYPE type )
 	case PT_VIDEOTECH: return VIDEOTECHNUMBER;
 	case PT_SOUNDTECH: return SOUNDTECHNUMBER;
 	case PT_LANGUAGE: return LANGNUMBER;
+	case PT_PHYSIC: return ADVTECHNUMBER;
 	default: assert( false ); return "error";
 	}
 }
@@ -34,7 +35,7 @@ CNrpGameProject::CNrpGameProject( const NrpText& name, CNrpCompany* ptrCompany )
 : INrpProject( CLASS_GAMEPROJECT, name )
 {
 	_InitializeOptions( name );
-	Param( PARENTCOMPANY ) = ptrCompany;
+	_self[ PARENTCOMPANY ] = ptrCompany;
 }
 
 CNrpGameProject::CNrpGameProject( const CNrpGameProject& ptr ) : INrpProject( CLASS_GAMEPROJECT, ptr[ NAME ] )
@@ -138,9 +139,9 @@ void CNrpGameProject::AddTech( const CNrpTechnology* tech )
 	if( PT_GENRE == type )
 	{	
 		PNrpGameEngine ge = _self[ GAME_ENGINE ].As<PNrpGameEngine>();
-		if( (int)arr.size() >= (int)(*ge)[ GENRE_MODULE_NUMBER ] || 
-			!ge->IsMyTech( (*tech)[ INTERNAL_NAME ] ) )
+		if( (int)arr.size() >= (int)(*ge)[ GENRE_MODULE_NUMBER ] ) 
 			return;
+		//!ge->IsMyTech( (*tech)[ INTERNAL_NAME ] ) )
 	}
 
 	if( !IsMyTech( tech ) ) 
@@ -262,7 +263,7 @@ void CNrpGameProject::Load( const NrpText& loadFolder )
 	_self[ GLICENSE ] = license;
 
 	NrpText saveFile = lv.Get( SECTION_PROPERTIES, ENGINEEXTENDED, NrpText("") );
-	Param( ENGINEEXTENDED ) = new CNrpTechnology( saveFile );
+	_self[ ENGINEEXTENDED ] = new CNrpTechnology( saveFile );
 }
 
 void CNrpGameProject::_InitializeOptions( const NrpText& name )
@@ -294,8 +295,6 @@ void CNrpGameProject::_InitializeOptions( const NrpText& name )
 	Add( PLATFORMSUPPORTCODE, 0 );
 	Add( LANGUAGESUPPORTCODE, 0 );
 	Add<PNrpTechnology>( ENGINEEXTENDED, NULL );
-	Add<PNrpTechnology>( LOCALIZATION, NULL );
-	Add<PNrpTechnology>( CROSSPLATFORMCODE, NULL ); 
 	Add( MONEYONDEVELOP, (int)0 );
 	Add( PROJECTREADY, false );
 	Add( FAMOUS, 0.f );

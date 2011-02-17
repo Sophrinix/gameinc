@@ -14,13 +14,13 @@ CLASS_NAME CLASS_LUAPROGRESBAR( "CLuaProgressBar" );
 
 BEGIN_LUNA_METHODS(CLuaProgressBar)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaProgressBar )
-	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaProgressBar, SetPosition )
-	LUNA_AUTONAME_FUNCTION( CLuaProgressBar, SetImage )
-	LUNA_AUTONAME_FUNCTION( CLuaProgressBar, SetFillImage )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaProgressBar)
+	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaProgressBar )
+	LUNA_AUTONAME_PROPERTY( CLuaProgressBar, "progress", PureFunction, SetPosition )
+	LUNA_AUTONAME_PROPERTY( CLuaProgressBar, "image", PureFunction, SetImage )
+	LUNA_AUTONAME_PROPERTY( CLuaProgressBar, "fillImage", PureFunction, SetFillImage )
 END_LUNA_PROPERTIES
 
 CLuaProgressBar::CLuaProgressBar(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAPROGRESBAR, ex )							//конструктор
@@ -28,25 +28,23 @@ CLuaProgressBar::CLuaProgressBar(lua_State *L, bool ex)	: ILuaGuiElement(L, CLAS
 
 int CLuaProgressBar::SetPosition( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaLabel:SetPosition need int parameter");
-
-	int position = lua_tointeger( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN	_object->setPosition( position );
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int position = lua_tointeger( L, -1 );
+		_object->setPosition( position );
+	}
 
 	return 1;
 }
 
 int CLuaProgressBar::SetImage( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaLabel:SetImage need string parameter");
-
-	NrpText textureName = lua_tostring( L, 2 );
-
+	assert( lua_isstring( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
+		NrpText textureName = lua_tostring( L, -1 );
+
 		video::ITexture* ptrTexture = _nrpEngine.GetVideoDriver()->getTexture( textureName );
 		_object->setImage( ptrTexture );
 	}
@@ -56,13 +54,10 @@ int CLuaProgressBar::SetImage( lua_State* L )
 
 int CLuaProgressBar::SetFillImage( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaLabel:SetFillImage need string parameter");
-
-	NrpText textureName = lua_tostring( L, 2 );
-
+	assert( lua_isstring( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
+		NrpText textureName = lua_tostring( L, -1 );
 		video::ITexture* ptrTexture = _nrpEngine.GetVideoDriver()->getTexture( textureName );
 		_object->setFillImage( ptrTexture );
 	}

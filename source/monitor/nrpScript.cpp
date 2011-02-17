@@ -148,9 +148,9 @@ CNrpScript::CNrpScript() : INrpConfig( CLASS_NRPSCRIPT, CLASS_NRPSCRIPT ), vm_(0
 
 		lua_register( vm_, "NrpGetBrowser", GetBrowser );
 
-		lua_register( vm_, "NrpGetTranslate", ApplicationGetTranslate ),
+		lua_register( vm_, "NrpGetTranslate", ApplicationGetTranslate );
 		
-		lua_register( vm_, "NrpGetSender", ApplicationGetSender ),
+		lua_register( vm_, "NrpDumpStack", ApplicationDumpStack );
 
 		RegisterLuaClasses_();
 	}
@@ -301,12 +301,39 @@ CNrpScript& CNrpScript::Instance()
 	return *global_script_engine; 
 }
 
-void CNrpScript::CallFunction( const NrpText& funcName, void* userData )
+//! Пытаемся выполнить функцию по именованной переменной
+void CNrpScript::CallFunction( int funcRef, void* sender, void* userData )
+{
+	try
+	{
+		//DumpStack( _vm);
+
+		// Ставим на вершину стека функцию с указанным именем
+		lua_getref( vm_, funcRef );
+		lua_pushlightuserdata( vm_, sender );
+		lua_pushlightuserdata( vm_, userData );
+		//DumpStack( _vm );
+
+		if( lua_pcall( vm_, 2, LUA_MULTRET, 0 ) != 0 )
+		{
+			// Вытаскиваем сообщение об ошибке
+			NrpText errMsg = lua_tostring(vm_, -1);
+
+			lua_pop(vm_, -1);
+			Log(SCRIPT, FATAL) << errMsg << term;
+		}
+	}
+	catch(...)
+	{}
+}
+
+void CNrpScript::CallFunction( const NrpText& funcName, void* sender, void* userData )
 {
 	lua_getfield( vm_, LUA_GLOBALSINDEX, const_cast< NrpText& >( funcName ) );
+	lua_pushlightuserdata( vm_, sender );
 	lua_pushlightuserdata( vm_, userData );
 
-	if( lua_pcall( vm_, 1, LUA_MULTRET, 0 ) != 0 )
+	if( lua_pcall( vm_, 2, LUA_MULTRET, 0 ) != 0 )
 	{
 		// Вытаскиваем сообщение об ошибке
 		NrpText errMsg = lua_tostring(vm_, -1);
@@ -349,4 +376,10 @@ NrpText CNrpScript::ClassName()
 {
 	return CLASS_NRPSCRIPT;
 }
+
+void CNrpScript::ReleaseRef( int action )
+{
+	lua_unref( vm_, action );
+}
+
 }//namespace nrp

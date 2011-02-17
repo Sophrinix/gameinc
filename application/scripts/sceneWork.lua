@@ -1,11 +1,11 @@
 --безопасная загрузка  скриптов
 
 IncludeScript("button")
-IncludeScript("mainmenu")
+IncludeScript("window")
+IncludeScript("pda")
 IncludeScript("swork_wndCompanyInfo")
 IncludeScript("swork_StoreWindow")
 IncludeScript("city")
-IncludeScript("projectSelect")
 IncludeScript("userManager")
 IncludeScript("shop")
 IncludeScript("reklameManager")
@@ -18,16 +18,17 @@ IncludeScript("plant")
 IncludeScript("laboratory" )
 IncludeScript("devRoom" )
 IncludeScript("office")
-IncludeScript("gameprojectManager")
 IncludeScript("monitor")
-IncludeScript("pda")
 IncludeScript("journals")
 IncludeScript("diskManager")
 IncludeScript("saleManager")
 IncludeScript("safe")
-IncludeScript( "testDef" )
-IncludeScript( "testerComp" )
-IncludeScript( "topGame" )
+IncludeScript("testDef" )
+IncludeScript("testerComp" )
+IncludeScript("topGame" )
+IncludeScript("bridge" )
+IncludeScript("callbacks" )
+IncludeScript("mainmenu")
 --------------------------------------------
 
 --создание рабочей сцены 
@@ -43,15 +44,6 @@ AddPortfelleWindow()
 sceneManager:DrawProgress( 77, "Подгружаю профиль" )
 
 city.Show()
-city.SetVisible( false )
-guienv:FadeAction( 100, FADE_OUT, REMOVE_ON_END )
 sceneManager:DrawProgress( 100, "Создаю сцену" )
 
-guienv:AddTimer( 1000, "city.SetVisible( true )" )
-guienv:AddTimer( 1000, "guienv:FadeAction( 2000, FADE_IN, true )" )
-
-alwaysOnTopWindow[ 1 ] = mainmenu.GetWindow()
-alwaysOnTopWindow[ 2 ] = CLuaWindow( browser.window )
-alwaysOnTopWindow[ 3 ] = pda.GetWindow()
-
-IncludeScript( "callbacks" )
+guienv:AddTopElement( browser.window )

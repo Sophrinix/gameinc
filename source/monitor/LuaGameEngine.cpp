@@ -12,20 +12,18 @@ namespace nrp
 CLASS_NAME CLASS_LUAGAMEENGINE( "CLuaGameEngine" );
 
 BEGIN_LUNA_METHODS(CLuaGameEngine)
-	LUNA_ILUAPROJECT_HEADER( CLuaGameEngine )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, AddGenre )
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetGenreModuleNumber )
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetGenreModuleNumber )
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTechNumber )
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, SetCodeVolume )
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, IsMyTech )
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Create )
-	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, GetTexture )
 	LUNA_AUTONAME_FUNCTION( CLuaGameEngine, Load )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaGameEngine)
+	LUNA_ILUAPROJECT_PROPERTIES( CLuaGameEngine )	
+	LUNA_AUTONAME_PROPERTY(CLuaGameEngine, "texture", GetTexture, PureFunction )
+	LUNA_AUTONAME_PROPERTY(CLuaGameEngine, "codeVolume", PureFunction, SetCodeVolume )
+	LUNA_AUTONAME_PROPERTY(CLuaGameEngine, "techNumber", GetTechNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY(CLuaGameEngine, "genresNumber", GetGenreModuleNumber, SetGenreModuleNumber )
 END_LUNA_PROPERTIES
 
 CLuaGameEngine::CLuaGameEngine(lua_State *L, bool ex) : ILuaProject(L, CLASS_LUAGAMEENGINE, ex)	//конструктор
@@ -71,43 +69,34 @@ int CLuaGameEngine::AddGenre( lua_State* L )
 
 int CLuaGameEngine::SetGenreModuleNumber( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameEngine:SetGenreModuleNumber need int parameter" );
-
-	int genreNumber = lua_tointeger( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN  (*_object)[ GENRE_MODULE_NUMBER ] = genreNumber;
-
-	return 1;
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	(*_object)[ GENRE_MODULE_NUMBER ] = lua_tointeger( L, 2 );
+	return 0;
 }
 
 int CLuaGameEngine::GetGenreModuleNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetGenreModuleNumber", GENRE_MODULE_NUMBER, 0 ) ) ;
+	lua_pushinteger( L, GetParam_<int>( L, PROP, GENRE_MODULE_NUMBER, 0 ) ) ;
 	return 1;
 }
 
 int CLuaGameEngine::SetCodeVolume( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameEngine:SetCodeVolume need parameter" );
-
-	int volCode = lua_tointeger( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN  (*_object)[ CODEVOLUME ] = volCode;
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN  (*_object)[ CODEVOLUME ] = lua_tointeger( L, -1 );
 
 	return 1;
 }
 
 int CLuaGameEngine::GetTexture( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "") );
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "") );
 	return 1;
 }
 
 int CLuaGameEngine::GetTechNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetAdvancedTechNumber", ADVTECHNUMBER, 0 ) ) ;
+	lua_pushinteger( L, GetParam_<int>( L, PROP, ADVTECHNUMBER, 0 ) ) ;
 	return 1;
 }
 

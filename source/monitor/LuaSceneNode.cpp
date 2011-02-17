@@ -11,13 +11,10 @@ namespace nrp
 CLASS_NAME CLASS_LUASCENENODE( "CLuaSceneNode" );
 
 BEGIN_LUNA_METHODS(CLuaSceneNode)
-	LUNA_ILUASCENENODE_HEADER( CLuaSceneNode )
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaSceneNode)
+	LUNA_ILUASCENENODE_PROPERTIES( CLuaSceneNode )
 END_LUNA_PROPERTIES
 
 CLuaSceneNode::CLuaSceneNode(lua_State *L, bool ex)	: ILuaSceneNode(L, CLASS_LUASCENENODE, ex)							//конструктор

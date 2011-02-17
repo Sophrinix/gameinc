@@ -9,6 +9,7 @@ IncludeScript( "tutorialPlant" )
 IncludeScript( "tutorialUniver" )
 IncludeScript( "tutorialMedia" )
 IncludeScript( "tutorialBank" )
+IncludeScript( "tutorialNewGame" )
 
 module('tutorial')
 

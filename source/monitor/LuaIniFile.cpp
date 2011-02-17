@@ -9,8 +9,6 @@ namespace nrp
 CLASS_NAME CLASS_LUAINIFILE( "CLuaIniFile" );
 
 BEGIN_LUNA_METHODS(CLuaIniFile)
-	LUNA_ILUAOBJECT_HEADER( CLuaIniFile )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadInteger )
 	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadString )
 	LUNA_AUTONAME_FUNCTION( CLuaIniFile, ReadFloat )
@@ -18,6 +16,7 @@ BEGIN_LUNA_METHODS(CLuaIniFile)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaIniFile)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaIniFile )
 END_LUNA_PROPERTIES
 
 CLuaIniFile::CLuaIniFile(lua_State *L,bool ex)	: ILuaObject(L, CLASS_LUAINIFILE, ex)	//конструктор

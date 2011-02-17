@@ -88,6 +88,9 @@ public:
 	int BringToFront( lua_State* L );
 	int AddLigthing( lua_State* L );
 	int AddFlick( lua_State* L );
+	int AddLayout( lua_State* L );
+	int AddTopElement( lua_State* L );
+	
 	static const char* ClassName();
 };
 

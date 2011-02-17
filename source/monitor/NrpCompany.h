@@ -16,6 +16,8 @@ OPTION_NAME OTHER_CAPITAL( L"otherCapital" );
 OPTION_NAME MONEY_ON_PIE( L"moneyOnPie" );
 OPTION_NAME PIE_COST( L"pieCost" );
 OPTION_NAME PIE_NUMBER( L"pieNumber" );
+OPTION_NAME PROFIT_LASTYEAR( L"profitLastYear" );
+OPTION_NAME DIVIDEND( L"dividend" );
 
 class CNrpCompany : public INrpConfig
 {

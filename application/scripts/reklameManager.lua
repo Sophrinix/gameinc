@@ -42,18 +42,18 @@ local function localFillGamesListBox()
 	local game = nil
 	for i=1, company:GetGameNumber() do
 		game = company:GetGame( i-1 )
-		lbxGames:AddItem( game:GetName(), game:Self() )
+		lbxGames:AddItem( game:GetName(), game.object )
 	end	
 	
 	local project = nil
 	for i=1, company:GetDevProjectNumber() do
 		project = company:GetDevProject( i-1 )
-		lbxGames:AddItem( project:GetName(), project:Self() )
+		lbxGames:AddItem( project:GetName(), project.object )
 	end	
 end
 
 local function localAddLabel( textr, x1, y1, x2, y2 )
-	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, campaniesWindow:Self() )
+	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, campaniesWindow )
 	label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 	label:SetOverrideColor( 0xff, 0xff, 0xff, 0xff )
 
@@ -77,14 +77,14 @@ function Show()
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", mainWindow:Self(), -1, "",
+		 			    "button_down", mainWindow, -1, "",
 						"./reklameManager.Hide()" )
 	end
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_REKLAME )
 	
 	--get loan
-	btnReklame = button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow:Self(), -1, "", "./reklameManager.ShowCampaniesManager()" )
+	btnReklame = button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow, -1, "", "./reklameManager.ShowCampaniesManager()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "reklameManager.FadeEnterAction()" )
@@ -120,16 +120,16 @@ function ShowCampaniesManager()
 	if #reklames == 0 then localCreateReklames() end
 		
 	--блок рекламы на листовках
-	picflowReklames = guienv:AddPictureFlow( 60, 60, scrWidth - 10, 60 + scrHeight / 3, -1, campaniesWindow:Self() )
+	picflowReklames = guienv:AddPictureFlow( 60, 60, scrWidth - 10, 60 + scrHeight / 3, -1, campaniesWindow )
 	picflowReklames:SetDrawBorder( false )
 
-	btnDecDayNumber = guienv:AddButton( 10, scrHeight / 3 + 20, 70, scrHeight / 3 + 80, campaniesWindow:Self(), -1, "-" )
+	btnDecDayNumber = guienv:AddButton( 10, scrHeight / 3 + 20, 70, scrHeight / 3 + 80, campaniesWindow, -1, "-" )
 	btnDecDayNumber:SetAction( "./reklameManager.DecDay()" )
 	btnDecDayNumber:SetVisible( false )
 	
 	btnIncDayNumber = guienv:AddButton( scrWidth / 2 - 80, scrHeight / 3 + 20, 
 										scrWidth / 2 - 20, scrHeight / 3 + 80, 
-										campaniesWindow:Self(), -1, "+" ) 										
+										campaniesWindow, -1, "+" ) 										
 	btnIncDayNumber:SetAction( "./reklameManager.IncDay()" )
 	btnIncDayNumber:SetVisible( false )
 	
@@ -143,17 +143,17 @@ function ShowCampaniesManager()
 	labelGameFamous = localAddLabel( "0", 60, yof + 280, rightY, yof + 330 ) 
 	
 	for y=1, #reklames do
-		picflowReklames:AddItem( reklames[ y ]:GetTexture(), reklames[ y ]:GetName(), reklames[ y ]:Self() )
+		picflowReklames:AddItem( reklames[ y ]:GetTexture(), reklames[ y ]:GetName(), reklames[ y ].object )
 	end
 	
-	lbxGames = guienv:AddComponentListBox( scrWidth / 2 + 10, scrHeight / 3 + 20, scrWidth - 10, scrHeight - 80, -1, campaniesWindow:Self() )
+	lbxGames = guienv:AddComponentListBox( scrWidth / 2 + 10, scrHeight / 3 + 20, scrWidth - 10, scrHeight - 80, -1, campaniesWindow )
 	localFillGamesListBox()
 		
-	btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, campaniesWindow:Self(), -1, base.STR_STARTREKLAME )
+	btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, campaniesWindow, -1, base.STR_STARTREKLAME )
 	btnApplyWork:SetAction( "./reklameManager.QuerryUserToApplyWork()" )
 	btnApplyWork:SetVisible( false )
 	
-	local btnExit = guienv:AddButton( scrWidth / 2 + 10, scrHeight - 70, scrWidth - 10, scrHeight - 20, campaniesWindow:Self(), -1, base.STR_EXIT )
+	local btnExit = guienv:AddButton( scrWidth / 2 + 10, scrHeight - 70, scrWidth - 10, scrHeight - 20, campaniesWindow, -1, base.STR_EXIT )
 	btnExit:SetAction( "./reklameManager.HideCampaniesWindow()" )
 	
 	--заказать статью в игровом журнале
@@ -205,7 +205,7 @@ function SelectNewWork()
 	currentWork:SetReklameObject( selectedGame )
 	addingDays = 0	
 	
-	local vis = selectedGame:Empty() == 0
+	local vis = selectedGame.empty
 	btnApplyWork:SetVisible( vis )
 	btnIncDayNumber:SetVisible( vis )
 	btnDecDayNumber:SetVisible( vis )
@@ -228,11 +228,11 @@ function DecDay()
 	localUpdateLabels()
 end
 
-function ApplyNewWork()
-	local parent = base.CLuaElement( base.NrpGetSender() ):GetParent()
+function ApplyNewWork( mp )
+	local parent = base.CLuaElement( mp ).parent
 	local parentCompany = applic:GetCompanyByName( currentWork:GetCompanyName() )
 	
-	plant:AddReklameWork( currentWork:Self() )
+	plant:AddReklameWork( currentWork )
 	addingDays = 0
 	localUpdateLabels()
 	

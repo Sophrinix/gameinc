@@ -13,22 +13,20 @@ CLASS_NAME CLASS_LINKBOX( "CLuaLinkBox" );
 
 BEGIN_LUNA_METHODS(CLuaLinkBox)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaLinkBox )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, AddLuaFunction )
 	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, RemoveLuaFunction )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetModuleType )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetModuleType )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetDraggable )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, IsDraggable )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetData )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetData )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, HaveData )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetTexture )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, GetTexture )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, SetDefaultTexture )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaLinkBox)
+	LUNA_ILUAGUIELEMENT_PROPERTIES( CLuaLinkBox )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "type", GetModuleType, SetModuleType )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "data", GetData, SetData )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "haveData", HaveData, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "draggable", IsDraggable, SetDraggable )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "texture", GetTexture, SetTexture )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "defaultTexture", PureFunction, SetDefaultTexture )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "setFunction", PureFunction, SetFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "unsetFunction", PureFunction, UnsetFunction )
 END_LUNA_PROPERTIES
 
 CLuaLinkBox::CLuaLinkBox(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LINKBOX, ex )							//конструктор
@@ -45,14 +43,14 @@ int CLuaLinkBox::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool
 	luaL_argcheck(L, argc == 3, 3, _ErrStr( ( NrpText(":") + funcName + " need 2 parameter" ) ) );
 
 	int id = lua_tointeger( L, 2 );
-	NrpText fName = lua_tostring( L, 3 );
+	int funRef = _GetRef( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
 		if( add )
-			_object->AddLuaFunction( id, fName );
+			_object->AddLuaFunction( id, funRef );
 		else 
-			_object->RemoveLuaFunction( id, fName );
+			_object->RemoveLuaFunction( id, funRef );
 		return 1;
 	}
 
@@ -61,14 +59,10 @@ int CLuaLinkBox::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool
 
 int CLuaLinkBox::SetModuleType( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetType need int parameter");
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	_object->setModuleType( lua_tointeger( L, -1 ) );
 
-	int typeName = lua_tointeger( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN	_object->setModuleType( typeName );
-
-	return 1;	
+	return 0;	
 }
 
 int CLuaLinkBox::RemoveLuaFunction( lua_State* L )
@@ -78,137 +72,132 @@ int CLuaLinkBox::RemoveLuaFunction( lua_State* L )
 
 int CLuaLinkBox::SetDraggable( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetDraggable need int parameter");
-
-	bool isdr = lua_toboolean( L, 2 ) > 0;
-
-	IF_OBJECT_NOT_NULL_THEN	_object->SetDraggable( isdr );
-
-	return 1;	
+	assert( !lua_isnil( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	_object->SetDraggable( lua_toboolean( L, -1 ) > 0 );
+	return 0;	
 }
 
 int CLuaLinkBox::IsDraggable( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaLinkBox::GetDraggable not need parameter");
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pushboolean( L, _object->IsDraggable() );
+		return 1;
+	}
 
-	bool isdr = false;
-
-	IF_OBJECT_NOT_NULL_THEN	isdr = _object->IsDraggable();
-
-	lua_pushboolean( L, isdr );
-
+	lua_pushnil( L );
 	return 1;	
 }
 
 int CLuaLinkBox::SetData( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetData need void* parameter");
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		void* data = _GetLuaObject<void, ILuaObject>(L, -1, true);
+		_object->SetData( data );
+	}
 
-	void* data = _GetLuaObject<void, ILuaObject>(L, 2, true);
-
-	IF_OBJECT_NOT_NULL_THEN	_object->SetData( data );
-
-	return 1;	
+	return 0;	
 }
 
 int CLuaLinkBox::GetModuleType( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaLinkBox::GetModuleType not need parameter");
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pushinteger( L, _object->getModuleType() );
+		return 1;
+	}
 
-	int mt = 0;
-
-	IF_OBJECT_NOT_NULL_THEN	mt = _object->getModuleType();
-
-	lua_pushinteger( L, mt );
-
+	lua_pushnil( L );
 	return 1;		
 }
 
 int CLuaLinkBox::GetData( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaLinkBox::GetData not need parameter");
-
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		if( _object->GetData() )
-			lua_pushlightuserdata( L, _object->GetData() );
-		else
-			lua_pushnil( L );
+		lua_pushlightuserdata( L, _object->GetData() );
+		//DumpStack(L);
+		return 1;	
 	}
 
+	lua_pushnil( L );
 	return 1;		
 }
 
 int CLuaLinkBox::HaveData( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaLinkBox::HaveData not need parameter");
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		bool haveData = _object->GetData() != NULL;
+		lua_pushboolean( L, haveData );
+		return 1;
+	}
 
-	bool haveData = 0;
-
-	IF_OBJECT_NOT_NULL_THEN	haveData = _object->GetData() != NULL;
-
-	lua_pushboolean( L, haveData );
-
+	lua_pushnil( L );
 	return 1;		
 }
 
 int CLuaLinkBox::SetTexture( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetTexture need string parameter");
-
-	NrpText textureName = lua_tostring( L, 2 );
-
-	if( textureName != NULL )
+	assert( lua_isstring( L, -1 ) );
+	if( lua_isstring( L, -1 ) )
 	{
-		IF_OBJECT_NOT_NULL_THEN	_object->setImage( _nrpEngine.GetVideoDriver()->getTexture( textureName ) );
+		NrpText text = lua_tostring( L, -1 );
+		IF_OBJECT_NOT_NULL_THEN	_object->setImage( _nrpEngine.GetVideoDriver()->getTexture( text ) );
 	}
 
-	return 1;	
+	return 0;	
 }
 
 int CLuaLinkBox::GetTexture( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaLinkBox::GetTexture not need parameter");
-
-	NrpText textureName = "";
-
 	IF_OBJECT_NOT_NULL_THEN
 	{
+		NrpText textureName = "";
+
 		if( _object->getImage() )
 			textureName = _object->getImage()->getName().getPath().c_str();
+
+		lua_pushstring( L, textureName );
+		return 1;
 	}
 
-	lua_pushstring( L, textureName );
-
+	lua_pushnil( L );
 	return 1;		
 }
 
 int CLuaLinkBox::SetDefaultTexture( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaLinkBox::SetTexture need string parameter");
-
-	NrpText textureName = lua_tostring( L, 2 );
-
-	if( textureName != NULL )
+	assert( lua_isstring( L, -1 ) );
+	if( lua_isstring( L, -1 ) )
 	{
-		IF_OBJECT_NOT_NULL_THEN	_object->setDefaultImage( _nrpEngine.GetVideoDriver()->getTexture( textureName ) );
+		NrpText text = lua_tostring( L, -1 );
+		IF_OBJECT_NOT_NULL_THEN	_object->setDefaultImage( _nrpEngine.GetVideoDriver()->getTexture( text ) );
 	}
 
-	return 1;	
+	return 0;	
 }
 
 const char* CLuaLinkBox::ClassName()
 {
 	return ( CLASS_LINKBOX );
+}
+
+int CLuaLinkBox::SetFunction( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+		_object->AddLuaFunction( GUIELEMENT_SET_DATA, _GetRef( L, -1 ) );
+
+	return 0;	
+}
+
+int CLuaLinkBox::UnsetFunction( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+		_object->AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, _GetRef( L, -1 ) );
+
+	return 0;	
 }
 
 }//namespace nrp

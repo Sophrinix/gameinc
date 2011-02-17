@@ -40,33 +40,33 @@ function Show()
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", univerWindow:Self(), -1, "",
+		 			    "button_down", univerWindow, -1, "",
 						"./univer:Hide()" )
 	end	
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_UNIVER )
 
 	--stuff plate	
-	btnDesk = button.EqualeTexture( 122, 320, "stuffPlate", univerWindow:Self(), -1, "", "./univer.ShowEmployersWindow()" )
+	btnDesk = button.EqualeTexture( 122, 320, "stuffPlate", univerWindow, -1, "", "./univer.ShowEmployersWindow()" )
 	
 	--outsourcing
-	button.EqualeTexture( 612, 300, "outsorcing", univerWindow:Self(), -1, "", "./outsourcing.Show()" )
+	button.EqualeTexture( 612, 300, "outsorcing", univerWindow, -1, "", "./outsourcing.Show()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "univer.FadeEnterAction()" )
 end
 
 local function AddProgressBar( windowe, x1, y1, x2, y2, id, pos, textr )
-	local prg = guienv:AddProgressBar( windowe:Self(), x1, y1, x2, y2, id )
+	local prg = guienv:AddProgressBar( windowe, x1, y1, x2, y2, id )
 	prg:SetPosition( pos )						   
 	prg:SetImage( "media/textures/stars01.tga" )
 	prg:SetFillImage( "media/textures/stars06.tga" )
-	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, windowe:Self() )
+	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, windowe )
 	label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 end
 
 function ShowUserInfoWindow( x, y, width, height, user )
-	local windowg = guienv:AddWindow( "", x, y, x + width, y + height, -1, windowUpEmployer:Self() )
+	local windowg = guienv:AddWindow( "", x, y, x + width, y + height, -1, windowUpEmployer )
 	local button = windowg:GetCloseButton()
 	local image = nil
 	
@@ -75,7 +75,7 @@ function ShowUserInfoWindow( x, y, width, height, user )
 	windowg:SetDraggable( false )
 
 	local xOffset = width / 3	
-	image = guienv:AddImage( 30, 30, 30 + 107, 30 + 141, windowg:Self(), -1, "" )
+	image = guienv:AddImage( 30, 30, 30 + 107, 30 + 141, windowg, -1, "" )
 	image:SetImage( user:GetTexture() )
 	image:SetScaleImage( true )
 	image:SetUseAlphaChannel( true )	
@@ -90,9 +90,9 @@ function ShowUserInfoWindow( x, y, width, height, user )
 	                user:GetParam("stability"), base.STR_STAMINA )
 					   
 	local money = user:GetParam( "wantMoney" )
-    guienv:AddLabel( "Зарплата: "..money.."$", xOffset, 110, width, 110 + 20, -1, windowg:Self() )
+    guienv:AddLabel( "Зарплата: "..money.."$", xOffset, 110, width, 110 + 20, -1, windowg )
 	
-	local btn = guienv:AddButton( width / 2 - 50, height - 30, width / 2 + 50, height - 10, windowg:Self(), -1, "Нанять" )
+	local btn = guienv:AddButton( width / 2 - 50, height - 30, width / 2 + 50, height - 10, windowg, -1, "Нанять" )
 	btn:SetAction( "./univer.UpEmployer()" )	
 	
 	return windowg			   
@@ -106,10 +106,10 @@ local function ShowAvaibleEmployers()
 	local yoffset = 100
 	
 	local cnt = 0
-	base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "ShowAvaibleEmployers:appusers" .. maxuser )
+	base.LogScript( "ShowAvaibleEmployers:appusers" .. maxuser )
 	
 	for i=1, #usersWindow do
-		guienv:AddToDeletionQueue( usersWindow[ i ]:Self() )
+		guienv:AddToDeletionQueue( usersWindow[ i ] )
 		usersWindow[ i ] = nil
 	end
 	
@@ -134,12 +134,12 @@ local function ShowAvaibleEmployers()
 	end
 end
 
-function UpEmployer()
-	local button = base.CLuaButton( base.NrpGetSender() )
-	local windowg = base.CLuaWindow( button:GetParent() )
-	local name = windowg:GetText() 
+function UpEmployer( mp )
+	local button = base.CLuaButton( mp )
+	local windowg = base.CLuaWindow( button.parent )
 	
-	userToUp = applic:GetUserByName( name )
+	userToUp = applic:GetUserByName( windowg.text )
+
 	if userToUp:GetParam( "contractMoney" ) > 0 then 
 	    local money = userToUp:GetParam( "contractMoney" ) * userToUp:GetParam( "wantMoney" )
 		guienv:MessageBox( "Деньги за контракт $" .. money, true, true, "./univer.UpContractUser()", "" )
@@ -147,7 +147,7 @@ function UpEmployer()
 	end
 	
 	company:AddUser( userToUp )
-	guienv:AddToDeletionQueue( windowg:Self() )
+	guienv:AddToDeletionQueue( windowg )
 	ShowAvaibleEmployers()
 end
 
@@ -175,23 +175,23 @@ function ShowEmployersWindow()
 	local wTmp = scrWidth / 6
 	local xOffset = 20
 	local yOffset = 30
-	local button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, base.STR_CODERS )
+	local button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, base.STR_CODERS )
 	button:SetAction( "./univer.ChangeUserType( STR_CODERS )" )
 	
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, base.STR_DESIGNERS )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, base.STR_DESIGNERS )
 	button:SetAction( "./univer.ChangeUserType( STR_DESIGNERS )" )
 
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, base.STR_COMPOSERS )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, base.STR_COMPOSERS )
 	button:SetAction( "./univer.ChangeUserType( STR_COMPOSERS )" )
 	
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, base.STR_TESTERS  )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, base.STR_TESTERS  )
 	button:SetAction( "./univer.ChangeUserType( STR_TESTERS )" )
 	
 	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer:Self(), -1, "Выход" )
+	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, "Выход" )
 	button:SetAction( "./univer.CloseEmployersWindow()" )
 	
 	ShowAvaibleEmployers()

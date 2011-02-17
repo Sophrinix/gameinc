@@ -19,10 +19,6 @@ namespace nrp
 CLASS_NAME CLASS_LUASCENEMANAGER( "CLuaSceneManager" );
 
 BEGIN_LUNA_METHODS(CLuaSceneManager)
-	LUNA_ILUAOBJECT_HEADER( CLuaSceneManager )
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetActiveCamera )
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddTerrainSceneNode )
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddSkyDomeSceneNode )
@@ -55,6 +51,7 @@ BEGIN_LUNA_METHODS(CLuaSceneManager)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaSceneManager)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaSceneManager )
 END_LUNA_PROPERTIES
 
 CLuaSceneManager::CLuaSceneManager(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUASCENEMANAGER, ex)
@@ -339,8 +336,8 @@ int CLuaSceneManager::AddSceneFunction( lua_State* vm )
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:AddSceneFunction need 2 parameter ");
 
 	int typef = lua_tointeger( vm, 2 );
-	NrpText name = lua_tostring( vm, 3 );
-
+	int name = lua_tointeger( vm, 3 );
+	assert( typef && name != -1 );
 	_nrpEngine.GetCurrentScene()->AddLuaFunction( typef, name );
 
 	return 1;
@@ -352,8 +349,8 @@ int CLuaSceneManager::RemoveSceneFunction( lua_State* vm )
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:RemoveSceneFunction need 2 parameter ");
 
 	int typef = lua_tointeger( vm, 2 );
-	NrpText name = lua_tostring( vm, 3 );
-
+	int name = lua_tointeger( vm, 3 );
+	assert( typef && name );
 	_nrpEngine.GetCurrentScene()->RemoveLuaFunction( typef, name );
 
 	return 1;

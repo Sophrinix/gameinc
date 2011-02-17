@@ -34,16 +34,15 @@ public:
 	void DoFile( const NrpText& file );
 	void DoString( const NrpText& s );
 	void LoadFile( const NrpText& fileName );
-	void CallFunction( const NrpText& funcName, void* userData=NULL );
+	void CallFunction( const NrpText& funcName, void* sender=NULL, void* userData=NULL );
+	void CallFunction( int funcRef, void* sender=NULL, void* userData=NULL  );
 	void TemporaryScript( const NrpText& fileName, SCRIPT_ACTION action );
 	void AddActionToTemporaryScript( const NrpText& fileName, const NrpText& action );
-	void SetSender( void* ptr ) { _sender = ptr; }
-	void* GetSender() { return _sender; }
+	void ReleaseRef( int action );
 	
 	static NrpText ClassName();
 private:
 	lua_State* vm_;
-	void* _sender;
 
 	void RegisterLuaClasses_();
 };

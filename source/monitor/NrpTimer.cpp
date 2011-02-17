@@ -11,9 +11,10 @@ namespace gui
 
 CNrpTimer::~CNrpTimer(void)
 {
+	nrp::CNrpScript::Instance().ReleaseRef( _action );
 }
 
-CNrpTimer::CNrpTimer( IGUIEnvironment* environment, IGUIElement* node, size_t time, const NrpText& action )
+CNrpTimer::CNrpTimer( IGUIEnvironment* environment, IGUIElement* node, size_t time, int action )
 	: IGUIAnimator( environment, node )
 {
 	_time = time > 0 ? time : 0;
@@ -26,8 +27,7 @@ void CNrpTimer::draw()
 {
 	if( _active && (GetTickCount() - _startTime > _time) )
 	{
-		nrp::CNrpScript::Instance().SetSender( this );
-		nrp::CNrpScript::Instance().DoString( _action );
+		nrp::CNrpScript::Instance().CallFunction( _action, (void*)this );
 		_active = false;  
 
 		if( CNrpGUIEnvironment* env = dynamic_cast< CNrpGUIEnvironment* >( Environment) )

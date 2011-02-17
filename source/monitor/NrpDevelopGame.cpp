@@ -44,7 +44,6 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 	Add<int>( MONEYONDEVELOP, 0 );
 	Add<int>( PLATFORMNUMBER, 0 );
 	Add<int>( GENRE_MODULE_NUMBER, 0 );
-	Add<int>( LOCALIZATION, 0 );
 	Add<float>( FAMOUS, 0 );
 
 	_self[ NAME ] = name;
@@ -156,7 +155,7 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
 			 assert( genre );
 	}
 
-	_nrpApp.DoLuaFunctionsByType( APP_MODULE_FINISHED, module );
+	_nrpApp.DoLuaFunctionsByType( APP_MODULE_FINISHED, this, module );
 }
 
 NrpText CNrpDevelopGame::Save( const NrpText& folderSave )

@@ -40,21 +40,21 @@ function Show()
 		
 		--adding closeButton
 		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", mainWindow:Self(), -1, "",
+		 			    "button_down", mainWindow, -1, "",
 						"./shop.Hide()" )
 	end
 
 	--игры в продаже
-	button.EqualeTexture( 147, 333, "gameInSale", mainWindow:Self(), -1, "", "./saleManager.Show()")
+	button.EqualeTexture( 147, 333, "gameInSale", mainWindow, -1, "", "./saleManager.Show()")
 	
 	--топ-лист месяца
-	button.EqualeTexture( 703, 67, "toplistmonth", mainWindow:Self(), -1, "", "./topGame.Show( topGame.TIME_MONTH )" )
+	button.EqualeTexture( 703, 67, "toplistmonth", mainWindow, -1, "", "./topGame.Show( topGame.TIME_MONTH )" )
 
 	--топ-лист за все время
-	button.EqualeTexture( 119, 94, "toplisttime", mainWindow:Self(), -1, "", "./topGame.Show( topGame.TIME_LIFE )")
+	button.EqualeTexture( 119, 94, "toplisttime", mainWindow, -1, "", "./topGame.Show( topGame.TIME_LIFE )")
 
 	--игровые журналы
-	button.EqualeTexture( 861, 268, "showMagazines", mainWindow:Self(), -1, "", "./journals.Show()" )
+	button.EqualeTexture( 861, 268, "showMagazines", mainWindow, -1, "", "./journals.Show()" )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, "shop.FadeEnterAction()" )

@@ -2,7 +2,7 @@ local base = _G
 
 module( "tutorialDirector" )
 
-function ShowEmployer()
+function ShowEmployers()
 	base.button.ArrowToElement( base.director.btnEmployer, "media/buttons/mouse_left.png", 5000 )
 	AddDelayRemImage( 850, 300, 850 + 128, 300 + 64, "media/buttons/mouse_left.png", 5000 )
 end

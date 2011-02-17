@@ -9,8 +9,6 @@ OPTION_NAME ADVTECH( "advtech" );
 OPTION_NAME SOUNDTECH( "soundTech" );
 OPTION_NAME GAME_ENGINE( "gameEngine" );
 OPTION_NAME ENGINEEXTENDED( "endgineExtended" );
-OPTION_NAME LOCALIZATION( "localozation" );
-OPTION_NAME CROSSPLATFORMCODE( "crossPlatformCode" );
 OPTION_NAME PREV_GAME( "prevGame" );
 OPTION_NAME SCENARIO( "scenario" );
 OPTION_NAME GLICENSE( "license" );

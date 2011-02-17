@@ -38,7 +38,7 @@ local function ShowAvaibleEmployersToManage()
 		local user = company:GetUser( i-1 )
 		
 		if modeUserView == user:GetTypeName() then
-			listBoxCompanyEmployers:AddItem( user:GetName(), user:Self() )
+			listBoxCompanyEmployers:AddItem( user:GetName(), user.object )
 			listBoxCompanyEmployers:SetItemTextColor( i-1, 0xff, 0x0, 0xff, 0x0 )
 			if i % 2 == 0 then
 				listBoxCompanyEmployers:SetItemBgColor( i-1, 0xff, 0x82, 0x82, 0x82 )
@@ -93,7 +93,7 @@ function Show()
 	scrWidth, scrHeight = base.scrWidth, base.scrHeight
 	company = applic.playerCompany
 	
-	if windowUserManager == nil or windowUserManager:Empty() == 1 then
+	if windowUserManager == nil or windowUserManager.empty then
 		windowUserManager = guienv:AddWindow( "media/maps/director_cabinet_slider.png", 0, 0, 
 											  scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
 		windowUserManager:GetCloseButton():SetVisible( false )
@@ -103,51 +103,50 @@ function Show()
 		 			    "button_down", windowUserManager, -1, "",
 						"./userManager.Hide()" )
 	else
-		base.CLuaElement( windowUserManager:Self() ):RemoveChilds()
+		base.CLuaElement( windowUserManager ):RemoveChilds()
 	end
 	
 	--Coder's button
 	button.EqualeTexture( 20, 40, "buttonCoders", windowUserManager, -1, base.STR_CODERS, "./userManager.ChangeUserType( STR_CODERS )" )
-	button.EqualeTexture( scrWidth * 0.25, 40, "buttonDesigners", windowUserManager, -1, base.STR_DESIGNERS, "./userManager.ChangeUserType( STR_DESIGNERS )" )
-	button.EqualeTexture( scrWidth * 0.5, 40, "buttonComposers", windowUserManager, -1, base.STR_COMPOSERS, "./userManager.ChangeUserType( STR_COMPOSERS )" )
-	button.EqualeTexture( scrWidth * 0.75, 40, "buttonTesters", windowUserManager, -1, base.STR_TESTERS, "./userManager.ChangeUserType( STR_TESTERS )" )
+	button.EqualeTexture( "25%", 40, "buttonDesigners", windowUserManager, -1, base.STR_DESIGNERS, "./userManager.ChangeUserType( STR_DESIGNERS )" )
+	button.EqualeTexture( "50%", 40, "buttonComposers", windowUserManager, -1, base.STR_COMPOSERS, "./userManager.ChangeUserType( STR_COMPOSERS )" )
+	button.EqualeTexture( "75%", 40, "buttonTesters", windowUserManager, -1, base.STR_TESTERS, "./userManager.ChangeUserType( STR_TESTERS )" )
 	
-	listBoxCompanyEmployers = guienv:AddComponentListBox( 20, 160, scrWidth - 20, scrHeight - 80, -1, windowUserManager )
+	listBoxCompanyEmployers = guienv:AddComponentListBox( 20, 160, "20e", "80e", -1, windowUserManager )
 	listBoxCompanyEmployers:SetItemHeigth( 128 );
 	windowUserManager:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./userManager.ShowUserInfo()" )
 	
 	ShowAvaibleEmployersToManage()
 	
 	local i = 0
-	btnRemoveUser = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight  - 10, windowUserManager, -1, base.STR_FIRE_EMP )
-	btnRemoveUser:SetAction( "./userManager.RemoveUser()" )
+	btnRemoveUser = button.Stretch( 100 * i, "70e", 100 * (i + 1), "10e", windowUserManager, -1, base.STR_FIRE_EMP, RemoveUser )
 	
 	i = i + 1
-	btnUpSalary = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager, -1, base.STR_INC_SALARY )
+	btnUpSalary = guienv:AddButton( 100 * i, "70e", 100 * (i + 1), "10e", windowUserManager, -1, base.STR_INC_SALARY )
 	btnUpSalary:SetAction( "./userManager.UpSalary()" )
 	
 	i = i +	1
-	btnDownSalary = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager, -1, base.STR_DEC_SALARY )
+	btnDownSalary = guienv:AddButton( 100 * i, "70e", 100 * (i + 1), "10e", windowUserManager, -1, base.STR_DEC_SALARY )
 	btnDownSalary:SetAction( "./userManager.DownSalary()" )
 	
 	i = i + 1
-	btnGiveWeekEnd = guienv:AddButton( 100 * i, scrHeight  - 70, 100 * (i + 1), scrHeight - 10, windowUserManager, -1, base.STR_GET_WEEKEND )
+	btnGiveWeekEnd = guienv:AddButton( 100 * i, "70e", 100 * (i + 1), "10e", windowUserManager, -1, base.STR_GET_WEEKEND )
 	btnGiveWeekEnd:SetAction( "./userManager.GetWeekend()" )
 	
 	i = i +  1
-	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager, -1, base.STR_GET_PRESENT )
+	btnGivePremia = guienv:AddButton( 100 * i, "70e", 100 * (i + 1), "10e", windowUserManager, -1, base.STR_GET_PRESENT )
 	btnGivePremia:SetAction( "./userManager.GetPremia()" )
 	
 	i = i +  1
-	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager, -1, base.STR_SEND_TO_SCHOOL )
+	btnGivePremia = guienv:AddButton( 100 * i, "70e", 100 * (i + 1), "10e", windowUserManager, -1, base.STR_SEND_TO_SCHOOL )
 	btnGivePremia:SetAction( "./userManager.SendToLearning()" )	
 	
 	i = i +  1
-	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager, -1, base.STR_COMMUNICATE )
+	btnGivePremia = guienv:AddButton( 100 * i, "70e", 100 * (i + 1), "10e", windowUserManager, -1, base.STR_COMMUNICATE )
 	btnGivePremia:SetAction( "./userManager.Communicate()" )	
 	
 	i = i +  1
-	btnGivePremia = guienv:AddButton( 100 * i, scrHeight - 70, 100 * (i + 1), scrHeight - 10, windowUserManager, -1, base.STR_ROUTINE )
+	btnGivePremia = guienv:AddButton( 100 * i, "70e", 100 * (i + 1), "10e", windowUserManager, -1, base.STR_ROUTINE )
 	btnGivePremia:SetAction( "./userManager.Rooutine()" )	
 end
 

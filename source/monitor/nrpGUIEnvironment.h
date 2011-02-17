@@ -26,7 +26,7 @@ class CNrpTechMap;
 class CNrpGUIEnvironment : public irr::gui::IGUIEnvironment
 {
 public:
-	CNrpGUIEnvironment( gui::IGUIEnvironment* native_gui );
+	CNrpGUIEnvironment( gui::IGUIEnvironment* native_gui, ICursorControl* cursor );
 	~CNrpGUIEnvironment();
 	IGUIComboBox* addComboBox(const core::recti& rectangle,
 									gui::IGUIElement* parent=0, 
@@ -71,7 +71,7 @@ public:
 
 	gui::IGUIElement* AddDestructor( gui::IGUIElement* parent, int time );
 
-	gui::IGUIWindow* addMessageBox(const wchar_t* text, s32 flags, core::array< const char* >& funcNames );
+	gui::IGUIWindow* addMessageBox(const wchar_t* text, s32 flags, core::array< int >& funcRefs );
 	gui::IGUIWindow* addMessageBox(const wchar_t* caption, const wchar_t* text=0,
 										bool modal = true, 
 										s32 flags = gui::EMBF_OK, 
@@ -235,8 +235,8 @@ public:
 	virtual bool loadGUI(const io::path& filename, IGUIElement* parent=0);
 	virtual bool isHovered( IGUIElement* element ) const;
 
-	virtual void setDragObject( IGUIElement* elm );
-	virtual IGUIElement* getDragObject() const { return dragObject_; }
+	virtual void setDragObject( IGUIElement* elm, video::ITexture* txs );
+	virtual IGUIElement* getDragObject() const { return _dragObjectSave; }
  
 	virtual void serializeAttributes(io::IAttributes* out, io::SAttributeReadWriteOptions* options=0) const;
 	virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options=0);
@@ -244,14 +244,17 @@ public:
 	virtual void readGUIElement(io::IXMLReader* reader, IGUIElement* node);
 	virtual void addToDeletionQueue( IGUIElement* ptrElement );
 	virtual void RemoveAnimators( IGUIElement* elm );
+	virtual void AddTopElement( IGUIElement* elm );
 private:
 	IGUIEnvironment* _nativeEnv;									//указатель на простую фабрику элементов
+	ICursorControl* _cursor;
 	core::map< stringw, gui::IGUIFont* > fonts_;												//основной шрифт
 
 	core::list< IGUIElement* > _deletionQueue;
 
-	IGUIElement* dragObject_;
-	core::position2di dragObjBeginPos_;
+	IGUIElement* _dragObjectSave;
+	video::ITexture* _dragTexture;
+	core::array< IGUIElement* > _overlay;
 	bool CreateSkin_();
 	void LoadFonts_();
 	virtual void LunchToolTip( IGUIElement* elm );

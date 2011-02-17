@@ -5,7 +5,9 @@
 namespace nrp
 {
 
-#define LUNA_ILUABASEPROJECT_HEADER(class)	LUNA_ILUAOBJECT_HEADER(class)
+const NrpText PROP("property");
+
+#define LUNA_ILUABASEPROJECT_PROPERTIES(class)	LUNA_ILUAOBJECT_PROPERTIES(class)
 
 template< class T > class ILuaBaseProject : public ILuaObject< T >
 {
@@ -20,30 +22,40 @@ public:
 protected:
 	int SetParam_( lua_State* L, const NrpText& funcName, const NrpText& paramName )
 	{
-		int argc = lua_gettop( L );
-		luaL_argcheck( L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + "need int parameter") );
+		int index = -1;
+		if( funcName != PROP )
+		{
+			int argc = lua_gettop( L );
+			luaL_argcheck( L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + "need string parameter") );
+			index = 2;
+		}
 
-		NrpText tmpValue( lua_tostring( L, 2 ) );
+		NrpText tmpValue( lua_tostring( L, index ) );
 
 		IF_OBJECT_NOT_NULL_THEN	(*_object)[ paramName ] = tmpValue;
-		return 1;
+		return 0;
 	}
 
 	template< class RTYPE, class RETTYPE > int SetParam_( lua_State* L, const NrpText&  funcName, 
 		const NrpText&  paramName, 
 		RETTYPE (*lua_function)(lua_State*,int) )
 	{
-		int argc = lua_gettop( L );
-		luaL_argcheck( L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + "need int parameter") );
-		RTYPE lvalue = (RTYPE)lua_function( L, 2 );
+		int index = -1;
+		if( funcName != PROP )
+		{
+			int argc = lua_gettop( L );
+			luaL_argcheck( L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + "need one parameter") );
+			index = 2;
+		}
+		RTYPE lvalue = (RTYPE)lua_function( L, index );
 
 		IF_OBJECT_NOT_NULL_THEN	(*_object)[ paramName ] = lvalue;
-		return 1;
+		return 0;
 	}
 
 	template< class T > T GetParam_( lua_State* L, const NrpText& funcName, const NrpText& paramName, T defValue )
 	{
-		if( funcName != "property" )
+		if( funcName != PROP )
 		{
 			int argc = lua_gettop(L);
 			luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText(":") + funcName + " not need parameter" ) );

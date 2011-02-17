@@ -6,13 +6,12 @@ namespace nrp
 CLASS_NAME CLASS_RELATION( "CLuaRelation" );
 
 BEGIN_LUNA_METHODS(CLuaRelation)
-	LUNA_ILUAOBJECT_HEADER( CLuaRelation )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaRelation, Set )
 	LUNA_AUTONAME_FUNCTION( CLuaRelation, Get )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaRelation)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaRelation )
 END_LUNA_PROPERTIES
 
 CLuaRelation::CLuaRelation(lua_State *L, bool ex) : ILuaObject(L, CLASS_RELATION, ex)

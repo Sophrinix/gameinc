@@ -123,15 +123,7 @@ bool CNrpButton::OnEvent(const SEvent& event)
 				if (!isPushButton_)
 					setPressed(false);
 
-				if (Parent)
-				{
-					SEvent newEvent;
-					newEvent.EventType = EET_GUI_EVENT;
-					newEvent.GUIEvent.Caller = this;
-					newEvent.GUIEvent.Element = 0;
-					newEvent.GUIEvent.EventType = EGET_BUTTON_CLICKED;
-					Parent->OnEvent(newEvent);
-				}
+				_ClickButton();
 				return true;
 			}
 			break;
@@ -146,9 +138,9 @@ bool CNrpButton::OnEvent(const SEvent& event)
 		switch( event.MouseInput.Event  )
 		{
 		case EMIE_LMOUSE_PRESSED_DOWN:
-					return ButtonLMouseDown_( event );
+					return _ButtonLMouseDown( event );
 		case EMIE_LMOUSE_LEFT_UP:
-					return ButtonLMouseUp_( event );
+					return _ButtonMouseUp( event );
 		}
 		break;
 	default:
@@ -156,6 +148,21 @@ bool CNrpButton::OnEvent(const SEvent& event)
 	}
 
 	return Parent ? Parent->OnEvent(event) : false;
+}
+
+void CNrpButton::_ClickButton()
+{
+	if (Parent)
+	{
+		SEvent newEvent;
+		newEvent.EventType = EET_GUI_EVENT;
+		newEvent.GUIEvent.Caller = this;
+		newEvent.GUIEvent.Element = 0;
+		newEvent.GUIEvent.EventType = EGET_BUTTON_CLICKED;
+		Parent->OnEvent(newEvent);
+	}
+
+	DoLuaFunctionsByType( EGET_BUTTON_CLICKED, (void*)this );
 }
 
 bool CNrpButton::isPointInside(const core::position2di& point) const
@@ -171,7 +178,7 @@ bool CNrpButton::isPointInside(const core::position2di& point) const
 	return isMyPoint;
 }
 
-bool CNrpButton::ButtonLMouseUp_( const irr::SEvent& event )
+bool CNrpButton::_ButtonMouseUp( const irr::SEvent& event )
 {
 	bool wasPressed = pressed_;
 
@@ -191,19 +198,12 @@ bool CNrpButton::ButtonLMouseUp_( const irr::SEvent& event )
 
 	if ((!isPushButton_ && wasPressed && Parent) ||
 		(isPushButton_ && wasPressed != pressed_))
-	{
-		SEvent newEvent;
-		newEvent.EventType = EET_GUI_EVENT;
-		newEvent.GUIEvent.Caller = this;
-		newEvent.GUIEvent.Element = 0;
-		newEvent.GUIEvent.EventType = EGET_BUTTON_CLICKED;
-		Parent->OnEvent(newEvent);
-	}
+		_ClickButton();
 
 	return true;
 }
 
-bool CNrpButton::ButtonLMouseDown_( const irr::SEvent& event )
+bool CNrpButton::_ButtonLMouseDown( const irr::SEvent& event )
 {
 	if (Environment->hasFocus(this) &&
 		!AbsoluteClippingRect.isPointInside(core::position2d<s32>(event.MouseInput.X, event.MouseInput.Y)))
@@ -240,6 +240,7 @@ void CNrpButton::draw()
 	core::position2d<s32> pos = AbsoluteRect.getCenter();
 	pos.X -= imageRect_.getWidth() / 2;
 	pos.Y -= imageRect_.getHeight() / 2;
+	int fps = (100 / driver->getFPS() + 1) * 2;
 
 	if( IsEnabled )
 	{
@@ -272,11 +273,11 @@ void CNrpButton::draw()
 
 		if( isHovered )
 		{
-			if( AlphaBlend < 0xff )	AlphaBlend+=core::s32_min( 3, 0xff - AlphaBlend );
+			if( AlphaBlend < 0xff )	AlphaBlend+=core::s32_min( fps, 0xff - AlphaBlend );
 		}
 		else
 		{
-			if( AlphaBlend > 5 ) AlphaBlend-=core::s32_min( 3, AlphaBlend - 5 );
+			if( AlphaBlend > 0 ) AlphaBlend-=core::s32_min( fps, AlphaBlend - fps );
 		}
 
 		if( AlphaBlend <= 0xff && AlphaBlend >= 5 && hoveredImage_ != NULL )
@@ -496,7 +497,8 @@ void CNrpButton::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWr
 
 void CNrpButton::setHoveredImage( irr::video::ITexture* image )
 {
-	_SwapImage( hoveredImage_, image, hoveredImageRect_, core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize()) );
+	core::dimension2du size = image ?  image->getOriginalSize() : core::dimension2du( 0, 0 );
+	_SwapImage( hoveredImage_, image, hoveredImageRect_, core::rect<s32>(core::position2d<s32>(0,0), size) );
 }
 
 void CNrpButton::setHoveredImage( irr::video::ITexture* image, const irr::core::rect< irr::s32 >& pos )
@@ -513,6 +515,11 @@ bool CNrpButton::isScalingImage() const
 {
 	//return IGUIButton::isScalingImage();
 	return false;
+}
+
+void CNrpButton::setOnClickAction( int funcRef )
+{
+	AddLuaFunction( EGET_BUTTON_CLICKED, funcRef );
 }
 
 }//namespace gui

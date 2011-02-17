@@ -11,8 +11,6 @@ namespace nrp
 CLASS_NAME CLASS_LUAREKLAME( "CLuaReklame" );
 
 BEGIN_LUNA_METHODS(CLuaReklame)
-	LUNA_ILUAPROJECT_HEADER( CLuaReklame )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetQuality )
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, Remove )
 	LUNA_AUTONAME_FUNCTION( CLuaReklame, GetLevel )
@@ -29,6 +27,7 @@ BEGIN_LUNA_METHODS(CLuaReklame)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaReklame)
+	LUNA_ILUAPROJECT_PROPERTIES( CLuaReklame )
 END_LUNA_PROPERTIES
 
 CLuaReklame::CLuaReklame(lua_State *L, bool ex) : ILuaProject( L, CLASS_LUAREKLAME, ex )							//конструктор

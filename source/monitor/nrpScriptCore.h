@@ -80,6 +80,8 @@ extern "C"
 
 	// типа справка
 	int Help(lua_State *vm);
+
+	int ApplicationDumpStack( lua_State *vm );
 };
 
 }//namespace nrp

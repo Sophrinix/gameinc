@@ -21,39 +21,41 @@ namespace nrp
 CLASS_NAME CLASS_LUACOMPANY( "CLuaCompany" );
 
 BEGIN_LUNA_METHODS(CLuaCompany)
-	LUNA_ILUAOBJECT_HEADER( CLuaCompany )
-	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, SetCEO )
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetName )
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetBalance )
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetEnginesNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetEngine )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddBalance )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddGameEngine )
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTechNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetTech )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, CreateDevelopGame )
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProjectNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetDevProject )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddUser )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, RemoveUser )
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUserNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetUser )
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProject )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetProjectByName )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, AddToPortfelle )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetObjectsInPortfelle )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetFromPortfelle )
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGameNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGame )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, Create )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, StartInvention )
-	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetInventionNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetInvention )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaCompany)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaCompany )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "profitLastYear", GetProfitLastYear, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "pieCost", GetPieCost, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "dividend", GetDividend, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "enginesNumber", GetEnginesNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "name", GetName, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "ceo", PureFunction, SetCEO )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "balance", GetBalance, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "techNumber", GetTechNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "devProjectNumber", GetDevProjectNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "userNumber", GetUserNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "projectNumber", GetProjectNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "gameNumber", GetGameNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "inventionNumber", GetInventionNumber, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaCompany::CLuaCompany(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUACOMPANY, ex)	//конструктор
@@ -86,40 +88,36 @@ int CLuaCompany::Create( lua_State* L )
 
 int CLuaCompany::SetCEO( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:SetCEO need ptrUser parameter" );
-
-	IUser* user = (IUser*)lua_touserdata( L, 2 );
-
 	IF_OBJECT_NOT_NULL_THEN
 	{
+		IUser* user = _GetLuaObject< IUser, CLuaUser >( L, -1, false );
 		(*_object)[ nrp::CEO ] = user;
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaCompany::GetName( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetName", NAME, "" ) ); 
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, NAME, "" ) ); 
 	return 1;
 }
 
 int CLuaCompany::GetInventionNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetInventionNumber", INVENTIONSNUMBER, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, INVENTIONSNUMBER, 0 ) );
 	return 1;
 }
 
 int CLuaCompany::GetBalance( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetBalance", BALANCE, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, BALANCE, 0 ) );
 	return 1;
 }
 
 int CLuaCompany::GetEnginesNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetEnginesNumber", ENGINES_NUMBER, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, ENGINES_NUMBER, 0 ) );
 	return 1;
 }
 
@@ -153,7 +151,7 @@ int CLuaCompany::AddGameEngine( lua_State* L )
 
 int CLuaCompany::GetTechNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetTechNumber", TECHNUMBER, 0 ));
+	lua_pushinteger( L, GetParam_<int>( L, PROP, TECHNUMBER, 0 ));
 	return 1;
 }
 
@@ -213,7 +211,7 @@ int CLuaCompany::AddUser( lua_State* L )
 
 int CLuaCompany::GetUserNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetUserNumber", USERNUMBER, 0 ) ); 
+	lua_pushinteger( L, GetParam_<int>( L, PROP, USERNUMBER, 0 ) ); 
 	return 1;
 }
 
@@ -251,7 +249,7 @@ int CLuaCompany::GetUser( lua_State* L )
 
 int CLuaCompany::GetProjectNumber( lua_State *L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetProjectNumber", PROJECTNUMBER, 0 ) ); 
+	lua_pushinteger( L, GetParam_<int>( L, PROP, PROJECTNUMBER, 0 ) ); 
 	return 1;
 }
 
@@ -354,13 +352,13 @@ int CLuaCompany::GetGame( lua_State* L )
 
 int CLuaCompany::GetGameNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetGameNumber", GAMENUMBER, 0 ) ); 
+	lua_pushinteger( L, GetParam_<int>( L, PROP, GAMENUMBER, 0 ) ); 
 	return 1;
 }
 
 int CLuaCompany::GetDevProjectNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetDevProjectNumber", DEVELOPPROJECTS_NUMBER, 0 ) ); 
+	lua_pushinteger( L, GetParam_<int>( L, PROP, DEVELOPPROJECTS_NUMBER, 0 ) ); 
 	return 1;
 }
 
@@ -404,4 +402,42 @@ const char* CLuaCompany::ClassName()
 {
 	return ( CLASS_LUACOMPANY );
 }
+
+int CLuaCompany::GetProfitLastYear( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int change = (int)(*_object)[ BALANCE ] - (int)(*_object)[ PROFIT_LASTYEAR ];
+		lua_pushinteger( L, change ); 
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaCompany::GetPieCost( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pushinteger( L, (int)(*_object)[ PIE_COST ] ); 
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaCompany::GetDividend( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pushinteger( L, (int)(*_object)[ DIVIDEND ] ); 
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
 }//namespace nrp

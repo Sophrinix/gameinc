@@ -2,6 +2,7 @@
 #define LUNA_H 1
 
 #include <lua.hpp>
+#include <assert.h>
 //#include "nrpScript.h"
 //обрати внимание на запятую в конце
 #define LUNA_AUTONAME_FUNCTION(class, name) {#name, &class::name}, 
@@ -13,7 +14,7 @@ static void DumpStack(lua_State *L)
     int i, type;   
     int top = lua_gettop(L);   
 	char dd[ MAX_PATH ];
-    OutputDebugString("++++++++++++\n");   
+    OutputDebugString("++++++ DumpStack start ++++++\n");   
     for(i=-1; i >= (-top); --i) { /* repeat for each level */   
         type = lua_type(L, i); 
 		snprintf( dd, MAX_PATH, "pos bottom: %d: pos top: %d: = ",top+i+1,i );
@@ -36,8 +37,40 @@ static void DumpStack(lua_State *L)
             break;   
         }   
     }   
-    OutputDebugString("++++++++++++\n");   
+    OutputDebugString("++++++ DumpStack end ++++++\n");   
 }  
+
+static void Traceback( lua_State* L )
+{
+	int level;
+	lua_Debug ar;
+	level = 1;
+	char dd[ MAX_PATH ];
+	
+	OutputDebugString("++++++   TraceBack start ++++++\n");   
+	while( lua_getstack( L, level, &ar ) == 1 )
+	{
+		lua_getinfo( L, "Sn", &ar );
+
+		if( ar.name != NULL )
+		{
+			snprintf( dd, MAX_PATH, "[file :%s][line :%d][ function name %s ]\n", ar.short_src, ar.linedefined, ar.name);   
+			OutputDebugString( dd );   
+		}
+		else if( ar.namewhat != NULL )
+		{
+			snprintf( dd, MAX_PATH, "[file :%s][line :%d][ unknown %s]\n", ar.short_src, ar.linedefined, ar.namewhat);   
+			OutputDebugString( dd );   
+		}
+		else if( ar.what != NULL )
+		{
+			snprintf( dd, MAX_PATH, "[file :%s][line :%d][what %s: source]\n", ar.short_src, ar.linedefined, ar.what, ar.source);   
+			OutputDebugString( dd ); 
+		}
+		level++;
+	}
+	OutputDebugString("++++++   TraceBack end ++++++\n");   
+}
 
 // convenience macros
 template < class T > class Luna 
@@ -361,6 +394,10 @@ static int      property_getter(lua_State * L)
 	    return result;
 	}
 	// PUSH NIL 
+	Traceback(L);
+	DumpStack(L);
+	const char* dd = T::ClassName();
+	assert( "unknow property" == 0 ); 
 	lua_pushnil(L);
 
 	return 1;
@@ -380,11 +417,8 @@ static int      property_setter(lua_State * L)
 
 	if (lua_isnil(L, -1)) 
 	{
-
 	    lua_pop(L, 2);
-
 	    lua_rawset(L, 1);
-
 	    return 0;
 	} 
 	else 
@@ -402,7 +436,6 @@ static int      property_setter(lua_State * L)
 	    const PropertyType *_properties = (*obj)->T::props;
 
 	    return ((*obj)->*(T::props[_index].setter)) (L);
-
 	}
 }
 

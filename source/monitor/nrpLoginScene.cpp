@@ -8,8 +8,7 @@
 #include "NrpBrowserWindow.h"
 #include "Nrp2dPictureFlow.h"
 #include "NrpGuiFlick.h"
-
-//////////////////////////////////////////////////////////////////////////
+#include "layout/irrlayout.h"
 
 namespace irr
 {
@@ -23,19 +22,6 @@ bool CNrpLoginScene::OnEvent( const irr::SEvent& event )
 {
 	switch(event.EventType)
 	{
-	case EET_GUI_EVENT:
-		if (event.GUIEvent.EventType == gui::EGET_BUTTON_CLICKED)
-		{
-			gui::CNrpButton* btn = (gui::CNrpButton*)event.GUIEvent.Caller;
-
-			if( btn->getOnClickAction().size() )
-			{
-				nrp::CNrpScript::Instance().CallFunction( btn->getOnClickAction(), btn );
-				return true;
-			}
-		}
-		break;
-
 	case EET_KEY_INPUT_EVENT:
 		if( event.KeyInput.Key == KEY_RETURN && event.KeyInput.PressedDown == false )
 		{		
@@ -135,8 +121,9 @@ void CNrpLoginScene::OnEnter()
 	fader_ = env->addInOutFader();
 	fader_->fadeIn( 5000 );
 
-	//for( int i=0; i < 20; i++)
-	//	env->addImage( driver->getTexture( "media/agt_runit.png" ), core::vector2di( 0, 0 ), true, flick );
+	/*gui::CNrpLayout* layout = new gui::CNrpLayout( env, env->getRootGUIElement(), core::recti( 0, 0, 400, 400 ) );
+	for( int i=0; i < 15; i++)
+		env->addButton( core::recti( 0, 0, 1, 1 ), layout );*/
 }
 //////////////////////////////////////////////////////////////////////////
 

@@ -20,37 +20,34 @@ namespace nrp
 CLASS_NAME CLASS_LUAGAME( "CLuaGame" );
 
 BEGIN_LUNA_METHODS(CLuaGame)
-	LUNA_ILUABASEPROJECT_HEADER( CLuaGame )
-	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaGame, HaveBox )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetName )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, IsMyBoxAddon )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBoxAddon )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, AddBoxAddon )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, CreateBox )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBox )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxLevel )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxAddon )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, IsSaling )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImage )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImageNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshot )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshotNumber )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, SetViewImage )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetViewImage )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetLastMonthSales )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetLastMonthProfit )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetAllTimeSales )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetPrice )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, SetPrice )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetCompany )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, Create )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetDescriptionLink )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetAllTimeProfit )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaGame)
+	LUNA_ILUABASEPROJECT_PROPERTIES( CLuaGame )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "boxAddonsNumber", GetBoxAddonsNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "inSale", IsSaling, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "name", GetName, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "haveBox", HaveBox, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "boxLevel", GetBoxLevel, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "viewImage", GetViewImage, SetViewImage )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "company", GetCompany, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "lastMonthSales", GetLastMonthSales, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "price", GetPrice, SetPrice )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "lastMonthProfit", GetLastMonthProfit, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "allTimeSales", GetAllTimeSales, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "allTimeProfit", GetAllTimeProfit, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "description", GetDescriptionLink, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaGame::CLuaGame(lua_State *L, bool ex) : ILuaBaseProject(L, CLASS_LUAGAME, ex )							//конструктор
@@ -58,13 +55,13 @@ CLuaGame::CLuaGame(lua_State *L, bool ex) : ILuaBaseProject(L, CLASS_LUAGAME, ex
 
 int CLuaGame::HaveBox( lua_State* L )
 {
-	lua_pushboolean( L, GetParam_<PNrpGameBox>( L, "HaveBox", GBOX, NULL ) != NULL );
+	lua_pushboolean( L, GetParam_<PNrpGameBox>( L, PROP, GBOX, NULL ) != NULL );
 	return 1;	
 }
 
 int CLuaGame::GetName( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetName", NAME, "undeclared param" ) );
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, NAME, "undeclared param" ) );
 	return 1;	
 }
 
@@ -173,18 +170,18 @@ int CLuaGame::RemoveBox( lua_State* L )
 
 int CLuaGame::GetBoxLevel( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetBoxLevel not need any parameter" );
-
-	int boxLevel = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
 		if( box != NULL )
-			boxLevel = (*box)[ LEVEL ];
+		{
+			int boxLevel = (*box)[ LEVEL ];
+			lua_pushinteger( L, boxLevel );
+			return 1;
+		}
 	}
 
-	lua_pushinteger( L, boxLevel );
+	lua_pushnil( L );
 	return 1;			
 }
 
@@ -211,7 +208,7 @@ int CLuaGame::GetBoxAddon( lua_State* L )
 
 int CLuaGame::IsSaling( lua_State* L )
 {
-	lua_pushboolean( L, GetParam_<bool>( L, "ISSALING", GAMEISSALING, true ) );
+	lua_pushboolean( L, GetParam_<bool>( L, PROP, GAMEISSALING, true ) );
 	return 1;		
 }
 
@@ -281,20 +278,17 @@ int CLuaGame::GetScreenshot( lua_State* L )
 
 int CLuaGame::SetViewImage( lua_State* L )
 {
-	return SetParam_( L, "SetViewImage", VIEWIMAGE );
+	return SetParam_( L, PROP, VIEWIMAGE );
 }
 
 int CLuaGame::GetViewImage( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetViewImage", VIEWIMAGE, "undeclared param" ) );
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, VIEWIMAGE, "undeclared param" ) );
 	return 1;	
 }
 
 int CLuaGame::GetLastMonthProfit( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetLastMonthProfit not need any parameters" );
-
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		int sales = 0;
@@ -305,16 +299,16 @@ int CLuaGame::GetLastMonthProfit( lua_State* L )
 		}
 		else
 			lua_pushnil( L );		
+
+		return 1;
 	}
 
+	lua_pushnil( L );
 	return 1;
 }
 
 int CLuaGame::GetLastMonthSales( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetLastMonthSales not need any parameters" );
-
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		if( CNrpHistory* history = _object->GetHistory() )
@@ -327,50 +321,51 @@ int CLuaGame::GetLastMonthSales( lua_State* L )
 		}
 		else
 			lua_pushnil( L );		
+
+		return 1;
 	}
 
+	lua_pushnil( L )
 	return 1;
 }
 
 int CLuaGame::GetAllTimeSales( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetAllTimeSales not need parameter" );
-
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		if( CNrpHistory* history = _object->GetHistory() )
 			lua_pushinteger( L, history->GetSummFor( BOXNUMBER, _nrpApp[ CURRENTTIME ] ) );
 		else
 			lua_pushnil( L );
+		return 1;
 	}
+
+	lua_pushnil( L );
 	return 1;		
 }
 
 int CLuaGame::GetPrice( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetPrice not need any parameter" );
-
-	int price = 0;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
 		assert( box != NULL );
 		if( box != NULL )
-			price = (*box)[ PRICE ];
+		{
+			int price = (*box)[ PRICE ];
+			lua_pushinteger( L, price );
+			return 1;
+		}
 	}
 
-	lua_pushinteger( L, price );
+	lua_pushnil( L );
 	return 1;		
 }
 
 int CLuaGame::SetPrice( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:SetPrice need int parameter" );
-
-	int newPrice = lua_tointeger( L, 2 );
+	assert( lua_isnumber( L, -1 ) );
+	int newPrice = lua_tointeger( L, -1 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -379,20 +374,23 @@ int CLuaGame::SetPrice( lua_State* L )
 		if( box )
 			(*box)[ PRICE ] = newPrice;
 	}
-	return 1;		
+
+	return 0;		
 }
 
 int CLuaGame::GetCompany( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetCompany not need any parameter" );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		CNrpCompany* cmp = (*_object)[ PARENTCOMPANY ].As<CNrpCompany*>();
 
-	CNrpCompany* cmp = NULL;
-	IF_OBJECT_NOT_NULL_THEN cmp = (*_object)[ PARENTCOMPANY ].As<CNrpCompany*>();
+		lua_pop( L, argc );
+		lua_pushlightuserdata( L, cmp );
+		Luna< CLuaCompany >::constructor( L );
+		return 1;
+	}
 
-	lua_pop( L, argc );
-	lua_pushlightuserdata( L, cmp );
-	Luna< CLuaCompany >::constructor( L );
+	lua_pushnil( L );
 	return 1;		
 }
 
@@ -414,7 +412,7 @@ int CLuaGame::Create( lua_State* L )
 
 int CLuaGame::GetDescriptionLink( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetDescriptionLink", DESCRIPTIONPATH, "" ) );
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, DESCRIPTIONPATH, "" ) );
 	return 1;	
 }
 
@@ -425,16 +423,17 @@ const char* CLuaGame::ClassName()
 
 int CLuaGame::GetAllTimeProfit( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:GetAllTimeProfit not need parameter" );
-
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		if( CNrpHistory* history = _object->GetHistory() )
 			lua_pushinteger( L, history->GetSummFor( BALANCE, _nrpApp[ CURRENTTIME ] ) );
 		else
 			lua_pushnil( L );
+
+		return 1;
 	}
+
+	lua_pushnil( L );
 	return 1;		
 }
 

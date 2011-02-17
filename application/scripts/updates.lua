@@ -112,7 +112,7 @@ function CheckLanguages()
 		--провер€ем попадание врмененного интервала аддона в текущее врем€
 		local tech = base.CLuaTech( nil )
 		tech:Create( 0 )
-		tech:SetStatus( base.TS_READY )
+		tech.status = base.TS_READY
 		tech:Load( tmpLangIni )
 		applic:AddPublicTechnology( tech ) 
 	end --for
@@ -258,7 +258,7 @@ function CheckNewGames()
 			local game = applic:GetGame( gameName )
 			
 			Log( "find new game in "..gameIniFile )
-			if game:Empty() == 1 then
+			if game.empty then
 				game:Create( gameIniFile )
 				applic:AddGameToMarket( game )
 				if base.pda then
@@ -294,9 +294,9 @@ function CheckNewTechs()
 			local tech = applic:GetTech( techName )
 			
 			base.LogScript( "find new tech... is "..techName )
-			if tech:Empty() == 1 then
+			if tech.empty then
 				tech:Create( 0 )
-				tech:SetStatus( base.TS_READY )
+				tech.status = base.TS_READY
 				tech:Load( plIniFile )
 	
 				base.LogScript("!!!!!! LOAD TECH FROM "..plIniFile )
@@ -308,18 +308,18 @@ function CheckNewTechs()
 				end
 			else
 				--технологи€ уже есть в игре
-				local techcmp = tech:GetCompany()
+				local techcmp = tech.company
 				--это технологи€ зарегестрирована на какую-то контору,
 				-- надо еЄ перевести в разр€д общедоступных
-				if techcmp:Empty() == 0 then
-					techcmp:RemoveTech( tech:GetName() )
-					tech:SetCompany( nil )
+				if not techcmp.empty then
+					techcmp:RemoveTech( tech.name )
+					tech.company = nil
 					if base.pda then
 						base.pda.Show( "“ехнологи€ адаптирована дл€ массового применени€ "..
 										tech:GetName().." от компании "..tech:GetCompany():GetName() )
 					end
 				else
-					base.LogDebug("“ехнологи€ уже в общественном пользовании "..tech:GetName() )
+					base.LogDebug("“ехнологи€ уже в общественном пользовании "..tech.name )
 				end
 			end
 		end

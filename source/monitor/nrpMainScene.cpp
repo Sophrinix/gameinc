@@ -17,6 +17,7 @@
 #include "nrpChartAxis.h"
 #include "nrpChartSerie.h"
 #include "NrpCustomSceneNode.h"
+#include "nrpScript.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -106,23 +107,6 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
             //если было вызвано не перехваченное нажатие кнопки 
 			switch( event.GUIEvent.EventType )
 			{
-				case gui::EGET_BUTTON_CLICKED:
-				{
-					gui::CNrpButton* btn = dynamic_cast< gui::CNrpButton* >( event.GUIEvent.Caller );
-					assert( btn != NULL );
-					//пытаемся его обработать
-					if( btn->getOnClickAction().size() )
-					{
-						nrp::CNrpScript::Instance().SetSender( btn );
-						const char* dd = btn->getOnClickAction();
-						if( *dd == '.' && *(dd+1) == '/' )
-							nrp::CNrpScript::Instance().DoString( dd+2 );
-						else
-							nrp::CNrpScript::Instance().CallFunction( btn->getOnClickAction(), btn );
-						return true;
-					}
-				}
-				break;
 				//а может это дернули скролбар
 				case gui::EGET_SCROLL_BAR_CHANGED:
 				{
@@ -141,7 +125,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 		//если произошло неперехваченное событие от клавы
 		case EET_KEY_INPUT_EVENT:
 		{	//отдадим его на обработку
-			DoLuaFunctionsByType( SCENE_KEY_INPUT_EVENT, &event );
+			DoLuaFunctionsByType( SCENE_KEY_INPUT_EVENT, this, (void*)&event );
 		}
 		break;
 		//последними обрабатываем события мышки
@@ -151,7 +135,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 			{		 	
 				//нажатие пкм произошло вне гуи
 				case EMIE_RMOUSE_LEFT_UP:	
-					 DoLuaFunctionsByType<void>( SCENE_RMOUSE_LEFT_UP );
+					 DoLuaFunctionsByType( SCENE_RMOUSE_LEFT_UP, this );
 				break;
 				//вне гуи произошло нажатие лкм
 				case EMIE_LMOUSE_LEFT_UP:
@@ -171,7 +155,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 
 				case EMIE_MOUSE_MOVED:
 				{	//обрабатываем событие перемещения мышки
-					DoLuaFunctionsByType<void>( SCENE_MOUSE_MOVED );
+					DoLuaFunctionsByType( SCENE_MOUSE_MOVED, this );
 				}
 				break;
 				
@@ -205,17 +189,17 @@ void CNrpMainScene::OnUpdate()
 		video::IVideoDriver* driver = _nrpEngine.GetVideoDriver();
 		
 		//вызываем событие луа до начала сцены
-		DoLuaFunctionsByType<void>( SCENE_BEFORE_BEGIN );
+		DoLuaFunctionsByType( SCENE_BEFORE_BEGIN, this );
 		driver->beginScene( true, true, video::SColor(150,50,50,50) );
 		
 		try
 		{
 			//вызываем событие луа до рендера сцены
-			DoLuaFunctionsByType<void>( SCENE_BEFORE_RENDER );
+			DoLuaFunctionsByType( SCENE_BEFORE_RENDER, this );
 			//рендерим сцену
 			RenderScene_();
 			//вызываем событие луа после рендера сцены
-			DoLuaFunctionsByType<void>( SCENE_AFTER_RENDER );			
+			DoLuaFunctionsByType( SCENE_AFTER_RENDER, this );			
 
 			//отладочная вещь для просмотра выделенных объектов
 			try
@@ -250,7 +234,7 @@ void CNrpMainScene::OnUpdate()
 			
 		driver->endScene();
 		//вызываем событие луа после завершения рендера сцены
-		DoLuaFunctionsByType<void>( SCENE_AFTER_END );
+		DoLuaFunctionsByType( SCENE_AFTER_END, this );
 	
 		if( mouseSceneBLeftEvent_ && ( GetTickCount() - lastTimeNodeSelect_ > 200) )
 		{

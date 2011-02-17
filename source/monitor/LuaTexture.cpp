@@ -10,7 +10,7 @@ namespace nrp
 CLASS_NAME CLASS_LUATEXTURE( "CLuaTexture" );
 
 BEGIN_LUNA_METHODS(CLuaTexture)
-	LUNA_ILUAOBJECT_HEADER( CLuaTexture )
+	
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
@@ -21,6 +21,7 @@ BEGIN_LUNA_METHODS(CLuaTexture)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaTexture)
+	LUNA_ILUAOBJECT_PROPERTIES( CLuaTexture )
 END_LUNA_PROPERTIES
 
 CLuaTexture::CLuaTexture(lua_State *L, bool ex) : ILuaObject( L, CLASS_LUATEXTURE, ex )

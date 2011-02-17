@@ -30,6 +30,7 @@ BEGIN_LUNA_METHODS( CLuaTable )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaTable)
+	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaTable)
 END_LUNA_PROPERTIES
 
 CLuaTable::CLuaTable(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUATABLE, ex)						//конструктор

@@ -839,7 +839,7 @@ void CNrpTechMap::selectNew( core::position2di cell, bool onlyHover)
 			_selected.Y < static_cast< s32 >( Rows.size() ) &&
 			_selected.X < static_cast< s32 >( Rows[ _selected.Y ].Items.size() ) &&
 			Rows[ _selected.Y ].Items[ _selected.X ].assignTech )
-			DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology() );			
+			DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, this, Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology() );			
 
 		_selected = newSelected;
 	}

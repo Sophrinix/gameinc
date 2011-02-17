@@ -136,7 +136,7 @@ local function localAddGames()
 	for i=1, company:GetGameNumber() do
 		local game = company:GetGame( i-1 )
 		if game:HaveBox() then 
-			cmbxGames:AddItem( game:GetViewImage(), game:GetName(), game:Self() )
+			cmbxGames:AddItem( game:GetViewImage(), game:GetName(), game.object )
 		end	
 	end
 end
@@ -152,7 +152,7 @@ end
 
 function MachineSelected()
 	currentDiskMachine = base.CLuaDiskMachine( cmbxProduceType:GetSelectedObject() )
-	produceDiskWork:SetProduceType( currentDiskMachine:Self() )
+	produceDiskWork:SetProduceType( currentDiskMachine.slef )
 	UpdateLabels()
 	btnMachine:SetImage( 0, 0, 0, 0, currentDiskMachine:GetTexture() )
 	windowSelectMachine:SetVisible( false )
@@ -176,7 +176,7 @@ local function  localAddMachines()
 	
 	for i=1, plant:GetDiskMachineNumber() do
 		local dm = plant:GetDiskMachine( i-1 )
-		cmbxProduceType:AddItem( dm:GetTexture(), dm:GetName(), dm:Self() )		
+		cmbxProduceType:AddItem( dm:GetTexture(), dm:GetName(), dm.object )		
 	end
 end
 
@@ -211,7 +211,6 @@ function Show()
 	
 	if wndDPP == nil then
 		wndDPP = guienv:AddWindow( "media/textures/MachinePlant.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		wndDPP:SetName( base.WINDOW_DISKPRODUCEPLANT_NAME )
 		wndDPP:SetDraggable( false )
 	else
 		wndDPP:SetVisible( true )

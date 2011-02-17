@@ -13,12 +13,12 @@ CLASS_NAME CLASS_LUAEDIT( "CLuaEdit" );
 
 BEGIN_LUNA_METHODS(CLuaEdit)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaEdit )
-	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaEdit, SetOverrideColor )
-	LUNA_AUTONAME_FUNCTION( CLuaEdit, SetPasswordBox )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaEdit)
+	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaEdit)
+	LUNA_AUTONAME_PROPERTY( CLuaEdit, "overrideColor", PureFunction, SetOverrideColor )
+	LUNA_AUTONAME_PROPERTY( CLuaEdit, "isPasswordBox", PureFunction, SetPasswordBox )
 END_LUNA_PROPERTIES
 
 CLuaEdit::CLuaEdit(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAEDIT, ex )							//конструктор
@@ -26,10 +26,7 @@ CLuaEdit::CLuaEdit(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAEDIT, ex 
 
 int CLuaEdit::SetOverrideColor( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaEdit:SetOverrideColor need int parameter");
-
-	int ovColor = lua_tointeger( L, 2 );
+	int ovColor = lua_tointeger( L, -1 );
 
 	IF_OBJECT_NOT_NULL_THEN	_object->setOverrideColor( ovColor );
 
@@ -38,10 +35,7 @@ int CLuaEdit::SetOverrideColor( lua_State* L )
 
 int CLuaEdit::SetPasswordBox( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaEdit:SetPasswordBox need int parameter");
-
-	bool isPassBox = lua_toboolean( L, 2 ) > 0;
+	bool isPassBox = lua_toboolean( L, -1 ) > 0;
 
 	IF_OBJECT_NOT_NULL_THEN	_object->setPasswordBox( isPassBox );
 

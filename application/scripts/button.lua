@@ -31,7 +31,7 @@ function EqualeTexture( x, y, texturePrefix, parentr, idr, textr, actionr )
 	
 	local btn = guienv:AddButton( x, y, x + txsw, y + txsh, parentr, idr, textr )
 	SetImagePack( btn, 0, 0, txsw, txsh, normalPath, selectPath )
-	btn:SetAction( actionr )
+	btn.action = actionr
 	
 	return btn
 end
@@ -53,9 +53,13 @@ function Stretch( x1, y1, x2, y2, texturePrefix, parentr, idr, textr, actionr )
 
 	local btn = guienv:AddButton( x1, y1, x2, y2, parentr, idr, textr )
 	SetImagePack( btn, 0, 0, txsw, txsh, normalPath, selectPath )
-	btn:SetAction( actionr )
+	btn.action = actionr
 	
 	return btn
+end
+
+function LayoutButton( texturePrefix, parentr, idr, textr, actionr )
+	Stretch( 0, 0, 1, 1, texturePrefix, parentr, idr, textr, actionr )
 end
 
 function StretchOne( x1, y1, x2, y2, pathToTexture, parentr, idr, textr, actionr )
@@ -64,7 +68,7 @@ function StretchOne( x1, y1, x2, y2, pathToTexture, parentr, idr, textr, actionr
 	
 	local btn = guienv:AddButton( x1, y1, x2, y2, parentr, idr, textr )
 	btn:SetImage( x, y, txsw, txsh, pathToTexture )
-	btn:SetAction( actionr )
+	btn.action = actionr
 	
 	return btn
 end

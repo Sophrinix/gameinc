@@ -71,15 +71,6 @@ bool CNrpGuiLinkBox::OnEvent(const SEvent& event)
 				if (!isPushButton_)
 					setPressed(false);
 
-				/*if (Parent)
-				{
-					SEvent newEvent;
-					newEvent.EventType = EET_GUI_EVENT;
-					newEvent.GUIEvent.Caller = this;
-					newEvent.GUIEvent.Element = 0;
-					newEvent.GUIEvent.EventType = EGET_BUTTON_CLICKED;
-					Parent->OnEvent(newEvent);
-				}*/
 				return true;
 			}
 			break;
@@ -94,10 +85,10 @@ bool CNrpGuiLinkBox::OnEvent(const SEvent& event)
 		switch( event.MouseInput.Event  )
 		{
 		case EMIE_LMOUSE_PRESSED_DOWN:
-					return ButtonLMouseDown_( event );
+					return _ButtonLMouseDown( event );
 		case EMIE_RMOUSE_LEFT_UP:
 		case EMIE_LMOUSE_LEFT_UP:
-					return ButtonLMouseUp_( event );
+					return _ButtonMouseUp( event );
 		}
 		break;
 	default:
@@ -107,7 +98,7 @@ bool CNrpGuiLinkBox::OnEvent(const SEvent& event)
 	return Parent ? Parent->OnEvent(event) : false;
 }
 
-bool CNrpGuiLinkBox::ButtonLMouseUp_( const irr::SEvent& event )
+bool CNrpGuiLinkBox::_ButtonMouseUp( const irr::SEvent& event )
 {
 	bool wasPressed = pressed_;
 
@@ -123,24 +114,24 @@ bool CNrpGuiLinkBox::ButtonLMouseUp_( const irr::SEvent& event )
 	else
 		setPressed(!pressed_);
 
-	/*if ((!isPushButton_ && wasPressed && Parent) ||
+	if ((!isPushButton_ && wasPressed && Parent) ||
 		(isPushButton_ && wasPressed != pressed_))
 	{
-		SEvent newEvent;
-		newEvent.EventType = EET_GUI_EVENT;
-		newEvent.GUIEvent.Caller = this;
-		newEvent.GUIEvent.Element = 0;
-		newEvent.GUIEvent.EventType = EGET_BUTTON_CLICKED;
-		Parent->OnEvent(newEvent);
-	}*/
+		CNrpGUIEnvironment* ge = dynamic_cast< CNrpGUIEnvironment* >( Environment );
+		if( ge && ge->getDragObject() )
+			DoLuaFunctionsByType( GUIELEMENT_SET_DATA, this, ge->getDragObject() );
+
+		if( isDraggable_ && ge)
+			ge->setDragObject( this, image_ );
+	}
+
 	DoLuaFunctionsByType( event.MouseInput.Event == EMIE_LMOUSE_LEFT_UP
 		                  ? GUIELEMENT_LMOUSE_LEFTUP
-						  : GUIELEMENT_RMOUSE_LEFTUP,
-						  this );
+						  : GUIELEMENT_RMOUSE_LEFTUP, this );
 	return true;
 }
 
-bool CNrpGuiLinkBox::ButtonLMouseDown_( const irr::SEvent& event )
+bool CNrpGuiLinkBox::_ButtonLMouseDown( const irr::SEvent& event )
 {
 	if (Environment->hasFocus(this) &&
 		!AbsoluteClippingRect.isPointInside(core::position2d<s32>(event.MouseInput.X, event.MouseInput.Y)))
@@ -242,7 +233,6 @@ void CNrpGuiLinkBox::draw()
 void CNrpGuiLinkBox::SetData( void* data )
 {
 	data_ = data;
-	DoLuaFunctionsByType( GUIELEMENT_SET_DATA, this );
 }
 
 void CNrpGuiLinkBox::setDefaultImage( video::ITexture* image )

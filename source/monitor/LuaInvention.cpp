@@ -15,8 +15,6 @@ namespace nrp
 CLASS_NAME CLASS_LUAINVENTION( "CLuaInvention" );
 
 BEGIN_LUNA_METHODS(CLuaInvention)
-	LUNA_ILUAPROJECT_HEADER( CLuaInvention )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, AddUser )
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, Load )
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, Remove )
@@ -42,6 +40,7 @@ BEGIN_LUNA_METHODS(CLuaInvention)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaInvention)
+	LUNA_ILUAPROJECT_PROPERTIES( CLuaInvention )
 END_LUNA_PROPERTIES
 
 CLuaInvention::CLuaInvention(lua_State *L, bool ex) : ILuaProject( L, CLASS_LUAINVENTION, ex )							//конструктор

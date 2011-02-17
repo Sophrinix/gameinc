@@ -18,8 +18,7 @@ class KeyPair
 
 	NrpText _name, _type, _value;
 public:
-	KeyPair( const NrpText& str, 
-		wchar_t delim=L':' )
+	KeyPair( const NrpText& str, wchar_t delim=L':' )
 	{
 		int empPos = str.findFirst( L'=' );
 		assert( empPos >= 0 );

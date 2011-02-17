@@ -7,8 +7,7 @@
 namespace nrp
 {
 
-#define LUNA_ILUASCENENODE_HEADER(class)	LUNA_ILUAOBJECT_HEADER(class)\
-											LUNA_AUTONAME_FUNCTION(class, SetVisible )\
+#define LUNA_ILUASCENENODE_HEADER(class)	LUNA_AUTONAME_FUNCTION(class, SetVisible )\
 											LUNA_AUTONAME_FUNCTION(class, GetVisible )\
 											LUNA_AUTONAME_FUNCTION(class, SetPosition )\
 											LUNA_AUTONAME_FUNCTION(class, SetScale )\
@@ -21,6 +20,8 @@ namespace nrp
 											LUNA_AUTONAME_FUNCTION(class, SetMaterialFlag )\
 											LUNA_AUTONAME_FUNCTION(class, SetTriangleSelector)\
 											LUNA_AUTONAME_FUNCTION(class, SetMaterialTexture )
+
+#define  LUNA_ILUASCENENODE_PROPERTIES(class) LUNA_ILUAOBJECT_PROPERTIES(class)
 
 template< class T > class ILuaSceneNode : public ILuaObject< T >
 {

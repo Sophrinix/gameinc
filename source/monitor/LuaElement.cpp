@@ -13,11 +13,10 @@ CLASS_NAME CLASS_LUAELEMENT( "CLuaElement" );
 
 BEGIN_LUNA_METHODS(CLuaElement)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaElement )
-	/*  */
-	//LUNA_AUTONAME_FUNCTION( CLuaElement, RemoveChilds ),
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaElement)
+	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaElement)
 END_LUNA_METHODS
 
 CLuaElement::CLuaElement(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAELEMENT, ex)							//конструктор

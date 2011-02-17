@@ -17,14 +17,14 @@ CLASS_NAME CLASS_LUABUTTON( "CLuaButton" );
 
 BEGIN_LUNA_METHODS(CLuaButton)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaButton )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaButton, SetImage )
 	LUNA_AUTONAME_FUNCTION( CLuaButton, SetHoveredImage )
 	LUNA_AUTONAME_FUNCTION( CLuaButton, SetPressedImage )
-	LUNA_AUTONAME_FUNCTION( CLuaButton, SetAction )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaButton)
+	LUNA_ILUAGUIELEMENT_PROPERTIES( CLuaButton )
+	LUNA_AUTONAME_PROPERTY( CLuaButton, "action", PureFunction, SetAction )
 END_LUNA_PROPERTIES
 
 
@@ -56,12 +56,8 @@ int CLuaButton::SetPressedImage( lua_State *L )						//получает имя файла с текс
 	
 int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функции для этой кнопки	
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaButton::SetAction need string parameter");
-
-	NrpText funcName = lua_tostring( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN	dynamic_cast< gui::CNrpButton* >( _object )->setOnClickAction( funcName );
+	IF_OBJECT_NOT_NULL_THEN
+		dynamic_cast< gui::CNrpButton* >( _object )->setOnClickAction( _GetRef( L, -1 ) );
 
 	return 1;
 }

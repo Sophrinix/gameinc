@@ -19,62 +19,51 @@ namespace nrp
 CLASS_NAME CLASS_LUAGMEPROJECT( "CLuaGameProject" );
 
 BEGIN_LUNA_METHODS(CLuaGameProject)
-	LUNA_ILUAPROJECT_HEADER( CLuaGameProject )
-	/*   */
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetGameEngine )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetNumber )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCodeVolume )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyTech )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyGameEngine )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetGameEngine )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLicense )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetScenario )
 	LUNA_AUTONAME_FUNCTION(	CLuaGameProject, GetPlatform )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyPlatform )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, AddPlatform )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, RemovePlatform )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsProjectReady )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, HaveLicense )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, HaveScenario )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetScriptEngine )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetScriptEngine )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetMiniGameEngine )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetMiniGameEngine )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetPhysicEngine )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetPhysicEngine )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetTech )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, AddTech )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, RemoveTech )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, IsMyTech )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetVideoQuality )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetVideoQuality )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetSoundQuality )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetSoundQuality )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCodeQuality )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, SetScenario )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetEngineExtend )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetLocalization )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCrossPlatformCode )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetCpuUse )
-	LUNA_AUTONAME_FUNCTION( CLuaGameProject, GetMemoryUse )
-
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Create )
 	LUNA_AUTONAME_FUNCTION( CLuaGameProject, Remove )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaGameProject)
+	LUNA_ILUAPROJECT_PROPERTIES(CLuaGameProject)
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "gameEngine", GetGameEngine, SetGameEngine )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "codeVolume", GetCodeVolume, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "license", GetLicense, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "scenario", GetScenario, SetScenario )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "projectReady", IsProjectReady, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "haveLicense", HaveLicense, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "haveScenario", HaveScenario, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "scriptEngine", GetScriptEngine, SetScriptEngine )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "miniGameEngine", GetMiniGameEngine, SetMiniGameEngine )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "physicEngine", GetPhysicEngine, SetPhysicEngine )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "videoQuality", GetVideoQuality, SetVideoQuality )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "soundQuality", GetSoundQuality, SetSoundQuality )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "codeQuality", GetCodeQuality, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "engineExtend", GetEngineExtend, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "cpu", GetCpuUse, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGameProject, "memory", GetMemoryUse, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaGameProject::CLuaGameProject(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUAGMEPROJECT, ex)							//конструктор
 {}
 
-int CLuaGameProject::SetGameEngine( lua_State* L )\
+int CLuaGameProject::SetGameEngine( lua_State* L )
 {  
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:SetGameEngine need CNrpGameEngine parameter" );
-
-	CNrpGameEngine* eng = (CNrpGameEngine*)lua_touserdata( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN _object->SetGameEngine( eng );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		CNrpGameEngine* eng = _GetLuaObject< CNrpGameEngine, CLuaGameEngine >( L, -1, false );
+		_object->SetGameEngine( eng );
+	}
+	 
 	return 1;	
 }
  
@@ -98,14 +87,15 @@ int CLuaGameProject::GetNumber( lua_State* L )
 }
 
 int CLuaGameProject::GetScenario( lua_State* L )
-{ return _XInitialize< CNrpScenario, CLuaTechnology >( L, "GetScenario", SCENARIO ); }
+{ return _XInitialize< CNrpScenario, CLuaTechnology >( L, PROP, SCENARIO ); }
 
 int CLuaGameProject::SetScenario( lua_State* L )
-{ return _SetNamedTech< CNrpScenario >( L, "SetScenario", SCENARIO ); }	
+{ return _SetNamedTech< CNrpScenario >( L, PROP, SCENARIO ); }	
 
 int CLuaGameProject::GetLicense( lua_State* L )
 { 
-	PNrpLicense lic = GetParam_<PNrpLicense>( L, "GetLicense", GLICENSE, NULL );
+	PNrpLicense lic = GetParam_<PNrpLicense>( L, PROP, GLICENSE, NULL );
+
 	lua_pop( L, lua_gettop( L ) );
 	lua_pushlightuserdata( L, lic ); 
 	Luna< CLuaTechnology >::constructor( L );
@@ -114,14 +104,15 @@ int CLuaGameProject::GetLicense( lua_State* L )
 }
 
 int CLuaGameProject::GetCodeQuality( lua_State* L )
-{ lua_pushinteger( L, GetParam_<int>( L, "GetCodeQuality", QUALITY, 0 )); return 1; }
+{ lua_pushinteger( L, GetParam_<int>( L, PROP, QUALITY, 0 )); return 1; }
 
 int CLuaGameProject::GetCodeVolume( lua_State* L )
-{ lua_pushinteger( L, GetParam_<int>( L, "GetCodeQuality", CODEVOLUME, 0 )); return 1; }
+{ lua_pushinteger( L, GetParam_<int>( L, PROP, CODEVOLUME, 0 )); return 1; }
 
 int CLuaGameProject::GetGameEngine( lua_State* L )
 { 
-	PNrpGameEngine ge = GetParam_<PNrpGameEngine>( L, "GetGameEngine", GAME_ENGINE, NULL );
+	PNrpGameEngine ge = GetParam_<PNrpGameEngine>( L, PROP, GAME_ENGINE, NULL );
+
 	lua_pop( L, lua_gettop( L ) ); 
 	lua_pushlightuserdata( L, ge ); 
 	Luna< CLuaGameEngine >::constructor( L );
@@ -130,46 +121,40 @@ int CLuaGameProject::GetGameEngine( lua_State* L )
 }
 
 int CLuaGameProject::IsProjectReady( lua_State* L )
-{ lua_pushboolean( L, GetParam_<bool>( L, "IsProjectReady", PROJECTREADY, false )); return 1; }
+{ lua_pushboolean( L, GetParam_<bool>( L, PROP, PROJECTREADY, false )); return 1; }
 
 int CLuaGameProject::GetScriptEngine( lua_State* L )
-{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, "GetScriptEngine", SCRIPTENGINE ); }
+{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, PROP, SCRIPTENGINE ); }
 
 int CLuaGameProject::SetScriptEngine( lua_State* L )
-{ return _SetNamedTech< CNrpGameEngine >( L, "SetScriptEngine", SCRIPTENGINE ); }	
+{ return _SetNamedTech< CNrpTechnology >( L, PROP, SCRIPTENGINE ); }	
 
 int CLuaGameProject::GetEngineExtend( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetEngineExtend", ENGINEEXTENDED, NULL )); return 1; }
-
-int CLuaGameProject::GetLocalization( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetLocalization", LOCALIZATION, NULL )); return 1; }
-
-int CLuaGameProject::GetCrossPlatformCode( lua_State* L )
-{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, "GetCrossPlatformCode", CROSSPLATFORMCODE, NULL )); return 1; }
+{ lua_pushlightuserdata( L, GetParam_<PNrpTechnology>( L, PROP, ENGINEEXTENDED, NULL )); return 1; }
 
 int CLuaGameProject::GetMiniGameEngine( lua_State* L )
-{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, "GetMiniGameEngine", MINIGAMEENGINE ); }
+{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, PROP, MINIGAMEENGINE ); }
 
 int CLuaGameProject::SetMiniGameEngine( lua_State* L )
-{ return _SetNamedTech< CNrpTechnology >( L, "SetMiniGameEngine", MINIGAMEENGINE ); }
+{ return _SetNamedTech< CNrpTechnology >( L, PROP, MINIGAMEENGINE ); }
 
 int CLuaGameProject::GetPhysicEngine( lua_State* L )
-{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, "GetPhysicEngine", PHYSICSENGINE ); }
+{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, PROP, PHYSICSENGINE ); }
 
 int CLuaGameProject::SetPhysicEngine( lua_State* L )
-{ return _SetNamedTech< CNrpTechnology >( L, "SetPhysicEngine", PHYSICSENGINE ); }
+{ return _SetNamedTech< CNrpTechnology >( L, PROP, PHYSICSENGINE ); }
 
 int CLuaGameProject::GetVideoQuality( lua_State* L ) 
-{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, "GetVideoQuality", GRAPHICQUALITY ); }
+{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, PROP, GRAPHICQUALITY ); }
 
 int CLuaGameProject::SetVideoQuality( lua_State* L )
-{ return _SetNamedTech< CNrpTechnology >( L, "SetVideoQuality", GRAPHICQUALITY ); }	
+{ return _SetNamedTech< CNrpTechnology >( L, PROP, GRAPHICQUALITY ); }	
 
 int CLuaGameProject::GetSoundQuality( lua_State* L ) 
-{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, "GetVideoQuality", SOUNDQUALITY ); }
+{ return _XInitialize< CNrpTechnology, CLuaTechnology >( L, PROP, SOUNDQUALITY ); }
 
 int CLuaGameProject::SetSoundQuality( lua_State* L )
-{ return _SetNamedTech< CNrpTechnology >( L, "SetSoundQuality", SOUNDQUALITY ); }	
+{ return _SetNamedTech< CNrpTechnology >( L, PROP, SOUNDQUALITY ); }	
 
 template< class T, class B >
 int CLuaGameProject::_XInitialize( lua_State* L, const NrpText& funcName, OPTION_NAME& paramName )
@@ -212,12 +197,13 @@ int CLuaGameProject::IsMyTech( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsGenreIncluded need GenreName parameter" );
 
-	CNrpTechnology* tech = _GetLuaObject< CNrpTechnology, CLuaTechnology >( L, 2, false );
+	INrpProject* tech = _GetLuaObject< INrpProject, ILuaObject >( L, 2, true );
 	bool isIncl = false;
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		isIncl = _object->IsMyTech( tech );
+		isIncl = _object->IsMyTech( (CNrpTechnology*)tech );
+		isIncl |= ( (*_object)[ GAME_ENGINE ] == (CNrpGameEngine*)tech );
 		isIncl |= ( (*_object)[ GLICENSE ] == (CNrpLicense*)tech );
 		isIncl |= ( (*_object)[ SCENARIO ] == (CNrpScenario*)tech );
 	}
@@ -227,38 +213,31 @@ int CLuaGameProject::IsMyTech( lua_State* L )
 	return 1;			
 }
 
-int CLuaGameProject::IsMyGameEngine( lua_State* L )
-{
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsMyGameEngine need CNrpGameEngine* parameter" );
-
-	CNrpGameEngine* ge = _GetLuaObject< CNrpGameEngine, CLuaGameEngine >( L, 2 );
-	bool isIncl = false;
-
-	IF_OBJECT_NOT_NULL_THEN isIncl = (*_object)[ GAME_ENGINE ] == ge;
-	lua_pushboolean( L, isIncl );
-
-	return 1;		
-}
-
 int CLuaGameProject::HaveLicense( lua_State* L )
 {
-	lua_pushboolean( L, GetParam_<PNrpTechnology>( L, "HaveLicense", GLICENSE, NULL) != NULL );
+	lua_pushboolean( L, GetParam_<PNrpTechnology>( L, PROP, GLICENSE, NULL) != NULL );
 	return 1;
 }
 
 int CLuaGameProject::HaveScenario( lua_State* L )
 {
-	lua_pushboolean( L, GetParam_<PNrpTechnology>( L, "HaveScenario", SCENARIO, NULL ) != NULL );
+	lua_pushboolean( L, GetParam_<PNrpTechnology>( L, PROP, SCENARIO, NULL ) != NULL );
 	return 1;
 }
 
 template< class T >
 int CLuaGameProject::_SetNamedTech( lua_State* L, const NrpText& funcName, const NrpText& paramName )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + " need PNrpTechnology parameter") );
-	T* tech = (T*)_GetLuaObject< T, ILuaObject >( L, 2, true );
+	int index = 2;
+	if( funcName != PROP )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":") + funcName + " need PNrpTechnology parameter") );
+	}
+	else
+		index = -1;
+
+	T* tech = (T*)_GetLuaObject< T, ILuaObject >( L, index, true );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -360,15 +339,9 @@ int CLuaGameProject::RemovePlatform( lua_State* L )
 }
 
 int CLuaGameProject::GetCpuUse( lua_State* L )
-{
-	lua_pushnumber( L, GetParam_<float>( L, "GetCpuUse", CPU, 0.f ) ); 
-	return 1; 
-}
+{ lua_pushnumber( L, GetParam_<float>( L, PROP, CPU, 0.f ) ); return 1; }
 
 int CLuaGameProject::GetMemoryUse( lua_State* L )
-{
-	lua_pushnumber( L, GetParam_<float>( L, "GetMemoryUse", RAM, 0.f ) ); 
-	return 1; 
-}
+{ lua_pushnumber( L, GetParam_<float>( L, PROP, RAM, 0.f ) ); return 1; }
 
 }//namespace nrp

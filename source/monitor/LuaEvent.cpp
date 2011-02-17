@@ -10,8 +10,6 @@ namespace nrp
 CLASS_NAME CLASS_LUAEVENT( "CLuaEvent" );
 
 BEGIN_LUNA_METHODS( CLuaEvent )
-	LUNA_ILUAOBJECT_HEADER( CLuaEvent )
-	/*  */
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetUserData1 )
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetLogText )
 	LUNA_AUTONAME_FUNCTION( CLuaEvent, GetTime )
@@ -19,6 +17,7 @@ BEGIN_LUNA_METHODS( CLuaEvent )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaEvent)
+	LUNA_ILUAOBJECT_PROPERTIES(CLuaEvent)
 	LUNA_AUTONAME_PROPERTY( CLuaEvent, "key", GetKey, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaEvent, "char", GetChar, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaEvent, "keyDown", IsKeyDown, PureFunction )
@@ -84,7 +83,7 @@ int CLuaEvent::GetChar( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		NrpText ret = _object->KeyInput.Char;
+		NrpText ret( _object->KeyInput.Char );
 		lua_pushstring( L, ret.ToStr() );
 		return 1;
 	}

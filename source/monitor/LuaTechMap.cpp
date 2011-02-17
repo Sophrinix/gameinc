@@ -28,6 +28,7 @@ BEGIN_LUNA_METHODS(CLuaTechMap)
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaTechMap)
+	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaTechMap)
 END_LUNA_PROPERTIES
 
 CLuaTechMap::CLuaTechMap(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUATECHMAP, ex)						//конструктор
@@ -94,13 +95,13 @@ int CLuaTechMap::AddLuaFunction( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaTechMap::AddLuaFunction need funcName parameter");
 
-	int	funcType = lua_tointeger( L, 2 );
-	NrpText funcName = lua_tostring( L, 3 );
-
-	if( !funcName.size() )
-		return 1;
-
-	IF_OBJECT_NOT_NULL_THEN _object->AddLuaFunction( funcType, funcName );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int	funcType = lua_tointeger( L, 2 );
+		int funcName = lua_tointeger( L, 3 );
+		assert( funcName && funcType );
+		_object->AddLuaFunction( funcType, funcName );
+	}
 
 	return 1;		
 }

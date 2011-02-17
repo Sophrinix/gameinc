@@ -13,13 +13,13 @@ CLASS_NAME CLASS_LUALABEL( "CLuaLabel" );
 
 BEGIN_LUNA_METHODS(CLuaLabel)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaLabel )
-	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideColor )
 	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideFont )
 	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetTextAlignment )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaLabel)
+	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaLabel)
 END_LUNA_PROPERTIES
 
 CLuaLabel::CLuaLabel(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUALABEL, ex )							//конструктор
@@ -43,14 +43,7 @@ int CLuaLabel::SetOverrideFont( lua_State* L )
 
 int CLuaLabel::SetOverrideColor( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 5, 5, "Function CLuaLabel::SetOverrideColor need 4 int parameter");
-
-	int ovColor = (lua_tointeger( L, 2 ) << 24);
-	ovColor += (lua_tointeger( L, 3 ) << 16);
-	ovColor += (lua_tointeger( L, 4 ) << 8);
-	ovColor += lua_tointeger( L, 5 );
-
+	int ovColor = lua_tointeger( L, -1 );
 	IF_OBJECT_NOT_NULL_THEN	_object->setOverrideColor( ovColor );
 
 	return 1;
