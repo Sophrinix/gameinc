@@ -8,8 +8,6 @@ namespace nrp
 CLASS_NAME CLASS_LUAPDA( "CLuaPda" );
 
 BEGIN_LUNA_METHODS(CLuaPda)
-	LUNA_AUTONAME_FUNCTION( CLuaPda, GetMessage )
-	LUNA_AUTONAME_FUNCTION( CLuaPda, GetTimeStr )
 	LUNA_AUTONAME_FUNCTION( CLuaPda, Next )
 	LUNA_AUTONAME_FUNCTION( CLuaPda, Prev )
 	LUNA_AUTONAME_FUNCTION( CLuaPda, AddMessage )
@@ -19,6 +17,8 @@ END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaPda)
 	LUNA_ILUAOBJECT_PROPERTIES( CLuaPda )
+	LUNA_AUTONAME_PROPERTY( CLuaPda, "time", GetTimeStr, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaPda, "message", GetMessage, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaPda::CLuaPda(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAPDA, ex)
@@ -26,13 +26,14 @@ CLuaPda::CLuaPda(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAPDA, ex)
 
 int CLuaPda::GetMessage( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaPda::GetMessage not need parameter");
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		NrpText ret = const_cast< CPdaItem& >( _object->Current() )[ MESSAGE ];
+		lua_pushstring( L, ret );
+		return 1;
+	}
 
-	NrpText ret = "0:0_error";
-	IF_OBJECT_NOT_NULL_THEN ret = const_cast< CPdaItem& >( _object->Current() )[ MESSAGE ];
-
-	lua_pushstring( L, ret );
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -58,9 +59,6 @@ int CLuaPda::Prev( lua_State *L )
 
 int CLuaPda::GetTimeStr( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaPda::GetMessage not need parameter");
-
 	NrpText ret = "0:0_error";
 	IF_OBJECT_NOT_NULL_THEN
 	{
@@ -68,9 +66,11 @@ int CLuaPda::GetTimeStr( lua_State* L )
 		char dd[ MAX_PATH ] = { 0 };
 		snprintf( dd, MAX_PATH - 1, "%04d.%02d.%02d %02d:%02d", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute );
 		ret = dd;
+		lua_pushstring( L, ret );
+		return 1;
 	}
 
-	lua_pushstring( L, ret );
+	lua_pushnil( L );
 	return 1;
 }
 

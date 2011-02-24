@@ -144,8 +144,6 @@ CNrpScript::CNrpScript() : INrpConfig( CLASS_NRPSCRIPT, CLASS_NRPSCRIPT ), vm_(0
 
 		lua_register( vm_, "NrpApplicationSave", ApplicationSave );
 
-		lua_register( vm_, "NrpGetPlant", GetPlant );
-
 		lua_register( vm_, "NrpGetBrowser", GetBrowser );
 
 		lua_register( vm_, "NrpGetTranslate", ApplicationGetTranslate );

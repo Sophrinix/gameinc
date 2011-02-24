@@ -14,14 +14,6 @@ purpose:	Класс обертка для Lua, для работы с кнопками
 
 #include "ILuaGuiElement.h"
 
-namespace irr
-{
-	namespace gui
-	{
-		class IGUIComboBox;
-	}
-}
-
 namespace nrp
 {
 

@@ -65,7 +65,7 @@ int CLuaSceneManager::GetActiveCamera( lua_State *vm )
 	void* cam = NULL;
 	IF_OBJECT_NOT_NULL_THEN cam = (void*)_object->getActiveCamera();
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, cam );
 	Luna< CLuaCamera >::constructor( vm );
 
@@ -323,7 +323,7 @@ int CLuaSceneManager::GetSceneNodeByName( lua_State* vm )
 	
 	IF_OBJECT_NOT_NULL_THEN node = _object->getSceneNodeFromName( name );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, node );
 	Luna< CLuaSceneNode >::constructor( vm );
 
@@ -588,7 +588,7 @@ int CLuaSceneManager::GetSceneNodeByID( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN node = _object->getSceneNodeFromId( id );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, node );
 	Luna< CLuaSceneNode >::constructor( vm );
 

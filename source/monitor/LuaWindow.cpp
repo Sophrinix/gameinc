@@ -37,7 +37,7 @@ int CLuaWindow::GetCloseButton( lua_State *L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		void* button = (void*)(_object->getCloseButton());
-		lua_pop( L, argc );
+		//lua_pop( L, argc );
 		lua_pushlightuserdata( L, button );
 		Luna< CLuaButton >::constructor( L );
 		return 1;

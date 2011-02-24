@@ -372,8 +372,9 @@ void CNullDriver::renameTexture(ITexture* texture, const io::path& newName)
 //! loads a Texture
 ITexture* CNullDriver::getTexture(const io::path& filename)
 {
+	io::path rPath = checkFile( filename );
 	// Identify textures by their absolute filenames if possible.
-	const io::path absolutePath = FileSystem->getAbsolutePath(filename);
+	const io::path absolutePath = FileSystem->getAbsolutePath( rPath );
 
 	ITexture* texture = findTexture(absolutePath);
 	if (texture)

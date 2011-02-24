@@ -111,48 +111,8 @@ function UpdateProjectWindow( pageName )
 	links = {}
 end
 
-function CreateProjectGame()
-	project.name = gameName
-	
-	if company:CreateDevelopGame( project ) ~= nil then
-		--company:AddToPortfelle( prj )
-		--sworkUpdateCompanyPortfelle()
-		guienv:MessageBox( "¬ы завершили создание проекта игры " .. gameName, false, false, "", "" )
-	else
-		guienv:MessageBox( "”же есть проект с таким именем", false, false, "", "" )
-	end
-end
-
-function ItemSelected( pSender )
-	local lbx = base.CLuaPictureFlow( pSender )
-	local selIndex = lbx.itemSelected
-	
-	if picFlowLang.object == lbx.object then
-		local lang = base.CLuaTech( lbx.objectSelected )
-		
-		--уже есть €зык, надо убрать его из списка
-		if project:IsMyTech( lang ) then 
-			project:RemoveTech( lang )
-			lbx:SetItemBlend( selIndex, 0xC0 )	
-		--такого €зыка нет в игре, надо бы добавить
-		else 
-			project:AddTech( lang )	
-			lbx:SetItemBlend( selIndex, 0xff )
-		end		
-	elseif picFlowPlatform.object == lbx.object then
-		local platform = base.CLuaPlatform( lbx.objectSelected )
-		
-		--така€ платформа за€влена в игре, игрок хочет еЄ убрать
-		if project:IsMyPlatform( platform ) then
-			project:RemovePlatform( platform )
-			lbx:SetItemBlend( selIndex, 0xC0 )				
-		else
-			if localCheckPlatformsForProject( platform ) then
-				project:AddPlatform( platform )
-				lbx:SetItemBlend( selIndex, 0xff )			
-			end
-		end	
-	end
+local function _ClearDragObject()
+	guienv:SetDragObject( nil, "" )
 end
 
 function Show()
@@ -165,7 +125,7 @@ function Show()
 		dragLink = guienv:AddLinkBox( "", 0, 0, sizeLinkBox, sizeLinkBox, -1, mainWindow )
 		projectWindow = guienv:AddWindow( "media/maps/newProject.png", 60, 90, "60e", "30e", -1, mainWindow )
 		projectWindow.draggable = false
-		projectWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, ItemSelected )
+		--projectWindow:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, _ClearDragObject )
 	end 
 	
 	prgProjectQuality = guienv:AddProgressBar( mainWindow, 10, 40, "140+", "20+", -1 )

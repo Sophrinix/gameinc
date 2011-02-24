@@ -4,8 +4,7 @@ module( "topGame" )
 
 local guienv = base.guienv
 
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
+local window = base.window
 local button = base.button
 local browser = base.browser
 local tutorial = base.tutorial
@@ -27,7 +26,7 @@ local SORT_SALE = 1
 TIME_MONTH = 1
 TIME_LIFE = 2
 
-local function SortByAllTime( typeSort )
+local function _SortByAllTime( typeSort )
 	local maxSort = 0
 	local index = 0
 	
@@ -50,7 +49,7 @@ local function SortByAllTime( typeSort )
 	return index
 end
 
-local function SortByMonth( typeSort )
+local function _SortByMonth( typeSort )
 	local maxSort = 0
 	local index = 0
 	
@@ -74,7 +73,7 @@ local function SortByMonth( typeSort )
 end
 
 
-local function localAddGamesSortBy( typeSort )
+local function _AddGamesSortBy( typeSort )
 	base.LogScript( " sort by "..typeSort.."  time by "..saveTypeTop )
 	tblGames:ClearRows()
 	
@@ -84,7 +83,7 @@ local function localAddGamesSortBy( typeSort )
 	games = nil
 	games = {}
 	
-	for i=1, applic:GetGamesNumber() do
+	for i=1, applic.gamesNumber do
 		base.table.insert( games, applic:GetGame( i-1 ) )
 	end
 	
@@ -94,9 +93,9 @@ local function localAddGamesSortBy( typeSort )
 		if #games == 0 then break end
 		
 		if saveTypeTop == TIME_LIFE then
-			index = SortByAllTime( typeSort )
+			index = _SortByAllTime( typeSort )
 		else
-			index = SortByMonth( typeSort )
+			index = _SortByMonth( typeSort )
 		end
 		
 		base.table.insert( gamesChart, games[ index ] )
@@ -107,74 +106,64 @@ local function localAddGamesSortBy( typeSort )
 		local game = gamesChart[ i ]
 		if game == nil then return end
 		
-		local idx = tblGames:AddRow( tblGames:GetRowCount() )
-		tblGames:SetCellText( idx, 0, game:GetName(), 0xff, 0xff, 0, 0 )
+		local idx = tblGames:AddRow( tblGames.rowCount )
+		tblGames:SetCellText( idx, 0, game.name, 0xff, 0xff, 0, 0 )
 		if saveTypeTop == TIME_LIFE then
-			tblGames:SetCellText( idx, 1, game:GetAllTimeSales(), 0xff, 0xff, 0, 0 )
-			tblGames:SetCellText( idx, 2, game:GetAllTimeProfit(), 0xff, 0xff, 0, 0 )
+			tblGames:SetCellText( idx, 1, game.allTimeSales, 0xff, 0xff, 0, 0 )
+			tblGames:SetCellText( idx, 2, game.allTimeProfit, 0xff, 0xff, 0, 0 )
 		else
-			tblGames:SetCellText( idx, 1, game:GetLastMonthSales(), 0xff, 0xff, 0, 0 )
-			tblGames:SetCellText( idx, 2, game:GetLastMonthProfit(), 0xff, 0xff, 0, 0 )
+			tblGames:SetCellText( idx, 1, game.lastMonthSales, 0xff, 0xff, 0, 0 )
+			tblGames:SetCellText( idx, 2, game.lastMonthProfit, 0xff, 0xff, 0, 0 )
 		end
 	
 	end
 end
 
-function HeaderSelected()
-	local activeColumn = tblGames:GetActiveColumn()
+local function _HeaderSelected()
+	local activeColumn = tblGames.activeColumn
 	
 	if activeColumn == SORT_PROFIT then
-		localAddGamesSortBy( SORT_PROFIT, saveTypeTop )
+		_AddGamesSortBy( SORT_PROFIT, saveTypeTop )
 	else
-		localAddGamesSortBy( SORT_SALE, saveTypeTop )
+		_AddGamesSortBy( SORT_SALE, saveTypeTop )
 	end
-end
-
-function Show( typeTop )
-	saveTypeTop = typeTop
-	company = applic.playerCompany
-
-	mainWindow = guienv:AddWindow( "media/textures/chartsMonth.png", 
-								   0, 0, scrWidth, scrHeight, 
-								   -1, guienv:GetRootGUIElement() )
-	mainWindow:SetDrawBody( false )
-	mainWindow:GetCloseButton():SetVisible( false )
-	mainWindow:SetDraggable( false )
-	
-	mainWindow:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, "./topGame.CellSelected()" )
-	mainWindow:AddLuaFunction( base.GUIELEMENT_TABLE_HEADER_SELECTED, "./topGame.HeaderSelected()" )
-	
-	local lb = guienv:AddLabel( "", "33%", 20, "66%", 120, 
-								-1, mainWindow )
-	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
-	
-	if typeTop == TIME_MONTH then
-		lb:SetText( "Чарт месяца" )
-	else
-		lb:SetText( "Чарт всех времен" )	
-	end
-	
-	--добавим окно с листбоксом
-	--в листбоксе поместим список игр, которые щас в продаже
-	tblGames = guienv:AddTable( 90, 150, 935, 530, -1, mainWindow )
-	tblGames:SetRowHeight( 24 )
-	tblGames:AddColumn( "Название", -1 )
-	tblGames:SetColumnWidth( 0, 282 )
-	tblGames:AddColumn( "Продано копий", -1 )
-	tblGames:SetColumnWidth( 1, 335 )
-	tblGames:AddColumn( "Прибыль", -1 )
-	tblGames:SetColumnWidth( 2, 230 )
-	
-	--adding closeButton
-	button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			"button_down", mainWindow, -1, "",
-					"./topGame.Hide()" )
-					
-	localAddGamesSortBy( SORT_PROFIT )
 end
 
 function Hide()
 	mainWindow:Remove()
 	--guienv:FadeAction( base.FADE_TIME, false, false )			
 	--guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeExitAction()" )	
+end
+
+function Show( typeTop )
+	saveTypeTop = typeTop
+	company = applic.playerCompany
+
+	mainWindow = window.fsWindow( "media/textures/chartsMonth.png", Hide )
+	
+	mainWindow:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, CellSelected )
+	mainWindow:AddLuaFunction( base.GUIELEMENT_TABLE_HEADER_SELECTED, HeaderSelected )
+	
+	local lb = guienv:AddLabel( "", "33%", 20, "66%", 120, 
+								-1, mainWindow )
+	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+	
+	if typeTop == TIME_MONTH then
+		lb.text = "Чарт месяца"
+	else
+		lb.text = "Чарт всех времен"
+	end
+	
+	--добавим окно с листбоксом
+	--в листбоксе поместим список игр, которые щас в продаже
+	tblGames = guienv:AddTable( 90, 150, 935, 530, -1, mainWindow )
+	tblGames.rowHeight = 24
+	tblGames:AddColumn( "Название", -1 )
+	tblGames:SetColumnWidth( 0, 282 )
+	tblGames:AddColumn( "Продано копий", -1 )
+	tblGames:SetColumnWidth( 1, 335 )
+	tblGames:AddColumn( "Прибыль", -1 )
+	tblGames:SetColumnWidth( 2, 230 )
+			
+	_AddGamesSortBy( SORT_PROFIT )
 end

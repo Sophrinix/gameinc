@@ -96,7 +96,7 @@ int CLuaGameProject::GetLicense( lua_State* L )
 { 
 	PNrpLicense lic = GetParam_<PNrpLicense>( L, PROP, GLICENSE, NULL );
 
-	lua_pop( L, lua_gettop( L ) );
+	//lua_pop( L, lua_gettop( L ) );
 	lua_pushlightuserdata( L, lic ); 
 	Luna< CLuaTechnology >::constructor( L );
 
@@ -113,7 +113,7 @@ int CLuaGameProject::GetGameEngine( lua_State* L )
 { 
 	PNrpGameEngine ge = GetParam_<PNrpGameEngine>( L, PROP, GAME_ENGINE, NULL );
 
-	lua_pop( L, lua_gettop( L ) ); 
+	//lua_pop( L, lua_gettop( L ) ); 
 	lua_pushlightuserdata( L, ge ); 
 	Luna< CLuaGameEngine >::constructor( L );
 
@@ -161,7 +161,7 @@ int CLuaGameProject::_XInitialize( lua_State* L, const NrpText& funcName, OPTION
 {
 	T* tech = GetParam_<T*>( L, funcName, paramName, NULL );
 
-	lua_pop( L, lua_gettop( L ) );
+	//lua_pop( L, lua_gettop( L ) );
 	lua_pushlightuserdata( L, tech); 
 	Luna< B >::constructor( L );
 	return 1;
@@ -185,7 +185,7 @@ int CLuaGameProject::Create( lua_State* L )
 
 	_object = new CNrpGameProject( name, NULL );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, _object );
 	Luna< CLuaGameProject >::constructor( L );
 
@@ -195,7 +195,7 @@ int CLuaGameProject::Create( lua_State* L )
 int CLuaGameProject::IsMyTech( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsGenreIncluded need GenreName parameter" );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGameProject:IsMyTech need GenreName parameter" );
 
 	INrpProject* tech = _GetLuaObject< INrpProject, ILuaObject >( L, 2, true );
 	bool isIncl = false;
@@ -315,7 +315,7 @@ int nrp::CLuaGameProject::_GetAny( lua_State* L,
 
 	IF_OBJECT_NOT_NULL_THEN tech = (_object->*Method)( type, idx );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
 	Luna< B >::constructor( L );
 

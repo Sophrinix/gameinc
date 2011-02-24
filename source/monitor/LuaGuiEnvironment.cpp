@@ -39,7 +39,6 @@ namespace nrp
 CLASS_NAME CLASS_LUAGUI( "CLuaGuiEnvironment" );
 
 BEGIN_LUNA_METHODS( CLuaGuiEnvironment )
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetRootGUIElement )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddWindow )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddBlenderAnimator )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddHoveredAnimator )
@@ -89,6 +88,7 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaGuiEnvironment)
 	LUNA_ILUAOBJECT_PROPERTIES( CLuaGuiEnvironment )
 	LUNA_AUTONAME_PROPERTY( CLuaGuiEnvironment, "focus", GetFocusedElement, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGuiEnvironment, "root", GetRootGUIElement, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaGuiEnvironment::CLuaGuiEnvironment(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAGUI, ex )
@@ -118,7 +118,7 @@ int CLuaGuiEnvironment::AddTable( lua_State *vm )
 	gui::IGUITable* table = NULL;
 	IF_OBJECT_NOT_NULL_THEN table = _object->addTable( rectangle, parentElem, id, false );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)table );
 	Luna< CLuaTable >::constructor( vm );
 
@@ -127,14 +127,14 @@ int CLuaGuiEnvironment::AddTable( lua_State *vm )
 
 int CLuaGuiEnvironment::GetRootGUIElement( lua_State *vm )
 {
-	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 1, 1, _ErrStr( ":GetRootGUIElement not need any parameter") );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		gui::IGUIElement* elm = _object->getRootGUIElement();
+		lua_pushlightuserdata( vm, (void*)elm );
+		return 1;
+	}
 
-	gui::IGUIElement* elm = NULL;
-
-	IF_OBJECT_NOT_NULL_THEN elm = _object->getRootGUIElement();
-	lua_pushlightuserdata( vm, (void*)elm );
-
+	lua_pushnil( vm );
 	return 1;
 }
 
@@ -160,7 +160,7 @@ int CLuaGuiEnvironment::AddWindow( lua_State *vm )
 		window->drop();
 	}
 	 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)window );
 	Luna< CLuaWindow >::constructor( vm );
 
@@ -287,7 +287,7 @@ int CLuaGuiEnvironment::AddButton( lua_State *vm )
 		gui::IGUIButton* elm = _object->addButton( rec,  parent, id, text.ToWide() );
 		if( action > 0 )
 			dynamic_cast< gui::CNrpButton* >( elm )->setOnClickAction( action );
-		lua_pop( vm, argc );
+		//lua_pop( vm, argc );
 		lua_pushlightuserdata( vm, (void*)elm );
 		Luna< CLuaButton >::constructor( vm );
 		return 1;
@@ -415,7 +415,7 @@ int CLuaGuiEnvironment::AddComboBox( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = _object->addComboBox( rectangle, parent, id );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
 	Luna< CLuaComboBox >::constructor( vm );
 
@@ -438,7 +438,7 @@ int CLuaGuiEnvironment::AddEdit( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = _object->addEditBox( text.ToWide(), rectangle, true, parent, id );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
 	Luna< CLuaEdit >::constructor( vm );
 
@@ -459,7 +459,7 @@ int CLuaGuiEnvironment::AddLabel( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = _object->addStaticText( text.ToWide(), rectangle, false, true, parent, id, false );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
 	Luna< CLuaLabel >::constructor( vm );
 
@@ -520,7 +520,7 @@ int CLuaGuiEnvironment::AddImage( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = _object->addImage( rectangle, parent, id, text.ToWide() );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
 	Luna< CLuaImage >::constructor( vm );
 
@@ -569,7 +569,7 @@ int CLuaGuiEnvironment::AddProgressBar( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = _object->addProgressBar( parent, iid, rectangle );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
 	Luna< CLuaProgressBar >::constructor( vm );
 
@@ -607,7 +607,7 @@ int CLuaGuiEnvironment::AddTab( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN elm = parent->addTab( name.ToWide(), id );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
 	Luna< CLuaTab >::constructor( vm );
 
@@ -634,7 +634,7 @@ int CLuaGuiEnvironment::AddLinkBox( lua_State* vm )
 			elm->setText( name.ToWide() );
 	}
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, (void*)elm );
 	Luna< CLuaLinkBox >::constructor( vm );
 
@@ -717,7 +717,7 @@ int CLuaGuiEnvironment::AddComponentListBox( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	elm = _object->addComponentListBox( rectangle, parent, iid );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, elm );
 	Luna< CLuaComponentListBox >::constructor( L );
 
@@ -737,7 +737,7 @@ int CLuaGuiEnvironment::AddListBox( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	elm = _object->addListBox( rectangle, parent, iid );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, elm );
 	Luna< CLuaListBox >::constructor( L );
 
@@ -784,7 +784,7 @@ int CLuaGuiEnvironment::AddPictureFlow( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 		elm = (gui::IGUIElement*)_object->addPictureFlow( rectangle, pictureRect, iid, parent );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, elm );
 	Luna< CLuaPictureFlow >::constructor( L );
 
@@ -797,6 +797,7 @@ int CLuaGuiEnvironment::FadeAction( lua_State* L )
 	luaL_argcheck(L, argc == 4, 4, "Function CLuaGuiEnvironment:FadeAction need int, bool, bool parameter" );
 
 	int time = lua_tointeger( L, 2 );
+	assert( time > 0 && time < 10000 );
 	bool inaction = lua_toboolean( L, 3 ) > 0;
 	bool needDestruct = lua_toboolean( L, 4 ) > 0;
 
@@ -808,8 +809,8 @@ int CLuaGuiEnvironment::FadeAction( lua_State* L )
 
 		if( time == 0 )
 		{
-				if( fader )
-					_object->addToDeletionQueue( fader );
+				/*if( fader )
+					fader->setVisible( false );*/
 				return 1;
 		}
 		else
@@ -819,10 +820,9 @@ int CLuaGuiEnvironment::FadeAction( lua_State* L )
 			else
 				fader->fadeOut( time );
 
-			if( needDestruct )
-			{
-				new gui::CNrpGuiTimeDestructor( _object, fader, time - 50 );	
-			}
+/*			fader->setVisible( true );
+			if( fader->getParent() )
+				fader->getParent()->bringToFront( fader ); */
 		}
 	}
 
@@ -841,7 +841,7 @@ int CLuaGuiEnvironment::AddTechMap( lua_State *vm )
 	gui::CNrpTechMap* techMap = NULL;
 	IF_OBJECT_NOT_NULL_THEN techMap = _object->AddTechMap( rectangle, parentElem, id, false );
 
-	lua_pop( vm, argc );
+	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, techMap );
 	Luna< CLuaTechMap >::constructor( vm );
 
@@ -942,7 +942,7 @@ int CLuaGuiEnvironment::AddFlick( lua_State* L )
 	gui::CNrpGuiFlick* elm = NULL;
 	IF_OBJECT_NOT_NULL_THEN elm = new gui::CNrpGuiFlick( _object, parentElem, rectangle, column, id );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, elm );
 	Luna< CLuaFlick >::constructor( L );
 
@@ -962,7 +962,7 @@ int CLuaGuiEnvironment::AddLayout( lua_State* L )
 	gui::CNrpLayout* elm = NULL;
 	IF_OBJECT_NOT_NULL_THEN elm = new gui::CNrpLayout( _object, parentElem, rectangle, column, id );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, elm );
 	Luna< CLuaElement >::constructor( L );
 

@@ -21,27 +21,27 @@ CLASS_NAME CLASS_LUAUSER( "CLuaUser" );
 BEGIN_LUNA_METHODS(CLuaUser)
 	LUNA_AUTONAME_FUNCTION( CLuaUser, SetSkill )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetSkill )
-	LUNA_AUTONAME_FUNCTION( CLuaUser, SetCharacter )
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTypeName )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetParam )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, SetParam )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, AddParam )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, IsTypeAs )
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetName )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, Save )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, AddWork )
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWorkNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, RemoveWork )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetWork )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, Create )
-	LUNA_AUTONAME_FUNCTION( CLuaUser, GetTexture )
-	LUNA_AUTONAME_FUNCTION( CLuaUser, IsFreeUser )
 	LUNA_AUTONAME_FUNCTION( CLuaUser, GetRelation )
-	LUNA_AUTONAME_FUNCTION( CLuaUser, HaveInvention )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaUser)
 	LUNA_ILUAOBJECT_PROPERTIES( CLuaUser )
+	LUNA_AUTONAME_PROPERTY( CLuaUser, "name", GetName, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaUser, "typeName", GetTypeName, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaUser, "character", PureFunction, SetCharacter )
+	LUNA_AUTONAME_PROPERTY( CLuaUser, "workNumber", GetWorkNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaUser, "texture", GetTexture, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaUser, "freeUser", IsFreeUser, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaUser, "haveInvention", HaveInvention, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaUser::CLuaUser(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAUSER, ex) {}
@@ -88,25 +88,22 @@ int CLuaUser::SetSkill( lua_State* L )
 
 int CLuaUser::SetCharacter( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:SetCharacter need int parameter" );
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	(*_object)[ CHARACTER ] = lua_tointeger( L, -1 );
 
-	int valuel = lua_tointeger( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN (*_object)[ CHARACTER ] = valuel;
-	return 1;	
+	return 0;	
 }
 
 int CLuaUser::GetTypeName( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetTypeName not need parameter" );
-	
-	NrpText name;
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		NrpText name = (*_object)[ TECHGROUP ];
+		lua_pushstring( L, name );
+		return 1;
+	}
 
-	IF_OBJECT_NOT_NULL_THEN name = (*_object)[ TECHGROUP ];
-
-	lua_pushstring( L, name );
+	lua_pushnil( L );
 	return 1;	
 }
 
@@ -140,14 +137,14 @@ int CLuaUser::IsTypeAs( lua_State* L )
 
 int CLuaUser::GetName( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetName not need parameter" );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		NrpText name = (NrpText)(*_object)[ NAME ];
+		lua_pushstring( L, name );
+		return 1;
+	}
 
-	NrpText name;
-
-	IF_OBJECT_NOT_NULL_THEN name = (NrpText)(*_object)[ NAME ];
-
-	lua_pushstring( L, name );
+	lua_pushnil( L );
 	return 1;	
 }
 
@@ -204,15 +201,15 @@ int CLuaUser::AddWork( lua_State* L )
 
 int CLuaUser::GetWorkNumber( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetName not need parameter" );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int valuel = (*_object)[ WORKNUMBER ];
+		lua_pushinteger( L, valuel );
+		return 1;		
+	}
 
-	int valuel = 0;
-
-	IF_OBJECT_NOT_NULL_THEN valuel = (*_object)[ WORKNUMBER ];
-
-	lua_pushinteger( L, valuel );
-	return 1;		
+	lua_pushnil( L );
+	return 1;
 }
 
 int CLuaUser::RemoveWork( lua_State* L )
@@ -244,25 +241,27 @@ int CLuaUser::GetWork( lua_State* L )
 
 int CLuaUser::GetTexture( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:GetTexture not need any parameter" );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		NrpText pathName = (*_object)[ TEXTURENORMAL ];
+		lua_pushstring( L, pathName );
+		return 1;
+	}
 
-	NrpText pathName = "";
-	IF_OBJECT_NOT_NULL_THEN pathName = (*_object)[ TEXTURENORMAL ];
-
-	lua_pushstring( L, pathName );
+	lua_pushnil( L );
 	return 1;		
 }
 
 int CLuaUser::IsFreeUser( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:IsFreeUser not need any parameter" );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		bool noCompany = (*_object)[ PARENTCOMPANY ].As<PNrpCompany>() == NULL;
+		lua_pushboolean( L, noCompany );
+		return 1;
+	}
 
-	bool noCompany = false;
-	IF_OBJECT_NOT_NULL_THEN noCompany = (*_object)[ PARENTCOMPANY ].As<PNrpCompany>() == NULL;
-
-	lua_pushboolean( L, noCompany );
+	lua_pushnil( L );
 	return 1;		
 }
 
@@ -276,7 +275,7 @@ int CLuaUser::GetRelation( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN ret = _object->GetRelation( name );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, ret );
 	Luna< CLuaRelation >::constructor( L );
 
@@ -285,12 +284,10 @@ int CLuaUser::GetRelation( lua_State* L )
 
 int CLuaUser::HaveInvention( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaUser:HaveInvention not need any parameter" );
-
-	bool ret = false;
 	IF_OBJECT_NOT_NULL_THEN 
 	{
+
+		bool ret = false;
 		for( int k=0; k < (int)(*_object)[ WORKNUMBER ]; k++ )
 		{
 			if( _object->GetWork( k )->ObjectTypeName() == CNrpInvention::ClassName() )
@@ -299,9 +296,11 @@ int CLuaUser::HaveInvention( lua_State* L )
 				break;
 			}
 		}
+		lua_pushboolean( L, ret );
+		return 1;
 	}
 
-	lua_pushboolean( L, ret );
+	lua_pushnil( L );
 	return 1;		
 }
 

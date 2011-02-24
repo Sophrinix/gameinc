@@ -13,13 +13,13 @@ CLASS_NAME CLASS_LUALABEL( "CLuaLabel" );
 
 BEGIN_LUNA_METHODS(CLuaLabel)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaLabel )
-	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideColor )
-	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetOverrideFont )
 	LUNA_AUTONAME_FUNCTION( CLuaLabel, SetTextAlignment )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaLabel)
 	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaLabel)
+	LUNA_AUTONAME_PROPERTY( CLuaLabel, "color", PureFunction, SetOverrideColor )
+	LUNA_AUTONAME_PROPERTY( CLuaLabel, "font", PureFunction, SetOverrideFont )
 END_LUNA_PROPERTIES
 
 CLuaLabel::CLuaLabel(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUALABEL, ex )							//конструктор
@@ -27,18 +27,15 @@ CLuaLabel::CLuaLabel(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUALABEL, 
 
 int CLuaLabel::SetOverrideFont( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaLabel::SetOverrideFont need fontName parameter");
-
-	NrpText fontName = lua_tostring( L, 2 );
-
+	assert( lua_isstring( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
+		NrpText fontName = lua_tostring( L, -1 );
 		gui::IGUIFont* font = _nrpEngine.GetGuiEnvironment()->getFont( fontName );
 		_object->setOverrideFont( font );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaLabel::SetOverrideColor( lua_State* L )

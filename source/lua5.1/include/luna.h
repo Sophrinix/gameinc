@@ -446,13 +446,22 @@ static int      property_setter(lua_State * L)
 */
 static int      function_dispatch(lua_State * L) 
 {
-	int             i = (int) lua_tonumber(L, lua_upvalueindex(1));
-	lua_pushnumber(L, 0);
-	lua_rawget(L, 1);
-	T             **obj = static_cast < T ** >(lua_touserdata(L, -1));
-	lua_pop(L, 1);
+	int             i=0;
+	try
+	{
+		i = (int) lua_tonumber(L, lua_upvalueindex(1));
+		lua_pushnumber(L, 0);
+		lua_rawget(L, 1);
+		T             **obj = static_cast < T ** >(lua_touserdata(L, -1));
+		lua_pop(L, 1);
 
-	return ((*obj)->*(T::methods[i].function)) (L);
+		return ((*obj)->*(T::methods[i].function)) (L);
+	}
+	catch(...)
+	{
+		int k=0;
+	}
+	return 0;
 }
 
 /*

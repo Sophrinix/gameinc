@@ -35,7 +35,7 @@ int CLuaPlatform::Create( lua_State* L )
 
 	_object = new CNrpPlatform( typeName );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata(L, _object );
 	Luna< CLuaPlatform >::constructor( L );
 

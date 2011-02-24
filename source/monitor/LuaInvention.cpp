@@ -18,29 +18,27 @@ BEGIN_LUNA_METHODS(CLuaInvention)
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, AddUser )
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, Load )
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, Remove )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetLevel )
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, Create )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetTexture )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetStatus )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetDescriptionLink )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetInvestiment )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, SetInvestiment )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetSpeed )
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPrognoseDateFinish )
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, CheckParams )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUserNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetUser )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetPassedMoney )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetDayLeft )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, IsValid )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetCompany )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetInternalName )
-	LUNA_AUTONAME_FUNCTION( CLuaInvention, GetMonthPay )
 	LUNA_AUTONAME_FUNCTION( CLuaInvention, ClearMonthPay )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaInvention)
 	LUNA_ILUAPROJECT_PROPERTIES( CLuaInvention )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "level", GetLevel, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "texture", GetTexture, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "status", GetStatus, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "description", GetDescriptionLink, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "investiment", GetInvestiment, SetInvestiment )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "speed", GetSpeed, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "userNumber", GetUserNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "passedMoney", GetPassedMoney, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "dayLeft", GetDayLeft, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "valid", IsValid, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "company", GetCompany, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaInvention, "monthPay", GetMonthPay, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaInvention::CLuaInvention(lua_State *L, bool ex) : ILuaProject( L, CLASS_LUAINVENTION, ex )							//конструктор
@@ -98,37 +96,37 @@ int CLuaInvention::Load( lua_State* L )
 
 int CLuaInvention::GetTexture( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetTexture", TEXTURENORMAL, "" ) );
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "" ) );
 	return 1;
 }
 
 int CLuaInvention::GetStatus( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<TECH_STATUS>( L, "GetStatus", STATUS, TS_UNKNOWN) );
+	lua_pushinteger( L, GetParam_<TECH_STATUS>( L, PROP, STATUS, TS_UNKNOWN) );
 	return 1;
 }
 
 int CLuaInvention::GetDescriptionLink( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetDescriptionLink", DESCRIPTIONPATH, "" ) );
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, DESCRIPTIONPATH, "" ) );
 	return 1;
 }
 
 int CLuaInvention::GetLevel( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, LEVEL, 0 ) );
 	return 1;
 }
 
 int CLuaInvention::GetInvestiment( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetInvestiment", INVESTIMENT, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, INVESTIMENT, 0 ) );
 	return 1;
 }
 
 int CLuaInvention::GetSpeed( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetInvestiment", INVENTIONSPEED, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, INVENTIONSPEED, 0 ) );
 	return 1;
 }
 
@@ -149,7 +147,7 @@ int CLuaInvention::GetPrognoseDateFinish( lua_State* L )
 
 int CLuaInvention::SetInvestiment( lua_State* L )
 {
-	return SetParam_<int, lua_Integer>( L, "SetInvestiment", INVESTIMENT, lua_tointeger );
+	return SetParam_<int, lua_Integer>( L, PROP, INVESTIMENT, lua_tointeger );
 }
 
 int CLuaInvention::CheckParams( lua_State* L )
@@ -164,7 +162,7 @@ int CLuaInvention::CheckParams( lua_State* L )
 
 int CLuaInvention::GetUserNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetUserNumber", USERNUMBER, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, USERNUMBER, 0 ) );
 	return 1;
 }
 
@@ -178,7 +176,7 @@ int CLuaInvention::GetUser( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	user = _object->GetUser( index );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
 	Luna< CLuaUser >::constructor( L );
 
@@ -187,21 +185,18 @@ int CLuaInvention::GetUser( lua_State* L )
 
 int CLuaInvention::GetPassedMoney( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetPassedMoney", PASSEDPRICE, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, PASSEDPRICE, 0 ) );
 	return 1;
 }
 
 int CLuaInvention::GetDayLeft( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetDayLeft", DAYLEFT, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, DAYLEFT, 0 ) );
 	return 1;
 }
 
 int CLuaInvention::IsValid( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:IsValid not need parameter");
-
 	bool avaible = true;
 	try
 	{
@@ -218,16 +213,16 @@ int CLuaInvention::IsValid( lua_State* L )
 
 int CLuaInvention::GetCompany( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:GetCompany not need parameter");
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		PNrpCompany cmp = (*_object)[ PARENTCOMPANY ].As<PNrpCompany>();
+		//lua_pop( L, lua_gettop( L ) );
+		lua_pushlightuserdata( L, cmp );
+		Luna< CLuaCompany >::constructor( L );
+		return 1;
+	}
 
-	PNrpCompany cmp = NULL;
-	IF_OBJECT_NOT_NULL_THEN	cmp = (*_object)[ PARENTCOMPANY ].As<PNrpCompany>();
-
-	lua_pop( L, argc );
-	lua_pushlightuserdata( L, cmp );
-	Luna< CLuaCompany >::constructor( L );
-
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -239,7 +234,7 @@ int CLuaInvention::GetInternalName( lua_State* L )
 
 int CLuaInvention::GetMonthPay( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetMonthPay", MONEY_TODECREASE, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, MONEY_TODECREASE, 0 ) );
 	return 1;
 }
 

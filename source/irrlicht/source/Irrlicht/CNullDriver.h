@@ -676,9 +676,34 @@ namespace video
 			core::dimension2d<u32> size;
 		};
 
+		void addResourceDirectory( const io::path& dir )
+		{
+			for( u32 i=0; i < _directories.size(); i++ )
+				if( _directories[ i ] == dir )
+					return;
+
+			_directories.push_back( dir );
+		}
+
+		io::path checkFile( const io::path& name )
+		{
+			if( FileSystem->existFile( name ) )
+				return name;
+
+			for( u32 i=0; i < _directories.size(); i++ )
+			{
+				io::path tmp = _directories[ i ] + "/" + name;
+				if( FileSystem->existFile( tmp ) )
+					return tmp;
+			}
+
+			return name;
+		}
+
 		core::array<SSurface> Textures;
 		core::array<video::IImageLoader*> SurfaceLoader;
 		core::array<video::IImageWriter*> SurfaceWriter;
+		core::array<io::path> _directories;
 		core::array<SLight> Lights;
 		core::array<SMaterialRenderer> MaterialRenderers;
 

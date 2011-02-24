@@ -28,6 +28,7 @@ public:
 	int HaveData( lua_State* L );
 	int SetFunction( lua_State* L );
 	int UnsetFunction( lua_State* L );
+	int SetColor( lua_State* L );
 
 private:
 	typedef enum { TI_IMAGE=0, TI_HOVER, TI_PRESSED } TYPE_IMAGE;

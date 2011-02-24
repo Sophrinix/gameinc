@@ -1,11 +1,13 @@
 local base = _G
 
+IncludeScript("topGame" )
+IncludeScript("journals")
+
 module( "shop" )
 
 local guienv = base.guienv
 
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
+local window = base.window
 local button = base.button
 local browser = base.browser
 local tutorial = base.tutorial
@@ -14,7 +16,7 @@ local applic = base.applic
 local mainWindow = nil
 
 function FadeEnterAction()
-	mainWindow:SetVisible( true )
+	mainWindow.visible = true
 	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
@@ -26,44 +28,33 @@ end
 
 function Hide()
 	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "shop.FadeExitAction()" )	
+	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
+	
+	base.package.loaded[ "topGame" ] = nil
+	base.package.loaded[ "journals" ] = nil
+	
 end
 
 function Show()  
     if mainWindow then
-		mainWindow:SetVisible( true )
+		mainWindow.visible = true
+		return
 	else
-		mainWindow = guienv:AddWindow( "media/maps/windowShop_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		mainWindow:SetDraggable( false )
-		mainWindow:GetCloseButton():SetVisible( false )
-		mainWindow:SetVisible( false )
-		
-		--adding closeButton
-		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", mainWindow, -1, "",
-						"./shop.Hide()" )
+		mainWindow = window.fsWindow( "media/maps/windowShop_normal.png", Hide )
 	end
 
 	--игры в продаже
-	button.EqualeTexture( 147, 333, "gameInSale", mainWindow, -1, "", "./saleManager.Show()")
+	button.EqualeTexture( 147, 333, "gameInSale", mainWindow, -1, "", base.saleManager.Show )
 	
 	--топ-лист месяца
-	button.EqualeTexture( 703, 67, "toplistmonth", mainWindow, -1, "", "./topGame.Show( topGame.TIME_MONTH )" )
+	button.EqualeTexture( 703, 67, "toplistmonth", mainWindow, -1, "", function () base.topGame.Show( topGame.TIME_MONTH ) end )
 
 	--топ-лист за все время
-	button.EqualeTexture( 119, 94, "toplisttime", mainWindow, -1, "", "./topGame.Show( topGame.TIME_LIFE )")
+	button.EqualeTexture( 119, 94, "toplisttime", mainWindow, -1, "",function () base.topGame.Show( topGame.TIME_LIFE ) end )
 
 	--игровые журналы
-	button.EqualeTexture( 861, 268, "showMagazines", mainWindow, -1, "", "./journals.Show()" )
+	button.EqualeTexture( 861, 268, "showMagazines", mainWindow, -1, "", base.journals.Show )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "shop.FadeEnterAction()" )
-end
-
-function ShowMonthTopList()
-
-end
-
-function ShowAllTimeTopList()
-
+	guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
 end

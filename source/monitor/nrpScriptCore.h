@@ -70,8 +70,6 @@ extern "C"
 
 	int ApplicationSave( lua_State* vm );
 
-	int GetPlant( lua_State* vm );
-
 	int GetBrowser( lua_State *vm );
 
 	int ApplicationGetTranslate( lua_State* vm );

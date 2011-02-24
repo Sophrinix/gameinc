@@ -199,7 +199,7 @@ int CLuaGame::GetBoxAddon( lua_State* L )
 			tech = box->GetAddon( index );
 	}
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
 	Luna< CLuaTechnology >::constructor( L );
 
@@ -325,7 +325,7 @@ int CLuaGame::GetLastMonthSales( lua_State* L )
 		return 1;
 	}
 
-	lua_pushnil( L )
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -384,7 +384,7 @@ int CLuaGame::GetCompany( lua_State* L )
 	{
 		CNrpCompany* cmp = (*_object)[ PARENTCOMPANY ].As<CNrpCompany*>();
 
-		lua_pop( L, argc );
+		//lua_pop( L, lua_gettop( L ) );
 		lua_pushlightuserdata( L, cmp );
 		Luna< CLuaCompany >::constructor( L );
 		return 1;

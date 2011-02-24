@@ -57,6 +57,9 @@ namespace gui
 
 		//! Returns if the fade in or out process is done.
 		virtual bool isReady() const = 0;
+
+		virtual bool isPointInside(const core::position2d<s32>& point) const
+		{ return false;	}
 	};
 
 

@@ -22,11 +22,9 @@ function ToggleVisible()
 	guienv:RemoveAnimators( mainWindow )
 	
 	if visible then	
-		guienv:AddMoveAnimator( mainWindow, 0, scrHeight - offsethh, 
-							1, true, true, false )
+		guienv:AddMoveAnimator( mainWindow, 0, scrHeight - offsethh, 1, true, true, false )
 	else
-		guienv:AddMoveAnimator( mainWindow, 0, scrHeight - hh, 
-							1, true, true, false )
+		guienv:AddMoveAnimator( mainWindow, 0, scrHeight - hh, 1, true, true, false )
 	end
 	
 	visible = not visible
@@ -35,42 +33,39 @@ end
 function Next()
 	appPda:Next()
 	base.LogScript( "NextR" )
-	local textr = appPda:GetTimeStr().."\n"..appPda:GetMessage()
-	base.CLuaElement( animTextRunner ):SetText( textr )
+	local textr = appPda.time.."\n"..appPda.message
+	base.CLuaElement( animTextRunner ).text = textr
 end
 
 function Prev()
 	appPda:Prev()
 	base.LogScript( "PrevR" )
-	local textr = appPda:GetTimeStr().."\n"..appPda:GetMessage()
-	base.CLuaElement( animTextRunner ):SetText( textr )
+	local textr = appPda.time .. "\n" .. appPda.message
+	base.CLuaElement( animTextRunner ).text = textr
 end
 
 function Show( textr )
 	if mainWindow == nil then
 		mainWindow = guienv:AddWindow( "media/textures/pda.png", 0, scrHeight - offsethh, 
 							 		   hw, scrHeight - offsethh + hh, -1, 
-							 		   guienv:GetRootGUIElement() )
+							 		   guienv.root )
 							 		   
-		mainWindow:GetCloseButton():SetVisible( false )
-		mainWindow:SetDrawBody( false )
-		mainWindow:SetDraggable( false ) 
+		mainWindow.closeButton.visible = false
+		mainWindow.drawBody = false
+		mainWindow.draggable = false
 		
-		button.Stretch( 70, 191, 70+53, 191+50, 
-		 			    "pda_down", mainWindow, -1, "",
-						Hide )
+		button.Stretch( 70, 191, "53+", "50+", "pda_down", mainWindow, -1, "", Hide )
+		button.Stretch( 10, 190, 40, 240, "suda", mainWindow, -1, "", Prev )
+		button.Stretch( "30e", 190, "0e",  240, "tuda", mainWindow, -1, "", Next )
 						
-		button.Stretch( 10, 190, 40,  240, "suda", mainWindow, -1, "", Prev )
-		button.Stretch( hw - 30, 190, hw,  240, "tuda", mainWindow, -1, "", Next )
-						
-		lbMessage = guienv:AddLabel( " ", 30, 30, 162, 252 - 40, -1, mainWindow )
-		lbMessage:SetOverrideFont( "font_7" )
+		lbMessage = guienv:AddLabel( " ", 30, 30, "30e", "40e", -1, mainWindow )
+		lbMessage.font = "font_7"
 								 
 		animTextRunner = guienv:AddTextRunner( lbMessage, "" )
 		
 		mainWindow:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, ToggleVisible )
 		
-		appPda = base.applic:GetPda()
+		appPda = base.applic.pda
 		
 		guienv:AddTopElement( mainWindow )
 	else
@@ -80,18 +75,16 @@ function Show( textr )
 	if textr ~= nil then
 		appPda:AddMessage( textr, "./pda.ToggleVisible()" )
 		local textr = appPda:GetTimeStr() .. "\n" .. appPda:GetMessage()
-		base.CLuaElement( animTextRunner ):SetText( textr )
+		base.CLuaElement( animTextRunner ).text = textr
 	end
 	
 	guienv:RemoveAnimators( mainWindow )
-	guienv:AddMoveAnimator( mainWindow, 0, scrHeight - hh, 
-							1, true, true, false )
+	guienv:AddMoveAnimator( mainWindow, 0, scrHeight - hh, 1, true, true, false )
 	visible = true
 end
 
 function Hide()
 	guienv:RemoveAnimators( mainWindow )
-	guienv:AddMoveAnimator( mainWindow, 0, scrHeight - offsethh, 
-							1, true, true, false )
+	guienv:AddMoveAnimator( mainWindow, 0, scrHeight - offsethh, 1, true, true, false )
 	visible = false
 end

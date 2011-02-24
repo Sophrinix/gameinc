@@ -56,32 +56,32 @@ local function localGetAddinMachine()
 end
 
 local function localGetFinalDiscount()
-	local discount = currentDiskMachine:GetDiscount() + currentDiskMachine:GetLineDiscount() * produceDiskWork:GetNumberMachine()
-	if discount > currentDiskMachine:GetMaxDiscount() then
-		discount = currentDiskMachine:GetMaxDiscount()
+	local discount = currentDiskMachine.discount + currentDiskMachine.lineDiscount * produceDiskWork.numberMachine
+	if discount > currentDiskMachine.maxDiscount then
+		discount = currentDiskMachine.maxDiscount
 	end
 	
 	return discount
 end
 
 local function localGetFinalPrice()
-	return produceDiskWork:GetPrice() * ( 1 - localGetFinalDiscount() )
+	return produceDiskWork.price * ( 1 - _GetFinalDiscount() )
 end
 
 local function UpdateLabels()
-	local machines = produceDiskWork:GetNumberMachine()
+	local machines = produceDiskWork.numberMachine
 	
-	labelGameName:SetText( currentGame:GetName() )
+	labelGameName.text = currentGame.name
 	
 	--labelPricePrint:SetText( "Плата за размещение: $"..produceDiskWork:GetRentPrice() )
 	--labelPerfomance:SetText( "Производительность:"..produceDiskWork:GetHourPerfomance().." (шт/час)" )
 	--labelPriceHour:SetText( "Стоимость работы:"..produceDiskWork:GetHourPrice().." ($/час)" )
 	
-	labelNumberMachine:SetText( produceDiskWork:GetNumberMachine() )
-	labelNumberDay:SetText( produceDiskWork:GetNumberDay().." (дн)" )
-	labelDiskNumber:SetText(  produceDiskWork:GetNumberDisk().." шт" ) 
-	labelDiskPrice:SetText( base.string.format( "%.2f", produceDiskWork:GetDiskPrice() ) )  
-	labelFinalPrice:SetText( "$"..base.string.format( "%d", localGetFinalPrice() ) )
+	labelNumberMachine.text = produceDiskWork.numberMachine
+	labelNumberDay.text = produceDiskWork.numberDay.." (дн)"
+	labelDiskNumber.text = produceDiskWork.numberDisk.." шт" 
+	labelDiskPrice.text = base.string.format( "%.2f", produceDiskWork.diskPrice )
+	labelFinalPrice.text = "$"..base.string.format( "%d", _GetFinalPrice() )
 	
 	--labelAdvPrice:SetText( "Цены дополнительных вещей: $"..base.string.format( "%.2f", produceDiskWork:GetAdvPrice() ) )
 	--labelDiskInDay:SetText( "Всего дисков за день:"..produceDiskWork:GetDiskInDay().." шт" )
@@ -94,89 +94,88 @@ end
 
 local function localAddLabel( text, xpos, ypos, ww, hh, parent )
 	local lb = guienv:AddLabel( text, xpos, ypos, ww, hh, -1, parent )
-	lb:SetOverrideColor( 0xff, 0xff, 0xff, 0xff )	
+	lb.color = base.toColor( 0xff, 0xff, 0xff, 0xff )	
 	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 	return lb, ypos + 40
 end
 
 function SelectGame()
 	guienv:BringToFront( windowSelectGame )
-	windowSelectGame:SetVisible( true )
+	windowSelectGame.visible = true
 end
 
 function SelectGameClose()
-	windowSelectGame:SetVisible( false )	
+	windowSelectGame.visible = false
 end
 
 function GameSelected()
-	currentGame = base.CLuaGame( cmbxGames:GetSelectedObject() )
+	currentGame = base.CLuaGame( cmbxGames.selectedObject )
 	produceDiskWork:SetGame( currentGame )
 	UpdateLabels()		
 	
-	windowSelectGame:SetVisible( false )	
-	btnGame:SetImage( 0, 0, 0, 0, currentGame:GetViewImage() )
+	windowSelectGame.visible = false
+	btnGame:SetImage( 0, 0, 0, 0, currentGame.viewImage )
 end
 
 local function localAddGames()
-	btnGame = button.Stretch( 100, 400, "150+", "230+", "pure_button", wndDPP, -1, "Выбрать\n игру", "./diskManager.SelectGame()" )
+	btnGame = button.Stretch( 100, 400, "150+", "230+", "pure_button", wndDPP, -1, "Выбрать\n игру", SelectGame )
 
 	windowSelectGame = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", -1, wndDPP )
-	windowSelectGame:SetVisible( false )
-	windowSelectGame:SetDraggable( false )
-	windowSelectGame:GetCloseButton():SetVisible( false )
-	windowSelectGame:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./diskManager.GameSelected()" )
+	windowSelectGame.visible = false
+	windowSelectGame.draggable = false
+	windowSelectGame.closeButton.visible = false
+	windowSelectGame:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, GameSelected )
 	
 	cmbxGames = guienv:AddPictureFlow( "5%", "5%", "80%", "80%", -1, windowSelectGame )
 	cmbxGames:SetPictureRect( 0, 0, 140, 140 )
-	cmbxGames:SetDrawBorder( false )
+	cmbxGames.drawBorder = false
 	
-	button.Stretch( "15%", "82%", "49%", "95%", "", windowSelectGame, -1, "Выбрать", "./diskManager.SelectGame()" )
-	button.Stretch( "51%", "82%", "85%", "95%", "", windowSelectGame, -1, "Закрыть", "./diskManager.SelectGameClose()" )
+	button.Stretch( "15%", "82%", "49%", "95%", "", windowSelectGame, -1, "Выбрать", SelectGame )
+	button.Stretch( "51%", "82%", "85%", "95%", "", windowSelectGame, -1, "Закрыть", SelectGameClose )
 		
-	for i=1, company:GetGameNumber() do
+	for i=1, company.gameNumber do
 		local game = company:GetGame( i-1 )
-		if game:HaveBox() then 
-			cmbxGames:AddItem( game:GetViewImage(), game:GetName(), game.object )
+		if game.haveBox then 
+			cmbxGames:AddItem( game.viewImage, game.name, game.object )
 		end	
 	end
 end
 
 function SelectMachine()
 	guienv:BringToFront( windowSelectMachine )
-	windowSelectMachine:SetVisible( true )
+	windowSelectMachine.visible = true
 end
 
 function SelectMachineClose()
-	windowSelectMachine:SetVisible( false )	
+	windowSelectMachine.visible = false
 end
 
 function MachineSelected()
-	currentDiskMachine = base.CLuaDiskMachine( cmbxProduceType:GetSelectedObject() )
-	produceDiskWork:SetProduceType( currentDiskMachine.slef )
+	currentDiskMachine = base.CLuaDiskMachine( cmbxProduceType.selectedObject )
+	produceDiskWork.produceType = currentDiskMachine.object
 	UpdateLabels()
-	btnMachine:SetImage( 0, 0, 0, 0, currentDiskMachine:GetTexture() )
-	windowSelectMachine:SetVisible( false )
+	btnMachine:SetImage( 0, 0, 0, 0, currentDiskMachine.texture )
 end
 
 local function  localAddMachines()
-	btnMachine = button.Stretch( 130, 170, 250, 265, "pure_button", wndDPP, -1, "Выбрать\n производство", "./diskManager.SelectMachine()" )
+	btnMachine = button.Stretch( 130, 170, 250, 265, "pure_button", wndDPP, -1, "Выбрать\n производство", _SelectMachine )
 	
 	windowSelectMachine = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", -1, wndDPP )
-	windowSelectMachine:SetVisible( false )
-	windowSelectMachine:SetDraggable( false )
-	windowSelectMachine:GetCloseButton():SetVisible( false )
-	windowSelectMachine:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./diskManager.MachineSelected()" )
+	windowSelectMachine.visible = false
+	windowSelectMachine.draggable = false
+	windowSelectMachine.closeButton.visible = false
+	windowSelectMachine:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, _MachineSelected )
 	
 	cmbxProduceType = guienv:AddPictureFlow( "5%", "5%", "80%", "80%", -1, windowSelectMachine )
 	cmbxProduceType:SetPictureRect( 0, 0, 140, 140 )
-	cmbxProduceType:SetDrawBorder( false )
+	cmbxProduceType.drawBorder = false
 	
-	button.Stretch( "15%", "82%", "49%", "95%", "", windowSelectMachine, -1, "Выбрать", "./diskManager.SelectMachine()" )
-	button.Stretch( "51%", "82%", "85%", "95%", "", windowSelectMachine, -1, "Закрыть", "./diskManager.SelectMachineClose()" )
+	button.Stretch( "15%", "82%", "49%", "95%", "", windowSelectMachine, -1, "Выбрать", _SelectMachine )
+	button.Stretch( "51%", "82%", "85%", "95%", "", windowSelectMachine, -1, "Закрыть", _SelectMachineClose )
 	
-	for i=1, plant:GetDiskMachineNumber() do
+	for i=1, plant.diskMachineNumber do
 		local dm = plant:GetDiskMachine( i-1 )
-		cmbxProduceType:AddItem( dm:GetTexture(), dm:GetName(), dm.object )		
+		cmbxProduceType:AddItem( dm.texture, dm.name, dm.object )		
 	end
 end
 
@@ -191,29 +190,52 @@ local function localAddLabels()
 	
 	--добавим кнопки изменения количества аппаратов для производства дисков
 	labelNumberMachine, _ = localAddLabel( "???", 300, 230, "30+", "40+", wndDPP )
-	guienv:AddButton( 260, 220, "40+", "30+", wndDPP, -1, "+" ):SetAction( "./diskManager.IncMachineNumber()" )	
-	guienv:AddButton( 260, 250, "40+", "30+", wndDPP, -1, "-" ):SetAction( "./diskManager.DecMachineNumber()" )
+	local btn = guienv:AddButton( 260, 220, "40+", "30+", wndDPP, -1, "+" )
+	btn.action = _IncMachineNumber
+	
+	btn = guienv:AddButton( 260, 250, "40+", "30+", wndDPP, -1, "-" )
+	btn.action = _DecMachineNumber
 	
 	--добавим кнопки изменения количества дней производства
 	labelNumberDay, _ = localAddLabel( "numberday", 275, 180, "120+", "30+", wndDPP )
-	guienv:AddButton( 410, 160, "32+", "32+", wndDPP, -1, "+" ):SetAction( "./diskManager.IncDayNumber()" )
-	guienv:AddButton( 410, 192, "32+", "32+", wndDPP, -1, "-" ):SetAction( "./diskManager.DecDayNumber()" )	 
+	btn = guienv:AddButton( 410, 160, "32+", "32+", wndDPP, -1, "+" )
+	btn.action = _IncDayNumber
+	btn = guienv:AddButton( 410, 192, "32+", "32+", wndDPP, -1, "-" )
+	btn.action = _DecDayNumber
 	
-	guienv:AddButton( 480, 220, "190+", "64+", wndDPP, -1, "-" ):SetAction( "./diskManager.SetAntipiratForce()" )
+	btn = guienv:AddButton( 480, 220, "190+", "64+", wndDPP, -1, "-" )
+	btn.action = _SetAntipiratForce
+end
+
+local function _AddWork()	
+	--изменим отношение производителя к игроку за размещение заказа
+	localChangeProducerDiscount()
+	
+	company:AddBalance( -localGetFinalPrice() )
+	plant:AddProduceWork( produceDiskWork )
+	
+	produceDiskWork:Remove()
+	wndDPP:Remove()
+	wndDPP = nil
+end
+
+function Hide()
+	produceDiskWork:Remove()
+	wndDPP:Remove()
+	wndDPP = nil
 end
 
 function Show()
 	numberMachine = 0
 	dayOfProduce = 0
 	company = base.applic.playerCompany
-	plant = base.NrpGetPlant()
-	produceDiskWork = base.CLuaPlantWork():Create( company:GetName() )
+	plant = base.pllic.plant
+	produceDiskWork = base.CLuaPlantWork():Create( company.name )
 	
 	if wndDPP == nil then
-		wndDPP = guienv:AddWindow( "media/textures/MachinePlant.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		wndDPP:SetDraggable( false )
+		wndDPP = window.fsWindow( "media/textures/MachinePlant.png", Hide )
 	else
-		wndDPP:SetVisible( true )
+		wndDPP.visible = true
 	end
 	
 	--игры, которые можно производить
@@ -226,10 +248,8 @@ function Show()
 	
 	localAddLabels()
 	
-	local btn = button.Stretch( 700, 385, "226+", "275+", "button_start", wndDPP, -1, "", "./diskManager.QueryAddWork()" )
+	local btn = button.Stretch( 700, 385, "226+", "275+", "button_start", wndDPP, -1, "", QueryAddWork )
 	btn:SetHoveredImage( 0, 0, 0, 0, "media/buttons/button_start_next.png" )
-		
-	button.Stretch( "80e", "80e", "10e", "10e", "button_down", wndDPP, -1, "", "./diskManager.Hide()" )
 end
 
 function IncDayNumber()
@@ -242,14 +262,14 @@ end
 function DecDayNumber()
 	if dayOfProduce > 1 then
 		dayOfProduce = dayOfProduce - 1
-		produceDiskWork:SetNumberDay( dayOfProduce )
+		produceDiskWork.numberDay = dayOfProduce
 	end
 	UpdateLabels()
 end
 
 function IncMachineNumber()
-	numberMachine = numberMachine + localGetAddinMachine()
-	produceDiskWork:SetNumberMachine( numberMachine )
+	numberMachine = numberMachine + _GetAddinMachine()
+	produceDiskWork.numberMachine = numberMachine
 	
 	UpdateLabels()
 end
@@ -257,7 +277,7 @@ end
 function DecMachineNumber( ptr )
 	if numberMachine > 1 then
 		numberMachine = numberMachine - localGetAddinMachine()
-		produceDiskWork:SetNumberMachine( numberMachine )
+		produceDiskWork.numberMachine = numberMachine
 	end
 	
 	UpdateLabels()
@@ -268,29 +288,29 @@ function CloseQueryAddWork()
 end
 
 function QueryAddWork()
-	local machines = produceDiskWork:GetNumberMachine()
+	local machines = produceDiskWork.numberMachine
 	windowQueryWork = guienv:AddWindow( "", "25%", 0, "50%+", "100%", -1, wndDPP )
 	local listBox = guienv:AddListBox( "2%", "2%", "98%", "80%", -1, windowQueryWork )
 	
-	listBox:AddItem( "Название:"..currentGame:GetName(), nil )
-	listBox:AddItem( base.string.format( "Цена копии: %.2f", produceDiskWork:GetDiskPrice() ), nil )	
+	listBox:AddItem( "Название:"..currentGame.name, nil )
+	listBox:AddItem( base.string.format( "Цена копии: %.2f", produceDiskWork.diskPrice ), nil )	
 	listBox:AddItem( produceDiskWork:GetNumberDisk().." шт", nil )	
-	listBox:AddItem( base.string.format( "$%d", localGetFinalPrice() ), nil )
-	listBox:AddItem( "Стоимость аренды: $"..produceDiskWork:GetRentPrice() * machines, nil)
-	listBox:AddItem( "Производительность (шт\час):"..produceDiskWork:GetHourPerfomance() * machines, nil ) 
-	listBox:AddItem( "Стоимость работы ($\час):"..produceDiskWork:GetHourPrice() * machines, nil )
-	listBox:AddItem( base.string.format( "Цены дополнительных вещей: $ %.2f", produceDiskWork:GetAdvPrice() ), nil )
-	listBox:AddItem( "Всего дисков за день:"..produceDiskWork:GetDiskInDay().." шт", nil )			
-	listBox:AddItem( "Стоимость работы:"..produceDiskWork:GetHourPrice().." ($/час)", nil )
-	listBox:AddItem( "Производительность:"..produceDiskWork:GetHourPerfomance().." (шт/час)", nil ) 
-	listBox:AddItem( "Плата за размещение: $"..produceDiskWork:GetRentPrice(), nil )
+	listBox:AddItem( base.string.format( "$%d", _GetFinalPrice() ), nil )
+	listBox:AddItem( "Стоимость аренды: $"..produceDiskWork.rentPrice * machines, nil)
+	listBox:AddItem( "Производительность (шт\час):"..produceDiskWork.hourPerfomance * machines, nil ) 
+	listBox:AddItem( "Стоимость работы ($\час):"..produceDiskWork.hourPrice * machines, nil )
+	listBox:AddItem( base.string.format( "Цены дополнительных вещей: $ %.2f", produceDiskWork.advPrice ), nil )
+	listBox:AddItem( "Всего дисков за день:"..produceDiskWork.diskInDay.." шт", nil )			
+	listBox:AddItem( "Стоимость работы:"..produceDiskWork.hourPrice.." ($/час)", nil )
+	listBox:AddItem( "Производительность:"..produceDiskWork.hourPerfomance.." (шт/час)", nil ) 
+	listBox:AddItem( "Плата за размещение: $"..produceDiskWork.rentPrice, nil )
 	listBox:AddItem( "Скидка производителя: "..base.string.format( "%d $", localGetFinalDiscount() * 100 ), nil )
-	listBox:AddItem( "Линий производства: "..produceDiskWork:GetNumberMachine(), nil )
-	listBox:AddItem( "Дней производства: "..produceDiskWork:GetNumberDay().." (дн)", nil )
+	listBox:AddItem( "Линий производства: "..produceDiskWork.numberMachine, nil )
+	listBox:AddItem( "Дней производства: "..produceDiskWork.numberDay.." (дн)", nil )
 	
-	local dd = base.string.format( "Оплатить %d", localGetFinalPrice() )
-	button.Stretch( "25%", "82%", "24%+", "98%", "", windowQueryWork, -1, dd, "./diskManager.AddWork()" )
-	button.Stretch( "51%", "82%", "24%+", "98%", "", windowQueryWork, -1, "Закрыть", "./diskManager.CloseQueryAddWork()" )
+	local dd = base.string.format( "Оплатить %d", _GetFinalPrice() )
+	button.Stretch( "25%", "82%", "24%+", "98%", "", windowQueryWork, -1, dd, _AddWork )
+	button.Stretch( "51%", "82%", "24%+", "98%", "", windowQueryWork, -1, "Закрыть", _CloseQueryAddWork )
 end
 
 function localChangeProducerDiscount()
@@ -317,22 +337,4 @@ function localChangeProducerDiscount()
 		end		
 	end
 --]]
-end
-
-function AddWork()	
-	--изменим отношение производителя к игроку за размещение заказа
-	localChangeProducerDiscount()
-	
-	company:AddBalance( -localGetFinalPrice() )
-	plant:AddProduceWork( produceDiskWork )
-	
-	produceDiskWork:Remove()
-	wndDPP:Remove()
-	wndDPP = nil
-end
-
-function Hide()
-	produceDiskWork:Remove()
-	wndDPP:Remove()
-	wndDPP = nil
 end

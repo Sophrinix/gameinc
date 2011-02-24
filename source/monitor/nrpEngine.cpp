@@ -11,13 +11,13 @@
 #include "nrpGUIEnvironment.h"
 #include "nrpConsole.h"
 #include "nrpScript.h"
-//////////////////////////////////////////////////////////////////////////
+
 #include <irrlicht.h>
 #include <cassert>
 
 using namespace irr;
 using namespace nrp;
-//////////////////////////////////////////////////////////////////////////
+
 static CNrpEngine * global_app_instance = 0;
 
 #define NOT_EVENTRECEIVER NULL
@@ -193,7 +193,7 @@ void CNrpEngine::CreateScreenShot_()
 				systime.wYear, systime.wMonth, systime.wDay,
 				systime.wHour, systime.wMinute, systime.wSecond );
 
-	GetVideoDriver()->writeImageToFile( image, filename);
+	GetVideoDriver()->writeImageToFile( image, filename );
 	image->drop();
 }
 

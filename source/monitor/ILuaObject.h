@@ -176,7 +176,7 @@ public:
 
 	ILuaObject(lua_State *L, const NrpText& className, bool exist ) : INrpObject( className, "" ) 
 	{
-		_object = _GetLuaObject<ObjectType, ILuaObject>( L, 1, true );
+		_object = _GetLuaObject<ObjectType, ILuaObject>( L, lua_gettop( L ), true );
 
 		if( _object == NULL )
 			DebugReport( __FILEW__, __LINE__, _ErrEmptyObject() );

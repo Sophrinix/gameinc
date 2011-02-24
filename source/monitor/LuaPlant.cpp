@@ -59,7 +59,7 @@ int CLuaPlant::GetDiskMachine( lua_State* L )
 	CNrpDiskMachine* dm = NULL;
 	IF_OBJECT_NOT_NULL_THEN	dm = _object->GetDiskMachine( dmNumber );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, dm );
 	Luna< CLuaDiskMachine >::constructor( L );
 
@@ -224,7 +224,7 @@ int CLuaPlant::GetReklame( lua_State* L )
 	CNrpReklameWork* r = NULL;
 	IF_OBJECT_NOT_NULL_THEN r = _object->GetReklame( typeName, game );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, r );
 	Luna< CLuaReklame >::constructor( L );
 	return 1;
@@ -247,7 +247,7 @@ int CLuaPlant::GetBaseReklame( lua_State* L )
 	CNrpReklameWork* ret = NULL;
 	IF_OBJECT_NOT_NULL_THEN  ret = _object->GetBaseReklame( index );
 	
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, ret );
 	Luna< CLuaReklame >::constructor( L );
 	return 1;

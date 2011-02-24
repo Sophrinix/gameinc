@@ -23,7 +23,10 @@ END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaComponentListBox)
 	LUNA_ILUALISTBOX_PROPERTIES( CLuaComponentListBox )
+	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "selectedObject", GetSelectedObject, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "onLmbDblClick", PureFunction, SetLmbDblClick )
 END_LUNA_PROPERTIES
+
 
 CLuaComponentListBox::CLuaComponentListBox(lua_State *L, bool ex) : ILuaListBox( L, CLASS_COMPONENTLISTBOX, ex )							//конструктор
 {}
@@ -43,21 +46,28 @@ int CLuaComponentListBox::AddItem( lua_State *L )	//добавляет текст в списко ото
 	return 1;
 }
 
+int CLuaComponentListBox::SetLmbDblClick( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddLuaFunction( GUIELEMENT_SELECTED_AGAIN, _GetRef( L, -1 ) );			
+	
+	return 0;
+}
+
 int CLuaComponentListBox::GetSelectedObject( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaComponentListBox::GetSelectedObject not need any parameter");
-
-	void* selObject = NULL;
-
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		int selected = _object->getSelected();
 		if( selected >= 0 )
-			selObject = _object->getSelectedObject();
+		{
+			void* selObject = _object->getSelectedObject();
+			lua_pushlightuserdata( L, selObject );
+			return 1;
+		}
 	}
 
-	lua_pushlightuserdata( L, selObject );
+	lua_pushnil( L );
 	return 1;
 }
 

@@ -130,7 +130,7 @@ int CLuaCompany::GetEngine( lua_State* L )
 	CNrpGameEngine* eng = NULL;
 	IF_OBJECT_NOT_NULL_THEN	eng = _object->GetGameEngine( idx );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, eng );
 	Luna< CLuaGameEngine >::constructor( L );
 
@@ -187,7 +187,7 @@ int CLuaCompany::CreateDevelopGame( lua_State* L )
 			_nrpApp.AddDevelopProject( result );
 			_object->AddDevelopProject( result );
 
-			lua_pop( L, argc );
+			//lua_pop( L, argc );
 			lua_pushlightuserdata( L, result );
 			Luna< CLuaGameProject >::constructor( L );
 		}
@@ -224,7 +224,7 @@ int CLuaCompany::GetInvention( lua_State* L )
 	CNrpInvention* inv = NULL;
 	IF_OBJECT_NOT_NULL_THEN	inv = _object->GetInvention( index );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, inv );
 	Luna< CLuaInvention >::constructor( L );
 
@@ -240,7 +240,7 @@ int CLuaCompany::GetUser( lua_State* L )
 	IUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN	user = _object->GetUser( index );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
 	Luna< CLuaUser >::constructor( L );
 
@@ -275,7 +275,7 @@ int CLuaCompany::GetProjectByName( lua_State* L )
 	INrpProject* prj = NULL;
 	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetProject( name );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
 	Luna< CLuaGameProject >::constructor( L );
 	return 1;	
@@ -309,7 +309,7 @@ int CLuaCompany::GetFromPortfelle( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetFromPortfelle( index );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
 	Luna< CLuaProject >::constructor( L );
 
@@ -326,7 +326,7 @@ int CLuaCompany::GetDevProject( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetDevelopProject( index );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
 	Luna< CLuaDevelopProject >::constructor( L );
 
@@ -343,7 +343,7 @@ int CLuaCompany::GetGame( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetGame( index );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
 	Luna< CLuaGame >::constructor( L );
 

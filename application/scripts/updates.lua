@@ -7,7 +7,7 @@ local SCRIPT = base.SCRIPT
 local ODS = base.ODS
 local CON = base.CON
 local applic = base.applic
-local plant = base.NrpGetPlant()
+local plant = base.applic.plant
 
 fileIniAddons		= "xtras/gameboxaddons.list"
 fileDiskMachines	= "xtras/diskmachines.list"
@@ -198,12 +198,12 @@ function CheckRetailers( ptr )
 		if retailer:ValidTime() then
 			if not retailer:IsLoaded() then
 				applic:LoadRetailer( retlIniFile )
-				Log( "Load retailer "..retailer:GetName().." from "..retlIniFile )
+				Log( "Load retailer "..retailer.name.." from "..retlIniFile )
 			end
 		else
 			if retailer:IsLoaded() then
-				applic:RemoveRetiler( retailer:GetName() )
-				Log( "Remove retailer "..retailer:GetName() )
+				applic:RemoveRetiler( retailer.name )
+				Log( "Remove retailer "..retailer.name )
 			end
 		end
 		
@@ -262,10 +262,10 @@ function CheckNewGames()
 				game:Create( gameIniFile )
 				applic:AddGameToMarket( game )
 				if base.pda then
-					base.pda.Show( "На рынке появилась новая игра "..game:GetName() )
+					base.pda.Show( "На рынке появилась новая игра "..game.name )
 				end
 			else
-				base.LogDebug("Игра "..game:GetName().." уже кем-то создана")
+				base.LogDebug("Игра "..game.name.." уже кем-то создана")
 			end
 		end 
 	end
@@ -304,7 +304,7 @@ function CheckNewTechs()
 				applic:AddPublicTechnology( tech ) 
 				
 				if base.pda then
-					base.pda.Show( "На рынке появилась новая технология "..tech:GetName() )
+					base.pda.Show( "На рынке появилась новая технология "..tech.name )
 				end
 			else
 				--технология уже есть в игре
@@ -316,7 +316,7 @@ function CheckNewTechs()
 					tech.company = nil
 					if base.pda then
 						base.pda.Show( "Технология адаптирована для массового применения "..
-										tech:GetName().." от компании "..tech:GetCompany():GetName() )
+										tech.name.." от компании "..tech.company.name )
 					end
 				else
 					base.LogDebug("Технология уже в общественном пользовании "..tech.name )

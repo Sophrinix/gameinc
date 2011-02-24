@@ -4,12 +4,11 @@ module( "saleManager" )
 
 local guienv = base.guienv
 
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
 local button = base.button
 local browser = base.browser
 local tutorial = base.tutorial
 local applic = base.applic
+local window = base.window
 
 local mainWindow = nil
 
@@ -31,95 +30,101 @@ local windowAnonce = nil
 local selectedGame = nil
 local lastTimeParamsUpdate = base.os.clock()
 
-local function CloseAnonceGame()
-	windowAnonce:Remove()
-end
-
-function AnonceGame()
-	windowAnonce = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", 
-								     -1, guienv:GetRootGUIElement() ) 
-	windowAnonce:GetCloseButton():SetVisible( false )
-	
-	anoncePictureFlow = guienv:AddPictureFlow( 10, 10, "10e", "50e", -1, windowAnonce )
-	anoncePictureFlow:SetPictureRect( 0, 0, 90, 90 )
-	
-	for i=1, company:GetGameNumber() do
-		local game = company:GetGame( i-1 )
-		
-		if not game:IsSaling() then 
-			anoncePictureFlow:AddItem( game:GetViewImage(), game:GetName(), game.object )
-		end	
-	end
-	
-	local btnOk = guienv:AddButton( "25%", "40e", "24%+", "10e", windowAnonce, -1, "Начать продажи" )
-	btnOk:SetAction( "./saleManager.StartSaling()" )
-	
-	local btnCancel = guienv:AddButton( "51%", "40e", "24%+", "10e", windowAnonce, -1, "Выход" )
-	btnCancel:SetAction( "./saleManager.CloseAnonceGame()" )
-end
-
-local function localUpdateCurrentGameParams()
-	labelGameName:SetText( "Название: " .. selectedGame:GetName() )
-	labelLastMonthSale:SetText( "Продаж за прошлый месяц:"..selectedGame:GetLastMonthSales() )
-	labelProfit:SetText( "Прибыль:" .. selectedGame:GetAllTimeProfit() )
-	labelAllTimeSale:SetText( "Продаж за все время:" .. selectedGame:GetAllTimeSales() )
-	--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
-		
-	if selectedGame:GetCompany().object == company.object then
-		btnDecreaseGamePrice:SetVisible( true )
-		btnIncreaseGamePrice:SetVisible( true )		
-		labelGamePrice:SetText( "Цена:" .. selectedGame:GetPrice() )
-	else
-		btnDecreaseGamePrice:SetVisible( false )
-		btnIncreaseGamePrice:SetVisible( false )			
-		
-		local price = selectedGame:GetAllTimeProfit() / selectedGame:GetAllTimeSales()
-		labelGamePrice:SetText( "Цена:" .. base.string.format( "%0.2f", price ) )
-	end
-end
-
-function UpdateGameParams()
-	if base.os.clock() - lastTimeParamsUpdate > 0 then
-		
-	end
-end
-
-function ListboxChanged( mp )
-    if mp == listboxGames.object then
-		selectedGame = base.CLuaGame( listboxGames:GetSelectedObject() )
-		localUpdateCurrentGameParams()
-    end
-end
-
-local function localAddGames()
+local function _AddGames()
 	listboxGames:Clear()
 	
 	local game = nil
-	for i=1, applic:GetGamesNumber() do
+	for i=1, applic.gamesNumber do
 		game = applic:GetGame( i-1 )
-		if game:IsSaling() then
-			listboxGames:AddItem( game:GetName(), game.object )
+		if game.inSale then
+			listboxGames:AddItem( game.name, game.object )
 		end
 	end
 end
 
+local function _CloseAnonceGame()
+	windowAnonce:Remove()
+end
+
+local function _StartSaling()
+	applic:AddGameToMarket( anoncePictureFlow.selectedObject )
+	_AddGames()
+	_CloseAnonceGame()	
+end
+
+
+local function _AnonceGame()
+	windowAnonce = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", -1, guienv.root ) 
+	windowAnonce.closeButton.visible = false
+	
+	anoncePictureFlow = guienv:AddPictureFlow( 10, 10, "10e", "50e", -1, windowAnonce )
+	anoncePictureFlow:SetPictureRect( 0, 0, 90, 90 )
+	
+	for i=1, company.gameNumber do
+		local game = company:GetGame( i-1 )
+		
+		if not game.inSale then 
+			anoncePictureFlow:AddItem( game.viewImage, game.name, game.object )
+		end	
+	end
+	
+	local btnOk = guienv:AddButton( "25%", "40e", "24%+", "10e", windowAnonce, -1, "Начать продажи" )
+	btnOk.action = _StartSaling
+	
+	local btnCancel = guienv:AddButton( "51%", "40e", "24%+", "10e", windowAnonce, -1, "Выход" )
+	btnCancel.action = _CloseAnonceGame
+end
+
+local function _UpdateGameParams()
+	if base.os.clock() - lastTimeParamsUpdate > 0 then
+		labelGameName.text = "Название: " .. selectedGame.name
+		labelLastMonthSale.text = "Продаж за прошлый месяц:"..selectedGame.lastMonthSales
+		labelProfit.text = "Прибыль:" .. selectedGame.allTimeProfit
+		labelAllTimeSale.text = "Продаж за все время:" .. selectedGame.allTimeSales
+		--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
+			
+		if selectedGame.company.object == company.object then
+			btnDecreaseGamePrice.visible = true
+			btnIncreaseGamePrice.visible = true		
+			labelGamePrice.text = "Цена:" .. selectedGame.price
+		else
+			btnDecreaseGamePrice.visible = false
+			btnIncreaseGamePrice.visible = false 
+			
+			local price = selectedGame.allTimeProfit / selectedGame.allTimeSales
+			labelGamePrice.text = "Цена:" .. base.string.format( "%0.2f", price )
+		end
+	end
+end
+
+local function _ListboxChanged()
+	selectedGame = base.CLuaGame( listboxGames.selectedObject )
+	localUpdateCurrentGameParams()
+end
+
+local function _DecreasePrice()
+	selectedGame.price = selectedGame.price - 1
+	labelGamePrice.text = "#TRANSLATE_TEXT_PRICE:" .. selectedGame.price
+end
+
+local function _IncreasePrice()
+	selectedGame.price = selectedGame.price + 1
+	labelGamePrice.text = "#TRANSLATE_TEXT_PRICE:" .. selectedGame.price
+end
+
+
 function Show()
 	company = applic.playerCompany
 
-	mainWindow = guienv:AddWindow( "media/textures/gameInSale.png", 
-								   0, 0, scrWidth, scrHeight, 
-								   -1, guienv:GetRootGUIElement() )
-	mainWindow:SetDrawBody( false )
-	mainWindow:GetCloseButton():SetVisible( false )
-	mainWindow:SetDraggable( false )
+	mainWindow = window.fsWindow( "media/textures/gameInSale.png", Hide )
 	
-	mainWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./saleManager.ListboxChanged()" )
-	mainWindow:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, "./saleManager.UpdateGameParams()" )
+	mainWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, _ListboxChanged )
+	mainWindow:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, _UpdateGameParams )
 	
 	--добавим окно с листбоксом
 	--в листбоксе поместим список игр, которые щас в продаже
 	listboxGames = guienv:AddComponentListBox( 45, 320, 327, 590, -1, mainWindow )
-	localAddGames()
+	_AddGames()
 	
 	--расположим изображение игры справа от списка
 	imageGamePreview = guienv:AddImage( 20, 20, 304, 204, mainWindow, -1, "" )
@@ -148,42 +153,18 @@ function Show()
 
 	--цена игры с возможностью изменять цену
 	btnDecreaseGamePrice = guienv:AddButton( pos.x, pos.y, size.h, size.h, mainWindow, -1, "-" )
-	btnDecreaseGamePrice:SetAction( "./saleManager.DecreasePrice()" ) 
+	btnDecreaseGamePrice.action = DecreasePrice
 									
 	labelGamePrice = guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", pos.x + size.hh, pos.y, 
 																size.w, size.h, -1, mainWindow )
 													 
 	btnIncreaseGamePrice = guienv:AddButton( pos.x + size.ww - size.hh, pos.y, pos.x + size.ww, size.h, 
 											 mainWindow, -1, "+" )
-	btnIncreaseGamePrice:SetAction( "./saleManager.IncreasePrice()" ) 	
+	btnIncreaseGamePrice.action = IncreasePrice
 	
 		--расположим кнопку "Анонсировать игру", по которой можно поместить игру на рынок
 	buttonAnonceGame = guienv:AddButton( pos.x, 380, size.w, size.h, mainWindow, -1, "Анонсировать игру" )
-	buttonAnonceGame:SetAction( "./saleManager.AnonceGame()" )
-	
-	--adding closeButton
-	button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			"button_down", mainWindow, -1, "",
-					"./saleManager.Hide()" )
-
-end
-
-function StartSaling()
-	local game = anoncePictureFlow:GetSelectedObject()
-	
-	applic:AddGameToMarket( game )
-	localAddGames()
-	CloseAnonceGame()	
-end
-
-function DecreasePrice()
-	selectedGame:SetPrice( selectedGame:GetPrice() - 1 )
-	labelGamePrice:SetText( "#TRANSLATE_TEXT_PRICE:" .. selectedGame:GetPrice() )
-end
-
-function IncreasePrice()
-	selectedGame:SetPrice( selectedGame:GetPrice() + 1 )
-	labelGamePrice:SetText( "#TRANSLATE_TEXT_PRICE:" .. selectedGame:GetPrice() )
+	buttonAnonceGame.action = AnonceGame
 end
 
 function Hide()

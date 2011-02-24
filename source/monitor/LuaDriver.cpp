@@ -54,7 +54,7 @@ int CLuaDriver::GetTexture( lua_State *L )
 	video::ITexture* txs = NULL;
 	IF_OBJECT_NOT_NULL_THEN txs = _object->getTexture( fileName );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, txs );
 	Luna< CLuaTexture >::constructor( L );
 
@@ -105,7 +105,7 @@ int CLuaDriver::AddRenderTargetTexture( lua_State* L )
 	video::ITexture* txs = NULL;
 	IF_OBJECT_NOT_NULL_THEN txs = _object->addRenderTargetTexture( core::dimension2du( width, height ), fileName, video::ECF_A8R8G8B8 );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, txs );
 	Luna< CLuaTexture >::constructor( L );
 

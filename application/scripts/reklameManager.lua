@@ -40,63 +40,55 @@ local reklames = {}
 
 local function localFillGamesListBox()
 	local game = nil
-	for i=1, company:GetGameNumber() do
+	for i=1, company.gameNumber do
 		game = company:GetGame( i-1 )
-		lbxGames:AddItem( game:GetName(), game.object )
+		lbxGames:AddItem( game.name, game.object )
 	end	
 	
 	local project = nil
-	for i=1, company:GetDevProjectNumber() do
+	for i=1, company.devProjectNumber do
 		project = company:GetDevProject( i-1 )
-		lbxGames:AddItem( project:GetName(), project.object )
+		lbxGames:AddItem( project.name, project.object )
 	end	
 end
 
 local function localAddLabel( textr, x1, y1, x2, y2 )
 	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, campaniesWindow )
 	label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
-	label:SetOverrideColor( 0xff, 0xff, 0xff, 0xff )
+	label.color = base.toColor( 0xff, 0xff, 0xff, 0xff )
 
 	return label
 end
 
 local function localCreateReklames()
-	for i=1, plant:GetBaseReklameNumber() do
+	for i=1, plant.baseReklameNumber do
 		reklames[ i ] = plant:GetBaseReklame( i-1 )
 	end
 end
 
 function Show()
 	if mainWindow then
-		mainWindow:SetVisible( true )
+		mainWindow.visible = true
 	else
-		mainWindow = guienv:AddWindow( "media/maps/marketing_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		mainWindow:SetDraggable( false )
-		mainWindow:GetCloseButton():SetVisible( false )
-		mainWindow:SetVisible( false )
-		
-		--adding closeButton
-		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", mainWindow, -1, "",
-						"./reklameManager.Hide()" )
+		mainWindow = window.fsWindow( "media/maps/marketing_normal.png", Hide )
 	end
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_REKLAME )
 	
 	--get loan
-	btnReklame = button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow, -1, "", "./reklameManager.ShowCampaniesManager()" )
+	btnReklame = button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow, -1, "", _ShowCampaniesManager )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "reklameManager.FadeEnterAction()" )
+	guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
 end
 
 function Hide()
 	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "reklameManager.FadeExitAction()" )	
+	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
 end
 
 function FadeEnterAction()
-	mainWindow:SetVisible( true )
+	mainWindow.visible = true
 	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
@@ -108,12 +100,11 @@ end
 
 function ShowCampaniesManager()
 	company = applic.playerCompany
-	plant = base.NrpGetPlant()
+	plant = applic.plant
 	
 	if campaniesWindow == nil then
-		campaniesWindow = guienv:AddWindow( "media/maps/marketing_select.png", 0, 0, scrWidth, 
-									   scrHeight, -1, guienv:GetRootGUIElement() )
-		campaniesWindow:GetCloseButton():SetVisible( false )
+		campaniesWindow = guienv:AddWindow( "media/maps/marketing_select.png", 0, 0, "0e", "0e", -1, guienv.root )
+		campaniesWindow.closeButton.visible = false
 	end
 		
 		
@@ -124,14 +115,14 @@ function ShowCampaniesManager()
 	picflowReklames:SetDrawBorder( false )
 
 	btnDecDayNumber = guienv:AddButton( 10, scrHeight / 3 + 20, 70, scrHeight / 3 + 80, campaniesWindow, -1, "-" )
-	btnDecDayNumber:SetAction( "./reklameManager.DecDay()" )
-	btnDecDayNumber:SetVisible( false )
+	btnDecDayNumber.action = DecDay
+	btnDecDayNumber.visible = false
 	
 	btnIncDayNumber = guienv:AddButton( scrWidth / 2 - 80, scrHeight / 3 + 20, 
 										scrWidth / 2 - 20, scrHeight / 3 + 80, 
 										campaniesWindow, -1, "+" ) 										
-	btnIncDayNumber:SetAction( "./reklameManager.IncDay()" )
-	btnIncDayNumber:SetVisible( false )
+	btnIncDayNumber.action = IncDay
+	btnIncDayNumber.visible = false
 	
 	local yof = scrHeight / 3
 	local rightY = scrWidth / 2 - 80
@@ -143,24 +134,24 @@ function ShowCampaniesManager()
 	labelGameFamous = localAddLabel( "0", 60, yof + 280, rightY, yof + 330 ) 
 	
 	for y=1, #reklames do
-		picflowReklames:AddItem( reklames[ y ]:GetTexture(), reklames[ y ]:GetName(), reklames[ y ].object )
+		picflowReklames:AddItem( reklames[ y ].texture, reklames[ y ].name, reklames[ y ].object )
 	end
 	
-	lbxGames = guienv:AddComponentListBox( scrWidth / 2 + 10, scrHeight / 3 + 20, scrWidth - 10, scrHeight - 80, -1, campaniesWindow )
+	lbxGames = guienv:AddComponentListBox( "51%", "33%", "10e", "80e", -1, campaniesWindow )
 	localFillGamesListBox()
 		
 	btnApplyWork = guienv:AddButton( 10, scrHeight - 70, scrWidth / 2 - 10, scrHeight - 20, campaniesWindow, -1, base.STR_STARTREKLAME )
-	btnApplyWork:SetAction( "./reklameManager.QuerryUserToApplyWork()" )
-	btnApplyWork:SetVisible( false )
+	btnApplyWork.action = QuerryUserToApplyWork
+	btnApplyWork.visible = false
 	
 	local btnExit = guienv:AddButton( scrWidth / 2 + 10, scrHeight - 70, scrWidth - 10, scrHeight - 20, campaniesWindow, -1, base.STR_EXIT )
-	btnExit:SetAction( "./reklameManager.HideCampaniesWindow()" )
+	btnExit.action = HideCampaniesWindow
 	
 	--заказать статью в игровом журнале
 		--список журналов
 			
 	--картинка с отображением игры
-	campaniesWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./reklameManager.SelectNewWork()" )
+	campaniesWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, SelectNewWork )
 end
 
 function HideCampaniesWindow()
@@ -206,11 +197,11 @@ function SelectNewWork()
 	addingDays = 0	
 	
 	local vis = selectedGame.empty
-	btnApplyWork:SetVisible( vis )
-	btnIncDayNumber:SetVisible( vis )
-	btnDecDayNumber:SetVisible( vis )
+	btnApplyWork.visible = vis
+	btnIncDayNumber.visible = vis
+	btnDecDayNumber.visible = vis
 
-	realCampany = plant:GetReklame( currentWork:GetUniq(), selectedGame:GetName() )
+	realCampany = plant:GetReklame( currentWork.uniq, selectedGame.name )
 	localUpdateLabels()		
 end
 
@@ -245,12 +236,12 @@ end
 function QuerryUserToApplyWork()
 	if addingDays > 0 then
 		currentWork:SetNumberDay( addingDays )
-		local text = "Рекламная кампания:"..currentWork:GetName().."\n"
-		text = text .. "Стоимость:" .. currentWork:GetDayCost() * currentWork:GetNumberDay() .. "\n"
-		text = text .. "Длительность:" .. currentWork:GetNumberDay()
-		guienv:MessageBox( text, true, true, "./reklameManager.ApplyNewWork()", "./reklameManager.CancelNewWork()" )
+		local text = "Рекламная кампания:"..currentWork.name.."\n"
+		text = text .. "Стоимость:" .. currentWork.dayCost * currentWork.numberDay .. "\n"
+		text = text .. "Длительность:" .. currentWork.numberDay
+		guienv:MessageBox( text, true, true, ApplyNewWork, CancelNewWork )
 	else
-		guienv:MessageBox( "Выберите количество дней кампании", false, false, "", "" )
+		guienv:MessageBox( "Выберите количество дней кампании", false, false, nil, nil )
 	end
 end
 

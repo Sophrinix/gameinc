@@ -12,8 +12,7 @@ CNrpPictureFlow::CNrpPictureFlow( scene::ISceneManager* smgr,
 								  IGUIEnvironment* env, 
 								  IGUIElement* parent, 
 								  core::recti rectangle, 
-								  s32 id )
-: IGUIListBox( env, parent, id, rectangle )
+								  s32 id ) : IGUIListBox( env, parent, id, rectangle )
 {
 	activeIndex_ = 0;
 	rttexture_ = Environment->getVideoDriver()->addRenderTargetTexture( core::dimension2du( 512, 512), "renderTargetTexture", video::ECF_A8R8G8B8 );
@@ -217,7 +216,7 @@ bool CNrpPictureFlow::OnEvent( const SEvent& event )
 	break;
 	}
 
-	return IGUIElement::OnEvent(event);
+	return IGUIListBox::OnEvent(event);
 }
 
 CNrpPictureFlow::~CNrpPictureFlow()

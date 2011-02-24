@@ -253,6 +253,8 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 					e.GUIEvent.Element = 0;
 					e.GUIEvent.EventType = EGET_LISTBOX_SELECTED_AGAIN;
 					Parent->OnEvent(e);
+
+					DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, this, NULL );
 				}
 				return true;
 			}
@@ -302,6 +304,8 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 								e.GUIEvent.Element = 0;
 								e.GUIEvent.EventType = EGET_LISTBOX_CHANGED;
 								Parent->OnEvent(e);
+
+								DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, this );
 							}
 							setSelected(current);
 							return true;
@@ -323,6 +327,8 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 								e.GUIEvent.Element = 0;
 								e.GUIEvent.EventType = EGET_LISTBOX_CHANGED;
 								Parent->OnEvent(e);
+
+								DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, this, NULL );
 							}
 							setSelected(current);
 							return true;
@@ -365,10 +371,7 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 				return true;
 
 			case EMIE_LMOUSE_PRESSED_DOWN:
-				{
-					Selecting = true;
-					return true;
-				}
+				{ Selecting = true;	return true; }
 
 			case EMIE_LMOUSE_LEFT_UP:
 				{
@@ -413,7 +416,7 @@ void CNrpComponentListbox::selectNew(s32 ypos, bool onlyHover)
 	if (ItemHeight!=0) 
 		Selected = ((ypos - AbsoluteRect.UpperLeftCorner.Y - 1) + ScrollBar->getPos()) / ItemHeight;
 
-	if (Selected<0)
+	if ( Selected < 0 )
 		Selected = 0;
 	else
 		if ((u32)Selected >= Items.size())
@@ -430,6 +433,10 @@ void CNrpComponentListbox::selectNew(s32 ypos, bool onlyHover)
 		event.GUIEvent.Element = 0;
 		event.GUIEvent.EventType = (Selected == oldSelected && now < selectTime + 500) ? EGET_LISTBOX_SELECTED_AGAIN : EGET_LISTBOX_CHANGED;
 		Parent->OnEvent(event);
+
+		DoLuaFunctionsByType( (Selected == oldSelected && now < selectTime + 500) 
+								? GUIELEMENT_SELECTED_AGAIN : GUIELEMENT_LBXITEM_SELECTED,
+								this, NULL );
 	}
 	selectTime = now;
 }

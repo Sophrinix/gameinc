@@ -16,7 +16,7 @@ btnBoxCreate = nil
 btnBoxProduce = nil
 
 function FadeEnterAction()
-	plantWindow:SetVisible( true )
+	plantWindow.visible = true
 	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
@@ -33,26 +33,18 @@ end
 
 function Show()
 	if plantWindow then
-		plantWindow:SetVisible( true )
+		plantWindow.visible = true
 	else
-		plantWindow = guienv:AddWindow( "media/maps/plant_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		plantWindow:GetCloseButton():SetVisible( false )
-		plantWindow:SetDraggable( false )
-		plantWindow:SetVisible( false )
-		
-		--adding closeButton
-		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", plantWindow, -1, "",
-						"./plant.Hide()" )
+		plantWindow = window.fsWindow( "media/maps/plant_normal.png", Hide )
 	end	
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_PLANT )
 	
 	--box manager
-	btnBoxCreate = button.EqualeTexture( 94, 29, "boxManager", plantWindow, -1, "", "./gameboxManager.Show()" )
+	btnBoxCreate = button.EqualeTexture( 94, 29, "boxManager", plantWindow, -1, "", base.gameboxManager.Show )
 	--produce
-	btnBoxProduce = button.EqualeTexture( 407, 1, "produce", plantWindow, -1, "", "./diskManager.Show()" )
+	btnBoxProduce = button.EqualeTexture( 407, 1, "produce", plantWindow, -1, "", base.diskManager.Show )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "plant.FadeEnterAction()" )
+	guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
 end

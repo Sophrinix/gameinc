@@ -19,7 +19,6 @@ BEGIN_LUNA_METHODS(CLuaPictureFlow)
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, AddItem )
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, Clear )
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetPictureRect )
-	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetDrawBorder )
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetItemTexture )
 	LUNA_AUTONAME_FUNCTION( CLuaPictureFlow, SetItemBlend )
 END_LUNA_METHODS
@@ -29,6 +28,8 @@ BEGIN_LUNA_PROPERTIES(CLuaPictureFlow)
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "itemSelected", GetSelected, SetSelected )
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "objectSelected", GetSelectedObject, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "textSelected", GetSelectedText, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "drawBorder", PureFunction, SetDrawBorder )
+	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "onSelect", PureFunction, SetOnNewSelect )
 END_LUNA_PROPERTIES
 
 CLuaPictureFlow::CLuaPictureFlow(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAPICTUREFLOW, ex )							//конструктор
@@ -130,14 +131,14 @@ int CLuaPictureFlow::GetSelectedText( lua_State* L )
 
 int CLuaPictureFlow::SetDrawBorder( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaPictureFlow::SetDrawBorder need boolean parameter");
+	assert( lua_isboolean( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		bool drawBorder = lua_toboolean( L, -1 ) > 0;
+		_object->setDrawBackground( drawBorder );			
+	}
 
-	bool drawBorder = lua_toboolean( L, 2 ) > 0;
-
-	IF_OBJECT_NOT_NULL_THEN	_object->setDrawBackground( drawBorder );			
-
-	return 1;
+	return 0;
 }
 
 const char* CLuaPictureFlow::ClassName()
@@ -174,4 +175,16 @@ int CLuaPictureFlow::SetItemBlend( lua_State* L )
 
 	return 1;
 }
+
+int CLuaPictureFlow::SetOnNewSelect( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		_object->AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, _GetRef( L, -1 ) );			
+	}
+
+	return 0;
+}
+
 }//namespace nrp

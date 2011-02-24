@@ -74,7 +74,7 @@ function Show()
 	mainWindow = guienv:AddWindow(	"media/top_menu/top_nerpa.png",
 			 							scrWidth/2 - txsWidth/2, 0, scrWidth/2 + txsWidth/2, 50,
 										-1,
-										guienv:GetRootGUIElement() )
+										guienv.root )
 																						
 	mainWindow.draggable = false
 	mainWindow.drawBody = false
@@ -92,10 +92,10 @@ function Show()
 	AddButton( mainLayout, function () ShowFuncsButtons( true ) end, "media/top_menu/one" )	
 	AddButton( mainLayout, base.sworkApplicationClose, "media/top_menu/off" )
 	
-	timeLabel = guienv:AddLabel( "Время", "180e", "5%", "130+", "15+", -1, mainLayout )
-	timeLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
-	userLabel = guienv:AddLabel( "UserName", "180e", "50%", "130", "15+", -1, mainLayout )
-	userLabel:SetOverrideColor( 0xff, 0xc0, 0xc0, 0xc0 );
+	base.timeLabel = guienv:AddLabel( "Время", "180e", "5%", "130+", "15+", -1, mainLayout )
+	base.timeLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
+	base.balanceLabel = guienv:AddLabel( "UserName", "180e", "50%", "130", "15+", -1, mainLayout )
+	base.balanceLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
 	
 	AddAdminingFunctionButton()
 	AddAdvancedFunctionButton()

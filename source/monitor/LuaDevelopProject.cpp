@@ -11,14 +11,14 @@ namespace nrp
 CLASS_NAME CLASS_LUADEVPROJECT( "CLuaDevelopProject" );
 
 BEGIN_LUNA_METHODS(CLuaDevelopProject)
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModuleNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetModule )
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetFamous )
-	LUNA_AUTONAME_FUNCTION( CLuaDevelopProject, GetWorkPercentDone )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaDevelopProject)
 	LUNA_ILUAPROJECT_PROPERTIES( CLuaDevelopProject )
+	LUNA_AUTONAME_PROPERTY( CLuaDevelopProject, "moduleNumber", GetModuleNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaDevelopProject, "famous", GetFamous, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaDevelopProject, "percentDone", GetWorkPercentDone, PureFunction )
 END_LUNA_PROPERTIES 
 
 CLuaDevelopProject::CLuaDevelopProject(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUADEVPROJECT, ex)							//конструктор
@@ -26,7 +26,7 @@ CLuaDevelopProject::CLuaDevelopProject(lua_State *L, bool ex)	: ILuaProject(L, C
 
 int CLuaDevelopProject::GetModuleNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetModuleNumber", MODULE_NUMBER, 0) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, MODULE_NUMBER, 0) );
 	return 1;
 }
 
@@ -39,7 +39,7 @@ int CLuaDevelopProject::GetModule( lua_State* L )
 	int index = lua_tointeger( L, 2 );
 	IF_OBJECT_NOT_NULL_THEN prj = _object->GetModule( index );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, prj );
 	Luna< CLuaDevelopModule >::constructor( L );
 	return 1;	
@@ -47,7 +47,7 @@ int CLuaDevelopProject::GetModule( lua_State* L )
 
 int CLuaDevelopProject::GetFamous( lua_State* L )
 {
-	lua_pushinteger( L, static_cast< int >( GetParam_<float>( L, "GetFamous", FAMOUS, 0 ) * 100 ) );
+	lua_pushinteger( L, static_cast< int >( GetParam_<float>( L, PROP, FAMOUS, 0 ) * 100 ) );
 	return 1;
 }
 
@@ -58,7 +58,7 @@ const char* CLuaDevelopProject::ClassName()
 
 int CLuaDevelopProject::GetWorkPercentDone( lua_State* L )
 {
-	lua_pushnumber( L, GetParam_<float>( L, "GetWorkPercentDone", READYWORKPERCENT, 0 ) );
+	lua_pushnumber( L, GetParam_<float>( L, PROP, READYWORKPERCENT, 0 ) );
 	return 1;
 }
 }//namespace nrp

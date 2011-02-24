@@ -333,17 +333,6 @@ int GetApplication( lua_State* vm )
 	return 1;	
 }
 
-int GetPlant( lua_State* vm )
-{
-	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 0, 0, "Function GetPlant not need any parameter");
-
-	lua_pushlightuserdata( vm, (void*)&CNrpPlant::Instance() );
-	Luna< CLuaPlant >::constructor( vm );
-
-	return 1;	
-}
-
 int ApplicationGetTranslate( lua_State* vm )
 {
 	int argc = lua_gettop(vm);

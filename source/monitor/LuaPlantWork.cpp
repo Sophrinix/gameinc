@@ -4,6 +4,8 @@
 #include "NrpDiskMachine.h"
 #include "NrpGame.h"
 #include "NrpGameBox.h"
+#include "LuaDiskMachine.h"
+#include "LuaGame.h"
 #include <assert.h>
 
 using namespace irr;
@@ -38,7 +40,7 @@ int CLuaPlantWork::GetPrice( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		lua_pushinteger( L, (*_object)[ FINALPRICE ] _;
+		lua_pushinteger( L, (*_object)[ FINALPRICE ] );
 		return 1;
 	}
 
@@ -55,7 +57,7 @@ int CLuaPlantWork::Create( lua_State* L )
 
 	_object = new CNrpPlantWork( name );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, _object );
 	Luna< CLuaPlantWork >::constructor( L );
 	return 1;	
@@ -171,7 +173,7 @@ int CLuaPlantWork::GetDiskPrice( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		lua_pushnumber( L, (*_object)[DISKPRICE] );
+		lua_pushnumber( L, (float)(*_object)[DISKPRICE] );
 		return 1;
 	}
 

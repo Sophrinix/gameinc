@@ -1,12 +1,13 @@
 local base = _G
 
+IncludeScript( "testerComp" )
+
 module( "devRoom" )
 
 local guienv = base.guienv
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
 local button = base.button
 local tutorial = base.tutorial
+local window = base.window
 
 local mainWindow = nil
 
@@ -35,7 +36,7 @@ function Show( ptr )
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_DEVELOPERS_ROOM )
 	
-	button.EqualeTexture( 820, 384, "devComp", mainWindow, -1, "", testerComp.Show )
+	button.EqualeTexture( 820, 384, "devComp", mainWindow, -1, "", base.testerComp.Show )
 	--employers manager
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			

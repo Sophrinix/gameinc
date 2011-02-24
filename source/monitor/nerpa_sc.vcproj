@@ -1707,20 +1707,16 @@
 					Name="office"
 					>
 					<File
-						RelativePath="..\..\application\scripts\devRoom.lua"
-						>
-					</File>
-					<File
 						RelativePath="..\..\application\scripts\office.lua"
-						>
-					</File>
-					<File
-						RelativePath="..\..\application\scripts\testerComp.lua"
 						>
 					</File>
 					<Filter
 						Name="director"
 						>
+						<File
+							RelativePath="..\..\application\scripts\buhgalter.lua"
+							>
+						</File>
 						<File
 							RelativePath="..\..\application\scripts\director.lua"
 							>
@@ -1789,6 +1785,18 @@
 								>
 							</File>
 						</Filter>
+					</Filter>
+					<Filter
+						Name="developers"
+						>
+						<File
+							RelativePath="..\..\application\scripts\devRoom.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\testerComp.lua"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter

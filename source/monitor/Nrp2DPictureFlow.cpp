@@ -288,8 +288,10 @@ void CNrp2DPictureFlow::_SendEventSelected( const SEvent& event )
 	e.EventType = EET_GUI_EVENT;
 	e.GUIEvent.Caller = this;
 	e.GUIEvent.Element = 0;
-	e.GUIEvent.EventType = EGET_LISTBOX_CHANGED;
+	e.GUIEvent.EventType = EGET_LISTBOX_SELECTED_AGAIN;
 	Parent->OnEvent(e);
+
+	DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
 }
 
 bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
@@ -355,7 +357,7 @@ bool CNrp2DPictureFlow::OnEvent( const SEvent& event )
 	break;
 	}
 
-	return IGUIElement::OnEvent(event);
+	return IGUIListBox::OnEvent(event);
 }
 
 CNrp2DPictureFlow::~CNrp2DPictureFlow()

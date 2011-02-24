@@ -13,13 +13,13 @@ CLASS_NAME CLASS_LUAIMAGE("CLuaImage");
 
 BEGIN_LUNA_METHODS(CLuaImage)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaImage )
-	LUNA_AUTONAME_FUNCTION( CLuaImage, SetImage )
-	LUNA_AUTONAME_FUNCTION( CLuaImage, SetScaleImage )
-	LUNA_AUTONAME_FUNCTION( CLuaImage, SetUseAlphaChannel )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaImage)
 	LUNA_ILUAGUIELEMENT_PROPERTIES( CLuaImage )
+	LUNA_AUTONAME_PROPERTY( CLuaImage, "texture", PureFunction, SetImage )
+	LUNA_AUTONAME_PROPERTY( CLuaImage, "scale", PureFunction, SetScaleImage )
+	LUNA_AUTONAME_PROPERTY( CLuaImage, "alphaChannel", PureFunction, SetUseAlphaChannel )
 END_LUNA_PROPERTIES
 
 CLuaImage::CLuaImage(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAIMAGE, ex )							//конструктор
@@ -27,42 +27,38 @@ CLuaImage::CLuaImage(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAIMAGE, 
 
 int CLuaImage::SetImage( lua_State *L )								
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaImage::SetImage need ITexture* parameter");
-
-	NrpText pathToTexture = lua_tostring( L, 2 );
-
+	assert( lua_isstring( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( pathToTexture.size() )
-			_object->setImage( _nrpEngine.GetVideoDriver()->getTexture( pathToTexture ) );
+		NrpText pathToTexture = lua_tostring( L, -1 );
+		_object->setImage( _nrpEngine.GetVideoDriver()->getTexture( pathToTexture ) );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaImage::SetScaleImage( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaImage::SetScaleImage need bool parameter");
+	assert( lua_isboolean( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		bool scaleImage = lua_toboolean( L, -1 ) > 0;
+		_object->setScaleImage( scaleImage );
+	}
 
-	bool scaleImage = lua_toboolean( L, 2 ) > 0;
-
-	IF_OBJECT_NOT_NULL_THEN	_object->setScaleImage( scaleImage );
-
-	return 1;
+	return 0;
 }
 
 int CLuaImage::SetUseAlphaChannel( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaImage::SetUseAlphaChannel need bool parameter");
+	assert( lua_isboolean( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		bool useAlpha = lua_toboolean( L, 2 ) > 0;
+		_object->setUseAlphaChannel( useAlpha );
+	}
 
-	bool useAlpha = lua_toboolean( L, 2 ) > 0;
-
-	IF_OBJECT_NOT_NULL_THEN	_object->setUseAlphaChannel( useAlpha );
-
-	return 1;
+	return 0;
 }
 
 const char* CLuaImage::ClassName()

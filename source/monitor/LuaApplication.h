@@ -65,11 +65,11 @@ public:
 	int GetGameTime( lua_State* L );
 	int GetInvention( lua_State* L );
 	int GetPda( lua_State* L );
-
+	int GetPlant( lua_State* L );
 	int CreateDirectorySnapshot( lua_State* L );
-
 	int GetPauseBetweenStep( lua_State* L );
 	int SetPauseBetweenStep( lua_State* L );
+	int AddResourceDirectory( lua_State* L );
 
 private:
 	int AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool rem );

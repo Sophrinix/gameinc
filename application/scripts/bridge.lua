@@ -14,7 +14,7 @@ local tblCompanies = nil
 
 
 function FadeEnterAction()
-	mainWindow:SetVisible( true )
+	mainWindow.visible = true
 	guienv:FadeAction( base.FADE_TIME, true, true )
 	guienv:AddTimer( base.AFADE_TIME, "guienv:FadeAction( 0, true, true )" )	
 end
@@ -37,7 +37,7 @@ function FillTableCompanies()
 		local cmp = applic.GetCompany( i-1 )
 		
 		local idx = tblCompanies:AddRow( tblCompanies:GetRowCount() )
-		tblCompanies:SetCellText( idx, 0, cmp:GetName(), 0xff, 0xff, 0, 0 )
+		tblCompanies:SetCellText( idx, 0, cmp.name, 0xff, 0xff, 0, 0 )
 		tblCompanies:SetCellText( idx, 1, cmp.profitLastYear, 0xff, 0xff, 0, 0 )
 		tblCompanies:SetCellText( idx, 2, cmp.pieCost, 0xff, 0xff, 0, 0 )
 		tblCompanies:SetCellText( idx, 3, cmp.dividend, 0xff, 0xff, 0, 0 )
@@ -49,27 +49,19 @@ function Show()
 	company = base.applic.playerCompany
 	
 	if mainWindow == nil then	
-		mainWindow = guienv:AddWindow( "media/maps/bank_select.png", 0, 0, "0e", "0e", -1, guienv:GetRootGUIElement() )
-		mainWindow:SetDraggable( false )
-		mainWindow:GetCloseButton():SetVisible( false )
-		mainWindow:SetVisible( false )
+		mainWindow = window.fsWindow( "media/maps/bank_select.png", Hide )
 		
-		--adding closeButton
-		button.Stretch( "80e", "60e", "60+", "60+", 
-		 			    "button_down", mainWindow, -1, "",
-						"./bridge.Hide()" )
+		tblCompanies = guienv:AddTable( 10, 135, "10e", "10e", -1, mainWindow )
+		tblCompanies:SetRowHeight( 24 )
+		tblCompanies:AddColumn( "Название", -1 )
+		tblCompanies:SetColumnWidth( 0, 100 )
+		tblCompanies:AddColumn( "Прибыль", -1 )
+		tblCompanies:SetColumnWidth( 1, 100 )
+		tblCompanies:AddColumn( "Стоимость акции", -1 )
+		tblCompanies:SetColumnWidth( 2, 100 )
+		tblCompanies:AddColumn( "Дивиденды", -1 )
+		tblCompanies:SetColumnWidth( 3, 100 )
+		tblCompanies:AddColumn( "Изменение", -1 )
+		tblCompanies:SetColumnWidth( 4, 100 )
 	end
-	
-	tblCompanies = guienv:AddTable( 10, 135, "10e", "10e", -1, mainWindow )
-	tblCompanies:SetRowHeight( 24 )
-	tblCompanies:AddColumn( "Название", -1 )
-	tblCompanies:SetColumnWidth( 0, 100 )
-	tblCompanies:AddColumn( "Прибыль", -1 )
-	tblCompanies:SetColumnWidth( 1, 100 )
-	tblCompanies:AddColumn( "Стоимость акции", -1 )
-	tblCompanies:SetColumnWidth( 2, 100 )
-	tblCompanies:AddColumn( "Дивиденды", -1 )
-	tblCompanies:SetColumnWidth( 3, 100 )
-	tblCompanies:AddColumn( "Изменение", -1 )
-	tblCompanies:SetColumnWidth( 4, 100 )
 end

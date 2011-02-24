@@ -18,7 +18,6 @@ namespace nrp
 CLASS_NAME CLASS_LUATECH( L"CLuaTech" );
 
 BEGIN_LUNA_METHODS(CLuaTechnology)
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetAddingEngineCode )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEngineTechRequire )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEmployerSkillRequire )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetOptionAsInt )
@@ -39,6 +38,7 @@ BEGIN_LUNA_PROPERTIES(CLuaTechnology)
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "quality", PureFunction, SetQuality )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "texture", GetTexture, SetTexture )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "ftNumber", GetFutureTechNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "engineCode", PureFunction, SetAddingEngineCode )
 END_LUNA_PROPERTIES
 
 CLuaTechnology::CLuaTechnology(lua_State *L, bool ex) : ILuaProject( L, CLASS_LUATECH, ex )							//конструктор
@@ -57,7 +57,7 @@ int CLuaTechnology::SetBaseCode( lua_State* L )
 
 int CLuaTechnology::SetAddingEngineCode( lua_State* L )
 {
-	return SetParam_<float, lua_Number>( L, "SetAddingEngineCode", ENGINE_CODE, lua_tonumber );
+	return SetParam_<float, lua_Number>( L, PROP, ENGINE_CODE, lua_tonumber );
 }
 
 int CLuaTechnology::SetQuality( lua_State* L )
@@ -213,7 +213,7 @@ int CLuaTechnology::GetCompany( lua_State* L )
 	{
 		CNrpCompany* cmp = (*_object)[ PARENTCOMPANY ].As<CNrpCompany*>();
 
-		lua_pop( L, lua_gettop(L) );
+		//lua_pop( L, lua_gettop(L) );
 		lua_pushlightuserdata( L, cmp );
 		Luna< CLuaCompany >::constructor( L );
 		return 1;

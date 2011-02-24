@@ -11,6 +11,7 @@
 #include "NrpScreenshot.h"
 #include "NrpGameTime.h"
 #include "NrpPlatform.h"
+#include "NrpPlant.h"
 
 #include "LuaCompany.h"
 #include "LuaUser.h"
@@ -23,6 +24,7 @@
 #include "IniFile.h"
 #include "LuaPlatform.h"
 #include "LuaTechnology.h"
+#include "LuaPlant.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -64,6 +66,7 @@ BEGIN_LUNA_METHODS(CLuaApplication)
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetInvention )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, CreateDirectorySnapshot )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadLinks )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddResourceDirectory )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaApplication)
@@ -76,13 +79,33 @@ BEGIN_LUNA_PROPERTIES(CLuaApplication)
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "userNumber", GetUserNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "profile", GetCurrentProfile, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "boxAddonNumber", GetGameBoxAddonNumber, PureFunction )
-	LUNA_AUTONAME_PROPERTY( CLuaApplication, "gameNumber", GetGamesNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "gamesNumber", GetGamesNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "pda", GetPda, PureFunction )
-	LUNA_AUTONAME_PROPERTY( CLuaApplication, "pause", GetPauseBetweenStep, SetPauseBetweenStep )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "speed", GetPauseBetweenStep, SetPauseBetweenStep )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "plant", GetPlant, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaApplication::CLuaApplication(lua_State *L, bool ex)	: ILuaProject(L, CLASS_CLUAPPLICATION, ex )	//конструктор
 {}
+
+int CLuaApplication::AddResourceDirectory( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:AddResourceDirectory need string parameter" );
+
+	NrpText pathTo = lua_tostring( L, 2 );
+	
+	assert( OpFileSystem::IsExist( pathTo ) );
+	_nrpEngine.GetVideoDriver()->addResourceDirectory( OpFileSystem::RemoveEndSlash( pathTo ) );
+	return 1;
+}
+
+int CLuaApplication::GetPlant( lua_State* L )
+{
+	lua_pushlightuserdata( L, (void*)&CNrpPlant::Instance() );
+	Luna< CLuaPlant >::constructor( L );
+	return 1;
+}
 
 int CLuaApplication::UpdateGameTime( lua_State* L )
 {
@@ -114,7 +137,7 @@ int CLuaApplication::GetBank( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		lua_pop( L, lua_gettop( L ) );
+		//lua_pop( L, lua_gettop( L ) );
 		lua_pushlightuserdata( L, (*_object)[ BANK ].As<PNrpBank>() );
 		Luna< CLuaBank >::constructor( L );
 		return 1;
@@ -128,7 +151,7 @@ int CLuaApplication::GetPlayerCompany( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		lua_pop( L, lua_gettop( L ) );
+		//lua_pop( L, lua_gettop( L ) );
 		lua_pushlightuserdata( L, (*_object)[ PLAYERCOMPANY ].As<PNrpCompany>() );
 		Luna< CLuaCompany >::constructor( L );
 		return 1;
@@ -202,7 +225,7 @@ int CLuaApplication::GetTech( lua_State* L )
 		}
 	}
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
 	Luna< CLuaTechnology >::constructor( L );
 
@@ -242,7 +265,7 @@ int CLuaApplication::GetUser( lua_State* L )
 	IUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN	user = _object->GetUser( userNumber );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
 	Luna< CLuaUser >::constructor( L );
 	return 1;
@@ -270,7 +293,7 @@ int CLuaApplication::GetUserByName( lua_State* L )
 		}
 	}
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, user );
 	Luna< CLuaUser >::constructor( L );
 	return 1;	
@@ -370,7 +393,7 @@ int CLuaApplication::GetCompany( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	ptrCompany = _object->GetCompany( cmpNumber );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, ptrCompany );
 	Luna< CLuaCompany >::constructor( L );
 	return 1;
@@ -386,7 +409,7 @@ int CLuaApplication::GetCompanyByName( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	ptrCompany = _object->GetCompany( cmpName );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, ptrCompany );
 	Luna< CLuaCompany >::constructor( L );
 	return 1;
@@ -413,7 +436,7 @@ int CLuaApplication::GetGameBoxAddon( lua_State* L )
 	CNrpTechnology* tech = NULL;
 	IF_OBJECT_NOT_NULL_THEN	tech = _object->GetBoxAddon( addonNumber );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, tech );
 	Luna< CLuaTechnology >::constructor( L );
 	return 1;	
@@ -532,7 +555,7 @@ int CLuaApplication::GetGame( lua_State* L )
 		IF_OBJECT_NOT_NULL_THEN game = _object->GetGame( name );
 	}
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, game );
 	Luna< CLuaGame >::constructor( L );
 	return 1;		
@@ -593,7 +616,7 @@ int CLuaApplication::GetInvention( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN inv = _object->GetInvention( inventionName, companyName );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, inv );
 	Luna< CLuaInvention >::constructor( L );
 	return 1;
@@ -617,9 +640,9 @@ int CLuaApplication::GetPda( lua_State* L )
 {	
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		pda = (*_object)[ PDA ].As<CNrpPda*>();
+		CNrpPda* pda = (*_object)[ PDA ].As<CNrpPda*>();
 
-		lua_pop( L, argc );
+		//lua_pop( L, lua_gettop( L ) );
 		lua_pushlightuserdata( L, pda );
 		Luna< CLuaPda >::constructor( L );
 		return 1;
@@ -679,7 +702,7 @@ int CLuaApplication::GetPlatform( lua_State* L )
 	CNrpPlatform* plt = NULL;
 	IF_OBJECT_NOT_NULL_THEN plt = _object->GetPlatform( index );
 
-	lua_pop( L, argc );
+	//lua_pop( L, argc );
 	lua_pushlightuserdata( L, plt );
 	Luna< CLuaPlatform >::constructor( L );
 

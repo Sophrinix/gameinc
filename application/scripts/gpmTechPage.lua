@@ -11,22 +11,24 @@ local project = nil
 local company = nil 
 local gpm = nil
 local CLuaLinkBox = base.CLuaLinkBox
+local CheckType = base.gpmFunctions.CheckType
 
 local function _Set( mp, sender )
 	sender = CLuaLinkBox( sender )
-	local redraw
-	if base.PT_ADVTECH == sender.type then 
+	mp = CLuaLinkBox( mp )
+	local redraw = false
+	if CheckType( mp, sender, base.PT_ADVTECH ) then 
 		project:AddTech( sender.data )
 		redraw = true
-	elseif base.PT_SCRIPTS == sender.type then
+	elseif CheckType( mp, sender, base.PT_SCRIPTS ) then
 		project.scriptEngine = sender.data 
 		redraw = true
-	elseif base.PT_MINIGAME == sender.type then 
+	elseif CheckType( mp, sender, base.PT_MINIGAME ) then 
 		project.miniGameEngine = sender.data 
 		redraw = true
-	elseif base.PT_PHYSIC == sender.type then 
+	elseif CheckType( mp, sender, base.PT_PHYSIC ) then 
 		project.physicEngine = sender.data 
-		redaw = true
+		redraw = true
 	end
 	
 	if redraw then

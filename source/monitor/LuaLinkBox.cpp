@@ -13,8 +13,8 @@ CLASS_NAME CLASS_LINKBOX( "CLuaLinkBox" );
 
 BEGIN_LUNA_METHODS(CLuaLinkBox)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaLinkBox )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, AddLuaFunction )
-	LUNA_AUTONAME_FUNCTION( CLuaLinkBox, RemoveLuaFunction )
+	//LUNA_AUTONAME_FUNCTION( CLuaLinkBox, AddLuaFunction )
+	//LUNA_AUTONAME_FUNCTION( CLuaLinkBox, RemoveLuaFunction )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaLinkBox)
@@ -27,6 +27,7 @@ BEGIN_LUNA_PROPERTIES(CLuaLinkBox)
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "defaultTexture", PureFunction, SetDefaultTexture )
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "setFunction", PureFunction, SetFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "unsetFunction", PureFunction, UnsetFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "color", PureFunction, SetColor )
 END_LUNA_PROPERTIES
 
 CLuaLinkBox::CLuaLinkBox(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LINKBOX, ex )							//конструктор
@@ -196,6 +197,17 @@ int CLuaLinkBox::UnsetFunction( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN
 		_object->AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, _GetRef( L, -1 ) );
+
+	return 0;	
+}
+
+int CLuaLinkBox::SetColor( lua_State* L )
+{
+	assert( lua_isnumber( L , -1) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		_object->setOverrideColor( lua_tointeger( L, -1 ) );
+	}
 
 	return 0;	
 }

@@ -1,6 +1,8 @@
 local base = _G
 
 IncludeScript("projectSelect")
+IncludeScript("monitor")
+IncludeScript("safe")
 
 module( "director" )
 
@@ -29,6 +31,10 @@ end
 function Hide()
 	guienv:FadeAction( base.FADE_TIME, false, false )			
 	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
+	
+	base.package.loaded[ "projectSelect" ] = nil
+	base.package.loaded[ "monitor" ] = nil
+	base.package.loaded[ "safe" ] = nil
 end
 
 function Show( ptr )

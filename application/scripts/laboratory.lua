@@ -6,14 +6,13 @@ local company = nil
 
 local lab = nil
 local guienv = base.guienv
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
+local window= base.window
 local browser = base.browser
 local button = base.button
 local tutorial = base.tutorial
 local applic = base.applic
 local windowMap = nil
-local Log = base.Log
+local Log = base.LogScript
 
 local techMap = nil
 local selectedTech = nil
@@ -25,37 +24,8 @@ btnSound = nil
 btnTech = nil
 btnGenre = nil
 
-function Hide()
-	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeExitAction()" )	
-end
-
-function Show()	
-	if lab then
-		lab:SetVisible( true )
-	else
-		lab = guienv:AddWindow( "media/maps/laboratory_normal.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		lab:SetDraggable( false )
-		lab:SetVisible( false )
-		lab:GetCloseButton():SetVisible( false )
-		
-		--adding closeButton
-		button.Stretch( "80e", "80e", "0e", "0e", "button_down", lab, -1, "", "./laboratory.Hide()" )
-	end	
-	
-	tutorial.Update( tutorial.STEP_OVERVIEW_LABORATORY )
-	
-	btnVideo = button.EqualeTexture( 545, 330, "techMapVideo", lab, -1, "", "./laboratory.ShowVideoTechMap()" )
-	btnSound = button.EqualeTexture( 372, 213, "techMapSound", lab, -1, "", "./laboratory.ShowSoundTechMap()" )
-	btnTech = button.EqualeTexture( 749, 222,  "techMapAdvTech", lab, -1, "", "./laboratory.ShowAdvancedTechMap()" )
-	btnGenre = button.EqualeTexture( 73, 202,  "techMapGenre", lab, -1, "", "./laboratory.ShowGenreTechMap()" )
-
-	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeEnterAction()" )
-end
-
 function FadeEnterAction()
-	lab:SetVisible( true )
+	lab.visible = true
 	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
@@ -65,6 +35,30 @@ function FadeExitAction()
 	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 
+function Hide()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
+end
+
+function Show()	
+	if lab then
+		lab.visible = true
+	else
+		lab = window.fsWindow( "media/maps/laboratory_normal.png", Hide )
+		
+		tutorial.Update( tutorial.STEP_OVERVIEW_LABORATORY )
+	
+		btnVideo = button.EqualeTexture( 545, 330, "techMapVideo", lab, -1, "", ShowVideoTechMap )
+		btnSound = button.EqualeTexture( 372, 213, "techMapSound", lab, -1, "", ShowSoundTechMap )
+		btnTech  = button.EqualeTexture( 749, 222,  "techMapAdvTech", lab, -1, "", ShowAdvancedTechMap )
+		btnGenre = button.EqualeTexture( 73, 202,  "techMapGenre", lab, -1, "", ShowGenreTechMap )
+
+		guienv:FadeAction( base.FADE_TIME, false, false )			
+		guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
+	end	
+end
+
+
 local function CreateTechSequence( tech )
 	if tech.empty then
 		return 
@@ -72,14 +66,14 @@ local function CreateTechSequence( tech )
 	
 	for i=1, tech:GetFutureTechNumber() do
 		local internalName = tech:GetFutureTechInternalName( i-1 )
-		Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "Дочерняя технолоwгия="..internalName.." Родительская технология="..tech:GetName() )
+		Log( "Дочерняя технолоwгия="..internalName.." Родительская технология="..tech.name )
 
 		local futureTech = applic:GetTech( internalName );
 		--такой технологии нет на рынке
 		if futureTech.empty then
 			--может у компании ведутся разработки этой технологии,
 			--надо подменить добавляемую технологию
-			local techInvention = applic:GetInvention( internalName, company:GetName() )
+			local techInvention = applic:GetInvention( internalName, company.name )
 			
 			--исследования не ведутся
 			if techInvention.empty then
@@ -104,21 +98,21 @@ end
 
 local function CreateWindow( typef )
 	company = applic.playerCompany
-	windowMap = guienv:AddWindow( "media/maps/laboratory_select.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-	windowMap:SetDraggable( false )
-	windowMap:GetCloseButton():SetVisible( false )
+	windowMap = guienv:AddWindow( "media/maps/laboratory_select.png", 0, 0, "0e", "0e", -1, guienv.root )
+	windowMap.draggable = false
+	windowMap.closeButton.visible = false
 	
-	base.LogScript( "sworkCreateGenreTechMapWindow="..company:GetName() )
+	base.LogScript( "sworkCreateGenreTechMapWindow="..company.name )
 	
 	techMap = guienv:AddTechMap( 10, 40, "10e", "10e", -1, windowMap )
-	techMap:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, "./laboratory.TechSelected()" )
-	techMap:SetDrawBack( false )
+	techMap:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, TechSelected )
+	techMap.drawBack = false
 	
 	local tech = nil
 	for i=1, applic.techNumber do
 	    tech = applic:GetTech( i-1 )
 		
-		if tech:GetTechGroup() == typef and not tech:HaveRequireTech() then
+		if tech.techGroup == typef and not tech.haveRequireTech then
 			techMap:AddTechnology( nil, tech )
 			CreateTechSequence( tech )
 		end
@@ -127,7 +121,7 @@ local function CreateWindow( typef )
 	--adding closeButton
 	button.Stretch( "80e", "80e", "0e", "0e", 
 	 			    "button_down", windowMap, -1, "",
-					"./laboratory.HideTechMap()" )
+					HideTechMap )
 end
 
 function ShowAdvancedTechMap()
@@ -153,17 +147,17 @@ function TechSelected()
 		--технология уже в ходу
 	    selectedTech = base.CLuaTech( techMap:GetSelectedObject() )
 		base.LogScript( base.string.format( "Выбрана технология=%s Описание=%s Статус=%s", 
-											selectedTech:GetName(), selectedTech:GetDescriptionLink(), selectedTech:GetStatus() ) )
+											selectedTech.name, selectedTech.description, selectedTech.datus ) )
 	    
 	    browser:Show()
-	    browser:Navigate( selectedTech:GetDescriptionLink() )
+	    browser:Navigate( selectedTech.description )
 	elseif type == base.TS_PROJECT then
 		--или технологию только предстоит изобрести
 		--то повторный выбор предполагает желание пользователя начать исследование...
 		StartInvention()
 	elseif type == base.TS_INDEVELOP then
-		selectedTech = base.CLuaInvention( techMap:GetSelectedObject() )
-		base.inventionManager.Show( selectedTech:GetInternalName(), company:GetName() )
+		selectedTech = base.CLuaInvention( techMap.selectedObject )
+		base.inventionManager.Show( selectedTech.uniq, company.name )
 	end
 end
 
@@ -183,7 +177,7 @@ function AssignInvention()
 	local loadFile = base.updates.FindInventionLoadFile( inventionName )
 	company:StartInvention( loadFile )
 	
-	base.inventionManager.Show( inventionName, company:GetName() )
+	base.inventionManager.Show( inventionName, company.name )
 	windowMap:Remove()
 	windowMap = nil
 	

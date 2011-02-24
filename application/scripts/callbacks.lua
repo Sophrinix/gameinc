@@ -1,13 +1,9 @@
-local plant = NrpGetPlant()
-local labelSpeed = nil
+plant = applic.plant
+labelSpeed = nil
+balanceLabel = nil
 
 function sworkAppDayChange( ptr )
-	local company = applic.playerCompany
-	
-	local userLabel = CLuaLabel( guienv:GetElementByID( ID_USERNAME_LABEL ) )
-	local name = company:GetName()
-	local summ = company:GetBalance()
-	userLabel:SetText( name..":   $"..summ)
+	balanceLabel.text = "$"..applic.playerCompany.balance
 end
 
 function sworkAppMonthChange()
@@ -27,7 +23,7 @@ function PaySalaryToWorkers()
 	local needMoney = 0
 	local user = nil
 	local salary = 0
-	for i=1, company:GetUserNumber() do
+	for i=1, company.userNumber do
 		user = company:GetUser( i-1 )
 		salary = user:GetParam( "salary" )
 		user:AddParam( "balance", salary )
@@ -39,7 +35,7 @@ end
 
 function PayMoneyToInventions()
 	local company = applic.playerCompany
-	for index=1, company:GetInventionNumber() do
+	for index=1, company.inventionNumber do
 		local invention = company:GetInvention( index-1 )
 					
 		company:AddBalance( -invention:GetMonthPay() )
@@ -53,12 +49,12 @@ end
 
 function sworkInventionFinished( ptr )
 	local inv = CLuaTech( ptr )
-	pda.Show( "Закончена работа над изобретением "..inv:GetName() )
+	pda.Show( "Закончена работа над изобретением "..inv.name )
 end
 
 function sworkPlayerCompanyReadyProject( ptr )
 	local game = CLuaGame( ptr )
-	pda.Show( "Закончена работа над проектом "..game:GetName() )
+	pda.Show( "Закончена работа над проектом "..game.name )
 end
 
 function sworkMainLoop( ptr )
@@ -68,14 +64,14 @@ end
 function sworkApplicationClose( ptr )
 	NrpApplicationSave()
 	applic:SaveBoxAddonsPrice()
-	applic:GetPda():Save()
+	applic.pda:Save()
 	plant:Save()
 	NrpApplicationClose()
 end
 
 function sworkModuleFinished( ptrModule )
 	local mod = CLuaDevelopModule( ptrModule )
-	pda.Show( "Завершена работа над модулем "..mod:GetName().." проекта "..mod:GetParent():GetName() )
+	pda.Show( "Завершена работа над модулем "..mod.name.." проекта "..mod.parent.name )
 end
 
 function sworkUserMarketUpdated()
@@ -84,25 +80,20 @@ end
 
 function sworkReklameFinished( ptrReklame )
 	local reklame = CLuaReklame( ptrReklame )
-	pda.Show( "Закончилась рекламная кампания "..reklame:GetName() )
+	pda.Show( "Закончилась рекламная кампания "..reklame.name )
 end
 
 local function localChangeSpeed( keyInput )
 	if labelSpeed then labelSpeed:Remove() end
 	
-	local spd = applic:GetPauseBetweenStep()
-	
 	if keyInput == 0xBB then 
-		if spd > 100 then applic:SetPauseBetweenStep( spd - 100 ) end
+		if applic.speed > 100 then applic.speed = applic.speed - 100 end
 	else
-		if spd < 1000 then applic:SetPauseBetweenStep( spd + 100 ) end
+		if applic.speed < 1000 then applic.spped = applic.speed + 100 end
 	end
 	
-	local dd = ( 1000 - applic:GetPauseBetweenStep() ) / 100
-	labelSpeed = guienv:AddLabel( "Скорость игры " .. dd,
-								  scrWidth / 2 - 100, scrHeight / 2 - 50, 
-								  "200+", "100+", -1, 
-								  guienv:GetRootGUIElement() )
+	local dd = ( 1000 - applic.speed ) / 100
+	labelSpeed = guienv:AddLabel( "Скорость игры " .. dd, "40%", "45%", "20%+", "10%+", -1, guienv.root )
 								  
 	guienv:AddBlenderAnimator( labelSpeed, 255, 10, 2000, false, true, false )
 end

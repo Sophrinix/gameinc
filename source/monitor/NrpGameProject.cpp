@@ -26,7 +26,6 @@ NrpText _GetNameFromType( PROJECT_TYPE type )
 	case PT_VIDEOTECH: return VIDEOTECHNUMBER;
 	case PT_SOUNDTECH: return SOUNDTECHNUMBER;
 	case PT_LANGUAGE: return LANGNUMBER;
-	case PT_PHYSIC: return ADVTECHNUMBER;
 	default: assert( false ); return "error";
 	}
 }
@@ -141,7 +140,6 @@ void CNrpGameProject::AddTech( const CNrpTechnology* tech )
 		PNrpGameEngine ge = _self[ GAME_ENGINE ].As<PNrpGameEngine>();
 		if( (int)arr.size() >= (int)(*ge)[ GENRE_MODULE_NUMBER ] ) 
 			return;
-		//!ge->IsMyTech( (*tech)[ INTERNAL_NAME ] ) )
 	}
 
 	if( !IsMyTech( tech ) ) 
@@ -238,7 +236,7 @@ void CNrpGameProject::_SaveTech( const OPTION_NAME& name, const NrpText& saveFol
 void CNrpGameProject::Load( const NrpText& loadFolder )
 {
 	NrpText fileName = OpFileSystem::CheckEndSlash( loadFolder ) + "project.ini";
-	CNrpCompany* ptrCompany = Param( PARENTCOMPANY ).As<PNrpCompany>();
+	CNrpCompany* ptrCompany = _self[ PARENTCOMPANY ].As<PNrpCompany>();
 	INrpProject::Load( fileName );
 
 	IniFile lv( fileName );
@@ -371,7 +369,7 @@ TECHS& CNrpGameProject::GetTechs( PROJECT_TYPE type )
 	case PT_VIDEOTECH: return _video;
 	case PT_SOUNDTECH: return _sound;
 	case PT_LANGUAGE: return _languages;
-	default: return nullTech;
+	default: assert( "unknown type" == 0 ); return nullTech;
 	}
 }
 

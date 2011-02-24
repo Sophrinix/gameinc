@@ -28,20 +28,29 @@ local company = nil
 
 local usersWindow = {}
 
+function FadeEnterAction()
+	univerWindow.visible = true
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function FadeExitAction()
+	univerWindow:Remove()
+	univerWindow = nil
+	guienv:FadeAction( base.FADE_TIME, true, true )
+end
+
+function Hide()
+	guienv:FadeAction( base.FADE_TIME, false, false )			
+	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
+end
+
+
 function Show()
 	company = applic.playerCompany
 	if univerWindow then
-		univerWindow:SetVisible( true )
+		univerWindow.visible = true
 	else
-		univerWindow = guienv:AddWindow( "media/maps/univer_dvor.png", 0, 0, scrWidth, scrHeight, -1, guienv:GetRootGUIElement() )
-		univerWindow:GetCloseButton():SetVisible( false )
-		univerWindow:SetDraggable( false )
-		univerWindow:SetVisible( false )
-		
-		--adding closeButton
-		button.Stretch( scrWidth - 80, scrHeight - 80, scrWidth, scrHeight, 
-		 			    "button_down", univerWindow, -1, "",
-						"./univer:Hide()" )
+		univerWindow = window.fsWindow( "media/maps/univer_dvor.png", Hide )
 	end	
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_UNIVER )
@@ -65,20 +74,19 @@ local function AddProgressBar( windowe, x1, y1, x2, y2, id, pos, textr )
 	label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 end
 
-function ShowUserInfoWindow( x, y, width, height, user )
+local function _ShowUserInfoWindow( x, y, width, height, user )
 	local windowg = guienv:AddWindow( "", x, y, x + width, y + height, -1, windowUpEmployer )
-	local button = windowg:GetCloseButton()
+	windowg.closeButton.visible = false
 	local image = nil
 	
-	button:SetVisible( false )
-	windowg:SetText( user:GetName() )
-	windowg:SetDraggable( false )
-
+	windowg.text = user.name
+	windowg.draggable = false
+	
 	local xOffset = width / 3	
 	image = guienv:AddImage( 30, 30, 30 + 107, 30 + 141, windowg, -1, "" )
-	image:SetImage( user:GetTexture() )
-	image:SetScaleImage( true )
-	image:SetUseAlphaChannel( true )	
+	image.texture = user.texture
+	image.scaleImage = true
+	image.useAlphaChannel = true
 
 	AddProgressBar( windowg, xOffset, 30, width - 5, 30 + 15, -1, 
 					user:GetParam( "knowledgeLevel" ), base.STR_EXPERIENCE )
@@ -93,12 +101,12 @@ function ShowUserInfoWindow( x, y, width, height, user )
     guienv:AddLabel( "Зарплата: "..money.."$", xOffset, 110, width, 110 + 20, -1, windowg )
 	
 	local btn = guienv:AddButton( width / 2 - 50, height - 30, width / 2 + 50, height - 10, windowg, -1, "Нанять" )
-	btn:SetAction( "./univer.UpEmployer()" )	
+	btn.action = UpEmployer
 	
 	return windowg			   
 end
 
-local function ShowAvaibleEmployers()
+local function _ShowAvaibleEmployers()
 	local maxuser = applic.userNumber
 	local hTemp = ( scrHeight - 150 ) / 3
 	
@@ -116,9 +124,8 @@ local function ShowAvaibleEmployers()
 	local position=1
 	for i=1, maxuser do
 		local user = applic:GetUser( i-1 )
-	
-		--base.Log({src=base.SCRIPT, dev=base.ODS|base.CON}, "ShowAvaibleEmployers:user=" .. user:GetName() .. " type=" .. user:GetTypeName() )
-		if modeUserView == user:GetTypeName() and user:IsFreeUser() then
+
+		if modeUserView == user.getTypeName and user.freeUser then
 			if cnt < 3 then
 				usersWindow[ position ] = ShowUserInfoWindow( xoffset, yoffset + cnt * hTemp, scrWidth / 2 - 30,  hTemp, user ) 
 			else
@@ -142,18 +149,18 @@ function UpEmployer( mp )
 
 	if userToUp:GetParam( "contractMoney" ) > 0 then 
 	    local money = userToUp:GetParam( "contractMoney" ) * userToUp:GetParam( "wantMoney" )
-		guienv:MessageBox( "Деньги за контракт $" .. money, true, true, "./univer.UpContractUser()", "" )
+		guienv:MessageBox( "Деньги за контракт $" .. money, true, true, UpContractUser, nil )
 		return 0
 	end
 	
 	company:AddUser( userToUp )
 	guienv:AddToDeletionQueue( windowg )
-	ShowAvaibleEmployers()
+	_ShowAvaibleEmployers()
 end
 
 function UpContractUser()
 	company:AddUser( userToUp )
-	ShowAvaibleEmployers()
+	_ShowAvaibleEmployers()
 end
 
 function CloseEmployersWindow()
@@ -161,64 +168,28 @@ function CloseEmployersWindow()
 	windowUpEmployer = nil
 end
 
-function ShowEmployersWindow()
-	if windowUpEmployer == nil then
-		windowUpEmployer = guienv:AddWindow( "media/textures/stuffUpWindowBg.png", 0, 0, scrWidth, scrHeight, WINDOW_EMPLOYER_SELECT_ID, guienv:GetRootGUIElement() )
-		windowUpEmployer:SetDraggable( false )
-	else
-		windowUpEmployer:SetVisible( true )
-	end
-	
-	local btn = windowUpEmployer:GetCloseButton()
-	btn:SetVisible( false )
-	
-	local wTmp = scrWidth / 6
-	local xOffset = 20
-	local yOffset = 30
-	local button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, base.STR_CODERS )
-	button:SetAction( "./univer.ChangeUserType( STR_CODERS )" )
-	
-	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, base.STR_DESIGNERS )
-	button:SetAction( "./univer.ChangeUserType( STR_DESIGNERS )" )
-
-	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, base.STR_COMPOSERS )
-	button:SetAction( "./univer.ChangeUserType( STR_COMPOSERS )" )
-	
-	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, base.STR_TESTERS  )
-	button:SetAction( "./univer.ChangeUserType( STR_TESTERS )" )
-	
-	xOffset = xOffset + wTmp + 20
-	button = guienv:AddButton( xOffset, yOffset, xOffset + wTmp, 90, windowUpEmployer, -1, "Выход" )
-	button:SetAction( "./univer.CloseEmployersWindow()" )
-	
-	ShowAvaibleEmployers()
+local function _CloseUpWindow()
+	windowUpEmployer:Remove()
+	windowUpEmployer = nil
 end
 
-function Hide()
-	univerWindow:Remove()
-	univerWindow = nil
+function ShowEmployersWindow()
+	if windowUpEmployer == nil then
+		windowUpEmployer = window.fsWindow( "media/textures/stuffUpWindowBg.png", _CloseUpWindow )
+	else
+		windowUpEmployer.visible = true
+	end
+	
+	local layout = guienv:AddLayout( 20, 20, "20e", "70+", -1, windowUpEmployer ) 	
+	button.LayoutButton( "", windowUpEmployer, -1, base.STR_CODERS, function () _ChangeUserType( STR_CODERS ) end )
+	button.LayoutButton( "", windowUpEmployer, -1, base.STR_DESIGNERS, function () _ChangeUserType( STR_DESIGNERS ) end )
+	button.LayoutButton( "", windowUpEmployer, -1, base.STR_COMPOSERS, function () _ChangeUserType( STR_COMPOSERS ) end )
+	button.LayoutButton( "", windowUpEmployer, -1, base.STR_TESTERS, function () _ChangeUserType( STR_TESTERS ) end )
+	
+	_ShowAvaibleEmployers()
 end
 
 function ChangeUserType( name )
 	modeUserView = mode[ name ] 
 	ShowEmployersWindow()
-end
-
-function FadeEnterAction()
-	univerWindow:SetVisible( true )
-	guienv:FadeAction( base.FADE_TIME, true, true )
-end
-
-function FadeExitAction()
-	univerWindow:Remove()
-	univerWindow = nil
-	guienv:FadeAction( base.FADE_TIME, true, true )
-end
-
-function Hide()
-	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "univer.FadeExitAction()" )	
 end

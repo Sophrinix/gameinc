@@ -11,6 +11,7 @@ local project = nil
 local company = nil 
 local gpm = nil
 local CLuaLinkBox = base.CLuaLinkBox
+local CheckType = base.gpmFunctions.CheckType
 
 local function _ShowAvaibleVideoQualityAndVideoTech()
 	local flick = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
@@ -21,24 +22,21 @@ local function _ShowAvaibleVideoQualityAndVideoTech()
 		local techCompany = tech.company
 		
 		if (techCompany.empty or techCompany.name == companyName) and 
-			( tg == base.PT_VIDEOTECH or tg == base.PT_VIDEOQUALITY ) 
-		then
-			 FlickLinkBox( flick, tech.name, tech.techGroup, tech, 
-						   RRG, not project:IsMyTech( tech ),
-						   LeftMouseButtonUp, nil, nil )
+		   (tg == base.PT_VIDEOTECH or tg == base.PT_VIDEOQUALITY ) then
+				base.gpmFunctions.LinkBox( flick, tech.name, tech.techGroup, tech, 	base.DRG, _Set, _Unset )
 		end
 	end	
 	--Log("SCRIPT-CREATEVTP:ShowAvaibleVideoQualityAndVideoTech public = " .. showedTech )
 end
 
-
-local function _Set( _, sender )
+local function _Set( mp, sender )
 	sender = CLuaLinkBox( sender )
+	mp = CLuaLinkBox( mp )
 	local redraw = false
-	if base.PT_VIDEOQUALITY == sender.type then 
+	if CheckType( mp, sender, base.PT_VIDEOQUALITY ) then 
 		project.videoQuality = sender.data
 		redraw = true
-	elseif base.PT_VIDEOTECH == sender.type then
+	elseif CheckType( mp, sender, base.PT_VIDEOTECH ) then
 		project:AddTech( sender.data )
 		redraw = true
 	end
@@ -77,7 +75,7 @@ function Show()
 	
 	local flick = guienv:AddFlick( "5%", "5%", "45%", "95%", 3, -1, projectWindow )
 	
-	local vq = project.vdeoQuality
+	local vq = project.videoQuality
 	local lnk = base.gpmFunctions.LinkBox( flick, vq.name, base.PT_VIDEOQUALITY, vq, base.NDRG, _Set, _Unset )
 	lnk.defaultTexture = "media/buttons/SoundQualityNoImage.png"						  	
 	local maxProjectVideoTech = project:GetNumber( base.PT_VIDEOTECH )

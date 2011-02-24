@@ -114,12 +114,12 @@ void CNrpGuiFlick::addChildToEnd( IGUIElement* elm )
 	}
 
 		
-	core::recti btnRect = core::recti( AbsoluteRect.getWidth() / 2 - 40, 20, AbsoluteRect.getWidth() / 2 + 40, 60 );
+	core::recti btnRect = core::recti( AbsoluteRect.getWidth() / 2 - 40, 0, AbsoluteRect.getWidth() / 2 + 40, 30 );
 	_btnUp->setRelativePosition( btnRect );
 	bringToFront( _btnUp );
 
-	btnRect.UpperLeftCorner.Y = AbsoluteRect.getHeight() - 60;
-	btnRect.LowerRightCorner.Y = AbsoluteRect.getHeight() - 20;
+	btnRect.UpperLeftCorner.Y = AbsoluteRect.getHeight() - 30;
+	btnRect.LowerRightCorner.Y = AbsoluteRect.getHeight();
 	_btnDown->setRelativePosition( btnRect );
 	bringToFront( _btnDown );
 }

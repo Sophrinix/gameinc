@@ -12,6 +12,7 @@ local sizeLinkBox = 80
 function LinkBox( parentr, textr, group, datar, draggable, funcSet, funcUnset )
 	local project = base.gameprojectManager.project
 	local linkModule = base.guienv:AddLinkBox( textr, 0, 0, sizeLinkBox, sizeLinkBox, -1, parentr )
+	linkModule.color = base.toColor( 0xFF, 0, 0, 0 )
 			
 	base.table.insert( base.gameprojectManager.links, linkModule )
 	
@@ -21,7 +22,7 @@ function LinkBox( parentr, textr, group, datar, draggable, funcSet, funcUnset )
 		linkModule.data = datar.object
 		linkModule.texture = datar.texture
 		
-		local enabled = (not draggable or datar.empty or not project:IsMyTech( datar ))
+		local enabled = (not draggable or datar.empty or not project:IsMyTech( datar ))	
 		if enabled then linkModule.alpha = 0xff
 				   else linkModule.alpha = 0x80 end
 	
@@ -45,5 +46,9 @@ function Ligthing( dlink )
 				guienv:AddLigthing( links[ i ], dlink, "media/textures/sphere.png", 10 )		
 	    end	
 	end
+end
+
+function CheckType( m, s, t )
+	return ((m.type == s.type) and (m.type == t))
 end
 

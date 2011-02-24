@@ -202,14 +202,14 @@ void CNrpGUIEnvironment::drawAll()
 	if( _dragObjectSave )
 	{
 		video::IVideoDriver* driver = _nativeEnv->getVideoDriver();
-		if( _dragTexture )
-		{
-			core::dimension2di size = _dragObjectSave->getAbsolutePosition().getSize();
-			core::position2di pos = _cursor->getPosition() - size / 2;
-			core::recti rectangle( pos, core::dimension2du( size.Width, size.Height ) );
+		core::dimension2di size = _dragObjectSave->getAbsolutePosition().getSize();
+		core::position2di pos = _cursor->getPosition() - size / 2;
+		core::recti rectangle( pos, core::dimension2du( size.Width, size.Height ) );
+		if( _dragTexture  )
 			driver->draw2DImage( _dragTexture, rectangle, core::recti( core::position2di( 0, 0 ), _dragTexture->getOriginalSize() ),
 				                 0, 0, true );
-		}
+		else
+			driver->draw2DRectangle( video::SColor( 0xffff0000 ), rectangle);
 	}
 }
 //////////////////////////////////////////////////////////////////////////

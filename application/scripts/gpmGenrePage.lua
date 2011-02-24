@@ -42,6 +42,7 @@ local function _Set( _, sender )
 end
 
 function Show()
+	company = base.applic.playerCompany
 	gpm = base.gameprojectManager
 	project = gpm.project	
 	projectWindow = gpm.projectWindow	

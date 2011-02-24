@@ -37,6 +37,8 @@ CNrpTechnology::CNrpTechnology( const NrpText& fileTech ) : INrpProject( CLASS_T
 	_InitializeOptions();
 
 	Load( fileTech );
+
+	assert( ((NrpText)_self[ INTERNAL_NAME ]).size() );
 }
 
 CNrpTechnology::CNrpTechnology( const CNrpTechnology& p ) : INrpProject( CLASS_TECHNOLOGY, "" )

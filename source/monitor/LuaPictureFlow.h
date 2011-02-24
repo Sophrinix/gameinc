@@ -30,6 +30,7 @@ public:
 	int SetDrawBorder( lua_State* L );
 	int SetItemTexture( lua_State* L );
 	int SetItemBlend( lua_State* L );
+	int SetOnNewSelect( lua_State* L );
 	int Clear( lua_State* L );
 };
 

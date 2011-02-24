@@ -1,6 +1,7 @@
 #pragma once
 
 #include <irrlicht.h>
+#include "LuaFunctionality.h"
 
 namespace nrp
 {
@@ -17,7 +18,7 @@ namespace irr
 namespace gui
 {
 
-class CNrpComponentListbox : public irr::gui::IGUIListBox
+class CNrpComponentListbox : public irr::gui::IGUIListBox, public ILuaFunctionality
 {
 public:
 	//! constructor

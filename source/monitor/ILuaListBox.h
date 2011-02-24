@@ -10,12 +10,11 @@ namespace nrp
 										LUNA_AUTONAME_FUNCTION(class, SetItemBgColor )\
 										LUNA_AUTONAME_FUNCTION(class, SetFontFromSize )\
 										LUNA_AUTONAME_FUNCTION(class, SetItemTextColor )\
-										LUNA_AUTONAME_FUNCTION(class, GetSelected )\
-										LUNA_AUTONAME_FUNCTION(class, SetSelected )\
-										LUNA_AUTONAME_FUNCTION(class, Clear )\
-										LUNA_AUTONAME_FUNCTION(class, SetItemHeigth )
+										LUNA_AUTONAME_FUNCTION(class, Clear )
 
-#define LUNA_ILUALISTBOX_PROPERTIES(class) LUNA_ILUAGUIELEMENT_PROPERTIES(class)
+#define LUNA_ILUALISTBOX_PROPERTIES(class) LUNA_ILUAGUIELEMENT_PROPERTIES(class)\
+										LUNA_AUTONAME_PROPERTY(class, "itemIndex", GetSelected, SetSelected )\
+										LUNA_AUTONAME_PROPERTY(class, "itemHeight", PureFunction, SetItemHeigth )
 
 template< class T >
 class ILuaListBox : public ILuaGuiElement<T>
@@ -42,15 +41,15 @@ public:
 
 	int SetItemHeigth( lua_State* L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText(":SetSelected need int parameter") ) );
+		assert( lua_isnumber( L, -1 ) );
+		IF_OBJECT_NOT_NULL_THEN	
+		{
+			int height = lua_tointeger( L, -1 );
+			assert( height > 0 && height < 200 );
 
-		int height = lua_tointeger( L, 2 );
-		assert( height > 0 && height < 200 );
-
-		IF_OBJECT_NOT_NULL_THEN	_object->setItemHeight( height );			
-
-		return 1;
+			_object->setItemHeight( height );			
+		}
+		return 0;
 	}
 
 
@@ -66,26 +65,25 @@ public:
 
 	int SetSelected( lua_State *L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 2, 2, _ErrStr( NrpText( ":SetSelected need int parameter" ) ) );
+		assert( lua_isnumber( L, -1 ) );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			_object->setSelected( lua_tointeger( L, 2 ) );			
+		}
 
-		int selected = lua_tointeger( L, 2 );
-
-		IF_OBJECT_NOT_NULL_THEN	_object->setSelected( selected );			
-
-		return 1;
+		return 0;
 	}
 
 	int GetSelected( lua_State *L )
 	{
-		int argc = lua_gettop(L);
-		luaL_argcheck(L, argc == 1, 1, _ErrStr( NrpText( ":GetSelected not need any parameter" ) ) );
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			int selected = _object->getSelected();
+			lua_pushinteger( L, selected );
+			return 1;
+		}
 
-		int selected = -1;
-
-		IF_OBJECT_NOT_NULL_THEN selected = _object->getSelected();
-		lua_pushinteger( L, selected );
-
+		lua_pushnil( L );
 		return 1;
 	}
 

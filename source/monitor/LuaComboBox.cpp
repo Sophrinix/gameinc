@@ -19,9 +19,6 @@ BEGIN_LUNA_METHODS(CLuaComboBox)
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetImage )
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetAction )
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, AddItem )
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelected )
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetSelectedObject )
-	LUNA_AUTONAME_FUNCTION( CLuaComboBox, SetSelected )
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, GetItem )
 	LUNA_AUTONAME_FUNCTION( CLuaComboBox, Clear )
 END_LUNA_METHODS
@@ -29,6 +26,8 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaComboBox)
 	LUNA_ILUAGUIELEMENT_PROPERTIES( CLuaComboBox )
 	LUNA_AUTONAME_PROPERTY( CLuaComboBox, "itemCount", GetItemCount, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaComboBox, "selectedObject", GetSelectedObject, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaComboBox, "itemIndex", GetSelected, SetSelected )
 END_LUNA_PROPERTIES
 
 CLuaComboBox::CLuaComboBox(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUACOMBOBOX, ex )							//конструктор
@@ -110,27 +109,23 @@ int CLuaComboBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 
 int CLuaComboBox::GetSelected( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaComboBox::GetSelected not need any parameter");
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		int selected = _object->getSelected();
+		lua_pushinteger( L, selected );
+		return 1;
+	}
 
-	int selected = -1;
-
-	IF_OBJECT_NOT_NULL_THEN selected = _object->getSelected();
-	lua_pushinteger( L, selected );
-
+	lua_pushnil( L );
 	return 1;
 }
 
 int CLuaComboBox::SetSelected( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaComboBox::SetSelected need 1 parameter");
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	_object->setSelected( lua_tointeger( L, -1 ) );			
 
-	int selected = lua_tointeger( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN	_object->setSelected( selected );			
-
-	return 1;
+	return 0;
 }
 
 int CLuaComboBox::Clear( lua_State* L )
@@ -145,19 +140,17 @@ int CLuaComboBox::Clear( lua_State* L )
 
 int CLuaComboBox::GetSelectedObject( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaComboBox::GetSelected not need any parameter");
-
-	void* ptrData =NULL;
-
 	IF_OBJECT_NOT_NULL_THEN
 	{
+		void* ptrData = NULL;
 		int selected = _object->getSelected();
 		if( selected >= 0 )
 			ptrData = (void*)_object->getItemData( selected );
+		lua_pushlightuserdata( L, ptrData );
+		return 1;
 	}
-	lua_pushlightuserdata( L, ptrData );
-
+	
+	lua_pushnil( L );
 	return 1;
 }
 

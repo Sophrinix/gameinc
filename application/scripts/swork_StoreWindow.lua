@@ -7,7 +7,7 @@ local startObjectNumber = 0							--номер стартового объекта
 
 function AddPortfelleWindow()
 
-	portfelleWnd = guienv:AddWindow( "portfelleWindow", wndHeight, scrHeight - wndHeight, scrWidth, scrHeight, -1, guienv:GetRootGUIElement()  )
+	portfelleWnd = guienv:AddWindow( "portfelleWindow", wndHeight, scrHeight - wndHeight, scrWidth, scrHeight, -1, guienv.root  )
 	maxObjectNumber = ( scrWidth - wndHeight ) / wndHeight
 	
 	sworkUpdateCompanyPortfelle()
@@ -21,7 +21,7 @@ function sworkUpdateCompanyPortfelle()
 		end
 		
 		local config = company:GetFromPortfelle( i - 1 )
-		local linkModule = guienv:AddLinkBox( config:GetName(), 10, 50, 10 + 50, 50 + 50, -1, portfelleWnd )
+		local linkModule = guienv:AddLinkBox( config.name, 10, 50, 10 + 50, 50 + 50, -1, portfelleWnd )
 		linkModule.data = config.object
 		--linkModule:
 		--linkModule:AddLuaFunction( GUIELEMENT_LMOUSE_LEFTUP, "sworkLeftMouseButtonUp" )

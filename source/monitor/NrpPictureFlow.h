@@ -1,5 +1,6 @@
 #pragma once
 #include <irrlicht.h>
+#include "LuaFunctionality.h"
 
 namespace irr
 {
@@ -7,7 +8,7 @@ namespace irr
 namespace gui
 {
 
-class CNrpPictureFlow : public IGUIListBox
+class CNrpPictureFlow : public IGUIListBox, public ILuaFunctionality
 {
 	class CNrpImageDescription
 	{

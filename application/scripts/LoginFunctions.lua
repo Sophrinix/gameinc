@@ -12,7 +12,7 @@ local applic = base.applic
 local button = base.button
 local updates = base.updates
 --переменные для работы
-local plant = base.NrpGetPlant()
+local plant = base.applic.plant
 
 --размеры окна
 local width = 200
@@ -63,7 +63,7 @@ function CreateNewProfileAndStartGame( ptr )
 end
 
 function NewGame( ptr )
-	wndNewGame = guienv:AddWindow( "", "25%", "33%", "50%+", "33%+", -1, guienv:GetRootGUIElement() )
+	wndNewGame = guienv:AddWindow( "", "25%", "33%", "50%+", "33%+", -1, guienv.root )
 	wndNewGame.closeButton.visible = false
 	
 	editName = guienv:AddEdit(  "dalerank",  "10%", 40, "80%+", "20+", -1, wndNewGame )
@@ -101,7 +101,7 @@ function Continue( ptr )
 	updates.CheckGameBoxAddons()
 	applic:LoadBoxAddonsPrice()
 	
-	applic:GetPda():Load()
+	applic.pda:Load()
 		
 	--загружаем аппараты по производству дисков
 	updates.CheckDiskMachines()

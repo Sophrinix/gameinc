@@ -17,11 +17,11 @@ BEGIN_LUNA_METHODS(CLuaListBox)
 	LUNA_ILUALISTBOX_HEADER( CLuaListBox )
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaListBox, AddItem )
-	LUNA_AUTONAME_FUNCTION( CLuaListBox, GetSelectedObject )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaListBox)
 	LUNA_ILUALISTBOX_PROPERTIES(CLuaListBox)
+	LUNA_AUTONAME_PROPERTY( CLuaListBox, "selectedObject", GetSelectedObject, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaListBox::CLuaListBox(lua_State *L, bool ex)	: ILuaListBox(L, CLASS_LUALISTBOX, ex )							//конструктор
@@ -42,19 +42,18 @@ int CLuaListBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 
 int CLuaListBox::GetSelectedObject( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaListBox::GetSelectedObject not need any parameter");
-
-	void* selObject = NULL;
-
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		int selected = _object->getSelected();
 		if( selected >= 0 )
-			selObject = (void*)_object->getIcon( selected );
+		{
+			void* selObject = (void*)_object->getIcon( selected );
+			lua_pushlightuserdata( L, selObject );
+			return 1;
+		}
 	}
-	lua_pushlightuserdata( L, selObject );
 
+	lua_pushnil( L );
 	return 1;
 }
 

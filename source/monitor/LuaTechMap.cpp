@@ -21,14 +21,14 @@ BEGIN_LUNA_METHODS(CLuaTechMap)
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetAction )
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddTechnology )
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddLuaFunction )
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectType )
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObject )
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, GetSelectedObjectName )
-	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetDrawBack )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaTechMap)
 	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaTechMap)
+	LUNA_AUTONAME_PROPERTY( CLuaTechMap, "drawBack", PureFunction, SetDrawBack )
+	LUNA_AUTONAME_PROPERTY( CLuaTechMap, "selectedType", GetSelectedObjectType, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaTechMap, "selectedObject", GetSelectedObject, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaTechMap, "selectedName", GetSelectedObjectName, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaTechMap::CLuaTechMap(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUATECHMAP, ex)						//конструктор
@@ -108,49 +108,53 @@ int CLuaTechMap::AddLuaFunction( lua_State* L )
 
 int CLuaTechMap::GetSelectedObjectType( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObjectType not need parameter");
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int type = _object->GetSelectedObjectType();
+		lua_pushinteger( L, type );
+		return 1;
+	}
 
-	int type = -1;
-	IF_OBJECT_NOT_NULL_THEN type = _object->GetSelectedObjectType();
-
-	lua_pushinteger( L, type );
+	lua_pushnil( L );
 	return 1;
 }
 
 int CLuaTechMap::GetSelectedObject( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObject not need parameter");
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		CNrpTechnology* ptr = _object->GetSelectedObject();
+		lua_pushlightuserdata( L, ptr );
+		return 1;
+	}
 
-	CNrpTechnology* ptr = NULL;
-	IF_OBJECT_NOT_NULL_THEN ptr = _object->GetSelectedObject();
-
-	lua_pushlightuserdata( L, ptr );
+	lua_pushnil( L );
 	return 1;
 }
 
 int CLuaTechMap::GetSelectedObjectName( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaTechMap::GetSelectedObjectName not need parameter");
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		NrpText name = _object->GetSelectedObjectName();
+		lua_pushstring( L, name );
+		return 1;
+	}
 
-	NrpText name;
-	IF_OBJECT_NOT_NULL_THEN name = _object->GetSelectedObjectName();
-
-	lua_pushstring( L, name );
+	lua_pushnil( L );
 	return 1;
 }
 
 int CLuaTechMap::SetDrawBack( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechMap::SetBackgroundVisible need boolean parameter");
+	assert( lua_isboolean( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		bool visible = lua_toboolean( L, -1 ) > 0;
+		_object->SetDrawBack( visible );
+	}
 
-	bool visible = lua_toboolean( L, 2 ) > 0;
-	IF_OBJECT_NOT_NULL_THEN _object->SetDrawBack( visible );
-
-	return 1;
+	return 0;
 }
 
 const char* CLuaTechMap::ClassName()

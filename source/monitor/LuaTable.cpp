@@ -21,20 +21,28 @@ BEGIN_LUNA_METHODS( CLuaTable )
 	LUNA_AUTONAME_FUNCTION( CLuaTable, AddColumn )
 	LUNA_AUTONAME_FUNCTION( CLuaTable, SetColumnWidth )
 	LUNA_AUTONAME_FUNCTION( CLuaTable, SetCellText )
-	LUNA_AUTONAME_FUNCTION( CLuaTable, GetRowCount )
-	LUNA_AUTONAME_FUNCTION( CLuaTable, GetColumnCount )
 	LUNA_AUTONAME_FUNCTION( CLuaTable, RemoveColumn )
-	LUNA_AUTONAME_FUNCTION( CLuaTable, SetRowHeight )
 	LUNA_AUTONAME_FUNCTION( CLuaTable, ClearRows )
-	LUNA_AUTONAME_FUNCTION( CLuaTable, GetActiveColumn )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaTable)
 	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaTable)
+	LUNA_AUTONAME_PROPERTY( CLuaTable, "activeColumn", GetActiveColumn, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaTable, "rowCount", GetRowCount, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaTable, "columnCount", GetColumnCount, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaTable, "rowHeight", PureFunction, SetRowHeight )
+	//LUNA_AUTONAME_PROPERTY( CLuaTable, "cellSelected", PureFunction, SetCellSelected )
 END_LUNA_PROPERTIES
 
 CLuaTable::CLuaTable(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUATABLE, ex)						//конструктор
 {			
+}
+
+int CLuaTable::SetCellSelected( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	//IF_OBJECT_NOT_NULL_THEN _object->AddLuaFunction( GUIELEMENT_SELECTED_AGAIN, _GetRef( L, -1 ) );
+	return 0;
 }
 
 int CLuaTable::SetImage( lua_State *L )							//получает имя файла с текстурой, область из которой надо брать кнопку
@@ -129,27 +137,27 @@ int CLuaTable::SetCellText( lua_State *L )
 
 int CLuaTable::GetRowCount( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaButton::GetRowCount not need parameter");
+	IF_OBJECT_NOT_NULL_THEN  
+	{
+		int rowCount = _object->getRowCount();
+		lua_pushinteger( L, rowCount );
+		return 1;
+	}
 
-	int rowCount=-9999;
-
-	IF_OBJECT_NOT_NULL_THEN  rowCount = _object->getRowCount();
-	lua_pushinteger( L, rowCount );
-
+	lua_pushnil( L );
 	return 1;		
 }
 
 int CLuaTable::GetColumnCount( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaButton::GetColumnCount not need parameter");
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		int rowCount = _object->getColumnCount();
+		lua_pushinteger( L, rowCount );
+		return 1;
+	}
 
-	int rowCount=-9999;
-
-	IF_OBJECT_NOT_NULL_THEN  rowCount = _object->getColumnCount();
-	lua_pushinteger( L, rowCount );
-
+	lua_pushnil( L );
 	return 1;	
 }
 
@@ -167,11 +175,8 @@ int CLuaTable::RemoveColumn( lua_State *L )
 
 int CLuaTable::SetRowHeight( lua_State *L )
 {
-	int argc = lua_gettop(L);luaL_argcheck(L, argc == 2, 2, "Function CLuaButton::SetRowHeigth need 2 parameter");
-
-	int height = lua_tointeger( L, 2 );
-
-	IF_OBJECT_NOT_NULL_THEN _object->SetItemHeight( height );
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN _object->SetItemHeight( lua_tointeger( L, -1 ) );
 	return 1;	
 }
 
@@ -192,11 +197,13 @@ const char* CLuaTable::ClassName()
 
 int CLuaTable::GetActiveColumn( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaButton::ClearRows not need parameter");
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		lua_pushinteger( L, _object->getActiveColumn() );
+		return 1;
+	}
 
-	IF_OBJECT_NOT_NULL_THEN	lua_pushinteger( L, _object->getActiveColumn() );
-
+	lua_pushnil( L );
 	return 1;	
 }
 

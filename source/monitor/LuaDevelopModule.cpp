@@ -118,7 +118,7 @@ int CLuaDevelopModule::GetParent( lua_State* L )
 	{
 		INrpDevelopProject* prj = (*_object)[ PARENT ].As<INrpDevelopProject*>();
 
-		lua_pop( L, argc );
+		//lua_pop( L, lua_gettop( L ) );
 		lua_pushlightuserdata( L, prj );
 		Luna< CLuaDevelopProject >::constructor( L );
 		return 1;

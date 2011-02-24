@@ -21,6 +21,7 @@ public:
 	
 	int AddItem( lua_State *L );
 	int GetSelectedObject( lua_State* L );
+	int SetLmbDblClick( lua_State* L );
 	static const char* ClassName();
 };
 

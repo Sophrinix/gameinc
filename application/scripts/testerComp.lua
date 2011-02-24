@@ -3,8 +3,6 @@ local base = _G
 module( "testerComp" )
 
 local guienv = base.guienv
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
 local button = base.button
 local applic = base.applic
 local tutorial = base.tutorial
@@ -18,41 +16,30 @@ local lbDesc = nil
 
 function Hide()
 	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "testerComp.FadeExitAction()" )	
+	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
 end
 
 function Show( ptr )
 	if mainWindow then
-		mainWindow:SetVisible( true )
+		mainWindow.visible = true
+		return
 	else
-		mainWindow = guienv:AddWindow( "media/textures/testComp.png", 0, 0, 
-									   scrWidth, scrHeight, -1, 
-									   guienv:GetRootGUIElement() )
-		mainWindow:SetDraggable( false )
-		mainWindow:SetVisible( false )
-		mainWindow:GetCloseButton():SetVisible( false )
-		mainWindow:SetDrawBody( false )
-		
-		--adding closeButton
-		button.Stretch( "95%", "95%", "100%", "100%", 
-		 			    "button_down", 
-		 			    mainWindow, -1, "",
-						"./testerComp.Hide()" )
+		mainWindow = window.fsWindow( "media/textures/testComp.png", Hide )
 	end	
 	
 	lbDesc = guienv:AddLabel( "", 278, 417, 770, 655, -1, mainWindow )
 	
 	picflowGames = guienv:AddPictureFlow( 350, 70, 680, 310, -1, mainWindow )
-	picflowGames:SetDrawBorder( false )
+	picflowGames.drawBorder = false
 	
 	local project = nil
 	local company = applic.playerCompany
 	
-	for i=1, company:GetDevProjectNumber() do
+	for i=1, company.devProjectNumber do
 		project = company:GetDevProject( i-1 )
 		
-		if project:GetTechGroup() == base.PT_GAME then
-			picflowGames:AddItem( project:GetName(), "", project )
+		if project.techGroup == base.PT_GAME then
+			picflowGames:AddItem( project.name, "", project )
 		end
 	end	
 	
@@ -60,26 +47,26 @@ function Show( ptr )
 	--employers manager
 	
 	--картинка с отображением игры
-	mainWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./testerComp.SelectGame()" )
+	mainWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, SelectGame )
 	
 	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "testerComp.FadeEnterAction()" )
+	guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
 end
 
 function SelectGame()
-	local game = base.CLuaDevelopProject( picflowGames:GetSelectedObject() )
+	local game = base.CLuaDevelopProject( picflowGames.selectedObject )
 	
 	local ret = {}
 	-- base.PT_GAMEENGINE=0, base.PT_VIDEOTECH=0, base.PT_SOUNDTECH=0, base.PT_ADVTECH=0 }
-	for i=1, game:GetModuleNumber() do
+	for i=1, game.moduleNumber do
 	    local module = game:GetModule( i-1 )
-	    local tg = module:GetTechGroup()
+	    local tg = module.techGroup
 	    local dt = testDef.defs[ tg ]
 	    
-	    Log( "module:"..module:GetName() )
+	    Log( "module:"..module.name )
 	    if dt and not module.empty then
-			Log( "module:"..module:GetName().." qua:"..module:GetQuality().."  prc:"..module:GetPercentDone() )
-			local quality = base.math.floor( module:GetQuality() / 100 * (#dt) )
+			Log( "module:"..module.name.." qua:"..module.quality.."  prc:"..module.percentDone )
+			local quality = base.math.floor( module.quality / 100 * (#dt) )
 			
 			if ret[ tg ] == nil then
 				ret[ tg ] = 1
@@ -95,11 +82,11 @@ function SelectGame()
 	text = text .. "\n«вук:".. testDef.soundtech[ ret[ base.PT_SOUNDTECH ] ]
 	text = text .. "\n”правление:" .. testDef.advtech[ ret[ base.PT_ADVTECH ] ]
 	
-	lbDesc:SetText( text )
+	lbDesc.text = text
 end
 
 function FadeEnterAction()
-	mainWindow:SetVisible( true )
+	mainWindow.visible = true
 	guienv:FadeAction( base.FADE_TIME, true, true )
 end
 

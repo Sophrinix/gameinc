@@ -1361,6 +1361,8 @@ namespace video
 
 		//! Returns the maximum texture size supported.
 		virtual core::dimension2du getMaxTextureSize() const =0;
+
+		virtual void addResourceDirectory( const io::path& dir )=0;
 	};
 
 } // end namespace video
