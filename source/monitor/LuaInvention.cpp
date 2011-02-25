@@ -135,14 +135,18 @@ int CLuaInvention::GetPrognoseDateFinish( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:Remove not need parameter");
 
-	SYSTEMTIME time;
-	memset( &time, 0, sizeof(SYSTEMTIME) );
-	IF_OBJECT_NOT_NULL_THEN	time = (*_object)[ PROGNOSEDATEFINISH ];
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		NrpTime time = (*_object)[ PROGNOSEDATEFINISH ];
 
-	lua_pushinteger( L, time.wDay );
-	lua_pushinteger( L, time.wMonth );
-	lua_pushinteger( L, time.wYear );
-	return 3;
+		lua_pushinteger( L, time.RDay() );
+		lua_pushinteger( L, time.RMonth() );
+		lua_pushinteger( L, time.RYear() );
+		return 3;
+	}
+
+	lua_pushnil( L );
+	return 1;
 }
 
 int CLuaInvention::SetInvestiment( lua_State* L )

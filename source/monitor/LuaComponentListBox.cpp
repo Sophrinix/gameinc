@@ -25,6 +25,7 @@ BEGIN_LUNA_PROPERTIES(CLuaComponentListBox)
 	LUNA_ILUALISTBOX_PROPERTIES( CLuaComponentListBox )
 	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "selectedObject", GetSelectedObject, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "onLmbDblClick", PureFunction, SetLmbDblClick )
+	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "onChangeSelect", PureFunction, SetOnChangeSelect )
 END_LUNA_PROPERTIES
 
 
@@ -50,6 +51,14 @@ int CLuaComponentListBox::SetLmbDblClick( lua_State* L )
 {
 	assert( lua_isfunction( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN	_object->AddLuaFunction( GUIELEMENT_SELECTED_AGAIN, _GetRef( L, -1 ) );			
+	
+	return 0;
+}
+
+int  CLuaComponentListBox::SetOnChangeSelect( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, _GetRef( L, -1 ) );			
 	
 	return 0;
 }

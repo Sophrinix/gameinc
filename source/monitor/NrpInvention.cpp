@@ -16,8 +16,7 @@ CLASS_NAME CLASS_INVENTION( "CNrpInvention" );
 
 int CNrpInvention::_GetRealPrice()
 {
-	int month = TimeHelper::GetMonthBetweenDate( _self[ STARTDATE ].As<SYSTEMTIME>(), 
-												 _nrpApp[ CURRENTTIME ].As<SYSTEMTIME>() ); //получаем количество месяцев от реального срока появления технологии на рынке
+	int month = _self[ STARTDATE ].As<NrpTime>().GetMonthToDate( _nrpApp[ CURRENTTIME ].As<NrpTime>() ); //получаем количество месяцев от реального срока появления технологии на рынке
 	int price = _self[ BALANCE ];
 	for( int k=0; k < month; k++ )//каждый лишний месяц удорожает технологию на 10% от базовой стоимости( сложный процент )
 		 price = static_cast< int >( price * 1.1f );
@@ -50,9 +49,7 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp )
 		_self[ STARTDATE ] = refTech[ STARTDATE ];
 		_self[ REALPRICE ] = _GetRealPrice();
 
-		SYSTEMTIME time;
-		memset( &time, 0, sizeof(SYSTEMTIME) );
-		Add<SYSTEMTIME>( PROGNOSEDATEFINISH, time );
+		Add( PROGNOSEDATEFINISH, NrpTime( 0. ) );
 		CheckParams();
 
 		CopyMapTo( _techRequires, pTech->GetTechRequires() );
@@ -76,14 +73,14 @@ void CNrpInvention::InitializeOptions_()
 	Add( INVENTIONSPEED, 0 );
 	Add( USERNUMBER, 0 );
 	Add( COMPANYNAME, NrpText( "" ) );
-	Add( PROGNOSEDATEFINISH, SYSTEMTIME() );
-	Add( USERSTARTDATE, SYSTEMTIME() );
+	Add( PROGNOSEDATEFINISH, NrpTime( 0. ) );
+	Add( USERSTARTDATE, NrpTime( 0. ) );
 	Add( MONEY_TODECREASE, 0 );
 }
 
 void CNrpInvention::CheckParams()
 {
-	int dayFromStart = TimeHelper::GetDaysBetweenDate( Param( USERSTARTDATE ), _nrpApp[ CURRENTTIME ] ); 
+	int dayFromStart = _self[ USERSTARTDATE ].As<NrpTime>().GetDaysToDate( _nrpApp[ CURRENTTIME ].As<NrpTime>() ); 
 
 	if( dayFromStart == 0 )
 		dayFromStart++;
@@ -96,7 +93,8 @@ void CNrpInvention::CheckParams()
 		moneyInDay = 1;
 	int dayToFinish = ( (int)_self[ REALPRICE ] - (int)_self[ PASSEDPRICE ] ) / moneyInDay;
 	
-	_self[ PROGNOSEDATEFINISH ] = TimeHelper::DatePlusDay( _nrpApp[ CURRENTTIME ], dayToFinish );
+	NrpTime curTime = _nrpApp[ CURRENTTIME ];
+	_self[ PROGNOSEDATEFINISH ] = curTime.AppendDay( dayToFinish );
 
 	_self[ DAYLEFT ] = dayToFinish;//сколько дней осталось до завершения работ, при полном освоении финансирования
 	_self[ INVENTIONSPEED ] = moneyInDay;
@@ -204,7 +202,7 @@ NrpText CNrpInvention::ClassName()
 	return CLASS_INVENTION;
 }
 
-void CNrpInvention::BeginNewMonth( const SYSTEMTIME& time )
+void CNrpInvention::BeginNewMonth( const NrpTime& time )
 {
 	_self[ REALPRICE ] = _GetRealPrice();
 }

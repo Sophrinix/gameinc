@@ -59,8 +59,8 @@ void CNrpTechnology::_InitializeOptions()
 	Add<PNrpCompany>( PARENTCOMPANY, NULL );
 	Add<NrpText>( PARENT, "" );
 	Add<NrpText>( BASEFILE, "" );
-	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
-	Add<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
+	Add( STARTDATE, NrpTime( 0. ) );
+	Add( ENDDATE, NrpTime( 0. ) );
 	Add<float>( PRICE, 0 );
 	Add<NrpText>( TEXTURENORMAL, "" );
 	Add<NrpText>( TEXTUREHOVER, "" );

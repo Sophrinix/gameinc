@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "NrpDiskMachine.h"
+#include "timeHelpers.h"
 
 namespace nrp
 {
@@ -8,8 +9,8 @@ CLASS_NAME CLASS_DISKMACHINE( "CNrpDiskMachine" );
 CNrpDiskMachine::CNrpDiskMachine(void) : INrpConfig( CLASS_DISKMACHINE, "" )
 {
 	Add<NrpText>( NAME, "" );
-	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );	
-	Add<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
+	Add( STARTDATE, NrpTime( 0. ) );	
+	Add( ENDDATE, NrpTime( 0. ) );
 	Add<int>( DISKPERHOUR, 0 );
 	Add<int>( PRICEPERHOUR, 0 );
 	Add<int>( RENTPRICE, 0 );

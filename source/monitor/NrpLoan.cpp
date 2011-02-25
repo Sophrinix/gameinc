@@ -11,8 +11,8 @@ CNrpLoan::CNrpLoan( int id ) : INrpConfig( CLASS_LOAN, "" )
 {
 	Add<NrpText>( COMPANYNAME, "" );
 	Add( YEARPERCENT, 0.f );
-	Add( STARTDATE, SYSTEMTIME() );
-	Add( ENDDATE, SYSTEMTIME() );
+	Add( STARTDATE, NrpTime( 0. ) );
+	Add( ENDDATE, NrpTime( 0. ) );
 	Add( MONEY, 0 );
 	Add( STARTMONEY, 0 );
 	Add( MONEYPAY, 0 );

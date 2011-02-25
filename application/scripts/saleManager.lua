@@ -76,11 +76,12 @@ local function _AnonceGame()
 end
 
 local function _UpdateGameParams()
-	if base.os.clock() - lastTimeParamsUpdate > 0 then
+	if selectedGame and (base.os.clock() - lastTimeParamsUpdate > 0) then
 		labelGameName.text = "Название: " .. selectedGame.name
 		labelLastMonthSale.text = "Продаж за прошлый месяц:"..selectedGame.lastMonthSales
 		labelProfit.text = "Прибыль:" .. selectedGame.allTimeProfit
-		labelAllTimeSale.text = "Продаж за все время:" .. selectedGame.allTimeSales
+		--[[labelAllTimeSale.text = "Продаж за все время:" .. selectedGame.allTimeSales
+		lastTimeParamsUpdate = base.os.clock()
 		--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
 			
 		if selectedGame.company.object == company.object then
@@ -94,12 +95,12 @@ local function _UpdateGameParams()
 			local price = selectedGame.allTimeProfit / selectedGame.allTimeSales
 			labelGamePrice.text = "Цена:" .. base.string.format( "%0.2f", price )
 		end
+		--]]
 	end
 end
 
 local function _ListboxChanged()
 	selectedGame = base.CLuaGame( listboxGames.selectedObject )
-	localUpdateCurrentGameParams()
 end
 
 local function _DecreasePrice()
@@ -112,20 +113,23 @@ local function _IncreasePrice()
 	labelGamePrice.text = "#TRANSLATE_TEXT_PRICE:" .. selectedGame.price
 end
 
+function Hide()
+	mainWindow:Remove()
+	--guienv:FadeAction( base.FADE_TIME, false, false )			
+	--guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeExitAction()" )	
+end
 
 function Show()
 	company = applic.playerCompany
 
 	mainWindow = window.fsWindow( "media/textures/gameInSale.png", Hide )
 	
-	mainWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, _ListboxChanged )
-	mainWindow:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, _UpdateGameParams )
-	
 	--добавим окно с листбоксом
 	--в листбоксе поместим список игр, которые щас в продаже
 	listboxGames = guienv:AddComponentListBox( 45, 320, 327, 590, -1, mainWindow )
+	listboxGames.onChangeSelect = _ListboxChanged
 	_AddGames()
-	
+
 	--расположим изображение игры справа от списка
 	imageGamePreview = guienv:AddImage( 20, 20, 304, 204, mainWindow, -1, "" )
 	
@@ -153,22 +157,18 @@ function Show()
 
 	--цена игры с возможностью изменять цену
 	btnDecreaseGamePrice = guienv:AddButton( pos.x, pos.y, size.h, size.h, mainWindow, -1, "-" )
-	btnDecreaseGamePrice.action = DecreasePrice
+	btnDecreaseGamePrice.action = _DecreasePrice
 									
 	labelGamePrice = guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", pos.x + size.hh, pos.y, 
 																size.w, size.h, -1, mainWindow )
 													 
 	btnIncreaseGamePrice = guienv:AddButton( pos.x + size.ww - size.hh, pos.y, pos.x + size.ww, size.h, 
 											 mainWindow, -1, "+" )
-	btnIncreaseGamePrice.action = IncreasePrice
+	btnIncreaseGamePrice.action = _IncreasePrice
 	
 		--расположим кнопку "Анонсировать игру", по которой можно поместить игру на рынок
 	buttonAnonceGame = guienv:AddButton( pos.x, 380, size.w, size.h, mainWindow, -1, "Анонсировать игру" )
-	buttonAnonceGame.action = AnonceGame
-end
-
-function Hide()
-	mainWindow:Remove()
-	--guienv:FadeAction( base.FADE_TIME, false, false )			
-	--guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeExitAction()" )	
+	buttonAnonceGame.action = _AnonceGame
+	
+	mainWindow:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, _UpdateGameParams )
 end

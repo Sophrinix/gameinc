@@ -1,4 +1,6 @@
 #pragma once
+#include "timeHelpers.h"
+#include "NrpText.h"
 
 namespace nrp
 {
@@ -9,15 +11,16 @@ class IModificator
 {
 public:
 	virtual NrpText& GetName() = 0;
-	virtual SYSTEMTIME& GetTime() = 0;
+	virtual NrpTime& GetTime() = 0;
 };
 
-template< class ValClass > class CNrpUserModificator : public IModificator
+template< class ValClass > 
+class CNrpUserModificator : public IModificator
 {
 public:
-	CNrpUserModificator( IUser* ptrUser, SYSTEMTIME time, 
+	CNrpUserModificator( IUser* ptrUser, NrpTime time, 
 						 NrpText paramName, bool absolute, 
-						 ValClass offset )
+						 ValClass offset ) : endTime_( 0. )
 	{
 		offset_ = offset;
 		endTime_ = time;
@@ -28,11 +31,11 @@ public:
 
 	NrpText& GetName() { return paramName_; }
 	ValClass& GetValue() { return offset_; }
-	SYSTEMTIME& GetTime() { return endTime_; }
+	NrpTime& GetTime() { return endTime_; }
 
 private:
 	ValClass offset_;
-	SYSTEMTIME endTime_;
+	NrpTime endTime_;
 	IUser* ptrUser_;
 	NrpText paramName_;
 	bool absolute_;

@@ -60,10 +60,10 @@ void CNrpBank::CreateLoan( const NrpText& name, int money, int percent, int mont
 {
 	CNrpLoan* loan = new CNrpLoan( loanId_++ );
 	CNrpLoan& refLoan = *loan;
-	SYSTEMTIME endtime, time = _nrpApp[ CURRENTTIME ].As<SYSTEMTIME>();
+	NrpTime endtime( 0. ), time = _nrpApp[ CURRENTTIME ].As<NrpTime>();
 	endtime = time;
-	endtime.wYear = time.wYear + month / 12;
-	endtime.wMonth = ( time.wMonth + month ) % 12;
+	endtime.AppendMonth( month );
+
 	refLoan[ YEARPERCENT ] = static_cast< float >( percent );
 	refLoan[ STARTMONEY ] = money;
 	refLoan[ MONEY ] = money;

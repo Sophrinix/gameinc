@@ -17,3 +17,5 @@ NrpAddScene( "sceneWork", "scripts/sceneWork.lua" )
 	
 --устнановка начальной сцены
 NrpSetNextScene( "sceneLogin" )
+
+applic:AddResourceDirectory( "media/maps" )

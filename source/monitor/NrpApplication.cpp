@@ -76,7 +76,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add( PROFILENAME, rv.Get( SECTION_OPTIONS, "currentProfile", NrpText( "dalerank" ) ) );
 	Add( PROFILECOMPANY, rv.Get( SECTION_OPTIONS, "currentCompany", NrpText( "daleteam" ) ) );
 
-	Add( CURRENTTIME, SYSTEMTIME() );
+	Add( CURRENTTIME, NrpTime( 0. ) );
 	Add( BOXADDONNUMBER, (int)0 );
 	Add( GAMENUMBER, (int)0 );
 	Add( ENGINES_NUMBER, (int)0 );
@@ -529,7 +529,7 @@ float GetConsumerAbility_( int price )
 
 int CNrpApplication::_GetFreePlatformNumberForGame( CNrpGame* game )
 {
-	int yearRaznost = Param( CURRENTTIME ).As<SYSTEMTIME>().wYear - 1980;
+	int yearRaznost = _self[ CURRENTTIME ].As<NrpTime>().RYear() - 1980;
 
 	int summ = 5000;
 	for( int k=0; k < yearRaznost; k++ )
@@ -720,13 +720,14 @@ void CNrpApplication::_UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typ
 		}
 
 		//вычисляем сколько месяцев на рынке игра
-		int monthInMarket = TimeHelper::GetMonthBetweenDate( refGame[ STARTDATE ], Param( CURRENTTIME ) ) + 1;
+		int monthInMarket = refGame[ STARTDATE ].As<NrpTime>().GetMonthToDate( _self[ CURRENTTIME ].As<NrpTime>() ) + 1;
 		//понижаем рейтинг из-за времени на рынке
 		rating = static_cast< int >( rating / (monthInMarket > 12 ? 12 :  monthInMarket) );
 
 		//результат подсчета рейтинга
 		//todo: надо както обходить рейтинг хитовых игр
-		ptrGame->GetHistory()->AddStep( Param( CURRENTTIME ) )->AddValue<int>( CURRENTGAMERATING, rating );
+		if( CNrpHistoryStep* step = ptrGame->GetHistory()->AddStep( _self[ CURRENTTIME ].As<NrpTime>() ) )
+			(*step)[ CURRENTGAMERATING ] += (int)rating;
 	}
 }
 
@@ -911,9 +912,10 @@ NrpText CNrpApplication::GetFreeInternalName( CNrpGame* game )
 	SCREENSHOTS	thisYearAndGenreImgs;
 	
 	int minimumRating = 1;
-	int year = _self[ CURRENTTIME ].As<SYSTEMTIME>().wYear;
+	int year = _self[ CURRENTTIME ].As<NrpTime>().RYear();
+	
 	if( CNrpGameEngine* ge = GetGameEngine( (*game)[ GAME_ENGINE ].As<NrpText>() ) )
-		year = (*ge)[ STARTDATE ].As<SYSTEMTIME>().wYear;
+		year = (*ge)[ STARTDATE ].As<NrpTime>().RYear();
 
 	for( u32 i=0; i < _screenshots.size(); i++ )
 	{

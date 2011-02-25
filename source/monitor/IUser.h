@@ -4,6 +4,7 @@
 #include "nrpConfig.h"
 #include "nrpArrays.h"
 #include "NrpTypes.h"
+#include "timeHelpers.h"
 
 namespace nrp
 {
@@ -61,8 +62,8 @@ public:
 
 	void AddModificator( IModificator* ptrModificator );
 
-	void BeginNewHour( const SYSTEMTIME& time );
-	void BeginNewDay( const SYSTEMTIME& time );
+	void BeginNewHour( const NrpTime& time );
+	void BeginNewDay( const NrpTime& time );
 
 	CNrpRelation* GetRelation( const NrpText& name );
 
@@ -78,7 +79,7 @@ private:
 	void CalculateWantSalary_();
 	void CalculateKnowledgeLevel_();
 
-	void RemoveOldModificators_( const SYSTEMTIME& time );
+	void RemoveOldModificators_( NrpTime time );
 	void CheckModificators_();
 
 	KNOWLEDGE_MAP genrePreferences_; /*< предпочтения в жанре, растут рандомно со временем */

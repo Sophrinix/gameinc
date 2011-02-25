@@ -32,12 +32,9 @@ CNrpHistory::CNrpHistory( const NrpText& fileName ) : INrpConfig( CLASS_NRPHISTO
 	Load( fileName );
 }
 
-CNrpHistoryStep* CNrpHistory::GetStep( const SYSTEMTIME& time )
+CNrpHistoryStep* CNrpHistory::GetStep( NrpTime time )
 {
-	int ret = TimeHelper::DateToInt( const_cast< SYSTEMTIME& >( time ) );
-
-	HISTORY_MAP::iterator pIter = _steps.find( ret );
-
+	HISTORY_MAP::iterator pIter = _steps.find( static_cast< int >( time.GetDate().ToDouble() ) );
 	return pIter != _steps.end() ? pIter->second : NULL;
 }
 
@@ -68,21 +65,20 @@ void CNrpHistory::Load( const NrpText& fileName )
 	for( int index=0; index < size; index++ )
 	{
 		NrpText section = CreateSectionStep( index );
-		SYSTEMTIME time = lf.Get( section, KEY_TIME, SYSTEMTIME() );
+		double dblTime = lf.Get( section, KEY_TIME, (int)0 );
 
-		CNrpHistoryStep* step = AddStep( time );
+		CNrpHistoryStep* step = AddStep( NrpTime( dblTime ) );
 		assert( step );
 		(*step)[ BALANCE ] =  lf.Get( section, KEY_PROFIT, 0 );
 		(*step)[ BOXNUMBER ] = lf.Get( section, KEY_SALE, 0 );
 	}
 }
 
-CNrpHistoryStep* CNrpHistory::AddStep( const SYSTEMTIME& time )
+CNrpHistoryStep* CNrpHistory::AddStep( NrpTime time )
 {
-	int ret = TimeHelper::DateToInt( const_cast< SYSTEMTIME& >( time ) );
-
+	int ret = static_cast< int >( time.GetDate().ToDouble() );
 	HISTORY_MAP::iterator pIter = _steps.find( ret );
-	
+
 	if( pIter == _steps.end() )
 	{
 		CNrpHistoryStep* step = new CNrpHistoryStep( time );
@@ -104,26 +100,30 @@ CNrpHistoryStep* CNrpHistory::GetFirst()
 	return _steps.size() > 0 ? _steps.begin()->second : NULL;
 }
 
-int CNrpHistory::GetSummFor( const OPTION_NAME& name, const SYSTEMTIME& time )
+int CNrpHistory::GetSummFor( const OPTION_NAME& name, NrpTime time )
 {
 	int summ = 0;
 	if( _steps.size() > 0 )
 	{
 		HISTORY_MAP::iterator pIter = _steps.begin();
-		while( pIter != _steps.end() && 
-			TimeHelper::TimeCmp( pIter->second->Param( STARTDATE ), time ) == -1 )
+		while( pIter != _steps.end() )
 		{	
-			 summ += (int)(pIter->second->Param( name ));
-			 pIter++;
+			NrpTime stepTime = pIter->second->Param( STARTDATE );
+
+			if( stepTime.Equale( time ) == -1 )
+			{
+				summ += (int)(pIter->second->Param( name ));
+				pIter++;
+			}
 		}
 	}
 
 	return summ;
 }
 
-CNrpHistoryStep::CNrpHistoryStep( const SYSTEMTIME& time ) : INrpConfig( CLASS_HISTORYSTEP, "" )
+CNrpHistoryStep::CNrpHistoryStep( const NrpTime& time ) : INrpConfig( CLASS_HISTORYSTEP, "" )
 {
-	Add<SYSTEMTIME>( STARTDATE, time );
+	Add<NrpTime>( STARTDATE, time );
 	Add<int>( BOXNUMBER, 0 );
 	Add<int>( BALANCE, 0 );
 }

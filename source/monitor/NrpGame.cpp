@@ -28,8 +28,8 @@ void CNrpGame::_InitializeOptions()
 	Add<NrpText>( COMPANYNAME, "" );
 	Add<NrpText>( NAME, "" );
 	Add<NrpText>( INTERNAL_NAME, "" );
-	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
-	Add<SYSTEMTIME>( ENDDATE, SYSTEMTIME() );
+	Add<NrpTime>( STARTDATE, NrpTime( 0. ) );
+	Add<NrpTime>( ENDDATE, NrpTime( 0. ) );
 	Add<int>( MONEYONDEVELOP, 0 );
 	Add<int>( CASH, 0 );
 	Add<NrpText>( OWNER, "" );
@@ -222,7 +222,7 @@ void CNrpGame::_CreateHistory()
 	_history = new CNrpHistory();
 	assert( _history );
 
-	int fMonth = TimeHelper::GetMonthBetweenDate( _self[ STARTDATE ], _self[ ENDDATE ] );//полное количество мес€цев жизни игры
+	int fMonth = NrpTime( _self[ STARTDATE ] ).GetMonthToDate( _self[ ENDDATE ].As<NrpTime>() );//полное количество мес€цев жизни игры
 	int sale = _self[ COPYSELL ];
 	int profit = _self[ CASH ];
 
@@ -231,7 +231,8 @@ void CNrpGame::_CreateHistory()
 	float step = 1.f / fMonth;
 	for( int i=0; i < fMonth; i++ )
 	{
-		CNrpHistoryStep* historyStep = _history->AddStep( TimeHelper::DatePlusDay( _self[ STARTDATE ], 30 * i ) );
+		NrpTime ft( _self[ STARTDATE ] );
+		CNrpHistoryStep* historyStep = _history->AddStep( ft.AppendMonth( i ) );
 		//вычисл€ем коеффициент продаж в этом мес€це
 		float percent = ( 1 - i * step ) * step * 2;
 		(*historyStep)[ BOXNUMBER ] = static_cast< int >( sale * percent );
@@ -285,7 +286,7 @@ void CNrpGame::GameBoxSaling( int number )
 		if( cmp )
 			(*cmp)[ BALANCE ] += price * number;
 
-		SYSTEMTIME curTime =_nrpApp[ CURRENTTIME ].As<SYSTEMTIME>();
+		NrpTime curTime =_nrpApp[ CURRENTTIME ].As<NrpTime>();
 
 		assert( _history );
 		if( _history )

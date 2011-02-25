@@ -64,9 +64,9 @@ public:
 	CNrpGame* GetGame( size_t index ) const;
 	CNrpGame* CreateGame( CNrpDevelopGame* ptrProject );
 
-	void BeginNewHour( const SYSTEMTIME& time );
-	void BeginNewDay( const SYSTEMTIME& time );
-	void BeginNewMonth( const SYSTEMTIME& time );
+	void BeginNewHour( const NrpTime& time );
+	void BeginNewDay( const NrpTime& time );
+	void BeginNewMonth( const NrpTime& time );
 
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& loadFolder );

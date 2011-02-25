@@ -62,9 +62,9 @@ int CLuaPda::GetTimeStr( lua_State* L )
 	NrpText ret = "0:0_error";
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		SYSTEMTIME time = _object->Current()[ STARTDATE ].As<SYSTEMTIME>();
+		NrpTime time = _object->Current()[ STARTDATE ].As<NrpTime>();
 		char dd[ MAX_PATH ] = { 0 };
-		snprintf( dd, MAX_PATH - 1, "%04d.%02d.%02d %02d:%02d", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute );
+		snprintf( dd, MAX_PATH - 1, "%04d.%02d.%02d %02d:%02d", time.RYear(), time.RMonth(), time.RDay(), time.RHour(), time.RMinute() );
 		ret = dd;
 		lua_pushstring( L, ret );
 		return 1;
@@ -84,7 +84,7 @@ int CLuaPda::AddMessage( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		SYSTEMTIME time = _nrpApp[ CURRENTTIME ].As<SYSTEMTIME>();
+		NrpTime time = _nrpApp[ CURRENTTIME ].As<NrpTime>();
 		_object->AddItem( message, action, time );
 	}
 

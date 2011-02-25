@@ -15,9 +15,7 @@ public:
 	{
 		Add<NrpText>( NAME, name );
 		Add<int>( REL_VALUE, valuel );
-		SYSTEMTIME time;
-		GetLocalTime( &time );
-		Add<SYSTEMTIME>( REL_TIME, time );
+		Add<NrpTime>( REL_TIME, NrpTime::FromLocalTime() );
 	}
 
 	static NrpText ClassName();

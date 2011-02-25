@@ -252,24 +252,24 @@ IWorkingModule* IUser::GetWork( const NrpText& name ) const
 	return NULL;
 }
 
-void IUser::BeginNewHour( const SYSTEMTIME& time )
+void IUser::BeginNewHour( const NrpTime& time )
 {
-	if( time.wHour == 9 && Text( USERSTATE ).equals_ignore_case( "readyToWork" ) )
+	if( time.RHour() == 9 && Text( USERSTATE ).equals_ignore_case( "readyToWork" ) )
 	{
-		Param( USERSTATE ) = NrpText( "work" );
+		_self[ USERSTATE ] = NrpText( "work" );
 	}
 
-	Param( HANGRY ) -= 15;
-	if(	(int)Param( HANGRY ) < 30 )
+	_self[ HANGRY ] -= 15;
+	if(	(int)_self[ HANGRY ] < 30 )
 	{
-		SYSTEMTIME endTime = time;
-		endTime.wHour = 23;
+		NrpTime endTime( time );
+		endTime.RHour() = 23;
 		AddModificator( new CNrpUserModificator<int>( this, endTime, MOOD, true, 45 ) );
 	}
 
-	if( time.wHour == 18 )
+	if( time.RHour() == 18 )
 	{
-		Param( USERSTATE ) = NrpText( "readyToWork" );
+		_self[ USERSTATE ] = NrpText( "readyToWork" );
 	}
 
 	if( Text( USERSTATE ).equals_ignore_case( "work" ) )
@@ -307,20 +307,22 @@ void IUser::SetGenrePreferences( const NrpText& name, int valuel )
 	genrePreferences_[ name ] = valuel;
 }
 
-void IUser::RemoveOldModificators_( const SYSTEMTIME& time )
+void IUser::RemoveOldModificators_( NrpTime time )
 {
 	for( size_t cnt=0; cnt < modificators_.size(); cnt++ )
-		if( TimeHelper::TimeCmp( time, modificators_[ cnt ]->GetTime() ) == -1  )
+	{
+		if( time.Equale( modificators_[ cnt ]->GetTime() ) == -1  )
 		{
 			delete modificators_[ cnt ];
 			modificators_.erase( cnt );
 			cnt--;
 		}
+	}
 }
 
-void IUser::BeginNewDay( const SYSTEMTIME& time )
+void IUser::BeginNewDay( const NrpTime& time )
 {
-	Param( HANGRY ) = 100;
+	_self[ HANGRY ] = 100;
 	RemoveOldModificators_( time );
 }
 

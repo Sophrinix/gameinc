@@ -34,10 +34,7 @@ void CNrpReklameWork::InitializeOptions_()
 	Add<NrpText>( TYPEOBJECT, "" );
 	Add<int>( POPULARITY, 0 );
 	Add<NrpText>( INTERNAL_NAME, "" );
-
-	SYSTEMTIME rt;
-	memset( &rt, 0, sizeof( rt ) );
-	Add<SYSTEMTIME>( STARTDATE, rt );
+	Add( STARTDATE, NrpTime( 0. ) );
 }
 
 CNrpReklameWork::CNrpReklameWork( const CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )

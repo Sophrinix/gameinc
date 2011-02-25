@@ -41,7 +41,7 @@ CNrpScreenshot::~CNrpScreenshot(void)
 
 bool CNrpScreenshot::IsMyYear( int year )
 {
-	return _self[ STARTDATE ].As<SYSTEMTIME>().wYear <= year;
+	return _self[ STARTDATE ].As<NrpTime>().RYear() <= year;
 }
 
 int CNrpScreenshot::GetEqualeRating( CNrpGame* game )
@@ -108,7 +108,7 @@ void CNrpScreenshot::Load( const NrpText& fileName )
 void CNrpScreenshot::InitializeOptions_()
 {
 	Add<NrpText>( INTERNAL_NAME, "" );
-	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	Add( STARTDATE, NrpTime( 0. ) );
 	Add<int>( IMAGESNUMBER, 0 );
 	Add<int>( IMAGESBOXNUMBER, 0 );
 	Add<NrpText>( NAME, "" );

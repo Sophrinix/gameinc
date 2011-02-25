@@ -170,10 +170,12 @@ bool OpFileSystem::IsExist( const NrpText& pathTo )
 {
 	bool ex = ( _waccess( pathTo.ToWide(), 0 ) != -1);
 
+/*
 #ifdef _DEBUG
 	if( !ex )
-		Log(SCRIPT) << "Yказанный файл не существует " <<  pathTo << term;
+		Log(SCRIPT) << "”казанный файл не существует " <<  pathTo << term;
 #endif
+*/
 	return ex;
 }
 

@@ -5,6 +5,7 @@
 #include <irrmap.h>
 #include "nrpArrays.h"
 #include "SectionNames.h"
+#include "TimeHelpers.h"
 
 namespace nrp
 {
@@ -137,9 +138,9 @@ public:
 
 	/*****************************************************************************/
    
-	bool Set( SECTION_NAME& section, const NrpText& key, const SYSTEMTIME& amount );
+	bool Set( SECTION_NAME& section, const NrpText& key, const NrpTime& amount );
 
-	SYSTEMTIME Get( SECTION_NAME& section, const NrpText& key, const SYSTEMTIME& def_value );
+	NrpTime Get( SECTION_NAME& section, const NrpText& key, const NrpTime& def_value );
 
 	void Get( SECTION_NAME& sectionName, KNOWLEDGE_MAP& mapt );
 

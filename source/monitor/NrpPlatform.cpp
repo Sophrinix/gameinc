@@ -39,8 +39,8 @@ void CNrpPlatform::_InitialyzeOptions()
 	Add( ENGINE_CODE, 0.f );
 	Add( LEVEL, 0 );
 	Add( QUALITY, 100 );
-	Add( STARTDATE, SYSTEMTIME() );
-	Add( ENDDATE, SYSTEMTIME() );
+	Add( STARTDATE, NrpTime( 0. ) );
+	Add( ENDDATE, NrpTime( 0. ) );
 
 }
 

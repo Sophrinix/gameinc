@@ -129,18 +129,17 @@ bool IniFile::Get( const NrpText& section,
 	return def_value;
 }
 
-SYSTEMTIME IniFile::Get( const NrpText& section, 
+NrpTime IniFile::Get( const NrpText& section, 
 							const NrpText& key, 
-							const SYSTEMTIME& def_value )
+							const NrpTime& def_value )
 {
-	SYSTEMTIME result( def_value );
+	NrpTime result( def_value );
 
 	NrpText str_pars = Get( section, key, NrpText( L"y=0 m=0 d=0 h=0 mi=0 s=0" ) );
 	swscanf_s( str_pars.ToWide(), L"y=%04d m=%02d d=%02d h=%02d mi=%02d s=%02d", 
-								  &result.wYear, &result.wMonth, &result.wDay,
-								  &result.wHour, &result.wMinute, &result.wSecond );
-	result.wSecond = 0;
-	result.wMilliseconds = 0;
+								  &result.RYear(), &result.RMonth(), &result.RDay(),
+								  &result.RHour(), &result.RMinute(), &result.RSecond() );
+	result.RSecond() = 0;
 
 	return result;	
 }
@@ -159,13 +158,13 @@ bool IniFile::Set( const NrpText& section,
 
 bool IniFile::Set( const NrpText& section, 
 						   const NrpText& key, 
-						   const SYSTEMTIME& amount )
+						   const NrpTime& amount )
 {
 	wchar_t str[ MAX_PATH ];
 
 	swprintf_s( str, MAX_PATH, L"y=%04d m=%02d d=%02d h=%02d mi=%02d s=0", 
-					amount.wYear, amount.wMonth, amount.wDay,
-					amount.wHour, amount.wMinute );
+					amount.RYear(), amount.RMonth(), amount.RDay(),
+					amount.RHour(), amount.RMinute() );
 
 	return Set( section, key, str );
 }

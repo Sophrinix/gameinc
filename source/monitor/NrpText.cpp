@@ -220,7 +220,7 @@ recti NrpText::ToRect()
 	return rct;
 }
 
-SYSTEMTIME NrpText::ToTime()
+NrpTime NrpText::ToTime()
 {
 	SYSTEMTIME time;
 
@@ -229,7 +229,7 @@ SYSTEMTIME NrpText::ToTime()
 	time.wSecond = 0;
 	time.wMilliseconds = 0;
 
-	return time;	
+	return NrpTime( time );	
 }
 
 bool NrpText::ToBool()

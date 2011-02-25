@@ -136,7 +136,7 @@ void CNrpConfigLooder::_InitWriters()
 	_writers[ typeid( NrpText ).name() ] = &CNrpConfigLooder::_WriteString;
 	_writers[ typeid( stringc ).name() ] = &CNrpConfigLooder::_WriteString;
 	_writers[ typeid( bool ).name() ] =  &CNrpConfigLooder::_WriteBool;
-	_writers[ typeid( SYSTEMTIME ).name() ] =  &CNrpConfigLooder::_WriteTime;
+	_writers[ typeid( NrpTime ).name() ] =  &CNrpConfigLooder::_WriteTime;
 	_writers[ L"unknown" ] = &CNrpConfigLooder::_WriteUnknown;
 	_writers[ typeid( float ).name() ] = &CNrpConfigLooder::_WriteFloat;
 	_writers[ typeid( PUser ).name() ] = &CNrpConfigLooder::_WriteUser;
@@ -235,7 +235,7 @@ void CNrpConfigLooder::_WriteFloat( const NParam* prop, const NrpText& key, IniF
 
 void CNrpConfigLooder::_WriteTime( const NParam* prop, const NrpText& key, IniFile* ini )
 {
-	ini->Set( SECTION_PROPERTIES, key + L":time", prop->As<SYSTEMTIME>() );
+	ini->Set( SECTION_PROPERTIES, key + L":time", prop->As<NrpTime>() );
 }
 
 void CNrpConfigLooder::_WriteString( const NParam* prop, const NrpText& key, IniFile* ini)

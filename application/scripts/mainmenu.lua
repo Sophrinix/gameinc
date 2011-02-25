@@ -10,6 +10,8 @@ local scrHeight = base.scrHeight
 local funcLayout = nil
 local adminLayout = nil
 local mainLayout = nil 
+local timeLabel = nil
+local balanceLabel = nil
 
 mainWindow = nil
 
@@ -65,6 +67,12 @@ local function AddAdminingFunctionButton()
 	AddButton( adminLayout, function () ShowAdminButtons( false ) end , "media/top_menu/back" )
 end
 
+local function _UpdateTimeLabel()
+	base.applic:UpdateGameTime( timeLabel )	
+	balanceLabel.text = "$"..base.applic.playerCompany.balance
+end
+
+
 function Show()
 	local txs = driver:GetTexture( "media/top_menu/top_nerpa.png")
 	local txsWidth = 0
@@ -72,17 +80,14 @@ function Show()
 	txsWidth, txsHeight = txs:GetSize()
 						  
 	mainWindow = guienv:AddWindow(	"media/top_menu/top_nerpa.png",
-			 							scrWidth/2 - txsWidth/2, 0, scrWidth/2 + txsWidth/2, 50,
-										-1,
-										guienv.root )
+			 						scrWidth/2 - txsWidth/2, 0, scrWidth/2 + txsWidth/2, 50,
+									-1, guienv.root )
 																						
 	mainWindow.draggable = false
 	mainWindow.drawBody = false
 	mainWindow.closeButton.visible = false
 	
 	guienv:AddHoveredAnimator( mainWindow, 100, 255, 4, true, false, false )
-
-
 
 	mainLayout = guienv:AddLayout( "15%", "5%", "70%", "60%", 10, -1, mainWindow ) 
 	
@@ -92,10 +97,11 @@ function Show()
 	AddButton( mainLayout, function () ShowFuncsButtons( true ) end, "media/top_menu/one" )	
 	AddButton( mainLayout, base.sworkApplicationClose, "media/top_menu/off" )
 	
-	base.timeLabel = guienv:AddLabel( "Время", "180e", "5%", "130+", "15+", -1, mainLayout )
-	base.timeLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
-	base.balanceLabel = guienv:AddLabel( "UserName", "180e", "50%", "130", "15+", -1, mainLayout )
-	base.balanceLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
+	timeLabel = guienv:AddLabel( "Время", "180e", "5%", "130+", "15+", -1, mainLayout )
+	timeLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
+	balanceLabel = guienv:AddLabel( "UserName", "180e", "50%", "130", "15+", -1, mainLayout )
+	balanceLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
+	mainWindow:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, _UpdateTimeLabel )
 	
 	AddAdminingFunctionButton()
 	AddAdvancedFunctionButton()

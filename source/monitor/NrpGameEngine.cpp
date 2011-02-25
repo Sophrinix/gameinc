@@ -30,7 +30,7 @@ void CNrpGameEngine::_InitialyzeOptions()
 	Add<NrpText>( COMPANYNAME, "" );
 	Add<PNrpCompany>( PARENTCOMPANY, NULL );
 	Add<NrpText>( TEXTURENORMAL, "" );
-	Add<SYSTEMTIME>( STARTDATE, SYSTEMTIME() );
+	Add( STARTDATE, NrpTime( 0. ) );
 	Add( CPU, 0.f );
 	Add( ADVTECHNUMBER, 0 );
 

@@ -1,5 +1,8 @@
 #include "StdAfx.h"
 #include "NrpGuiTextTimeAnimator.h"
+#include "TimeHelpers.h"
+
+using namespace nrp;
 
 namespace irr
 {
@@ -19,15 +22,13 @@ CNrpGuiTextTimeAnimator::CNrpGuiTextTimeAnimator( IGUIEnvironment* environment, 
 
 void CNrpGuiTextTimeAnimator::draw()
 {
-	SYSTEMTIME locTime;
-
-	GetLocalTime( &locTime );
 	if( GetTickCount() - time_ > 1000 )
 	{
 		time_ = GetTickCount();
 		wchar_t text[ 32 ];
 
-		swprintf( text, 32, L"%02d:%02d:%02d", locTime.wHour, locTime.wMinute, locTime.wSecond );
+		NrpTime tmp = NrpTime::FromLocalTime();
+		swprintf( text, 32, L"%02d:%02d:%02d", tmp.RHour(), tmp.RMinute(), tmp.RSecond() );
 
 		Parent->setText( text );
 	}

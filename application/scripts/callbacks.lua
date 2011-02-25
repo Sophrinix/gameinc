@@ -1,9 +1,8 @@
 plant = applic.plant
 labelSpeed = nil
-balanceLabel = nil
 
 function sworkAppDayChange( ptr )
-	balanceLabel.text = "$"..applic.playerCompany.balance
+	
 end
 
 function sworkAppMonthChange()
@@ -57,10 +56,6 @@ function sworkPlayerCompanyReadyProject( ptr )
 	pda.Show( "Закончена работа над проектом "..game.name )
 end
 
-function sworkMainLoop( ptr )
-	applic:UpdateGameTime( ID_DATETIME_LABEL )	
-end
-
 function sworkApplicationClose( ptr )
 	NrpApplicationSave()
 	applic:SaveBoxAddonsPrice()
@@ -108,7 +103,6 @@ function sworkKeyboardEvent( ptr )
 	end
 end
 
-sceneManager:AddSceneFunction( SCENE_AFTER_END, sworkMainLoop )
 sceneManager:AddSceneFunction( SCENE_KEY_INPUT_EVENT, sworkKeyboardEvent )
 
 applic:AddLuaFunction( APP_DAY_CHANGE, sworkAppDayChange )

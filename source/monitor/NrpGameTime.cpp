@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "NrpGameTime.h"
 #include "NrpApplication.h"
+#include "TimeHelpers.h"
 #include "irrlicht.h"
 
 //янв фев мрт апр май июн июл авг снт окт ноя дек	
@@ -21,7 +22,7 @@ CNrpGameTime::CNrpGameTime( CNrpApplication* parent )
 	time.wHour = 0;
 	time.wMinute = 0;
 
-	(*parent)[ CURRENTTIME ] = time;
+	(*parent)[ CURRENTTIME ] = NrpTime( time );
 }
 
 CNrpGameTime::~CNrpGameTime(void)
@@ -30,58 +31,34 @@ CNrpGameTime::~CNrpGameTime(void)
 
 bool CNrpGameTime::Update()
 {
-	SYSTEMTIME& time = _nrpApp[ CURRENTTIME ];
-	time.wDayOfWeek = time.wMilliseconds = time.wSecond = 0;
-	if( GetTickCount() - lastTimeUpdate_ > (int)_nrpApp[ PAUSEBTWSTEP ] )
+	NrpTime& time = _nrpApp[ CURRENTTIME ].As<NrpTime>();
+	NrpTime oldTime( time );
+
+	if( GetTickCount() - lastTimeUpdate_ > static_cast< size_t >( (int)_nrpApp[ PAUSEBTWSTEP ] ) )
 	{
 		lastTimeUpdate_ = GetTickCount();
-		SPEED spd = speed_;
-		if( spd == SPD_MINUTE )
+
+		if( oldTime.RHour() != time.RHour() )
+			_nrpApp._BeginNewHour();
+
+		if( time.RHour() > 17 )
 		{
-			time.wMinute += 10;
-			if( time.wMinute >= 60  )
-			{
-				time.wMinute = 0;
-				spd = SPD_HOUR;
-				_nrpApp._BeginNewHour();
-			}
+			time.AppendDay();
+			time.RHour() = 9;
+			_nrpApp._BeginNewDay();
+			_nrpApp.DoLuaFunctionsByType( APP_DAY_CHANGE, this );
 		}
 
-		if( spd == SPD_HOUR )
+		if( time.RMonth() != oldTime.RMonth() )
 		{
-			time.wHour++;
-			if( time.wHour > 18 )
-			{
-				time.wHour = 9;
-				spd = SPD_DAY;
-				_nrpApp._BeginNewDay();
-				_nrpApp.DoLuaFunctionsByType( APP_DAY_CHANGE, this );
-			}
+			_nrpApp._BeginNewMonth();
+			_nrpApp.DoLuaFunctionsByType( APP_MONTH_CHANGE, this );
 		}
 
-		if( spd == SPD_DAY )
+		if( time.RYear() != oldTime.RMonth() )
 		{
-			time.wDay++;
-			int monthL = monthLen[ time.wMonth ] + (( time.wMonth == 1 && (time.wYear % 4 == 0)) ? 1 : 0 );
-			if( time.wDay > monthL )
-			{
-				time.wDay = 1;
-				spd = SPD_MONTH;
-				_nrpApp._BeginNewMonth();
-				_nrpApp.DoLuaFunctionsByType( APP_MONTH_CHANGE, this );
-			}
-		}
-
-		if( spd == SPD_MONTH )
-		{
-			time.wMonth++;
-			if( time.wMonth > 12 )
-			{
-				time.wMonth = 1;
-				time.wYear++;
-				//app.BeginNewYear_();
-				_nrpApp.DoLuaFunctionsByType( APP_YEAR_CHANGE, this );
-			}
+			//app.BeginNewYear_();
+			_nrpApp.DoLuaFunctionsByType( APP_YEAR_CHANGE, this );
 		}
 
 		return true;

@@ -1,5 +1,6 @@
 #pragma once
 #include "nrpConfig.h"
+#include "timeHelpers.h"
 
 namespace nrp
 {
@@ -9,7 +10,7 @@ class CNrpHistoryStep : public INrpConfig
 {
 	CNrpHistoryStep();
 public:
-	CNrpHistoryStep( const SYSTEMTIME& time );
+	CNrpHistoryStep( const NrpTime& time );
 
 	template< class T >
 	void AddValue( const NrpText& name, T amount )
@@ -29,13 +30,12 @@ public:
 	NrpText Save( const NrpText& fileName );
 	void Load( const NrpText& fileName );
 
-	CNrpHistoryStep* GetStep( const SYSTEMTIME& time );
+	CNrpHistoryStep* GetStep( NrpTime time );
 	CNrpHistoryStep* GetLast();
 	CNrpHistoryStep* GetFirst();
 
-	CNrpHistoryStep* AddStep( const SYSTEMTIME& time );
-
-	int GetSummFor( const OPTION_NAME& name, const SYSTEMTIME& time );
+	CNrpHistoryStep* AddStep( NrpTime time );
+	int GetSummFor( const OPTION_NAME& name, NrpTime time );
 
 	CNrpHistory( const NrpText& fileName );
 	CNrpHistory();

@@ -253,13 +253,13 @@ INrpProject* CNrpCompany::GetProject( size_t index ) const
 	return index < _projects.size() ? _projects[ index ] : NULL;
 }
 
-void CNrpCompany::BeginNewHour( const SYSTEMTIME& time  )
+void CNrpCompany::BeginNewHour( const NrpTime& time  )
 {
 	for( size_t cnt=0; cnt < _employers.size(); cnt++ )
 		_employers[ cnt ]->BeginNewHour( time );
 }
 
-void CNrpCompany::BeginNewDay( const SYSTEMTIME& time )
+void CNrpCompany::BeginNewDay( const NrpTime& time )
 {
 	//уведомление о завершении проекта происходит на следующий день после окончания разработки
 	//последнего модуля
@@ -329,7 +329,7 @@ void CNrpCompany::RemoveProject( const NrpText& name )
 	_self[ PROJECTNUMBER ] = static_cast< int >( _projects.size() );
 }
 
-void CNrpCompany::BeginNewMonth( const SYSTEMTIME& time )
+void CNrpCompany::BeginNewMonth( const NrpTime& time )
 {
 	_PaySalaries();
 }

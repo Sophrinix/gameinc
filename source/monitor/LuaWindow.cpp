@@ -103,11 +103,12 @@ int CLuaWindow::AddLuaFunction( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaWindow:AddLuaFunction need 2 parameter ");
 
+	assert( lua_isfunction( L, 3 ) );
 	IF_OBJECT_NOT_NULL_THEN	
 	{
 		int typef = lua_tointeger( L, 2 );
-		int name = lua_tointeger( L, 3 );
-		assert( typef && name >= 0 );
+		int name = _GetRef( L, 3 );
+		assert( typef );
 		_object->AddLuaFunction( typef, name );
 	}
 

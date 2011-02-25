@@ -87,19 +87,15 @@ int CLuaIniFile::ReadTime( lua_State* L )
 	NrpText section = lua_tostring( L, 2 );
 	NrpText key = lua_tostring( L, 3 );
 
-	SYSTEMTIME time;
-	memset( &time, 0, sizeof( SYSTEMTIME ) );
+	NrpTime time = _ini->Get( section, key, NrpTime( 0. ) );
 
-	time = _ini->Get( section, key, time );
+	assert( time.IsValid() );
 
-	assert( time.wYear > 0 && time.wMonth > 0 && time.wMonth <= 12 && 
-			time.wDay > 0 && time.wDay <= 31 );
-
-	lua_pushinteger( L, time.wYear );
-	lua_pushinteger( L, time.wMonth );
-	lua_pushinteger( L, time.wDay );
-	lua_pushinteger( L, time.wHour );
-	lua_pushinteger( L, time.wMinute );
+	lua_pushinteger( L, time.RYear() );
+	lua_pushinteger( L, time.RMonth() );
+	lua_pushinteger( L, time.RDay() );
+	lua_pushinteger( L, time.RHour() );
+	lua_pushinteger( L, time.RMinute() );
 
 	return 5;
 }

@@ -24,7 +24,7 @@ public:
 	bool Equale( const NrpText& name, const NrpText& company );
 
 	virtual void Update( IUser* ptrUser );
-	void BeginNewMonth( const SYSTEMTIME& time );
+	void BeginNewMonth( const NrpTime& time );
 	void CheckParams();
 	IUser* GetUser( u32 index );
 	int AddUser( IUser* user );

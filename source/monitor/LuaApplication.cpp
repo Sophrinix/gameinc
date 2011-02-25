@@ -25,6 +25,7 @@
 #include "LuaPlatform.h"
 #include "LuaTechnology.h"
 #include "LuaPlant.h"
+#include "lualabel.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -112,25 +113,27 @@ int CLuaApplication::UpdateGameTime( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:UpdateGameTime need 2 parameter" );
 
-	int idDateLabel = lua_tointeger( L, 2 );
+	irr::gui::IGUIStaticText* lb = _GetLuaObject< irr::gui::IGUIStaticText, CLuaLabel >( L, 2, false );
+	assert( lb );
+	if( !lb )
+		return 0;
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		bool needUpdate = (*_object)[ GAME_TIME ].As<CNrpGameTime*>()->Update();
 
 		wchar_t text[ 32 ] = { 0 };
-		gui::IGUIEnvironment* env = _nrpEngine.GetGuiEnvironment();
-		gui::IGUIElement* elm = env->getRootGUIElement()->getElementFromId( idDateLabel, true );
-		SYSTEMTIME& time = (*_object)[ CURRENTTIME ];
-		if( elm && needUpdate )
+
+		NrpTime& time = (*_object)[ CURRENTTIME ].As<NrpTime>();
+		if( lb && needUpdate )
 		{
-			swprintf_s( text, 31, L"%4d.%02d.%02d  %02d:%02d", time.wYear, time.wMonth, time.wDay, 
-															   time.wHour, time.wMinute );
-			elm->setText( text );
+			swprintf_s( text, 31, L"%4d.%02d.%02d  %02d:%02d", time.RYear(), time.RMonth(), time.RDay(), 
+															   time.RHour(), time.RMinute() );
+			lb->setText( text );
 		}
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaApplication::GetBank( lua_State* L )
@@ -486,7 +489,7 @@ int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 		pathToFile.append( profileName + "/profile.ini" );
 		
 		IniFile rv( pathToFile );
-		(*_object)[ CURRENTTIME ] = rv.Get( SECTION_PROPERTIES, CURRENTTIME + ":time", SYSTEMTIME() );
+		(*_object)[ CURRENTTIME ] = rv.Get( SECTION_PROPERTIES, CURRENTTIME + ":time", NrpTime( 0. ) );
 	}
 
 	return 1;	
@@ -593,16 +596,22 @@ int CLuaApplication::GetGameTime( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:GetGameTime not need any parameter" );
 
-	SYSTEMTIME time;
-	IF_OBJECT_NOT_NULL_THEN time = (*_object)[ CURRENTTIME ];
+	
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		NrpTime time = (*_object)[ CURRENTTIME ];
 
-	lua_pushinteger( L, time.wYear );
-	lua_pushinteger( L, time.wMonth );
-	lua_pushinteger( L, time.wDay );
-	lua_pushinteger( L, time.wHour );
-	lua_pushinteger( L, time.wMinute );
+		lua_pushinteger( L, time.RYear() );
+		lua_pushinteger( L, time.RMonth() );
+		lua_pushinteger( L, time.RDay() );
+		lua_pushinteger( L, time.RHour() );
+		lua_pushinteger( L, time.RMinute() );
 
-	return 5;		
+		return 5;		
+	}
+
+	lua_pushnil( L );
+	return 1;
 }
 
 int CLuaApplication::GetInvention( lua_State* L )

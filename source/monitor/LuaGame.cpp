@@ -334,7 +334,7 @@ int CLuaGame::GetAllTimeSales( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		if( CNrpHistory* history = _object->GetHistory() )
-			lua_pushinteger( L, history->GetSummFor( BOXNUMBER, _nrpApp[ CURRENTTIME ] ) );
+			lua_pushinteger( L, history->GetSummFor( BOXNUMBER, _nrpApp[ CURRENTTIME ].As<NrpTime>() ) );
 		else
 			lua_pushnil( L );
 		return 1;
@@ -426,7 +426,7 @@ int CLuaGame::GetAllTimeProfit( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		if( CNrpHistory* history = _object->GetHistory() )
-			lua_pushinteger( L, history->GetSummFor( BALANCE, _nrpApp[ CURRENTTIME ] ) );
+			lua_pushinteger( L, history->GetSummFor( BALANCE, _nrpApp[ CURRENTTIME ].As<NrpTime>() ) );
 		else
 			lua_pushnil( L );
 
