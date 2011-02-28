@@ -46,9 +46,9 @@ end
 
 local function _SelectLang( sender )
 	local lbx = base.CLuaPictureFlow( sender )
-	local selIndex = lbx.itemSelected
+	local selIndex = lbx.selectedIndex
 	
-	local lang = base.CLuaTech( lbx.objectSelected )
+	local lang = base.CLuaTech( lbx.selectedObject )
 		
 	--уже есть язык, надо убрать его из списка
 	if project:IsMyTech( lang ) then 
@@ -63,9 +63,9 @@ end
 
 local function _SelectPlatform( sender )
 	local lbx = base.CLuaPictureFlow( sender )
-	local selIndex = lbx.itemSelected
+	local selIndex = lbx.selectedIndex
 	
-	local platform = base.CLuaPlatform( lbx.objectSelected )
+	local platform = base.CLuaPlatform( lbx.selectedObject )
 	
 	--такая платформа заявлена в игре, игрок хочет её убрать
 	if project:IsMyPlatform( platform ) then

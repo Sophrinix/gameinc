@@ -1647,42 +1647,6 @@
 			<Filter
 				Name="scenes"
 				>
-				<File
-					RelativePath="..\..\application\scripts\bank.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\bridge.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\diskManager.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\gameboxManager.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\inventionManager.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\laboratory.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\plant.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\reklameManager.lua"
-					>
-				</File>
-				<File
-					RelativePath="..\..\application\scripts\univer.lua"
-					>
-				</File>
 				<Filter
 					Name="shop"
 					>
@@ -1824,6 +1788,70 @@
 					</File>
 					<File
 						RelativePath="..\..\application\scripts\mainmenu.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="bank"
+					>
+					<File
+						RelativePath="..\..\application\scripts\bank.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\bridge.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\deposit.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\loans.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="plant"
+					>
+					<File
+						RelativePath="..\..\application\scripts\diskManager.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gameboxManager.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\plantrd.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="lab"
+					>
+					<File
+						RelativePath="..\..\application\scripts\inventionManager.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\laboratory.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="univer"
+					>
+					<File
+						RelativePath="..\..\application\scripts\univer.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="reklame"
+					>
+					<File
+						RelativePath="..\..\application\scripts\reklameManager.lua"
 						>
 					</File>
 				</Filter>

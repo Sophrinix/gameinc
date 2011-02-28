@@ -108,7 +108,10 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpCo
 	CNrpScreenshot* pgList = _nrpApp.GetScreenshot( _self[ INTERNAL_NAME ] );
 	assert( pgList != NULL );
 	if( pgList != NULL )
+	{
 		_self[ GAMEIMAGELIST ] = pgList;
+		_self[ VIEWIMAGE ] = pgList->GetBoxImages()[ 0 ];
+	}
 
 	_history = new CNrpHistory();
 }
@@ -214,7 +217,11 @@ void CNrpGame::Load( const NrpText& loadPath )
 	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( _self[ INTERNAL_NAME ] );
 	assert( pgList != NULL );
 	if( pgList != NULL )
+	{
 		_self[ GAMEIMAGELIST ] = pgList;
+		_self[ VIEWIMAGE ] = pgList->GetBoxImages()[ 0 ];
+
+	}
 }
 
 void CNrpGame::_CreateHistory()

@@ -5,8 +5,7 @@ module( "gameboxManager" )
 local guienv = base.guienv
 local applic = base.applic
 local button = base.button
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
+local window = base.window
 
 local wndGBM = nil
 local company = nil
@@ -24,58 +23,40 @@ local btnNextBoxImage = nil
 local btnPrevBoxImage = nil
 local currentBoxIndex = 1
 
-local function CreateElementsForGameSelect()
+local function _CreateElementsForGameSelect()
 	local row = 0
 	local columnt = 0
 	local gameWithoutBox = 0
 	local offset = 40
 	local delimiter = 4
-	for i=1, company:GetGameNumber() do
+	for i=1, company.gameNumber do
 		local game = company:GetGame( i-1 )
 		
-		if not game:HaveBox() then 
-			row = gameWithoutBox/delimiter
+		if not game.haveBox then 
+			row = gameWithoutBox / delimiter
 			columnt = gameWithoutBox%delimiter
 			
-			button.StretchOne( offset + scrWidth/delimiter * columnt, 
-					  		   offset + scrHeight/delimiter * row, 
-					  		   offset + scrWidth/delimiter * (columnt+1), 
-					  		   offset + scrHeight/delimiter * (row+1),
+			button.StretchOne( offset + base.scrWidth/delimiter * columnt, 
+					  		   offset + base.scrHeight/delimiter * row, 
+					  		   offset + base.scrWidth/delimiter * (columnt+1), 
+					  		   offset + base.scrHeight/delimiter * (row+1),
 							   game:GetScreenshot( -1 ), 
 							   wndGBM, 
-							   -1, "", "./gameboxManager.SetGame()" )
+							   -1, "", SetGame )
 		  										
 			gameWithoutBox = gameWithoutBox + 1
 		end
 	end
 	
 	if gameWithoutBox == 0 then 
-		local image = guienv:AddImage( scrWidth / 2 - 300, scrHeight / 2 - 300, 
-									   scrWidth / 2 + 300, scrHeight / 2 + 300, 
-									   wndGBM, -1, "" )
-		image:SetImage( "media/textures/noGameForCreateBox.png" )
-		image:SetScaleImage( true )
-		image:SetUseAlphaChannel( true )
+		local lb = guienv:AddLabel( "Нет готовых игр", "33%", "33%", "33%+", "33%+", -1, wndGBM )
+		lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+		lb.font = "font_28"
+		lb.color = base.WHITE_COLOR
 	end
 end
 
-function FadeEnterAction()
-	CreateElementsForGameSelect()
-
-	wndGBM.visible = true
-	guienv:FadeAction( base.FADE_TIME, true, true )
-	guienv:AddTimer( base.AFADE_TIME, "guienv:FadeAction( 0, true, true )" )	
-end
-
-function FadeExitAction()
-	wndGBM:Remove()
-	wndGBM = nil
-	guienv:FadeAction( base.FADE_TIME, true, true )
-end
-
-function Hide()
-	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, "gameboxManager.FadeExitAction()" )	
+local function _Hide()
 end
 
 function HideWithoutBox()
@@ -179,9 +160,9 @@ local function localCreateBoxImage()
 		base.table.insert( textures, currentGame:GetBoxImage( i-1 ) )
 	end
 	
-	btnNextBoxImage = button.EqualeTexture( 540, 220, "button_next", wndGBM, -1, ">>", "./gameboxManager.NextBoxImage()" )
+	btnNextBoxImage = button.EqualeTexture( 540, 220, "button_next", wndGBM, -1, ">>", NextBoxImage )
 	btnNextBoxImage.visible = false
-	btnPrevBoxImage = button.EqualeTexture( 120, 220, "button_prev", wndGBM, -1, "<<", "./gameboxManager.PrevBoxImage()" )
+	btnPrevBoxImage = button.EqualeTexture( 120, 220, "button_prev", wndGBM, -1, "<<", PrevBoxImage )
 	btnPrevBoxImage.visible = false
 	currentBoxIndex = 1
 end
@@ -191,10 +172,10 @@ local function localCreateBoxViewerAndAddons()
 	localCreateWindowForBoxAvaibleAddons()
 	localCreateBoxImage()
 		
-	btnExit = guienv:AddButton( scrWidth - 100, scrHeight - 50, scrWidth - 10, scrHeight - 10, wndGBM, -1, "Выход" )
+	btnExit = guienv:AddButton( "100e", "50e", "10e", "10e", wndGBM, -1, "Выход" )
 	btnExit.action = HideWithoutBox
 	
-	btnNext = guienv:AddButton( scrWidth - 200, scrHeight - 50, scrWidth - 110, scrHeight - 10, wndGBM, -1, "Создать" )
+	btnNext = guienv:AddButton( "200e", "50e", "110e", "10e", wndGBM, -1, "Создать" )
 	btnNext.action = SelectBoxImage
 end
 
@@ -263,21 +244,18 @@ function SetGame( mp )
 	btn:SetImage( 0, 0, 0, 0, "media/textures/boxWithoutImage.png" )						  
 	btn.action = SelectMegaBox
 	
-	btn = guienv:AddButton( scrWidth - 200, 10, scrWidth -10, 50, wndGBM, -1, "Выход" )
+	btn = guienv:AddButton( "200e", 10, "10e", 50, wndGBM, -1, "Выход" )
 	btn.action = Hide
 end
 
 function Show()
 	company = applic.playerCompany
 
-	if wndGBM == nil then	
-		wndGBM = window.fsWindow( "media/maps/plant_select.png", Hide )
-		
-		wndGBM:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, "./gameboxManager.WindowLeftMouseButtonUp()" )
-	end
+	wndGBM = window.fsWindow( "plant_select.png", _Hide )	
+	wndGBM.visible = false
+	wndGBM:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, WindowLeftMouseButtonUp )
 	
-	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
+	_CreateElementsForGameSelect()
 end
 
 function WindowLeftMouseButtonUp( ptr )

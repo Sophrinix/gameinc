@@ -19,13 +19,12 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaLabel)
 	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaLabel)
 	LUNA_AUTONAME_PROPERTY( CLuaLabel, "color", PureFunction, SetOverrideColor )
-	LUNA_AUTONAME_PROPERTY( CLuaLabel, "font", PureFunction, SetOverrideFont )
 END_LUNA_PROPERTIES
 
 CLuaLabel::CLuaLabel(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUALABEL, ex )							//конструктор
 {}
 
-int CLuaLabel::SetOverrideFont( lua_State* L )
+int CLuaLabel::SetFont( lua_State* L )
 {
 	assert( lua_isstring( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
@@ -40,8 +39,8 @@ int CLuaLabel::SetOverrideFont( lua_State* L )
 
 int CLuaLabel::SetOverrideColor( lua_State* L )
 {
-	int ovColor = lua_tointeger( L, -1 );
-	IF_OBJECT_NOT_NULL_THEN	_object->setOverrideColor( ovColor );
+	NrpText ovColor = lua_tostring( L, -1 );
+	IF_OBJECT_NOT_NULL_THEN	_object->setOverrideColor( ovColor.ToInt() );
 
 	return 1;
 }

@@ -24,14 +24,14 @@ BEGIN_LUNA_METHODS(CLuaPlant)
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, Save )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetReklame )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklame )
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklameNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadDiskMachine )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetDiskMachine )
-	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetDiskMachineNumber )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaPlant)
 	LUNA_ILUAOBJECT_PROPERTIES( CLuaPlant )
+	LUNA_AUTONAME_PROPERTY( CLuaPlant, "machineNumber", GetDiskMachineNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaPlant, "reklameNumber", GetBaseReklameNumber, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaPlant::CLuaPlant(lua_State *L, bool ex)	: ILuaBaseProject(L, CLASS_LUAPLANT, ex )							//конструктор
@@ -68,7 +68,7 @@ int CLuaPlant::GetDiskMachine( lua_State* L )
 
 int CLuaPlant::GetDiskMachineNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetDiskMachineNumber", DISKMACHINENUMBER, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, DISKMACHINENUMBER, 0 ) );
 	return 1;
 }
 
@@ -232,7 +232,7 @@ int CLuaPlant::GetReklame( lua_State* L )
 
 int CLuaPlant::GetBaseReklameNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, "GetBaseReklameNumber", BASEREKLAMENUMBER, 0 ) );
+	lua_pushinteger( L, GetParam_<int>( L, PROP, BASEREKLAMENUMBER, 0 ) );
 	return 1;
 }
 

@@ -78,7 +78,6 @@ function InventionSelect()
 	currentInvention = base.CLuaInvention( picFlowInvention.selectedObject ) 
 end
 
-
 function UserSelect()	
 	selectedUser = base.CLuaUser( lbxUsers.selectedObject )
 end
@@ -114,7 +113,7 @@ function AddPeopleToInvention()
 	btn.action = CloseWindowUserAdding
 	
 	--обработчик выбора в списке
-	windowUserSelect:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./inventionManager.UserSelect()" )
+	windowUserSelect:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, UserSelect )
 end
 
 function CloseWindowUserAdding()
@@ -142,7 +141,7 @@ function Show( techName, companyName )
 	windowIM.draggable = false
 	
 	picFlowInvention = guienv:AddPictureFlow( 60, 10, "10e", "66%", -1, windowIM )
-	picFlowInvention:SetPictureRect( 0, 0, scrHeight / 3 - 40, scrHeight / 3 - 40 )
+	picFlowInvention:SetPictureRect( 0, 0, "33%", "33%" )
 	picFlowInvention.drawBorder = false
 	
 	for index=1, company.inventionNumber do
@@ -197,25 +196,22 @@ function Show( techName, companyName )
 	localFillListInvnentionStuff()
 	
 	--показать данные по изобретению
-	local btnShowInfo = guienv:AddButton( btnWidth + 10,  "40e", "120+", "10e",
-	 									  windowIM, -1, "Инфо" )
+	local btnShowInfo = guienv:AddButton( btnWidth + 10,  "40e", "120+", "10e", windowIM, -1, "Инфо" )
 	btnShowInfo.action = ShowInfoAboutInvention
 
 	--кнопка добавления людей к исследованию, по которой показывается список со служащими 
 	--и возможность добавления выделенного человека
-	local btnAddPeople = guienv:AddButton( btnWidth + 130, "40e", "250+", "10e",  
-										   windowIM, -1, "Добавить" )
+	local btnAddPeople = guienv:AddButton( btnWidth + 130, "40e", "250+", "10e", windowIM, -1, "Добавить" )
 	btnAddPeople.action = AddPeopleToInvention
 
 	--удаление людей из списка
-	local btnRemPeople = guienv:AddButton( btnWidth + 260, "40e", "10e",  "10e", 
-										   windowIM, -1, "Убрать" )
+	local btnRemPeople = guienv:AddButton( btnWidth + 260, "40e", "10e",  "10e", windowIM, -1, "Убрать" )
 	btnRemPeople.action = RemPeopleFromInvention
 	
 	--обновление надписей
-	windowIM:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, "./inventionManager.UpdateLabelValue()" )
+	windowIM:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, UpdateLabelValue )
 	--обработчик выбора технологии
-	windowIM:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./inventionManager.InventionSelect()" )
+	windowIM:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, InventionSelect )
 end
 
 local lastTimeUpdate = 0

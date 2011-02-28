@@ -111,10 +111,9 @@ int CNrpHistory::GetSummFor( const OPTION_NAME& name, NrpTime time )
 			NrpTime stepTime = pIter->second->Param( STARTDATE );
 
 			if( stepTime.Equale( time ) == -1 )
-			{
 				summ += (int)(pIter->second->Param( name ));
-				pIter++;
-			}
+
+			pIter++;
 		}
 	}
 

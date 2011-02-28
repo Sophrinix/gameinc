@@ -76,8 +76,8 @@ end
 function ArrowToElement( elm, textureName, time )
 	local x, y = elm:GetCenter()
 	local image = guienv:AddImage( x-64, y-32, x+128, y+64, guienv.root, -1, "" );
-	image:SetImage( textureName )
-	image:SetScaleImage( true )
-	image:SetUseAlphaChannel( true )
+	image.texture = textureName
+	image.scale = true
+	image.alphaChannel = true
 	guienv:AddDestructor( image, time )
 end

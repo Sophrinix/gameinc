@@ -73,7 +73,7 @@ function Show( textr )
 	end
 
 	if textr ~= nil then
-		appPda:AddMessage( textr, "./pda.ToggleVisible()" )
+		appPda:AddMessage( textr, ToggleVisible )
 		local textr = appPda:GetTimeStr() .. "\n" .. appPda:GetMessage()
 		base.CLuaElement( animTextRunner ).text = textr
 	end

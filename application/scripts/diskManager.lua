@@ -2,10 +2,9 @@ local base = _G
 
 module( "diskManager" )
 
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
 local button = base.button
 local tutorial = base.tutorial
+local window = base.window
 local plant = nil
 local guienv = base.guienv
 local company = nil
@@ -47,7 +46,14 @@ local cmbxGames = nil
 
 local addons = { }
 
-local function localGetAddinMachine()
+local function _AddLabel( text, xpos, ypos, ww, hh, parent )
+	local lb = guienv:AddLabel( text, xpos, ypos, ww, hh, -1, parent )
+	lb.color = base.toColor( 0xff, 0xff, 0xff, 0xff )	
+	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+	return lb, ypos + 40
+end
+
+local function _GetAddinMachine()
 	if numberMachine < 10 then return 1 
 	elseif numberMachine >= 10 and numberMachine < 30 then return 5 
 	elseif numberMachine >= 30 and numberMachine < 100 then return 10 
@@ -64,11 +70,11 @@ local function localGetFinalDiscount()
 	return discount
 end
 
-local function localGetFinalPrice()
+local function _GetFinalPrice()
 	return produceDiskWork.price * ( 1 - _GetFinalDiscount() )
 end
 
-local function UpdateLabels()
+local function _UpdateLabels()
 	local machines = produceDiskWork.numberMachine
 	
 	labelGameName.text = currentGame.name
@@ -92,46 +98,39 @@ local function UpdateLabels()
 	--labelRelationWithPlant:SetText( "—кидка производител€: "..base.string.format( "%d", localGetFinalDiscount() * 100 ).."%" )
 end
 
-local function localAddLabel( text, xpos, ypos, ww, hh, parent )
-	local lb = guienv:AddLabel( text, xpos, ypos, ww, hh, -1, parent )
-	lb.color = base.toColor( 0xff, 0xff, 0xff, 0xff )	
-	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
-	return lb, ypos + 40
-end
-
-function SelectGame()
+local function _SelectGame()
 	guienv:BringToFront( windowSelectGame )
 	windowSelectGame.visible = true
 end
 
-function SelectGameClose()
+local function _SelectGameClose()
 	windowSelectGame.visible = false
 end
 
-function GameSelected()
+local function _GameSelected()
 	currentGame = base.CLuaGame( cmbxGames.selectedObject )
 	produceDiskWork:SetGame( currentGame )
-	UpdateLabels()		
+	_UpdateLabels()		
 	
 	windowSelectGame.visible = false
 	btnGame:SetImage( 0, 0, 0, 0, currentGame.viewImage )
 end
 
-local function localAddGames()
-	btnGame = button.Stretch( 100, 400, "150+", "230+", "pure_button", wndDPP, -1, "¬ыбрать\n игру", SelectGame )
+local function _AddGames()
+	btnGame = button.Stretch( 100, 400, "150+", "230+", "pure_button", wndDPP, -1, "¬ыбрать\n игру", _SelectGame )
 
 	windowSelectGame = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", -1, wndDPP )
 	windowSelectGame.visible = false
 	windowSelectGame.draggable = false
 	windowSelectGame.closeButton.visible = false
-	windowSelectGame:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, GameSelected )
 	
 	cmbxGames = guienv:AddPictureFlow( "5%", "5%", "80%", "80%", -1, windowSelectGame )
 	cmbxGames:SetPictureRect( 0, 0, 140, 140 )
 	cmbxGames.drawBorder = false
+	cmbxGames.onSelect = _GameSelected
 	
-	button.Stretch( "15%", "82%", "49%", "95%", "", windowSelectGame, -1, "¬ыбрать", SelectGame )
-	button.Stretch( "51%", "82%", "85%", "95%", "", windowSelectGame, -1, "«акрыть", SelectGameClose )
+	button.Stretch( "15%", "82%", "49%", "95%", "", windowSelectGame, -1, "¬ыбрать", _SelectGame )
+	button.Stretch( "51%", "82%", "85%", "95%", "", windowSelectGame, -1, "«акрыть", _SelectGameClose )
 		
 	for i=1, company.gameNumber do
 		local game = company:GetGame( i-1 )
@@ -141,55 +140,90 @@ local function localAddGames()
 	end
 end
 
-function SelectMachine()
+local function _SelectMachine()
 	guienv:BringToFront( windowSelectMachine )
 	windowSelectMachine.visible = true
 end
 
-function SelectMachineClose()
+local function _SelectMachineClose()
 	windowSelectMachine.visible = false
 end
 
-function MachineSelected()
+local function _MachineSelected()
 	currentDiskMachine = base.CLuaDiskMachine( cmbxProduceType.selectedObject )
 	produceDiskWork.produceType = currentDiskMachine.object
-	UpdateLabels()
+	_UpdateLabels()
 	btnMachine:SetImage( 0, 0, 0, 0, currentDiskMachine.texture )
 end
 
-local function  localAddMachines()
+local function  _AddMachines()
 	btnMachine = button.Stretch( 130, 170, 250, 265, "pure_button", wndDPP, -1, "¬ыбрать\n производство", _SelectMachine )
 	
 	windowSelectMachine = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", -1, wndDPP )
 	windowSelectMachine.visible = false
 	windowSelectMachine.draggable = false
 	windowSelectMachine.closeButton.visible = false
-	windowSelectMachine:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, _MachineSelected )
 	
 	cmbxProduceType = guienv:AddPictureFlow( "5%", "5%", "80%", "80%", -1, windowSelectMachine )
 	cmbxProduceType:SetPictureRect( 0, 0, 140, 140 )
 	cmbxProduceType.drawBorder = false
+	cmbxProduceType.onSelect = _MachineSelected
 	
 	button.Stretch( "15%", "82%", "49%", "95%", "", windowSelectMachine, -1, "¬ыбрать", _SelectMachine )
 	button.Stretch( "51%", "82%", "85%", "95%", "", windowSelectMachine, -1, "«акрыть", _SelectMachineClose )
 	
-	for i=1, plant.diskMachineNumber do
+	for i=1, plant.machineNumber do
 		local dm = plant:GetDiskMachine( i-1 )
 		cmbxProduceType:AddItem( dm.texture, dm.name, dm.object )		
 	end
 end
 
-local function localAddLabels()
-	labelGameName, _ = localAddLabel( "GameName", 270, 60, "400+", "40+", wndDPP )
+local function _IncDayNumber()
+	dayOfProduce = dayOfProduce + 1
+	produceDiskWork.numberDay = dayOfProduce
+	
+	_UpdateLabels()
+end
+
+local function _DecDayNumber()
+	if dayOfProduce > 1 then
+		dayOfProduce = dayOfProduce - 1
+		produceDiskWork.numberDay = dayOfProduce
+	end
+	_UpdateLabels()
+end
+
+local function _IncMachineNumber()
+	numberMachine = numberMachine + _GetAddinMachine()
+	produceDiskWork.numberMachine = numberMachine
+	
+	_UpdateLabels()
+end
+
+local function _DecMachineNumber( ptr )
+	if numberMachine > 1 then
+		numberMachine = numberMachine - _GetAddinMachine()
+		produceDiskWork.numberMachine = numberMachine
+	end
+	
+	_UpdateLabels()
+end
+
+local function _SetAntipiratForce()
+
+end
+
+local function _AddLabels()
+	labelGameName, _ = _AddLabel( "GameName", 270, 60, "400+", "40+", wndDPP )
 	--добавим метку цены одного диска
-	labelDiskPrice, _ =  localAddLabel( "???", 340, 330, "140+", "40+", wndDPP )
+	labelDiskPrice, _ =  _AddLabel( "???", 340, 330, "140+", "40+", wndDPP )
 	
 	--добавим метку общей цены за производство
-	labelDiskNumber, _ = localAddLabel( "???", 330, 490, "140+", "30+", wndDPP )	
-	labelFinalPrice, _ = localAddLabel( "¬сего:", 330, 410, "140+", "30+", wndDPP )
+	labelDiskNumber, _ = _AddLabel( "???", 330, 490, "140+", "30+", wndDPP )	
+	labelFinalPrice, _ = _AddLabel( "¬сего:", 330, 410, "140+", "30+", wndDPP )
 	
 	--добавим кнопки изменени€ количества аппаратов дл€ производства дисков
-	labelNumberMachine, _ = localAddLabel( "???", 300, 230, "30+", "40+", wndDPP )
+	labelNumberMachine, _ = _AddLabel( "???", 300, 230, "30+", "40+", wndDPP )
 	local btn = guienv:AddButton( 260, 220, "40+", "30+", wndDPP, -1, "+" )
 	btn.action = _IncMachineNumber
 	
@@ -197,13 +231,13 @@ local function localAddLabels()
 	btn.action = _DecMachineNumber
 	
 	--добавим кнопки изменени€ количества дней производства
-	labelNumberDay, _ = localAddLabel( "numberday", 275, 180, "120+", "30+", wndDPP )
+	labelNumberDay, _ = _AddLabel( "numberday", 275, 180, "120+", "30+", wndDPP )
 	btn = guienv:AddButton( 410, 160, "32+", "32+", wndDPP, -1, "+" )
 	btn.action = _IncDayNumber
 	btn = guienv:AddButton( 410, 192, "32+", "32+", wndDPP, -1, "-" )
 	btn.action = _DecDayNumber
 	
-	btn = guienv:AddButton( 480, 220, "190+", "64+", wndDPP, -1, "-" )
+	btn = guienv:AddButton( 480, 220, "190+", "64+", wndDPP, -1, "Pirates" )
 	btn.action = _SetAntipiratForce
 end
 
@@ -211,7 +245,7 @@ local function _AddWork()
 	--изменим отношение производител€ к игроку за размещение заказа
 	localChangeProducerDiscount()
 	
-	company:AddBalance( -localGetFinalPrice() )
+	company:AddBalance( -_GetFinalPrice() )
 	plant:AddProduceWork( produceDiskWork )
 	
 	produceDiskWork:Remove()
@@ -219,68 +253,29 @@ local function _AddWork()
 	wndDPP = nil
 end
 
-function Hide()
-	produceDiskWork:Remove()
-	wndDPP:Remove()
-	wndDPP = nil
+local function _Hide()
+
 end
 
 function Show()
 	numberMachine = 0
 	dayOfProduce = 0
 	company = base.applic.playerCompany
-	plant = base.pllic.plant
+	plant = base.applic.plant
 	produceDiskWork = base.CLuaPlantWork():Create( company.name )
 	
-	if wndDPP == nil then
-		wndDPP = window.fsWindow( "media/textures/MachinePlant.png", Hide )
-	else
-		wndDPP.visible = true
-	end
+	wndDPP = window.fsWindow( "media/textures/MachinePlant.png", _Hide )
 	
 	--игры, которые можно производить
-	localAddGames()
+	_AddGames()
 	
 	--добавим список аппаратов
-	localAddMachines()	
-	--повесим событие на выбор в каком либо из списков
-	wndDPP:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./diskManager.ItemSelected()" )
+	_AddMachines()	
 	
-	localAddLabels()
+	_AddLabels()
 	
 	local btn = button.Stretch( 700, 385, "226+", "275+", "button_start", wndDPP, -1, "", QueryAddWork )
 	btn:SetHoveredImage( 0, 0, 0, 0, "media/buttons/button_start_next.png" )
-end
-
-function IncDayNumber()
-	dayOfProduce = dayOfProduce + 1
-	produceDiskWork:SetNumberDay( dayOfProduce )
-	
-	UpdateLabels()
-end
-
-function DecDayNumber()
-	if dayOfProduce > 1 then
-		dayOfProduce = dayOfProduce - 1
-		produceDiskWork.numberDay = dayOfProduce
-	end
-	UpdateLabels()
-end
-
-function IncMachineNumber()
-	numberMachine = numberMachine + _GetAddinMachine()
-	produceDiskWork.numberMachine = numberMachine
-	
-	UpdateLabels()
-end
-
-function DecMachineNumber( ptr )
-	if numberMachine > 1 then
-		numberMachine = numberMachine - localGetAddinMachine()
-		produceDiskWork.numberMachine = numberMachine
-	end
-	
-	UpdateLabels()
 end
 
 function CloseQueryAddWork()
@@ -330,7 +325,7 @@ function localChangeProducerDiscount()
 	currentDiskMachine:SetDiscount( discount )
 
 	--у всех остальных производителей снизим отнощение к игроку
-	for i=1, plant:GetDiskMachineNumber() do
+	for i=1, plant:machineNumber do
 		local dm = plant:GetDiskMachine( i-1 )
 		if dm:GetName() ~= currentDiskMachine:GetName() then
 			dm:SetDiscount( dm:GetDiscount() - 0.05 )		

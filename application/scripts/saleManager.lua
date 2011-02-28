@@ -80,7 +80,7 @@ local function _UpdateGameParams()
 		labelGameName.text = "Название: " .. selectedGame.name
 		labelLastMonthSale.text = "Продаж за прошлый месяц:"..selectedGame.lastMonthSales
 		labelProfit.text = "Прибыль:" .. selectedGame.allTimeProfit
-		--[[labelAllTimeSale.text = "Продаж за все время:" .. selectedGame.allTimeSales
+		labelAllTimeSale.text = "Продаж за все время:" .. selectedGame.allTimeSales
 		lastTimeParamsUpdate = base.os.clock()
 		--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
 			
@@ -95,12 +95,16 @@ local function _UpdateGameParams()
 			local price = selectedGame.allTimeProfit / selectedGame.allTimeSales
 			labelGamePrice.text = "Цена:" .. base.string.format( "%0.2f", price )
 		end
-		--]]
 	end
 end
 
 local function _ListboxChanged()
 	selectedGame = base.CLuaGame( listboxGames.selectedObject )
+	
+	if selectedGame then
+		imageGamePreview.texture = selectedGame.viewImage
+		imageGamePreview.scale = true
+	end
 end
 
 local function _DecreasePrice()
@@ -166,7 +170,7 @@ function Show()
 											 mainWindow, -1, "+" )
 	btnIncreaseGamePrice.action = _IncreasePrice
 	
-		--расположим кнопку "Анонсировать игру", по которой можно поместить игру на рынок
+	--расположим кнопку "Анонсировать игру", по которой можно поместить игру на рынок
 	buttonAnonceGame = guienv:AddButton( pos.x, 380, size.w, size.h, mainWindow, -1, "Анонсировать игру" )
 	buttonAnonceGame.action = _AnonceGame
 	

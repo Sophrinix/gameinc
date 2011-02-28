@@ -24,7 +24,6 @@ BEGIN_LUNA_METHODS(CLuaTechnology)
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Load )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Remove )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Create )
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, HaveRequireTech )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechInternalName )
 END_LUNA_METHODS
 
@@ -39,6 +38,7 @@ BEGIN_LUNA_PROPERTIES(CLuaTechnology)
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "texture", GetTexture, SetTexture )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "ftNumber", GetFutureTechNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "engineCode", PureFunction, SetAddingEngineCode )
+	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "haveRequireTech", HaveRequireTech, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaTechnology::CLuaTechnology(lua_State *L, bool ex) : ILuaProject( L, CLASS_LUATECH, ex )							//конструктор
@@ -164,7 +164,7 @@ int CLuaTechnology::GetTexture( lua_State* L )
 
 int CLuaTechnology::HaveRequireTech( lua_State* L )
 {
-	lua_pushboolean( L, GetParam_<PNrpTechnology>( L, "HaveRequireTech", REQUIRETECH, NULL) != NULL );
+	lua_pushboolean( L, GetParam_<PNrpTechnology>( L, PROP, REQUIRETECH, NULL) != NULL );
 	return 1;
 }
 

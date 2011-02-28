@@ -32,15 +32,15 @@ local function _SortByAllTime( typeSort )
 	
 	if typeSort == SORT_PROFIT then
 		for i=1, #games do
-			if games[ i ]:GetAllTimeProfit() > maxSort then
-				maxSort = games[ i ]:GetAllTimeProfit()
+			if games[ i ].allTimeProfit > maxSort then
+				maxSort = games[ i ].allTimeProfit
 				index = i
 			end
 		end
 	else
 		for i=1, #games do
-			if games[ i ]:GetAllTimeSales() > maxSort then
-				maxSort = games[ i ]:GetAllTimeSales()
+			if games[ i ].allTimeSales > maxSort then
+				maxSort = games[ i ].allTimeSales
 				index = i
 			end
 		end		
@@ -55,15 +55,15 @@ local function _SortByMonth( typeSort )
 	
 	if typeSort == SORT_PROFIT then
 		for i=1, #games do
-			if games[ i ]:GetLastMonthProfit() > maxSort then
-				maxSort = games[ i ]:GetLastMonthProfit()
+			if games[ i ].lastMonthProfit > maxSort then
+				maxSort = games[ i ].lastMonthProfit
 				index = i
 			end
 		end
 	else
 		for i=1, #games do
-			if games[ i ]:GetLastMonthSales() > maxSort then
-				maxSort = games[ i ]:GetLastMonthSales()
+			if games[ i ].lastMonthSales > maxSort then
+				maxSort = games[ i ].lastMonthSales
 				index = i
 			end
 		end		
@@ -135,18 +135,23 @@ function Hide()
 	--guienv:AddTimer( base.AFADE_TIME, "laboratory.FadeExitAction()" )	
 end
 
+local function _CellSelected()
+
+end
+
 function Show( typeTop )
 	saveTypeTop = typeTop
 	company = applic.playerCompany
 
 	mainWindow = window.fsWindow( "media/textures/chartsMonth.png", Hide )
 	
-	mainWindow:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, CellSelected )
-	mainWindow:AddLuaFunction( base.GUIELEMENT_TABLE_HEADER_SELECTED, HeaderSelected )
+	mainWindow:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, _CellSelected )
+	mainWindow:AddLuaFunction( base.GUIELEMENT_TABLE_HEADER_SELECTED, _HeaderSelected )
 	
-	local lb = guienv:AddLabel( "", "33%", 20, "66%", 120, 
-								-1, mainWindow )
+	local lb = guienv:AddLabel( "", "33%", 20, "66%", 120, -1, mainWindow )
 	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+	lb.font = "font_28"
+	lb.color = base.WHITE_COLOR
 	
 	if typeTop == TIME_MONTH then
 		lb.text = "„арт мес€ца"

@@ -24,47 +24,15 @@ btnSound = nil
 btnTech = nil
 btnGenre = nil
 
-function FadeEnterAction()
-	lab.visible = true
-	guienv:FadeAction( base.FADE_TIME, true, true )
+local function _Hide()
 end
-
-function FadeExitAction()
-	lab:Remove()
-	lab = nil
-	guienv:FadeAction( base.FADE_TIME, true, true )
-end
-
-function Hide()
-	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
-end
-
-function Show()	
-	if lab then
-		lab.visible = true
-	else
-		lab = window.fsWindow( "media/maps/laboratory_normal.png", Hide )
-		
-		tutorial.Update( tutorial.STEP_OVERVIEW_LABORATORY )
-	
-		btnVideo = button.EqualeTexture( 545, 330, "techMapVideo", lab, -1, "", ShowVideoTechMap )
-		btnSound = button.EqualeTexture( 372, 213, "techMapSound", lab, -1, "", ShowSoundTechMap )
-		btnTech  = button.EqualeTexture( 749, 222,  "techMapAdvTech", lab, -1, "", ShowAdvancedTechMap )
-		btnGenre = button.EqualeTexture( 73, 202,  "techMapGenre", lab, -1, "", ShowGenreTechMap )
-
-		guienv:FadeAction( base.FADE_TIME, false, false )			
-		guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
-	end	
-end
-
 
 local function CreateTechSequence( tech )
 	if tech.empty then
 		return 
 	end
 	
-	for i=1, tech:GetFutureTechNumber() do
+	for i=1, tech.ftNumber do
 		local internalName = tech:GetFutureTechInternalName( i-1 )
 		Log( "Дочерняя технолоwгия="..internalName.." Родительская технология="..tech.name )
 
@@ -141,11 +109,11 @@ function ShowGenreTechMap()
 end
 
 function TechSelected() 
-    local type = techMap:GetSelectedObjectType()
+    local type = techMap.selectedType
     
 	if type == base.TS_READY then
 		--технология уже в ходу
-	    selectedTech = base.CLuaTech( techMap:GetSelectedObject() )
+	    selectedTech = base.CLuaTech( techMap.selectedObject )
 		base.LogScript( base.string.format( "Выбрана технология=%s Описание=%s Статус=%s", 
 											selectedTech.name, selectedTech.description, selectedTech.datus ) )
 	    
@@ -166,14 +134,14 @@ function StartInvention()
 	browser:Navigate( "media/html/unknownTechnology.htm" )
 	
 	btnOk = guienv:AddButton( "5%", 30, "45%+", "20+", browser.window, -1, "Начать исследования" )
-	btnOk:SetAction( "./laboratory.AssignInvention()" )
+	btnOk.action = AssignInvention
 	
 	btnCancel = guienv:AddButton( "55%", 30, "45%+", "20+", browser.window, -1, "Закрыть" )
-	btnCancel:SetAction( "./laboratory.CloseConfirmationWindow()" )
+	btnCancel.action = CloseConfirmationWindow
 end
 
 function AssignInvention()
-	local inventionName = techMap:GetSelectedObjectName()
+	local inventionName = techMap.selectedObjectName
 	local loadFile = base.updates.FindInventionLoadFile( inventionName )
 	company:StartInvention( loadFile )
 	
@@ -190,4 +158,15 @@ function CloseConfirmationWindow( ptr )
 	btnOk:Remove()
 	btnCancel:Remove()
 	browser:Hide()
+end
+
+function Show()	
+	lab = window.fsWindow( "media/maps/laboratory_normal.png", _Hide )
+	
+	tutorial.Update( tutorial.STEP_OVERVIEW_LABORATORY )
+	
+	btnVideo = button.EqualeTexture( 545, 330, "techMapVideo", lab, -1, "", ShowVideoTechMap )
+	btnSound = button.EqualeTexture( 372, 213, "techMapSound", lab, -1, "", ShowSoundTechMap )
+	btnTech  = button.EqualeTexture( 749, 222,  "techMapAdvTech", lab, -1, "", ShowAdvancedTechMap )
+	btnGenre = button.EqualeTexture( 73, 202,  "techMapGenre", lab, -1, "", ShowGenreTechMap )
 end

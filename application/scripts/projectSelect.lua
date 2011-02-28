@@ -12,15 +12,7 @@ local mainWindow = nil
 btnEngine = nil
 btnGame = nil
 
-function FadeExitAction()
-	mainWindow:Remove()
-	mainWindow = nil
-	--guienv:FadeAction( base.FADE_TIME, true, true )
-end
-
 function Hide()
-	--guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
 	base.package.loaded[ "gameprojectManager" ] = nil
 end
 
@@ -43,12 +35,9 @@ end
 function Show()
 	tutorial.Update( tutorial.STEP_CREATE_NEW_PROJECT )
 	
-	mainWindow = window.fsWindow( "media/maps/director_cabinet_slider.png", Hide )
+	mainWindow = window.fsWindow( "director_cabinet_slider.png", Hide )
 	
 	local layout = guienv:AddLayout( "33%", "25%", "50%+", "33%+", 2, -1, mainWindow )
 	btnEngine = button.LayoutButton( "newEngine", layout, -1, base.STR_NEW_GAME_ENGINE, StartEngineProject )
 	btnGame = button.LayoutButton( "newGame", layout, -1, base.STR_NEW_GAME, StartGameProject )
-							  				
-	--guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
 end

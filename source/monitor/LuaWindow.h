@@ -26,6 +26,7 @@ public:
 	int AddLuaFunction( lua_State* L );
 	int RemoveLuaFunction( lua_State* L );
 	int Draw( lua_State* L );
+	int SetOnRemove( lua_State* L );
 
 	int SetTexture( lua_State* L );
 	int GetTexture( lua_State* L );

@@ -37,17 +37,6 @@ local lastData = nil
 local REMOVE = true
 local ADD = false
 
-function FadeEnterAction()
-	mainWindow.visible = true
-	--guienv:FadeAction( base.FADE_TIME, true, true )
-end
-
-function FadeExitAction()
-	mainWindow:Remove()
-	mainWindow = nil
-	--guienv:FadeAction( base.FADE_TIME, true, true )
-end
-
 function ShowParams()
 	labelCodeVolume.text = "Код:" .. project.codeVolume
 	prgProjectQuality.progress = project.codeQuality
@@ -55,8 +44,6 @@ end
 
 function Hide()
 	project:Remove()
-	mainWindow:Remove()
-	mainWindow = nil
 	
 	base.package.loaded[ "linkbox" ] = nil
 	base.package.loaded[ "gpmFunctions" ] = nil
@@ -70,7 +57,16 @@ function Hide()
 	base.package.loaded[ "gpmGenrePage" ] = nil
 end
 
-local function localShowChangeNamePage()
+function UpdateProjectWindow( pageName )
+    step = pageName
+	base.CLuaElement( projectWindow ):RemoveChilds()
+	button.StretchOne( 0, "30e", 30, "0e", "", projectWindow, -1, "", PrevPage )
+	button.StretchOne( "30e", "30e", "0e", "0e", "", projectWindow, -1, "", NextPage )
+	links = nil
+	links = {}
+end
+
+local function _ShowChangeNamePage()
     UpdateProjectWindow( "name" )
 	editGameName = guienv:AddEdit( "Название игры", "55%", "50%", "90%", "60%", -1, projectWindow )
 	editGameName.font = "font_16"
@@ -102,36 +98,25 @@ function PrevPage()
 	elseif step == "end" then base.gpmPlatformPage.Show(); return end
 end
 
-function UpdateProjectWindow( pageName )
-    step = pageName
-	base.CLuaElement( projectWindow ):RemoveChilds()
-	button.StretchOne( 0, "30e", 30, "0e", "", projectWindow, -1, "", PrevPage )
-	button.StretchOne( "30e", "30e", "0e", "0e", "", projectWindow, -1, "", NextPage )
-	links = nil
-	links = {}
-end
-
 local function _ClearDragObject()
 	guienv:SetDragObject( nil, "" )
 end
 
 function Show()
 	company = applic.playerCompany
-	if mainWindow == nil then
-		project = base.CLuaGameProject():Create( "defaultGame" )
+
+	project = base.CLuaGameProject():Create( "defaultGame" )
 		
-		mainWindow = window.fsWindow( "media/maps/director_cabinet_slider.png", Hide )
+	mainWindow = window.fsWindow( "media/maps/director_cabinet_slider.png", Hide )
 		
-		dragLink = guienv:AddLinkBox( "", 0, 0, sizeLinkBox, sizeLinkBox, -1, mainWindow )
-		projectWindow = guienv:AddWindow( "media/maps/newProject.png", 60, 90, "60e", "30e", -1, mainWindow )
-		projectWindow.draggable = false
-		--projectWindow:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, _ClearDragObject )
-	end 
+	projectWindow = guienv:AddWindow( "media/maps/newProject.png", 60, 90, "60e", "30e", -1, mainWindow )
+	projectWindow.draggable = false
+	--projectWindow:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, _ClearDragObject )
 	
 	prgProjectQuality = guienv:AddProgressBar( mainWindow, 10, 40, "140+", "20+", -1 )
 	labelCodeVolume = guienv:AddLabel( "Код", "150e", 40, "10e", "20+", -1, mainWindow )
 
-	localShowChangeNamePage()	
+	_ShowChangeNamePage()	
 	--guienv:FadeAction( base.FADE_TIME, false, false )			
 	--guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
 end

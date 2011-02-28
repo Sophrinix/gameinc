@@ -93,6 +93,8 @@ CNrpWindow::CNrpWindow(IGUIEnvironment* environment, IGUIElement* parent, video:
 //! destructor
 CNrpWindow::~CNrpWindow()
 {
+	DoLuaFunctionsByType( GUIELEMENT_ON_REMOVE, this, NULL );
+
 	if (buttons_[ BTNE_MINIMAZE ])
 		buttons_[ BTNE_MINIMAZE ]->drop();
 

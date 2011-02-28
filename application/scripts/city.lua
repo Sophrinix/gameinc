@@ -1,10 +1,10 @@
 local base = _G
 
-IncludeScript("plant")
 IncludeScript("office")
 IncludeScript("laboratory" )
 IncludeScript("bank")
 IncludeScript("shop")
+IncludeScript("plantrd")
 IncludeScript("univer")
 IncludeScript("reklameManager")
 
@@ -37,17 +37,17 @@ local function _CreateButtons()
 	--shop	
 	btnShop = button.EqualeTexture( 417, 82, "media", mainWindow, -1, "", base.shop.Show )
 	--labor
-	--btnLab = button.EqualeTexture( 811, 198, "labor", mainWindow, -1, "", base.laboratory.Show )
+	btnLab = button.EqualeTexture( 811, 198, "labor", mainWindow, -1, "", base.laboratory.Show )
 	--bank
-	--btnBank = button.EqualeTexture( 323, 389, "bank", mainWindow, -1, "", base.bank.Show )
+	btnBank = button.EqualeTexture( 323, 389, "bank", mainWindow, -1, "", base.bank.Show )
 	--plant	
-	--btnPlant = button.EqualeTexture( 517, 326, "plant", mainWindow, -1, "", base.plant.Show )
+	btnPlant = button.EqualeTexture( 517, 326, "plant", mainWindow, -1, "", base.plantrd.Show )
 	--pizza	
 	--btnPizza = button.EqualeTexture( 105, 42, "pizza", mainWindow, -1, "", base.pizza.Show )
 	--univer	
-	--btnUniver = button.EqualeTexture( 0, 287, "univer", mainWindow, -1, "", base.univer.Show )
+	btnUniver = button.EqualeTexture( 0, 287, "univer", mainWindow, -1, "", base.univer.Show )
 	--reklame
-	--btnReklame = button.EqualeTexture( 0, 94, "reklame", mainWindow, -1, "", base.reklameManager.Show )
+	btnReklame = button.EqualeTexture( 0, 94, "reklame", mainWindow, -1, "", base.reklameManager.Show )
 end
 	
 function Show()	

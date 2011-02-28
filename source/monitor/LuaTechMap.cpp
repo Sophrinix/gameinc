@@ -98,7 +98,7 @@ int CLuaTechMap::AddLuaFunction( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		int	funcType = lua_tointeger( L, 2 );
-		int funcName = lua_tointeger( L, 3 );
+		int funcName = _GetRef( L, 3 );
 		assert( funcName && funcType );
 		_object->AddLuaFunction( funcType, funcName );
 	}

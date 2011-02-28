@@ -807,23 +807,13 @@ int CLuaGuiEnvironment::FadeAction( lua_State* L )
 		if( fader == NULL )
 			fader = _object->addInOutFader(0, _object->getRootGUIElement(), 2002002 );
 
-		if( time == 0 )
-		{
-				/*if( fader )
-					fader->setVisible( false );*/
-				return 1;
-		}
+		if( inaction )
+			fader->fadeIn( time );
 		else
-		{
-			if( inaction )
-				fader->fadeIn( time );
-			else
-				fader->fadeOut( time );
+			fader->fadeOut( time );
 
-/*			fader->setVisible( true );
-			if( fader->getParent() )
-				fader->getParent()->bringToFront( fader ); */
-		}
+		if( fader->getParent() )
+			fader->getParent()->bringToFront( fader );
 	}
 
 	return 1;

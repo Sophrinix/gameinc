@@ -10,12 +10,12 @@ ID_DATETIME_LABEL = ID_MAINMENU + 10
 --]]
 
 function toColor( a, r, g, b )
-	local ret = a * 256 + r;
-	ret = ret * 256 + g
-	ret = ret * 256 + b
-	
+	local ret = a * 16777216 + r * 65536 + g * 256 + b;
 	return ret
 end
+
+WHITE_COLOR = 4294967295
+BLACK_COLOR = 4278190080
 
 function IncludeScript( pathName )
 	local ok, message = pcall( require, pathName )

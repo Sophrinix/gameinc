@@ -81,11 +81,6 @@ function ShowUserInfo()
 	ShowUsersParameters( listBox, currentEmployer )
 end
 
-function Hide()
-	windowUserManager:Remove()
-	windowUserManager = nil
-end
-
 local function _UpSalary()
 	if currentEmployer ~= nil then
 		local curSalary = currentEmployer:GetParam( "salary" )
@@ -170,11 +165,7 @@ end
 function Show()
 	company = applic.playerCompany
 	
-	if windowUserManager == nil or windowUserManager.empty then
-		windowUserManager = window.fsWindow( "media/maps/director_cabinet_slider.png", Hide )
-	else
-		base.CLuaElement( windowUserManager ):RemoveChilds()
-	end
+	windowUserManager = window.fsWindow( "media/maps/director_cabinet_slider.png", Hide )
 	
 	--Coder's button
 	local layout = guienv:AddLayout( "25%", "5%", "50%+", "15%", 10, -1, windowUserManager )
@@ -189,13 +180,13 @@ function Show()
 	
 	ShowAvaibleEmployersToManage()
 
-	layout = guienv:AddLayout( "5%", "70e", "95%", "5e", 10, -1, windowUserManager )
-	button.LayoutButton( "", layout, -1, base.STR_FIRE_EMP, _RemoveUser )
-	button.LayoutButton( "", layout, -1, base.STR_INC_SALARY, _UpSalary )
-	button.LayoutButton( "", layout, -1, base.STR_DEC_SALARY, _DownSalary )
-	button.LayoutButton( "", layout, -1, base.STR_GET_WEEKEND, _GetWeekend )
-	button.LayoutButton( "", layout, -1, base.STR_GET_PRESENT, _GetPremia )
-	button.LayoutButton( "", layout, -1, base.STR_SEND_TO_SCHOOL, _SendToLearning )	
-	button.LayoutButton( "", layout, -1, base.STR_COMMUNICATE, _Communicate )	
-	button.LayoutButton( "", layout, -1, base.STR_ROUTINE, _Routine )	
+	layout = guienv:AddLayout( "25%", "70e", "50%+", "5e", 10, -1, windowUserManager )
+	button.LayoutButton( "fire", layout, -1, base.STR_FIRE_EMP, _RemoveUser )
+	button.LayoutButton( "moneyup", layout, -1, base.STR_INC_SALARY, _UpSalary )
+	button.LayoutButton( "moneydown", layout, -1, base.STR_DEC_SALARY, _DownSalary )
+	button.LayoutButton( "weekend", layout, -1, base.STR_GET_WEEKEND, _GetWeekend )
+	button.LayoutButton( "premia", layout, -1, base.STR_GET_PRESENT, _GetPremia )
+	button.LayoutButton( "learning", layout, -1, base.STR_SEND_TO_SCHOOL, _SendToLearning )	
+	button.LayoutButton( "talk", layout, -1, base.STR_COMMUNICATE, _Communicate )	
+	button.LayoutButton( "task", layout, -1, base.STR_ROUTINE, _Routine )	
 end

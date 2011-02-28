@@ -394,6 +394,7 @@ static int      property_getter(lua_State * L)
 	    return result;
 	}
 	// PUSH NIL 
+
 	Traceback(L);
 	DumpStack(L);
 	const char* dd = T::ClassName();

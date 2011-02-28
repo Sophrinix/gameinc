@@ -27,6 +27,9 @@ public:
 
 	bool isPointInside(const core::position2d<s32>& point) const;
 
+	void updateAbsolutePosition();
+	void setRelativePosition(const core::rect<s32>& r);
+
 	//void setVisible( bool visible );
 
 protected:
@@ -41,7 +44,7 @@ protected:
 	void setDrawTitlebar(bool) {}
 	bool getDrawTitlebar(void) const { return false; }
 	irr::core::recti getClientRect(void) const { return core::recti(); }
-	
+
 	u32 _btnInLine;
 	int _margin;
 };

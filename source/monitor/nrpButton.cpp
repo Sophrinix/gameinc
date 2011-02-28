@@ -171,6 +171,8 @@ bool CNrpButton::isPointInside(const core::position2di& point) const
 	if( isMyPoint && _alphaImage )
 	{
 		core::position2di relPoint = point - AbsoluteClippingRect.UpperLeftCorner;
+		relPoint.X *= (_alphaImage->getDimension().Width / AbsoluteClippingRect.getWidth());
+		relPoint.Y *= (_alphaImage->getDimension().Height / AbsoluteClippingRect.getHeight());
 		video::SColor color = _alphaImage->getPixel( relPoint.X, relPoint.Y );
 		isMyPoint = color.getAlpha() > 10;
 	}

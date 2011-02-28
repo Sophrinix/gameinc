@@ -16,6 +16,7 @@ namespace nrp
 											LUNA_AUTONAME_FUNCTION(class, GetRelativePosition )\
 											LUNA_AUTONAME_FUNCTION(class, GetChild )\
 											LUNA_AUTONAME_FUNCTION(class, GetCenter )\
+											LUNA_AUTONAME_FUNCTION(class, GetSize)\
 											LUNA_AUTONAME_FUNCTION(class, RemoveChilds )
 
 #define LUNA_ILUAGUIELEMENT_PROPERTIES(class) LUNA_ILUAOBJECT_PROPERTIES(class)\

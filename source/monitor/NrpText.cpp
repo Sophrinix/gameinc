@@ -140,9 +140,7 @@ const char* NrpText::ToStr()
 
 int NrpText::ToInt()
 {
-	std::wistringstream win( this->c_str() );
-	int value;
-	return win >> value ? value : 0;
+	return atoi( ToStr() );
 }
 
 bool NrpText::IsNumber()

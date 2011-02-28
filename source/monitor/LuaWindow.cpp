@@ -26,6 +26,7 @@ BEGIN_LUNA_PROPERTIES(CLuaWindow)
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "closeButton", GetCloseButton, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "draggable", PureFunction, SetDraggable )
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "drawBody", PureFunction, SetDrawBody )
+	LUNA_AUTONAME_PROPERTY( CLuaWindow, "onRemove", PureFunction, SetOnRemove )
 END_LUNA_PROPERTIES
 
 CLuaWindow::CLuaWindow(lua_State *L, bool exist) : ILuaGuiElement(L, CLASS_LUAWINDOW, exist )
@@ -45,6 +46,14 @@ int CLuaWindow::GetCloseButton( lua_State *L )
 
 	lua_pushnil( L );
 	return 1;
+}
+
+int CLuaWindow::SetOnRemove( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN _object->AddLuaFunction( GUIELEMENT_ON_REMOVE, _GetRef( L, -1 ) );
+
+	return 0;
 }
 
 int CLuaWindow::SetTexture( lua_State* L )
@@ -84,7 +93,7 @@ int CLuaWindow::SetDraggable( lua_State *L )
 		_object->setDraggable( drag );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaWindow::SetDrawBody( lua_State *L )
@@ -95,7 +104,7 @@ int CLuaWindow::SetDrawBody( lua_State *L )
 		_object->setDrawBackground( drag );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaWindow::AddLuaFunction( lua_State* L )
@@ -112,7 +121,7 @@ int CLuaWindow::AddLuaFunction( lua_State* L )
 		_object->AddLuaFunction( typef, name );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaWindow::RemoveLuaFunction( lua_State* L )
@@ -128,7 +137,7 @@ int CLuaWindow::RemoveLuaFunction( lua_State* L )
 		_object->RemoveLuaFunction( typef, name );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaWindow::Draw( lua_State* L )
@@ -138,7 +147,7 @@ int CLuaWindow::Draw( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	_object->draw();
 
-	return 1;
+	return 0;
 }
 
 const char* CLuaWindow::ClassName()

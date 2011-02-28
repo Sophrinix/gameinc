@@ -50,6 +50,9 @@ CNrpLayout::CNrpLayout( IGUIEnvironment* guienv, IGUIElement* parent, core::rect
 	_margin = 4;
 	_btnInLine = buttonInLine;
 
+	AlignRight = EGUIA_LOWERRIGHT;
+	AlignBottom = EGUIA_LOWERRIGHT;
+
 	//updateAbsolutePosition();
 }
 
@@ -85,6 +88,20 @@ bool CNrpLayout::isPointInside( const core::position2d<s32>& point ) const
 	return AbsoluteRect.isPointInside( point );
 }
 
+void CNrpLayout::updateAbsolutePosition()
+{
+	IGUIWindow::updateAbsolutePosition();
+
+	addChildToEnd( NULL );
 }
 
+void CNrpLayout::setRelativePosition(const core::rect<s32>& r)
+{
+	IGUIWindow::setRelativePosition( r );
+
+	addChildToEnd( NULL );
 }
+
+}//end namesoace gui
+
+}//end namespace irr

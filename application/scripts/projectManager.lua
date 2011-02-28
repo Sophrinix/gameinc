@@ -51,7 +51,7 @@ local function ShowWindowUserInfo( userPtr )
 	
 	if windowUserInfo == nil then
 		windowUserInfo = guienv:AddWindow( "", 490, 140, "150e", "60e", -1, windowProjectManager )
-		windowUserInfo:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./projectManager.ListBoxItemSelected()" )
+		windowUserInfo:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, ListBoxItemSelected )
 		windowUserInfo.drawBody = false
 		windowUserInfo.closeButton.visible = false
 		windowUserInfo.draggable = false
@@ -146,8 +146,8 @@ function Show()
 	--поставим для просмотра первого кодера
 	UpdateUsersListBox( base.STR_CODERS )	
 	
-	windowProjectManager:AddLuaFunction( base.GUIELEMENT_CMBXITEM_SELECTED, "./projectManager.ComboBoxItemSelected()" )
-	windowProjectManager:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, "./projectManager.ListBoxItemSelected()" )
+	windowProjectManager:AddLuaFunction( base.GUIELEMENT_CMBXITEM_SELECTED, ComboBoxItemSelected )
+	windowProjectManager:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, ListBoxItemSelected )
 end
 
 function ListBoxItemSelected( mp )
