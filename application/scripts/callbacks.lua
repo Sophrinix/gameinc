@@ -1,4 +1,3 @@
-plant = applic.plant
 labelSpeed = nil
 
 function sworkAppDayChange( ptr )
@@ -22,14 +21,21 @@ function PaySalaryToWorkers()
 	local needMoney = 0
 	local user = nil
 	local salary = 0
+	
+	--подсчет суммы для выплаты зарплаты
 	for i=1, company.userNumber do
 		user = company:GetUser( i-1 )
+		--выплатим зарплату
 		salary = user:GetParam( "salary" )
-		user:AddParam( "balance", salary )
+		user:AddParam( "balance", salary, false )
 		needMoney = needMoney + salary
+		
+		--снижение ожидания премии
+		salary = user:GetParam( "lastAward" )
+		user:SetParam( "lastAward", salary / 2 )
 	end
 	
-	company:AddBalance( -needMoney )
+	company:AddBalance( "Выплата зарплаты сотрудникам", -needMoney )
 end
 
 function PayMoneyToInventions()
@@ -37,7 +43,7 @@ function PayMoneyToInventions()
 	for index=1, company.inventionNumber do
 		local invention = company:GetInvention( index-1 )
 					
-		company:AddBalance( -invention:GetMonthPay() )
+		company:AddBalance( "Инвестиции в развитие", -invention:GetMonthPay() )
 		invention:ClearMonthPay()
 	end
 end
@@ -60,7 +66,7 @@ function sworkApplicationClose( ptr )
 	NrpApplicationSave()
 	applic:SaveBoxAddonsPrice()
 	applic.pda:Save()
-	plant:Save()
+	applic.plant:Save()
 	NrpApplicationClose()
 end
 
@@ -82,18 +88,21 @@ local function localChangeSpeed( keyInput )
 	if labelSpeed then labelSpeed:Remove() end
 	
 	if keyInput == 0xBB then 
-		if applic.speed > 100 then applic.speed = applic.speed - 100 end
+		if applic.speed > 100 then applic.speed = (applic.speed - 100) end
 	else
-		if applic.speed < 1000 then applic.spped = applic.speed + 100 end
+		if applic.speed < 1000 then applic.speed = (applic.speed + 100) end
 	end
 	
 	local dd = ( 1000 - applic.speed ) / 100
-	labelSpeed = guienv:AddLabel( "Скорость игры " .. dd, "40%", "45%", "20%+", "10%+", -1, guienv.root )
-								  
+	labelSpeed = guienv:AddLabel( "Скорость игры " .. dd, "25%", "45%", "50%+", "20%+", -1, guienv.root )
+	labelSpeed:SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
+	labelSpeed.font = "font_28"
+							
+	LogScript( "labelSpeed:Update" )
 	guienv:AddBlenderAnimator( labelSpeed, 255, 10, 2000, false, true, false )
 end
 
-function sworkKeyboardEvent( ptr )
+function sworkKeyboardEvent( _, ptr )
 	local event = CLuaEvent( ptr )
 	local keyInput = event.key
 
@@ -102,14 +111,3 @@ function sworkKeyboardEvent( ptr )
 		localChangeSpeed( keyInput )
 	end
 end
-
-sceneManager:AddSceneFunction( SCENE_KEY_INPUT_EVENT, sworkKeyboardEvent )
-
-applic:AddLuaFunction( APP_DAY_CHANGE, sworkAppDayChange )
-applic:AddLuaFunction( APP_MONTH_CHANGE, sworkAppMonthChange )
-applic:AddLuaFunction( APP_YEAR_CHANGE, sworkAppYearChange )
-applic:AddLuaFunction( APP_INVENTION_FINISHED, sworkInventionFinished )
-applic:AddLuaFunction( APP_MODULE_FINISHED, sworkModuleFinished )
-applic:AddLuaFunction( APP_REKLAME_FINISHED, sworkReklameFinished )
-applic:AddLuaFunction( APP_USER_MARKETUPDATE, sworkUserMarketUpdated )
-applic:AddLuaFunction( APP_PROJECT_FINISHED, sworkPlayerCompanyReadyProject )

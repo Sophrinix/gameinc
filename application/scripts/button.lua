@@ -20,6 +20,11 @@ local function SetImagePack( button, x, y, w, h, norm, sel )
 	button:SetPressedImage( x, y, w, h, sel )	
 end
 
+function CloseParent( mp )
+	mp = base.CLuaButton( mp ).parent
+	base.CLuaElement( mp ):Remove()
+end
+
 function EqualeTexture( x, y, texturePrefix, parentr, idr, textr, actionr )
 	local normalPath = GetNormalPath( texturePrefix )
 	local selectPath = GetSelectPath( texturePrefix )
@@ -52,6 +57,7 @@ function Stretch( x1, y1, x2, y2, texturePrefix, parentr, idr, textr, actionr )
 	local txsw, txsh = txs:GetSize()
 
 	local btn = guienv:AddButton( x1, y1, x2, y2, parentr, idr, textr )
+	btn.tooltip = textr
 	SetImagePack( btn, 0, 0, txsw, txsh, normalPath, selectPath )
 	btn.action = actionr
 	
@@ -60,6 +66,13 @@ end
 
 function LayoutButton( texturePrefix, parentr, idr, textr, actionr )
 	Stretch( 0, 0, 1, 1, texturePrefix, parentr, idr, textr, actionr )
+end
+
+function LayoutPushButton( texturePrefix, parentr, idr, textr, actionr )
+	local btn = Stretch( 0, 0, 1, 1, texturePrefix, parentr, idr, textr, actionr )
+	btn.pushButton = true
+	
+	return btn
 end
 
 function StretchOne( x1, y1, x2, y2, pathToTexture, parentr, idr, textr, actionr )

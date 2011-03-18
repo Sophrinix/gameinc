@@ -1,5 +1,7 @@
 local base = _G
 
+IncludeScript( "userInfo" )
+
 module( "univer" )
 
 btnDesk = nil
@@ -47,86 +49,55 @@ function Show()
 	button.EqualeTexture( 612, 300, "outsorcing", univerWindow, -1, "", ShowOutsourcingWindow )
 end
 
-local function _AddProgressBar( windowe, pos, texture )
-	local prg = guienv:AddProgressBar( windowe, 0, 0, 1, 1, -1 )
-	prg.position = pos
-	prg.image = texture
-	prg.fillImage = "media/pogressbar/prg_star_fill.png"
-	--local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, windowe )
-	--label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+local function _UpContractUser()
+	company:AddUser( userToUp )
+	base.univer.ShowAvaibleEmployers()
 end
 
-local function _ShowUserInfoWindow( x, y, width, height, user, parent )
-	local windowg = guienv:AddWindow( "", x, y, width, height, -1, parent )
-	windowg.closeButton.visible = false
+local function _UpEmployer( userToUp )
+	if userToUp == nil then 
+		return 
+	end
 	
-	local money = user:GetParam( "wantMoney" )
-	windowg.text = user.name.." ($"..money..")"
-	windowg.draggable = false
+	if userToUp:GetParam( "contractMoney" ) > 0 then 
+	    local money = userToUp:GetParam( "contractMoney" ) * userToUp:GetParam( "wantMoney" )
+		guienv:MessageBox( "Деньги за контракт $" .. money, true, true, _UpContractUser, nil )
+		return 0
+	end
 	
-	local image = guienv:AddImage( 20, 20, "100+", "140+", windowg, -1, "" )
-	image.texture = user.texture
-	image.scaleImage = true
-	image.useAlphaChannel = true
-	
-	local layout = guienv:AddLayout( 130, 20, "95%", "40e", 2, -1, windowg )
-	_AddProgressBar( layout, user:GetParam( "knowledgeLevel" ), "media/progressbar/prg_experience.png" )
-	_AddProgressBar( layout, user:GetParam("codeQuality"), "media/progressbar/prg_quality.png" )
-	_AddProgressBar( layout, user:GetParam("codeSpeed"), "media/progressbar/prg_speed.png" )
-	_AddProgressBar( layout, user:GetParam("stability"), "media/progressbar/prg_stamina.png" )
-					   
-	local btn = guienv:AddButton( "25%", "30e", "50%+", "5e", windowg, -1, "Нанять" )
-	btn.action = UpEmployer
-	
-	return windowg			   
+	company:AddUser( userToUp )
+	base.univer.ShowAvaibleEmployers()
 end
 
-local function _ShowAvaibleEmployers()
+function ShowAvaibleEmployers()
 	local maxuser = applic.userNumber
 
 	base.LogScript( "ShowAvaibleEmployers:appusers" .. maxuser )
 	
 	for i=1, #usersWindow do
-		guienv:AddToDeletionQueue( usersWindow[ i ] )
-		usersWindow[ i ] = nil
+		guienv:AddToDeletionQueue( usersWindow[ i ].window )
 	end
+	
+	usersWindow = nil
+	usersWindow = {}
 
-	local layout = guienv:AddLayout( "5%", "10%", "95%", "95%", 2, -1, windowUpEmployer )
+	local layout = guienv:AddLayout( "5%", 100, "95%", "95%", 2, -1, windowUpEmployer )
 	local position=1
 	for i=1, maxuser do
-		local user = applic:GetUser( i-1 )
-
-		if modeUserView == user.typeName and user.freeUser then
-			usersWindow[ position ] = _ShowUserInfoWindow( "2%", (5 + (position-1) * 32).."%", "45%+",  "31%+", user, layout ) 
+		local mUser = applic:GetUser( i-1 )
+		
+		if modeUserView == mUser.typeName and mUser.freeUser then
+			usersWindow[ position ] = { window=guienv:AddWindow( "", 0, 0, 0, 0, -1, layout ), user=mUser }
 		    position = position + 1
 		end
 		
-		if position > 7 then 
-			return 0 
-		end
-	end
-end
-
-function UpEmployer( mp )
-	local button = base.CLuaButton( mp )
-	local windowg = base.CLuaWindow( button.parent )
-	
-	userToUp = applic:GetUserByName( windowg.text )
-
-	if userToUp:GetParam( "contractMoney" ) > 0 then 
-	    local money = userToUp:GetParam( "contractMoney" ) * userToUp:GetParam( "wantMoney" )
-		guienv:MessageBox( "Деньги за контракт $" .. money, true, true, UpContractUser, nil )
-		return 0
+		if position > 7 then break end
 	end
 	
-	company:AddUser( userToUp )
-	guienv:AddToDeletionQueue( windowg )
-	_ShowAvaibleEmployers()
-end
-
-function UpContractUser()
-	company:AddUser( userToUp )
-	_ShowAvaibleEmployers()
+	for i=1, #usersWindow do
+		base.userInfo.Update( usersWindow[ i ].user, usersWindow[ i ].window )
+		button.Stretch( "30e", "30e", "0e", "0e", "button_ok", usersWindow[ i ].window, -1, "",	function () _UpEmployer( usersWindow[ i ].user ) end )
+	end
 end
 
 function CloseEmployersWindow()
@@ -139,19 +110,21 @@ local function _CloseUpWindow()
 	windowUpEmployer = nil
 end
 
+local function _ChangeUserType( name )
+	modeUserView = mode[ name ] 
+	base.univer.ShowAvaibleEmployers()
+end
+
 function ShowEmployersWindow()
 	windowUpEmployer = window.fsWindow( "media/textures/stuffUpWindowBg.png", _CloseUpWindow )
 	
 	local layout = guienv:AddLayout( 20, 20, "20e", "70+", 4, -1, windowUpEmployer ) 	
-	button.LayoutButton( "", windowUpEmployer, -1, base.STR_CODERS, function () _ChangeUserType( STR_CODERS ) end )
-	button.LayoutButton( "", windowUpEmployer, -1, base.STR_DESIGNERS, function () _ChangeUserType( STR_DESIGNERS ) end )
-	button.LayoutButton( "", windowUpEmployer, -1, base.STR_COMPOSERS, function () _ChangeUserType( STR_COMPOSERS ) end )
-	button.LayoutButton( "", windowUpEmployer, -1, base.STR_TESTERS, function () _ChangeUserType( STR_TESTERS ) end )
+	button.LayoutButton( "", layout, -1, base.STR_CODERS, function () _ChangeUserType( base.STR_CODERS ) end )
+	button.LayoutButton( "", layout, -1, base.STR_DESIGNERS, function () _ChangeUserType( base.STR_DESIGNERS ) end )
+	button.LayoutButton( "", layout, -1, base.STR_COMPOSERS, function () _ChangeUserType( base.STR_COMPOSERS ) end )
+	button.LayoutButton( "", layout, -1, base.STR_TESTERS, function () _ChangeUserType( base.STR_TESTERS ) end )
 	
-	_ShowAvaibleEmployers()
+	base.univer.ShowAvaibleEmployers()
 end
 
-function ChangeUserType( name )
-	modeUserView = mode[ name ] 
-	ShowEmployersWindow()
-end
+

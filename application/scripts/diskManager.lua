@@ -245,7 +245,7 @@ local function _AddWork()
 	--изменим отношение производителя к игроку за размещение заказа
 	localChangeProducerDiscount()
 	
-	company:AddBalance( -_GetFinalPrice() )
+	company:AddBalance( "Оплата производства", -_GetFinalPrice() )
 	plant:AddProduceWork( produceDiskWork )
 	
 	produceDiskWork:Remove()

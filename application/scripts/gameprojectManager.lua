@@ -24,7 +24,7 @@ local window = base.window
 local Log = base.LogScript
 local company = nil
 local labelCodeVolume = nil
-local gameName = "withoutName"
+gameName = "withoutName"
 local editGameName = nil
 local prgProjectQuality = nil
 
@@ -39,22 +39,22 @@ local ADD = false
 
 function ShowParams()
 	labelCodeVolume.text = "Код:" .. project.codeVolume
-	prgProjectQuality.progress = project.codeQuality
+	prgProjectQuality.position = project.codeQuality
 end
 
 function Hide()
 	project:Remove()
 	
-	base.package.loaded[ "linkbox" ] = nil
-	base.package.loaded[ "gpmFunctions" ] = nil
-	base.package.loaded[ "gpmScenarioPage" ] = nil
-	base.package.loaded[ "gpmPlatformPage" ] = nil
-	base.package.loaded[ "gpmTechPage" ] = nil
-	base.package.loaded[ "gpmEndPage" ] = nil
-	base.package.loaded[ "gpmVideoPage" ] = nil
-	base.package.loaded[ "gpmSoundPage" ] = nil
-	base.package.loaded[ "gpmEnginePage" ] = nil
-	base.package.loaded[ "gpmGenrePage" ] = nil
+	base.package.loaded[ "linkbox" ] = false
+	base.package.loaded[ "gpmFunctions" ] = false
+	base.package.loaded[ "gpmScenarioPage" ] = false
+	base.package.loaded[ "gpmPlatformPage" ] = false
+	base.package.loaded[ "gpmTechPage" ] = false
+	base.package.loaded[ "gpmEndPage" ] = false
+	base.package.loaded[ "gpmVideoPage" ] = false
+	base.package.loaded[ "gpmSoundPage" ] = false
+	base.package.loaded[ "gpmEnginePage" ] = false
+	base.package.loaded[ "gpmGenrePage" ] = false
 end
 
 function UpdateProjectWindow( pageName )

@@ -18,9 +18,9 @@ local mainWindow = nil
 
 function Hide()
     base.LogScript( "shop.Hide" )
-	base.package.loaded[ "topGame" ] = nil
-	base.package.loaded[ "journals" ] = nil
-	base.package.loaded[ "saleManager" ] = nil
+	base.package.loaded[ "topGame" ] = false
+	base.package.loaded[ "journals" ] = false
+	base.package.loaded[ "saleManager" ] = false
 end
 
 function Show()  

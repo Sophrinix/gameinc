@@ -216,7 +216,7 @@ function ApplyNewWork( mp )
 	localUpdateLabels()
 	
 	--снимем деньги со счета компании для проведения рекламной акции
-	parentCompany:AddBalance( -1 * currentWork:GetDayCost() * currentWork.numberDay )
+	parentCompany:AddBalance( "Проведение рекламной кампании", -1 * currentWork:GetDayCost() * currentWork.numberDay )
 	
 	base.CLuaElement( parent ):Remove()
 end

@@ -80,6 +80,7 @@ STR_DEC_SALARY="З\П - 10%"
 STR_GET_WEEKEND="Выходной"
 STR_GET_PRESENT="Премия"
 STR_SEND_TO_SCHOOL="Обучение"
+STR_RECOGNITION="Наградить"
 STR_COMMUNICATE="Пригласить \nдля разговора"
 STR_ROUTINE="Дать поручение"
 

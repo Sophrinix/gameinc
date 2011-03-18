@@ -1,5 +1,10 @@
 local base = _G
 
+IncludeScript( "moneySelect" )
+IncludeScript( "userAward" )
+IncludeScript( "userLearning" )
+IncludeScript( "userRecognition" )
+
 module( "userManager" ) 
 
 local applic = base.applic
@@ -18,26 +23,27 @@ mode[ base.STR_TESTERS ] = "tester"
 
 local modeUserView = "coder"
 
-local currentEmployer = nil
+currentEmployer = nil
+
 local listBoxCompanyEmployers = nil
-local winInfo = nil
 local windowUserManager = nil
 local btnRemoveUser = nil
 local btnUpSalary = nil
 local btnDownSalary = nil
 local btnGiveWeekEnd = nil
 local btnGivePremia = nil
+local messageBox = nil
 
-local function ShowAvaibleEmployersToManage()
-	local maxuser = company.userNumber
-	
+local function _ShowAvaibleEmployersToManage()
 	listBoxCompanyEmployers:Clear()
-	for i=1, maxuser do
+	listBoxCompanyEmployers.itemHeight = 60
+
+	for i=1, company.userNumber do
 		local user = company:GetUser( i-1 )
 		
 		if modeUserView == user.typeName then
 			listBoxCompanyEmployers:AddItem( user.name, user.object )
-			listBoxCompanyEmployers:SetItemTextColor( i-1, 0xff, 0x0, 0xff, 0x0 )
+
 			if i % 2 == 0 then
 				listBoxCompanyEmployers:SetItemBgColor( i-1, 0xff, 0x82, 0x82, 0x82 )
 			else
@@ -47,50 +53,28 @@ local function ShowAvaibleEmployersToManage()
 	end
 end
 
-local function ShowUsersParameters( lbx, user )
-	lbx:Clear()
-	lbx:AddItem( "Опыт=" .. user:GetParam( "knowledgeLevel" ), nil )
-	lbx:AddItem( "Качество=" .. user:GetParam( "codeQuality" ), nil )
-	lbx:AddItem( "Скорость=" .. user:GetParam( "codeSpeed" ), nil )
-	lbx:AddItem( "Устойчивость=" .. user:GetParam( "stability" ), nil )
-	lbx:AddItem( "Характер=" .. user:GetParam( "character" ), nil )	
-	
-	if user:GetSkill( base.SKILL_CODING ) > 0 then 
-		lbx:AddItem( "Программирование=" .. user:GetSkill( base.SKILL_CODING ), nil )	
-	end
-end
-
 function CloseUserInfoWindow( ptr )
 	winInfo:Remove()
 end
 
-function ShowUserInfo()	
-	if winInfo ~= nil then winInfo:Remove() end
-
-	currentEmployer = base.CLuaUser( listBoxCompanyEmployers:GetSelectedObject() )
-	
-	winInfo = guienv:AddWindow( "", "25%", "33%", "50%+", "50%+", -1, windowUserManager )
-	winInfo.text = currentEmployer.name
-	winInfo.draggable = false 
-
-	winInfo:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, CloseUserInfoWindow )
-	
-	local wd, ht = winInfo:GetSize()
-	local listBox = guienv:AddListBox( 10, 20, "10e", "10e", -1, winInfo )
-	
-	ShowUsersParameters( listBox, currentEmployer )
-end
-
-local function _UpSalary()
+local function _SetNewSalary( start, stop )
 	if currentEmployer ~= nil then
-		local curSalary = currentEmployer:GetParam( "salary" )
-		currentEmployer:SetParam( "salary", curSalary * 1.1 )
-		LogScript( "!!!!!!!!!!!!!! Salary to "..currentEmployer.name.." is $"..curSalary )
+		currentEmployer:SetParam( "salary", stop )
 		
-		--currentEmployer:AddModificator( "effectively", 1.2, "7 day" ) 
+		base.LogScript( "!!!!!!!!!!!!!! Salary to "..currentEmployer.name.." is $"..stop )
+		--currentEmployer:AddModificator( "effectively", 1.2, "7 day" )
 	end
 end
 
+local function _ChangeSalary()
+	if currentEmployer ~= nil then
+		local curSalary = currentEmployer:GetParam( "salary" )
+		local interval = base.math.ceil( curSalary / 500 ) * 50
+		base.moneySelect.Show( "Установить новую зарплату", curSalary, interval, _SetNewSalary )
+	end
+end
+
+--нормально выплатили выходное пособие работнику при увольнении
 local function _GetMoneyForFireEmp()
 	--работник остается на рынке труда
 	company:RemoveUser( currentEmployer.name )
@@ -99,94 +83,97 @@ local function _GetMoneyForFireEmp()
 	--в неё снова
 	-- получим текущее значение отношения рабочего к компании
 	local relation = currentEmployer:GetRelation( company.name ) 
-	relation:Set( "rel_value", relation:GetValue( "rel_value" ) * 0.8 ) 
+	relation.value = relation.value * 0.8
 	--также это вызовет некоторое снижение отношения к компании
 	--у его друзей, чем выше показатель отношения между людьми
 	--тем больше зависимость падения отношения к компании у друга
 
 	-- больше к этому человеку нет доступа
 	currentEmployer = nil
-	ShowAvaibleEmployersToManage()
+	messageBox:Remove()
+	_ShowAvaibleEmployersToManage()
 end
 
+--не захотели выплатить выходное пособие работнику
 local function _NoGetMoneyForFireEmp()
 	company:RemoveUser( currentEmployer.name )
 	
 	local relation = currentEmployer:GetRelation( company.name ) 
-	relation:Set( "rel_value", realtion:GetValue( "rel_value" ) * 0.3 ) 
+	relation.value = relation.value * 0.3
 	--расчет возможности что уволенный человек забрал
 	--какие-то данные или испортил разрабатываемый модуль,
 	--передал разработку в другую компанию, чем увеличил прогресс 
 	--какого нибудть модуля
 	--если это произошло, то его надо убрать с рынка
-	application:RemoveUser( currentEmployer )
+	applic:RemoveUser( currentEmployer )
 	currentEmployer = nil
-	ShowAvaibleEmployersToManage()
+	messageBox:Remove()
+	_ShowAvaibleEmployersToManage()
 end
 
 local function _RemoveUser()
 	--увольняя человека надо выплатить ему зарплату за два месяца
 	--иначе повышается шанс, что он чтонибудь стащит с конторы
-	guienv:MessageBox( "Работник хочет получить жалование за 2 месяца вперед ($" .. currentEmployer:GetParam( "salary" ) * 2 .. ")\nВыплатить???", 
-					   true, true, _GetMoneyForFireEmp, _NoGetMoneyForFireEmp )
+	messageBox = guienv:MessageBox( "Работник хочет получить жалование \nза 2 месяца вперед ($" .. currentEmployer:GetParam( "salary" ) * 2 .. ")\nВыплатить???", 
+								    true, true, _GetMoneyForFireEmp, _NoGetMoneyForFireEmp )
 end
 
 local function _ChangeUserType( name )
 	modeUserView = mode[ name ] 
 	currentEmployer = nil
 	
-	ShowAvaibleEmployersToManage()
-end
-
-local function _DownSalary()
-
+	_ShowAvaibleEmployersToManage()
 end
 
 local function _GetWeekend()
-
-end
-
-local function _GetPremia()
-
-end
-
-local function _SendToLearning()
-
-end
-
-local function _Communicate()
-
+	if currentEmployer ~= nil then
+		currentEmployer:AddTimeWork( 7, "Отпуск", 14, "codeQuality", base.math.random( 0, 10 ) )
+		local relation = currentEmployer:GetRelation( company.name ) 
+		relation.value = relation.value * 1.01
+		
+		base.pda.Show( currentEmployer.name.." будет в отпуске 7 дней" )
+	end
 end
 
 local function _Routine()
 
 end
 
+local function _Hide()
+	base.package.loaded[ "moneySelect" ] = false
+	base.package.loaded[ "userAward" ] = false
+	base.package.loaded[ "userLearning" ] = false
+	base.packege.loaded[ "userRecognition" ] = false
+end
+
 function Show()
 	company = applic.playerCompany
 	
-	windowUserManager = window.fsWindow( "media/maps/director_cabinet_slider.png", Hide )
+	windowUserManager = window.fsWindow( "media/maps/director_cabinet_slider.png", _Hide )
 	
 	--Coder's button
 	local layout = guienv:AddLayout( "25%", "5%", "50%+", "15%", 10, -1, windowUserManager )
-	button.LayoutButton( "buttonCoders", layout, -1, base.STR_CODERS, function () _ChangeUserType( STR_CODERS ) end )
-	button.LayoutButton( "buttonDesigners", layout, -1, base.STR_DESIGNERS, function () _ChangeUserType( STR_DESIGNERS ) end )
-	button.LayoutButton( "buttonComposers", layout, -1, base.STR_COMPOSERS, function () _ChangeUserType( STR_COMPOSERS ) end )
-	button.LayoutButton( "buttonTesters", layout, -1, base.STR_TESTERS, function () _ChangeUserType( STR_TESTERS ) end )
+	button.LayoutButton( "buttonCoders", layout, -1, base.STR_CODERS, function () _ChangeUserType( base.STR_CODERS ) end )
+	button.LayoutButton( "buttonDesigners", layout, -1, base.STR_DESIGNERS, function () _ChangeUserType( base.STR_DESIGNERS ) end )
+	button.LayoutButton( "buttonComposers", layout, -1, base.STR_COMPOSERS, function () _ChangeUserType( base.STR_COMPOSERS ) end )
+	button.LayoutButton( "buttonTesters", layout, -1, base.STR_TESTERS, function () _ChangeUserType( base.STR_TESTERS ) end )
 	
 	listBoxCompanyEmployers = guienv:AddComponentListBox( "5%", "18%", "95%", "80e", -1, windowUserManager )
 	listBoxCompanyEmployers.itemHeigth = 128
-	listBoxCompanyEmployers.onLmbDblClick = ShowUserInfo
+	listBoxCompanyEmployers.onLmbDblClick = _ShowUserInfo
+	listBoxCompanyEmployers.onChangeSelect = function () 
+													currentEmployer = base.CLuaUser( listBoxCompanyEmployers.selectedObject ) 
+											 end
 	
-	ShowAvaibleEmployersToManage()
+	_ShowAvaibleEmployersToManage()
 
 	layout = guienv:AddLayout( "25%", "70e", "50%+", "5e", 10, -1, windowUserManager )
 	button.LayoutButton( "fire", layout, -1, base.STR_FIRE_EMP, _RemoveUser )
-	button.LayoutButton( "moneyup", layout, -1, base.STR_INC_SALARY, _UpSalary )
-	button.LayoutButton( "moneydown", layout, -1, base.STR_DEC_SALARY, _DownSalary )
+	button.LayoutButton( "moneyup", layout, -1, base.STR_INC_SALARY, _ChangeSalary )
+	--button.LayoutButton( "moneydown", layout, -1, base.STR_DEC_SALARY, _DownSalary )
 	button.LayoutButton( "weekend", layout, -1, base.STR_GET_WEEKEND, _GetWeekend )
-	button.LayoutButton( "premia", layout, -1, base.STR_GET_PRESENT, _GetPremia )
-	button.LayoutButton( "learning", layout, -1, base.STR_SEND_TO_SCHOOL, _SendToLearning )	
-	button.LayoutButton( "talk", layout, -1, base.STR_COMMUNICATE, _Communicate )	
-	button.LayoutButton( "task", layout, -1, base.STR_ROUTINE, _Routine )	
+	button.LayoutButton( "premia", layout, -1, base.STR_GET_PRESENT, base.userAward.Show )
+	button.LayoutButton( "learning", layout, -1, base.STR_SEND_TO_SCHOOL, base.userLearning.Show )	
+	button.LayoutButton( "medal", layout, -1, base.STR_RECOGNITION, base.userRecognition.Show )	
+	--button.LayoutButton( "task", layout, -1, base.STR_ROUTINE, _Routine )	
 end

@@ -89,7 +89,7 @@ function Show()
 	
 	guienv:AddHoveredAnimator( mainWindow, 100, 255, 4, true, false, false )
 
-	mainLayout = guienv:AddLayout( "15%", "5%", "70%", "60%", 10, -1, mainWindow ) 
+	mainLayout = guienv:AddLayout( "15%", "5%", "50%", "60%", 10, -1, mainWindow ) 
 	
 	AddButton( mainLayout, PureFunction, "media/top_menu/trass" )
 	AddButton( mainLayout, PureFunction, "media/top_menu/play" )
@@ -97,9 +97,9 @@ function Show()
 	AddButton( mainLayout, function () ShowFuncsButtons( true ) end, "media/top_menu/one" )	
 	AddButton( mainLayout, base.sworkApplicationClose, "media/top_menu/off" )
 	
-	timeLabel = guienv:AddLabel( "Время", "180e", "5%", "130+", "15+", -1, mainLayout )
+	timeLabel = guienv:AddLabel( "Время", "180e", 0, "130+", "33%", -1, mainWindow )
 	timeLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
-	balanceLabel = guienv:AddLabel( "UserName", "180e", "50%", "130", "15+", -1, mainLayout )
+	balanceLabel = guienv:AddLabel( "UserName", "180e", "33%", "130+", "33%+", -1, mainWindow )
 	balanceLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
 	mainWindow:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, _UpdateTimeLabel )
 	

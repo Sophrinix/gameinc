@@ -13,7 +13,7 @@ btnEngine = nil
 btnGame = nil
 
 function Hide()
-	base.package.loaded[ "gameprojectManager" ] = nil
+	base.package.loaded[ "gameprojectManager" ] = false
 end
 
 function StartEngineProject()

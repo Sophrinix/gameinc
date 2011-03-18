@@ -20,9 +20,9 @@ btnDebt = nil
 btnBridge = nil
 
 local function _Hide()
-	base.package.loaded[ "bridge" ] = nil
-	base.package.loaded[ "loans" ] = nil
-	base.package.loaded[ "deposit" ] = nil
+	base.package.loaded[ "bridge" ] = false
+	base.package.loaded[ "loans" ] = false
+	base.package.loaded[ "deposit" ] = false
 end
 
 function Show()

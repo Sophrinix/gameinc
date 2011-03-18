@@ -4,8 +4,6 @@ module( "pda" )
 
 local guienv = base.guienv
 local button = base.button
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
 local appPda = nil
 
 local lbMessage = nil
@@ -13,18 +11,20 @@ local animTextRunner = nil
 
 local hw = 192
 local hh = 252
+local hhEnd = "252e"
 local offsethh = hh / 3
+local offsethhEnd = offsethh.."e"
 local visible = false
 
 mainWindow = nil
 
-function ToggleVisible()
+local function _ToggleVisible()
 	guienv:RemoveAnimators( mainWindow )
 	
 	if visible then	
-		guienv:AddMoveAnimator( mainWindow, 0, scrHeight - offsethh, 1, true, true, false )
+		guienv:AddMoveAnimator( mainWindow, 0, offsethhEnd, 1, true, true, false )
 	else
-		guienv:AddMoveAnimator( mainWindow, 0, scrHeight - hh, 1, true, true, false )
+		guienv:AddMoveAnimator( mainWindow, 0, hhEnd, 1, true, true, false )
 	end
 	
 	visible = not visible
@@ -46,8 +46,8 @@ end
 
 function Show( textr )
 	if mainWindow == nil then
-		mainWindow = guienv:AddWindow( "media/textures/pda.png", 0, scrHeight - offsethh, 
-							 		   hw, scrHeight - offsethh + hh, -1, 
+		mainWindow = guienv:AddWindow( "media/textures/pda.png", 0, offsethhEnd, 
+							 		   hw, (offsethh + hh).."e", -1, 
 							 		   guienv.root )
 							 		   
 		mainWindow.closeButton.visible = false
@@ -63,7 +63,7 @@ function Show( textr )
 								 
 		animTextRunner = guienv:AddTextRunner( lbMessage, "" )
 		
-		mainWindow:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, ToggleVisible )
+		mainWindow:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, _ToggleVisible )
 		
 		appPda = base.applic.pda
 		
@@ -73,18 +73,18 @@ function Show( textr )
 	end
 
 	if textr ~= nil then
-		appPda:AddMessage( textr, ToggleVisible )
-		local textr = appPda:GetTimeStr() .. "\n" .. appPda:GetMessage()
+		appPda:AddMessage( textr, _ToggleVisible )
+		local textr = appPda.time .. "\n" .. appPda.message
 		base.CLuaElement( animTextRunner ).text = textr
 	end
 	
 	guienv:RemoveAnimators( mainWindow )
-	guienv:AddMoveAnimator( mainWindow, 0, scrHeight - hh, 1, true, true, false )
+	guienv:AddMoveAnimator( mainWindow, 0, hhEnd, 1, true, true, false )
 	visible = true
 end
 
 function Hide()
 	guienv:RemoveAnimators( mainWindow )
-	guienv:AddMoveAnimator( mainWindow, 0, scrHeight - offsethh, 1, true, true, false )
+	guienv:AddMoveAnimator( mainWindow, 0, offsethhEnd, 1, true, true, false )
 	visible = false
 end

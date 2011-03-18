@@ -12,7 +12,7 @@ local window = base.window
 local mainWindow = nil
 
 local function _Hide()
-	base.package.loaded[ "testerComp" ] = nil
+	base.package.loaded[ "testerComp" ] = false
 end
 
 function Show( ptr )

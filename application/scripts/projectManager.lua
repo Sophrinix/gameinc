@@ -1,5 +1,7 @@
 local base = _G
 
+IncludeScript( "userInfo" )
+
 module( "projectManager" ) 
 
 local button = base.button
@@ -32,7 +34,7 @@ local windowProjectManager = nil
 local windowUserInfo = nil
 
 local function localCreateProjectsComboBox()
-	comboxProjects = guienv:AddComboBox( "", 140, 60, "300+", "30+", -1, windowProjectManager )
+	comboxProjects = guienv:AddComboBox( "", 140, 60, "50%", "30+", -1, windowProjectManager )
 	--пробежимся по всем проектам компании
 	LogScript( "Company DevProject number="..company.devProjectNumber )
 	for i=1, company.devProjectNumber do
@@ -50,7 +52,7 @@ local function ShowWindowUserInfo( userPtr )
 	currentEmployer = userPtr
 	
 	if windowUserInfo == nil then
-		windowUserInfo = guienv:AddWindow( "", 490, 140, "150e", "60e", -1, windowProjectManager )
+		windowUserInfo = guienv:AddWindow( "", "50%", "20%", "60e", "40%", -1, windowProjectManager )
 		windowUserInfo:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, ListBoxItemSelected )
 		windowUserInfo.drawBody = false
 		windowUserInfo.closeButton.visible = false
@@ -65,24 +67,12 @@ local function ShowWindowUserInfo( userPtr )
 		return 0
 	end
 	
-	local function dd( named, valuel, posy )
-		local lbd = guienv:AddLabel( named, 5, posy, "5e", "20+", -1, windowUserInfo )
-		lbd.color = base.toColor( 0xff, 0xff, 0xff, 0xff )
-		local prg = guienv:AddProgressBar( windowUserInfo, 80, posy, "5r", "20+", -1 )
-		prg.progress = valuel
-		prg.image = "media/textures/stars01.png"
-		prg.fillImage = "media/textures/stars06.png"
-	end
-	
-	dd( "Опыт", currentEmployer:GetParam( "knowledgeLevel" ), 30 )
-	dd( "Качество", currentEmployer:GetParam("codeQuality"), 50 )
-	dd( "Скорость", currentEmployer:GetParam("codeSpeed"), 70 )
-	dd( "Устойчивость", currentEmployer:GetParam("stability"), 90 ) 
+	base.userInfo.Update( currentEmployer, windowUserInfo )
 				   
-	local lbx = guienv:AddComponentListBox( 10, 135, "10e", "10e", -1, windowUserInfo )
-	for i=1, currentEmployer:GetWorkNumber() do
+	local lbx = guienv:AddComponentListBox( "55%", "40%", "150e", "60e", -1, windowProjectManager )
+	for i=1, currentEmployer.workNumber do
 		lbx:AddItem( "", currentEmployer:GetWork( i-1 ) )
-		lbx:SetItemTextColor( i-1, 0xff, 0xff, 0xff, 0xff )
+		--lbx:SetItemTextColor( i-1, 0xff, 0xff, 0xff, 0xff )
 	end
 end
 
@@ -110,9 +100,11 @@ function UpdateUsersListBox( newMode )
 end
 
 function Hide()
-	windowProjectManager:Remove()
+
 	windowProjectManager = nil
 	windowUserInfo = nil
+	
+	base.package.loaded[ "userInfo" ] = false
 end
 
 function Show()	
@@ -126,19 +118,17 @@ function Show()
 	
 	localCreateProjectsComboBox()
 
-	--project componentlistbox 
-	local offsetX = 140 + 300
-	lbxComponents = guienv:AddComponentListBox( 140, 100, offsetX, "60e", -1, windowProjectManager )
+	lbxComponents = guienv:AddComponentListBox( 140, 100, "50%", "60e", -1, windowProjectManager )
 	lbxComponents.itemHeigth = 40
 	
-	localBtnToggleTask = button.Stretch( offsetX + 10, "50%", "50+", "60+", "tuda",
-								     	 windowProjectManager, -1, "Добавить задание",
+	localBtnToggleTask = button.Stretch( "50%", "50%", "50+", "60+", "tuda",
+								     	 windowProjectManager, -1, "",
 								    	 ToggleComponentLider )
 	--users combobox
-	comboxUsers = guienv:AddComboBox( "", offsetX + 10, 110, "150e", "20+", -1, windowProjectManager )
+	comboxUsers = guienv:AddComboBox( "", "50%", "15%", "140e", "4%+", -1, windowProjectManager )
 	
 	--coders
-	local layout = guienv:AddLayout( offsetX, 50, "80%", "60+", 10, -1, windowProjectManager )
+	local layout = guienv:AddLayout( "50%", "5%", "140e", "15%", 10, -1, windowProjectManager )
 	button.LayoutButton( "", layout, -1, base.STR_CODERS, function () UpdateUsersListBox( base.STR_CODERS ) end )
 	button.LayoutButton( "", layout, -1, base.STR_DESIGNERS, function () UpdateUsersListBox( base.STR_DESIGNERS ) end )
 	button.LayoutButton( "", layout, -1, base.STR_COMPOSERS, function () UpdateUsersListBox( base.STR_COMPOSERS ) end )
@@ -152,14 +142,14 @@ end
 
 function ListBoxItemSelected( mp )
 	selectedListBox = base.CLuaComponentListBox( mp )
-	currentComponent = base.CLuaDevelopModule( selectedListBox:GetSelectedObject() )
+	currentComponent = base.CLuaDevelopModule( selectedListBox.selectedObject )
 	LogScript( "!!!!!!!!!!!! CurrentComponent "..currentComponent.name )
 
 	if selectedListBox.object == lbxComponents.object then
-		localBtnToggleTask:SetText( "Добавить задание" )
+		localBtnToggleTask.tooltip = "Добавить задание"
 		button.SetEqualeImage( localBtnToggleTask, "tuda" )	
 	else
-		localBtnToggleTask:SetText( "Убрать задание" )	
+		localBtnToggleTask.tooltip = "Убрать задание"
 		button.SetEqualeImage( localBtnToggleTask, "suda" )	
 	end
 end
@@ -167,11 +157,11 @@ end
 local function ShowUnworkedGameProjectComponent()
 	lbxComponents:Clear()
 	
-	for i=1, currentProject:GetModuleNumber() do
+	for i=1, currentProject.moduleNumber do
 	    local module = currentProject:GetModule( i-1 )
 		if not module.empty then 
 		  lbxComponents:AddItem( module.name, module )	
-		  lbxComponents:SetItemTextColor( i-1, 0xff, 0xff, 0xff, 0xff )
+		  --lbxComponents:SetItemTextColor( i-1, 0xff, 0xff, 0xff, 0xff )
 		end
 	end
 end
@@ -182,7 +172,7 @@ function ToggleComponentLider()
 		if currentComponent ~= nil and not currentComponent.empty then
 			currentEmployer:AddWork( currentComponent )	
 			if currentComponent:GetEmployerPosibility( currentEmployer ) < 0.4 then
-				guienv:MessageBox( currentEmployer.name .. " имеет недостаточные навыки.", true, false, "", "" )
+				guienv:MessageBox( currentEmployer.name .. " имеет недостаточные навыки.", true, false, nil, nil )
 			end
 		end
 	else
@@ -200,13 +190,13 @@ function ComboBoxItemSelected( mp )
 	local cmbx = base.CLuaComboBox( mp )
 	
 	if cmbx.object == comboxUsers.object then
-		ShowWindowUserInfo( base.CLuaUser( cmbx:GetSelectedObject() ) ) 	
+		ShowWindowUserInfo( base.CLuaUser( cmbx.selectedObject ) ) 	
 	elseif cmbx.object == comboxProjects.object then
-		currentProject = base.CLuaDevelopProject( cmbx:GetSelectedObject() )
+		currentProject = base.CLuaDevelopProject( cmbx.selectedObject )
 		
-		if currentProject:GetTechGroup() == base.PT_GAME then
+		if currentProject.techGroup == base.PT_GAME then
 			ShowUnworkedGameProjectComponent()
-		elseif currentProject:GetTechGroup() == base.PT_GAMEENGINE then
+		elseif currentProject.techGroup == base.PT_GAMEENGINE then
 			ShowUnworkedEngineProjectComponent()
 		end
 	end

@@ -18,9 +18,9 @@ btnEmployer = nil
 btnSafe = nil
 
 function Hide()
-	base.package.loaded[ "projectSelect" ] = nil
-	base.package.loaded[ "monitor" ] = nil
-	base.package.loaded[ "safe" ] = nil
+	base.package.loaded[ "projectSelect" ] = false
+	base.package.loaded[ "monitor" ] = false
+	base.package.loaded[ "safe" ] = false
 end
 
 function Show( ptr )

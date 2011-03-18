@@ -16,8 +16,8 @@ btnBoxCreate = nil
 btnBoxProduce = nil
 
 local function _Hide()
-	base.package.loaded[ "gameboxManager" ] = nil	
-	base.package.loaded[ "diskManager" ] = nil
+	base.package.loaded[ "gameboxManager" ] = false	
+	base.package.loaded[ "diskManager" ] = false
 end
 
 function Show()

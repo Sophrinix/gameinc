@@ -15,8 +15,8 @@ local mainWindow = nil
 local width = 80
 
 function Hide()
-	base.package.loaded[ "projectManager" ] = nil
-	base.package.loaded[ "userManager" ] = nil
+	base.package.loaded[ "projectManager" ] = false
+	base.package.loaded[ "userManager" ] = false
 end
 
 function Show()
