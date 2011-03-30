@@ -126,7 +126,7 @@ local function _AddGames()
 	
 	cmbxGames = guienv:AddPictureFlow( "5%", "5%", "80%", "80%", -1, windowSelectGame )
 	cmbxGames:SetPictureRect( 0, 0, 140, 140 )
-	cmbxGames.drawBorder = false
+	cmbxGames.drawBody = false
 	cmbxGames.onSelect = _GameSelected
 	
 	button.Stretch( "15%", "82%", "49%", "95%", "", windowSelectGame, -1, "Выбрать", _SelectGame )
@@ -166,7 +166,7 @@ local function  _AddMachines()
 	
 	cmbxProduceType = guienv:AddPictureFlow( "5%", "5%", "80%", "80%", -1, windowSelectMachine )
 	cmbxProduceType:SetPictureRect( 0, 0, 140, 140 )
-	cmbxProduceType.drawBorder = false
+	cmbxProduceType.drawBody = false
 	cmbxProduceType.onSelect = _MachineSelected
 	
 	button.Stretch( "15%", "82%", "49%", "95%", "", windowSelectMachine, -1, "Выбрать", _SelectMachine )

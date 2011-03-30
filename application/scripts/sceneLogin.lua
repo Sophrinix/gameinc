@@ -22,5 +22,7 @@ guienv:AddButton( "Выход", layout, LoginFunctions.Quit )
 browser:Show()
 browser:Navigate( "media/html/intro.htm" )
 
---guienv:AddLigthing( btnNewGame:Self(), btnExitGame:Self(), "media/textures/larrow.png", 10 )
---
+--local img = guienv:AddImage( 0, 0, 200, 200, guienv.root, -1, "" );
+--img.scale = true
+--local txs = driver:CreateBlur( "media/02.bmp" )
+--img.texture = txs.path

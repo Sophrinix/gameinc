@@ -251,7 +251,8 @@ end
 function Show()
 	company = applic.playerCompany
 
-	wndGBM = window.fsWindow( "plant_select.png", _Hide )	
+	local txsBlur = base.driver:CreateBlur( "plant.png", 2, 4 )
+	wndGBM = window.fsWindow( txsBlur.path, _Hide )	
 	wndGBM.visible = false
 	wndGBM:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, WindowLeftMouseButtonUp )
 	

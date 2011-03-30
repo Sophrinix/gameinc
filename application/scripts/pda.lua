@@ -20,6 +20,8 @@ mainWindow = nil
 
 local function _ToggleVisible()
 	guienv:RemoveAnimators( mainWindow )
+
+	base.LogScript( "pda _ToggleVisible offsethhEnd=".. offsethhEnd.. "  hhEnd="..hhEnd ) 
 	
 	if visible then	
 		guienv:AddMoveAnimator( mainWindow, 0, offsethhEnd, 1, true, true, false )
@@ -46,6 +48,7 @@ end
 
 function Show( textr )
 	if mainWindow == nil then
+		base.LogScript( "pda show ofsethh=".. offsethh.. "  hh="..hh ) 
 		mainWindow = guienv:AddWindow( "media/textures/pda.png", 0, offsethhEnd, 
 							 		   hw, (offsethh + hh).."e", -1, 
 							 		   guienv.root )

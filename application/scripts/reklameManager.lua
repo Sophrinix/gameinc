@@ -120,7 +120,8 @@ local function _ShowCampaniesManager()
 	plant = applic.plant
 	
 	if campaniesWindow == nil then
-		campaniesWindow = guienv:AddWindow( "media/maps/marketing_select.png", 0, 0, "0e", "0e", -1, guienv.root )
+		local txsBlur = base.driver:CreateBlur( "marketing.png", 2, 4 )
+		campaniesWindow = guienv:AddWindow( txsBlur.path, 0, 0, "0e", "0e", -1, guienv.root )
 		campaniesWindow.closeButton.visible = false
 	end
 		
@@ -128,8 +129,8 @@ local function _ShowCampaniesManager()
 	if #reklames == 0 then localCreateReklames() end
 		
 	--блок рекламы на листовках
-	picflowReklames = guienv:AddPictureFlow( 60, 60, "10e", "33%+", -1, campaniesWindow )
-	picflowReklames:SetDrawBorder( false )
+	picflowReklames = guienv:AddPictureFlow( 60, 60, "10e", "25%+", -1, campaniesWindow )
+	picflowReklames.drawBody = false
 
 	btnDecDayNumber = guienv:AddButton( 10, "33%", 70, "80+", campaniesWindow, -1, "-" )
 	btnDecDayNumber.action = _DecDay
@@ -168,7 +169,7 @@ local function _ShowCampaniesManager()
 end
 
 function Show()
-	mainWindow = window.fsWindow( "media/maps/marketing_normal.png", _Hide )
+	mainWindow = window.fsWindow( "marketing.png", _Hide )
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_REKLAME )
 	

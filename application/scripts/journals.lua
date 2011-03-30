@@ -36,8 +36,14 @@ function Show()
 	if mainWindow then
 		mainWindow.visible = true
 	else
-		mainWindow = window.fsWindow( "media/textures/magazine.png", _Hide )
-								
+		local txsBlur = base.driver:CreateBlur( "windowShop.png", 2, 4 )
+		mainWindow = window.fsWindow( txsBlur.path, _Hide )
+		
+		local img = guienv:AddImage( 0, 0, "0e", "0e", mainWindow, -1, "" );
+		img.texture = "media/textures/magazine.png"
+		img.alphaChannel = true
+		guienv:SendToBack( img )
+				
 		lbxGames = guienv:AddComponentListBox( 320, 50, 730, 520, -1, mainWindow )						
 		--picflowGames = guienv:AddPictureFlow( 60, 10, scrWidth - 10, scrHeight / 3, -1, campaniesWindow:Self() )
 		--picflowGames:SetPictureRect( 0, 0, scrHeight / 3 - 40, scrHeight / 3 - 40 )

@@ -24,7 +24,7 @@ function Hide()
 end
 
 function Show()  
-	mainWindow = window.fsWindow( "windowShop_normal.png", Hide )
+	mainWindow = window.fsWindow( "windowShop.png", Hide )
 	
 	--игры в продаже
 	button.EqualeTexture( 147, 333, "gameInSale", mainWindow, -1, "", base.saleManager.Show )

@@ -30,7 +30,7 @@ function Show( ptr )
 	lbDesc = guienv:AddLabel( "", 278, 417, 770, 655, -1, mainWindow )
 	
 	picflowGames = guienv:AddPictureFlow( 350, 70, 680, 310, -1, mainWindow )
-	picflowGames.drawBorder = false
+	picflowGames.drawBody = false
 	
 	local project = nil
 	local company = applic.playerCompany

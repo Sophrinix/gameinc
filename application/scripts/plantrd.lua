@@ -21,7 +21,7 @@ local function _Hide()
 end
 
 function Show()
-	plantWindow = window.fsWindow( "media/maps/plant_normal.png", _Hide )
+	plantWindow = window.fsWindow( "plant.png", _Hide )
 	
 	base.tutorial.Update( base.tutorial.STEP_OVERVIEW_PLANT )
 	

@@ -55,7 +55,8 @@ function Show()
 	bankApp = applic.bank
 	company = applic.playerCompany
 	
-	windowLoan = window.fsWindow( "media/maps/bank_select.png", _Hide )
+	local txsBlur = base.driver:CreateBlur( "bank.png", 2, 4 )
+	windowLoan = window.fsWindow( txsBlur.path, _Hide )
 	
 	local summ = bankApp:GetMaxCompanyLoan( company.name )
 	base.LogScript( "loan for "..company.name .. " is "..summ )

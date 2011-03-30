@@ -31,7 +31,7 @@ function Update( user, windowg )
 	
 	local image = guienv:AddImage( "10", "10", wwImage.."+", hhImage.."+", windowg, -1, "" )
 	image.texture = user.texture
-	image.scaleImage = true
+	image.scale = true
 	image.useAlphaChannel = true
 	
 	hhImage = hhImage * 0.9

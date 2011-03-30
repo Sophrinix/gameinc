@@ -34,8 +34,9 @@ end
 
 function Show()
 	tutorial.Update( tutorial.STEP_CREATE_NEW_PROJECT )
-	
-	mainWindow = window.fsWindow( "director_cabinet_slider.png", Hide )
+
+	local txsBlur = base.driver:CreateBlur( "director_cabinet.png", 2, 4 )	
+	mainWindow = window.fsWindow( txsBlur.path, Hide )
 	
 	local layout = guienv:AddLayout( "33%", "25%", "50%+", "33%+", 2, -1, mainWindow )
 	btnEngine = button.LayoutButton( "newEngine", layout, -1, base.STR_NEW_GAME_ENGINE, StartEngineProject )

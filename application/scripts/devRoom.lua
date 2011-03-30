@@ -16,7 +16,7 @@ local function _Hide()
 end
 
 function Show( ptr )
-	mainWindow = window.fsWindow( "media/maps/developers.png", _Hide )
+	mainWindow = window.fsWindow( "developers.png", _Hide )
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_DEVELOPERS_ROOM )
 	

@@ -143,8 +143,14 @@ function Show( typeTop )
 	saveTypeTop = typeTop
 	company = applic.playerCompany
 
-	mainWindow = window.fsWindow( "media/textures/chartsMonth.png", Hide )
+	local txsBlur = base.driver:CreateBlur( "windowShop.png", 2, 4 )
+	mainWindow = window.fsWindow( txsBlur.path, Hide )
 	
+	local img = guienv:AddImage( 0, 0, "0e", "0e", mainWindow, -1, "" );
+	img.texture = "media/textures/chartsMonth.png"
+	img.alphaChannel = true
+	guienv:SendToBack( img )
+		
 	mainWindow:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, _CellSelected )
 	mainWindow:AddLuaFunction( base.GUIELEMENT_TABLE_HEADER_SELECTED, _HeaderSelected )
 	

@@ -25,6 +25,10 @@ function CloseParent( mp )
 	base.CLuaElement( mp ):Remove()
 end
 
+function NoFunction()
+
+end
+
 function EqualeTexture( x, y, texturePrefix, parentr, idr, textr, actionr )
 	local normalPath = GetNormalPath( texturePrefix )
 	local selectPath = GetSelectPath( texturePrefix )
@@ -45,9 +49,8 @@ function SetEqualeImage( button, texturePrefix )
 	local normalPath = GetNormalPath( texturePrefix )
 	local selectPath = GetSelectPath( texturePrefix )
 	local txs = driver:GetTexture( normalPath )
-	local txsw, txsh = txs:GetSize()
 	
-	SetImagePack( button, 0, 0, txsw, txsh, normalPath, selectPath )
+	SetImagePack( button, 0, 0, txs.width, txs.height, normalPath, selectPath )
 end
 
 function Stretch( x1, y1, x2, y2, texturePrefix, parentr, idr, textr, actionr )

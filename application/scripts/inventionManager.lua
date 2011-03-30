@@ -137,12 +137,13 @@ function Show( techName, companyName )
 	company = applic:GetCompanyByName( companyName )
 	
 	base.LogScript( "Окрыто окно для исследования="..techName.. "  компания="..company.name )
-	windowIM = guienv:AddWindow( "media/maps/laboratory_select.png", 0, 0, "0e", "0e", -1, guienv.root )
+	local txsBlur = base.driver:CreateBlur( "laboratory.png", 2, 4 )
+	windowIM = guienv:AddWindow( txsBlur.path, 0, 0, "0e", "0e", -1, guienv.root )
 	windowIM.draggable = false
 	
 	picFlowInvention = guienv:AddPictureFlow( 60, 10, "10e", "66%", -1, windowIM )
 	picFlowInvention:SetPictureRect( 0, 0, "33%", "33%" )
-	picFlowInvention.drawBorder = false
+	picFlowInvention.drawBody = false
 	
 	for index=1, company.inventionNumber do
 		local invention = company:GetInvention( index-1 )

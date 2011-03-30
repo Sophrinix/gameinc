@@ -149,7 +149,8 @@ end
 function Show()
 	company = applic.playerCompany
 	
-	windowUserManager = window.fsWindow( "media/maps/director_cabinet_slider.png", _Hide )
+	local txsBlur = base.driver:CreateBlur( "director_cabinet.png", 2, 4 )
+	windowUserManager = window.fsWindow( txsBlur.path, _Hide )
 	
 	--Coder's button
 	local layout = guienv:AddLayout( "25%", "5%", "50%+", "15%", 10, -1, windowUserManager )

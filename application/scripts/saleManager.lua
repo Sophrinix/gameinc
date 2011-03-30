@@ -126,7 +126,14 @@ end
 function Show()
 	company = applic.playerCompany
 
-	mainWindow = window.fsWindow( "media/textures/gameInSale.png", Hide )
+	local txsBlur = base.driver:CreateBlur( "windowShop.png", 2, 4 )
+	mainWindow = window.fsWindow( txsBlur.path, Hide )
+	
+	local img = guienv:AddImage( 0, 0, "0e", "0e", mainWindow, -1, "" );
+	img.texture = "media/textures/gameInSale.png"
+	img.alphaChannel = true
+	guienv:SendToBack( img )
+
 	
 	--добавим окно с листбоксом
 	--в листбоксе поместим список игр, которые щас в продаже

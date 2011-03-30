@@ -66,7 +66,8 @@ end
 
 local function CreateWindow( typef )
 	company = applic.playerCompany
-	windowMap = guienv:AddWindow( "media/maps/laboratory_select.png", 0, 0, "0e", "0e", -1, guienv.root )
+	local txsBlur = base.driver:CreateBlur( "laboratory.png", 2, 4 )
+	windowMap = guienv:AddWindow( txsBlur.path, 0, 0, "0e", "0e", -1, guienv.root )
 	windowMap.draggable = false
 	windowMap.closeButton.visible = false
 	
@@ -161,7 +162,7 @@ function CloseConfirmationWindow( ptr )
 end
 
 function Show()	
-	lab = window.fsWindow( "media/maps/laboratory_normal.png", _Hide )
+	lab = window.fsWindow( "laboratory.png", _Hide )
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_LABORATORY )
 	

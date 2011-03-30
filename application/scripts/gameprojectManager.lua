@@ -107,7 +107,8 @@ function Show()
 
 	project = base.CLuaGameProject():Create( "defaultGame" )
 		
-	mainWindow = window.fsWindow( "media/maps/director_cabinet_slider.png", Hide )
+	local blurTexture = base.driver:CreateBlur( "director_cabinet.png", 2, 4 )	
+	mainWindow = window.fsWindow( blurTexture.path, Hide )
 		
 	projectWindow = guienv:AddWindow( "media/maps/newProject.png", 60, 90, "60e", "30e", -1, mainWindow )
 	projectWindow.draggable = false

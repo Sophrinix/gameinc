@@ -26,7 +26,7 @@ local function _Hide()
 end
 
 function Show()
-	bankWindow = window.fsWindow( "bank_normal.png", _Hide )
+	bankWindow = window.fsWindow( "bank.png", _Hide )
 	
 	tutorial.Update( tutorial.STEP_OVERVIEW_BANK )
 	
@@ -35,6 +35,6 @@ function Show()
 	--deposit	
 	btnDebt = button.EqualeTexture( 258, 301, "deposit", bankWindow, -1, "", base.deposit.Show )
 	
-	btnBridge = button.EqualeTexture( 300, 300, "", bankWindow, -1, "", base.bridge.Show )
+	btnBridge = button.EqualeTexture( 333, 157, "bridge", bankWindow, -1, "", base.bridge.Show )
 end
 
