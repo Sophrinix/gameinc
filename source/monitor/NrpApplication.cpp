@@ -51,7 +51,6 @@ CLASS_NAME CLASS_NRPAPPLICATION( "CNrpApplication" );
 
 CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS_NRPAPPLICATION )
 {
-	Add<PNrpBank>( BANK, NULL );
 	Add( TECHNUMBER, (int)0 );
 	Add( USERNUMBER, (int)0 );
 	Add( COMPANIESNUMBER, (int)0 );
@@ -70,6 +69,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add<NrpText>( SAVEINI_PROFILE, "" );
 	Add<NrpText>( SAVEDIR_PROFILE, "" );
 	Add<NrpText>( SAVEDIR_TECHS, "" );
+	Add<NrpText>( SAVEDIR_BRIDGE, "" );
 	Add( SYSTEMINI, NrpText( "config/system.ini" ) );
 
 	IniFile rv( (NrpText)Param( SYSTEMINI ) );
@@ -89,6 +89,8 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add<CNrpPda*>( PDA, new CNrpPda() );
 	Add<CNrpGameTime*>( GAME_TIME, new CNrpGameTime( this ) );
 	Add( PAUSEBTWSTEP, 100 );
+	Add( INFLATION, 0.02f );
+	Add( PROFIT_TAX, 0.18f );
 	Add<CNrpBridge*>( BRIDGE, NULL );
 
 	srand( GetTickCount() );
@@ -125,22 +127,22 @@ int CNrpApplication::AddCompany( CNrpCompany* company )
 		
 		assert( ceo );
 		if( ceo && ceo->ObjectTypeName() == CNrpPlayer::ClassName() )
-			Param( PLAYERCOMPANY ) = company;
+			_self[ PLAYERCOMPANY ] = company;
 
 		return 1;
 	}
 	return 0;
 }
 
-int CNrpApplication::AddUser( IUser* user )
+int CNrpApplication::AddUser( CNrpUser* user )
 {
-	IUser* tmpUser = GetUser( user->Param( NAME ) );
+	CNrpUser* tmpUser = GetUser( (*user)[ NAME ] );
 	assert( tmpUser == NULL );
 
 	if( user && tmpUser == NULL )
 		_users.push_back( user );
 
-	Param( USERNUMBER ) = static_cast< int >( _users.size() );
+	_self[ USERNUMBER ] = static_cast< int >( _users.size() );
 	return 1;
 }
 
@@ -170,17 +172,17 @@ void CNrpApplication::AddTechnology( CNrpTechnology* ptrTech )
 	_self[ TECHNUMBER ] = static_cast<int>( _technologies.size() );
 }
 
-IUser* CNrpApplication::GetUser( u32 index )
+CNrpUser* CNrpApplication::GetUser( u32 index )
 {
 	return index < _users.size() ? _users[ index ] : NULL;
 }
 
-IUser* CNrpApplication::GetUser( const NrpText& name )
+CNrpUser* CNrpApplication::GetUser( const NrpText& name )
 {
-	return FindByNameAndIntName<USERS, IUser>( _users, name );
+	return FindByNameAndIntName<USERS, CNrpUser>( _users, name );
 }
 
-int CNrpApplication::RemoveUser( IUser* user )
+int CNrpApplication::RemoveUser( CNrpUser* user )
 {
 	for( u32 pos=0; pos < _users.size(); pos++ )
 		if( _users[ pos ] == user )
@@ -298,7 +300,7 @@ void CNrpApplication::_LoadUsers( const NrpText& fileName )
 
 		NrpText fileName = (NrpText)Param( SAVEDIR_USERS ) + name + ".user";
 		
-		IUser* user = NULL;
+		CNrpUser* user = NULL;
 		if( className == CNrpPlayer::ClassName() ) 
 			user = new CNrpPlayer( fileName );
 		else
@@ -307,7 +309,7 @@ void CNrpApplication::_LoadUsers( const NrpText& fileName )
 				user = new CNrpAiUser( fileName );
 			else
 			{
-				user = new IUser( className, fileName );
+				user = new CNrpUser( className, fileName );
 				user->Load( fileName );
 			}
 		}
@@ -331,6 +333,7 @@ void CNrpApplication::_InitialyzeSaveDirectories( const NrpText& profileName )
 	_self[ SAVEDIR_USERS ] = profileDir + "users/";
 	_self[ SAVEINI_PROFILE ] = profileDir + "profile.ini";
 	_self[ SAVEDIR_TECHS ] = profileDir + "techs/";
+	_self[ SAVEDIR_BRIDGE ] = profileDir + "bridge/";
 }
 
 void CNrpApplication::LoadLinks( const NrpText& fileName, const NrpText& templateName )
@@ -431,6 +434,8 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 		AddCompany( cmp );
 	}
 
+	CNrpBridge::Instance().Load( _self[ SAVEDIR_BRIDGE ] );
+
 	CNrpScript::Instance().TemporaryScript( AFTER_LOAD_SCRIPT, CNrpScript::SA_EXEC );
 }
 
@@ -502,7 +507,7 @@ void CNrpApplication::_UpdateInvention()
 	{
 		CNrpInvention* pInv = _inventions[ k ];
 		assert( pInv );
-		pInv->CheckParams();
+		pInv->CheckParams( _self[ CURRENTTIME ].As<NrpTime>() );
 
 		if( (*pInv)[ READYWORKPERCENT ] >= 1.f )
 		{
@@ -623,9 +628,9 @@ void CNrpApplication::CreateNewFreeUsers()
 	
 	for( u32 i=0; i < _users.size(); i++ )
 	{
-		IUser* user = _users[ i ];
+		CNrpUser* user = _users[ i ];
 		NrpText typeName = user->ObjectTypeName();
-		if( user->Param( PARENTCOMPANY ).As<PNrpCompany>() != NULL )
+		if( (*user)[ PARENTCOMPANY ].As<PNrpCompany>() != NULL )
 			continue;
 
 		if( core::map< NrpText, USERS* >::Node* node = group.find( typeName ) )
@@ -644,7 +649,7 @@ void CNrpApplication::CreateNewFreeUsers()
 		tmpList.clear();
 
 		for( size_t cnt=tmpList.size(); cnt < USER_GROUP_COUNT; cnt++ )
-			tmpList.push_back( _CreateRandomUser( gIter->getKey() ) );
+			tmpList.push_back( CreateRandomUser( gIter->getKey() ) );
 	}
 
 	gIter = group.getIterator();
@@ -655,7 +660,7 @@ void CNrpApplication::CreateNewFreeUsers()
 	if( _self[ USERNUMBER ] != static_cast< int >( _users.size() ) )
 		DoLuaFunctionsByType( APP_USER_MARKETUPDATE, NULL );
 
-	Param( USERNUMBER ) = static_cast< int >( _users.size() );
+	_self[ USERNUMBER ] = static_cast< int >( _users.size() );
 }
 
 void CNrpApplication::Init()
@@ -665,8 +670,9 @@ void CNrpApplication::Init()
 #else
 	_self[ WORKDIR ] = OpFileSystem::UpDir( __argv[ 0 ] );
 #endif
-	_self[ BANK ] = &CNrpBank::Instance();
 
+	CNrpBank::Instance();
+	CNrpBridge::Instance();
 	plugin::CNrpPluginEngine::Instance();
 	//инициализация систем
 	CNrpHUDConfig::Instance();
@@ -675,7 +681,7 @@ void CNrpApplication::Init()
 	CNrpPlant::Instance();
 	CNrpScript::Instance();
 	CNrpHtmlEngineConfig& heConfig = CNrpHtmlEngineConfig::Instance();
-	heConfig[ BASEDIR ] = OpFileSystem::CheckEndSlash( Param( WORKDIR ) ) + (NrpText)heConfig[ BASEDIR ];
+	heConfig[ BASEDIR ] = OpFileSystem::CheckEndSlash( _self[ WORKDIR ] ) + (NrpText)heConfig[ BASEDIR ];
 
 	//ожидаем подгрузки видео
 	_nrpEngine.InitVideo();
@@ -749,11 +755,11 @@ int CNrpApplication::_GetTechsByGroup( int type, TECHS& arrayt )
 	return arrayt.size();
 }
 
-IUser* CNrpApplication::_CreateRandomUser( NrpText userType )
+CNrpUser* CNrpApplication::CreateRandomUser( NrpText userType )
 {
 	TECHS genres;
 	_GetTechsByGroup( PT_GENRE, genres );
-	int randomParams = 1 + rand() % genres.size();//сколько параметров будем создавать
+	size_t randomParams = 1 + rand() % genres.size();//сколько параметров будем создавать
 	int maxParamValue = 1 + rand() % 100;//максимальное значение параметров
 
 	std::map< NrpText, NrpText > skillMap;
@@ -764,18 +770,22 @@ IUser* CNrpApplication::_CreateRandomUser( NrpText userType )
 
 	NrpText userName;
 
-	IUser* ptrUser = NULL;
+	CNrpUser* ptrUser = NULL;
 	do 
 	{
 		userName = GlobalPeopleName[ rand() % PEOPLE_NAME_COUNT ] + " " + GlobalPeopleSurname[ rand() % PEOPLE_SURNAME_COUNT ];
 		ptrUser = GetUser( userName );
 	} while ( ptrUser != NULL );
 
-	ptrUser = new IUser( userType, userName );
-	IUser& refUser = *ptrUser;
+	if( userType == CNrpAiUser::ClassName() )
+		ptrUser = new CNrpAiUser( userName, NULL );
+	else
+		ptrUser = new CNrpUser( userType, userName );
+
+	CNrpUser& refUser = *ptrUser;
 	ptrUser->SetSkill( skillMap[ userType ], maxParamValue );
-	refUser[ CODE_QUALITY ] = rand() % maxParamValue;
-	refUser[ CODE_SPEED ] = rand() % maxParamValue;
+	refUser[ WORK_QUALITY ] = rand() % maxParamValue;
+	refUser[ WORK_SPEED ] = rand() % maxParamValue;
 	refUser[ TALANT ] = rand() % maxParamValue;
 	refUser[ STAMINA ] = rand() % maxParamValue;
 	refUser[ STABILITY ] = rand() % maxParamValue;
@@ -811,6 +821,8 @@ void CNrpApplication::_BeginNewMonth()
 	for( u32 i=0; i < _games.size(); i++ )
 		 if( _games[ i ]->Param( GAMEISSALING ) )
 			 UpdateGameRatings( _games[ i ] );
+
+	_self[ BRIDGE ].As<CNrpBridge*>()->Update();
 }
 
 void CNrpApplication::_BeginNewHour()
@@ -1041,7 +1053,7 @@ void CNrpApplication::AddInvention( const NrpText& fileName, CNrpCompany* parent
 
 	if( !tmp )
 	{
-		CNrpInvention* inv = new CNrpInvention( startTech.get(), parentCompany );
+		CNrpInvention* inv = new CNrpInvention( startTech.get(), parentCompany, _self[ CURRENTTIME ].As<NrpTime>() );
 		parentCompany->AddInvention( inv );	
 		_inventions.push_back( inv );  
 		_self[ INVENTIONSNUMBER ] = static_cast< int >( _inventions.size() );
@@ -1120,7 +1132,7 @@ CNrpPlatform* CNrpApplication::GetPlatform( const NrpText& name )
 	return FindByNameAndIntName< PLATFORMS, CNrpPlatform >( _platforms, name );
 }
 
-CNrpPlatform* CNrpApplication::GetPlatform( int index )
+CNrpPlatform* CNrpApplication::GetPlatform( size_t index )
 {
 	assert( index < _platforms.size() );
 	return index < _platforms.size() ? _platforms[ index ] : NULL;

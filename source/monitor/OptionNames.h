@@ -43,5 +43,6 @@ OPTION_NAME PLATFORMNUMBER( "platformNumber" );
 OPTION_NAME RAM("ram");
 OPTION_NAME CPU("cpu");
 OPTION_NAME POPULARITY( L"popularity" );/*< изветность разработчика */
+OPTION_NAME OWNER( L"owner" );
 
 }//end namespace nrp

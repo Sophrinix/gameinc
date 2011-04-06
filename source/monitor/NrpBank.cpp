@@ -86,7 +86,7 @@ NrpText CNrpBank::ClassName()
 	return CLASS_BANK;
 }
 
-int CNrpBank::GetLoan( const NrpText& name )
+int CNrpBank::GetLoanMoney( const NrpText& name )
 {
 	return 0;
 }

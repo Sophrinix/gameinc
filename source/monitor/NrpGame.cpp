@@ -252,7 +252,7 @@ float CNrpGame::GetAuthorFamous()
 	float summ = 0.1f;
 	for( u32 i=0; i < _developers.size(); i++ )
 	{
-		IUser* user = _nrpApp.GetUser( _developers[ i ] );
+		CNrpUser* user = _nrpApp.GetUser( _developers[ i ] );
 		if( user )
 		{
 			summ += (*user)[ FAMOUS ].As<float>();

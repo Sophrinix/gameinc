@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "NrpUserModificator.h"
+#include "NrpConfigModificator.h"
 #include "IUser.h"
 
 namespace nrp

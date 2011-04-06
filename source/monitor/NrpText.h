@@ -10,7 +10,6 @@
 #pragma once
 #include <sstream>
 #include <irrlicht.h>
-#include "TimeHelpers.h"
 
 using namespace irr;
 using namespace core;
@@ -26,7 +25,6 @@ public:
 	NrpText( const stringw& str );
 	NrpText( const char* str );
 	NrpText( const wchar_t* str );
-	NrpText( const NrpTime& time );
 	NrpText( bool amount );
 	NrpText( int amount );
 	NrpText( float amount );
@@ -67,7 +65,6 @@ public:
 	bool IsFloat();
 	float ToFloat();
 	int ToInt();											//перевод строки в число
-	NrpTime ToTime();
 	bool ToBool();
 
 	const char* ToStr();

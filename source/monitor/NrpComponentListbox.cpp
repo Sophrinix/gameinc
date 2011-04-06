@@ -503,12 +503,17 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 		driver->draw2DImage( txs, 
 						 	 core::recti( core::position2di( 0, 0 ), imSize ) + rectangle.UpperLeftCorner,
 							 core::recti( core::position2di( 0, 0 ), txs->getSize() ), &clipRect );
+
+		rectangle.UpperLeftCorner.X += imSize.Width;
 	}
 
 
 	NrpText name = refTech[ NAME ];
+	if( percent < 1 )
+		swprintf( tmpstr, 127, L"%s (%d %%)(%d emp)", name.ToWide(), (int)(percent * 100), (int)refTech[ USERNUMBER ] );
+	else
+		swprintf( tmpstr, 127, L"%s", name.ToWide(), (int)(percent * 100) );
 
-	swprintf( tmpstr, 127, L"%s (%d %%)", name.ToWide(), (int)(percent * 100) );
 	_font->draw( tmpstr, rectangle, color, false, true, &clipRect );
 }
 
@@ -597,7 +602,7 @@ void CNrpComponentListbox::draw()
 						bgcolor = ( i==Selected && hl ) ? EGUI_LBC_TEXT_HIGHLIGHT : bgcolor;
 						if( CNrpTechnology* tech = dynamic_cast<CNrpTechnology*>( pObject ) )
 							_DrawAsTechnology( tech, textRect, frameRect, itbncolor, clientClip, bgcolor );
-						else if( IUser* user = dynamic_cast<IUser*>( pObject ) )
+						else if( CNrpUser* user = dynamic_cast<CNrpUser*>( pObject ) )
 							_DrawAsUser( user, textRect, frameRect, itbncolor, clientClip, bgcolor );
 						else if( CNrpDevelopGame* devGame = dynamic_cast< CNrpDevelopGame* >( pObject ) )
 							_DrawAsGame( devGame, textRect, frameRect, itbncolor, clientClip, bgcolor );
@@ -663,7 +668,7 @@ void CNrpComponentListbox::_DrawAsGame( INrpConfig* devGame, core::recti rectang
 	_font->draw( name, frameRect, color, true, true, &clipRect ); 
 }
 
-void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle, 
+void CNrpComponentListbox::_DrawAsUser( CNrpUser* user, core::recti rectangle, 
 									    core::recti frameRect, video::SColor color, 
 									    core::recti& clipRect, video::SColor bgColor )
 {
@@ -673,7 +678,7 @@ void CNrpComponentListbox::_DrawAsUser( IUser* user, core::recti rectangle,
 	rectangle.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
-	const IUser& refUser = *user;
+	const CNrpUser& refUser = *user;
 	int expr = refUser[ EXPERIENCE ];
 	NrpText name = refUser[ NAME ];
 	core::recti progressRect = frameRect;

@@ -29,7 +29,7 @@ OPTION_NAME LANGUAGESUPPORTCODE( "languageSupportCode" );
 class CNrpGameEngine;
 class CNrpTechnology;
 class CNrpProjectModule;
-class IUser;
+class CNrpUser;
 class CNrpCompany;
 class IniFile;
 

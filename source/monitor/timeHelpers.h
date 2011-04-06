@@ -23,10 +23,10 @@ public:
 	const WORD& RDay() const { return _date.wDay; }
 	const WORD& RSecond() const { return _date.wSecond; }
 
-	double ToDouble()
+	double ToDouble() const
 	{
 		double fDate;
-		SystemTimeToVariantTime( &_date, &fDate );
+		SystemTimeToVariantTime( const_cast< SYSTEMTIME* >( &_date ), &fDate );
 
 		return fDate;
 	}
@@ -34,6 +34,14 @@ public:
 	NrpTime( const SYSTEMTIME& time )
 	{
 		_date = time;
+		_date.wMilliseconds = 0;
+	}
+
+	NrpTime( const wchar_t* strValue )
+	{
+		swscanf_s( strValue, L"y=%04d m=%02d d=%02d h=%02d mi=%02d", 
+				   &_date.wYear, &_date.wMonth, &_date.wDay, &_date.wHour, &_date.wMinute );
+		_date.wSecond = 0;
 		_date.wMilliseconds = 0;
 	}
 
@@ -86,7 +94,7 @@ public:
 		int errCurrTime = SystemTimeToVariantTime( &_date, &time );
 		assert( errCurrTime > 0 );
 
-		time += minute / ( 24 * 60 );
+		time += minute / ( 24 * 60. );
 		VariantTimeToSystemTime( time, &_date );//прогноз завершения работ
 		return *this;
 	}
@@ -99,6 +107,21 @@ public:
 	bool IsValid() 
 	{
 		return _date.wYear > 0 && _date.wMonth > 0 && _date.wMonth <= 12 && _date.wDay > 0 && _date.wDay <= 31;
+	}
+
+	bool operator > ( const NrpTime& other ) const
+	{
+		return ToDouble() > other.ToDouble();
+	}
+
+	bool operator < ( const NrpTime& other )
+	{
+		return ToDouble() < other.ToDouble();
+	}
+
+	bool operator == ( const NrpTime& other )
+	{
+		return ToDouble() == other.ToDouble();
 	}
 
 	static NrpTime FromLocalTime()

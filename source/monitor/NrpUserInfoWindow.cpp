@@ -20,7 +20,7 @@ CNrpUserInfoWindow::CNrpUserInfoWindow(IGUIEnvironment* environment,
 									   IGUIElement* parent, 
 									   video::ITexture* texture, 
 									   s32 id, 
-									   nrp::IUser* ptrUser, 
+									   nrp::CNrpUser* ptrUser, 
 									   core::rect<s32> rectangle)
 	: IGUIWindow(environment, parent, id, rectangle), 
 		Dragging(false), IsDraggable(true), 

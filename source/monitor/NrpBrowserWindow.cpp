@@ -22,7 +22,8 @@ CNrpBrowserWindow::CNrpBrowserWindow( gui::IGUIEnvironment* env,
 									  core::dimension2du size ) : CNrpWindow( env, env->getRootGUIElement(), texture, id, 
 																			  core::recti( pos, size+core::dimension2du( 10, 25 ) ) )
 {
-	image_ = Environment->addImage( core::recti( 5, 20, size.Width + 5, size.Height + 20 ), this, -1, 0 );
+	setRelativePosition( core::recti( 0, 0, size.Width + 14, size.Height + 15 ) );
+	image_ = Environment->addImage( core::recti( 7, 7, size.Width+7, size.Height+7 ), this, -1, 0 );
 	image_->setScaleImage( true );
 	
 	setDraggable( true );

@@ -118,7 +118,12 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 			{
 				DoLuaFunctionsByType( GUIELEMENT_TABLE_HEADER_SELECTED, event.GUIEvent.Caller );
 				return true;
+			}
 
+			if( event.GUIEvent.EventType == EGET_TABLE_CHANGED )
+			{
+				DoLuaFunctionsByType( GUIELEMENT_TABLE_CHANGED, event.GUIEvent.Caller );
+				return true;
 			}
 
 			if( event.GUIEvent.EventType == EGET_LISTBOX_CHANGED )

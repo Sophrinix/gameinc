@@ -5,7 +5,7 @@
 
 namespace nrp
 {
-	class IUser;
+	class CNrpUser;
 }
 
 namespace irr
@@ -23,7 +23,7 @@ public:
 						IGUIElement* parent, 
 						video::ITexture* texture, 
 						s32 id, 
-						nrp::IUser* ptrUser,
+						nrp::CNrpUser* ptrUser,
 						core::rect<s32> rectangle);
 
 	//! destructor
@@ -90,7 +90,7 @@ protected:
 	bool Dragging, IsDraggable;
 	bool DrawBackground;
 	bool DrawTitlebar;
-	nrp::IUser* user_;
+	nrp::CNrpUser* user_;
 };
 
 } // end namespace gui

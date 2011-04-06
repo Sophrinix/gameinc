@@ -4,7 +4,7 @@
 namespace nrp
 {
 
-class CNrpAiUser : public IUser
+class CNrpAiUser : public CNrpUser
 {
 public:
 	CNrpAiUser( const NrpText& name, CNrpCompany* ptrCmp );

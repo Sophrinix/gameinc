@@ -5,7 +5,7 @@ namespace nrp
 {
 class CNrpCompany;
 
-class CNrpPlayer : public IUser
+class CNrpPlayer : public CNrpUser
 {
 public:
 	CNrpPlayer( const NrpText& name, CNrpCompany* ptrCmp );

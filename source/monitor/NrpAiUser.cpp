@@ -5,13 +5,13 @@ namespace nrp
 {
 CLASS_NAME CLASS_AIUSER( "CNrpAiUser" );	
 
-CNrpAiUser::CNrpAiUser( const NrpText& name, CNrpCompany* ptrCmp ) : IUser( CLASS_AIUSER, name )
+CNrpAiUser::CNrpAiUser( const NrpText& name, CNrpCompany* ptrCmp ) : CNrpUser( CLASS_AIUSER, name )
 {
 	assert( name.size() > 0 );
-	Param( NAME ) = name;
+	_self[ NAME ] = name;
 }
 
-CNrpAiUser::CNrpAiUser( const NrpText& fileName ) : IUser( CLASS_AIUSER, "" )
+CNrpAiUser::CNrpAiUser( const NrpText& fileName ) : CNrpUser( CLASS_AIUSER, "" )
 {
 	Load( fileName );
 }

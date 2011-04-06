@@ -5,7 +5,6 @@
 
 namespace nrp
 {
-OPTION_NAME BANK( L"bank" );
 OPTION_NAME PROFILENAME( L"profileName" );
 OPTION_NAME PROFILECOMPANY( L"profileCompany" );
 OPTION_NAME WORKDIR( L"workDir" );
@@ -22,6 +21,7 @@ OPTION_NAME SAVEDIR_USERS( L"saveDirUsers" );
 OPTION_NAME SAVEINI_PROFILE( L"saveIniProfile" );
 OPTION_NAME SAVEDIR_PROFILE( L"saveDirProfile" );
 OPTION_NAME SAVEDIR_TECHS( L"saveDirTechs" );
+OPTION_NAME SAVEDIR_BRIDGE( L"saveDirBridge" );
 OPTION_NAME CURRENTTIME( L"currentTime" );
 OPTION_NAME BOXADDONNUMBER( L"boxAdonNumber" );
 OPTION_NAME MARKETGAMENUMBER( L"marketGameNumber" );
@@ -32,9 +32,10 @@ OPTION_NAME SYSTEMINI( L"systemIni" );
 OPTION_NAME GAME_TIME( L"objectGameTime" );
 OPTION_NAME PAUSEBTWSTEP( L"pausebtwstep" );
 OPTION_NAME BRIDGE( L"bridge" );
-OPTION_NAME TAX( L"tax" );
+OPTION_NAME INFLATION( L"infaltion" );
+OPTION_NAME PROFIT_TAX( L"profit_tax" );
 
-class IUser;
+class CNrpUser;
 class INrpProject;
 class CNrpGameEngine;
 class CNrpTechnology;
@@ -62,11 +63,14 @@ public:
 	CNrpCompany* GetCompany( u32 index );
 	int AddCompany( CNrpCompany* company );
 
-	int AddUser( IUser* user );
-	int RemoveUser( IUser* user );
+	int AddUser( CNrpUser* user );
+	int RemoveUser( CNrpUser* user );
+
 	void CreateNewFreeUsers();
-	IUser* GetUser( u32 index );
-	IUser* GetUser( const NrpText& name );
+	CNrpUser* CreateRandomUser( NrpText userType );
+	
+	CNrpUser* GetUser( u32 index );
+	CNrpUser* GetUser( const NrpText& name );
 
 	void AddDevelopProject( INrpDevelopProject* project );
 	void RemoveDevelopProject( const NrpText& name );
@@ -94,7 +98,7 @@ public:
 	bool AddPlatform( CNrpPlatform* platform );
 	void RemovePlatform( const NrpText& name );
 	CNrpPlatform* GetPlatform( const NrpText& name );
-	CNrpPlatform* GetPlatform( int index );
+	CNrpPlatform* GetPlatform( size_t index );
 
 	void UpdateGameRatings( CNrpGame* ptrGame, bool firstTime=false );
 
@@ -144,7 +148,6 @@ private:
 	void _BeginNewHour();
 	void _BeginNewDay();
 	void _BeginNewMonth();
-	IUser* _CreateRandomUser( NrpText userType );
 	void _UpdateMarketGames();
 	int _GetFreePlatformNumberForGame( CNrpGame* game );
 	int _GetSalesNumber( CNrpGame* game );

@@ -1,6 +1,7 @@
 #pragma once
 #include "nrpConfig.h"
 #include "nrpArrays.h"
+#include "timeHelpers.h"
 
 namespace nrp
 { 
@@ -11,18 +12,18 @@ OPTION_NAME GAMENUMBER( L"gameNumber" );
 OPTION_NAME OBJECTSINPORTFELLE( L"objectInPortfelle" );
 OPTION_NAME DEVELOPPROJECTS_NUMBER( L"developProjectsNumber" );
 OPTION_NAME INVENTIONSNUMBER( L"inventionsNumber" );
-OPTION_NAME SELF_CAPITAL( L"selfCapital" );
-OPTION_NAME OTHER_CAPITAL( L"otherCapital" );
-OPTION_NAME MONEY_ON_PIE( L"moneyOnPie" );
+OPTION_NAME MONEY_ON_PIE( L"moneyOnPie" );   //доход на акцию в денежном значении
 OPTION_NAME PIE_COST( L"pieCost" );
 OPTION_NAME PIE_NUMBER( L"pieNumber" );
 OPTION_NAME PROFIT_LASTYEAR( L"profitLastYear" );
-OPTION_NAME DIVIDEND( L"dividend" );
+OPTION_NAME DIVIDEND( L"dividend" );		//доход на акции в процентном отношении к стоимости акции
+OPTION_NAME BOOKKEEPING( L"bookKeeping" );
+OPTION_NAME SELF_PIE_NUMBER( L"self_pie" );
 
 class CNrpCompany : public INrpConfig
 {
 public:
-	CNrpCompany( const NrpText& name, IUser* ceo );
+	CNrpCompany( const NrpText& name, CNrpUser* ceo );
 	CNrpCompany( const NrpText& fileName );
 	~CNrpCompany(void);
 
@@ -54,10 +55,10 @@ public:
 	CNrpInvention* GetInvention( int index );
 	void RemoveInvention( CNrpInvention* inv );
 
-	void AddUser( IUser* user );
+	void AddUser( CNrpUser* user );
 	void RemoveUser( const NrpText& name );
-	IUser* GetUser( int index ) const;
-	IUser* GetUser( const NrpText& name ) const;
+	CNrpUser* GetUser( int index ) const;
+	CNrpUser* GetUser( const NrpText& name ) const;
 	
 	void AddGame( CNrpGame* game );
 	CNrpGame* GetGame( const NrpText& gameName ) const;
@@ -67,6 +68,7 @@ public:
 	void BeginNewHour( const NrpTime& time );
 	void BeginNewDay( const NrpTime& time );
 	void BeginNewMonth( const NrpTime& time );
+	void BeginNewYear( const NrpTime& time );
 
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& loadFolder );

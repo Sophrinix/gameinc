@@ -60,7 +60,7 @@ CNrpProjectModule::CNrpProjectModule( CNrpPlatform* platform, INrpDevelopProject
 	_self[ QUALITY ] = refPl[ QUALITY ];
 
 	const TECHS& techs = platform->GetTechsList();
-	for( s32 i=0; i < techs.size(); i++ )
+	for( u32 i=0; i < techs.size(); i++ )
 	{
 		const NrpText& name = (*techs[ i ])[ INTERNAL_NAME ];
 		 _techRequires[ name ] = 100;
@@ -73,10 +73,8 @@ CNrpProjectModule::~CNrpProjectModule(void)
 
 void CNrpProjectModule::InitializeOptions_()
 {
-	CNrpTechnology::_InitializeOptions();
-
-	Add<IUser*>( LASTWORKER, NULL );
-	Add<IUser*>( COMPONENTLIDER, NULL );
+	Add<CNrpUser*>( LASTWORKER, NULL );
+	Add<CNrpUser*>( COMPONENTLIDER, NULL );
 	Add<int>( CODEVOLUME, 0 );
 	Add<int>( CODEPASSED, 0 );
 	Add<int>( ERRORNUMBER, 0 );
@@ -86,20 +84,20 @@ void CNrpProjectModule::InitializeOptions_()
 	Add<INrpDevelopProject*>( PARENT, NULL );
 }
 
-int CNrpProjectModule::AddUser( IUser* ptrUser )
+int CNrpProjectModule::AddUser( CNrpUser* ptrUser )
 {
-	if( (float)Param( READYWORKPERCENT ) < 1.f )
+	if( (float)_self[ READYWORKPERCENT ] < 1.f )
 	{
 		_users.push_back( ptrUser );
-		Param( USERNUMBER ) = static_cast< int >( _users.size() );
+		_self[ USERNUMBER ] = static_cast< int >( _users.size() );
 	}
 
-	return ( (float)Param( READYWORKPERCENT ) < 1.f);
+	return ( (float)_self[ READYWORKPERCENT ] < 1.f);
 }
 
-void CNrpProjectModule::Update( IUser* ptrUser )
+void CNrpProjectModule::Update( CNrpUser* ptrUser, const NrpTime& time )
 {
-	INrpDevelopProject* parent = Param( PARENT ).As<INrpDevelopProject*>();
+	INrpDevelopProject* parent = _self[ PARENT ].As<INrpDevelopProject*>();
 	assert( parent != NULL );
 
 	if( (int)_self[ CODEPASSED ] < (int)_self[ CODEVOLUME] )
@@ -133,7 +131,7 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 		_self[ CODEPASSED ] = codePassed;
 		_self[ READYWORKPERCENT ] = codePassed / static_cast< float >( (int)_self[ CODEVOLUME ] );
 		int quality = Param( QUALITY );
-		_self[ QUALITY ] = static_cast< int >( quality + (int)(*ptrUser)[ CODE_QUALITY ] / 2 );
+		_self[ QUALITY ] = static_cast< int >( quality + (int)(*ptrUser)[ WORK_QUALITY ] / 2 );
 		_self[ MONEYONDEVELOP ] += (int)(*ptrUser)[ SALARY ] / (20*9);
 	}
 
@@ -141,7 +139,7 @@ void CNrpProjectModule::Update( IUser* ptrUser )
 		parent->ModuleFinished( this );
 }
 
-float CNrpProjectModule::_GetWorkKoeffForUser( IUser* ptrUser )
+float CNrpProjectModule::_GetWorkKoeffForUser( CNrpUser* ptrUser )
 {
 	float teamKoef[10] = { 1.f/*1*/, 4.f/*2*/, 3.f/*3*/, 2.f/*4*/, 1.f/*5*/, 0.8f/*6*/, 0.65f/*7*/, 0.5f/*8*/, 0.25f/*9*/, 0.1f/*10 and more*/};
 	return teamKoef[ _users.size() >= 9 ? 9 : _users.size() ];

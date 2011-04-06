@@ -178,12 +178,12 @@ void CNrpConfigLooder::_ReadString( KeyPair* p )
 
 void CNrpConfigLooder::_ReadTime( KeyPair* p )
 {
-	(*_config)[ p->GetName() ] = p->GetValue().ToTime();
+	(*_config)[ p->GetName() ] = NrpTime( p->GetValue() );
 }
 
 void CNrpConfigLooder::_ReadUser( KeyPair* p )
 {
-	IUser* user = _nrpApp.GetUser( p->GetValue() );
+	CNrpUser* user = _nrpApp.GetUser( p->GetValue() );
 
 	if( user )
 		(*_config)[ p->GetName() ] = user;

@@ -8,7 +8,7 @@ namespace nrp
 	class INrpObject;
 	class CNrpTechnology;
 	class CNrpDevelopGame;
-	class IUser;
+	class CNrpUser;
 	class INrpConfig;
 }
 
@@ -181,7 +181,7 @@ protected:
 	void _DrawAsTechnology( nrp::CNrpTechnology* tech, core::recti rectangle, 
 							core::recti frameRect, video::SColor color, 
 							core::recti& clipRect, video::SColor bgColor );
-	void _DrawAsUser( nrp::IUser* user, core::recti rectangle, 
+	void _DrawAsUser( nrp::CNrpUser* user, core::recti rectangle, 
 					  core::recti frameRect, video::SColor color, 
 					  core::recti& clipRect, video::SColor bgColor );
 	void _DrawAsGame( nrp::INrpConfig* devGame, core::recti rectangle, 

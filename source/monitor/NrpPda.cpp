@@ -58,7 +58,7 @@ void CNrpPda::Load( const NrpText& fileName )
 		if( mess.size() > 0 )
 		{
 			AddItem( mess, 
-					 rv.Get( section, "action", NrpText("") ),
+					 rv.Get( section, "action", 0 ),
 					 rv.Get( section, "time", timeDef ) );
 		}
 		else 
@@ -66,7 +66,7 @@ void CNrpPda::Load( const NrpText& fileName )
 	}
 }
 
-void CNrpPda::AddItem( const NrpText message, const NrpText& action, const NrpTime& lTime )
+void CNrpPda::AddItem( const NrpText message, int action, const NrpTime& lTime )
 {
 	_items.push_back( new CPdaItem( message, action, lTime ) );
 	
@@ -94,7 +94,7 @@ const CPdaItem& CNrpPda::Current()
 	bool valid =  _currentIndex >= 0 && _currentIndex < static_cast< int >( _items.size() );
 	assert( valid );
 
-	return valid ? *_items[ _currentIndex ] : CPdaItem( "", "", NrpTime( 0. ) );
+	return valid ? *_items[ _currentIndex ] : CPdaItem( "", 0, NrpTime( 0. ) );
 }
 
 NrpText CNrpPda::ClassName()
@@ -108,12 +108,12 @@ NrpText CPdaItem::ClassName()
 	return CLASS_PDAITEM;
 }
 
-CPdaItem::CPdaItem( const NrpText& m, const NrpText& a, const NrpTime& t ) : INrpConfig( CLASS_PDAITEM, "" )
+CPdaItem::CPdaItem( const NrpText& m, int a, const NrpTime& t ) : INrpConfig( CLASS_PDAITEM, "" )
 {
-	assert( m.size() > 0 && a.size() > 0 );
+	assert( m.size() > 0 );
 
 	Add<NrpText>( MESSAGE, m );
-	Add<NrpText>( ACTION, a);
+	Add<int>( ACTION, a);
 	Add( STARTDATE, t );
 }
 

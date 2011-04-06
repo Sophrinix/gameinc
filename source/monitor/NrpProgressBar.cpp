@@ -102,8 +102,7 @@ void CNrpProgressBar::draw()
 									 core::dimension2di( (fillTexture_->getOriginalSize().Width * position_) / 100, 
 														 fillTexture_->getOriginalSize().Height ) );
 
-		driver->draw2DImage(fillTexture_, dr, rt,
-							&AbsoluteClippingRect, Colors, UseAlphaChannel  );
+		driver->draw2DImage(fillTexture_, dr, rt, &AbsoluteClippingRect, Colors, UseAlphaChannel  );
 	}
 	else
 	{

@@ -10,7 +10,7 @@ namespace nrp
 class INrpProject;
 class CNrpGame;
 class CNrpGameEngine;
-class IUser;
+class CNrpUser;
 class CNrpTechnology;
 class CNrpDevelopGame;
 class CNrpGameProject;
@@ -32,7 +32,7 @@ class CNrpPlatform;
 
 typedef core::array< CNrpLoan* > LOANS;
 typedef core::array< CNrpGameEngine* > ENGINES;
-typedef core::array< IUser* > USERS;
+typedef core::array< CNrpUser* > USERS;
 typedef core::array< CNrpTechnology* > TECHS;
 typedef core::array< INrpProject* > PROJECTS;
 typedef core::array< INrpDevelopProject* > DEVPROJECTS;

@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "NrpInvention.h"
 #include "NrpCompany.h"
-#include "NrpApplication.h"
 #include "IUser.h"
 #include "timeHelpers.h"
 #include "OpFileSystem.h"
@@ -14,9 +13,9 @@ namespace nrp
 {
 CLASS_NAME CLASS_INVENTION( "CNrpInvention" );
 
-int CNrpInvention::_GetRealPrice()
+int CNrpInvention::_GetRealPrice( const NrpTime& time )
 {
-	int month = _self[ STARTDATE ].As<NrpTime>().GetMonthToDate( _nrpApp[ CURRENTTIME ].As<NrpTime>() ); //получаем количество месяцев от реального срока появления технологии на рынке
+	int month = _self[ STARTDATE ].As<NrpTime>().GetMonthToDate( time ); //получаем количество месяцев от реального срока появления технологии на рынке
 	int price = _self[ BALANCE ];
 	for( int k=0; k < month; k++ )//каждый лишний месяц удорожает технологию на 10% от базовой стоимости( сложный процент )
 		 price = static_cast< int >( price * 1.1f );
@@ -24,7 +23,7 @@ int CNrpInvention::_GetRealPrice()
 	return price;
 }
 
-CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp ) 
+CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp, NrpTime time ) 
 			  : IWorkingModule( static_cast< PROJECT_TYPE >( (int)(*pTech)[ TECHGROUP ] ), CLASS_INVENTION )
 {
 	InitializeOptions_();
@@ -45,12 +44,12 @@ CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp )
 		_self[ LEVEL ] = refTech[ LEVEL ];
 		_self[ QUALITY ] = refTech[ QUALITY ];
 		_self[ BASEFILE ] = refTech[ BASEFILE ];
-		_self[ USERSTARTDATE ] = _nrpApp[ CURRENTTIME ];
+		_self[ USERSTARTDATE ] = time;
 		_self[ STARTDATE ] = refTech[ STARTDATE ];
-		_self[ REALPRICE ] = _GetRealPrice();
+		_self[ REALPRICE ] = _GetRealPrice( time );
 
 		Add( PROGNOSEDATEFINISH, NrpTime( 0. ) );
-		CheckParams();
+		CheckParams( time );
 
 		CopyMapTo( _techRequires, pTech->GetTechRequires() );
 		CopyMapTo( _skillRequires,  pTech->GetSkillRequires() );
@@ -78,9 +77,9 @@ void CNrpInvention::InitializeOptions_()
 	Add( MONEY_TODECREASE, 0 );
 }
 
-void CNrpInvention::CheckParams()
+void CNrpInvention::CheckParams( NrpTime time )
 {
-	int dayFromStart = _self[ USERSTARTDATE ].As<NrpTime>().GetDaysToDate( _nrpApp[ CURRENTTIME ].As<NrpTime>() ); 
+	int dayFromStart = _self[ USERSTARTDATE ].As<NrpTime>().GetDaysToDate( time ); 
 
 	if( dayFromStart == 0 )
 		dayFromStart++;
@@ -93,9 +92,7 @@ void CNrpInvention::CheckParams()
 		moneyInDay = 1;
 	int dayToFinish = ( (int)_self[ REALPRICE ] - (int)_self[ PASSEDPRICE ] ) / moneyInDay;
 	
-	NrpTime curTime = _nrpApp[ CURRENTTIME ];
-	_self[ PROGNOSEDATEFINISH ] = curTime.AppendDay( dayToFinish );
-
+	_self[ PROGNOSEDATEFINISH ] = time.AppendDay( dayToFinish );
 	_self[ DAYLEFT ] = dayToFinish;//сколько дней осталось до завершения работ, при полном освоении финансирования
 	_self[ INVENTIONSPEED ] = moneyInDay;
 }
@@ -104,7 +101,7 @@ CNrpInvention::~CNrpInvention(void)
 {
 }
 
-void CNrpInvention::Update( IUser* ptrUser )
+void CNrpInvention::Update( CNrpUser* ptrUser, const NrpTime& time )
 {
 	PNrpCompany company = _self[ PARENTCOMPANY ].As<PNrpCompany>();
 	assert( ptrUser && company );
@@ -127,17 +124,17 @@ void CNrpInvention::Update( IUser* ptrUser )
 		_self[ MONEY_TODECREASE ] += (int)_self[ INVESTIMENT ] / ( 30 * 8 );
 	
 		_self[ READYWORKPERCENT ] = (int)_self[PASSEDPRICE] / static_cast< float >( (int)_self[ REALPRICE ] );
-		_self[ QUALITY ] = ( (int)_self[ QUALITY ] + (int)(*ptrUser)[ CODE_QUALITY ] ) / 2;
+		_self[ QUALITY ] = ( (int)_self[ QUALITY ] + (int)(*ptrUser)[ WORK_QUALITY ] ) / 2;
 	}
 }
 
-IUser* CNrpInvention::GetUser( u32 index )
+CNrpUser* CNrpInvention::GetUser( u32 index )
 {
 	assert( index < _users.size() );
 	return index < _users.size() ? _users[ index ] : NULL;
 }
 
-int CNrpInvention::AddUser( IUser* user )
+int CNrpInvention::AddUser( CNrpUser* user )
 {
 	for( u32 i=0; i < _users.size(); i++ )
 		if( _users[ i ] == user )
@@ -204,7 +201,7 @@ NrpText CNrpInvention::ClassName()
 
 void CNrpInvention::BeginNewMonth( const NrpTime& time )
 {
-	_self[ REALPRICE ] = _GetRealPrice();
+	_self[ REALPRICE ] = _GetRealPrice( time );
 }
 
 }//end namespace nrp

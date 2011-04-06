@@ -21,6 +21,7 @@ CNrpGameTime::CNrpGameTime( CNrpApplication* parent )
 	time.wDay = 1;
 	time.wHour = 0;
 	time.wMinute = 0;
+	time.wSecond = 0;
 
 	(*parent)[ CURRENTTIME ] = NrpTime( time );
 }
@@ -38,13 +39,15 @@ bool CNrpGameTime::Update()
 	{
 		lastTimeUpdate_ = GetTickCount();
 
+		time.AppendMinute( 10 );
+
 		if( oldTime.RHour() != time.RHour() )
 			_nrpApp._BeginNewHour();
 
 		if( time.RHour() > 17 )
 		{
 			time.AppendDay();
-			time.RHour() = 9;
+			time.RHour() = 8;
 			_nrpApp._BeginNewDay();
 			_nrpApp.DoLuaFunctionsByType( APP_DAY_CHANGE, this );
 		}

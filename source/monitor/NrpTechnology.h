@@ -7,7 +7,7 @@ namespace nrp
 typedef enum { TS_UNKNOWN=0, TS_READY, TS_INDEVELOP, TS_PROJECT, TS_COUNT } TECH_STATUS;
 const NrpText TECH_STATUS_NAME[TS_COUNT] = { L"unknown", L"ready", L"indevelop", L"project" };
 
-class IUser;
+class CNrpUser;
 class CNrpCompany;
 class CNrpInvention;
 
@@ -40,7 +40,7 @@ public:
 	const NrpText GetFutureTech( size_t index );
 	void AddFutureTech( const NrpText& techName );
 
-	float GetEmployerPosibility( IUser* ptrUser );
+	float GetEmployerPosibility( CNrpUser* ptrUser );
 
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& fileName );

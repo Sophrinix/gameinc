@@ -69,7 +69,7 @@ void CNrpTechnology::_InitializeOptions()
 	Add<int>( STATUS, TS_UNKNOWN );
 	Add<int>( BALANCE, 0 );
 	Add<int>( CODEPASSED, 0 );
-	Add<IUser*>( COMPONENTLIDER, NULL );
+	Add<CNrpUser*>( COMPONENTLIDER, NULL );
 	Add<int>( ERRORNUMBER, 0 );
 	Add<float>( READYWORKPERCENT, 0.f );
 	Add<int>( CODEVOLUME, 0 );
@@ -131,7 +131,7 @@ void CNrpTechnology::Load( const NrpText& fileName )
 		rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, (int)_self[ NEXTTECHNUMBER ], _futureTech );
 }
 
-float CNrpTechnology::GetEmployerPosibility( IUser* ptrUser )
+float CNrpTechnology::GetEmployerPosibility( CNrpUser* ptrUser )
 {
 	if( !ptrUser )
 		return 0;

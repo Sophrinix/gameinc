@@ -13,11 +13,11 @@ public:
 	CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject* pProject );
 	virtual ~CNrpProjectModule(void);
 
-	int AddUser( IUser* ptrUser );
+	int AddUser( CNrpUser* ptrUser );
 	int RemoveUser( const NrpText& userName );
 	const USERS& GetUsers() const { return _users; }
 
-	void Update( IUser* ptrUser );
+	void Update( CNrpUser* ptrUser, const NrpTime& time );
 
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& fileName );
@@ -27,7 +27,7 @@ public:
 private:
 	void InitializeOptions_();
 	CNrpProjectModule();
-	float _GetWorkKoeffForUser( IUser* ptrUser );
+	float _GetWorkKoeffForUser( CNrpUser* ptrUser );
 
 	USERS _users;
 };

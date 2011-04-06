@@ -10,6 +10,7 @@
 #include "NrpInvention.h"
 #include "OpFileSystem.h"
 #include "IniFile.h"
+#include "NrpBookKeeping.h"
 
 #include <errno.h>
 #include <assert.h>
@@ -28,18 +29,29 @@ void CNrpCompany::_InitialyzeOptions()
 	Add( USERNUMBER, 0 );
 	Add( PROJECTNUMBER, 0 );
 	Add( GAMENUMBER, 0 );
+	Add<NrpText>( INTERNAL_NAME, "" );
 	Add( OBJECTSINPORTFELLE, 0 );
 	Add( DEVELOPPROJECTS_NUMBER, 0 );
 	Add( FAMOUS, 0.1f );
 	Add( INVENTIONSNUMBER, 0 );
+	Add( MONEY_ON_PIE, 0.f );
+	Add( DIVIDEND, 0.f );
 	Add( PROFIT_LASTYEAR, 0 );
+	Add( PIE_NUMBER, 0 );
+	Add( PIE_COST, 0.f );
+	Add( ENDDATE, NrpTime( 0. ) );
+	Add( STARTDATE, NrpTime( 0. ) );
+	Add( SELF_PIE_NUMBER, 0 );
+	Add<NrpText>( TEXTURENORMAL, "" );
+	Add<CNrpBookKeeping*>( BOOKKEEPING, NULL );
 }
 
-CNrpCompany::CNrpCompany( const NrpText& name, IUser* ceo ) : INrpConfig( CLASS_NRPCOMPANY, name)
+CNrpCompany::CNrpCompany( const NrpText& name, CNrpUser* ceo ) : INrpConfig( CLASS_NRPCOMPANY, name)
 {
 	_InitialyzeOptions();
 
 	_self[ NAME ] = name;
+	_self[ INTERNAL_NAME ] = name + "_company";
 	_self[ CEO ] = ceo;
 }
 
@@ -101,7 +113,7 @@ void CNrpCompany::AddProject( INrpProject* ptrProject )
 	}
 }
 
-void CNrpCompany::AddUser( IUser* user )
+void CNrpCompany::AddUser( CNrpUser* user )
 {
 	assert( user );
 	if( user && !GetUser( user->Text( NAME ) ) )
@@ -113,14 +125,14 @@ void CNrpCompany::AddUser( IUser* user )
 	}
 }
 
-IUser* CNrpCompany::GetUser( int index ) const
+CNrpUser* CNrpCompany::GetUser( int index ) const
 {
 	return index < (int)_employers.size() ? _employers[ index ] : NULL;
 }
 
-IUser* CNrpCompany::GetUser( const NrpText& name ) const
+CNrpUser* CNrpCompany::GetUser( const NrpText& name ) const
 {
-	return FindByName< USERS, IUser >( _employers, name );
+	return FindByName< USERS, CNrpUser >( _employers, name );
 }
 
 NrpText CNrpCompany::Save( const NrpText& saveFolder )
@@ -133,7 +145,7 @@ NrpText CNrpCompany::Save( const NrpText& saveFolder )
 	//если нет директории в которую надо сохранять данные
 	OpFileSystem::CreateDirectory( localFolder );
 
-	NrpText saveFile = localFolder + "company.ini";
+	NrpText saveFile = localFolder + "item.company";
 
 	assert( !OpFileSystem::IsExist( saveFile ) );
 	INrpConfig::Save( saveFile );
@@ -167,7 +179,7 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		{
 			AddGameEngine( _nrpApp.GetGameEngine( rName ) );
 		}
-		else if( type == IUser::ClassName() || type == L"coder" || type == L"designer" || type == L"composer" || type == L"tester" )
+		else if( type == CNrpUser::ClassName() || type == L"coder" || type == L"designer" || type == L"composer" || type == L"tester" )
 		{
 			AddUser( _nrpApp.GetUser( rName ) );
 		}
@@ -202,11 +214,18 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 	//SetValue( condition, arrayT.size() );
 }
 
-void CNrpCompany::Load( const NrpText& loadFolder )
+void CNrpCompany::Load( const NrpText& pathTo )
 {
-	assert( OpFileSystem::IsExist( loadFolder ) );
+	NrpText loadFile = pathTo;
 
-	NrpText loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + "company.ini";
+	if( OpFileSystem::IsFolder( pathTo ) )
+		loadFile = OpFileSystem::CheckEndSlash( pathTo ) + "item.company";
+
+	assert( OpFileSystem::IsExist( loadFile ) );
+
+	if( !OpFileSystem::IsExist( loadFile ) )
+		return;
+
 	INrpConfig::Load( loadFile );
 
 	PUser ceo = _self[ CEO ].As<PUser>();
@@ -464,12 +483,12 @@ void CNrpCompany::RemoveUser( const NrpText& name )
 	for( u32 i=0; i < _employers.size(); i++ )
 		if( _employers[ i ]->Equale( name ) )
 		{
-			IUser* user = _employers[ i ];
+			CNrpUser& user = *_employers[ i ];
 			_employers.erase( i );
 
-			user->Param( WANTMONEY ) = static_cast< int >( (int)user->Param( SALARY ) * 1.5f );
-			user->Param( PARENTCOMPANY ) = (CNrpCompany*)NULL;
-			_self[ USERNUMBER ] =_employers.size();
+			user[ WANTMONEY ] = static_cast< int >( (int)user[ SALARY ] * 1.5f );
+			user[ PARENTCOMPANY ] = (CNrpCompany*)NULL;
+			_self[ USERNUMBER ] = static_cast< int >( _employers.size() );
 
 			break;
 		}
@@ -478,6 +497,11 @@ void CNrpCompany::RemoveUser( const NrpText& name )
 NrpText CNrpCompany::ClassName()
 {
 	return CLASS_NRPCOMPANY;
+}
+
+void CNrpCompany::BeginNewYear( const NrpTime& time )
+{
+	_self[ PROFIT_LASTYEAR ] = _self[ BALANCE ];
 }
 
 }//namespace nrp

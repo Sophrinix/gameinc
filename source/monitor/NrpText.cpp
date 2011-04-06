@@ -218,18 +218,6 @@ recti NrpText::ToRect()
 	return rct;
 }
 
-NrpTime NrpText::ToTime()
-{
-	SYSTEMTIME time;
-
-	swscanf_s( c_str(), L"y=%04d m=%02d d=%02d h=%02d mi=%02d", 
-			   &time.wYear, &time.wMonth, &time.wDay, &time.wHour, &time.wMinute );
-	time.wSecond = 0;
-	time.wMilliseconds = 0;
-
-	return NrpTime( time );	
-}
-
 bool NrpText::ToBool()
 {
 	return (_wcsicmp( c_str(), L"true" ) == 0 || _wcsicmp( c_str(), L"1" ) == 0);

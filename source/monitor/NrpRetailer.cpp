@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "NrpRetailer.h"
+#include "timeHelpers.h"
 
 namespace nrp
 {
