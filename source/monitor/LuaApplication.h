@@ -22,6 +22,7 @@ public:
 
 	int GetCompanyNumber( lua_State* L );
 	int GetCompany( lua_State* L );
+	int SinceCompany( lua_State* L );
 	int GetCompanyByName( lua_State* L );
 
 	int UpdateGameTime( lua_State* L );

@@ -12,6 +12,7 @@
 #include "NrpGameTime.h"
 #include "NrpPlatform.h"
 #include "NrpPlant.h"
+#include "NrpBridge.h"
 
 #include "LuaCompany.h"
 #include "LuaUser.h"
@@ -38,6 +39,7 @@ CLASS_NAME CLASS_CLUAPPLICATION( "CLuaApplication" );
 
 BEGIN_LUNA_METHODS(CLuaApplication)
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompany )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, SinceCompany )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyByName )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatform )
@@ -141,7 +143,7 @@ int CLuaApplication::GetBank( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		//lua_pop( L, lua_gettop( L ) );
-		lua_pushlightuserdata( L, (*_object)[ BANK ].As<PNrpBank>() );
+		lua_pushlightuserdata( L, &(CNrpBank::Instance()) );
 		Luna< CLuaBank >::constructor( L );
 		return 1;
 	}
@@ -182,7 +184,7 @@ int CLuaApplication::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, 
 #endif
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaApplication::AddLuaFunction( lua_State* L )
@@ -226,12 +228,17 @@ int CLuaApplication::GetTech( lua_State* L )
 			NrpText name( lua_tostring( L, 2 ) );
 			tech = _object->GetTechnology( name );	
 		}
+
+		//lua_pop( L, argc );
+		if( tech )
+		{
+			lua_pushlightuserdata( L, tech );
+			Luna< CLuaTechnology >::constructor( L );
+			return 1;
+		}
 	}
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, tech );
-	Luna< CLuaTechnology >::constructor( L );
-
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -244,7 +251,7 @@ int CLuaApplication::AddPublicTechnology( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	_object->AddTechnology( tech );
 
-	return 1;
+	return 0;
 }
 
 int CLuaApplication::GetUserNumber( lua_State* L )
@@ -265,12 +272,17 @@ int CLuaApplication::GetUser( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetUser need int parameter" );
 
 	int userNumber = lua_tointeger( L, 2 );
-	IUser* user = NULL;
-	IF_OBJECT_NOT_NULL_THEN	user = _object->GetUser( userNumber );
+	CNrpUser* user = NULL;
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		user = _object->GetUser( userNumber );
+		//lua_pop( L, argc );
+		lua_pushlightuserdata( L, user );
+		Luna< CLuaUser >::constructor( L );
+		return 1;
+	}
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, user );
-	Luna< CLuaUser >::constructor( L );
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -281,25 +293,27 @@ int CLuaApplication::GetUserByName( lua_State* L )
 
 	NrpText userName = lua_tostring( L, 2 );
 
-	IUser* user = NULL;
+	CNrpUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		int userNum = (*_object)[ USERNUMBER ];
 		for( int k = 0; k < userNum; k++ )
 		{
-			IUser* ptrUser = _object->GetUser( k );
+			CNrpUser* ptrUser = _object->GetUser( k );
 			if( (*ptrUser)[ NAME ] == userName )
 			{
 				user = ptrUser;
-				break;
+
+				//lua_pop( L, argc );
+				lua_pushlightuserdata( L, user );
+				Luna< CLuaUser >::constructor( L );
+				return 1;	
 			}
 		}
 	}
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, user );
-	Luna< CLuaUser >::constructor( L );
-	return 1;	
+	lua_pushnil( L );
+	return 1;
 }
 
 int CLuaApplication::RemoveUser( lua_State* L )
@@ -307,9 +321,9 @@ int CLuaApplication::RemoveUser( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:RemoveUser need IUser* parameter" );
 
-	IUser* user = (IUser*)lua_touserdata( L, 2 );
+	CNrpUser* user = _GetLuaObject< CNrpUser, CLuaUser >( L, 2 );
 	IF_OBJECT_NOT_NULL_THEN	_object->RemoveUser( user );
-	return 1;	
+	return 0;	
 }
 
 int CLuaApplication::GetCurrentProfile( lua_State* L )
@@ -339,7 +353,7 @@ int CLuaApplication::CreateProfile( lua_State* L )
 	NrpText companyName( lua_tostring( L, 3 ) );
 
 	IF_OBJECT_NOT_NULL_THEN	_object->CreateProfile( userName, companyName );
-	return 1;	
+	return 0;	
 }
 
 int CLuaApplication::ResetData( lua_State* L )
@@ -348,7 +362,7 @@ int CLuaApplication::ResetData( lua_State* L )
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:ResetData not need any parameter" );
 
 	IF_OBJECT_NOT_NULL_THEN	_object->ResetData();
-	return 1;
+	return 0;
 }
 
 int CLuaApplication::LoadProfile( lua_State* L )
@@ -361,7 +375,7 @@ int CLuaApplication::LoadProfile( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	_object->Load( name, company );
 
-	return 1;	
+	return 0;	
 }
 
 int CLuaApplication::CreateNewFreeUsers( lua_State* L )
@@ -371,7 +385,7 @@ int CLuaApplication::CreateNewFreeUsers( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	_object->CreateNewFreeUsers();
 
-	return 1;		
+	return 0;		
 }
 
 int CLuaApplication::GetCompanyNumber( lua_State* L )
@@ -391,14 +405,20 @@ int CLuaApplication::GetCompany( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:GetUser need int parameter" );
 
+	assert( lua_isnumber( L, 2 ) );
 	int cmpNumber = lua_tointeger( L, 2 );
 	CNrpCompany* ptrCompany = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	ptrCompany = _object->GetCompany( cmpNumber );
+	IF_OBJECT_NOT_NULL_THEN ptrCompany = _object->GetCompany( cmpNumber );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, ptrCompany );
-	Luna< CLuaCompany >::constructor( L );
+	if( ptrCompany )
+	{
+		lua_pushlightuserdata( L, ptrCompany );
+		Luna< CLuaCompany >::constructor( L );
+	}
+	else
+		lua_pushnil( L );
+
 	return 1;
 }
 
@@ -410,11 +430,17 @@ int CLuaApplication::GetCompanyByName( lua_State* L )
 	NrpText cmpName( lua_tostring( L, 2 ) );
 	CNrpCompany* ptrCompany = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	ptrCompany = _object->GetCompany( cmpName );
+	IF_OBJECT_NOT_NULL_THEN
+		ptrCompany = _object->GetCompany( cmpName );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, ptrCompany );
-	Luna< CLuaCompany >::constructor( L );
+	if( ptrCompany )
+	{
+		lua_pushlightuserdata( L, ptrCompany );
+		Luna< CLuaCompany >::constructor( L );
+	}
+	else
+		lua_pushnil( L );
+
 	return 1;
 }
 
@@ -437,11 +463,19 @@ int CLuaApplication::GetGameBoxAddon( lua_State* L )
 
 	int addonNumber = lua_tointeger( L, 2 );
 	CNrpTechnology* tech = NULL;
-	IF_OBJECT_NOT_NULL_THEN	tech = _object->GetBoxAddon( addonNumber );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		tech = _object->GetBoxAddon( addonNumber );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, tech );
-	Luna< CLuaTechnology >::constructor( L );
+		//lua_pop( L, argc );
+		if( tech )
+		{
+			lua_pushlightuserdata( L, tech );
+			Luna< CLuaTechnology >::constructor( L );
+		}
+		else
+			lua_pushnil( L );
+	}
 	return 1;	
 }
 
@@ -473,7 +507,7 @@ int CLuaApplication::AddGameBoxAddon( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	_object->AddBoxAddon( tech );
 
-	return 1;	
+	return 0;	
 }
 
 int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
@@ -492,7 +526,7 @@ int CLuaApplication::LoadGameTimeFromProfile( lua_State* L )
 		(*_object)[ CURRENTTIME ] = rv.Get( SECTION_PROPERTIES, CURRENTTIME + ":time", NrpTime( 0. ) );
 	}
 
-	return 1;	
+	return 0;	
 }
 
 int CLuaApplication::LoadBoxAddonsPrice( lua_State* L )
@@ -510,7 +544,7 @@ int CLuaApplication::LoadBoxAddonsPrice( lua_State* L )
 		tech[ PRICE ] = price;
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
@@ -531,7 +565,7 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 			}
 		}
 	}
-	return 1;
+	return 0;
 }
 
 int CLuaApplication::GetGamesNumber( lua_State* L )
@@ -558,9 +592,14 @@ int CLuaApplication::GetGame( lua_State* L )
 		IF_OBJECT_NOT_NULL_THEN game = _object->GetGame( name );
 	}
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, game );
-	Luna< CLuaGame >::constructor( L );
+	if( game )
+	{
+		//lua_pop( L, argc );
+		lua_pushlightuserdata( L, game );
+		Luna< CLuaGame >::constructor( L );
+	}
+	else
+		lua_pushnil( L );
 	return 1;		
 }
 
@@ -574,7 +613,7 @@ int CLuaApplication::AddGameToMarket( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN _object->AddGameToMarket( game );
 
-	return 1;	
+	return 0;	
 }
 
 int CLuaApplication::LoadScreenshots( lua_State* L )
@@ -588,7 +627,7 @@ int CLuaApplication::LoadScreenshots( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN _object->LoadScreenshot( imageListName );
 
-	return 1;		
+	return 0;		
 }
 
 int CLuaApplication::GetGameTime( lua_State* L )
@@ -623,11 +662,17 @@ int CLuaApplication::GetInvention( lua_State* L )
 	NrpText companyName( lua_tostring( L, 3 ) );
 	CNrpInvention* inv = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN inv = _object->GetInvention( inventionName, companyName );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		inv = _object->GetInvention( inventionName, companyName );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, inv );
-	Luna< CLuaInvention >::constructor( L );
+		//lua_pop( L, argc );
+		lua_pushlightuserdata( L, inv );
+		Luna< CLuaInvention >::constructor( L );
+		return 1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -642,7 +687,7 @@ int CLuaApplication::CreateDirectorySnapshot( lua_State* L )
 	NrpText itemName( lua_tostring( L, 5 ) );
 
 	OpFileSystem::CreateDirectorySnapshot( directory, saveFile, itemTemplate, itemName );
-	return 1;
+	return 0;
 }
 
 int CLuaApplication::GetPda( lua_State* L )
@@ -709,12 +754,17 @@ int CLuaApplication::GetPlatform( lua_State* L )
 
 	int index = lua_tointeger( L, 2 );
 	CNrpPlatform* plt = NULL;
-	IF_OBJECT_NOT_NULL_THEN plt = _object->GetPlatform( index );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		plt = _object->GetPlatform( index );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, plt );
-	Luna< CLuaPlatform >::constructor( L );
+		//lua_pop( L, argc );
+		lua_pushlightuserdata( L, plt );
+		Luna< CLuaPlatform >::constructor( L );
+		return 1;
+	}
 
+	lua_pushnil( L );
 	return 1;		
 }
 
@@ -752,6 +802,31 @@ int CLuaApplication::LoadLinks( lua_State* L )
 	NrpText tmpName = lua_tostring( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN _object->LoadLinks( pathTo, tmpName );
+	return 0;
+}
+
+int CLuaApplication::SinceCompany( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:SinceCompany need PathToFile parameter" );
+
+	NrpText pathTo = lua_tostring( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		CNrpCompany* cmp = new CNrpCompany( pathTo );
+		CNrpUser* user = _object->CreateRandomUser( CNrpAiUser::ClassName() );
+		_object->AddUser( user );
+		(*cmp)[ CEO ] = user;
+		_object->AddCompany( cmp );
+		CNrpBridge::Instance().Update();
+
+		lua_pushlightuserdata( L, cmp );
+		Luna< CLuaCompany >::constructor( L );
+		return 1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 
