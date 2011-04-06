@@ -56,6 +56,9 @@ BEGIN_LUNA_PROPERTIES(CLuaCompany)
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "projectNumber", GetProjectNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "gameNumber", GetGameNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "inventionNumber", GetInventionNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "allPie", GetAllPie, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "selfPie", GetSelfPie, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "texture", GetTexture, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaCompany::CLuaCompany(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUACOMPANY, ex)	//конструктор
@@ -85,12 +88,23 @@ int CLuaCompany::Create( lua_State* L )
 	return 1;
 }
 
+int CLuaCompany::GetAllPie( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, PIE_NUMBER, 0 ) );
+	return 1;
+}
+
+int CLuaCompany::GetSelfPie( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, SELF_PIE_NUMBER, 0 ) );
+	return 1;
+}
 
 int CLuaCompany::SetCEO( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		IUser* user = _GetLuaObject< IUser, CLuaUser >( L, -1, false );
+		CNrpUser* user = _GetLuaObject< CNrpUser, CLuaUser >( L, -1, false );
 		(*_object)[ nrp::CEO ] = user;
 	}
 
@@ -201,7 +215,7 @@ int CLuaCompany::AddUser( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:AddUser need IUser* parameter" );
 
-	IUser* ptrData = _GetLuaObject< IUser, CLuaUser >( L, 2, false );
+	CNrpUser* ptrData = _GetLuaObject< CNrpUser, CLuaUser >( L, 2, false );
 	assert( ptrData != NULL );
 
 	IF_OBJECT_NOT_NULL_THEN	_object->AddUser( ptrData );
@@ -237,7 +251,7 @@ int CLuaCompany::GetUser( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetUser need int parameter" );
 
 	int index = lua_tointeger( L, 2 );
-	IUser* user = NULL;
+	CNrpUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN	user = _object->GetUser( index );
 
 	//lua_pop( L, argc );
@@ -389,11 +403,16 @@ int CLuaCompany::RemoveUser( lua_State* L )
 int CLuaCompany::AddBalance( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:AddBalance need integer parameter" );
+	luaL_argcheck(L, argc == 3, 2, "Function CLuaCompany:AddBalance need integer parameter" );
 
-	int valuel = lua_tointeger( L, 2 );
+	NrpText text = lua_tostring( L, 2 );
+	int valuel = lua_tointeger( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN	(*_object)[ BALANCE ] += valuel;
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		//(*_object)[ BOOKKEEPING ].As<CNrpBookKeeping*>()->NewBill( text, valuel, _nrpApp[ CURRENTTIME ].As<NrpTime>() );
+		(*_object)[ BALANCE ] += valuel;
+	}
 
 	return 1;		
 }
@@ -420,7 +439,7 @@ int CLuaCompany::GetPieCost( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		lua_pushinteger( L, (int)(*_object)[ PIE_COST ] ); 
+		lua_pushnumber( L, (float)(*_object)[ PIE_COST ] ); 
 		return 1;
 	}
 
@@ -432,7 +451,19 @@ int CLuaCompany::GetDividend( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		lua_pushinteger( L, (int)(*_object)[ DIVIDEND ] ); 
+		lua_pushnumber( L, (float)(*_object)[ DIVIDEND ] ); 
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaCompany::GetTexture( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pushstring( L, (NrpText)(*_object)[ TEXTURENORMAL ] ); 
 		return 1;
 	}
 

@@ -26,8 +26,10 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaComboBox)
 	LUNA_ILUAGUIELEMENT_PROPERTIES( CLuaComboBox )
 	LUNA_AUTONAME_PROPERTY( CLuaComboBox, "itemCount", GetItemCount, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaComboBox, "selectedText", GetSelectedText, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaComboBox, "selectedObject", GetSelectedObject, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaComboBox, "itemIndex", GetSelected, SetSelected )
+	//LUNA_AUTONAME_PROPERTY
 END_LUNA_PROPERTIES
 
 CLuaComboBox::CLuaComboBox(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUACOMBOBOX, ex )							//конструктор
@@ -39,6 +41,26 @@ int CLuaComboBox::GetItemCount( lua_State* L )
 	{
 		lua_pushinteger( L, _object->getItemCount() );
 		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaComboBox::GetSelectedText( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaComboBox::GetSelectedText need index parameter");
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		int selected = _object->getSelected();
+		if( selected >= 0 )
+		{
+			NrpText text( _object->getItem( selected ) );
+			lua_pushstring( L, text );
+			return 1;
+		}
 	}
 
 	lua_pushnil( L );

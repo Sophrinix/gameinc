@@ -48,9 +48,13 @@ public:
 	int GetProfitLastYear( lua_State* L );
 	int GetPieCost( lua_State* L );
 	int GetDividend( lua_State* L );
+	int GetTexture( lua_State* L );
 
 	int GetInventionNumber( lua_State* L );
 	int GetInvention( lua_State* L );
+
+	int GetAllPie( lua_State* L );
+	int GetSelfPie( lua_State* L );
 };
 
 }//namespace nrp

@@ -34,6 +34,8 @@ public:
 	int SetSelected( lua_State *L );
 	int GetItemCount( lua_State* L );
 	int GetItem( lua_State* L );
+	int GetSelectedText( lua_State* L );
+
 	static const char* ClassName();
 };
 
