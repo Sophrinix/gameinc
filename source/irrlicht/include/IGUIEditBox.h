@@ -48,6 +48,8 @@ namespace gui
 		/** \param border: true if you want the border to be drawn, false if not */
 		virtual void setDrawBorder(bool border) = 0;
 
+		virtual bool getDrawBorder() = 0;
+
 		//! Sets text justification mode
 		/** \param horizontal: EGUIA_UPPERLEFT for left justified (default),
 		EGUIA_LOWEERRIGHT for right justified, or EGUIA_CENTER for centered text.

@@ -40,6 +40,8 @@ namespace gui
 		//! Turns the border on or off
 		virtual void setDrawBorder(bool border);
 
+		virtual bool getDrawBorder() { return Border; }
+
 		//! Enables or disables word wrap for using the edit box as multiline text editor.
 		virtual void setWordWrap(bool enable);
 
