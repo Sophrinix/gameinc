@@ -11,7 +11,7 @@
 #include "nrpScript.h"
 #include "NrpRelation.h"
 #include "OpFileSystem.h"
-#include "NrpUserModificator.h"
+#include "NrpConfigModificator.h"
 #include "timeHelpers.h"
 
 #include <io.h>
@@ -22,12 +22,13 @@ namespace nrp
 {
 CLASS_NAME CLASS_USER( "IUser" );
 
-IUser::IUser(const NrpText& className, const NrpText& systemName ) : INrpConfig( className.size() ? className : CLASS_USER, systemName )
+CNrpUser::CNrpUser(const NrpText& className, const NrpText& systemName ) : INrpConfig( className.size() ? className : CLASS_USER, systemName )
 {
 	assert( systemName.size() );
 	Add<NrpText>( NAME, systemName );
-	Add<int>( CODE_SPEED, 0 );
-	Add<int>( CODE_QUALITY, 0 );
+	Add<int>( WORK_SPEED, 0 );
+	Add<int>( WORK_QUALITY, 0 );
+	Add<int>( WORK_QUALITY_AWARD, 0 );
 	Add<int>( KNOWLEDGE_LEVEL, 0 );
 	Add<NrpText>( INTERNAL_NAME, systemName );
 	Add<NrpText>( TECHGROUP, className );
@@ -42,6 +43,7 @@ IUser::IUser(const NrpText& className, const NrpText& systemName ) : INrpConfig(
 	Add<int>( WANTMONEY, 0 );
 	Add<int>( CONTRACTMONEY, 0 );
 	Add<int>( WORKNUMBER, 0 );
+	Add<int>( LAST_AWARD, 0 );
 	Add<NrpText>( USERSTATE, "readyToWork" );
 	Add<NrpText>( ROOMSTATE, "unknown" );
 	Add<int>( HANGRY, 100 );
@@ -49,20 +51,21 @@ IUser::IUser(const NrpText& className, const NrpText& systemName ) : INrpConfig(
 	Add<int>( EXPERIENCE, 0 );
 	Add<NrpText>( TEXTURENORMAL, "" );
 	Add<int>( ALL_SKILL_SUMM, 0 );
+	Add<int>( ALCOHOL, 0 );
 }
 
-IUser::~IUser(void)
+CNrpUser::~CNrpUser(void)
 {
 }
 
-void IUser::SetSkill( const NrpText& name, int valuel )
+void CNrpUser::SetSkill( const NrpText& name, int valuel )
 {
 	knowledges_[ name ] = valuel;
 
 	CalculateWantSalary_();
 }
 
-void IUser::CalculateWantSalary_()
+void CNrpUser::CalculateWantSalary_()
 {
 	KNOWLEDGE_MAP::Iterator pIter = knowledges_.getIterator();
 	float sum = 0;
@@ -73,14 +76,14 @@ void IUser::CalculateWantSalary_()
 		 cash *= (cash > 100 ? 0.9f : 1);
 	}
 
-	sum += (int)Param( CODE_QUALITY ) * 10;
+	sum += (int)Param( WORK_QUALITY ) * 10;
 
 	_self[ WANTMONEY ] = (int)sum;
 
 	CalculateKnowledgeLevel_();
 }
 
-void IUser::CalculateKnowledgeLevel_()
+void CNrpUser::CalculateKnowledgeLevel_()
 {
 	int sum = 0;
 	int allKnowledge = 0;
@@ -105,12 +108,12 @@ void IUser::CalculateKnowledgeLevel_()
 	_self[ KNOWLEDGE_LEVEL ] = sum;
 }
 
-int IUser::GetSkill( const NrpText& name )
+int CNrpUser::GetSkill( const NrpText& name )
 {
 	return knowledges_.find( name ) != NULL ? knowledges_[ name ] : 0;
 }
 
-NrpText IUser::Save( const NrpText& folderPath )
+NrpText CNrpUser::Save( const NrpText& folderPath )
 {
 	try
 	{
@@ -153,7 +156,7 @@ NrpText IUser::Save( const NrpText& folderPath )
 	}
 }
 
-void IUser::Load( const NrpText& fileName )
+void CNrpUser::Load( const NrpText& fileName )
 {
 	assert( OpFileSystem::IsExist( fileName ) );
 
@@ -201,7 +204,7 @@ void IUser::Load( const NrpText& fileName )
 	CalculateKnowledgeLevel_();
 }
 
-void IUser::AddWork( IWorkingModule* module, bool toFront )
+void CNrpUser::AddWork( IWorkingModule* module, bool toFront )
 {
 	assert( module != NULL );
 
@@ -218,7 +221,7 @@ void IUser::AddWork( IWorkingModule* module, bool toFront )
 	Param( WORKNUMBER ) = static_cast< int >( works_.size() );
 }
 
-void IUser::RemoveWork( IWorkingModule* techWork )
+void CNrpUser::RemoveWork( IWorkingModule* techWork )
 {
 	assert( techWork != NULL );
 	if( techWork == NULL )
@@ -237,13 +240,13 @@ void IUser::RemoveWork( IWorkingModule* techWork )
 	Log(HW) << text << term;
 }
 
-IWorkingModule* IUser::GetWork( u32 index ) const
+IWorkingModule* CNrpUser::GetWork( u32 index ) const
 {
 	assert( index < works_.size() );
 	return ( index < works_.size()) ? works_[ index ] : NULL;
 }
 
-IWorkingModule* IUser::GetWork( const NrpText& name ) const
+IWorkingModule* CNrpUser::GetWork( const NrpText& name ) const
 {
 	for( u32 i=0; i < works_.size(); i++ )
 		if( (*works_[ i ])[ NAME ] == name )
@@ -252,19 +255,11 @@ IWorkingModule* IUser::GetWork( const NrpText& name ) const
 	return NULL;
 }
 
-void IUser::BeginNewHour( const NrpTime& time )
+void CNrpUser::BeginNewHour( const NrpTime& time )
 {
 	if( time.RHour() == 9 && Text( USERSTATE ).equals_ignore_case( "readyToWork" ) )
 	{
 		_self[ USERSTATE ] = NrpText( "work" );
-	}
-
-	_self[ HANGRY ] -= 15;
-	if(	(int)_self[ HANGRY ] < 30 )
-	{
-		NrpTime endTime( time );
-		endTime.RHour() = 23;
-		AddModificator( new CNrpUserModificator<int>( this, endTime, MOOD, true, 45 ) );
 	}
 
 	if( time.RHour() == 18 )
@@ -280,34 +275,34 @@ void IUser::BeginNewHour( const NrpTime& time )
 			if( (*works_[ 0 ] )[ READYWORKPERCENT ] >= 1.f )
 				RemoveWork( works_[ 0 ] );
 			else
-				works_[ 0 ]->Update( this );			
+				works_[ 0 ]->Update( this, time );			
 		}
 	}
 }
 
-int IUser::GetGenreExperience( const NrpText& name )
+int CNrpUser::GetGenreExperience( const NrpText& name )
 {
 	KNOWLEDGE_MAP::Node* kIter = genreExperience_.find( name );
 	return kIter != NULL ? kIter->getValue() : 0;
 }
 
-int IUser::GetGenrePreferences( const NrpText& name )
+int CNrpUser::GetGenrePreferences( const NrpText& name )
 {
 	KNOWLEDGE_MAP::Node* kIter = genrePreferences_.find( name );
 	return kIter != NULL ? kIter->getValue() : 0;
 }
 
-void IUser::SetGenreExperience( const NrpText& name, int valuel )
+void CNrpUser::SetGenreExperience( const NrpText& name, int valuel )
 {
 	genreExperience_[ name ] = valuel;
 }
 
-void IUser::SetGenrePreferences( const NrpText& name, int valuel )
+void CNrpUser::SetGenrePreferences( const NrpText& name, int valuel )
 {
 	genrePreferences_[ name ] = valuel;
 }
 
-void IUser::RemoveOldModificators_( NrpTime time )
+void CNrpUser::RemoveOldModificators_( NrpTime time )
 {
 	for( size_t cnt=0; cnt < modificators_.size(); cnt++ )
 	{
@@ -320,23 +315,24 @@ void IUser::RemoveOldModificators_( NrpTime time )
 	}
 }
 
-void IUser::BeginNewDay( const NrpTime& time )
+void CNrpUser::BeginNewDay( const NrpTime& time )
 {
 	_self[ HANGRY ] = 100;
+
 	RemoveOldModificators_( time );
 }
 
-void IUser::AddModificator( IModificator* ptrModificator )
+void CNrpUser::AddModificator( IModificator* ptrModificator )
 {
 	modificators_.push_back( ptrModificator );
 }
 
-void IUser::IncreaseExperience( const NrpText& name, int grow )
+void CNrpUser::IncreaseExperience( const NrpText& name, int grow )
 {
 	genreExperience_[ name ] = ( genreExperience_.find( name ) != NULL ? genreExperience_[ name ] : 0) + grow;
 }
 
-void IUser::CheckModificators_()
+void CNrpUser::_CheckModificators()
 {
 	/*
 	MODIFICATOR_LIST::iterator pIter = modificators_.begin();
@@ -349,7 +345,7 @@ void IUser::CheckModificators_()
 	*/
 }
 
-CNrpRelation* IUser::GetRelation( const NrpText& name )
+CNrpRelation* CNrpUser::GetRelation( const NrpText& name )
 {
 	if( _relations.find( name ) == NULL )
 		_relations[ name ] = new CNrpRelation( name, 0 );
@@ -357,12 +353,12 @@ CNrpRelation* IUser::GetRelation( const NrpText& name )
 	return  _relations[ name ];
 }
 
-bool IUser::Equale( const NrpText& name )
+bool CNrpUser::Equale( const NrpText& name )
 {
 	return Text( NAME ) == name;
 }
 
-NrpText IUser::ClassName()
+NrpText CNrpUser::ClassName()
 {
 	return CLASS_USER;
 }

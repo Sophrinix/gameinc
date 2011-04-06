@@ -17,7 +17,9 @@ namespace nrp
 											LUNA_AUTONAME_FUNCTION(class, GetChild )\
 											LUNA_AUTONAME_FUNCTION(class, GetCenter )\
 											LUNA_AUTONAME_FUNCTION(class, GetSize)\
-											LUNA_AUTONAME_FUNCTION(class, RemoveChilds )
+											LUNA_AUTONAME_FUNCTION(class, RemoveChilds )\
+											LUNA_AUTONAME_FUNCTION(class, SetRectAlignment )\
+											LUNA_AUTONAME_FUNCTION(class, SetMaxSize)
 
 #define LUNA_ILUAGUIELEMENT_PROPERTIES(class) LUNA_ILUAOBJECT_PROPERTIES(class)\
 											  LUNA_AUTONAME_PROPERTY(class, "parent", GetParent, PureFunction )\
@@ -30,7 +32,10 @@ namespace nrp
 											  LUNA_AUTONAME_PROPERTY(class, "id", GetID, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "font", PureFunction, SetFont )\
 											  LUNA_AUTONAME_PROPERTY(class, "childCount", GetChildCount, PureFunction )\
-											  LUNA_AUTONAME_PROPERTY(class, "name", GetName, SetName )
+											  LUNA_AUTONAME_PROPERTY(class, "name", GetName, SetName )\
+											  LUNA_AUTONAME_PROPERTY(class, "width", GetWidth, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "bottom", GetBottom, PureFunction )
+														
 
 template< class T > class ILuaGuiElement : public ILuaObject< T >
 {
@@ -44,6 +49,30 @@ public:
 		{
 			NrpText name = _object->getName();
 			lua_pushstring( L, name );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
+	int GetWidth( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushinteger( L, _object->getAbsolutePosition().getWidth() );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
+	int GetBottom( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushinteger( L, _object->getAbsolutePosition().LowerRightCorner.Y );
 			return 1;
 		}
 
@@ -83,6 +112,22 @@ public:
 		}
 
 		lua_pushlightuserdata( L, ret );
+		return 1;
+	}
+
+	int SetRectAlignment( lua_State* L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 5, 5, "Function CLuaLabel::SetTextAlignment need bool, bool parameter");
+
+		int left = lua_tointeger( L, 2 );
+		int right = lua_tointeger( L, 3 );
+		int top = lua_tointeger( L, 4 );
+		int bottom = lua_tointeger( L, 5 );
+
+		IF_OBJECT_NOT_NULL_THEN	_object->setAlignment( gui::EGUI_ALIGNMENT(left), gui::EGUI_ALIGNMENT(right),
+													   gui::EGUI_ALIGNMENT(top), gui::EGUI_ALIGNMENT(bottom) );
+
 		return 1;
 	}
 
@@ -218,7 +263,7 @@ public:
 			_object->setEnabled( enabled );
 		}
 
-		return 1;
+		return 0;
 	}
 
 	int GetText( lua_State *L )
@@ -263,6 +308,23 @@ public:
 		core::recti wndRect = _object->getAbsolutePosition();
 
 		IF_OBJECT_NOT_NULL_THEN	_object->setRelativePosition( wndRect + offset );
+
+		return 1;
+	}
+
+	int SetMaxSize( lua_State* L )
+	{
+		int argc = lua_gettop(L);
+		luaL_argcheck(L, argc == 3, 3, _ErrStr( NrpText( ":SetMaxSize need 2 parameter" ) ) );
+
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			core::dimension2du offset;
+			offset.Width = _ReadParam( L, 2, _object->getParent()->getAbsolutePosition().getWidth(), 0 );
+			offset.Height = _ReadParam( L, 3, _object->getParent()->getAbsolutePosition().getHeight(), 0 );
+
+			_object->setMaxSize( offset );
+		}
 
 		return 1;
 	}

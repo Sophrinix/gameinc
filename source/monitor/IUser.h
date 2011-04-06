@@ -8,8 +8,9 @@
 
 namespace nrp
 {
-OPTION_NAME CODE_SPEED( L"codeSpeed" ); /*< How many string code may write developer in day */
-OPTION_NAME CODE_QUALITY( L"codeQuality" );/*< What quality we have on game end.Percent */
+OPTION_NAME WORK_SPEED( L"codeSpeed" ); /*< How many string code may write developer in day */
+OPTION_NAME WORK_QUALITY( L"codeQuality" );/*< What quality we have on game end.Percent */
+OPTION_NAME WORK_QUALITY_AWARD( L"codeQualityAward" ); /*< «начение ожидаемого прироста параметра*/
 OPTION_NAME KNOWLEDGE_LEVEL( L"knowledgeLevel" );/*< ”ровень знаний. ќт этого параметра зависит скорость роста скорости написани€ кода*/
 OPTION_NAME TALANT( L"talant" ); /*< “алант. от этого параметра зависит скорость роста качества кода*/
 OPTION_NAME STAMINA( L"stamina" );/*< ”сталость. ѕри значении ниже 90% умножаетс€ на codeSpeed_, дл€ получени€ конечного значени€ */
@@ -31,6 +32,9 @@ OPTION_NAME COLLECTIVINTEGRATION( L"collectivintegration" ); /*! ”мение работать
 OPTION_NAME TIMEMANAGMENT( L"timeManagment" ); /*!  ”правление временем, от этого параметра зависит реальное врем€ потраченное на разарботку */
 OPTION_NAME EXPERIENCE( L"experience" );
 OPTION_NAME ALL_SKILL_SUMM( L"allSkillSumm" );
+OPTION_NAME LAST_AWARD( "lastAward" );
+OPTION_NAME ALCOHOL("alcohol");					/*! отношение к алкоголю */
+
 
 class IUserAction;
 class CNrpTechnology; 
@@ -39,10 +43,11 @@ class IModificator;
 class IWorkingModule;
 class CNrpRelation;
 
-class IUser : public INrpConfig
+class CNrpUser : public INrpConfig
 {
+	friend class CLuaUser;
 public:
-	IUser(const NrpText& className, const NrpText& systemName );
+	CNrpUser(const NrpText& className, const NrpText& systemName );
 
 	void SetSkill( const NrpText& name, int valuel ); 
 	int GetSkill( const NrpText& name );
@@ -67,21 +72,22 @@ public:
 
 	CNrpRelation* GetRelation( const NrpText& name );
 
-	~IUser(void);
+	~CNrpUser(void);
 	NrpText Save( const NrpText& folderPath );
 	void Load( const NrpText& fileName );
 
 	bool Equale( const NrpText& name );
 
 	static NrpText ClassName();
+//notificators
+	void CheckHangry( NParam& paramt );
 
 private:         			
 	void CalculateWantSalary_();
 	void CalculateKnowledgeLevel_();
 
 	void RemoveOldModificators_( NrpTime time );
-	void CheckModificators_();
-
+	void _CheckModificators();
 	KNOWLEDGE_MAP genrePreferences_; /*< предпочтени€ в жанре, растут рандомно со временем */
 	KNOWLEDGE_MAP genreExperience_;  /*< опыт написани€ игр, растет по мере выполнени€ компонентов */
 	KNOWLEDGE_MAP knowledges_;		/*< уровень знани€ технологий */
@@ -90,7 +96,7 @@ private:
 	RELATION_MAP _relations;	
 };
 
-typedef IUser* PUser;
+typedef CNrpUser* PUser;
 
 }//namespace nrp
 

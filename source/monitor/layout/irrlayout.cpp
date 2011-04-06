@@ -14,7 +14,7 @@ void CNrpLayout::addChildToEnd( IGUIElement* elm )
 		IGUIElement::addChildToEnd( elm );
 
 	core::list< IGUIElement* > pChildrens( Children );
-	int numRow = Children.size() / _btnInLine;
+	int numRow = ceil( Children.size() / (float)_btnInLine );
 	
 	if( numRow == 0 )
 		numRow = 1;
@@ -32,9 +32,17 @@ void CNrpLayout::addChildToEnd( IGUIElement* elm )
 		}
 
 		side.Width = (AbsoluteRect.getWidth() - _margin / 2 * tmp.size() ) / tmp.size(); 
+
+		core::dimension2du finalSize = side;
+
+		if( _size.Width > 0 )
+			finalSize.Width = min( side.Width, _size.Width );
+		if( _size.Height > 0 )
+			finalSize.Height = min( side.Height, _size.Height );
+
 		for( u32 i=0; i < tmp.size(); i++ )
 		{
-			core::recti rectangle( side.Width * i, 0, side.Width * (i+1), side.Height );
+			core::recti rectangle( core::position2di( side.Width * i, 0 ), finalSize );
 			rectangle += core::position2di( _margin / 2, lastY );
 			tmp[ i ]->setRelativePosition( rectangle );
 		}
@@ -52,7 +60,7 @@ CNrpLayout::CNrpLayout( IGUIEnvironment* guienv, IGUIElement* parent, core::rect
 
 	AlignRight = EGUIA_LOWERRIGHT;
 	AlignBottom = EGUIA_LOWERRIGHT;
-
+	_size = core::dimension2du( 0, 0 );
 	//updateAbsolutePosition();
 }
 

@@ -250,15 +250,18 @@ void CImageGUISkin::draw3DSunkenPane(IGUIElement* element, video::SColor bgcolor
 	
 	case EGUIET_EDIT_BOX:																	//поле ввода
 		{
-			IGUICheckBox* ebox = static_cast< IGUICheckBox* >( element );
-			if (ebox->isEnabled())
+			IGUIEditBox* ebox = static_cast< IGUIEditBox* >( element );
+			if( ebox->getDrawBorder() )
 			{
-				elstyle = native_gui_->isHovered( element )
-										? Config.EditBoxHovered
-										: Config.EditBox;				
+				if( ebox->isEnabled() )
+				{
+					elstyle = native_gui_->isHovered( element )
+						? Config.EditBoxHovered
+						: Config.EditBox;				
+				}
+				else 
+					elstyle = Config.EditBoxDisabled;
 			}
-			else 
-				elstyle = Config.EditBoxDisabled;
 		}
 	break;
 	

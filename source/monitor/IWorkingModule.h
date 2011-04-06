@@ -1,8 +1,14 @@
 #pragma once
 #include "NrpTechnology.h"
+#include "timeHelpers.h"
 
 namespace nrp
 {
+
+OPTION_NAME PARAMNAME("paramName");
+OPTION_NAME DURATION("duration");
+OPTION_NAME OFFSET( "offset" );
+OPTION_NAME LASTTIMEUPDATE( "lastTimeUpdate" );
 
 class IWorkingModule : public CNrpTechnology
 {
@@ -15,8 +21,8 @@ public:
 		Add<float>( READYWORKPERCENT, 0 );
 	}
 
-	virtual void Update( IUser* ptrUser ) = 0;
-	virtual int AddUser( IUser* ptrUser ) = 0;
+	virtual void Update( CNrpUser* ptrUser, const NrpTime& time ) = 0;
+	virtual int AddUser( CNrpUser* ptrUser ) = 0;
 	virtual int RemoveUser( const NrpText& userName ) = 0;
 
 	virtual NrpText Save( const NrpText& saveFolder ) { return ""; }

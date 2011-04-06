@@ -41,7 +41,7 @@ void INrpDevelopProject::InitializeOptions_()
 	Add<float>( FAMOUS, 0.f );
 }
 
-void INrpDevelopProject::SetDeveloper( IUser* user )
+void INrpDevelopProject::SetDeveloper( CNrpUser* user )
 {
 	for( u32 i=0; i < _developers.size(); i++ )
 		if( _developers[ i ] == user->Text( NAME ) )

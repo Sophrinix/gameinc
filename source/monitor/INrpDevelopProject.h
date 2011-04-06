@@ -7,7 +7,7 @@ namespace nrp
 OPTION_NAME MODULE_NUMBER( L"moduleNumber" );
 
 class CNrpProjectModule;
-class IUser;
+class CNrpUser;
 
 class INrpDevelopProject : public INrpProject
 {
@@ -18,7 +18,7 @@ public:
 	 
 	~INrpDevelopProject(void);
 
-	void SetDeveloper( IUser* user );
+	void SetDeveloper( CNrpUser* user );
 	const STRINGS& GetDevelopers() { return _developers; }
 	virtual void ModuleFinished( CNrpProjectModule* module ) = 0;
 	virtual bool IsReady() = 0; 

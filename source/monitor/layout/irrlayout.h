@@ -30,6 +30,11 @@ public:
 	void updateAbsolutePosition();
 	void setRelativePosition(const core::rect<s32>& r);
 
+	void setMaxSize(core::dimension2du size)
+	{
+		_size = size;
+	}
+
 	//void setVisible( bool visible );
 
 protected:
@@ -47,6 +52,7 @@ protected:
 
 	u32 _btnInLine;
 	int _margin;
+	core::dimension2du _size;
 };
 
 }

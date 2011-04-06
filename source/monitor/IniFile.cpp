@@ -153,7 +153,7 @@ bool IniFile::Set( const NrpText& section,
 
 	swprintf_s( str, MAX_PATH, L"%.3f, %.3f, %.3f", amount.X, amount.Y, amount.Z );
 
-	return Set( section, key, str );
+	return Set( section, key, NrpText( str ) );
 }
 
 bool IniFile::Set( const NrpText& section, 
@@ -166,7 +166,7 @@ bool IniFile::Set( const NrpText& section,
 					amount.RYear(), amount.RMonth(), amount.RDay(),
 					amount.RHour(), amount.RMinute() );
 
-	return Set( section, key, str );
+	return Set( section, key, NrpText( str ) );
 }
 
 bool IniFile::Set( const NrpText& section, const NrpText& key, float valuel )
