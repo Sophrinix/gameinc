@@ -405,8 +405,13 @@ int CLuaGame::Create( lua_State* L )
 	{
 		_object = new CNrpGame( fileName  );
 		(*_object)[ NPC_GAME ] = true;
+
+		lua_pushlightuserdata( L, _object );
+		Luna< CLuaGame >::constructor( L );
+		return 1;
 	}
 
+	lua_pushnil( L );
 	return 1;		
 }
 

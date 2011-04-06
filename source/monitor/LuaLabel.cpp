@@ -19,6 +19,7 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaLabel)
 	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaLabel)
 	LUNA_AUTONAME_PROPERTY( CLuaLabel, "color", PureFunction, SetOverrideColor )
+	LUNA_AUTONAME_PROPERTY( CLuaLabel, "drawBody", PureFunction, SetDrawBackground )
 END_LUNA_PROPERTIES
 
 CLuaLabel::CLuaLabel(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUALABEL, ex )							//конструктор
@@ -32,6 +33,18 @@ int CLuaLabel::SetFont( lua_State* L )
 		NrpText fontName = lua_tostring( L, -1 );
 		gui::IGUIFont* font = _nrpEngine.GetGuiEnvironment()->getFont( fontName );
 		_object->setOverrideFont( font );
+	}
+
+	return 0;
+}
+
+int CLuaLabel::SetDrawBackground( lua_State* L )
+{
+	assert( lua_isboolean( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		bool draw = lua_toboolean( L, -1 ) != 0;
+		_object->setDrawBackground( draw );
 	}
 
 	return 0;

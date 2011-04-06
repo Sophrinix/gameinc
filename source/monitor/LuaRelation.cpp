@@ -6,12 +6,12 @@ namespace nrp
 CLASS_NAME CLASS_RELATION( "CLuaRelation" );
 
 BEGIN_LUNA_METHODS(CLuaRelation)
-	LUNA_AUTONAME_FUNCTION( CLuaRelation, Set )
-	LUNA_AUTONAME_FUNCTION( CLuaRelation, Get )
+
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaRelation)
 	LUNA_ILUAOBJECT_PROPERTIES( CLuaRelation )
+	LUNA_AUTONAME_PROPERTY( CLuaRelation, "value", Get, Set )
 END_LUNA_PROPERTIES
 
 CLuaRelation::CLuaRelation(lua_State *L, bool ex) : ILuaObject(L, CLASS_RELATION, ex)
@@ -19,17 +19,13 @@ CLuaRelation::CLuaRelation(lua_State *L, bool ex) : ILuaObject(L, CLASS_RELATION
 
 int CLuaRelation::Set( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaRelation::Set need name, value parameter");
-
-	NrpText name = lua_tostring( L, 2 );
-
+	assert( lua_isnumber( L, -1 ) || lua_isstring( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		if( lua_isnumber( L, 3 ) )
-			(*_object)[ name ] = static_cast< float >( lua_tonumber( L, 3 ) );
-		else if( lua_isstring( L, 3 ) )
-			(*_object)[ name ] = NrpText( lua_tostring( L, 3 ) );
+		if( lua_isnumber( L, -1 ) )
+			(*_object)[ REL_VALUE ] = static_cast< float >( lua_tonumber( L, -1 ) );
+		else if( lua_isstring( L, -1 ) )
+			(*_object)[ REL_VALUE ] = NrpText( lua_tostring( L, -1 ) );
 		else
 			assert( "unsupport type" );
 	}
@@ -39,21 +35,16 @@ int CLuaRelation::Set( lua_State *L )
 
 int CLuaRelation::Get( lua_State *L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaRelation::GetValue need name parameter");
-
-	NrpText name = lua_tostring( L, 2 );
-
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( (*_object)[ name ].Is<NrpText>() )
-			lua_pushstring( L, (NrpText)(*_object)[ name ] );
-		else if( (*_object)[ name ].Is< float >() )
-			lua_pushnumber( L, (float)(*_object)[ name ] );
-		else if( (*_object)[ name ].Is< int >() )
-			lua_pushinteger( L, (int)(*_object)[ name ] );
+		if( (*_object)[ REL_VALUE ].Is<NrpText>() )
+			lua_pushstring( L, (NrpText)(*_object)[ REL_VALUE ] );
+		else if( (*_object)[ REL_VALUE ].Is< float >() )
+			lua_pushnumber( L, (float)(*_object)[ REL_VALUE ] );
+		else if( (*_object)[ REL_VALUE ].Is< int >() )
+			lua_pushinteger( L, (int)(*_object)[ REL_VALUE ] );
 		else
-			lua_pushinteger( L, -1 );
+			lua_pushnil( L );
 	}
 
 	return 1;

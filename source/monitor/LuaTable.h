@@ -32,6 +32,8 @@ public:
 	int ClearRows( lua_State* L);
 	int GetActiveColumn( lua_State* L );
 	int SetCellSelected( lua_State* L );
+	int GetCellText( lua_State *L );
+	int GetActiveRow( lua_State* L );
 };
 
 }//namespace nrp

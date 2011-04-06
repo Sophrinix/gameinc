@@ -24,6 +24,7 @@ public:
 	int SetOverrideColor( lua_State* L );
 	int SetTextAlignment( lua_State* L );
 	int SetFont( lua_State* L );
+	int SetDrawBackground( lua_State* L );
 };
 
 }//namespace nrp

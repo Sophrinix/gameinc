@@ -19,6 +19,7 @@ BEGIN_LUNA_PROPERTIES(CLuaEdit)
 	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaEdit)
 	LUNA_AUTONAME_PROPERTY( CLuaEdit, "overrideColor", PureFunction, SetOverrideColor )
 	LUNA_AUTONAME_PROPERTY( CLuaEdit, "isPasswordBox", PureFunction, SetPasswordBox )
+	LUNA_AUTONAME_PROPERTY( CLuaEdit, "drawBody", PureFunction, SetDrawBorder )
 END_LUNA_PROPERTIES
 
 CLuaEdit::CLuaEdit(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAEDIT, ex )							//конструктор
@@ -29,6 +30,15 @@ int CLuaEdit::SetOverrideColor( lua_State* L )
 	int ovColor = lua_tointeger( L, -1 );
 
 	IF_OBJECT_NOT_NULL_THEN	_object->setOverrideColor( ovColor );
+
+	return 1;
+}
+
+int CLuaEdit::SetDrawBorder( lua_State* L )
+{
+	bool draw = lua_toboolean( L, -1 ) > 0;
+
+	IF_OBJECT_NOT_NULL_THEN	_object->setDrawBorder( draw );
 
 	return 1;
 }

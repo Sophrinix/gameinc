@@ -34,8 +34,6 @@ public:
 	*/
 	virtual void RemoveLuaFunction( int actionType, int m );
 
-	virtual void DoLuaFunctionByRef( int funcType, void* sender, void* param = NULL );
-
 	virtual void DoLuaFunctionsByType( int funcType, void* sender, void* param = NULL );
 };
 

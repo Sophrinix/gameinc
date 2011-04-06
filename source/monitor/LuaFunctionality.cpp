@@ -32,12 +32,6 @@ void ILuaFunctionality::RemoveLuaFunction( int actionType, int m )
 		luaFunctions_.erase( pIter );
 }
 
-void ILuaFunctionality::DoLuaFunctionByRef( int funcType, void* sender, void* param /*= NULL */ )
-{
-	assert( funcType >= 0 );
-	nrp::CNrpScript::Instance().CallFunction( funcType, sender, param );
-}
-
 void ILuaFunctionality::DoLuaFunctionsByType( int funcType, void* sender, void* param /*= NULL */ )
 {
 	try

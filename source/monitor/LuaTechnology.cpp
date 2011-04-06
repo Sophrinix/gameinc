@@ -21,7 +21,7 @@ BEGIN_LUNA_METHODS(CLuaTechnology)
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEngineTechRequire )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, SetEmployerSkillRequire )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetOptionAsInt )
-	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Load )
+//	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Load )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Remove )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, Create )
 	LUNA_AUTONAME_FUNCTION( CLuaTechnology, GetFutureTechInternalName )
@@ -88,10 +88,29 @@ int CLuaTechnology::Create( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:CreateTechnology need int parameter" );
 
-	int typen = lua_tointeger( L, 2 );
+	if( lua_isnumber( L, 2 ) )
+	{
+		int typen = lua_tointeger( L, 2 );
 
-	_object = new CNrpTechnology( PROJECT_TYPE(typen) );
-	lua_pushlightuserdata(L, _object );
+		_object = new CNrpTechnology( PROJECT_TYPE(typen) );
+		lua_pushlightuserdata(L, _object );
+		Luna< CLuaTechnology >::constructor( L );
+	}
+	else if( lua_isstring( L, 2 ) )
+	{
+		NrpText fileName = lua_tostring( L, 2 );
+		if( !OpFileSystem::IsExist( fileName ) )
+			fileName = CNrpApplication::Instance().GetLink( fileName );
+
+		_object = new CNrpTechnology( PROJECT_TYPE(0) );
+		(*_object)[ STATUS ] = static_cast< int >( TS_READY );
+		_object->Load( fileName );
+
+		lua_pushlightuserdata(L, _object );
+		Luna< CLuaTechnology >::constructor( L );
+	}
+	else
+		lua_pushnil( L );
 
 	return 1;
 }

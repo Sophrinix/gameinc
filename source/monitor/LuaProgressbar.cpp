@@ -18,9 +18,10 @@ END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaProgressBar)
 	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaProgressBar )
-	LUNA_AUTONAME_PROPERTY( CLuaProgressBar, "progress", PureFunction, SetPosition )
+	LUNA_AUTONAME_PROPERTY( CLuaProgressBar, "position", PureFunction, SetPosition )
 	LUNA_AUTONAME_PROPERTY( CLuaProgressBar, "image", PureFunction, SetImage )
 	LUNA_AUTONAME_PROPERTY( CLuaProgressBar, "fillImage", PureFunction, SetFillImage )
+	LUNA_AUTONAME_PROPERTY( CLuaProgressBar, "alphaChannel", PureFunction, SetAlphaUse )
 END_LUNA_PROPERTIES
 
 CLuaProgressBar::CLuaProgressBar(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAPROGRESBAR, ex )							//конструктор
@@ -33,6 +34,18 @@ int CLuaProgressBar::SetPosition( lua_State* L )
 	{
 		int position = lua_tointeger( L, -1 );
 		_object->setPosition( position );
+	}
+
+	return 1;
+}
+
+int CLuaProgressBar::SetAlphaUse( lua_State* L )
+{
+	assert( lua_isboolean( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		bool alpha = lua_toboolean( L, -1 ) != 0;
+		_object->setUseAlphaChannel( alpha );
 	}
 
 	return 1;

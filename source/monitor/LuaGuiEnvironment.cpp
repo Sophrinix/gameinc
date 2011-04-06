@@ -74,6 +74,7 @@ BEGIN_LUNA_METHODS( CLuaGuiEnvironment )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, FadeAction )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddDestructor )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, BringToFront )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SendToBack )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTimer )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextRunner )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLigthing )
@@ -472,25 +473,30 @@ int CLuaGuiEnvironment::AddMoveAnimator( lua_State* vm )
 	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddMoveAnimator need 7 parameter");
 
 	gui::IGUIElement* parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );	
-	
-	core::position2di pos;
-	pos.X = lua_tointeger( vm, 3 );
-	pos.Y = lua_tointeger( vm, 4 );
+	assert( parent );
+	if( parent )
+	{
+		core::position2di pos;
+		pos.X = _ReadParam( vm, 3, parent->getAbsolutePosition().getWidth(), 0 );
+		pos.Y = _ReadParam( vm, 4, parent->getAbsolutePosition().getWidth(), 0 );
 
-	int step = lua_tointeger( vm, 5 );
-	bool visibleOnStop = lua_toboolean( vm, 6 ) > 0;
-	bool removeOnStop = lua_toboolean( vm, 7 ) > 0;
-	bool removeParentOnStop =  lua_toboolean( vm, 8 ) > 0;
+		int step = _ReadParam( vm, 5, parent->getAbsolutePosition().getWidth(), 0 );
+		bool visibleOnStop = lua_toboolean( vm, 6 ) > 0;
+		bool removeOnStop = lua_toboolean( vm, 7 ) > 0;
+		bool removeParentOnStop =  lua_toboolean( vm, 8 ) > 0;
 
-	gui::IGUIAnimator* anim = NULL;
+		gui::IGUIAnimator* anim = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN anim = _object->addMoveAnimator( parent, pos, step, 
-															 visibleOnStop,
-															 removeOnStop,
-															 removeParentOnStop );
+		IF_OBJECT_NOT_NULL_THEN anim = _object->addMoveAnimator( parent, pos, step, 
+																 visibleOnStop,
+																 removeOnStop,
+																 removeParentOnStop );
 
-	lua_pushlightuserdata( vm, (void*)anim );
+		lua_pushlightuserdata( vm, (void*)anim );
+		return 1;
+	}
 
+	lua_pushnil( vm );
 	return 1;
 }
 
@@ -838,6 +844,24 @@ int CLuaGuiEnvironment::AddTechMap( lua_State *vm )
 	return 1;
 }
 
+int CLuaGuiEnvironment::SendToBack( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGuiEnvironment:SendToBack need element parameter" );
+
+	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 2, true );
+	assert( elm != NULL );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::IGUIElement* parent = elm->getParent();
+		if( parent)
+			parent->sendToBack( elm );
+	}
+
+	return 1;
+}
+
 int CLuaGuiEnvironment::BringToFront( lua_State* L )
 {
 	int argc = lua_gettop(L);
@@ -880,7 +904,7 @@ int CLuaGuiEnvironment::AddTextRunner( lua_State* vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaGuiEnvironment:AddTextRunner need 2 parameter");
 
-	gui::IGUIElement* parent = (gui::IGUIElement*)lua_touserdata( vm, 2 );
+	gui::IGUIElement* parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
 	NrpText text( lua_tostring( vm, 3 ) );
 
 	gui::IGUIAnimator* anim = NULL;

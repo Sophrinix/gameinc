@@ -23,6 +23,7 @@ public:
 	int GetWidth( lua_State *L );
 	int GetHeight( lua_State *L );
 	int Drop( lua_State *L );
+	int GetName( lua_State *L );
 };
 
 }//namespace nrp

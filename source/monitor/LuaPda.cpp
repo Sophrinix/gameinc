@@ -80,12 +80,15 @@ int CLuaPda::AddMessage( lua_State* L )
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaPda::AddMessage need message, action parameter");
 
 	NrpText message = lua_tostring( L, 2 );
-	NrpText action = lua_tostring( L, 3 );
+	
+	int refunc = -1;
+	if( !lua_isnil( L, 3 ) )
+		refunc = _GetRef( L, 3 );
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		NrpTime time = _nrpApp[ CURRENTTIME ].As<NrpTime>();
-		_object->AddItem( message, action, time );
+		_object->AddItem( message, refunc, time );
 	}
 
 	return 1;

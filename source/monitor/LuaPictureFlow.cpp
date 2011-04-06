@@ -28,7 +28,7 @@ BEGIN_LUNA_PROPERTIES(CLuaPictureFlow)
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "selectedIndex", GetSelected, SetSelected )
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "selectedObject", GetSelectedObject, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "selectedText", GetSelectedText, PureFunction )
-	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "drawBorder", PureFunction, SetDrawBorder )
+	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "drawBody", PureFunction, SetDrawBorder )
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "onSelect", PureFunction, SetOnNewSelect )
 END_LUNA_PROPERTIES
 

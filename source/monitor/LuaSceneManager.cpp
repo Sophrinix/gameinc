@@ -336,7 +336,7 @@ int CLuaSceneManager::AddSceneFunction( lua_State* vm )
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:AddSceneFunction need 2 parameter ");
 
 	int typef = lua_tointeger( vm, 2 );
-	int name = lua_tointeger( vm, 3 );
+	int name = _GetRef( vm, 3 );
 	assert( typef && name != -1 );
 	_nrpEngine.GetCurrentScene()->AddLuaFunction( typef, name );
 

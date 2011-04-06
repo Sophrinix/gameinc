@@ -22,6 +22,7 @@ public:
 	int SetPosition( lua_State* L );
 	int SetImage( lua_State* L );
 	int SetFillImage( lua_State* L );
+	int SetAlphaUse( lua_State* L );
 																//нажатии на эту кнопк
 };
 

@@ -9,6 +9,7 @@
 #include "NrpCompany.h"
 #include "LuaUser.h"
 #include "LuaCompany.h"
+#include "LuaTechnology.h"
 
 namespace nrp
 {
@@ -49,10 +50,10 @@ int CLuaInvention::Create( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaInvention:Create need int, company parameter" );
 
-	CNrpTechnology* tech = (CNrpTechnology*)lua_touserdata( L, 2 );
-	PNrpCompany cmp = (PNrpCompany)lua_touserdata( L, 3 );
+	CNrpTechnology* tech = _GetLuaObject< CNrpTechnology, CLuaTechnology >( L, 2, false );
+	PNrpCompany cmp = _GetLuaObject< CNrpCompany, CLuaCompany >( L, 3, false );
 
-	_object = new CNrpInvention( tech, cmp );
+	_object = new CNrpInvention( tech, cmp, _nrpApp[ CURRENTTIME ].As<NrpTime>() );
 	lua_pushlightuserdata(L, _object );
 
 	return 1;
@@ -63,7 +64,7 @@ int CLuaInvention::AddUser( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaInvention::AddUser not need parameter");
 
-	IUser* user = _GetLuaObject< IUser, CLuaUser >( L, 2, false ); 
+	CNrpUser* user = _GetLuaObject< CNrpUser, CLuaUser >( L, 2, false ); 
 	IF_OBJECT_NOT_NULL_THEN	_object->AddUser( user );
 
 	return 1;	
@@ -159,7 +160,7 @@ int CLuaInvention::CheckParams( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaInvention:CheckParams not need parameter");
 
-	IF_OBJECT_NOT_NULL_THEN	_object->CheckParams();
+	IF_OBJECT_NOT_NULL_THEN	_object->CheckParams( _nrpApp[ CURRENTTIME ].As<NrpTime>() );
 
 	return 1;
 }
@@ -176,7 +177,7 @@ int CLuaInvention::GetUser( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaInvention::Load not GetUser parameter");
 
 	int index = lua_tointeger( L, 2 );
-	IUser* user = NULL;
+	CNrpUser* user = NULL;
 
 	IF_OBJECT_NOT_NULL_THEN	user = _object->GetUser( index );
 

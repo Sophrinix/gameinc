@@ -23,6 +23,7 @@ BEGIN_LUNA_METHODS( CLuaTable )
 	LUNA_AUTONAME_FUNCTION( CLuaTable, SetCellText )
 	LUNA_AUTONAME_FUNCTION( CLuaTable, RemoveColumn )
 	LUNA_AUTONAME_FUNCTION( CLuaTable, ClearRows )
+	LUNA_AUTONAME_FUNCTION( CLuaTable, GetCellText )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaTable)
@@ -31,6 +32,7 @@ BEGIN_LUNA_PROPERTIES(CLuaTable)
 	LUNA_AUTONAME_PROPERTY( CLuaTable, "rowCount", GetRowCount, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTable, "columnCount", GetColumnCount, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTable, "rowHeight", PureFunction, SetRowHeight )
+	LUNA_AUTONAME_PROPERTY( CLuaTable, "activeRow", GetActiveRow, PureFunction )
 	//LUNA_AUTONAME_PROPERTY( CLuaTable, "cellSelected", PureFunction, SetCellSelected )
 END_LUNA_PROPERTIES
 
@@ -117,6 +119,24 @@ int CLuaTable::SetColumnWidth( lua_State *L )
 	IF_OBJECT_NOT_NULL_THEN _object->setColumnWidth( index, width );
 
 	return 1;	
+}
+
+int CLuaTable::GetCellText( lua_State *L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaButton::GetCellText need row, column parameter");
+
+	int aRow = lua_tointeger( L, 2 );
+	int aCol = lua_tointeger( L, 3 );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pushstring( L, NrpText( _object->getCellText( aRow, aCol ) ).ToStr() );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
 }
 
 int CLuaTable::SetCellText( lua_State *L )
@@ -206,5 +226,18 @@ int CLuaTable::GetActiveColumn( lua_State* L )
 	lua_pushnil( L );
 	return 1;	
 }
+
+int CLuaTable::GetActiveRow( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		lua_pushinteger( L, _object->getSelected() );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;	
+}
+
 
 }//namespace nrp

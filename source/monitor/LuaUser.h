@@ -3,13 +3,13 @@
 
 namespace nrp
 {
-	class IUser;
+	class CNrpUser;
 }
 
 namespace nrp
 {
 
-class CLuaUser : public ILuaObject<nrp::IUser>
+class CLuaUser : public ILuaObject<nrp::CNrpUser>
 {
 public:
 	DEFINE_PROPERTIES_AND_METHODS(CLuaUser)
@@ -36,6 +36,16 @@ public:
 	int Create( lua_State* L );
 	int GetTexture( lua_State* L );
 	int GetRelation( lua_State* L );
+	int AddModificator( lua_State* L );
+	int AddLearning( lua_State* L );
+	int YetLearning( lua_State* L );
+	int AddTimeWork( lua_State* L );
+	int GetQuality( lua_State* L );
+	int SetQualityAward( lua_State* L );
+	int GetQualityAward( lua_State* L );
+	int GetSalary( lua_State* L );
+	int SetSalary( lua_State* L );
+	int GetKnowledges( lua_State* L );
 };
 
 }//namespace nrp

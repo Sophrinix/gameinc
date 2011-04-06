@@ -3,6 +3,7 @@
 
 #include "LuaImage.h"
 #include "nrpEngine.h"
+#include "LuaTexture.h"
 #include "nrpGUIEnvironment.h"
 
 using namespace irr;
@@ -27,11 +28,19 @@ CLuaImage::CLuaImage(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAIMAGE, 
 
 int CLuaImage::SetImage( lua_State *L )								
 {
-	assert( lua_isstring( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		NrpText pathToTexture = lua_tostring( L, -1 );
-		_object->setImage( _nrpEngine.GetVideoDriver()->getTexture( pathToTexture ) );
+		video::ITexture* txs = NULL;
+		if( lua_isstring( L, -1 ) )
+		{
+			NrpText pathToTexture = lua_tostring( L, -1 );
+			txs = _nrpEngine.GetVideoDriver()->getTexture( pathToTexture );
+		}
+		else if( lua_istable( L, -1 ) || lua_isuserdata( L, -1 ) )
+		{
+			txs = _GetLuaObject< video::ITexture, CLuaTexture >( L, -1 );
+		}
+		_object->setImage( txs );
 	}
 
 	return 0;

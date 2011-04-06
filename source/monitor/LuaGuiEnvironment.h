@@ -86,6 +86,7 @@ public:
 	int AddDestructor( lua_State* vm );
 	int AddTextRunner( lua_State* vm );
 	int BringToFront( lua_State* L );
+	int SendToBack( lua_State* L );
 	int AddLigthing( lua_State* L );
 	int AddFlick( lua_State* L );
 	int AddLayout( lua_State* L );
