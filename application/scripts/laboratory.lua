@@ -38,7 +38,7 @@ local function CreateTechSequence( tech )
 
 		local futureTech = applic:GetTech( internalName );
 		--такой технологии нет на рынке
-		if futureTech.empty then
+		if futureTech == nil or futureTech.empty then
 			--может у компании ведутся разработки этой технологии,
 			--надо подменить добавляемую технологию
 			local techInvention = applic:GetInvention( internalName, company.name )
@@ -80,6 +80,7 @@ local function CreateWindow( typef )
 	local tech = nil
 	for i=1, applic.techNumber do
 	    tech = applic:GetTech( i-1 )
+		base.assert( tech ~= nil )
 		
 		if tech.techGroup == typef and not tech.haveRequireTech then
 			techMap:AddTechnology( nil, tech )

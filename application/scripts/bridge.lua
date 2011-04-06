@@ -1,5 +1,7 @@
 local base = _G
 
+IncludeScript( "shareSelect" )
+
 module( "bridge" )
 
 local button = base.button
@@ -7,11 +9,19 @@ local tutorial = base.tutorial
 local guienv = base.guienv
 local applic = base.applic
 local window = base.window
+local rbank = nil
 local company = nil
 local mainWindow = nil
+local currentCompany = nil
+
 local tblCompanies = nil
 local companyLogo = nil
-local currentCompany = nil
+local labelAcNumber = nil
+local labelAllAc = nil
+local labelSelfAc = nil
+local labelPrice = nil
+local btnChangeShare = nil
+local btnTryControl = nil
 
 local function _Hide()
 end
@@ -20,14 +30,21 @@ local function _FillTableCompanies()
 	tblCompanies:ClearRows()
 
 	for i=1, applic.companyNumber do
-		local cmp = applic.GetCompany( i-1 )
+		local cmp = applic:GetCompany( i-1 )
 		
-		local idx = tblCompanies:AddRow( tblCompanies:GetRowCount() )
-		tblCompanies:SetCellText( idx, 0, cmp.name, 0xff, 0xff, 0, 0 )
-		tblCompanies:SetCellText( idx, 1, cmp.profitLastYear, 0xff, 0xff, 0, 0 )
-		tblCompanies:SetCellText( idx, 2, cmp.pieCost, 0xff, 0xff, 0, 0 )
-		tblCompanies:SetCellText( idx, 3, cmp.dividend, 0xff, 0xff, 0, 0 )
-		tblCompanies:SetCellText( idx, 4, 0, 0xff, 0xff, 0, 0 )
+		if cmp.allPie > 0 then
+			local idx = tblCompanies:AddRow( tblCompanies.rowCount )
+			tblCompanies:SetCellText( idx, 0, cmp.name, 0xff, 0xff, 0, 0 )
+			tblCompanies:SetCellText( idx, 1, cmp.profitLastYear, 0xff, 0xff, 0, 0 )
+			tblCompanies:SetCellText( idx, 2, cmp.pieCost, 0xff, 0xff, 0, 0 )
+			tblCompanies:SetCellText( idx, 3, (cmp.dividend * 100).."%", 0xff, 0xff, 0, 0 )
+			tblCompanies:SetCellText( idx, 4, rbank:GetPieCostDynamic( cmp ), 0xff, 0xff, 0, 0 )
+
+			local prc = rbank:GetShares( company.name, cmp ) / cmp.allPie * 100	
+			local selfPie = cmp.selfPie / cmp.allPie * 100
+			
+			tblCompanies:SetCellText( idx, 5, base.string.format( "%d%% (%d%%)", prc, selfPie ), 0xff, 0xff, 0, 0 )
+		end
 	end
 end
 
@@ -35,34 +52,48 @@ function _CellSelected()
 	local selRow = tblCompanies.activeRow
 	
 	local cmpName = tblCompanies:GetCellText( selRow, 0 )
-	currentCompany = base.applic:GetCompany( cmpName )
+	currentCompany = applic:GetCompanyByName( cmpName )
 	
+	base.LogScript( "company logo to "..currentCompany.name.." from "..currentCompany.texture )
 	companyLogo.texture = currentCompany.texture
 	
-	local prc = packet / currentCompany.allPie	
+	local sharesNumber = rbank:GetShares( company.name, currentCompany )
+
+	labelAcNumber.text = "Куплено: "..sharesNumber
+	labelAllAc.text = "Всего: "..currentCompany.allPie
+	labelPrice.text = "Цена: $"..currentCompany.pieCost
+	labelSelfAc.text = "Доступно: ".. (currentCompany.allPie - currentCompany.selfPie)
+	
 	--если есть возможность взять контроль над компанией 
-	buttonTryControl.enabled = prc > 0.15
+	btnTryControl.enabled = ( sharesNumber / currentCompany.allPie ) > 0.15
 end
 
-local function _BuyAc()
+local function _EndingChangeShare()
 	
 end
 
-local function _SellAc()
+local function _ChangeShare()
+	local shareCur = rbank:GetShares( company.name, currentCompany )
+	shareSelect.Show( "", currentCompany, _EndingChangeShare )
+end
+
+local function _EndingTryControl()
 
 end
 
 local function _TryControl()
-
+	local shareCur = rbank:GetShares( company.name, currentCompany )
+	companyControl.Show( "", currentCompany, _EndingTryControl )
 end
 
 function Show()
+	rbank = base.applic.bank
 	company = base.applic.playerCompany
 	
 	local txsBlur = base.driver:CreateBlur( "bank.png", 2, 4 )
 	mainWindow = window.fsWindow( txsBlur.path, _Hide )
 	
-	tblCompanies = guienv:AddTable( 10, 135, "74%", "10e", -1, mainWindow )
+	tblCompanies = guienv:AddTable( "5%", "10%", "74%", "95%", -1, mainWindow )
 	tblCompanies.rowHeight = 24
 	tblCompanies:AddColumn( "Название", -1 )
 	tblCompanies:SetColumnWidth( 0, 100 )
@@ -74,24 +105,23 @@ function Show()
 	tblCompanies:SetColumnWidth( 3, 100 )
 	tblCompanies:AddColumn( "Изменение", -1 )
 	tblCompanies:SetColumnWidth( 4, 100 )
-	tblCompanies:AddColumn( "Пакет", -1 )
+	tblCompanies:AddColumn( "Доля", -1 )
 	tblCompanies:SetColumnWidth( 5, 100 )
 	
 	local ww = mainWindow.width * 0.2
-	companyLogo = guienv:AddImage( "75%", 135, ww.."+", ww.."+", guienv.root, -1, "" )	
+	companyLogo = guienv:AddImage( "75%", "5%", ww.."+", ww.."+", mainWindow, -1, "" )	
+	companyLogo.scale = true
+	companyLogo.alphaChannel = true
 	
-	local packet = currentCompany:GetPiePacket( company.name )
-	labelAcNumber = guienv:AddLabel( "Акций: "..packet, "76%", companyLogo.bottom, "10e", "20+", -1, mainWindow )
-	labelAllAc = guienv:AddLabel( "Всего: "..currentCompany.allPie, "76%", labelAcNumber.bottom, "10e", "20+", mainWindow )
+	labelAcNumber = guienv:AddLabel( "Куплено: ", "76%", companyLogo.bottom, "10e", "20+", -1, mainWindow )
+	labelAllAc = guienv:AddLabel( "Всего: ", "76%", labelAcNumber.bottom, "10e", "20+", -1, mainWindow )
+	labelSelfAc = guienv:AddLabel( "Доступно: ", "76%", labelAllAc.bottom, "10e", "20+", -1, mainWindow )
+	labelPrice = guienv:AddLabel( "Цена: ", "76%", labelSelfAc.bottom, "10e", "20+", -1, mainWindow )
 	
-	local price = packet * currentCompany.pieCost
-	labelPrice = guienv:AddLabel( "Цена: "..price, "76%", labelAllAc.bottom, "10e", "20+", mainWindow )
+	btnChangeShare = button.Stretch( "76%", labelPrice.bottom + 10, "95%", "30+", "changeShare", mainWindow, -1, "", _ChangeShare )
+	btnTryControl = button.Stretch( "76%", btnChangeShare.bottom + 10, "95%", "30+", "tryControl", mainWindow, -1, "", _TryControl )
 	
-	buttonBuy = button.EqualeTexture( "76%", labelPrice.bottom + 10, "buyAc", mainWindow, -1, "", _BuyAc )
-	buttonSell = button.EqualeTexture( "76%", buttonBuy.bottom + 10, "sellAc", mainWindow, -1, "", _SellAc )
-	buttonTryControl = button.EqualTexture( "76%", buttonSell.bottom + 10, "tryControl", mainWindow, "", _TryControl )
-	
-	mainWindow:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, _CellSelected )
+	mainWindow:AddLuaFunction( base.GUIELEMENT_TABLE_CHANGED, _CellSelected )
 	
 	_FillTableCompanies()
 end

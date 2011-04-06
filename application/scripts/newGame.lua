@@ -38,6 +38,9 @@ function CreateStuffLists()
 	
 	base.os.remove( updates.filePlatforms )
 	applic:CreateDirectorySnapshot( "xtras/platforms", updates.filePlatforms, "platform", "item.platform" )	
+	
+	base.os.remove( updates.fileCompanies )
+	applic:CreateDirectorySnapshot( "xtras/companies", updates.fileCompanies, "company", "item.company" )
 end
 
 function ResetData()
@@ -64,10 +67,7 @@ function AddCompanyTechnologies()
 end
 
 local function localLoadTechnology( typer, filer )
-	local tech = base.CLuaTech( nil )
-	tech:Create( typer )
-	tech.status = TS_READY
-	tech:Load( filer )
+	local tech = base.CLuaTech( nil ):Create( filer )
 	
 	base.LogScript("!!!!!!LOAD TECH FROM "..filer )
 	applic:AddPublicTechnology( tech )

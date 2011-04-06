@@ -51,6 +51,7 @@ function CreateNewProfileAndStartGame( ptr )
 	updates.CheckDiskMachines()
 	updates.CheckNewReklames()
 	updates.CheckNewGames()
+	updates.CheckNewCompanies()
 	
 	--создание рабочих
 	applic:CreateNewFreeUsers()

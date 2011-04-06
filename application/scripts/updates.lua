@@ -20,6 +20,7 @@ fileEngines			= "xtras/engines.list"
 fileGames			= "xtras/games.list"
 fileLanguages		= "xtras/languages.list"
 filePlatforms		= "xtras/platforms.list"
+fileCompanies		= "xtras/companies.list"
 
 local function GetString( fileName, key ) 
 	return base.CLuaIniFile( nil, fileName ):ReadString( "properties", key, "error" )
@@ -48,6 +49,7 @@ function LoadLinks()
 	applic:LoadLinks( fileGames, "game" )									
 	applic:LoadLinks( fileLanguages, "language" )		
 	applic:LoadLinks( filePlatforms, "platform" )	
+	applic:LoadLinks( fileCompanies, "company" )
 end
 
 function FindInventionLoadFile( inventionName )
@@ -110,10 +112,7 @@ function CheckLanguages()
 		local langName = GetString( tmpLangIni, "internalname:string" )
 		
 		--провер€ем попадание врмененного интервала аддона в текущее врем€
-		local tech = base.CLuaTech( nil )
-		tech:Create( 0 )
-		tech.status = base.TS_READY
-		tech:Load( tmpLangIni )
+		local tech = base.CLuaTech( nil ):Create( tmpLangIni )
 		applic:AddPublicTechnology( tech ) 
 	end --for
 end
@@ -189,25 +188,6 @@ function CheckRetailers( ptr )
 	
 	Log( "Open config file "..fileRetailers.." with retailNumber="..retlNumber )
 	for i=1, retlNumber do
-		local retailer = base.CLuaRetailer( nil )
-		retailer:Create()
-
-		retlIniFile = iniFile:ReadString( "options", "retailer"..(i-1), "" ) 
-		retailer:Load( retlIniFile ) 
-
-		if retailer:ValidTime() then
-			if not retailer:IsLoaded() then
-				applic:LoadRetailer( retlIniFile )
-				Log( "Load retailer "..retailer.name.." from "..retlIniFile )
-			end
-		else
-			if retailer:IsLoaded() then
-				applic:RemoveRetiler( retailer.name )
-				Log( "Remove retailer "..retailer.name )
-			end
-		end
-		
-		retailer:Remove()
 	end
 end
 
@@ -258,14 +238,48 @@ function CheckNewGames()
 			local game = applic:GetGame( gameName )
 			
 			Log( "find new game in "..gameIniFile )
-			if game.empty then
-				game:Create( gameIniFile )
+			if game == nil or game.empty then
+				game = base.CLuaGame():Create( gameIniFile )
 				applic:AddGameToMarket( game )
 				if base.pda then
 					base.pda.Show( "Ќа рынке по€вилась нова€ игра "..game.name )
 				end
 			else
 				base.LogDebug("»гра "..game.name.." уже кем-то создана")
+			end
+		end 
+	end
+end
+
+function CheckNewCompanies()
+	base.LogDebug( "!!!!!!!! Start update companies" )
+	local iniFile = base.CLuaIniFile( nil, fileCompanies )
+
+	local companyNumber = iniFile:ReadInteger( "options", "companyNumber", 0 )
+	local companyIniFile = ""
+	local currentDate = GetCurrentDate()
+	
+	for i=1, companyNumber do
+		companyIniFile = iniFile:ReadString( "options", "company"..(i-1), "" )
+		base.LogDebug( "open company file "..companyIniFile )
+		
+		local companyName = GetString( companyIniFile, "internalname:string" )
+		local startDate = GetDate( companyIniFile, "startdate:time" )
+		
+		if startDate <= currentDate then
+			--если така€ компани€ уже есть на рынке, то еЄ не надо показывать
+			--искать будем по внутреннему имени
+			local company = applic:GetCompanyByName( companyName )
+			
+			base.LogDebug( "find new company in "..companyIniFile )
+			
+			if company == nil or company.empty then
+				company = applic:SinceCompany( companyIniFile )
+				
+				if base.pda then
+					base.pda.Show( "Ќа рынке по€вилась нова€ компани€ "..company.name )
+				end
+				
 			end
 		end 
 	end
@@ -294,10 +308,8 @@ function CheckNewTechs()
 			local tech = applic:GetTech( techName )
 			
 			base.LogScript( "find new tech... is "..techName )
-			if tech.empty then
-				tech:Create( 0 )
-				tech.status = base.TS_READY
-				tech:Load( plIniFile )
+			if tech == nil or tech.empty then
+				tech = base.CLuaTech():Create( plIniFile )
 	
 				base.LogScript("!!!!!! LOAD TECH FROM "..plIniFile )
 				--добавим технологию в игру

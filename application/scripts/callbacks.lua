@@ -10,6 +10,7 @@ function sworkAppMonthChange()
 	updates.CheckNewTechs() 
 	updates.CheckGameBoxAddons()
 	updates.CheckNewGames()
+	updates.CheckNewCompanies()
 	
 	PayMoneyToInventions()
 	PaySalaryToWorkers()
