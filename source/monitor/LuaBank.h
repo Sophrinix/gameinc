@@ -27,6 +27,9 @@ public:
 	int GetLoanMonthToEnd( lua_State* L );
 	int CreateLoan( lua_State* L );
 
+	int GetShares( lua_State* L );
+	int GetPieCostDynamic( lua_State* L );
+
 private:
 	template< class T > T GetLoanParam_( lua_State* L, NrpText& funcName, OPTION_NAME& name, T defValue );
 };

@@ -7,6 +7,7 @@
 #include "IUser.h"
 #include "NrpApplication.h"
 #include "LuaDevelopProject.h"
+#include "LuaUser.h"
 
 #define NO_POSTFIX
 #define NO_ASSERT
@@ -28,6 +29,7 @@ BEGIN_LUNA_PROPERTIES(CLuaDevelopModule)
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "parent", GetParent, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "percentDone", GetPercentDone, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "quality", GetQuality, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "userNumber", GetUserNumber, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaDevelopModule::CLuaDevelopModule(lua_State *L, bool ex) : ILuaProject( L, CLASS_DEVELOPMODULE, ex )							//конструктор
@@ -64,7 +66,7 @@ int CLuaDevelopModule::GetEmployerPosibility( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaDevelopModule::GetEmployerPosibility need PUser parameter");
 
 	float posilbleValue = 0; 
-	PUser puser = (PUser)lua_touserdata( L, 2 );
+	PUser puser = _GetLuaObject< CNrpUser, CLuaUser >( L, 2 );
 	assert( puser != NULL );
 	if( puser != NULL )
 		IF_OBJECT_NOT_NULL_THEN	posilbleValue = _object->GetEmployerPosibility( puser );
@@ -90,6 +92,12 @@ int CLuaDevelopModule::Remove( lua_State* L )
 int CLuaDevelopModule::GetPercentDone( lua_State* L )
 {
 	lua_pushnumber( L, GetParam_<float>( L, PROP, READYWORKPERCENT, 0 ) * 100 );
+	return 1;
+}
+
+int CLuaDevelopModule::GetUserNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, USERNUMBER, 0 ) );
 	return 1;
 }
 

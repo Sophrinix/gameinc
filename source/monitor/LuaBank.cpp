@@ -3,6 +3,9 @@
 #include "NrpBank.h"
 #include "NrpLoan.h"
 #include "NrpCompany.h"
+#include "NrpBridge.h"
+#include "NrpHistory.h"
+#include "LuaCompany.h"
 #include <assert.h>
 
 namespace nrp
@@ -20,6 +23,8 @@ BEGIN_LUNA_METHODS(CLuaBank)
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanMoneyPerMonth )
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanMonthToEnd )
 	LUNA_AUTONAME_FUNCTION( CLuaBank, CreateLoan )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetShares )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetPieCostDynamic )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaBank)
@@ -158,4 +163,48 @@ const char* CLuaBank::ClassName()
 {
 	return ( CLASS_LUABANK );
 }
+
+int CLuaBank::GetShares( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaCompany:GetShares need company name parameter" );
+
+	NrpText name = lua_tostring( L, 2 );
+	CNrpCompany* cmp = _GetLuaObject< CNrpCompany, CLuaCompany >( L, 3 );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		CShareholder* share = CNrpBridge::Instance().GetShares( name, cmp );
+
+		lua_pushinteger( L, share ? (int)(*share)[ PIE_NUMBER ] : 0 );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaBank::GetPieCostDynamic( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetPieCostDynamic need company name parameter" );
+
+	CNrpCompany* cmp = _GetLuaObject< CNrpCompany, CLuaCompany >( L, 2 );
+	assert( cmp && "company must be exists" );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( CNrpHistory* history = CNrpBridge::Instance().GetHistory( (*cmp)[ NAME ] ) )
+			if( CNrpHistoryStep* step = history->GetLast() )
+			{
+				float diff = (float)(*step)[ PIE_COST ] - (float)(*cmp)[ PIE_COST ];
+				lua_pushnumber( L, diff );
+				return 1;
+			}
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
 }//namespace nrp
