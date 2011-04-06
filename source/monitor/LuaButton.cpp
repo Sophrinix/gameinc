@@ -25,6 +25,9 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaButton)
 	LUNA_ILUAGUIELEMENT_PROPERTIES( CLuaButton )
 	LUNA_AUTONAME_PROPERTY( CLuaButton, "action", PureFunction, SetAction )
+	LUNA_AUTONAME_PROPERTY( CLuaButton, "pushButton", PureFunction, SetPushButton )
+	LUNA_AUTONAME_PROPERTY( CLuaButton, "pressed", PureFunction, SetPressed )
+	LUNA_AUTONAME_PROPERTY( CLuaButton, "tooltip", PureFunction, SetTooltip )
 END_LUNA_PROPERTIES
 
 
@@ -35,6 +38,28 @@ const char* CLuaButton::ClassName()
 
 CLuaButton::CLuaButton(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUABUTTON, ex )							//конструктор
 {}
+
+int CLuaButton::SetPushButton( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		bool pushBtn = lua_toboolean( L, -1 ) > 0;
+		_object->setIsPushButton( pushBtn );
+	}
+
+	return 0;
+}
+
+int CLuaButton::SetPressed( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		bool pushed = lua_toboolean( L, -1 ) > 0;
+		_object->setPressed( pushed );
+	}
+
+	return 0;
+}
 
 int CLuaButton::SetImage( lua_State *L )							//получает имя файла с текстурой, область из которой надо брать кнопку
 																	//для текущего состояния
@@ -85,6 +110,14 @@ int CLuaButton::SetImage_( lua_State* L, const NrpText& funcName, TYPE_IMAGE typ
 		case TI_PRESSED: _object->setPressedImage( txs, rectangle ); break;
 		}
 
+	return 1;
+}
+
+int CLuaButton::SetTooltip( lua_State* L )
+{
+	assert( lua_isstring( L, -1 ) );
+	NrpText text( lua_tostring( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	_object->setToolTipText( text.ToWide() );
 	return 1;
 }
 }//namespace nrp

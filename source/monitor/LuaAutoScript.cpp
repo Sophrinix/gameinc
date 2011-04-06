@@ -39,7 +39,7 @@ int CLuaAutoScript::AddUserToGameProject( lua_State* L )
 	NrpText moduleName = lua_tostring( L, 4 );
 	assert( userName != NULL && projectName != NULL && moduleName != NULL );
 
-	if( IUser* user = _nrpApp.GetUser( userName ) )
+	if( CNrpUser* user = _nrpApp.GetUser( userName ) )
 		if( PNrpCompany cmp = (*user)[ PARENTCOMPANY ].As<PNrpCompany>() )
 			if( INrpDevelopProject* devProject = cmp->GetDevelopProject( projectName ) )
 				if( CNrpProjectModule* module = devProject->GetModule( moduleName ) )
@@ -58,7 +58,7 @@ int CLuaAutoScript::AddUserToInvention( lua_State* L )
 	NrpText userName = lua_tostring( L, 2 );
 	NrpText inventionName = lua_tostring( L, 3 );
 
-	if( IUser* user = _nrpApp.GetUser( userName ) )
+	if( CNrpUser* user = _nrpApp.GetUser( userName ) )
 		if( PNrpCompany cmp = (*user)[ PARENTCOMPANY ].As<PNrpCompany>() )
 			if( CNrpInvention* invention = cmp->GetInvention( inventionName ) )
 			{

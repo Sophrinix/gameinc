@@ -33,7 +33,10 @@ public:
 	int SetImage( lua_State *L );							//привязка к текстуре в обычном состоянии
 	int SetHoveredImage( lua_State *L );					//привязка к текстуре в ховеред состоянии
 	int SetPressedImage( lua_State *L );					//привязка к текстуре в нажатом состоянии
-	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при 
+	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при
+	int SetPushButton( lua_State* L );
+	int SetTooltip( lua_State* L );
+	int SetPressed( lua_State* L );
 	static const char* ClassName();
 																//нажатии на эту кнопку
 private:
