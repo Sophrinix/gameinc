@@ -55,6 +55,7 @@ public:
 	int AddRenderTargetTexture( lua_State* L );
 
 	int SetRenderTarget( lua_State* L );
+	int CreateBlur( lua_State* L );
 };
 
 }//namespace nrp
