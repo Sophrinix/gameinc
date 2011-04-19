@@ -25,6 +25,7 @@ CNrpBrowserWindow::CNrpBrowserWindow( gui::IGUIEnvironment* env,
 	setRelativePosition( core::recti( 0, 0, size.Width + 14, size.Height + 15 ) );
 	image_ = Environment->addImage( core::recti( 7, 7, size.Width+7, size.Height+7 ), this, -1, 0 );
 	image_->setScaleImage( true );
+	bringToFront( getCloseButton() );
 	
 	setDraggable( true );
 	drop();

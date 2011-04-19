@@ -374,11 +374,15 @@ int CLuaUser::RemoveWork( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaUser:AddTechWork need CNrpTechnology* parameter" );
 
 	IWorkingModule* work = _GetLuaObject< IWorkingModule, ILuaObject >( L, 2, true );
-	assert( work != NULL );
+	assert( work );
 
-	IF_OBJECT_NOT_NULL_THEN _object->RemoveWork( work );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( work )
+			_object->RemoveWork( *work );
+	}
 
-	return 1;		
+	return 0;		
 }
 
 int CLuaUser::GetWork( lua_State* L )

@@ -477,8 +477,9 @@ int CLuaGuiEnvironment::AddMoveAnimator( lua_State* vm )
 	if( parent )
 	{
 		core::position2di pos;
-		pos.X = _ReadParam( vm, 3, parent->getAbsolutePosition().getWidth(), 0 );
-		pos.Y = _ReadParam( vm, 4, parent->getAbsolutePosition().getWidth(), 0 );
+		core::dimension2di size = parent->getParent() ? parent->getParent()->getAbsolutePosition().getSize() : core::dimension2di( 0, 0 );
+		pos.X = _ReadParam( vm, 3, size.Width, 0 );
+		pos.Y = _ReadParam( vm, 4, size.Height, 0 );
 
 		int step = _ReadParam( vm, 5, parent->getAbsolutePosition().getWidth(), 0 );
 		bool visibleOnStop = lua_toboolean( vm, 6 ) > 0;
