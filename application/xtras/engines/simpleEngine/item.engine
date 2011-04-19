@@ -9,7 +9,7 @@ internalName:string=simple_engine
 startdate:time=y=1983 m=01 d=01 h=0 mi=0
 parentcompany:unknown=
 quality:int=0
-skillcoding:int=0
+skill_coding:int=0
 ;techgroup:int=#PT_GAMEENGINE
 timeactual:int=0
 volumecode:int=10000

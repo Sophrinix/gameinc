@@ -23,11 +23,10 @@ function Show( header, text, font, texture )
 		
 		lbHeader = guienv:AddLabel( header, "8%", "33%", "92%", "40%", -1, mainWindow )
 		lbHeader:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
-		edText = guienv:AddEdit( text, "50%", "43%", "92%", "92%", -1, mainWindow ) 
-		edText.multiline = true
-		edText.enabled = true
 		
-		image = guienv:AddImage( "8%", "43%", "48%", "92%", mainWindow, -1, "" )
+		edText = guienv:AddLabel( text, "50%", "43%", "95%", "95%", -1, mainWindow ) 
+		
+		image = guienv:AddImage( "7%", "43%", "48%", "95%", mainWindow, -1, "" )
 		image.scale = true
 		image.alphaChannel = true
 		

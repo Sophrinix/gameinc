@@ -49,8 +49,7 @@ end
 function Show( textr )
 	if mainWindow == nil then
 		base.LogScript( "pda show ofsethh=".. offsethh.. "  hh="..hh ) 
-		mainWindow = guienv:AddWindow( "media/textures/pda.png", 0, offsethhEnd, 
-							 		   hw, (offsethh + hh).."e", -1, 
+		mainWindow = guienv:AddWindow( "media/textures/pda.png", 0, hh.."e", hw, "0e", -1, 
 							 		   guienv.root )
 							 		   
 		mainWindow.closeButton.visible = false

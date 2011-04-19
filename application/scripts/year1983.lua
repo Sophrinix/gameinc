@@ -39,6 +39,18 @@ events[ 119 ] = function()
 	rbank:ChangePieCost( "apple_company", "2%+" )
 end
 
+events[ 120 ] = function()
+	local header = "Получил по заслугам"
+	local text = "B Боливии арестован высокопоставленный нацистский военный преступник Клаус Барби"
+	
+	paper.Show( header, text, "font_10" )
+end
+
+events[ 122 ] = function()
+	local text = "Бьорн Борг ушёл из большого тенниса после 5 выигранных подряд Уимблдонских турниров."
+	--повышение интереса к спортивным играм
+end
+
 events[ 126 ] = function()
 	local header = "1-2-3-Старт"
 	local text =  "Lotus выпускает электронную таблицу Lotus 1-2-3"
@@ -48,17 +60,12 @@ events[ 126 ] = function()
 end
 
 events[ 127 ] = function()
-	local header = "Best of the Best"
+	local header = "Best of the IT 1982"
 	local text = "Названы лучшие проекты прошлого года в сфере IT. \"InfoWorld\" выбирает Multiplan производства Microsoft программным продуктом года, а IBM PC - компьютером года"
 	
 	paper.Show( header, text, "font_10" )
 	rbank:ChangePieCost( "microsoft_company", "4%+" )
 	rbank:ChangePieCost( "ibm_company", "3%+" )
-end
-
-events[ 122 ] = function()
-	local text = "Бьорн Борг ушёл из большого тенниса после 5 выигранных подряд Уимблдонских турниров."
-	--повышение интереса к спортивным играм
 end
 
 events[ 126 ] = function()
@@ -67,10 +74,19 @@ events[ 126 ] = function()
 end
 
 events[ 127 ] = function ()
---1983.01.27	
+	local header = "Европа без атома"
 	local text = "В Женеве возобновляются американо-советские переговоры. Обсуждается предложение СССР о создании безъядерной зоны в Центральной Европе."
+	
+	paper.Show( header, text )
 	applic:GrowInterest( "genre_war", 0.1 )
 end 
+
+events[ 213 ] = function()
+	local header = "1983 - год Библии"
+	local text = "Президент США Рональд Рейган объявил 1983 «Годом Библии»"
+	
+	paper.Show( header, text )
+end
 
 events[ 217 ] = function()
 	local header = "Взгляд в будущее"
