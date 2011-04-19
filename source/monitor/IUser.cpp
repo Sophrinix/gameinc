@@ -76,7 +76,7 @@ void CNrpUser::CalculateWantSalary_()
 		 cash *= (cash > 100 ? 0.9f : 1);
 	}
 
-	sum += (int)Param( WORK_QUALITY ) * 10;
+	sum += (int)_self[ WORK_QUALITY ] * log( static_cast< float>( (int)_self[ WORK_QUALITY ] ) );
 
 	_self[ WANTMONEY ] = (int)sum;
 
@@ -206,7 +206,8 @@ void CNrpUser::Load( const NrpText& fileName )
 
 void CNrpUser::AddWork( IWorkingModule& module, bool toFront )
 {
-	if( GetWork( (NrpText)module[ NAME ] ) == NULL )
+	//модуль не закончен и этого модул€ нет в списке запланированных
+	if( (float)module[ READYWORKPERCENT ] < 1.f && GetWork( (NrpText)module[ NAME ] ) == NULL )
 	{
 		if( toFront )
 			works_.insert( &module, 0 );
@@ -219,22 +220,18 @@ void CNrpUser::AddWork( IWorkingModule& module, bool toFront )
 	_self[ WORKNUMBER ] = static_cast< int >( works_.size() );
 }
 
-void CNrpUser::RemoveWork( IWorkingModule* techWork )
+void CNrpUser::RemoveWork( IWorkingModule& techWork )
 {
-	assert( techWork != NULL );
-	if( techWork == NULL )
-		return;
-
 	for( u32 i=0; i < works_.size(); i++ )
-		if( works_[ i ] == techWork )
+		if( works_[ i ] == &techWork )
 		{
-			techWork->RemoveUser( Text( NAME ) );
+			techWork.RemoveUser( (NrpText)_self[ NAME ] );
 			works_.erase( i );
 			_self[ WORKNUMBER ] = static_cast< int >( works_.size() );
 			return;
 		}
 		
-	NrpText text = NrpText( "Ќе могу найти компонент дл€ удалени€ " ) + techWork->Text( NAME );
+	NrpText text = NrpText( "Ќе могу найти компонент дл€ удалени€ " ) + (NrpText)techWork[ NAME ];
 	Log(HW) << text << term;
 }
 
@@ -271,7 +268,7 @@ void CNrpUser::BeginNewHour( const NrpTime& time )
 		{
 			//закончили обработку компонента
 			if( (*works_[ 0 ] )[ READYWORKPERCENT ] >= 1.f )
-				RemoveWork( works_[ 0 ] );
+				RemoveWork( *works_[ 0 ] );
 			else
 				works_[ 0 ]->Update( *this, time );			
 		}
@@ -322,12 +319,13 @@ void CNrpUser::BeginNewDay( const NrpTime& time )
 
 void CNrpUser::AddModificator( IModificator* ptrModificator )
 {
-	modificators_.push_back( ptrModificator );
+	assert( ptrModificator );
+	if( ptrModificator )
+		modificators_.push_back( ptrModificator );
 }
 
 void CNrpUser::IncreaseExperience( const NrpText& name, int grow )
 {
-
 	genreExperience_[ name ] = ( genreExperience_.find( name ) != NULL ? genreExperience_[ name ] : 0) + grow;
 	//общий опыт тоже растет по мере работы разраба
 	_self[ EXPERIENCE ] += grow; 

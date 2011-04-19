@@ -62,7 +62,7 @@ public:
 	void AddWork( IWorkingModule& techWork, bool toFront=false );
 	IWorkingModule* GetWork( u32 index ) const;
 	IWorkingModule* GetWork( const NrpText& name ) const;
-	void RemoveWork( IWorkingModule* techWork );
+	void RemoveWork( IWorkingModule& techWork );
 
 	void AddModificator( IModificator* ptrModificator );
 

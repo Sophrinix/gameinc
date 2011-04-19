@@ -25,8 +25,10 @@ public:
 	virtual int AddUser( CNrpUser& ptrUser ) = 0;
 	virtual int RemoveUser( const NrpText& userName ) = 0;
 
-	virtual NrpText Save( const NrpText& saveFolder ) { return ""; }
-	virtual void Load( const NrpText& fileName ) {}
+	virtual const USERS& GetUsers() const = 0;
+
+	virtual NrpText Save( const NrpText& saveFolder ) { assert( "IWorkingModule::Save pure function call" ); return ""; }
+	virtual void Load( const NrpText& fileName ) { assert( "IWorkingModule::Load pure function call" ); }
 
 	virtual ~IWorkingModule() {};
 };
