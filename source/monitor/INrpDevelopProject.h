@@ -18,9 +18,10 @@ public:
 	 
 	~INrpDevelopProject(void);
 
-	void SetDeveloper( CNrpUser* user );
+	void SetDeveloper( CNrpUser& user );
 	const STRINGS& GetDevelopers() { return _developers; }
-	virtual void ModuleFinished( CNrpProjectModule* module ) = 0;
+	virtual void ModuleFinished( IWorkingModule& module ) = 0;
+	virtual void ModuleTested( IWorkingModule& module ) = 0;
 	virtual bool IsReady() = 0; 
 	virtual CNrpProjectModule* GetModule( u32 index ) = 0;
 	virtual CNrpProjectModule* GetModule( const NrpText& name ) = 0;
@@ -33,7 +34,6 @@ protected:
 	void InitializeOptions_();
 
 	STRINGS _developers;
-private:
 };
 
 }//end namespace nrp

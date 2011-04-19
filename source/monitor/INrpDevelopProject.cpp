@@ -41,14 +41,14 @@ void INrpDevelopProject::InitializeOptions_()
 	Add<float>( FAMOUS, 0.f );
 }
 
-void INrpDevelopProject::SetDeveloper( CNrpUser* user )
+void INrpDevelopProject::SetDeveloper( CNrpUser& user )
 {
 	for( u32 i=0; i < _developers.size(); i++ )
-		if( _developers[ i ] == user->Text( NAME ) )
+		if( _developers[ i ] == (NrpText)user[ NAME ] )
 			continue;
 
-	_developers.push_back( user->Text( NAME ) );
-	Param( USERNUMBER ) = static_cast< int >( _developers.size() );
+	_developers.push_back( (NrpText)user[ NAME ] );
+	_self[ USERNUMBER ] = static_cast< int >( _developers.size() );
 }
 
 void INrpDevelopProject::Load( const NrpText& pathTo )
@@ -56,7 +56,7 @@ void INrpDevelopProject::Load( const NrpText& pathTo )
 	INrpProject::Load( pathTo );
 
 	IniFile rv( pathTo );
-	rv.Get( SECTION_USERS, CreateKeyUser, (int)Param( USERNUMBER ), _developers );
+	rv.Get( SECTION_USERS, CreateKeyUser, (int)_self[ USERNUMBER ], _developers );
 }
 
 NrpText INrpDevelopProject::ClassName()
