@@ -2,6 +2,7 @@
 NrpInitializeLoginScene()
 
 IncludeScript( "LoginFunctions" )
+IncludeScript( "button" )
 
 --создание названий полей ввода
 
@@ -9,15 +10,14 @@ local label = guienv:AddLabel( "Профиль:" .. applic.profile, scrWidth / 2 - 150,
 label.color = toColor( 0xff, 0xc0, 0xc0, 0xc0 )
 								
 --создание полей ввода				
-local btnSelectProfile = guienv:AddButton( "55%", "170e", "80+",  "150e", guienv.root, -1, "Выбрать")
+local btnSelectProfile = guienv:AddButton( "80%", "100e", "0e",  "0e", guienv.root, -1, "Выбрать")
 --btnSelectProfile.action = slogin_SelectProfile
 
---создание кнопки входа 
-local layout = guienv:AddLayout( "12%", "120e", "88%", "60+", 4, -1, guienv.root )
-guienv:AddButton( "Новая игра", layout, LoginFunctions.NewGame )
-guienv:AddButton( "Продолжить", layout, LoginFunctions.Continue )
-guienv:AddButton( "Настройки", layout, LoginFunctions.ShowOptions )
-guienv:AddButton( "Выход", layout, LoginFunctions.Quit )
+--создание кнопоку входа 
+button.Stretch( "10.9%", "57.4%", "67.5%", "98%", "btnNewGame", guienv.root, -1, "", LoginFunctions.NewGame )
+button.Stretch( "4.6%", "0", "41%", "55%", "btnContinueGame", guienv.root, -1, "",	LoginFunctions.Continue )
+button.Stretch( "51.3%", "51%", "74.3%", "69%", "btnOptionsGame", guienv.root, -1, "", LoginFunctions.ShowOptions )
+button.Stretch( "29.5%", "6%", "96%", "51.6%", "btnExitGame", guienv.root, -1, "", LoginFunctions.Quit )
 
 browser:Show()
 browser:Navigate( "media/html/intro.htm" )

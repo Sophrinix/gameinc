@@ -35,6 +35,6 @@ function Show()
 	--deposit	
 	btnDebt = button.EqualeTexture( 258, 301, "deposit", bankWindow, -1, "", base.deposit.Show )
 	
-	btnBridge = button.EqualeTexture( 333, 157, "bridge", bankWindow, -1, "", base.bridge.Show )
+	btnBridge = button.EqualeTexture( 425, 174, "bridge", bankWindow, -1, "", base.bridge.Show )
 end
 

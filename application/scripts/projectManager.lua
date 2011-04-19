@@ -38,13 +38,14 @@ local function localCreateProjectsComboBox()
 	comboxProjects = guienv:AddComboBox( "", 140, 50, "50%", "30+", -1, windowProjectManager )
 	--пробежимся по всем проектам компании
 	LogScript( "Company DevProject number="..company.devProjectNumber )
+	
+	local function dd( pt )
+			if pt == base.PT_GAME then return base.STR_GAME else return base.STR_ENGINE end
+	end
+		
 	for i=1, company.devProjectNumber do
 		local ptrProject = company:GetDevProject( i-1 )
 		
-		local function dd( pt )
-			if pt == base.PT_GAME then return base.STR_GAME else return base.STR_ENGINE end
-		end
-			
 		comboxProjects:AddItem( dd( ptrProject.techGroup ) .. ":" .. ptrProject.name, ptrProject )	
 	end
 end
@@ -201,6 +202,10 @@ function Show()
 	button.LayoutButton( "", layout, -1, base.STR_TESTERS, function () UpdateUsersListBox( base.STR_TESTERS ) end )
 	--поставим для просмотра первого кодера
 	UpdateUsersListBox( base.STR_CODERS )	
+	
+	if comboxProjects.itemCount > 0 then
+		comboxProjects.itemIndex = 0
+	end 
 	
 	windowProjectManager:AddLuaFunction( base.GUIELEMENT_CMBXITEM_SELECTED, _ComboBoxItemSelected )
 end

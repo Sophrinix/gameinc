@@ -7,7 +7,7 @@ IncludeScript( "localization/russian" )
 IncludeScript( "globalVariableInitialize" )
 IncludeScript( "Tutorial" )
 
-NrpLoadPlugins( "Plugins/" )
+--NrpLoadPlugins( "Plugins/" )
 
 --загрузка сцены авторизации пользователя
 NrpAddScene( "sceneLogin", "scripts/sceneLogin.lua" )
@@ -19,3 +19,4 @@ NrpAddScene( "sceneWork", "scripts/sceneWork.lua" )
 NrpSetNextScene( "sceneLogin" )
 
 applic:AddResourceDirectory( "media/maps" )
+applic:AddResourceDirectory( "media/textures" )

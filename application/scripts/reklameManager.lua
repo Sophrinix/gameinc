@@ -86,7 +86,7 @@ end
 local function _SelectNewWork()
 	currentWork = base.CLuaReklame( picflowReklames.selectedObject )
 	selectedGame = base.CLuaDevelopProject( lbxGames.selectedObject )
-	currentWork:SetReklameObject( selectedGame )
+	currentWork.reklameObject = selectedGame
 	addingDays = 0	
 	
 	local vis = selectedGame.empty

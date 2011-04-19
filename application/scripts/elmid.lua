@@ -10,8 +10,7 @@ ID_DATETIME_LABEL = ID_MAINMENU + 10
 --]]
 
 function toColor( a, r, g, b )
-	local ret = a * 16777216 + r * 65536 + g * 256 + b;
-	return ret
+	return a * 16777216 + r * 65536 + g * 256 + b;
 end
 
 WHITE_COLOR = 4294967295

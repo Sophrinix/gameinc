@@ -4,39 +4,59 @@ module( "shareSelect" )
 
 local guienv = base.guienv
 local button = base.button
+local rbank = nil
+local company = nil
+local shareCompany = nil
 
 local mainWindow = nil
 local edShare = nil
 local edMoney = nil
 local onEnd = nil
 local shareStart = nil
-local shareEnd = nil
+local wantShareNumber = nil
+
+
+local function _UpdateLabel()
+	edShare.text = shareStart + wantShareNumber
+	local deltaMoney = wantShareNumber * shareCompany.pieCost
+	edMoney.text = deltaMoney
+	
+	if deltaMoney > 0 then 
+		edMoney.overrideColor = base.toColor( 0xff, 0, 0xff, 0 )
+	else
+		edMoney.overrideColor = base.toColor( 0xff, 0xff, 0, 0 )
+	end
+end
 
 local function _UpShare()
-	moneyEnd = moneyEnd + moneyDelta
-	edFull.text = moneyEnd
-	edDelta.text = moneyEnd - moneyStart
+	local needMoney = ( wantShareNumber + 100 ) * shareCompany.pieCost
+	if rbank:GetAvaibleShares( shareCompany ) > ( wantShareNumber + 100 ) and company.balance > needMoney then
+		wantShareNumber = wantShareNumber + 100
+		_UpdateLabel()
+	end
 end
 
 local function _DownShare()
-	if moneyEnd > moneyDelta then
-		moneyEnd = moneyEnd - moneyDelta
-		edFull.text = moneyEnd
-		edDelta.text = moneyEnd - moneyStart
+	if shareStart + wantShareNumber > 0 then
+		wantShareNumber = wantShareNumber - 100
+		_UpdateLabel()
 	end
 end
 
 local function _OnEnd()
 	mainWindow:Remove()
-	onEnd( moneyStart, moneyEnd )
+	onEnd( shareCompany, shareStart + wantShareNumber )
 end
 
 function Show( text, shrCmp, actionAfterEnd )
-	local shareCur = rbank.GetShares( company.name, currentCompany )
-	
-	shareEnd = shareCur
+	rbank = base.applic.bank
+	company = base.applic.playerCompany
+	local shareCur = rbank:GetShares( company.name, currentCompany )
+
 	shareStart = shareCur
 	onEnd = actionAfterEnd
+	shareCompany = shrCmp
+	wantShareNumber = 0
 	
 	mainWindow = guienv:AddWindow( "media/textures/money_select.png", "33%", "33%", "284+", "142+", -1, guienv.root )
 	mainWindow.closeButton.visible = false

@@ -67,8 +67,8 @@ function NewGame( ptr )
 	wndNewGame = guienv:AddWindow( "", "25%", "33%", "50%+", "33%+", -1, guienv.root )
 	wndNewGame.closeButton.visible = false
 	
-	editName = guienv:AddEdit(  "dalerank",  "10%", 40, "80%+", "20+", -1, wndNewGame )
-	editCompany = guienv:AddEdit(  "daleteam", "10%", 70, "80%+", "20+", -1, wndNewGame )				
+	editName = guienv:AddEdit(  "Player",  "10%", 40, "80%+", "20+", -1, wndNewGame )
+	editCompany = guienv:AddEdit(  "CompanyName", "10%", 70, "80%+", "20+", -1, wndNewGame )				
 	
 	button.Stretch( "12%", "60e", "49%", "10e", "ok", wndNewGame, -1, "Готово", CreateNewProfileAndStartGame )
 	button.Stretch( "51%", "60e", "88%", "10e", "cancel", wndNewGame, -1, "Отмена", CloseNewGame )

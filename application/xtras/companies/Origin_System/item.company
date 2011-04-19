@@ -1,0 +1,12 @@
+[properties]
+balance:int=20000000
+name:string=Origin System, Inc.
+internalname:string=origin_system_company
+pieNumber:int=30000
+startdate:time=y=1983 m=04 d=02 h=00 mi=00 s=0
+enddate:time=y=2004 m=01 d=02 h=00 mi=00 s=0
+self_pie:int=9000
+pieCost:float=0
+texturenormal:path=image.png
+;location=tokyo
+;region=asia

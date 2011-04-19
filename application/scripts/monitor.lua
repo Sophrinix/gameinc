@@ -2,6 +2,7 @@ local base = _G
 
 IncludeScript("projectManager")	
 IncludeScript("userManager")
+IncludeScript("houseSelect" )
 
 module( "monitor" )
 
@@ -17,6 +18,7 @@ local width = 80
 function Hide()
 	base.package.loaded[ "projectManager" ] = false
 	base.package.loaded[ "userManager" ] = false
+	base.package.loaded[ "houseSelect" ] = false
 end
 
 function Show()
@@ -28,4 +30,5 @@ function Show()
 	button.Stretch( 0, 0, width, width, "m_inDevelop", flick, -1, base.STR_DEVPROJECTS, base.projectManager.Show )
 	--button.Stretch( 0, 0, width, width, "m_buhgalter", flick, -1, base.STR_BUHGALTERIA, buhgalter.Show )
 	button.Stretch( 0, 0, width, width, "m_personal", flick, -1, base.STR_PERSONAL, base.userManager.Show )
+	button.Stretch( 0, 0, width, width, "m_houseSelect", flick, -1, base.STR_HOUSE_SELECT, base.houseSelect.Show )
 end

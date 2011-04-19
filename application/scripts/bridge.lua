@@ -24,6 +24,7 @@ local btnChangeShare = nil
 local btnTryControl = nil
 
 local function _Hide()
+	base.package.loaded[ "shareSelect" ] = false
 end
 
 local function _FillTableCompanies()
@@ -48,12 +49,7 @@ local function _FillTableCompanies()
 	end
 end
 
-function _CellSelected()
-	local selRow = tblCompanies.activeRow
-	
-	local cmpName = tblCompanies:GetCellText( selRow, 0 )
-	currentCompany = applic:GetCompanyByName( cmpName )
-	
+local function _UpdateInfo()
 	base.LogScript( "company logo to "..currentCompany.name.." from "..currentCompany.texture )
 	companyLogo.texture = currentCompany.texture
 	
@@ -62,19 +58,30 @@ function _CellSelected()
 	labelAcNumber.text = "Куплено: "..sharesNumber
 	labelAllAc.text = "Всего: "..currentCompany.allPie
 	labelPrice.text = "Цена: $"..currentCompany.pieCost
-	labelSelfAc.text = "Доступно: ".. (currentCompany.allPie - currentCompany.selfPie)
+	labelSelfAc.text = "Доступно: ".. rbank:GetAvaibleShares( currentCompany )
 	
 	--если есть возможность взять контроль над компанией 
 	btnTryControl.enabled = ( sharesNumber / currentCompany.allPie ) > 0.15
 end
 
-local function _EndingChangeShare()
+local function _CellSelected()
+	local selRow = tblCompanies.activeRow
 	
+	local cmpName = tblCompanies:GetCellText( selRow, 0 )
+	currentCompany = applic:GetCompanyByName( cmpName )
+	
+	_UpdateInfo()	
+end
+
+local function _EndingChangeShare( shareCompany, newShare )
+	rbank:ChangeShares( company.name, shareCompany, newShare )
+	_FillTableCompanies()
+	_UpdateInfo()
 end
 
 local function _ChangeShare()
 	local shareCur = rbank:GetShares( company.name, currentCompany )
-	shareSelect.Show( "", currentCompany, _EndingChangeShare )
+	base.shareSelect.Show( "", currentCompany, _EndingChangeShare )
 end
 
 local function _EndingTryControl()
@@ -83,14 +90,14 @@ end
 
 local function _TryControl()
 	local shareCur = rbank:GetShares( company.name, currentCompany )
-	companyControl.Show( "", currentCompany, _EndingTryControl )
+	base.companyControl.Show( "", currentCompany, _EndingTryControl )
 end
 
 function Show()
 	rbank = base.applic.bank
 	company = base.applic.playerCompany
 	
-	local txsBlur = base.driver:CreateBlur( "bank.png", 2, 4 )
+	local txsBlur = base.driver:CreateBlur( "bridge.png", 2, 4 )
 	mainWindow = window.fsWindow( txsBlur.path, _Hide )
 	
 	tblCompanies = guienv:AddTable( "5%", "10%", "74%", "95%", -1, mainWindow )

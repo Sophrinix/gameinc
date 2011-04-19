@@ -8,12 +8,29 @@ videotech = {}
 soundtech = {}
 engine = {}
 
-defs = {}
-
-defs[ base.PT_PLUGIN ] = engine
-defs[ base.PT_VIDEOTECH ] = videotech
-defs[ base.PT_SOUNDTECH ] = soundtech
-defs[ base.PT_ADVTECH ] = advtech
+function GetText( type, quality )
+	if quality == nil then 
+		return "Нечего тестировать"
+	end
+	
+	local prc = quality / 100;
+	local text = nil
+	if type == base.PT_GAMEENGINE then
+		text = engine[ prc * #engine ]	
+	elseif type == base.PT_VIDEOTECH then
+		text = videotech[ prc * #videotech]
+	elseif type == base.PT_SOUNDTECH then
+		text = soundtech[ prc * #soundtech]
+	elseif type == base.PT_ADVTECH then
+		text = advtech[ prc * #advtech]
+	end
+	
+	if text == nil then
+		return "Нечего тестировать"
+	else
+		return text
+	end
+end
 
 table.insert( advtech, "Управление катастрофическое." )
 table.insert( advtech, "Так просто невозможно играть." )

@@ -8,6 +8,8 @@ local ODS = base.ODS
 local CON = base.CON
 local applic = base.applic
 local plant = base.applic.plant
+local currentYear = nil
+local currentYearNumber = 0
 
 fileIniAddons		= "xtras/gameboxaddons.list"
 fileDiskMachines	= "xtras/diskmachines.list"
@@ -335,5 +337,20 @@ function CheckNewTechs()
 				end
 			end
 		end
+	end
+end
+
+function CheckNewEvents()
+	local year, month, day, _, _ = applic:GetGameTime()
+	
+	if currentYear == nil or currentYearNumber ~= year then
+		local fileName = "year"..year
+		base.IncludeScript( fileName )
+		currentYear = base.require( fileName )
+		currentYearNumber = year
+	end
+	
+	if currentYear then
+		currentYear.FindEvent( month, day )
 	end
 end

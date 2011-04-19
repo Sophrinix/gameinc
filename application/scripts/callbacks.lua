@@ -1,7 +1,7 @@
 labelSpeed = nil
 
 function sworkAppDayChange( ptr )
-	
+	updates.CheckNewEvents()
 end
 
 function sworkAppMonthChange()
