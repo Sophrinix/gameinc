@@ -22,10 +22,12 @@ public:
 	~CNrpGuiRectAnimator(void);
 
 	virtual void draw();
-private:
+
+protected:
 	core::recti startRect_, stopRect_;
 	s32 step_;
 
+private:
 	bool visibleOnStop_, remOnStop_, remParentOnStop_;
 };
 

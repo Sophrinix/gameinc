@@ -22,14 +22,14 @@ CNrpTechnology::CNrpTechnology( PROJECT_TYPE typen, const CLASS_NAME& className 
 	Param( TECHGROUP ) = static_cast< int >( typen );
 }
 
-CNrpTechnology::CNrpTechnology( CNrpInvention* invention ) : INrpProject( CLASS_TECHNOLOGY, "" )
+CNrpTechnology::CNrpTechnology( CNrpInvention& invention ) : INrpProject( CLASS_TECHNOLOGY, "" )
 {
 	_InitializeOptions();
 
 	_self[ STATUS ] = static_cast< int >( TS_READY );
-	Load( (*invention)[ BASEFILE ] );
-	_self[ PARENTCOMPANY ] = (*invention)[ PARENTCOMPANY ];
-	_self[ STARTDATE ] = (*invention)[ ENDDATE ];
+	Load( invention[ BASEFILE ] );
+	_self[ PARENTCOMPANY ] = invention[ PARENTCOMPANY ];
+	_self[ STARTDATE ] = invention[ ENDDATE ];
 }
 
 CNrpTechnology::CNrpTechnology( const NrpText& fileTech ) : INrpProject( CLASS_TECHNOLOGY, "" )

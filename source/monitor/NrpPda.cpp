@@ -35,9 +35,9 @@ NrpText CNrpPda::Save( const NrpText& fileName )
 		CPdaItem* item = _items[ k ];
 		NrpText section = CreateKeyItem( k );
 		assert( item->Text( MESSAGE ).size() > 0 );
-		sv.Set( section, "message", item->Text( MESSAGE ) );
-		sv.Set( section, "time", item->Param( STARTDATE ).As<NrpTime>() );
-		sv.Set( section, "action", item->Text( ACTION ) );
+		sv.Set( section, "message", (NrpText)(*item)[ MESSAGE ] );
+		sv.Set( section, "time", (*item)[ STARTDATE ].As<NrpTime>() );
+		sv.Set( section, "action", (NrpText)(*item)[ ACTION ] );
 	}	
 
 	return fileName;
@@ -58,7 +58,7 @@ void CNrpPda::Load( const NrpText& fileName )
 		if( mess.size() > 0 )
 		{
 			AddItem( mess, 
-					 rv.Get( section, "action", 0 ),
+					 rv.Get( section, "action", NrpText() ),
 					 rv.Get( section, "time", timeDef ) );
 		}
 		else 
@@ -66,7 +66,7 @@ void CNrpPda::Load( const NrpText& fileName )
 	}
 }
 
-void CNrpPda::AddItem( const NrpText message, int action, const NrpTime& lTime )
+void CNrpPda::AddItem( const NrpText& message, const NrpText& action, const NrpTime& lTime )
 {
 	_items.push_back( new CPdaItem( message, action, lTime ) );
 	
@@ -108,12 +108,12 @@ NrpText CPdaItem::ClassName()
 	return CLASS_PDAITEM;
 }
 
-CPdaItem::CPdaItem( const NrpText& m, int a, const NrpTime& t ) : INrpConfig( CLASS_PDAITEM, "" )
+CPdaItem::CPdaItem( const NrpText& m, const NrpText& a, const NrpTime& t ) : INrpConfig( CLASS_PDAITEM, "" )
 {
 	assert( m.size() > 0 );
 
 	Add<NrpText>( MESSAGE, m );
-	Add<int>( ACTION, a);
+	Add<NrpText>( ACTION, a);
 	Add( STARTDATE, t );
 }
 

@@ -50,14 +50,11 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 	_self[ TECHGROUP ] = static_cast< int >( PT_GAME );
 }
 
-void CNrpDevelopGame::_AddModulesFrom( const CNrpTechnology* tech, int baseCode )
+void CNrpDevelopGame::_AddModulesFrom( const CNrpTechnology& tech, int baseCode )
 {
-	if( tech )
-	{
-		CNrpProjectModule* module = new CNrpProjectModule( const_cast< CNrpTechnology* >( tech ), this );
-		(*module)[ CODEVOLUME ] = static_cast< int >( baseCode * (*module)[ BASE_CODE ].As<float>() );
-		_modules.push_back( module );
-	}
+	CNrpProjectModule* module = new CNrpProjectModule( const_cast< CNrpTechnology& >( tech ), *this );
+	(*module)[ CODEVOLUME ] = static_cast< int >( baseCode * (*module)[ BASE_CODE ].As<float>() );
+	_modules.push_back( module );
 }
 
 template< typename T, typename TARRAY >
@@ -67,23 +64,23 @@ void CNrpDevelopGame::_AddModulesFrom( const TARRAY& arrtech, int baseCode )
 	{
 		T* ptr = arrtech[ i ];
 
+		assert( ptr );
 		if( ptr )
 		{
-			CNrpProjectModule* nTech = new CNrpProjectModule( ptr, this );
+			CNrpProjectModule* nTech = new CNrpProjectModule( *ptr, *this );
 			(*nTech)[ CODEVOLUME ] = static_cast< int >( baseCode * (float)(*nTech)[ BASE_CODE ] );
 			_modules.push_back( nTech );
 		}
 	}
 }
 
-CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCompany ) 
-: INrpDevelopProject( CLASS_DEVELOPGAME, nProject->Text( NAME ) )
+CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject& refPr, CNrpCompany& ptrCompany ) 
+: INrpDevelopProject( CLASS_DEVELOPGAME, refPr[ NAME ] )
 {
-	CNrpGameProject& refPr = *nProject;
-	_InitializeOptions( nProject->Text( NAME ) );
+	_InitializeOptions( refPr[ NAME ] );
     //компания, которая делает это модуль
-	_self[ PARENTCOMPANY ] = ptrCompany;
-	assert( (*nProject)[ PLATFORMNUMBER ] != (int)0 );
+	_self[ PARENTCOMPANY ] = &ptrCompany;
+	assert( refPr[ PLATFORMNUMBER ] != (int)0 );
 	_self[ PLATFORMNUMBER ] = refPr[ PLATFORMNUMBER ];
 	_self[ GENRE_MODULE_NUMBER ] = refPr[ GENRE_MODULE_NUMBER ];
 	int bcv = refPr[ ENGINE_CODEVOLUME ];
@@ -91,7 +88,7 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	PNrpGameEngine ge = refPr[ GAME_ENGINE ].As<PNrpGameEngine>();
 	_self[ GAME_ENGINE ] = ge;
 
-	CNrpProjectModule* extEngine = new CNrpProjectModule( PT_PLUGIN, this );
+	CNrpProjectModule* extEngine = new CNrpProjectModule( PT_PLUGIN, *this );
 	(*extEngine)[ NAME ] = Text( NAME ) + " Расширение движка";
 	(*extEngine)[ INTERNAL_NAME ] = Text( NAME ) + "_extent";
 	(*extEngine).SetEmployerSkillRequire( SKILL_CODING, (*ge)[ SKILL_CODING ] );
@@ -108,11 +105,11 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCom
 	_self[ PROJECTREADY ] = false;
 	_self[ QUALITY ] = int(0);
 
-	_AddModulesFrom( refPr[ SCRIPTENGINE ].As<CNrpTechnology*>(), bcv );
-	_AddModulesFrom( refPr[ MINIGAMEENGINE ].As<CNrpTechnology*>(), bcv );
-	_AddModulesFrom( refPr[ PHYSICSENGINE ].As<CNrpTechnology*>(), bcv );
-	_AddModulesFrom( refPr[ GRAPHICQUALITY ].As<CNrpTechnology*>(), bcv);
-	_AddModulesFrom( refPr[ SOUNDQUALITY ].As<CNrpTechnology*>(), bcv );
+	_AddModulesFrom( *refPr[ SCRIPTENGINE ].As<CNrpTechnology*>(), bcv );
+	_AddModulesFrom( *refPr[ MINIGAMEENGINE ].As<CNrpTechnology*>(), bcv );
+	_AddModulesFrom( *refPr[ PHYSICSENGINE ].As<CNrpTechnology*>(), bcv );
+	_AddModulesFrom( *refPr[ GRAPHICQUALITY ].As<CNrpTechnology*>(), bcv);
+	_AddModulesFrom( *refPr[ SOUNDQUALITY ].As<CNrpTechnology*>(), bcv );
 	_AddModulesFrom< CNrpTechnology >( refPr.GetTechs( PT_ADVTECH ), bcv );
 	_AddModulesFrom< CNrpTechnology >( refPr.GetTechs( PT_GENRE ), bcv );
 	_AddModulesFrom< CNrpTechnology >( refPr.GetTechs( PT_VIDEOTECH ), bcv );
@@ -147,8 +144,8 @@ void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
 	{
 		 SetDeveloper( uList[ k ] );
 		 int growExp = (int)(*module)[ CODEVOLUME ] / (int)_self[ BASE_CODEVOLUME ];
-		 //опыт пользователя растет по мере выполнения компонентов
-		 //а если у пользователя не было опыта в этом жанре, то он появляется
+		 //опыт разработчика растет по мере выполнения компонентов
+		 //а если у разработчкиа не было опыта в этом жанре, то он появляется
 		 if( CNrpTechnology* genre = GetGenre( 0 ) )
 			 uList[ k ]->IncreaseExperience( (*genre)[ INTERNAL_NAME ], growExp );
 		 else
@@ -207,7 +204,7 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 	for( int i=0; i < (int)Param( MODULE_NUMBER ); ++i )
 	{
 		NrpText saveFile = rf.Get( SECTION_MODULES, CreateKeyModule(i), NrpText("") );
-		CNrpProjectModule* tech = new CNrpProjectModule( PROJECT_TYPE( 0 ), this );
+		CNrpProjectModule* tech = new CNrpProjectModule( PROJECT_TYPE( 0 ), *this );
 		tech->Load( saveFile );
 		_modules.push_back( tech );		
 	}

@@ -338,12 +338,17 @@ int CLuaCompany::GetDevProject( lua_State* L )
 	int index = lua_tointeger( L, 2 );
 	INrpProject* prj = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetDevelopProject( index );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		prj = _object->GetDevelopProject( index );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, prj );
-	Luna< CLuaDevelopProject >::constructor( L );
+		//lua_pop( L, argc );
+		lua_pushlightuserdata( L, prj );
+		Luna< CLuaDevelopProject >::constructor( L );
+		return 1;
+	}
 
+	lua_pushnil( L );
 	return 1;	
 }
 
@@ -383,7 +388,7 @@ int CLuaCompany::StartInvention( lua_State* L )
 
 	NrpText fileName = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN	_nrpApp.AddInvention( fileName, _object );
+	IF_OBJECT_NOT_NULL_THEN	_nrpApp.AddInvention( fileName, *_object );
 
 	return 1;	
 }

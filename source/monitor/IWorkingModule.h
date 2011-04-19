@@ -21,16 +21,14 @@ public:
 		Add<float>( READYWORKPERCENT, 0 );
 	}
 
-	virtual void Update( CNrpUser* ptrUser, const NrpTime& time ) = 0;
-	virtual int AddUser( CNrpUser* ptrUser ) = 0;
+	virtual void Update( CNrpUser& ptrUser, const NrpTime& time ) = 0;
+	virtual int AddUser( CNrpUser& ptrUser ) = 0;
 	virtual int RemoveUser( const NrpText& userName ) = 0;
 
 	virtual NrpText Save( const NrpText& saveFolder ) { return ""; }
 	virtual void Load( const NrpText& fileName ) {}
 
 	virtual ~IWorkingModule() {};
-private:
-	IWorkingModule(void) : CNrpTechnology( PROJECT_TYPE(0), "undefined" ) {};
 };
 
 }//end namespace nrp

@@ -66,16 +66,12 @@ class CNrp2DPictureFlow : public IGUIListBox, public ILuaFunctionality
 			downTexture_ = CreateTextures_( driver ); 
 			_textureLoaded = true;
 		}
-
-		NrpText GetText() const { return _text; }
-		void SetText( const NrpText& text ) { _text = text; }
 	private:
 		video::ITexture* CreateTextures_( video::IVideoDriver* driver );
 		video::ITexture* texture_;
 		video::ITexture* downTexture_;
 		NrpText _pathToTexture; 
 		bool _textureLoaded;
-		NrpText _text;
 	};
 
 	CNrp2DPictureFlow();

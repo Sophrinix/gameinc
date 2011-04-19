@@ -68,7 +68,6 @@ u32 CNrp2DPictureFlow::addItem( video::ITexture* texture, const wchar_t* text )
 	CNrpImageDescription* descr = new CNrpImageDescription();
 	_images.push_back( descr );
 	descr->SetTexture( texture ); 
-	descr->SetText( text );
 	
 	descr->rectangle = core::recti( 0, 0, 0, 0 );
 
@@ -184,13 +183,6 @@ void CNrp2DPictureFlow::_DrawPairImage( CNrpImageDescription* pDesk )
 	colorsA[ 1 ] = colorsA[ 2 ] = 0;
 	colorsA[ 3 ] = colorsA[ 0 ] = 0xC0C0C0C0C0;
 	_DrawAny( pDesk->GetDownTexture(), pDesk->downRect, colorsA );
-
-	if( gui::IGUIFont* font = Environment->getBuiltInFont() )
-	{
-		core::recti clipRect = AbsoluteRect;
-		font->draw( pDesk->GetText().ToWide(), rectangle, video::SColor( 0xff000000 ), true, true, &clipRect );
-	}
-	
 }
 
 void CNrp2DPictureFlow::draw()

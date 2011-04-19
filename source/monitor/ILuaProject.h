@@ -10,7 +10,9 @@ namespace nrp
 #define LUNA_ILUAPROJECT_PROPERTIES(class) LUNA_ILUABASEPROJECT_PROPERTIES(class)\
 										LUNA_AUTONAME_PROPERTY(class, "techGroup", GetTechGroup, PureFunction )\
 										LUNA_AUTONAME_PROPERTY(class, "name", GetName, SetName )\
-										LUNA_AUTONAME_PROPERTY(class, "uniq", GetUniq, PureFunction )
+										LUNA_AUTONAME_PROPERTY(class, "uniq", GetUniq, PureFunction )\
+										LUNA_AUTONAME_PROPERTY(class, "texture", GetTexture, SetTexture )
+										
 
 template< class T > class ILuaProject : public ILuaBaseProject< T >
 {
@@ -40,6 +42,16 @@ protected:
 		return 1;
 	}
 
+	int GetTexture( lua_State* L )
+	{
+		lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "" ) );
+		return 1;
+	}
+
+	int SetTexture( lua_State* L)
+	{
+		return SetParam_( L, PROP, TEXTURENORMAL );
+	}
 private:
 	ILuaProject(void);
 };

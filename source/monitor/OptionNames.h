@@ -44,5 +44,10 @@ OPTION_NAME RAM("ram");
 OPTION_NAME CPU("cpu");
 OPTION_NAME POPULARITY( L"popularity" );/*< изветность разработчика */
 OPTION_NAME OWNER( L"owner" );
+OPTION_NAME SKILL_CODING( "skill_coding" );
+OPTION_NAME SKILL_TESTING( "skill_testing" );
+OPTION_NAME SKILL_DRAWING( "skill_drawing" );
+OPTION_NAME SKILL_SOUND( "skill_sound" );
+OPTION_NAME ERRORNUMBER( L"moduleErrorNumber");
 
 }//end namespace nrp

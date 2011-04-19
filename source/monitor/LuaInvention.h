@@ -21,7 +21,6 @@ public:
 	int Load( lua_State* L );
 	int Remove( lua_State* L );
 	int Create( lua_State* L );
-	int GetTexture( lua_State* L );
 	int HaveRequireTech( lua_State* L );
 	int GetFutureTechNumber( lua_State* L );
 	int GetLevel( lua_State* L );

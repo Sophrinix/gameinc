@@ -94,12 +94,12 @@ int CLuaUser::AddTimeWork( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		NrpTime time = _nrpApp[ CURRENTTIME ].As<NrpTime>();
-		NrpTimework* we = new NrpTimework( _object, NrpTime( time ), time.AppendDay( days ) );
+		NrpTimework* we = new NrpTimework( *_object, NrpTime( time ), time.AppendDay( days ) );
 		(*we)[ PARAMNAME ] = paramName;
 		(*we)[ DURATION ] = duration;
 		(*we)[ OFFSET ] = offset;
 		(*we)[ NAME ] = workName;
-		_object->AddWork( we, true );
+		_object->AddWork( *we, true );
 	}
 	return 1;
 }
@@ -117,12 +117,12 @@ int CLuaUser::AddLearning( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		NrpTime time = _nrpApp[ CURRENTTIME ].As<NrpTime>();
-		NrpLearning* we = new NrpLearning( _object, NrpTime( time ), time.AppendDay( duration ) );
+		NrpLearning* we = new NrpLearning( *_object, NrpTime( time ), time.AppendDay( duration ) );
 		(*we)[ WORKNAME ] = workName;
 		(*we)[ PARAMNAME ] = paramName;
 		(*we)[ OFFSET ] = offset;
 		(*we)[ NAME ] = workName;
-		_object->AddWork( we, true );
+		_object->AddWork( *we, true );
 	}
 	return 1;
 }
@@ -346,9 +346,13 @@ int CLuaUser::AddWork( lua_State* L )
 	IWorkingModule* work = _GetLuaObject< IWorkingModule, ILuaObject >( L, 2, true );
 	assert( work != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN _object->AddWork( work );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		if( work )
+			_object->AddWork( *work );
+	}
 
-	return 1;		
+	return 0;		
 }
 
 int CLuaUser::GetWorkNumber( lua_State* L )

@@ -44,7 +44,7 @@ int CLuaAutoScript::AddUserToGameProject( lua_State* L )
 			if( INrpDevelopProject* devProject = cmp->GetDevelopProject( projectName ) )
 				if( CNrpProjectModule* module = devProject->GetModule( moduleName ) )
 				{
-					user->AddWork( module );
+					user->AddWork( *module );
 				}
 
 	return 1;
@@ -62,7 +62,7 @@ int CLuaAutoScript::AddUserToInvention( lua_State* L )
 		if( PNrpCompany cmp = (*user)[ PARENTCOMPANY ].As<PNrpCompany>() )
 			if( CNrpInvention* invention = cmp->GetInvention( inventionName ) )
 			{
-				invention->AddUser( user );
+				invention->AddUser( *user );
 			}
 
 	return 1;

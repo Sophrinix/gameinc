@@ -59,8 +59,7 @@ public:
 	int GetGenrePreferences( const NrpText& name );
 	void SetGenrePreferences( const NrpText& name, int valuel );
 	
-	void AddWork( IWorkingModule* techWork, bool toFront=false );
-
+	void AddWork( IWorkingModule& techWork, bool toFront=false );
 	IWorkingModule* GetWork( u32 index ) const;
 	IWorkingModule* GetWork( const NrpText& name ) const;
 	void RemoveWork( IWorkingModule* techWork );
@@ -78,11 +77,14 @@ public:
 
 	bool Equale( const NrpText& name );
 
+	bool operator == ( const CNrpUser& other );
+
 	static NrpText ClassName();
+
 //notificators
 	void CheckHangry( NParam& paramt );
 
-private:         			
+protected:         			
 	void CalculateWantSalary_();
 	void CalculateKnowledgeLevel_();
 

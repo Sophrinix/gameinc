@@ -23,6 +23,7 @@ public:
 	int SetOverrideColor( lua_State* L );
 	int SetPasswordBox( lua_State* L );
 	int SetDrawBorder( lua_State* L );
+	int SetMultiline( lua_State* L );
 	static const char* ClassName();
 };
 

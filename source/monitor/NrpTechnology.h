@@ -14,7 +14,6 @@ class CNrpInvention;
 OPTION_NAME BASE_CODE( L"baseCode" );
 OPTION_NAME ENGINE_CODE( L"engineCode" );
 OPTION_NAME LASTWORKER( L"lastWorker" );
-OPTION_NAME ERRORNUMBER( L"moduleErrorNumber");
 OPTION_NAME HAVELIDER( L"haveLider" );
 OPTION_NAME PRICE( L"price" );
 OPTION_NAME BASEFILE( L"baseFile" );
@@ -27,7 +26,7 @@ class CNrpTechnology : public INrpProject
 {
 public:
 	CNrpTechnology( PROJECT_TYPE typen, const CLASS_NAME& className=CNrpTechnology::ClassName() );
-	CNrpTechnology( CNrpInvention* invention );
+	CNrpTechnology( CNrpInvention& invention );
 	CNrpTechnology( const NrpText& fileTech );
 	~CNrpTechnology(void);
 

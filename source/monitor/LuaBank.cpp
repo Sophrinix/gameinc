@@ -6,6 +6,7 @@
 #include "NrpBridge.h"
 #include "NrpHistory.h"
 #include "LuaCompany.h"
+#include "NrpApplication.h"
 #include <assert.h>
 
 namespace nrp
@@ -24,7 +25,9 @@ BEGIN_LUNA_METHODS(CLuaBank)
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetLoanMonthToEnd )
 	LUNA_AUTONAME_FUNCTION( CLuaBank, CreateLoan )
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetShares )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, ChangeShares )
 	LUNA_AUTONAME_FUNCTION( CLuaBank, GetPieCostDynamic )
+	LUNA_AUTONAME_FUNCTION( CLuaBank, GetAvaibleShares )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaBank)
@@ -205,6 +208,40 @@ int CLuaBank::GetPieCostDynamic( lua_State* L )
 
 	lua_pushnil( L );
 	return 1;
+}
+
+int CLuaBank::GetAvaibleShares( lua_State* L )
+{
+	CNrpCompany* cmp = _GetLuaObject< CNrpCompany, CLuaCompany >( L, 2 );
+	assert( cmp && "company must be exists" );
+
+	lua_pushinteger( L, cmp ? CNrpBridge::Instance().GetAvaibleShares( cmp ) : 0 );
+	return 1;
+}
+
+int CLuaBank::ChangeShares( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 4, 4, "Function CLuaCompany:GetPieCostDynamic need company name parameter" );
+
+	NrpText name = lua_tostring( L, 2 );
+	CNrpCompany* cmp = _GetLuaObject< CNrpCompany, CLuaCompany >( L, 3 );
+	int shareNumber = lua_tointeger( L, 4 );
+
+	assert( cmp && "company must be exists" );
+
+	if( cmp )	
+	{
+		INrpConfig* agent = _nrpApp.GetCompany( name );
+		if( !agent )
+			agent = _nrpApp.GetUser( name );
+
+		assert( agent );
+		
+		CNrpBridge::Instance().ChangeShares( agent, cmp, shareNumber );
+	}
+
+	return 0;
 }
 
 }//namespace nrp

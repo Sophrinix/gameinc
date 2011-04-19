@@ -25,33 +25,33 @@ CLASS_NAME CLASS_USER( "IUser" );
 CNrpUser::CNrpUser(const NrpText& className, const NrpText& systemName ) : INrpConfig( className.size() ? className : CLASS_USER, systemName )
 {
 	assert( systemName.size() );
-	Add<NrpText>( NAME, systemName );
-	Add<int>( WORK_SPEED, 0 );
-	Add<int>( WORK_QUALITY, 0 );
-	Add<int>( WORK_QUALITY_AWARD, 0 );
-	Add<int>( KNOWLEDGE_LEVEL, 0 );
-	Add<NrpText>( INTERNAL_NAME, systemName );
-	Add<NrpText>( TECHGROUP, className );
-	Add<int>( TALANT, 0 );
-	Add<int>( STAMINA, 0 );
-	Add<int>( MOOD, 0 );
-	Add<int>( POPULARITY, 0 );
-	Add<int>( SALARY, 0 );
-	Add<int>( STABILITY, 0 );
-	Add<int>( BALANCE, 0 );
-	Add<int>( CHARACTER, 0 );
-	Add<int>( WANTMONEY, 0 );
-	Add<int>( CONTRACTMONEY, 0 );
-	Add<int>( WORKNUMBER, 0 );
-	Add<int>( LAST_AWARD, 0 );
-	Add<NrpText>( USERSTATE, "readyToWork" );
+	Add<NrpText>( NAME, systemName ); //имя
+	Add<int>( WORK_SPEED, 0 );	//скорость работы
+	Add<int>( WORK_QUALITY, 0 ); //качество работы
+	Add<int>( WORK_QUALITY_AWARD, 0 );	//ожидаемая награда за качество работы
+	Add<int>( KNOWLEDGE_LEVEL, 0 );	//уровень знаний
+	Add<NrpText>( INTERNAL_NAME, systemName );	//внутреннее имя
+	Add<NrpText>( TECHGROUP, className );	//класс разработчика
+	Add<int>( TALANT, 0 );			//собственно одаренность разраба
+	Add<int>( STAMINA, 0 );			//выносливость
+	Add<int>( MOOD, 0 );			//настроение
+	Add<int>( POPULARITY, 0 );		//известность разраба
+	Add<int>( SALARY, 0 );			//зарплата
+	Add<int>( STABILITY, 0 );		//уравновешенность
+	Add<int>( BALANCE, 0 );			//наличка
+	Add<int>( CHARACTER, 0 );		//тип характера
+	Add<int>( WANTMONEY, 0 );		//сколько денег хочет за свои услуги
+	Add<int>( CONTRACTMONEY, 0 );		//сколько денег попросит при заключении контракта
+	Add<int>( WORKNUMBER, 0 );		//проекты у разраба
+	Add<int>( LAST_AWARD, 0 );			//ожидание премии
+	Add<NrpText>( USERSTATE, "readyToWork" );		
 	Add<NrpText>( ROOMSTATE, "unknown" );
-	Add<int>( HANGRY, 100 );
-	Add<PNrpCompany>( PARENTCOMPANY, NULL );
-	Add<int>( EXPERIENCE, 0 );
-	Add<NrpText>( TEXTURENORMAL, "" );
-	Add<int>( ALL_SKILL_SUMM, 0 );
-	Add<int>( ALCOHOL, 0 );
+	Add<int>( HANGRY, 100 );			//голод
+	Add<PNrpCompany>( PARENTCOMPANY, NULL );	//компания в которой работает
+	Add<int>( EXPERIENCE, 0 );			//общий опыт
+	Add<NrpText>( TEXTURENORMAL, "" );		//лицо
+	Add<int>( ALL_SKILL_SUMM, 0 );		
+	Add<int>( ALCOHOL, 0 );				//отношение к выпивке
 }
 
 CNrpUser::~CNrpUser(void)
@@ -204,21 +204,19 @@ void CNrpUser::Load( const NrpText& fileName )
 	CalculateKnowledgeLevel_();
 }
 
-void CNrpUser::AddWork( IWorkingModule* module, bool toFront )
+void CNrpUser::AddWork( IWorkingModule& module, bool toFront )
 {
-	assert( module != NULL );
-
-	if( GetWork( module->Text( NAME ) ) == NULL )
+	if( GetWork( (NrpText)module[ NAME ] ) == NULL )
 	{
 		if( toFront )
-			works_.insert( module, 0 );
+			works_.insert( &module, 0 );
 		else
-			works_.push_back( module );
+			works_.push_back( &module );
 
-		module->AddUser( this );
+		module.AddUser( *this );
 	}
 
-	Param( WORKNUMBER ) = static_cast< int >( works_.size() );
+	_self[ WORKNUMBER ] = static_cast< int >( works_.size() );
 }
 
 void CNrpUser::RemoveWork( IWorkingModule* techWork )
@@ -232,7 +230,7 @@ void CNrpUser::RemoveWork( IWorkingModule* techWork )
 		{
 			techWork->RemoveUser( Text( NAME ) );
 			works_.erase( i );
-			Param( WORKNUMBER ) = static_cast< int >( works_.size() );
+			_self[ WORKNUMBER ] = static_cast< int >( works_.size() );
 			return;
 		}
 		
@@ -275,7 +273,7 @@ void CNrpUser::BeginNewHour( const NrpTime& time )
 			if( (*works_[ 0 ] )[ READYWORKPERCENT ] >= 1.f )
 				RemoveWork( works_[ 0 ] );
 			else
-				works_[ 0 ]->Update( this, time );			
+				works_[ 0 ]->Update( *this, time );			
 		}
 	}
 }
@@ -329,7 +327,10 @@ void CNrpUser::AddModificator( IModificator* ptrModificator )
 
 void CNrpUser::IncreaseExperience( const NrpText& name, int grow )
 {
+
 	genreExperience_[ name ] = ( genreExperience_.find( name ) != NULL ? genreExperience_[ name ] : 0) + grow;
+	//общий опыт тоже растет по мере работы разраба
+	_self[ EXPERIENCE ] += grow; 
 }
 
 void CNrpUser::_CheckModificators()
@@ -362,4 +363,10 @@ NrpText CNrpUser::ClassName()
 {
 	return CLASS_USER;
 }
+
+bool CNrpUser::operator==( const CNrpUser& other )
+{
+	return (&other == this) || ((NrpText)other[ NAME ] == (NrpText)_self[ NAME ] );
+}
+
 }//namespace nrp

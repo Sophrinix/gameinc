@@ -128,7 +128,7 @@ protected:
 				percent.erase( percent.size() - 1 );
 
 				ret = lastChar == L'%' 
-						? start + static_cast< int >( percent.ToInt() / 100.f * mult )
+						? start + static_cast< int >( percent.ToFloat() / 100.f * mult )
 						: ret = mult - percent.ToInt();
 			}
 			break;

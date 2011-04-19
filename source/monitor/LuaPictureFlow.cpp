@@ -43,12 +43,11 @@ int CLuaPictureFlow::AddItem( lua_State *L )	//добавляет текст в списко отображе
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		NrpText texturePath( lua_tostring( L, 2 ) );
-		//video::ITexture* texture = _nrpEngine.GetVideoDriver()->getTexture( texturePath );
 
 		NrpText text( lua_tostring( L, 3 ) ); 
 		void* object = _GetLuaObject< void, ILuaObject >( L, 4, true );
 	
-		int ret = _object->addItem( texturePath, text.ToWide(), object );			
+		int ret = _object->addItem( texturePath.ToWide(), text.ToWide(), object );			
 		lua_pushinteger( L, ret );
 	}
 

@@ -431,12 +431,12 @@ void CNrpCompany::AddInvention( CNrpInvention* const inv )
 	}
 }
 
-void CNrpCompany::InventionReleased( const CNrpInvention* inv )
+void CNrpCompany::InventionReleased( const CNrpInvention& inv )
 {
-	NrpText name = static_cast< CNrpInvention >( *inv ).Text( NAME );
+	NrpText name = inv[ NAME ];
 	for( u32 p=0; p < _inventions.size(); p++ )
 	{
-		if( _inventions[ p ]->Equale( name, Text( name ) ) )
+		if( _inventions[ p ]->Equale( name, _self[ name ] ) )
 		{
 			//надо что-то делать с похожей технологией... либо развивать следующий уровень,
 			//либо прекращать разработки и переводить людей на другой проект с частичным
@@ -460,17 +460,17 @@ void CNrpCompany::AddTechnology( CNrpTechnology* tech )
 	}
 }
 
-void CNrpCompany::RemoveInvention( CNrpInvention* inv )
+void CNrpCompany::RemoveInvention( CNrpInvention& inv )
 {
 	for( u32 i=0; i < _inventions.size(); i++ )
-		if( _inventions[ i ] == inv )
+		if( _inventions[ i ] == &inv )
 		{
 			_inventions.erase( i );
 			break;
 		}
 
 	for( u32 i=0; i < _employers.size(); i++ )
-		_employers[ i ]->RemoveWork( inv );
+		_employers[ i ]->RemoveWork( &inv );
 }
 
 CNrpInvention* CNrpCompany::GetInvention( const NrpText& name )

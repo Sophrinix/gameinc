@@ -35,7 +35,6 @@ BEGIN_LUNA_PROPERTIES(CLuaTechnology)
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "techGrpoup", GetTechGroup, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "baseCode", PureFunction, SetBaseCode )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "quality", PureFunction, SetQuality )
-	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "texture", GetTexture, SetTexture )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "ftNumber", GetFutureTechNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "engineCode", PureFunction, SetAddingEngineCode )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "haveRequireTech", HaveRequireTech, PureFunction )
@@ -63,11 +62,6 @@ int CLuaTechnology::SetAddingEngineCode( lua_State* L )
 int CLuaTechnology::SetQuality( lua_State* L )
 {
 	return SetParam_<int, lua_Integer>( L, PROP, QUALITY, lua_tointeger );
-}
-
-int CLuaTechnology::SetTexture( lua_State* L)
-{
-	return SetParam_( L, PROP, TEXTURENORMAL );
 }
 
 int CLuaTechnology::GetOptionAsInt( lua_State* L )
@@ -172,12 +166,6 @@ int CLuaTechnology::Load( lua_State* L )
 int CLuaTechnology::GetLevel( lua_State* L )
 {
 	lua_pushinteger( L, GetParam_<int>( L, "GetLevel", LEVEL, 0 ) );
-	return 1;
-}
-
-int CLuaTechnology::GetTexture( lua_State* L )
-{
-	lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "" ) );
 	return 1;
 }
 

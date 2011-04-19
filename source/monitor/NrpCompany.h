@@ -50,10 +50,10 @@ public:
 	INrpProject* GetProject( size_t index ) const;
 
 	void AddInvention( CNrpInvention* const inv );
-	void InventionReleased( const CNrpInvention* inv );
+	void InventionReleased( const CNrpInvention& inv );
 	CNrpInvention* GetInvention( const NrpText& name );
 	CNrpInvention* GetInvention( int index );
-	void RemoveInvention( CNrpInvention* inv );
+	void RemoveInvention( CNrpInvention& inv );
 
 	void AddUser( CNrpUser* user );
 	void RemoveUser( const NrpText& name );

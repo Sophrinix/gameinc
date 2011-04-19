@@ -21,7 +21,6 @@ public:
 	int IsMyTech( lua_State* L );
 	int SetCodeVolume( lua_State *L );
 	int Create( lua_State* L );
-	int GetTexture( lua_State* L );
 	int Load( lua_State* L );
 };
 

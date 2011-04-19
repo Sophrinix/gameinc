@@ -16,7 +16,6 @@ END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaPlatform)
 	LUNA_ILUAPROJECT_PROPERTIES(CLuaPlatform)
-	LUNA_AUTONAME_PROPERTY( CLuaPlatform, "texture", GetTexture, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPlatform, "cpu", GetCpu, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPlatform, "ram", GetRam, PureFunction )
 END_LUNA_PROPERTIES
@@ -55,12 +54,6 @@ int CLuaPlatform::Load( lua_State* L )
 	NrpText pathTo = lua_tostring( L, 2 );
 
 	IF_OBJECT_NOT_NULL_THEN _object->Load( pathTo );
-	return 1;
-}
-
-int CLuaPlatform::GetTexture( lua_State* L )
-{
-	lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "") );
 	return 1;
 }
 

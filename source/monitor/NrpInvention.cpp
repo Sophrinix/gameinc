@@ -23,41 +23,37 @@ int CNrpInvention::_GetRealPrice( const NrpTime& time )
 	return price;
 }
 
-CNrpInvention::CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp, NrpTime time ) 
-			  : IWorkingModule( static_cast< PROJECT_TYPE >( (int)(*pTech)[ TECHGROUP ] ), CLASS_INVENTION )
+CNrpInvention::CNrpInvention( CNrpTechnology& refTech, CNrpCompany& pCmp, NrpTime time ) 
+			  : IWorkingModule( static_cast< PROJECT_TYPE >( (int)refTech[ TECHGROUP ] ), CLASS_INVENTION )
 {
 	InitializeOptions_();
 
-	if( pTech && pCmp )
-	{
-		const CNrpTechnology& refTech = * pTech;
-		_self[ BALANCE ] = refTech[ BALANCE ];
-		_self[ PARENTCOMPANY ] = pCmp;
-		_self[ COMPANYNAME ] = (*pCmp)[ NAME ];
-		_self[ STATUS ] = static_cast< int >( TS_INDEVELOP );
-		_self[ NAME ] = refTech[ NAME ];
-		_self[ INTERNAL_NAME ] = refTech[ INTERNAL_NAME ];
-		_self[ TECHGROUP ] = refTech[ TECHGROUP ];
-		_self[ BASE_CODE ] = refTech[ BASE_CODE ];
-		_self[ ENGINE_CODE ] = refTech[ ENGINE_CODE ];
-		_self[ TEXTURENORMAL ] = refTech[ TEXTURENORMAL ];
-		_self[ LEVEL ] = refTech[ LEVEL ];
-		_self[ QUALITY ] = refTech[ QUALITY ];
-		_self[ BASEFILE ] = refTech[ BASEFILE ];
-		_self[ USERSTARTDATE ] = time;
-		_self[ STARTDATE ] = refTech[ STARTDATE ];
-		_self[ REALPRICE ] = _GetRealPrice( time );
+	_self[ BALANCE ] = refTech[ BALANCE ];
+	_self[ PARENTCOMPANY ] = &pCmp;
+	_self[ COMPANYNAME ] = pCmp[ NAME ];
+	_self[ STATUS ] = static_cast< int >( TS_INDEVELOP );
+	_self[ NAME ] = refTech[ NAME ];
+	_self[ INTERNAL_NAME ] = refTech[ INTERNAL_NAME ];
+	_self[ TECHGROUP ] = refTech[ TECHGROUP ];
+	_self[ BASE_CODE ] = refTech[ BASE_CODE ];
+	_self[ ENGINE_CODE ] = refTech[ ENGINE_CODE ];
+	_self[ TEXTURENORMAL ] = refTech[ TEXTURENORMAL ];
+	_self[ LEVEL ] = refTech[ LEVEL ];
+	_self[ QUALITY ] = refTech[ QUALITY ];
+	_self[ BASEFILE ] = refTech[ BASEFILE ];
+	_self[ USERSTARTDATE ] = time;
+	_self[ STARTDATE ] = refTech[ STARTDATE ];
+	_self[ REALPRICE ] = _GetRealPrice( time );
 
-		Add( PROGNOSEDATEFINISH, NrpTime( 0. ) );
-		CheckParams( time );
+	Add( PROGNOSEDATEFINISH, NrpTime( 0. ) );
+	CheckParams( time );
 
-		CopyMapTo( _techRequires, pTech->GetTechRequires() );
-		CopyMapTo( _skillRequires,  pTech->GetSkillRequires() );
-	}
+		CopyMapTo( _techRequires, refTech.GetTechRequires() );
+		CopyMapTo( _skillRequires,  refTech.GetSkillRequires() );
 }
 
 CNrpInvention::CNrpInvention( const NrpText& fileName ) 
-			  : IWorkingModule( PROJECT_TYPE(0), CLASS_INVENTION )
+	: IWorkingModule( PROJECT_TYPE(0), CLASS_INVENTION )
 {
 	InitializeOptions_();
 	Load( fileName );
@@ -101,22 +97,19 @@ CNrpInvention::~CNrpInvention(void)
 {
 }
 
-void CNrpInvention::Update( CNrpUser* ptrUser, const NrpTime& time )
+void CNrpInvention::Update( CNrpUser& ptrUser, const NrpTime& time )
 {
 	PNrpCompany company = _self[ PARENTCOMPANY ].As<PNrpCompany>();
-	assert( ptrUser && company );
+	assert( company );
 
-	if( !ptrUser || !company )
+	if( !company )
 		return;
 
 	if( (int)_self[ PASSEDPRICE ] < (int)_self[ REALPRICE ] )
 	{
 		float koeff = (int)_self[ INVESTIMENT ] / static_cast< float >( (int)_self[ REALPRICE ] );
 
-		float sumSkill = (int)(*ptrUser)[ ALL_SKILL_SUMM ] * ( koeff + 1 );
-
-		if( sumSkill < 10 )
-			sumSkill = 10;
+		float sumSkill = (std::max)( (int)ptrUser[ ALL_SKILL_SUMM ] * ( koeff + 1 ), (float)10 );
 
 		//эти средства реально пошли на изучение новых технологий
 		_self[ PASSEDPRICE ] += static_cast<int>( sumSkill );
@@ -124,7 +117,7 @@ void CNrpInvention::Update( CNrpUser* ptrUser, const NrpTime& time )
 		_self[ MONEY_TODECREASE ] += (int)_self[ INVESTIMENT ] / ( 30 * 8 );
 	
 		_self[ READYWORKPERCENT ] = (int)_self[PASSEDPRICE] / static_cast< float >( (int)_self[ REALPRICE ] );
-		_self[ QUALITY ] = ( (int)_self[ QUALITY ] + (int)(*ptrUser)[ WORK_QUALITY ] ) / 2;
+		_self[ QUALITY ] = ( (int)_self[ QUALITY ] + (int)ptrUser[ WORK_QUALITY ] ) / 2;
 	}
 }
 
@@ -134,15 +127,24 @@ CNrpUser* CNrpInvention::GetUser( u32 index )
 	return index < _users.size() ? _users[ index ] : NULL;
 }
 
-int CNrpInvention::AddUser( CNrpUser* user )
+int CNrpInvention::IsMyUser( CNrpUser& user )
 {
 	for( u32 i=0; i < _users.size(); i++ )
-		if( _users[ i ] == user )
-			return 1;
+		if( *(_users[ i ]) == user )
+			return true;
+
+	return false;
+}
+
+int CNrpInvention::AddUser( CNrpUser& user )
+{
+	if( IsMyUser( user ) )
+		return 1;
 	
-	_users.push_back( user );
-	Param( USERNUMBER ) = static_cast< int >(_users.size() );
-	user->AddWork( this, true );
+	_users.push_back( &user );
+	_self[ USERNUMBER ] = static_cast< int >(_users.size() );
+
+	user.AddWork( *this, true );
 	return 0;
 }
 

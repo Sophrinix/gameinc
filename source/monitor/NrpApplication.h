@@ -116,8 +116,8 @@ public:
 	void LoadScreenshot( const NrpText& fileName );
 	float GetGameGenreInterest( CNrpGame* game );
 
-	void AddInvention( const NrpText& startTech, CNrpCompany* parentCompany );
-	void InventionFinished( CNrpInvention* ptrInvention );
+	void AddInvention( const NrpText& startTech, CNrpCompany& parentCompany );
+	void InventionFinished( CNrpInvention& ptrInvention );
 	void InventionCanceled( CNrpInvention* ptrInvention );
 	CNrpInvention* GetInvention( const NrpText& name, const NrpText& companyName );
 	void Init();

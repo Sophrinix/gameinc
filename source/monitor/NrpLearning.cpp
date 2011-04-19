@@ -10,19 +10,14 @@ CLASS_NAME CLASS_NRPLEARNING( "NrpLearning" );
 
 NrpLearning::~NrpLearning(void)
 {
-	CNrpUser* user = _self[ COMPONENTLIDER ].As<CNrpUser*>();
-	if( user )
-	{
-		int offset = _self[ OFFSET ];
-		if( (float)_self[ READYWORKPERCENT ] < 0.2 )
-			offset = -offset;
-		else
-			offset = offset * (float)_self[ READYWORKPERCENT ];
+	CNrpUser& user = *(_self[ COMPONENTLIDER ].As<CNrpUser*>());
 
-		NrpText paramName = _self[ PARAMNAME ];
-		if( (*user).IsExist( paramName ))
-			(*user)[ paramName ] += offset; 
-	}
+	int offset = _self[ OFFSET ];
+	offset = ( (float)_self[ READYWORKPERCENT ] < 0.2 ) ? -offset : offset * (float)_self[ READYWORKPERCENT ];
+
+	NrpText paramName = _self[ PARAMNAME ];
+	if( user.IsExist( paramName ))
+		user[ paramName ] += offset; 
 }
 
 NrpText NrpLearning::ClassName()
@@ -30,13 +25,13 @@ NrpText NrpLearning::ClassName()
 	return CLASS_NRPLEARNING;
 }
 
-NrpLearning::NrpLearning( CNrpUser* user, const NrpTime& startDate, const NrpTime& endDate ): IWorkingModule( PROJECT_TYPE(0), CLASS_NRPLEARNING )
+NrpLearning::NrpLearning( CNrpUser& user, const NrpTime& startDate, const NrpTime& endDate ): IWorkingModule( PROJECT_TYPE(0), CLASS_NRPLEARNING )
 {
 	_InitializeOptions();
 	_self[ TECHGROUP ] = (int)0;
 	_self[ ENDDATE ] = endDate;
 	_self[ STARTDATE ] = startDate;
-	_self[ COMPONENTLIDER ] = user;
+	_self[ COMPONENTLIDER ] = &user;
 }
 
 void NrpLearning::_InitializeOptions()
@@ -53,7 +48,7 @@ void NrpLearning::_InitializeOptions()
 	Add<INrpDevelopProject*>( PARENT, NULL );
 }
 
-void NrpLearning::Update( CNrpUser* ptrUser, const NrpTime& time )
+void NrpLearning::Update( CNrpUser& ptrUser, const NrpTime& time )
 {
 	_self[ LASTTIMEUPDATE ] = time;
 
@@ -75,7 +70,7 @@ void NrpLearning::Load( const NrpText& fileName )
 
 }
 
-int NrpLearning::AddUser( CNrpUser* ptrUser )
+int NrpLearning::AddUser( CNrpUser& ptrUser )
 {
 	return 0;
 }

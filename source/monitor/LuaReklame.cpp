@@ -19,7 +19,6 @@ BEGIN_LUNA_PROPERTIES(CLuaReklame)
 	LUNA_ILUAPROJECT_PROPERTIES( CLuaReklame )
 	LUNA_AUTONAME_PROPERTY( CLuaReklame, "level", GetLevel, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaReklame, "numberDay", GetNumberDay, SetNumberDay )
-	LUNA_AUTONAME_PROPERTY( CLuaReklame, "texture", GetTexture, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaReklame, "price", GetPrice, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaReklame, "dayCost", GetDayCost, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaReklame, "famous", GetFamous, PureFunction )
@@ -84,7 +83,6 @@ int CLuaReklame::GetQuality( lua_State* L ) { lua_pushinteger( L, GetParam_<int>
 int CLuaReklame::GetLevel( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, PROP, LEVEL, 0 ) ); return 1; }
 int CLuaReklame::GetNumberDay( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, PROP, NUMBERDAY, 0 ) ); return 1; }
 int CLuaReklame::SetNumberDay( lua_State* L ) {	SetParam_<int, lua_Integer>( L, PROP, NUMBERDAY, lua_tointeger );	return 1; }
-int CLuaReklame::GetTexture( lua_State* L ) { lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "" ) ); return 1; }
 int CLuaReklame::GetPrice( lua_State* L ) {	lua_pushinteger( L, GetParam_<int>( L, PROP, BALANCE, 0 ) ); return 1; }
 int CLuaReklame::GetDayCost( lua_State* L ) { lua_pushinteger( L, GetParam_<int>( L, PROP, DAYCOST, 0 ) );return 1; }
 int CLuaReklame::GetFamous( lua_State* L ) { lua_pushinteger( L, static_cast< int >( GetParam_<float>( L, PROP, MAXQUALITY, 0 ) * 100 ) ); return 1; }

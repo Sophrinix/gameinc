@@ -29,7 +29,6 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaInvention)
 	LUNA_ILUAPROJECT_PROPERTIES( CLuaInvention )
 	LUNA_AUTONAME_PROPERTY( CLuaInvention, "level", GetLevel, PureFunction )
-	LUNA_AUTONAME_PROPERTY( CLuaInvention, "texture", GetTexture, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaInvention, "status", GetStatus, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaInvention, "description", GetDescriptionLink, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaInvention, "investiment", GetInvestiment, SetInvestiment )
@@ -53,9 +52,15 @@ int CLuaInvention::Create( lua_State* L )
 	CNrpTechnology* tech = _GetLuaObject< CNrpTechnology, CLuaTechnology >( L, 2, false );
 	PNrpCompany cmp = _GetLuaObject< CNrpCompany, CLuaCompany >( L, 3, false );
 
-	_object = new CNrpInvention( tech, cmp, _nrpApp[ CURRENTTIME ].As<NrpTime>() );
-	lua_pushlightuserdata(L, _object );
+	assert( tech && cmp && "CLuaInvetntion must exist tech and company" );
+	if( tech && cmp )
+	{
+		_object = new CNrpInvention( *tech, *cmp, _nrpApp[ CURRENTTIME ].As<NrpTime>() );
+		lua_pushlightuserdata(L, _object );
+		return 1;
+	}
 
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -65,7 +70,12 @@ int CLuaInvention::AddUser( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaInvention::AddUser not need parameter");
 
 	CNrpUser* user = _GetLuaObject< CNrpUser, CLuaUser >( L, 2, false ); 
-	IF_OBJECT_NOT_NULL_THEN	_object->AddUser( user );
+	assert( user );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		if( user )
+			_object->AddUser( *user );
+	}
 
 	return 1;	
 }
@@ -93,12 +103,6 @@ int CLuaInvention::Load( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	_object->Load( iniFile );
 	return 1;	
-}
-
-int CLuaInvention::GetTexture( lua_State* L )
-{
-	lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "" ) );
-	return 1;
 }
 
 int CLuaInvention::GetStatus( lua_State* L )

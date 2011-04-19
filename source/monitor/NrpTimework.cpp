@@ -14,10 +14,7 @@ NrpTimework::~NrpTimework(void)
 	if( user )
 	{
 		int offset = _self[ OFFSET ];
-		if( (float)_self[ READYWORKPERCENT ] < 0.2 )
-			offset = -offset;
-		else
-			offset = offset *  (float)_self[ READYWORKPERCENT ];
+		offset = (float)_self[ READYWORKPERCENT ] < 0.2 ? -offset : offset * (float)_self[ READYWORKPERCENT ];
 
 		NrpTime time = _self[ LASTTIMEUPDATE ].As<NrpTime>().AppendDay( (int)_self[ DURATION ] );
 		user->AddModificator( new CNrpConfigModificator<int>( user, time, _self[ PARAMNAME ], false, offset, _self[ NAME ] ) );
@@ -29,13 +26,13 @@ NrpText NrpTimework::ClassName()
 	return CLASS_NRPWEEKEND;
 }
 
-NrpTimework::NrpTimework( CNrpUser* user, const NrpTime& startDate, const NrpTime& endDate ): IWorkingModule( PROJECT_TYPE(0), CLASS_NRPWEEKEND )
+NrpTimework::NrpTimework( CNrpUser& user, const NrpTime& startDate, const NrpTime& endDate ): IWorkingModule( PROJECT_TYPE(0), CLASS_NRPWEEKEND )
 {
 	_InitializeOptions();
 	_self[ TECHGROUP ] = (int)0;
 	_self[ ENDDATE ] = endDate;
 	_self[ STARTDATE ] = startDate;
-	_self[ COMPONENTLIDER ] = user;
+	_self[ COMPONENTLIDER ] = &user;
 }
 
 void NrpTimework::_InitializeOptions()
@@ -52,7 +49,7 @@ void NrpTimework::_InitializeOptions()
 	Add<INrpDevelopProject*>( PARENT, NULL );
 }
 
-void NrpTimework::Update( CNrpUser* ptrUser, const NrpTime& time )
+void NrpTimework::Update( CNrpUser& ptrUser, const NrpTime& time )
 {
 	_self[ LASTTIMEUPDATE ] = time;
 
@@ -75,7 +72,7 @@ void NrpTimework::Load( const NrpText& fileName )
 
 }
 
-int NrpTimework::AddUser( CNrpUser* ptrUser )
+int NrpTimework::AddUser( CNrpUser& ptrUser )
 {
 	return 0;
 }

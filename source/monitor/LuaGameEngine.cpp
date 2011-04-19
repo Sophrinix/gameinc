@@ -20,7 +20,6 @@ END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaGameEngine)
 	LUNA_ILUAPROJECT_PROPERTIES( CLuaGameEngine )	
-	LUNA_AUTONAME_PROPERTY(CLuaGameEngine, "texture", GetTexture, PureFunction )
 	LUNA_AUTONAME_PROPERTY(CLuaGameEngine, "codeVolume", PureFunction, SetCodeVolume )
 	LUNA_AUTONAME_PROPERTY(CLuaGameEngine, "techNumber", GetTechNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY(CLuaGameEngine, "genresNumber", GetGenreModuleNumber, SetGenreModuleNumber )
@@ -85,12 +84,6 @@ int CLuaGameEngine::SetCodeVolume( lua_State *L )
 	assert( lua_isnumber( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN  (*_object)[ CODEVOLUME ] = lua_tointeger( L, -1 );
 
-	return 1;
-}
-
-int CLuaGameEngine::GetTexture( lua_State* L )
-{
-	lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "") );
 	return 1;
 }
 

@@ -38,6 +38,7 @@
 #include "NrpConsoleConfig.h"
 #include "NrpPlatform.h"
 #include "NrpBridge.h"
+#include "NrpTester.h"
 
 #include <io.h>
 #include <errno.h>
@@ -505,13 +506,13 @@ void CNrpApplication::_UpdateInvention()
 {
 	for( u32 k=0; k < _inventions.size(); k++ )
 	{
-		CNrpInvention* pInv = _inventions[ k ];
-		assert( pInv );
-		pInv->CheckParams( _self[ CURRENTTIME ].As<NrpTime>() );
+		CNrpInvention& pInv = *(_inventions[ k ]);
 
-		if( (*pInv)[ READYWORKPERCENT ] >= 1.f )
+		pInv.CheckParams( _self[ CURRENTTIME ].As<NrpTime>() );
+
+		if( pInv[ READYWORKPERCENT ] >= 1.f )
 		{
-			(*pInv )[ ENDDATE ] = _self[ CURRENTTIME ];
+			pInv[ ENDDATE ] = _self[ CURRENTTIME ];
 			InventionFinished( pInv );
 			k--;
 		}
@@ -763,10 +764,10 @@ CNrpUser* CNrpApplication::CreateRandomUser( NrpText userType )
 	int maxParamValue = 1 + rand() % 100;//максимальное значение параметров
 
 	std::map< NrpText, NrpText > skillMap;
-	skillMap[ "coder" ] = "skill_coding";
-	skillMap[ "designer" ] = "skill_drawing";
-	skillMap[ "composer" ] = "skill_sound";
-	skillMap[ "tester" ] = "skill_testing";
+	skillMap[ "coder" ] = SKILL_CODING;
+	skillMap[ "designer" ] = SKILL_DRAWING;
+	skillMap[ "composer" ] = SKILL_SOUND;
+	skillMap[ "tester" ] = SKILL_TESTING;
 
 	NrpText userName;
 
@@ -779,6 +780,8 @@ CNrpUser* CNrpApplication::CreateRandomUser( NrpText userType )
 
 	if( userType == CNrpAiUser::ClassName() )
 		ptrUser = new CNrpAiUser( userName, NULL );
+	else if( userType == NrpTester::ClassName() )
+		ptrUser = new NrpTester( userName );
 	else
 		ptrUser = new CNrpUser( userType, userName );
 
@@ -1045,22 +1048,24 @@ void CNrpApplication::AddGame( CNrpGame* ptrGame )
 	_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
 }
 
-void CNrpApplication::AddInvention( const NrpText& fileName, CNrpCompany* parentCompany )
+void CNrpApplication::AddInvention( const NrpText& fileName, CNrpCompany& parentCompany )
 {
 	std::auto_ptr< CNrpTechnology > startTech( new CNrpTechnology( fileName ) );
 
-	CNrpInvention* tmp = GetInvention( (*startTech)[ INTERNAL_NAME ], (*parentCompany)[ NAME ] );
+	CNrpInvention* tmp = GetInvention( (*startTech)[ INTERNAL_NAME ], parentCompany[ NAME ] );
+
+	assert( !tmp );
 
 	if( !tmp )
 	{
-		CNrpInvention* inv = new CNrpInvention( startTech.get(), parentCompany, _self[ CURRENTTIME ].As<NrpTime>() );
-		parentCompany->AddInvention( inv );	
+		CNrpInvention* inv = new CNrpInvention( *startTech, parentCompany, _self[ CURRENTTIME ].As<NrpTime>() );
+		parentCompany.AddInvention( inv );	
 		_inventions.push_back( inv );  
 		_self[ INVENTIONSNUMBER ] = static_cast< int >( _inventions.size() );
 	}
 }
 
-void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )
+void CNrpApplication::InventionFinished( CNrpInvention& ptrInvention )
 {
 	//создать соответствующую изобретению технологию 
 	//разместить её в списке доступных
@@ -1070,11 +1075,11 @@ void CNrpApplication::InventionFinished( CNrpInvention* ptrInvention )
 	int delPos = -1;
 	for( u32 i=0; i < _inventions.size(); i++ )
 	{
-		CNrpInvention* inv = _inventions[ i ];
-		if( (NrpText)(*inv)[ INTERNAL_NAME ] == (NrpText)(*ptrInvention)[ INTERNAL_NAME ] )
+		CNrpInvention& inv = *(_inventions[ i ]);
+		if( (NrpText)inv[ INTERNAL_NAME ] == (NrpText)ptrInvention[ INTERNAL_NAME ] )
 		{
-			CNrpCompany* pCmp = (*inv)[ PARENTCOMPANY ].As<PNrpCompany>();
-			if( pCmp == (*ptrInvention)[ PARENTCOMPANY ].As<PNrpCompany>() )
+			CNrpCompany* pCmp = inv[ PARENTCOMPANY ].As<PNrpCompany>();
+			if( pCmp == ptrInvention[ PARENTCOMPANY ].As<PNrpCompany>() )
 			{
 				delPos = i;//найти это изобретение в своем списке и удалить его оттуда...
 				pCmp->AddTechnology( tech );

@@ -11,7 +11,7 @@ OPTION_NAME ACTION( "action" );
 class CPdaItem : public INrpConfig
 {
 public:
-	CPdaItem( const NrpText& m, int a, const NrpTime& t );
+	CPdaItem( const NrpText& m, const NrpText& a, const NrpTime& t );
 
 	static NrpText ClassName();
 private:
@@ -27,7 +27,7 @@ public:
 	NrpText Save( const NrpText& fileName );
 	void Load( const NrpText& fileName );
 
-	void AddItem( const NrpText message, int action, const NrpTime& lTime );
+	void AddItem( const NrpText& message, const NrpText& action, const NrpTime& lTime );
 	const CPdaItem& Next();
 	const CPdaItem& Prev();
 	const CPdaItem& Current();

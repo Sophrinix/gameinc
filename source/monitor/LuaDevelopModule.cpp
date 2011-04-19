@@ -25,7 +25,6 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaDevelopModule)
 	LUNA_ILUAPROJECT_PROPERTIES( CLuaDevelopModule )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "level", GetLevel, PureFunction )
-	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "texture", GetTexture, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "parent", GetParent, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "percentDone", GetPercentDone, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "quality", GetQuality, PureFunction )
@@ -103,20 +102,21 @@ int CLuaDevelopModule::GetUserNumber( lua_State* L )
 
 int CLuaDevelopModule::GetQuality( lua_State* L )
 {
-	float tmpQuality = GetParam_<int>( L, "GetQuality", QUALITY, 0 ) * GetParam_<float>( L, "GetPercentDone", READYWORKPERCENT, 0 );
-	lua_pushnumber( L, tmpQuality );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		float tmpQuality = (int)(*_object)[ QUALITY ] * (float)(*_object)[ READYWORKPERCENT ];
+		lua_pushnumber( L, tmpQuality );
+
+		return 1;
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 
 int CLuaDevelopModule::GetLevel( lua_State* L )
 {
 	lua_pushinteger( L, GetParam_<int>( L, PROP, LEVEL, 0 ) );
-	return 1;
-}
-
-int CLuaDevelopModule::GetTexture( lua_State* L )
-{
-	lua_pushstring( L, GetParam_<NrpText>( L, PROP, TEXTURENORMAL, "" ) );
 	return 1;
 }
 

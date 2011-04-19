@@ -28,6 +28,8 @@ public:
 	int CreateLoan( lua_State* L );
 
 	int GetShares( lua_State* L );
+	int ChangeShares( lua_State* L );
+	int GetAvaibleShares( lua_State* L );
 	int GetPieCostDynamic( lua_State* L );
 
 private:

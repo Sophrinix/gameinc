@@ -767,6 +767,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\NrpGuiLoopResizer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpGuiLoopResizer.h"
+						>
+					</File>
+					<File
 						RelativePath=".\NrpGuiLuaAnimator.cpp"
 						>
 					</File>
@@ -1525,6 +1533,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\magazine.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\NerpaActionType.lua"
 				>
 			</File>
@@ -1538,10 +1550,6 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\sceneWork.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_StoreWindow.lua"
 				>
 			</File>
 			<File
@@ -1573,6 +1581,10 @@
 				</File>
 				<File
 					RelativePath="..\..\application\scripts\tutorialCity.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialDevRoom.lua"
 					>
 				</File>
 				<File
@@ -1613,6 +1625,14 @@
 				</File>
 				<File
 					RelativePath="..\..\application\scripts\linkbox.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\userFullInfo.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\userInfo.lua"
 					>
 				</File>
 				<File
@@ -1674,94 +1694,6 @@
 						RelativePath="..\..\application\scripts\office.lua"
 						>
 					</File>
-					<Filter
-						Name="director"
-						>
-						<File
-							RelativePath="..\..\application\scripts\buhgalter.lua"
-							>
-						</File>
-						<File
-							RelativePath="..\..\application\scripts\director.lua"
-							>
-						</File>
-						<File
-							RelativePath="..\..\application\scripts\monitor.lua"
-							>
-						</File>
-						<File
-							RelativePath="..\..\application\scripts\projectManager.lua"
-							>
-						</File>
-						<File
-							RelativePath="..\..\application\scripts\projectSelect.lua"
-							>
-						</File>
-						<File
-							RelativePath="..\..\application\scripts\safe.lua"
-							>
-						</File>
-						<File
-							RelativePath="..\..\application\scripts\userManager.lua"
-							>
-						</File>
-						<Filter
-							Name="gameProjectManager"
-							>
-							<File
-								RelativePath="..\..\application\scripts\gameprojectManager.lua"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\scripts\gpmEndPage.lua"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\scripts\gpmEnginePage.lua"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\scripts\gpmFunctions.lua"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\scripts\gpmGenrePage.lua"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\scripts\gpmPlatformPage.lua"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\scripts\gpmScenarioPage.lua"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\scripts\gpmSoundPage.lua"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\scripts\gpmTechPage.lua"
-								>
-							</File>
-							<File
-								RelativePath="..\..\application\scripts\gpmVideoPage.lua"
-								>
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
-						Name="developers"
-						>
-						<File
-							RelativePath="..\..\application\scripts\devRoom.lua"
-							>
-						</File>
-						<File
-							RelativePath="..\..\application\scripts\testerComp.lua"
-							>
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="login"
@@ -1810,6 +1742,10 @@
 						RelativePath="..\..\application\scripts\loans.lua"
 						>
 					</File>
+					<File
+						RelativePath="..\..\application\scripts\shareSelect.lua"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="plant"
@@ -1855,6 +1791,130 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="director"
+					>
+					<File
+						RelativePath="..\..\application\scripts\buhgalter.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\director.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\houseSelect.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\monitor.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\projectSelect.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\safe.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="developers"
+					>
+					<File
+						RelativePath="..\..\application\scripts\devRoom.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\testerComp.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="gameCreator"
+					>
+					<File
+						RelativePath="..\..\application\scripts\gameprojectManager.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gpmEndPage.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gpmEnginePage.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gpmFunctions.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gpmGenrePage.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gpmPlatformPage.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gpmScenarioPage.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gpmSoundPage.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gpmTechPage.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\gpmVideoPage.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="userManager"
+					>
+					<File
+						RelativePath="..\..\application\scripts\moneySelect.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\userAward.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\userCommunicate.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\userLearning.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\userManager.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\userRecognition.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="projectManager"
+					>
+					<File
+						RelativePath="..\..\application\scripts\projectChief.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\projectManager.lua"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1882,6 +1942,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpApplication.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpBookKeeping.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpBookKeeping.h"
 				>
 			</File>
 			<File
@@ -2025,6 +2093,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NrpConfigModificator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpConfigModificator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpLearning.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpLearning.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NrpPlayer.cpp"
 				>
 			</File>
@@ -2041,11 +2125,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NrpUserModificator.cpp"
+				RelativePath=".\NrpTester.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NrpUserModificator.h"
+				RelativePath=".\NrpTester.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpTimework.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpTimework.h"
 				>
 			</File>
 		</Filter>
@@ -2093,10 +2185,6 @@
 			Name="Project"
 			>
 			<File
-				RelativePath=".\IWorkingModule.h"
-				>
-			</File>
-			<File
 				RelativePath=".\NrpGameEngine.cpp"
 				>
 			</File>
@@ -2126,14 +2214,6 @@
 			</File>
 			<File
 				RelativePath=".\NrpLicense.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpProjectModule.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NrpProjectModule.h"
 				>
 			</File>
 			<File
@@ -2213,6 +2293,22 @@
 				</File>
 				<File
 					RelativePath=".\NrpTechnology.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="working"
+				>
+				<File
+					RelativePath=".\IWorkingModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpProjectModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpProjectModule.h"
 					>
 				</File>
 			</Filter>

@@ -16,7 +16,7 @@ class CNrpDevelopGame : public INrpDevelopProject
 
 public:
 	CNrpDevelopGame( const NrpText& name, CNrpCompany* ptrCompany );
-	CNrpDevelopGame( CNrpGameProject* nProject, CNrpCompany* ptrCompany );
+	CNrpDevelopGame( CNrpGameProject& nProject, CNrpCompany& ptrCompany );
 	CNrpDevelopGame( const NrpText& fileName );
 
 	NrpText Save( const NrpText& folderSave );
@@ -41,7 +41,7 @@ private:
 	template< typename T, typename TARRAY >
 	void _AddModulesFrom( const TARRAY& arrtech, int baseCode );
 	
-	void _AddModulesFrom( const CNrpTechnology* tech, int baseCode );
+	void _AddModulesFrom( const CNrpTechnology& tech, int baseCode );
 };
 
 }//end namespace nrp

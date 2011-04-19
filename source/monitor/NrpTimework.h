@@ -9,14 +9,14 @@ namespace nrp
 class NrpTimework : public IWorkingModule
 {
 public:
-	NrpTimework( CNrpUser* user, const NrpTime& startDate, const NrpTime& endTime );
+	NrpTimework( CNrpUser& user, const NrpTime& startDate, const NrpTime& endTime );
 
 	virtual ~NrpTimework(void);
 
-	int AddUser( CNrpUser* ptrUser );
+	int AddUser( CNrpUser& ptrUser );
 	int RemoveUser( const NrpText& userName );
 
-	void Update( CNrpUser* ptrUser, const NrpTime& time );
+	void Update( CNrpUser& ptrUser, const NrpTime& time );
 
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& fileName );

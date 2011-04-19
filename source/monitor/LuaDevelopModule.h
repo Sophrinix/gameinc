@@ -24,7 +24,6 @@ public:
 	int GetQuality( lua_State* L );
 	int GetEmployerPosibility( lua_State* L );
 	int Remove( lua_State* L );
-	int GetTexture( lua_State* L );
 	int GetParent( lua_State* L );
 	int GetUserNumber( lua_State* L );
 };

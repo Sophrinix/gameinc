@@ -17,17 +17,18 @@ OPTION_NAME MONEY_TODECREASE( "moneyToDecrease" );
 class CNrpInvention : public IWorkingModule
 {
 public:
-	CNrpInvention( CNrpTechnology* pTech, CNrpCompany* pCmp, NrpTime time );
+	CNrpInvention( CNrpTechnology& pTech, CNrpCompany& pCmp, NrpTime time );
 	CNrpInvention( const NrpText& fileName );
 	virtual ~CNrpInvention(void);
 
 	bool Equale( const NrpText& name, const NrpText& company );
 
-	virtual void Update( CNrpUser* ptrUser, const NrpTime& time );
+	virtual void Update( CNrpUser& ptrUser, const NrpTime& time );
 	void BeginNewMonth( const NrpTime& time );
 	void CheckParams( NrpTime time );
 	CNrpUser* GetUser( u32 index );
-	int AddUser( CNrpUser* user );
+	int AddUser( CNrpUser& user );
+	int IsMyUser( CNrpUser& user );
 	int RemoveUser( const NrpText& userName );
 
 	NrpText Save( const NrpText& saveFolder, bool k );
@@ -39,7 +40,6 @@ private:
 	
 	void InitializeOptions_();
 	NrpText _GetFileName();
-
 	USERS _users;
 };
 

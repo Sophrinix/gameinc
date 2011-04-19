@@ -29,6 +29,7 @@ public:
 	static NrpText ClassName();
 
 	CShareholder* GetShares( const NrpText& name, CNrpCompany* cmp );
+	int GetAvaibleShares( CNrpCompany* cmp );
 	int ChangeShares( INrpConfig* agent, CNrpCompany* cmp, int shareNumber );
 
 	void Load( const NrpText& fileName );
@@ -52,6 +53,7 @@ private:
 	bool _SellAvaible( INrpConfig* who, CShareholder* share, int shareNumber );
 	int  _GetSelfCapital( CNrpCompany& cmp );
 	int  _GetAdditionCapital( CNrpCompany& cmp );
+	float _SplitPie( CNrpCompany& company, float price );
 };
 
 }//namespace nrp
