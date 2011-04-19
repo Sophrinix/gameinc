@@ -21,6 +21,7 @@ BEGIN_LUNA_PROPERTIES(CLuaEdit)
 	LUNA_AUTONAME_PROPERTY( CLuaEdit, "isPasswordBox", PureFunction, SetPasswordBox )
 	LUNA_AUTONAME_PROPERTY( CLuaEdit, "drawBody", PureFunction, SetDrawBorder )
 	LUNA_AUTONAME_PROPERTY( CLuaEdit, "multiline", PureFunction, SetMultiline ) 
+	LUNA_AUTONAME_PROPERTY( CLuaEdit, "wordwrap", PureFunction, SetWordWrap )
 END_LUNA_PROPERTIES
 
 CLuaEdit::CLuaEdit(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LUAEDIT, ex )							//конструктор
@@ -33,6 +34,15 @@ int CLuaEdit::SetOverrideColor( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN	_object->setOverrideColor( ovColor );
 
 	return 0;
+}
+
+int CLuaEdit::SetWordWrap( lua_State* L )
+{
+	bool ww = lua_toboolean( L, -1 ) > 0;
+
+	IF_OBJECT_NOT_NULL_THEN	_object->setWordWrap( ww );
+
+	return 0;	
 }
 
 int CLuaEdit::SetDrawBorder( lua_State* L )

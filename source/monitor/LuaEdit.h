@@ -19,11 +19,13 @@ public:
 	DEFINE_PROPERTIES_AND_METHODS(CLuaEdit)				//методы обертки
 
 	CLuaEdit(lua_State *L, bool);		
-																//нажатии на эту кнопку
+														//нажатии на эту кнопку
 	int SetOverrideColor( lua_State* L );
 	int SetPasswordBox( lua_State* L );
 	int SetDrawBorder( lua_State* L );
 	int SetMultiline( lua_State* L );
+	int SetWordWrap( lua_State* L );
+
 	static const char* ClassName();
 };
 

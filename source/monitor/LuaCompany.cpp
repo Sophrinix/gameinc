@@ -197,7 +197,7 @@ int CLuaCompany::CreateDevelopGame( lua_State* L )
 	{
 		if( !_object->GetDevelopProject( (*ptrData)[ NAME ] ) )
 		{
-			result = new CNrpDevelopGame( ptrData, _object );
+			result = new CNrpDevelopGame( *ptrData, *_object );
 			_nrpApp.AddDevelopProject( result );
 			_object->AddDevelopProject( result );
 
