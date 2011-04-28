@@ -55,7 +55,7 @@ public:
 		lua_pushnil( L );
 		return 1;
 	}
-
+	
 	int GetWidth( lua_State* L )
 	{
 		IF_OBJECT_NOT_NULL_THEN 

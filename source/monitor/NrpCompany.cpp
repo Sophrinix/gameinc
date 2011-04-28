@@ -10,6 +10,7 @@
 #include "NrpInvention.h"
 #include "OpFileSystem.h"
 #include "IniFile.h"
+#include "NrpTester.h"
 #include "NrpBookKeeping.h"
 
 #include <errno.h>
@@ -179,7 +180,9 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		{
 			AddGameEngine( _nrpApp.GetGameEngine( rName ) );
 		}
-		else if( type == CNrpUser::ClassName() || type == L"coder" || type == L"designer" || type == L"composer" || type == L"tester" )
+		else if( type == CNrpUser::ClassName() || type == L"coder" || type == L"designer" 
+				 || type == L"composer" 
+				 || type == NrpTester::ClassName())
 		{
 			AddUser( _nrpApp.GetUser( rName ) );
 		}
@@ -353,7 +356,7 @@ void CNrpCompany::BeginNewMonth( const NrpTime& time )
 	_PaySalaries();
 }
 
-void CNrpCompany::AddToPortfelle( INrpConfig* const ptrObject )
+void CNrpCompany::AddToPortfelle( INrpConfig* ptrObject )
 {
 	_portfelle.push_back( ptrObject );
 	_self[ OBJECTSINPORTFELLE ] = static_cast< int >( _portfelle.size() );
@@ -470,7 +473,7 @@ void CNrpCompany::RemoveInvention( CNrpInvention& inv )
 		}
 
 	for( u32 i=0; i < _employers.size(); i++ )
-		_employers[ i ]->RemoveWork( &inv );
+		_employers[ i ]->RemoveWork( inv );
 }
 
 CNrpInvention* CNrpCompany::GetInvention( const NrpText& name )

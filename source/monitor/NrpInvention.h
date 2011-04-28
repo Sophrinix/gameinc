@@ -29,6 +29,7 @@ public:
 	CNrpUser* GetUser( u32 index );
 	int AddUser( CNrpUser& user );
 	int IsMyUser( CNrpUser& user );
+	const USERS& GetUsers() const { return _users; }
 	int RemoveUser( const NrpText& userName );
 
 	NrpText Save( const NrpText& saveFolder, bool k );

@@ -92,7 +92,6 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add( PAUSEBTWSTEP, 100 );
 	Add( INFLATION, 0.02f );
 	Add( PROFIT_TAX, 0.18f );
-	Add<CNrpBridge*>( BRIDGE, NULL );
 
 	srand( GetTickCount() );
 }
@@ -103,7 +102,7 @@ CNrpApplication::~CNrpApplication(void)
 
 CNrpCompany* CNrpApplication::GetCompany( const NrpText& companyName )
 {
-	return FindByName< COMPANIES, CNrpCompany >( _companies, companyName );
+	return FindByNameAndIntName< COMPANIES, CNrpCompany >( _companies, companyName );
 }
 
 CNrpCompany* CNrpApplication::GetCompany( u32 index )
@@ -293,14 +292,20 @@ void CNrpApplication::Save()
 void CNrpApplication::_LoadUsers( const NrpText& fileName )
 {
 	IniFile sv( fileName );
-	int maxUser = Param( USERNUMBER );
+	int maxUser = _self[ USERNUMBER ];
 	for( int i=0; i < maxUser; i++ )
 	{
 		NrpText name = sv.Get( SECTION_USERS, CreateKeyUser(i), NrpText("") );
 		NrpText className = sv.Get( SECTION_USERS, CreateKeyType(i), NrpText("") );
 
-		NrpText fileName = (NrpText)Param( SAVEDIR_USERS ) + name + ".user";
-		
+		NrpText fileName = (NrpText)_self[ SAVEDIR_USERS ] + name + ".user";
+
+ 		if( !OpFileSystem::IsExist( fileName ) )
+		{
+			assert( false && "user config file not found" );
+			continue;
+		}
+	
 		CNrpUser* user = NULL;
 		if( className == CNrpPlayer::ClassName() ) 
 			user = new CNrpPlayer( fileName );
@@ -310,11 +315,17 @@ void CNrpApplication::_LoadUsers( const NrpText& fileName )
 				user = new CNrpAiUser( fileName );
 			else
 			{
-				user = new CNrpUser( className, fileName );
+				if( className == NrpTester::ClassName() )
+					user = new NrpTester( name );
+				else
+					user = new CNrpUser( className, name );
+
+
 				user->Load( fileName );
 			}
 		}
 
+		assert( user );
 		AddUser( user );
 	}
 }
@@ -417,7 +428,8 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 	{
 		NrpText fileName = rv.Get( SECTION_GAMES,  CreateKeyGame( i ), NrpText("") );
 		PNrpGame game = new CNrpGame( fileName );
-		_games.push_back( game );
+		if( (bool)(*game)[ LOADOK ] )
+			_games.push_back( game );
 	}
 
 	for( int k=0; k < (int)_self[ INVENTIONSNUMBER ]; k++ )
@@ -431,8 +443,11 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 	for( int k=0; k < maxComp; k++ )
 	{
 		NrpText fileName = rv.Get( SECTION_COMPANIES, CreateKeyCompany( k ), NrpText("") );
-		CNrpCompany* cmp = new CNrpCompany( (NrpText)_self[ SAVEDIR_COMPANIES ] + fileName );
-		AddCompany( cmp );
+		if( !GetCompany( fileName ) )
+		{
+			CNrpCompany* cmp = new CNrpCompany( (NrpText)_self[ SAVEDIR_COMPANIES ] + fileName );
+			AddCompany( cmp );
+		}
 	}
 
 	CNrpBridge::Instance().Load( _self[ SAVEDIR_BRIDGE ] );
@@ -625,7 +640,7 @@ void CNrpApplication::CreateNewFreeUsers()
 	group[ "coder" ] = &coders;
 	group[ "designer" ] = &designer;
 	group[ "composer" ] = &composer;
-	group[ "tester" ] = &tester;
+	group[ NrpTester::ClassName() ] = &tester;
 	
 	for( u32 i=0; i < _users.size(); i++ )
 	{
@@ -767,7 +782,7 @@ CNrpUser* CNrpApplication::CreateRandomUser( NrpText userType )
 	skillMap[ "coder" ] = SKILL_CODING;
 	skillMap[ "designer" ] = SKILL_DRAWING;
 	skillMap[ "composer" ] = SKILL_SOUND;
-	skillMap[ "tester" ] = SKILL_TESTING;
+	skillMap[ NrpTester::ClassName() ] = SKILL_TESTING;
 
 	NrpText userName;
 
@@ -825,7 +840,7 @@ void CNrpApplication::_BeginNewMonth()
 		 if( _games[ i ]->Param( GAMEISSALING ) )
 			 UpdateGameRatings( _games[ i ] );
 
-	_self[ BRIDGE ].As<CNrpBridge*>()->Update();
+	CNrpBridge::Instance().Update();
 }
 
 void CNrpApplication::_BeginNewHour()

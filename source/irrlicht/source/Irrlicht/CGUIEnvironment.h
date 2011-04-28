@@ -250,6 +250,8 @@ public:
 	//! reads an element
 	virtual void readGUIElement(io::IXMLReader* reader, IGUIElement* node);
 
+	virtual void lunchToolTip( gui::IGUIElement* elm ) {};
+
 private:
 
 	IGUIElement* getNextElement(bool reverse=false, bool group=false);
@@ -257,8 +259,6 @@ private:
 	void updateHoveredElement(core::position2d<s32> mousePos);
 
 	void loadBuiltInFont();
-
-	void LunchToolTip( gui::IGUIElement* elm ) {};
 
 	struct SFont
 	{

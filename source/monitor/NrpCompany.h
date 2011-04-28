@@ -36,7 +36,7 @@ public:
 	void AddTechnology( CNrpTechnology* tech );
 	INrpConfig* GetFromPortfelle( size_t index ) const;
 	void RemoveFromPortfelle( const INrpConfig* ptrObject );
-	void AddToPortfelle( INrpConfig* const ptrObject );
+	void AddToPortfelle( INrpConfig* ptrObject );
 	float GetUserModificatorForGame( CNrpGame* game );
 
 	void AddDevelopProject( INrpDevelopProject* ptrDevProject );

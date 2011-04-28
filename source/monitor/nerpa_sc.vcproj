@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="GameDev"
 	ProjectGUID="{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"
 	RootNamespace="nerpa_sc"
@@ -1525,6 +1525,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\companyChief.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\globalVariableInitialize.lua"
 				>
 			</File>
@@ -1550,6 +1554,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\sceneWork.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\swork_StoreWindow.lua"
 				>
 			</File>
 			<File
@@ -1609,6 +1617,10 @@
 				</File>
 				<File
 					RelativePath="..\..\application\scripts\tutorialProjectSelect.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialReklame.lua"
 					>
 				</File>
 				<File

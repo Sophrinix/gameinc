@@ -16,6 +16,7 @@ public:
 	virtual NrpText& GetName() = 0;
 	virtual NrpTime& GetTime() = 0;
 	virtual void Update( const NrpTime& ) = 0;
+	virtual bool IsTimeout( const NrpTime& time ) const = 0;
 };
 
 template< class ValClass > 
@@ -59,6 +60,11 @@ public:
 	void Update( const NrpTime& curTime )
 	{
 		_isValid = (curTime > _endTime);
+	}
+
+	bool IsTimeout( const NrpTime& time ) const
+	{
+		return const_cast< NrpTime& >( time ).Equale( _endTime ) == -1;
 	}
 
 private:

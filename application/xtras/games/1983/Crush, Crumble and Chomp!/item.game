@@ -21,7 +21,7 @@ descriptionpath:path=desc.htm
 recense:path=recense.htm
 texturenormal:path=images/spl_0.png
 readyWorkPercent:float=1
-genreModuleNumber:int=3
+genreModuleNumber:int=2
 moduleNumber:int=1
 famous:float=0.5
 gameIsSaling:bool=false
@@ -38,6 +38,6 @@ platfrom_7=
 [genres]
 genre_0=genre_arcade
 genre_1=genre_action
-genre_2=genre_monster
+;genre_2=genre_monster
 [techs]
 tech_0=tech_keyboard

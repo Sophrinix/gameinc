@@ -14,7 +14,7 @@ public:
 	CNrpReklameWork( const NrpText& typeName, const NrpText& gameName );
 	CNrpReklameWork( const NrpText& fileName );
 
-	void Update( const CNrpReklameWork* p );
+	void Update( const CNrpReklameWork& p );
 	void BeginNewDay();
 
 	void Load( const NrpText& fileName );

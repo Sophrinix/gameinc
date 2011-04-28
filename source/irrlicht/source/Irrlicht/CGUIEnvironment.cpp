@@ -405,7 +405,7 @@ void CGUIEnvironment::OnPostRender( u32 time )
 		getSkin()->getFont(EGDF_TOOLTIP)
 		)
 	{
-		LunchToolTip( ToolTip.Element );
+		hoveredNonSub->lunchToolTip();
 		core::rect<s32> pos;
 
 		pos.UpperLeftCorner = LastHoveredMousePos;
@@ -430,7 +430,6 @@ void CGUIEnvironment::OnPostRender( u32 time )
 		pos = ToolTip.Element->getRelativePosition();
 		pos.LowerRightCorner.Y = pos.UpperLeftCorner.Y + textHeight;
 		ToolTip.Element->setRelativePosition(pos);
-
 	}
 
 	IGUIElement::OnPostRender ( time );

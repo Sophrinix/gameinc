@@ -136,23 +136,25 @@ CNrpDevelopGame::CNrpDevelopGame( const NrpText& fileName )
 	Load( fileName );
 }
 
-void CNrpDevelopGame::ModuleFinished( CNrpProjectModule* module )
+//завершили разработку модуля
+void CNrpDevelopGame::ModuleFinished( IWorkingModule& module )
 {
-	const USERS& uList = module->GetUsers();
+	USERS uList = module.GetUsers();
 	
 	for( size_t k=0; k < uList.size(); k++ )
 	{
-		 SetDeveloper( uList[ k ] );
-		 int growExp = (int)(*module)[ CODEVOLUME ] / (int)_self[ BASE_CODEVOLUME ];
+		 SetDeveloper( *uList[ k ] );
+		 int growExp = (int)module[ CODEVOLUME ] / (int)_self[ BASE_CODEVOLUME ];
 		 //опыт разработчика растет по мере выполнения компонентов
 		 //а если у разработчкиа не было опыта в этом жанре, то он появляется
 		 if( CNrpTechnology* genre = GetGenre( 0 ) )
 			 uList[ k ]->IncreaseExperience( (*genre)[ INTERNAL_NAME ], growExp );
 		 else
-			 assert( genre );
+			 assert( genre && "Genre must exists ff:CNrpDevelopGame::ModuleFinished()" );
 	}
 
-	_nrpApp.DoLuaFunctionsByType( APP_MODULE_FINISHED, this, module );
+	//вызовем функцию скрипта, которая отвечает за обработку события завершения обработки модуля
+	_nrpApp.DoLuaFunctionsByType( APP_MODULE_FINISHED, this, &module );
 }
 
 NrpText CNrpDevelopGame::Save( const NrpText& folderSave )
@@ -201,7 +203,7 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 	INrpProject::Load( fileName );
 	IniFile rf( fileName );
 
-	for( int i=0; i < (int)Param( MODULE_NUMBER ); ++i )
+	for( int i=0; i < (int)_self[ MODULE_NUMBER ]; ++i )
 	{
 		NrpText saveFile = rf.Get( SECTION_MODULES, CreateKeyModule(i), NrpText("") );
 		CNrpProjectModule* tech = new CNrpProjectModule( PROJECT_TYPE( 0 ), *this );
@@ -237,10 +239,10 @@ bool CNrpDevelopGame::IsReady()
 		}
 	}
 
-	Param( PROJECTREADY ) = ready;
-	Param( READYWORKPERCENT ) = workP;
+	_self[ PROJECTREADY ] = ready;
+	_self[ READYWORKPERCENT ] = workP;
 	if( ready )
-		Param( PROJECTSTATUS ) = NrpText( "produce" );
+		_self[ PROJECTSTATUS ] = NrpText( "produce" );
 
 	return ready;
 }
@@ -276,5 +278,21 @@ CNrpProjectModule* CNrpDevelopGame::GetModule( const NrpText& name )
 	}
 
 	return NULL;
+}
+
+void CNrpDevelopGame::ModuleTested( IWorkingModule& module )
+{
+	const USERS& uList = module.GetUsers();
+
+	for( size_t k=0; k < uList.size(); k++ )
+	{
+		int growExp = (int)module[ CODEVOLUME ] / (int)_self[ BASE_CODEVOLUME ];
+		growExp += uList[ k ]->GetSkill( SKILL_TESTING );
+		//опыт тестера растет по мере тестирования компонентов
+		//а если у разработчкиа не было опыта в тестировани
+		uList[ k ]->SetSkill( SKILL_TESTING, growExp );
+	}
+
+	_nrpApp.DoLuaFunctionsByType( APP_MODULE_TESTED, this, &module );
 }
 }//end namespace nrp

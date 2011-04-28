@@ -31,7 +31,6 @@ OPTION_NAME PDA( L"pda" );
 OPTION_NAME SYSTEMINI( L"systemIni" );
 OPTION_NAME GAME_TIME( L"objectGameTime" );
 OPTION_NAME PAUSEBTWSTEP( L"pausebtwstep" );
-OPTION_NAME BRIDGE( L"bridge" );
 OPTION_NAME INFLATION( L"infaltion" );
 OPTION_NAME PROFIT_TAX( L"profit_tax" );
 

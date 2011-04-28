@@ -143,6 +143,8 @@ public:
 	//! Swap the items at the given indices
 	virtual void swapItems(irr::u32 index1, irr::u32 index2);
 
+	virtual void lunchToolTip();
+
 protected:
 
 	struct ListItem

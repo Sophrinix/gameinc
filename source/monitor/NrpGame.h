@@ -32,6 +32,7 @@ OPTION_NAME VIEWIMAGE( L"viewImage" );
 OPTION_NAME GAMERETAILER( L"gameRetailer" );
 OPTION_NAME RECENSE( L"recense" );
 OPTION_NAME NPC_GAME( L"npcGame" );
+OPTION_NAME LOADOK( L"loadok" );
 
 class CNrpGame : public INrpConfig
 {

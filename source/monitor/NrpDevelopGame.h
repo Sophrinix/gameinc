@@ -30,12 +30,14 @@ public:
 
 	~CNrpDevelopGame(void);
 
+	void ModuleFinished( IWorkingModule& module );
+	void ModuleTested( IWorkingModule& module );
+
 	static NrpText ClassName();
 private:
 	MODULES _modules;
 
 	void _InitializeOptions( const NrpText& name );
-	void ModuleFinished( CNrpProjectModule* module );
 	void _FindPlaformsAndLanguages();
 
 	template< typename T, typename TARRAY >

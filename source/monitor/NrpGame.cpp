@@ -65,6 +65,7 @@ void CNrpGame::_InitializeOptions()
 	Add<NrpText>( VIEWIMAGE, "" );
 	Add<NrpText>( RECENSE, "" );
 	Add<bool>( NPC_GAME, false );
+	Add<bool>( LOADOK, false );
 	_history = NULL;
 }
 
@@ -167,10 +168,10 @@ NrpText CNrpGame::Save( const NrpText& saveFolder )
 
 void CNrpGame::Load( const NrpText& loadPath )
 {
-	bool mayLoad = OpFileSystem::IsExist( loadPath );
-	assert( mayLoad );
+	_self[ LOADOK ] = OpFileSystem::IsExist( loadPath );
+	assert( (bool)_self[ LOADOK ] && "can't load game config file ");
 
-	if( !mayLoad )
+	if( !(bool)_self[ LOADOK ] )
 		return;
 
 	NrpText loadFolder, loadFile ;
@@ -219,7 +220,10 @@ void CNrpGame::Load( const NrpText& loadPath )
 	if( pgList != NULL )
 	{
 		_self[ GAMEIMAGELIST ] = pgList;
-		_self[ VIEWIMAGE ] = pgList->GetBoxImages()[ 0 ];
+
+		assert( pgList->GetBoxImages().size() > 0 );
+		if( pgList->GetBoxImages().size() )	
+			_self[ VIEWIMAGE ] = pgList->GetBoxImages()[ 0 ];
 
 	}
 }

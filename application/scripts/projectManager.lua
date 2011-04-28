@@ -34,7 +34,13 @@ local selectedListBox = nil
 local windowProjectManager = nil
 local windowUserInfo = nil
 
-local function localCreateProjectsComboBox()
+local function _ShowModuleInformation()
+	local component = base.CLuaDevelopModule( lbxComponents.selectedObject )
+	LogScript( "Show information for " .. component.name )
+	LogScript( "errorNumber = " .. component.errorNumber )
+end
+
+local function _CreateProjectsComboBox()
 	comboxProjects = guienv:AddComboBox( "", 140, 50, "50%", "30+", -1, windowProjectManager )
 	--пробежимс€ по всем проектам компании
 	LogScript( "Company DevProject number="..company.devProjectNumber )
@@ -119,10 +125,23 @@ local function _ToggleComponentLider()
 		LogScript( "PROJECT-MANAGER:Add component to "..currentEmployer.name )
 		
 		if currentComponent ~= nil and not currentComponent.empty then
-			currentEmployer:AddWork( currentComponent )	
-			if currentComponent:GetEmployerPosibility( currentEmployer ) < 0.4 then
-				guienv:MessageBox( currentEmployer.name .. " имеет недостаточные навыки.", false, false, button.CloseParent, button.NoFunction )
+			if currentEmployer.typeName == "tester" then
+			    if currentComponent.percentDone < 0.4 then
+					guienv:MessageBox( "Ќизка€ готовность компонента не позвол€ет\n чтолибо потестировать.", false, false, button.CloseParent, button.NoFunction )
+					return
+			    end
+			    
+				if currentComponent.errorNumber == 0 then
+					guienv:MessageBox( "“естировщики уже провер€ли этот компонент\n ѕохоже, ошибок больше не осталось.", false, false, button.CloseParent, button.NoFunction )
+					return					
+				end
 			end
+			
+			currentEmployer:AddWork( currentComponent )	
+				
+			--if currentComponent:GetEmployerPosibility( currentEmployer ) < 0.4 then
+			--	guienv:MessageBox( currentEmployer.name .. " имеет недостаточные навыки.", false, false, button.CloseParent, button.NoFunction )
+			--end
 		end
 	else
 		LogScript( "PROJECT-MANAGER:Remove component from "..currentEmployer.name )
@@ -178,16 +197,19 @@ function Show()
 		return
 	end
 	
-	localCreateProjectsComboBox()
+	_CreateProjectsComboBox()
 
 	lbxComponents = guienv:AddComponentListBox( 140, 100, "50%", "60e", -1, windowProjectManager )
 	lbxComponents.itemHeigth = 40
 	lbxComponents.onChangeSelect = _UnworkedSelect
+	lbxComponents.onLmbDblClick = _ToggleComponentLider
+	lbxComponents.onRmbClick = _ShowModuleInformation
 	
 	lbxWorks = guienv:AddComponentListBox( "55%", "40%", "150e", "60e", -1, windowProjectManager )
 	lbxWorks.itemHeigth = 40
 	lbxWorks.onChangeSelect = _WorkedSelect
-	
+	lbxWorks.onLmbDblClick = _ToggleComponentLider
+
 	localBtnToggleTask = button.Stretch( "50%", "50%", "50+", "60+", "tuda",
 								     	 windowProjectManager, -1, "",
 								    	 _ToggleComponentLider )

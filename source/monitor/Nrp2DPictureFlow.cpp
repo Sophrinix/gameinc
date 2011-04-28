@@ -281,6 +281,8 @@ void CNrp2DPictureFlow::Prev( int offset )
 	_activeIndex = max( _activeIndex, 0 );
 
 	_UpdateImages();
+
+	DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
 }
 
 void CNrp2DPictureFlow::Next( int offset )
@@ -289,6 +291,8 @@ void CNrp2DPictureFlow::Next( int offset )
 	_activeIndex = min( _activeIndex, _images.size()-1 );
 
 	_UpdateImages();
+
+	DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
 }
 
 void CNrp2DPictureFlow::_SendEventSelected( const SEvent& event )

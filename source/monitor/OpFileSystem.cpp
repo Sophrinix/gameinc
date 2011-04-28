@@ -48,10 +48,14 @@ void OpFileSystem::Remove( const NrpText& pathTo )
 					if( _wfindnext( hFile, &fdata) != 0 )
 						break;
 			}
-		}
 
-		_findclose( hFile );
-		RemoveDirectoryW( RemoveEndSlash( mStr ).ToWide() );
+			_findclose( hFile );
+			if( !RemoveDirectoryW( RemoveEndSlash( mStr ).ToWide() ) )
+			{
+				int rr = GetLastError();
+				rr = rr;
+			}
+		}
 	}
 }
 
@@ -161,7 +165,7 @@ void OpFileSystem::CreateDirectory( NrpText pathTo )
 {
 	pathTo = CheckEndSlash( pathTo );
 	if( !IsExist( pathTo ) )
-		::CreateDirectoryW( pathTo, NULL );
+		::CreateDirectoryW( RemoveEndSlash( pathTo ), NULL );
 
 	assert( IsExist( pathTo ) );
 }

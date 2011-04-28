@@ -13,6 +13,8 @@ public:
 
 	void BeginNewDay( const NrpTime& time );
 
+	void AddWork( IWorkingModule& module, bool toFront );
+
 	static NrpText ClassName(); 
 };
 

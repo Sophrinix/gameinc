@@ -20,6 +20,7 @@ function Show( header, text, font, texture )
 	if mainWindow == nil then
 		mainWindow = guienv:AddWindow( "magazine_news.png", "25%", "25%", "50%+", "50%+", -1, guienv.root )
 		mainWindow.drawBody = false
+		mainWindow.closeButton.visible = false
 		
 		lbHeader = guienv:AddLabel( header, "8%", "33%", "92%", "40%", -1, mainWindow )
 		lbHeader:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )

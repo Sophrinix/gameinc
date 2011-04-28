@@ -34,7 +34,7 @@ CNrpUser::CNrpUser(const NrpText& className, const NrpText& systemName ) : INrpC
 	Add<NrpText>( TECHGROUP, className );	//класс разработчика
 	Add<int>( TALANT, 0 );			//собственно одаренность разраба
 	Add<int>( STAMINA, 0 );			//выносливость
-	Add<int>( MOOD, 0 );			//настроение
+	Add<int>( MOOD, 100 );			//настроение
 	Add<int>( POPULARITY, 0 );		//известность разраба
 	Add<int>( SALARY, 0 );			//зарплата
 	Add<int>( STABILITY, 0 );		//уравновешенность
@@ -301,7 +301,7 @@ void CNrpUser::RemoveOldModificators_( NrpTime time )
 {
 	for( size_t cnt=0; cnt < modificators_.size(); cnt++ )
 	{
-		if( time.Equale( modificators_[ cnt ]->GetTime() ) == -1  )
+		if( modificators_[ cnt ]->IsTimeout( time ) )
 		{
 			delete modificators_[ cnt ];
 			modificators_.erase( cnt );
@@ -313,6 +313,7 @@ void CNrpUser::RemoveOldModificators_( NrpTime time )
 void CNrpUser::BeginNewDay( const NrpTime& time )
 {
 	_self[ HANGRY ] = 100;
+	_self[ MOOD ] = 100; //будем считать что с утра настроение отличное
 
 	RemoveOldModificators_( time );
 }

@@ -66,7 +66,7 @@ int CLuaReklame::SetReklameObject( lua_State* L )
 {	
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		INrpConfig* reklameObject = _GetLuaObject< INrpConfig, ILuaProject >( L, 2, true );
+		INrpConfig* reklameObject = _GetLuaObject< INrpConfig, ILuaProject >( L, -1, true );
 		assert( reklameObject );
 		if( reklameObject )
 		{

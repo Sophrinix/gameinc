@@ -40,7 +40,9 @@ void CNrpReklameWork::InitializeOptions_()
 CNrpReklameWork::CNrpReklameWork( const CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )
 {
 	InitializeOptions_();
+
 	_self[ NUMBERDAY ] = p[ NUMBERDAY ];
+	_self[ BALANCE ] = p[ BALANCE ];
 	_self[ LEVEL ] = p[ LEVEL ];
 	_self[ NAME ] = p[ NAME ];
 	_self[ DAYCOST ] = p[ DAYCOST ];
@@ -70,10 +72,10 @@ void CNrpReklameWork::Load( const NrpText& fileName )
 	INrpConfig::Load( fileName );
 }
 
-void CNrpReklameWork::Update( const CNrpReklameWork* p )
+void CNrpReklameWork::Update( const CNrpReklameWork& p )
 {
-	Param( NUMBERDAY ) += (int)(*p)[ NUMBERDAY ];
-	Param( FINISHED ) = (int)Param( NUMBERDAY ) > 0;
+	_self[ NUMBERDAY ] += (int)p[ NUMBERDAY ];
+	_self[ FINISHED ] = (int)_self[ NUMBERDAY ] > 0;
 }
 
 void CNrpReklameWork::BeginNewDay()
@@ -83,7 +85,7 @@ void CNrpReklameWork::BeginNewDay()
 
 	if( cmp != NULL )
 	{
-		NrpText name = Text( GAMENAME );
+		NrpText name = _self[ GAMENAME ];
 		//сначала попробуем получить указатель на существующую игру
 		INrpConfig* game = reinterpret_cast< INrpConfig* >( cmp->GetGame( name ) );
 
@@ -96,18 +98,18 @@ void CNrpReklameWork::BeginNewDay()
 		if( game == NULL )
 			return;
 
-		if( (int)Param( NUMBERDAY ) > 0 && 
-			(float)Param( MAXQUALITY ) > (float)(*game)[ FAMOUS ] )
+		if( (int)_self[ NUMBERDAY ] > 0 && 
+			(float)_self[ MAXQUALITY ] > (float)(*game)[ FAMOUS ] )
 		{	
 			//здесь надо учесть факторы конторы, которые могут влиять на
 			//повышение или понижение этого параметра
-			(*game)[ FAMOUS ] += (float)Param( QUALITY );
+			(*game)[ FAMOUS ] += (float)_self[ QUALITY ];
 		}
 	}
 
-	Param( NUMBERDAY ) += (int)-1;
-	//AddValue<int>( BALANCE, GetValue<int>( DAYCOST ) );
-	Param( FINISHED ) = (int)Param( NUMBERDAY ) == 0;
+	_self[ NUMBERDAY ] += (int)-1;
+	_self[ BALANCE ] += (int)_self[ DAYCOST ];
+	_self[ FINISHED ] = (int)_self[ NUMBERDAY ] == 0;
 }
 
 NrpText CNrpReklameWork::Save( const NrpText& saveFolder )

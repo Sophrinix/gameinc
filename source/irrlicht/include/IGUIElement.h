@@ -831,7 +831,10 @@ public:
 		setNotClipped(in->getAttributeAsBool("NoClip"));
 	}
 
+	virtual void lunchToolTip() {};
+
 protected:
+
 	// not virtual because needed in constructor
 	virtual void addChildToEnd(IGUIElement* child)
 	{

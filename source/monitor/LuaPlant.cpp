@@ -202,10 +202,14 @@ int CLuaPlant::AddReklameWork( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant::AddReklameWork need CNrpReklameWork* parameter");
 
-	CNrpReklameWork* reklameWork = (CNrpReklameWork*)lua_touserdata( L, 2 );
+	CNrpReklameWork* reklameWork = _GetLuaObject< CNrpReklameWork, CLuaReklame >( L, 2, false );
 	assert( reklameWork != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN _object->AddReklame( reklameWork );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( reklameWork )	
+			_object->AddReklame( *reklameWork );
+	}
 
 	return 1;
 }

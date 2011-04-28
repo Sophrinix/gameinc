@@ -71,9 +71,14 @@ function sworkApplicationClose( ptr )
 	NrpApplicationClose()
 end
 
-function sworkModuleFinished( ptrModule )
+function sworkModuleFinished( project, ptrModule )
 	local mod = CLuaDevelopModule( ptrModule )
 	pda.Show( "Завершена работа над модулем "..mod.name.." проекта "..mod.parent.name )
+end
+
+function sworkModuleTestedFinished( project, ptrModule )
+	local mod = CLuaDevelopModule( ptrModule )
+	pda.Show( "Завершено тестирование модуля "..mod.name.." проекта "..mod.parent.name )	
 end
 
 function sworkUserMarketUpdated()
@@ -82,7 +87,8 @@ end
 
 function sworkReklameFinished( ptrReklame )
 	local reklame = CLuaReklame( ptrReklame )
-	pda.Show( "Закончилась рекламная кампания "..reklame.name )
+	local rtobject = CLuaProject( reklame.reklameObject )
+	pda.Show( "Закончилась рекламная кампания " .. reklame.name .. " для " .. rtobject.name )
 end
 
 local function localChangeSpeed( keyInput )

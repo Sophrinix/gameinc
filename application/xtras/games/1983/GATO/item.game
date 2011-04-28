@@ -39,8 +39,8 @@ platfrom_7=
 genre_0=genre_simulator
 genre_1=genre_time_history
 genre_2=genre_war
-genre_3=genre_submarine
-genre_4=genre_underwater
-genre_5=genre_realtime
+genre_3=genre_machines_submarine
+genre_4=genre_place_underwater
+genre_5=genre_real_time
 [techs]
 tech_0=tech_keyboard

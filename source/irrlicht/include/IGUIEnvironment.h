@@ -582,8 +582,6 @@ public:
 
 	//! reads an element
 	virtual void readGUIElement(io::IXMLReader* reader, IGUIElement* node) =0;
-
-	virtual void LunchToolTip( IGUIElement* elm ) = 0;
 };
 
 

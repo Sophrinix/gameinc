@@ -725,11 +725,6 @@ gui::IGUIAnimator* CNrpGUIEnvironment::addTextRunnerAnimator( IGUIElement* paren
 	return new CNrpGuiTextRunnerAnimator( this, parent, text );
 }
 
-void CNrpGUIEnvironment::LunchToolTip( IGUIElement* elm )
-{
-
-}
-
 void CNrpGUIEnvironment::AddTopElement( IGUIElement* elm )
 {
 	if( elm )

@@ -18,12 +18,12 @@ bool DownloadFiles ( HINTERNET hFtp, const std::wstring& rootDir )
 	char buf[1024] = {0};
 	std::vector< std::wstring > dirs;
 	DWORD c = 1024;
-	WIN32_FIND_DATA fd = { 0 }, ft = { 0 };
+	WIN32_FIND_DATAW fd = { 0 }, ft = { 0 };
 
 	if ( !FtpSetCurrentDirectoryW( hFtp, rootDir.c_str() ) )
 		wprintf( ( L"Directory " + rootDir + L" are not avaible. Goodbay\n").c_str() );
 
-	HINTERNET hSearch = FtpFindFirstFile( hFtp, NULL, &fd, INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD , 0 );
+	HINTERNET hSearch = FtpFindFirstFileW( hFtp, NULL, &fd, INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD , 0 );
 		
 	if ( hSearch ) 
 	{
@@ -43,16 +43,16 @@ bool DownloadFiles ( HINTERNET hFtp, const std::wstring& rootDir )
 				if ( _waccess( fd.cFileName, 0 ) == -1 ) 
 				{
 					wprintf( L"Loading file %s\n", fd.cFileName );
-					if( !FtpGetFile( hFtp, fd.cFileName, fd.cFileName, FALSE, 0, 0, 0 ) )
+					if( !FtpGetFileW( hFtp, fd.cFileName, fd.cFileName, FALSE, 0, 0, 0 ) )
 							  return false;
 				}
 				else
 				{
-					HANDLE ftFile = FindFirstFile( fd.cFileName, &ft );
+					HANDLE ftFile = FindFirstFileW( fd.cFileName, &ft );
 					if ( CompareFileTime ( &ft.ftLastWriteTime, &fd.ftLastWriteTime ) < 0 ) 
 					{			
 						wprintf( L"Loading file %s\n", fd.cFileName );
-						if ( !FtpGetFile( hFtp, fd.cFileName, fd.cFileName, FALSE, 0, 0, 0 ) )
+						if ( !FtpGetFileW( hFtp, fd.cFileName, fd.cFileName, FALSE, 0, 0, 0 ) )
 							return false;
 					}
 				}
@@ -64,14 +64,14 @@ bool DownloadFiles ( HINTERNET hFtp, const std::wstring& rootDir )
 
 	for( size_t k=0; k < dirs.size(); k++ )
 	{
-		CreateDirectory( dirs[ k ].c_str(), NULL );
-		SetCurrentDirectory( dirs[ k ].c_str() );
+		CreateDirectoryW( dirs[ k ].c_str(), NULL );
+		SetCurrentDirectoryW( dirs[ k ].c_str() );
 
 		DownloadFiles( hFtp, dirs[ k ] );
 	}
 	
-	FtpSetCurrentDirectory( hFtp, L".." );
-	SetCurrentDirectory( L".." );
+	FtpSetCurrentDirectoryW( hFtp, L".." );
+	SetCurrentDirectoryW( L".." );
 	return true;
 }  // DownloadFiles
 
@@ -82,8 +82,8 @@ void FtpDownload ( const std::wstring& serverName, const std::wstring& pathTo ) 
 
 	// Соединение с сервером
 	wprintf ( L"Connecting to server %s...\n", (L"ftp://" + serverName + L"/" + pathTo).c_str() );
-	HINTERNET hInet = InternetOpen( L"GameInc updater agent", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0 );
-	HINTERNET hFtp = InternetConnect( hInet, serverName.c_str(), INTERNET_DEFAULT_FTP_PORT, L"anonymous", L"anonymous@mail.com", INTERNET_SERVICE_FTP, 0, 0 );
+	HINTERNET hInet = InternetOpenW( L"GameInc updater agent", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0 );
+	HINTERNET hFtp = InternetConnectW( hInet, serverName.c_str(), INTERNET_DEFAULT_FTP_PORT, L"anonymous", L"anonymous@mail.com", INTERNET_SERVICE_FTP, 0, 0 );
 	if ( !hInet || !hFtp )
 		wprintf( L"Server are not availble. Goodbay\n" );
 	else

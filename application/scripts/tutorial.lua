@@ -11,6 +11,7 @@ IncludeScript( "tutorialMedia" )
 IncludeScript( "tutorialBank" )
 IncludeScript( "tutorialNewGame" )
 IncludeScript( "tutorialDevRoom" )
+IncludeScript( "tutorialReklame" )
 
 module('tutorial')
 
@@ -29,6 +30,7 @@ STEP_OVERVIEW_CITY=7
 STEP_OVERVIEW_REKLAME=8
 STEP_OVERVIEW_BANK=9
 STEP_OVERVIEW_DEVELOPERS_ROOM = 10
+STEP_OVERVIEW_REKLAMECAMPANY = 11
 
 steps = {}
 
@@ -42,6 +44,7 @@ table.insert( steps, STEP_OVERVIEW_CITY, "media/html/TutorialCity.htm" )
 table.insert( steps, STEP_OVERVIEW_REKLAME, "media/html/TutorialMedia.htm" )
 table.insert( steps, STEP_OVERVIEW_BANK, "media/html/TutorialBank.htm" )
 table.insert( steps, STEP_OVERVIEW_DEVELOPERS_ROOM, "media/html/TutorialDevRoom.htm" )
+table.insert( steps, STEP_OVERVIEW_REKLAMECAMPANY, "media/html/TutorialReklameCampany.htm" )
 
 function Update( currentStep )
 	base.LogScript( steps[ currentStep ] )

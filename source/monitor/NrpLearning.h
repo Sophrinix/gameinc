@@ -17,6 +17,7 @@ public:
 
 	int AddUser( CNrpUser& ptrUser );
 	int RemoveUser( const NrpText& userName );
+	const USERS& GetUsers() const { return _users; }
 
 	void Update( CNrpUser& ptrUser, const NrpTime& time );
 
@@ -28,6 +29,8 @@ public:
 private:
 	void _InitializeOptions();
 	NrpLearning();
+
+	USERS _users;
 };
 
 }//end namespace nrp

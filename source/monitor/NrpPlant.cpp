@@ -81,7 +81,7 @@ void CNrpPlant::Load( const NrpText& saveFolder )
 			if( type == CNrpPlantWork::ClassName() )
 				AddWork( new CNrpPlantWork( saveFile, true ) );
 			else if( type == CNrpReklameWork::ClassName() )
-				AddReklame( new CNrpReklameWork( saveFile ) );
+				AddReklame( CNrpReklameWork( saveFile ) );
 		}
 	}
 }
@@ -141,8 +141,8 @@ CNrpReklameWork* CNrpPlant::CreateReklame( const NrpText& type,
 	if( baseWork != NULL )
 	{
 		CNrpReklameWork* newReklame = new CNrpReklameWork( *baseWork );
-		newReklame->Param( GAMENAME ) = gameName;
-		newReklame->Param( COMPANYNAME ) = company;
+		(*newReklame)[ GAMENAME ] = gameName;
+		(*newReklame)[ COMPANYNAME ] = company;
 		return newReklame;
 	}
 	else
@@ -180,18 +180,18 @@ CNrpReklameWork* CNrpPlant::GetBaseReklame( const NrpText& name )
 	return NULL;
 }
 
-void CNrpPlant::AddReklame( CNrpReklameWork* reklame )
+void CNrpPlant::AddReklame( CNrpReklameWork& reklame )
 {
-	CNrpReklameWork* rWork = GetReklame( (*reklame)[ INTERNAL_NAME ], (*reklame)[ GAMENAME ] );
+	CNrpReklameWork* rWork = GetReklame( reklame[ INTERNAL_NAME ], reklame[ GAMENAME ] );
 
 	if( rWork != NULL )
 	{
 		rWork->Update( reklame );
 	}
 	else
-		_reklameWorks.push_back( new CNrpReklameWork( *reklame ) );
+		_reklameWorks.push_back( new CNrpReklameWork( reklame ) );
 
-	Param( REKLAMENUMBER ) = static_cast< int >( _reklameWorks.size() );
+	_self[ REKLAMENUMBER ] = static_cast< int >( _reklameWorks.size() );
 }
 
 CNrpReklameWork* CNrpPlant::GetReklame( const NrpText& type, 

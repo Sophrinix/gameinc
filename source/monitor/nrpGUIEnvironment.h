@@ -257,7 +257,6 @@ private:
 	core::array< IGUIElement* > _overlay;
 	bool CreateSkin_();
 	void LoadFonts_();
-	virtual void LunchToolTip( IGUIElement* elm );
 };
 
 }	//namespace gui

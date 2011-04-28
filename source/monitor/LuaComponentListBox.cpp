@@ -18,14 +18,15 @@ BEGIN_LUNA_METHODS(CLuaComponentListBox)
 	LUNA_ILUALISTBOX_HEADER( CLuaComponentListBox )
 	/*   */
 	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, AddItem )
-	LUNA_AUTONAME_FUNCTION( CLuaComponentListBox, GetSelectedObject )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaComponentListBox)
 	LUNA_ILUALISTBOX_PROPERTIES( CLuaComponentListBox )
 	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "selectedObject", GetSelectedObject, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "onLmbDblClick", PureFunction, SetLmbDblClick )
+	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "onRmbClick", PureFunction, SetRmbClick )
 	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "onChangeSelect", PureFunction, SetOnChangeSelect )
+	LUNA_AUTONAME_PROPERTY( CLuaComponentListBox, "onTooltip", PureFunction, SetTooltipLaunched )
 END_LUNA_PROPERTIES
 
 
@@ -45,6 +46,26 @@ int CLuaComponentListBox::AddItem( lua_State *L )	//добавляет текст в списко ото
 
 	lua_pushinteger( L, ret );
 	return 1;
+}
+
+int CLuaComponentListBox::SetTooltipLaunched( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		_object->AddLuaFunction( GUIELEMENT_TOOLTIP_LAUNCHED, _GetRef( L, -1 ) );			
+		_object->setToolTipText( L" " );
+	}
+
+	return 0;
+}
+
+int CLuaComponentListBox::SetRmbClick( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN	_object->AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, _GetRef( L, -1 ) );			
+
+	return 0;
 }
 
 int CLuaComponentListBox::SetLmbDblClick( lua_State* L )

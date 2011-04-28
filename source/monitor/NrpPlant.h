@@ -31,7 +31,7 @@ public:
 	CNrpReklameWork* GetBaseReklame( const NrpText& name );
 	CNrpReklameWork* GetBaseReklame( int index );
 
-	void AddReklame( CNrpReklameWork* reklame );
+	void AddReklame( CNrpReklameWork& reklame );
 	CNrpReklameWork* GetReklame( const NrpText& type, 
 								 const NrpText& gameName );
 	void RemoveReklame( NrpText type, const NrpText& gameName );

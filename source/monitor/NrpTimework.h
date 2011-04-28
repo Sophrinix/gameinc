@@ -15,7 +15,8 @@ public:
 
 	int AddUser( CNrpUser& ptrUser );
 	int RemoveUser( const NrpText& userName );
-
+	const USERS& GetUsers() const { return _users; }
+	
 	void Update( CNrpUser& ptrUser, const NrpTime& time );
 
 	NrpText Save( const NrpText& saveFolder );
@@ -27,6 +28,7 @@ private:
 	void _InitializeOptions();
 	NrpTimework();
 
+	USERS _users;
 	CNrpUser* _user;
 };
 

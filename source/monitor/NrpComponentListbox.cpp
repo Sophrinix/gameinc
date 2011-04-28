@@ -373,6 +373,9 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 			case EMIE_LMOUSE_PRESSED_DOWN:
 				{ Selecting = true;	return true; }
 
+			case EMIE_RMOUSE_LEFT_UP:
+				{ DoLuaFunctionsByType( GUIELEMENT_RMOUSE_LEFTUP, this, NULL ); return true;}
+
 			case EMIE_LMOUSE_LEFT_UP:
 				{
 					Selecting = false;
@@ -1034,6 +1037,12 @@ void CNrpComponentListbox::SetOverrideFont( gui::IGUIFont* newFont, video::SColo
 	_font = newFont;
 	_textColor = color;
 }
+
+void CNrpComponentListbox::lunchToolTip()
+{
+	DoLuaFunctionsByType( GUIELEMENT_TOOLTIP_LAUNCHED, this, NULL );
+}
+
 }
 
 }

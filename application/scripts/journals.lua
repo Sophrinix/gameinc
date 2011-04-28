@@ -40,16 +40,15 @@ function Show()
 		mainWindow = window.fsWindow( txsBlur.path, _Hide )
 		
 		local img = guienv:AddImage( 0, 0, "0e", "0e", mainWindow, -1, "" );
-		img.texture = "media/textures/magazine.png"
+		img.texture = "media/textures/magazine_busines.png"
 		img.alphaChannel = true
 		guienv:SendToBack( img )
 				
-		lbxGames = guienv:AddComponentListBox( 320, 50, 730, 520, -1, mainWindow )						
+		lbxGames = guienv:AddComponentListBox( 320, 50, 730, 520, -1, mainWindow )	
+		lbxGames.onChangeSelect = _ShowHistoryReview					
 		--picflowGames = guienv:AddPictureFlow( 60, 10, scrWidth - 10, scrHeight / 3, -1, campaniesWindow:Self() )
 		--picflowGames:SetPictureRect( 0, 0, scrHeight / 3 - 40, scrHeight / 3 - 40 )
-		--picflowGames:SetDrawBorder( false )		
-		
-		mainWindow:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, _ShowHistoryReview )				
+		--picflowGames:SetDrawBorder( false )				
 	end
 	
 	ShowAvaibleGames()

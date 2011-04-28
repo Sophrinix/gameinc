@@ -59,15 +59,15 @@ public:
 	int GetGenrePreferences( const NrpText& name );
 	void SetGenrePreferences( const NrpText& name, int valuel );
 	
-	void AddWork( IWorkingModule& techWork, bool toFront=false );
+	virtual void AddWork( IWorkingModule& techWork, bool toFront=false );
 	IWorkingModule* GetWork( u32 index ) const;
 	IWorkingModule* GetWork( const NrpText& name ) const;
 	void RemoveWork( IWorkingModule& techWork );
 
 	void AddModificator( IModificator* ptrModificator );
 
-	void BeginNewHour( const NrpTime& time );
-	void BeginNewDay( const NrpTime& time );
+	virtual void BeginNewHour( const NrpTime& time );
+	virtual void BeginNewDay( const NrpTime& time );
 
 	CNrpRelation* GetRelation( const NrpText& name );
 

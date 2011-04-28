@@ -11,7 +11,7 @@ CNrpAiUser::CNrpAiUser( const NrpText& name, CNrpCompany* ptrCmp ) : CNrpUser( C
 	_self[ NAME ] = name;
 }
 
-CNrpAiUser::CNrpAiUser( const NrpText& fileName ) : CNrpUser( CLASS_AIUSER, "" )
+CNrpAiUser::CNrpAiUser( const NrpText& fileName ) : CNrpUser( CLASS_AIUSER, fileName )
 {
 	Load( fileName );
 }

@@ -28,6 +28,7 @@ BEGIN_LUNA_PROPERTIES(CLuaDevelopModule)
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "parent", GetParent, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "percentDone", GetPercentDone, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "quality", GetQuality, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "errorNumber", GetErrorNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopModule, "userNumber", GetUserNumber, PureFunction )
 END_LUNA_PROPERTIES
 
@@ -91,6 +92,12 @@ int CLuaDevelopModule::Remove( lua_State* L )
 int CLuaDevelopModule::GetPercentDone( lua_State* L )
 {
 	lua_pushnumber( L, GetParam_<float>( L, PROP, READYWORKPERCENT, 0 ) * 100 );
+	return 1;
+}
+
+int CLuaDevelopModule::GetErrorNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, ERRORNUMBER, 0 ) );
 	return 1;
 }
 

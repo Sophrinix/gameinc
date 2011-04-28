@@ -27,9 +27,12 @@ public:
 	static NrpText ClassName();
 
 private:
-	void InitializeOptions_();
-	CNrpProjectModule();
+	void  _InitializeOptions();
 	float _GetWorkKoeffForUser( CNrpUser& ptrUser );
+
+	//обновление прогресса готовности , при изменение объема написанного кода
+	void  _UpdateProgress( NParam& rr );
+
 	USERS _users;
 };
 

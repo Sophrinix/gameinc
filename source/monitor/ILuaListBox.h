@@ -14,7 +14,8 @@ namespace nrp
 
 #define LUNA_ILUALISTBOX_PROPERTIES(class) LUNA_ILUAGUIELEMENT_PROPERTIES(class)\
 										LUNA_AUTONAME_PROPERTY(class, "itemIndex", GetSelected, SetSelected )\
-										LUNA_AUTONAME_PROPERTY(class, "itemHeight", PureFunction, SetItemHeigth )
+										LUNA_AUTONAME_PROPERTY(class, "itemHeight", PureFunction, SetItemHeigth )\
+										LUNA_AUTONAME_PROPERTY(class, "count", GetCount, PureFunction )
 
 template< class T >
 class ILuaListBox : public ILuaGuiElement<T>
@@ -23,6 +24,19 @@ public:
 	ILuaListBox(lua_State *L, const NrpText& luaName, bool ex) : ILuaGuiElement( L, luaName, ex )
 	{
 
+	}
+
+	int GetCount( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN
+		{
+			int itemCount = _object->getItemCount();
+			lua_pushinteger( L, itemCount );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
 	}
 
 	int SetItemBgColor( lua_State* L )
