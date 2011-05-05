@@ -1,5 +1,5 @@
-[PROPERTIES]
-internalname:string=game_battlezone
-genreModuleNumber:int=1
 [genres]
 genre_0=genre_skill
+[PROPERTIES]
+genreModuleNumber:int=1
+internalname:string=game_battlezone

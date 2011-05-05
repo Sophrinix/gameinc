@@ -53,6 +53,8 @@ void CNrpConsole::SaveCommands_()																	//сохранение введенных комманд
 		{
 			sv.Set( "commands", NrpText("type_") + (int)cnt, NrpText( console_history_[ cnt ] ) ); 
 		}	
+
+		sv.Save();
 	}
 	catch(...)
 	{

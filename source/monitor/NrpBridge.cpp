@@ -10,6 +10,8 @@
 using namespace irr;
 static nrp::CNrpBridge * globalBridgeInstance = 0;
 
+static const NrpText MY_SAVE( L"bridge.ini" );
+
 namespace nrp 
 {
 CLASS_NAME CLASS_NRPBRIDGE( L"CNrpBridge" );
@@ -153,14 +155,14 @@ void CNrpBridge::Update()
 			{
 				_CheckCompany( *cmp );
 
-				 //все компании с акци€ми должны находитьс€ в списке	
-				 CShareholder* share = GetShares( (*cmp)[ NAME], cmp );
-				 if( !share )
-				 {
-					 share = new CShareholder( (*cmp)[ NAME ], cmp );
-					 (*share)[ PIE_NUMBER ] = (*cmp)[ SELF_PIE_NUMBER ];
+				//все компании с акци€ми должны находитьс€ в списке	
+				CShareholder* share = GetShares( (*cmp)[ NAME], cmp );
+				if( !share )
+				{
+					share = new CShareholder( (*cmp)[ NAME ], cmp );
+					(*share)[ PIE_NUMBER ] = (*cmp)[ SELF_PIE_NUMBER ];
 					_stocks[ (*cmp)[ NAME ] ][ cmp ] = share;
-				 }
+				}
 			}
 		}
 }
@@ -183,16 +185,20 @@ CShareholder* CNrpBridge::GetShares( const NrpText& name, CNrpCompany* cmp )
 	return NULL;
 }
 
-void CNrpBridge::Load( const NrpText& fileName )
+void CNrpBridge::Load( const NrpText& saveFolder )
 {
+	NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + MY_SAVE;
+	assert( OpFileSystem::IsExist( fileName) );
 	if( OpFileSystem::IsExist( fileName) )
 	{
 		INrpConfig::Load( fileName );
 		IniFile rv( fileName );
-		int sharesNum = rv.Get( SECTION_PROPERTIES, SHARES_NUMBER, (int)0 );
+
+		int sharesNum = _self[ SHARES_NUMBER ];
+
 		for( int j=0; j < sharesNum; j++ )
 		{
-			NrpText shareSaveFile = rv.Get( SECTION_PROPERTIES, CreateKeyItem( j ), NrpText("") );
+			NrpText shareSaveFile = rv.Get( SECTION_SHARES, CreateKeyItem( j ), NrpText("") );
 			CShareholder* share = new CShareholder( shareSaveFile );
 			//попробуем найти компанию по имени
 			CNrpCompany* cmp = _nrpApp.GetCompany( (NrpText)(*share)[ COMPANYNAME ] );
@@ -212,12 +218,12 @@ NrpText CNrpBridge::Save( const NrpText& saveFolder )
 	//переданна€ директори€ должна существовать
 	assert( OpFileSystem::IsExist( saveFolder ) );
 
-	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder + Text( NAME ) );
+	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder );
 
 	//если нет директории в которую надо сохран€ть данные
 	OpFileSystem::CreateDirectory( localFolder );
 
-	NrpText saveFile = localFolder + "bridge.ini";
+	NrpText saveFile = localFolder + MY_SAVE;
 
 	assert( !OpFileSystem::IsExist( saveFile ) );
 	INrpConfig::Save( saveFile );
@@ -235,11 +241,13 @@ NrpText CNrpBridge::Save( const NrpText& saveFolder )
 		for( ; share != rIter->second.end(); share++, sequenceNum++ )
 		{
 			 NrpText ret = share->second->Save( shareDir + rIter->first + (NrpText)(*(share->second))[ COMPANYNAME ] + ".share" );
-			 sv.Set( SECTION_PROPERTIES, CreateKeyItem( sequenceNum ), ret );
+			 sv.Set( SECTION_SHARES, CreateKeyItem( sequenceNum ), ret );
 		}
 	}
 
-	sv.Set( SECTION_PROPERTIES, SHARES_NUMBER, sequenceNum );
+	sv.Set( SECTION_PROPERTIES, SHARES_NUMBER+":int", sequenceNum );
+
+	sv.Save();
 	return saveFile;
 }
 
@@ -326,16 +334,25 @@ int CNrpBridge::GetAvaibleShares( CNrpCompany* cmp )
 
 CLASS_NAME CLASS_CSHAREHOLDER( L"CShareholder" );
 
+void CShareholder::_InitOptions()
+{
+	Add<PNrpCompany>( PARENTCOMPANY, NULL );
+	Add<NrpText>( COMPANYNAME, L"" );
+	Add<NrpText>( OWNER, L"" );
+	Add( PIE_NUMBER, 0 );
+}
+
 CShareholder::CShareholder( const NrpText& name, CNrpCompany* cmp ) : INrpConfig( CLASS_CSHAREHOLDER, "" )
 {
-	Add<PNrpCompany>( PARENTCOMPANY, cmp );
-	Add( COMPANYNAME, (NrpText)(*cmp)[ NAME ] );
-	Add( OWNER, name );
-	Add( PIE_NUMBER, 0 );
+	_InitOptions();
+	_self[ PARENTCOMPANY ] = cmp;
+	_self[ COMPANYNAME ] = (*cmp)[ NAME ];
+	_self[ OWNER ] = name;
 }
 
 CShareholder::CShareholder( const NrpText& fileSave ) : INrpConfig( CLASS_CSHAREHOLDER, "" )
 {
+	_InitOptions();
 	Load( fileSave );
 }
 

@@ -157,6 +157,7 @@ int CLuaPlant::SaveReklamePrice( lua_State* L )
 			CNrpReklameWork* rW = _object->GetBaseReklame( k );
 			sv.Set( SECTION_PROPERTIES, (*rW)[ INTERNAL_NAME ], (int)(*rW)[ DAYCOST ] );
 		}
+		sv.Save();
 	}
 
 	return 1;

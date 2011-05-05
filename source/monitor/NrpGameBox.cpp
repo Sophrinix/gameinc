@@ -76,11 +76,13 @@ CNrpBoxAddon* CNrpGameBox::GetAddon( size_t index )
 
 NrpText CNrpGameBox::Save( const NrpText& fileName )
 {
+	INrpConfig::Save( fileName );	
+
 	IniFile sv( fileName );
 	for( u32 k=0; k < _addons.size(); k++ )
 		 sv.Set( SECTION_ADDONS, CreateKeyAddon( k ), (NrpText)(*_addons[ k ])[ INTERNAL_NAME ] );
 
-	INrpConfig::Save( fileName );	
+	sv.Save();
 
 	return fileName;
 }

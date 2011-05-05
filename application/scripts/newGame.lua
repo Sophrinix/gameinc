@@ -9,37 +9,16 @@ local applic = base.applic
 local updates = base.updates
 
 function CreateStuffLists()
-	base.os.remove( updates.fileDiskMachines )
 	applic:CreateDirectorySnapshot( "xtras/diskmachines", updates.fileDiskMachines, "diskMachine", "item.dm" )
-									
-	base.os.remove( updates.fileIniAddons )
 	applic:CreateDirectorySnapshot( "xtras/gameboxaddon", updates.fileIniAddons, "addon", "item.addon" )
-							
-	base.os.remove( updates.fileReklames )
 	applic:CreateDirectorySnapshot( "xtras/reklames", updates.fileReklames,	"reklame", "item.reklame" )
-
-	base.os.remove( updates.fileRetailers )
 	applic:CreateDirectorySnapshot( "xtras/retailers", updates.fileRetailers, "retailer", "item.retailer" )
-									
-	base.os.remove( updates.fileScreenshots )
 	applic:CreateDirectorySnapshot( "xtras/games", updates.fileScreenshots, "screenshot", "item.desc" )
-									
-	base.os.remove( updates.fileEngines )
 	applic:CreateDirectorySnapshot( "xtras/engines", updates.fileEngines, "engine", "item.engine" )
-									
-	base.os.remove( updates.fileTechs )
 	applic:CreateDirectorySnapshot( "xtras/technology", updates.fileTechs, "tech", "item.tech" )
-									
-	base.os.remove( updates.fileGames )
 	applic:CreateDirectorySnapshot( "xtras/games", updates.fileGames, "game", "item.game" )									
-	
-	base.os.remove( updates.fileLanguages )
 	applic:CreateDirectorySnapshot( "xtras/languages", updates.fileLanguages, "language", "item.lang" )		
-	
-	base.os.remove( updates.filePlatforms )
 	applic:CreateDirectorySnapshot( "xtras/platforms", updates.filePlatforms, "platform", "item.platform" )	
-	
-	base.os.remove( updates.fileCompanies )
 	applic:CreateDirectorySnapshot( "xtras/companies", updates.fileCompanies, "company", "item.company" )
 end
 

@@ -1,5 +1,5 @@
-[PROPERTIES]
-internalname:string=game_alleycat
-genreModuleNumber:int=1
 [genres]
 genre_0=genre_quest
+[PROPERTIES]
+genreModuleNumber:int=1
+internalname:string=game_alleycat

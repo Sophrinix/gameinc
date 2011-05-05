@@ -18,7 +18,7 @@
 using namespace irr;
 using namespace nrp;
 
-static CNrpEngine * global_app_instance = 0;
+static CNrpEngine * global_app_instance = NULL;
 
 #define NOT_EVENTRECEIVER NULL
 //////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ void CNrpEngine::Run() //создание нерпы
 
 		while ( device_->run() )
 		{
-			device_->setWindowCaption( NrpText( device_->getVideoDriver()->getFPS() ).ToWide() );
+			device_->setWindowCaption( NrpText( L"GameInc 0.1.80/" ) + NrpText( device_->getVideoDriver()->getFPS() ).ToWide() );
 			try
 			{
 				switch( run_state_ )

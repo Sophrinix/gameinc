@@ -71,6 +71,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add<NrpText>( SAVEDIR_PROFILE, "" );
 	Add<NrpText>( SAVEDIR_TECHS, "" );
 	Add<NrpText>( SAVEDIR_BRIDGE, "" );
+	Add<NrpText>( SAVEDIR_BANK, "" );
 	Add( SYSTEMINI, NrpText( "config/system.ini" ) );
 
 	IniFile rv( (NrpText)Param( SYSTEMINI ) );
@@ -209,6 +210,8 @@ void CNrpApplication::_CreateDirectoriesMapForSave()
 	OpFileSystem::CreateDirectory( _self[ SAVEDIR_ENGINES ] );
 	OpFileSystem::CreateDirectory( _self[ SAVEDIR_PLANT ] );
 	OpFileSystem::CreateDirectory( _self[ SAVEDIR_USERS ] );
+	OpFileSystem::CreateDirectory( _self[ SAVEDIR_BANK ] );
+	OpFileSystem::CreateDirectory( _self[ SAVEDIR_BRIDGE ] );
 }
 
 void CNrpApplication::Save()
@@ -223,9 +226,10 @@ void CNrpApplication::Save()
 	_CreateDirectoriesMapForSave();
 
 	assert( !OpFileSystem::IsExist( profileIni ) );
-	IniFile sv( profileIni );
 
 	INrpConfig::Save( profileIni );
+
+	IniFile sv( profileIni );
 
 	sv.Set( SECTION_OPTIONS, "currentProfile", (NrpText)_self[ PROFILENAME ] );
 	sv.Set( SECTION_OPTIONS, "currentCompany", (NrpText)_self[ PROFILECOMPANY ] );
@@ -287,6 +291,11 @@ void CNrpApplication::Save()
 		NrpText saveDir = _platforms[ i ]->Save( _self[ SAVEDIR_PLATFORMS ] );
 		sv.Set( SECTION_PLATFORMS, CreateKeyPlatform( i ), saveDir );
 	}
+
+	sv.Save();
+
+	CNrpBank::Instance().Save( _self[ SAVEDIR_BANK ] );
+	CNrpBridge::Instance().Save( _self[ SAVEDIR_BRIDGE ] );
 }
 
 void CNrpApplication::_LoadUsers( const NrpText& fileName )
@@ -346,6 +355,7 @@ void CNrpApplication::_InitialyzeSaveDirectories( const NrpText& profileName )
 	_self[ SAVEINI_PROFILE ] = profileDir + "profile.ini";
 	_self[ SAVEDIR_TECHS ] = profileDir + "techs/";
 	_self[ SAVEDIR_BRIDGE ] = profileDir + "bridge/";
+	_self[ SAVEDIR_BANK ] = profileDir + "bank/";
 }
 
 void CNrpApplication::LoadLinks( const NrpText& fileName, const NrpText& templateName )
@@ -427,6 +437,9 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 	for( int i=0; i < (int)_self[ GAMENUMBER ]; i++ )
 	{
 		NrpText fileName = rv.Get( SECTION_GAMES,  CreateKeyGame( i ), NrpText("") );
+		if( !OpFileSystem::IsExist( fileName ) )
+			continue;
+
 		PNrpGame game = new CNrpGame( fileName );
 		if( (bool)(*game)[ LOADOK ] )
 			_games.push_back( game );
@@ -451,7 +464,7 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 	}
 
 	CNrpBridge::Instance().Load( _self[ SAVEDIR_BRIDGE ] );
-
+	CNrpBank::Instance().Load( _self[ SAVEDIR_BANK ] );
 	CNrpScript::Instance().TemporaryScript( AFTER_LOAD_SCRIPT, CNrpScript::SA_EXEC );
 }
 

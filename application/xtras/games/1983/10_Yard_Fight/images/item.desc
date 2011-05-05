@@ -1,6 +1,6 @@
-[PROPERTIES]
-internalname:string=10_yard_fight
-genreModuleNumber:int=2
 [genres]
 genre_0=genre_simulator
 genre_1=genre_football
+[PROPERTIES]
+genreModuleNumber:int=2
+internalname:string=10_yard_fight

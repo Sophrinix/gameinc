@@ -17,6 +17,9 @@ public:
 	CShareholder( const NrpText& fileSave );
 
 	NrpText Save( const NrpText& fileName );
+
+private:
+	void _InitOptions();
 };
 
 class CNrpBridge : public INrpConfig

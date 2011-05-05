@@ -19,9 +19,15 @@ public:
 	void CreateLoan( const NrpText& name, int money, int percent, int month );
 
 	static NrpText ClassName();
+
+	NrpText Save( const NrpText& saveFolder );
+	void Load( const NrpText& saveFolder );
+
 private:
 	CNrpBank(void);
 	~CNrpBank(void);
+
+	NrpText _GetLoanSaveFileName( int index );
 
 	LOANS _loans;
 	int loanId_;

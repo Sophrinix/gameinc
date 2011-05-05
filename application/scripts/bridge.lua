@@ -125,8 +125,8 @@ function Show()
 	labelSelfAc = guienv:AddLabel( "Доступно: ", "76%", labelAllAc.bottom, "10e", "20+", -1, mainWindow )
 	labelPrice = guienv:AddLabel( "Цена: ", "76%", labelSelfAc.bottom, "10e", "20+", -1, mainWindow )
 	
-	btnChangeShare = button.Stretch( "76%", labelPrice.bottom + 10, "95%", "30+", "changeShare", mainWindow, -1, "", _ChangeShare )
-	btnTryControl = button.Stretch( "76%", btnChangeShare.bottom + 10, "95%", "30+", "tryControl", mainWindow, -1, "", _TryControl )
+	btnChangeShare = button.Stretch( "76%", labelPrice.bottom + 10, "95%", "30+", "changeShare", mainWindow, -1, "Изменить", _ChangeShare )
+	btnTryControl = button.Stretch( "76%", btnChangeShare.bottom + 10, "95%", "30+", "tryControl", mainWindow, -1, "Слияние", _TryControl )
 	
 	mainWindow:AddLuaFunction( base.GUIELEMENT_TABLE_CHANGED, _CellSelected )
 	

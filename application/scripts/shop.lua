@@ -16,6 +16,11 @@ local applic = base.applic
 
 local mainWindow = nil
 
+btnInSale = nil
+btnTopMonth = nil
+btnTopAllTime = nil
+btnJournals = nil
+
 function Hide()
     base.LogScript( "shop.Hide" )
 	base.package.loaded[ "topGame" ] = false
@@ -27,11 +32,13 @@ function Show()
 	mainWindow = window.fsWindow( "windowShop.png", Hide )
 	
 	--игры в продаже
-	button.EqualeTexture( 147, 333, "gameInSale", mainWindow, -1, "", base.saleManager.Show )
+	btnInSale = button.EqualeTexture( 147, 333, "gameInSale", mainWindow, -1, "", base.saleManager.Show )
 	--топ-лист месяца
-	button.EqualeTexture( 703, 67, "toplistmonth", mainWindow, -1, "", function() base.topGame.Show( base.topGame.TIME_MONTH ) end )
+	btnTopMonth = button.EqualeTexture( 703, 67, "toplistmonth", mainWindow, -1, "", function() base.topGame.Show( base.topGame.TIME_MONTH ) end )
 	--топ-лист за все время
-	button.EqualeTexture( 119, 94, "toplisttime", mainWindow, -1, "", function() base.topGame.Show( base.topGame.TIME_LIFE ) end )
+	btnTopAllTime = button.EqualeTexture( 119, 94, "toplisttime", mainWindow, -1, "", function() base.topGame.Show( base.topGame.TIME_LIFE ) end )
 	--игровые журналы
-	button.EqualeTexture( 861, 268, "showMagazines", mainWindow, -1, "", base.journals.Show )
+	btnJournals = button.EqualeTexture( 861, 268, "showMagazines", mainWindow, -1, "", base.journals.Show )
+
+	tutorial.Update( tutorial.STEP_OVERVIEW_SHOP )
 end

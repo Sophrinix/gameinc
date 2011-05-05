@@ -28,6 +28,7 @@ NrpText INrpConfig::Save( const NrpText& fileName )
 {
 	CNrpConfigLooder p( this );
 	p.Save( fileName );
+
 	return fileName;
 }
 

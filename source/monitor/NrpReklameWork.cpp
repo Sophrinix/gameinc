@@ -118,6 +118,7 @@ NrpText CNrpReklameWork::Save( const NrpText& saveFolder )
 	//должно получиться что-то вроде Компания_Продукт.Тип
 	NrpText fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + Text( COMPANYNAME ) + "_";
 	fileName += (Text( GAMENAME ) + "." + Text( INTERNAL_NAME ));
+	
 	INrpConfig::Save( fileName );
 
 	return fileName;

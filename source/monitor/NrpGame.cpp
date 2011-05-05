@@ -163,13 +163,15 @@ NrpText CNrpGame::Save( const NrpText& saveFolder )
 	if( _history )
 		_history->Save( localFolder + "game.history" );
 
+	sv.Save();
+
 	return localFolder;
 }
 
 void CNrpGame::Load( const NrpText& loadPath )
 {
 	_self[ LOADOK ] = OpFileSystem::IsExist( loadPath );
-	assert( (bool)_self[ LOADOK ] && "can't load game config file ");
+	assert( (bool)_self[ LOADOK ] && "can't load game config file" );
 
 	if( !(bool)_self[ LOADOK ] )
 		return;

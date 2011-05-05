@@ -3,7 +3,7 @@ name:string=Ручка
 quality:int=20
 internalname:string=boxaddon_pen
 startdate:time=y=1980 m=01 d=01 h=0 mi=0
-enddate:time=y=2010 m=00 d=00 h=0 mi=0 s=0
+enddate:time=y=2010 m=01 d=01 h=0 mi=0 s=0
 level:int=2
 price:float=0.3
 texturehover:string=

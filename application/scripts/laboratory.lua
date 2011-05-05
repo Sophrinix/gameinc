@@ -89,9 +89,7 @@ local function CreateWindow( typef )
 	end
 	
 	--adding closeButton
-	button.Stretch( "80e", "80e", "0e", "0e", 
-	 			    "button_down", windowMap, -1, "",
-					HideTechMap )
+	button.Stretch( "50e", "50e", "0e", "0e", "button_down", windowMap, -1, "", HideTechMap )
 end
 
 function ShowAdvancedTechMap()

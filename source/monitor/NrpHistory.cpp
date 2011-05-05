@@ -53,6 +53,7 @@ NrpText CNrpHistory::Save( const NrpText& fileName )
 		sf.Set( section, KEY_PROFIT, (int)pIter->second->Param( BALANCE ) );
 	}
 
+	sf.Save();
 	return fileName;
 }
 

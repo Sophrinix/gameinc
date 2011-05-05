@@ -1,8 +1,8 @@
 [options]
-name0=data_east_company
 company0=xtras/companies/Data_East/item.company
-companyNumber=3
-name1=interplay_entertaiment_company
 company1=xtras/companies/Interplay_entartainment/item.company
-name2=origin_system_company
 company2=xtras/companies/Origin_System/item.company
+companyNumber=3
+name0=data_east_company
+name1=interplay_entertaiment_company
+name2=origin_system_company

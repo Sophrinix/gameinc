@@ -94,6 +94,7 @@ private:
 
 	std::map< NrpText, NrpText > scenes_;
 };
+
 #define _nrpEngine CNrpEngine::Instance()
 
 #endif /* CNRP_APPLICATION_H_ */

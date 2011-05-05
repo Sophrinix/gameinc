@@ -172,6 +172,7 @@ NrpText CNrpProjectModule::Save( const NrpText& saveFolder )
 	sv.Set( SECTION_REQUIRE_TECH, _techRequires );
 	sv.Set( SECTION_REQUIRE_SKILL, _skillRequires );
 
+	sv.Save();
 	return fileName;
 }
 

@@ -181,6 +181,7 @@ NrpText CNrpInvention::Save( const NrpText& saveFolder, bool k )
 
 	assert( !OpFileSystem::IsExist( fileName ) );
 	INrpProject::Save( fileName );
+
 	IniFile sv( fileName );
 	assert( OpFileSystem::IsExist( fileName ) ); 
 	
@@ -188,6 +189,7 @@ NrpText CNrpInvention::Save( const NrpText& saveFolder, bool k )
 	sv.Set( SECTION_REQUIRE_SKILL, _skillRequires );
 	sv.Set( SECTION_USERS, _users, CreateKeyUser, NAME );
 
+	sv.Save();
 	return fileName;
 }
 

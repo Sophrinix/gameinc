@@ -72,6 +72,9 @@ local function _UpdateTimeLabel()
 	balanceLabel.text = "$"..base.applic.playerCompany.balance
 end
 
+local function _ShowHelp()
+
+end
 
 function Show()
 	local txs = driver:GetTexture( "media/top_menu/top_nerpa.png")
@@ -91,7 +94,7 @@ function Show()
 
 	mainLayout = guienv:AddLayout( "15%", "5%", "50%", "60%", 10, -1, mainWindow ) 
 	
-	AddButton( mainLayout, PureFunction, "media/top_menu/trass" )
+	AddButton( mainLayout, _ShowHelp, "media/top_menu/trass" )
 	AddButton( mainLayout, PureFunction, "media/top_menu/play" )
 	AddButton( mainLayout, function () ShowAdminButtons( true ) end, "media/top_menu/settings" )
 	AddButton( mainLayout, function () ShowFuncsButtons( true ) end, "media/top_menu/one" )	

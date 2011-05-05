@@ -1,6 +1,6 @@
-[PROPERTIES]
-internalname:string=game_BurgerTime
-genreModuleNumber:int=2
 [genres]
 genre_0=genre_skill
 genre_1=genre_time
+[PROPERTIES]
+genreModuleNumber:int=2
+internalname:string=game_BurgerTime

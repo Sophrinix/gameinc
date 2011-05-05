@@ -96,4 +96,6 @@ function ArrowToElement( elm, textureName, time )
 	image.scale = true
 	image.alphaChannel = true
 	guienv:AddDestructor( image, time )
+	
+	return image
 end

@@ -110,13 +110,17 @@ NrpText CNrpTechnology::Save( const NrpText& saveFolder )
 	NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + Text( INTERNAL_NAME ) + ".tech";
 	//не должно быть файла с такимже именем в директории
 	assert( !OpFileSystem::IsExist( fileName ) );
+	
+	INrpProject::Save( fileName );
 
 	IniFile sv( fileName );
 	sv.Set( SECTION_FUTURE_TECH, CreateKeyTech, _futureTech );
 	sv.Set( SECTION_REQUIRE_TECH, _techRequires );
 	sv.Set( SECTION_REQUIRE_SKILL, _skillRequires );
 
-	return INrpProject::Save( fileName );
+	sv.Save();
+
+	return fileName;
 }
 
 void CNrpTechnology::Load( const NrpText& fileName )

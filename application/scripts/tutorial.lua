@@ -12,12 +12,14 @@ IncludeScript( "tutorialBank" )
 IncludeScript( "tutorialNewGame" )
 IncludeScript( "tutorialDevRoom" )
 IncludeScript( "tutorialReklame" )
+IncludeScript( "tutorialShop" )
 
 module('tutorial')
 
 local guienv = base.guienv
 local browser = base.browser
 local table = base.table
+local currentStep = nil
 
 startGameWithTutorial = true
 STEP_OVERVIEW_RECEPTION = 1
@@ -31,32 +33,45 @@ STEP_OVERVIEW_REKLAME=8
 STEP_OVERVIEW_BANK=9
 STEP_OVERVIEW_DEVELOPERS_ROOM = 10
 STEP_OVERVIEW_REKLAMECAMPANY = 11
+STEP_OVERVIEW_SHOP = 12
 
 steps = {}
 
-table.insert( steps, STEP_OVERVIEW_RECEPTION, "media/html/TutorialReception.htm" )
-table.insert( steps, STEP_OVERVIEW_DIRECTORS_ROOM, "media/html/TutorialDirector.htm" )
-table.insert( steps, STEP_CREATE_NEW_PROJECT,"media/html/TutorialSelectProject.htm" )
-table.insert( steps, STEP_OVERVIEW_UNIVER, "media/html/TutorialUniver.htm" )
-table.insert( steps, STEP_OVERVIEW_LABORATORY, "media/html/TutorialLab.htm" )
-table.insert( steps, STEP_OVERVIEW_PLANT, "media/html/TutorialPlant.htm" )
-table.insert( steps, STEP_OVERVIEW_CITY, "media/html/TutorialCity.htm" )
-table.insert( steps, STEP_OVERVIEW_REKLAME, "media/html/TutorialMedia.htm" )
-table.insert( steps, STEP_OVERVIEW_BANK, "media/html/TutorialBank.htm" )
-table.insert( steps, STEP_OVERVIEW_DEVELOPERS_ROOM, "media/html/TutorialDevRoom.htm" )
-table.insert( steps, STEP_OVERVIEW_REKLAMECAMPANY, "media/html/TutorialReklameCampany.htm" )
+steps[ STEP_OVERVIEW_RECEPTION ] = "media/html/TutorialReception.htm"
+steps[ STEP_OVERVIEW_DIRECTORS_ROOM ] = "media/html/TutorialDirector.htm"
+steps[ STEP_CREATE_NEW_PROJECT ] = "media/html/TutorialSelectProject.htm"
+steps[ STEP_OVERVIEW_UNIVER ] = "media/html/TutorialUniver.htm"
+steps[ STEP_OVERVIEW_LABORATORY ] = "media/html/TutorialLab.htm"
+steps[ STEP_OVERVIEW_PLANT ] = "media/html/TutorialPlant.htm"
+steps[ STEP_OVERVIEW_CITY ] = "media/html/TutorialCity.htm"
+steps[ STEP_OVERVIEW_REKLAME ] = "media/html/TutorialMedia.htm" 
+steps[ STEP_OVERVIEW_BANK ] = "media/html/TutorialBank.htm"
+steps[ STEP_OVERVIEW_DEVELOPERS_ROOM ] = "media/html/TutorialDevRoom.htm"
+steps[ STEP_OVERVIEW_REKLAMECAMPANY ] = "media/html/TutorialReklameCampany.htm"
+steps[ STEP_OVERVIEW_SHOP ] = "media/html/TutorialShop.htm"
 
-function Update( currentStep )
+local function _ShowPage()
+	browser:Show()
+		
+	if steps[ currentStep ] ~= nil then
+		browser:Navigate( steps[ currentStep ] )
+	else
+		browser:Navigate( steps[ NO_STEP ] )	
+	end	
+end
+
+function Update( step )
+	currentStep = step
+	
 	base.LogScript( steps[ currentStep ] )
+
 	if not startGameWithTutorial then
 		return
 	end
-	
-	base.LogScript( steps[ currentStep ] )
-	browser:Show()
-	
-	if steps[ currentStep ] ~= nil then
-		browser:Navigate( steps[ currentStep ] )
-	end
-	base.LogScript( steps[ currentStep ] )
+
+	_ShowPage()
+end
+
+function ShowCurrentHelp()
+	_ShowPage()
 end

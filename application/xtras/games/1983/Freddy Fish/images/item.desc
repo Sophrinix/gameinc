@@ -1,9 +1,9 @@
-[PROPERTIES]
-internalname:string=game_freddyfish
-genreModuleNumber:int=5
 [genres]
 genre_0=genre_arcade
 genre_1=genre_action
 genre_2=genre_survival
 genre_3=genre_simulator
 genre_4=genre_animal_fish
+[PROPERTIES]
+genreModuleNumber:int=5
+internalname:string=game_freddyfish

@@ -97,13 +97,9 @@ void OpFileSystem::Copy( const NrpText& pathOld, const NrpText& pathNew )
 	return;
 }
 
-void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory,
-											const NrpText& saveFile, 
-											const NrpText& templateName,
-											const NrpText& itemName )
+void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory, const NrpText& templateName,
+											const NrpText& itemName, IniFile* ini )
 {
-	IniFile ini( saveFile );
-
 	_wfinddata_t fdata;	
 	intptr_t hFile;
 
@@ -116,7 +112,7 @@ void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory,
 			if ( !( wcscmp( fdata.name, L".") == 0 || wcscmp( fdata.name, L".." ) == 0 ) )// это удалять не надо
 				if ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ))// найдена папка
 				{
-					CreateDirectorySnapshot( CheckEndSlash( directory ) + NrpText( fdata.name ), saveFile, templateName, itemName );
+					CreateDirectorySnapshot( CheckEndSlash( directory ) + NrpText( fdata.name ), templateName, itemName, ini );
 				}
 				else// иначе найден файл
 				{
@@ -125,13 +121,12 @@ void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory,
 						NrpText fileName = CheckEndSlash( directory )+ fdata.name;
 						IniFile rv( fileName );
 
-						int number= ini.Get( "options", templateName + L"Number", (int)0 );
+						int number= ini->Get( "options", templateName + L"Number", (int)0 );
 
 						NrpText intName = rv.Get( "properties", "internalname:string", NrpText( "" ) );
-						ini.Set( L"options", NrpText( "name" ) + NrpText( (int)number ), intName );
-						ini.Set( L"options", templateName + NrpText( (int)number ), fileName );
-						number++;
-						ini.Set( L"options", templateName + L"Number", number );
+						ini->Set( L"options", NrpText( "name" ) + NrpText( (int)number ), intName );
+						ini->Set( L"options", templateName + NrpText( (int)number ), fileName );
+						ini->Set( L"options", templateName + L"Number", number+1 );
 					}
 				}
 			

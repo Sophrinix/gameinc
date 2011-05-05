@@ -28,6 +28,7 @@ NrpText INrpDevelopProject::Save( const NrpText& amount )
 	IniFile sv( amount );
 	sv.Set( SECTION_USERS, CreateKeyUser, _developers );
 
+	sv.Save();
 	return amount;
 }
 

@@ -25,6 +25,22 @@ MsgTerminator term;
 // Глобальный (для этого модуля) указатель для реализации синглетон-аксесса.
 static Logger* GlobalLogSubSystem = 0;
 
+void RDump( const char* lpFormatString )
+{
+	static FILE *f = NULL;
+	if ( !f ) 
+		f = fopen( "log.txt", "wb" );
+	else 
+		f = fopen( "log.txt", "ab" );
+
+	if ( f ) 
+	{
+		fprintf( f, lpFormatString, strlen( lpFormatString ) );
+		fprintf ( f, "\r\n" );
+		fclose( f );
+	}
+}
+
 void HandleLoggerErrors(const char* fmt, ...)
 {
 	va_list list;
@@ -230,6 +246,8 @@ void Logger::TreatLogEntry(const Log& log)
 			tmpScene->OnEvent( userEvent );
 		}
 	}
+
+	RDump( log.Text.str().c_str() );
 	// Складировать на постоянное сохранение отладочные сообщения 
 	// системы - не лучшая идея (проверка флага Sev).
 	// Если к БД подключиться не удалось, то тыкаться туда, очевидно 

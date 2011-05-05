@@ -3,7 +3,10 @@
 
 namespace nrp
 {
-	
+
+OPTION_NAME GAME_ENGINE_NAME( L"GameEngineName" );
+OPTION_NAME LICENSE_NAME( L"licenseName" );
+OPTION_NAME SCENARIO_NAME( L"scenarioName" );
 OPTION_NAME BALANCE(L"balance");
 OPTION_NAME NAME(L"name");
 OPTION_NAME QUALITY( L"quality" );

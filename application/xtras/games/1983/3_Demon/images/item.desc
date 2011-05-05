@@ -1,5 +1,5 @@
-[PROPERTIES]
-internalname:string=3_demon
-genreModuleNumber:int=1
 [genres]
 genre_0=genre_skill
+[PROPERTIES]
+genreModuleNumber:int=1
+internalname:string=3_demon

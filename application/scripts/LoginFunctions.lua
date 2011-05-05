@@ -83,7 +83,7 @@ function Continue( ptr )
 	
 	local dd = base.io.open( "save/"..lastProfile.."/profile.ini", "r" )
 	if dd == nil then
-		guienv:MessageBox( "Нет сохраненных игр", false, false, "", "" )
+		guienv:MessageBox( "Нет сохраненных игр", false, false, button.CloseParent, button.NoFunction )
 		return 0
 	end
 	--устанавливаем текущее времся

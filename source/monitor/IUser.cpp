@@ -121,6 +121,8 @@ NrpText CNrpUser::Save( const NrpText& folderPath )
 
 		NrpText fileName = OpFileSystem::CheckEndSlash( folderPath )+ Param( NAME ).As<NrpText>() + ".user";
 		assert( !OpFileSystem::IsExist( fileName ) );
+
+		INrpConfig::Save( fileName );
 		
 		IniFile sv( fileName );
 
@@ -146,8 +148,7 @@ NrpText CNrpUser::Save( const NrpText& folderPath )
 			}
 		}
 
-		INrpConfig::Save( fileName );
-
+		sv.Save();
 		return fileName;
 	}
 	catch(...)

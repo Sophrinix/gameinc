@@ -25,6 +25,7 @@ function fsWindow( txs, action )
 	
 	--adding closeButton
 	base.button.Stretch( "50e", "50e", "0e", "0e", "button_down", wnd, -1, "",	_Hide )
+	base.button.Stretch( "85e", "35e", "50e", "0e", "button_help", wnd, -1, "",	base.tutorial.ShowCurrentHelp )
 	
 	base.guienv:AddTimer( base.AFADE_TIME, function()
 												wnd.visible = true

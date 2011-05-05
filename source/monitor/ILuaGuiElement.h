@@ -34,6 +34,7 @@ namespace nrp
 											  LUNA_AUTONAME_PROPERTY(class, "childCount", GetChildCount, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "name", GetName, SetName )\
 											  LUNA_AUTONAME_PROPERTY(class, "width", GetWidth, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "left", GetLeft, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "bottom", GetBottom, PureFunction )
 														
 
@@ -61,6 +62,18 @@ public:
 		IF_OBJECT_NOT_NULL_THEN 
 		{
 			lua_pushinteger( L, _object->getAbsolutePosition().getWidth() );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
+	int GetLeft( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushinteger( L, _object->getAbsolutePosition().UpperLeftCorner.X );
 			return 1;
 		}
 

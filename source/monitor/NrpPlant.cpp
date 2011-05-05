@@ -33,6 +33,8 @@ int _SaveWorks( R& arrayt, int startNum, NrpText (*func)(int), const NrpText& fi
 		startNum++;
 	}
 
+	sv.Save();
+
 	return startNum;
 }
 

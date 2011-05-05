@@ -15,7 +15,6 @@ local onEnd = nil
 local shareStart = nil
 local wantShareNumber = nil
 
-
 local function _UpdateLabel()
 	edShare.text = shareStart + wantShareNumber
 	local deltaMoney = wantShareNumber * shareCompany.pieCost
@@ -45,6 +44,7 @@ end
 
 local function _OnEnd()
 	mainWindow:Remove()
+	mainWindow = nil
 	onEnd( shareCompany, shareStart + wantShareNumber )
 end
 
@@ -57,6 +57,10 @@ function Show( text, shrCmp, actionAfterEnd )
 	onEnd = actionAfterEnd
 	shareCompany = shrCmp
 	wantShareNumber = 0
+	
+	if mainWindow then
+		mainWindow:Remove()
+	end
 	
 	mainWindow = guienv:AddWindow( "media/textures/money_select.png", "33%", "33%", "284+", "142+", -1, guienv.root )
 	mainWindow.closeButton.visible = false

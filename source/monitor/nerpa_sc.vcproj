@@ -63,6 +63,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="irrlichtd.lib Version.lib libmysql.lib luad.lib Ws2_32.lib llmozlib2d.lib shell32.lib"
+				OutputFile="$(OutDir)\gameInc.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="lib"
 				GenerateManifest="true"
@@ -126,6 +127,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
+				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
@@ -142,6 +144,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="irrlicht.lib Version.lib lua.lib Ws2_32.lib llmozlib2.lib"
+				OutputFile="$(OutDir)\gameInc.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="lib"
 				IgnoreAllDefaultLibraries="false"
@@ -419,6 +422,14 @@
 				</File>
 				<File
 					RelativePath=".\IniFile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NativeIniFile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NativeIniFile.h"
 					>
 				</File>
 			</Filter>
@@ -1621,6 +1632,10 @@
 				</File>
 				<File
 					RelativePath="..\..\application\scripts\tutorialReklame.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialShop.lua"
 					>
 				</File>
 				<File

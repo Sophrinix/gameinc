@@ -11,6 +11,8 @@
 #include "OpFileSystem.h"
 #include "IniFile.h"
 
+static const NrpText MY_SAVE( L"item.devgame" );
+
 namespace nrp
 {
 CLASS_NAME CLASS_DEVELOPGAME("CNrpDevelopGame");
@@ -34,6 +36,7 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 	Add<NrpText>( PROJECTSTATUS, "unknown" );
 	Add<CNrpCompany*>( PARENTCOMPANY, NULL );
 	Add<PNrpGameEngine>( GAME_ENGINE, NULL );
+	Add<NrpText>( GAME_ENGINE_NAME, "" );
 	Add<NrpText>( PREV_GAME, "" );
 	Add<int>( BASE_CODEVOLUME, 0 );
 	Add<int>( BASEQUALITY, 0 );
@@ -45,6 +48,8 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 	Add<int>( PLATFORMNUMBER, 0 );
 	Add<int>( GENRE_MODULE_NUMBER, 0 );
 	Add<float>( FAMOUS, 0 );
+	Add<NrpText>( LICENSE_NAME, "" );
+	Add<NrpText>( SCENARIO_NAME, "" );
 
 	_self[ NAME ] = name;
 	_self[ TECHGROUP ] = static_cast< int >( PT_GAME );
@@ -85,13 +90,14 @@ CNrpDevelopGame::CNrpDevelopGame( CNrpGameProject& refPr, CNrpCompany& ptrCompan
 	_self[ GENRE_MODULE_NUMBER ] = refPr[ GENRE_MODULE_NUMBER ];
 	int bcv = refPr[ ENGINE_CODEVOLUME ];
 
-	PNrpGameEngine ge = refPr[ GAME_ENGINE ].As<PNrpGameEngine>();
-	_self[ GAME_ENGINE ] = ge;
+	CNrpGameEngine& ge = *(refPr[ GAME_ENGINE ].As<PNrpGameEngine>());
+	_self[ GAME_ENGINE_NAME ] = ge[ INTERNAL_NAME ];
+	_self[ GAME_ENGINE ] = &ge;
 
 	CNrpProjectModule* extEngine = new CNrpProjectModule( PT_PLUGIN, *this );
 	(*extEngine)[ NAME ] = Text( NAME ) + " Расширение движка";
 	(*extEngine)[ INTERNAL_NAME ] = Text( NAME ) + "_extent";
-	(*extEngine).SetEmployerSkillRequire( SKILL_CODING, (*ge)[ SKILL_CODING ] );
+	(*extEngine).SetEmployerSkillRequire( SKILL_CODING, ge[ SKILL_CODING ] );
 	(*extEngine)[ CODEVOLUME ] = refPr[ ENGINE_CODEVOLUME ];
 	(*extEngine)[ BASE_CODE ] = 1.f;
 	_modules.push_back( extEngine );
@@ -125,7 +131,7 @@ CNrpDevelopGame::CNrpDevelopGame( const NrpText& name, CNrpCompany* ptrCompany )
 : INrpDevelopProject( CLASS_DEVELOPGAME, name )
 {
 	_InitializeOptions( name );
-	Param( PARENTCOMPANY ) = ptrCompany;
+	_self[ PARENTCOMPANY ] = ptrCompany;
 }
 
 CNrpDevelopGame::CNrpDevelopGame( const NrpText& fileName ) 
@@ -165,8 +171,18 @@ NrpText CNrpDevelopGame::Save( const NrpText& folderSave )
 
 	OpFileSystem::CreateDirectory( localFolder );
 
-	NrpText fileName = localFolder + "item.devgame";
+	NrpText fileName = localFolder + MY_SAVE;
+
+	//Запомним где лежит сценарий
+	if( PNrpScenario sxn = _self[ SCENARIO ].As<PNrpScenario>() )
+		_self[ SCENARIO_NAME ] = sxn->Save( localFolder );
+
+	//Запомним где лежит лицензия
+	if( PNrpLicense sln = _self[ GLICENSE ].As<PNrpLicense>() )
+		_self[ LICENSE_NAME ] = sln->Save( localFolder );
+
 	INrpDevelopProject::Save( fileName );
+
 	IniFile sf( fileName );
 
 	for( u32 i=0; i < _modules.size(); i++ )
@@ -175,21 +191,7 @@ NrpText CNrpDevelopGame::Save( const NrpText& folderSave )
 		sf.Set( SECTION_MODULES, CreateKeyModule(i), saveFile );
 	}
 
-	if( PNrpGameEngine ge = _self[ GAME_ENGINE ].As<PNrpGameEngine>() )
-		sf.Set( SECTION_PROPERTIES, GAME_ENGINE, (NrpText)(*ge)[ INTERNAL_NAME ] );
-
-	if( PNrpScenario sxn = _self[ SCENARIO ].As<PNrpScenario>() )
-	{
-		NrpText saveFile = sxn->Save( localFolder );
-		sf.Set( SECTION_PROPERTIES, SCENARIO, saveFile );
-	}
-
-	if( PNrpLicense sln = _self[ GLICENSE ].As<PNrpLicense>() )
-	{
-		NrpText saveFile = sln->Save( localFolder );
-		sf.Set( SECTION_PROPERTIES, GLICENSE, saveFile );
-	}
-
+	sf.Save();
 	return localFolder;
 }
 
@@ -198,9 +200,10 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 	assert( OpFileSystem::IsExist(loadFolder) );
 	NrpText myFolder = OpFileSystem::CheckEndSlash(loadFolder);
 
-	NrpText fileName = myFolder + "item.devgame";
-	CNrpCompany* ptrCompany = Param( PARENTCOMPANY ).As<CNrpCompany*>();
+	NrpText fileName = myFolder + MY_SAVE;
+	CNrpCompany* ptrCompany = _self[ PARENTCOMPANY ].As<CNrpCompany*>();
 	INrpProject::Load( fileName );
+
 	IniFile rf( fileName );
 
 	for( int i=0; i < (int)_self[ MODULE_NUMBER ]; ++i )
@@ -211,14 +214,9 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 		_modules.push_back( tech );		
 	}
 
-	NrpText saveFile = rf.Get( SECTION_PROPERTIES, GAME_ENGINE, NrpText("") );
-	_self[ GAME_ENGINE ] = _nrpApp.GetGameEngine( saveFile );
-
-	saveFile = rf.Get( SECTION_PROPERTIES, SCENARIO, NrpText("") );
-	_self[ SCENARIO ] = new CNrpScenario( saveFile );
-
-	saveFile = rf.Get( SECTION_PROPERTIES, GLICENSE, NrpText("") );
-	_self[ GLICENSE ] = new CNrpLicense( saveFile );
+	_self[ GAME_ENGINE ] = _nrpApp.GetGameEngine( (NrpText)_self[ GAME_ENGINE_NAME ] );
+	_self[ SCENARIO ] = new CNrpScenario( (NrpText)_self[ LICENSE_NAME ] );
+	_self[ GLICENSE ] = new CNrpLicense( (NrpText)_self[ SCENARIO_NAME ] );
 }
 
 bool CNrpDevelopGame::IsReady()

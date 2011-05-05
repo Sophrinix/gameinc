@@ -63,6 +63,8 @@ NrpText CNrpPlatform::Save( const NrpText& pathTo )
 	IniFile sv( fileName );
 	sv.Set( SECTION_TECHS, _techs, CreateKeyTech, INTERNAL_NAME );
 
+	sv.Save();
+
 	return fileName;
 }
 

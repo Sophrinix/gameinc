@@ -1,8 +1,8 @@
 [options]
-name0=lang_english
 language0=xtras/languages/lang_english/item.lang
-languageNumber=3
-name1=lang_germany
 language1=xtras/languages/lang_germany/item.lang
-name2=lang_russian
 language2=xtras/languages/lang_russian/item.lang
+languageNumber=3
+name0=lang_english
+name1=lang_germany
+name2=lang_russian

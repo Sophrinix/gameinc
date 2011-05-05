@@ -32,8 +32,8 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 //
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION 1,0,0,330
-PRODUCTVERSION 1,0,0,330
+FILEVERSION 1,0,0,334
+PRODUCTVERSION 1,0,0,334
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -48,13 +48,13 @@ BEGIN
     BEGIN
         BLOCK "041904b0"
         BEGIN
-            VALUE "FileDescription", "nerpa_sc"
-VALUE "FileVersion", "1.0.0.330\0"
-            VALUE "InternalName", "nerpa_sc"
-            VALUE "LegalCopyright", "Copyright (C) 2009"
-            VALUE "OriginalFilename", "nerpa_sc"
-            VALUE "ProductName", "nerpa_sc"
-VALUE "ProductVersion", "1.0.0.330\0"
+            VALUE "FileDescription", "Game,Inc"
+VALUE "FileVersion", "1.0.0.334\0"
+            VALUE "InternalName", "Gameinc"
+            VALUE "LegalCopyright", "Copyright (C) 2010"
+            VALUE "OriginalFilename", "Game,Inc"
+            VALUE "ProductName", "Game,Inc"
+VALUE "ProductVersion", "1.0.0.334\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -154,7 +154,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_APP_TITLE           "nerpa_sc"
+    IDS_APP_TITLE           "Game,Inc"
     IDC_NERPA_SC            "NERPA_SC"
 END
 

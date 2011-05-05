@@ -24,12 +24,11 @@ fileLanguages		= "xtras/languages.list"
 filePlatforms		= "xtras/platforms.list"
 fileCompanies		= "xtras/companies.list"
 
-local function GetString( fileName, key ) 
-	return base.CLuaIniFile( nil, fileName ):ReadString( "properties", key, "error" )
+local function GetString( ini, key ) 
+	return ini:ReadString( "properties", key, "error" )
 end
 
-local function GetDate( fileName, keyName )
-	local ini = base.CLuaIniFile( nil, fileName )
+local function GetDate( ini, keyName )
 	local cYear, cMonth, cDay = ini:ReadTime( "properties", keyName )
 	
 	return base.os.time( {year=cYear, month=cMonth, day=cDay} )
@@ -79,12 +78,13 @@ function CheckPlatforms( showPdaForNewPlatform )
 	for i=1, plNumber do
 		--запоминаем имя файла с описанием платформы
 		local tmpPlatformIni = iniFile:ReadString( "options", "platform"..(i-1), "" )
+		local ini = base.CLuaIniFile( nil, tmpPlatformIni )
+
 		Log( "platform"..(i-1).."="..tmpPlatformIni )
 		
 		--прочитаем параметры платформы
-		local plName = GetString( tmpPlatformIni, "name:string" )
-		local platformStartTime = GetDate( tmpPlatformIni, "startdate:time" )
-		--local platformEndDate = GetDate( tmpPlatformIni, "enddate:time" )
+		local plName = GetString( ini, "name:string" )
+		local platformStartTime = GetDate( ini, "startdate:time" )
 		
 		--проверяем попадание врмененного интервала платформы в текущее время
 		if platformStartTime <= curTime then
@@ -108,10 +108,11 @@ function CheckLanguages()
 	for i=1, lgNumber do
 		--запоминаем имя файла с описанием языка
 		local tmpLangIni = iniFile:ReadString( "options", "language"..(i-1), "" )
+		local ini = base.CLuaIniFile( nil, tmpLangIni )
 		Log( "language"..(i-1).."="..tmpLangIni )
 		
 		--прочитаем параметры платформы
-		local langName = GetString( tmpLangIni, "internalname:string" )
+		local langName = GetString( ini, "internalname:string" )
 		
 		--проверяем попадание врмененного интервала аддона в текущее время
 		local tech = base.CLuaTech( nil ):Create( tmpLangIni )
@@ -131,12 +132,12 @@ function CheckGameBoxAddons( showPdaForNewPAddon )
 	for i=1, plNumber do
 		--запоминаем имя файла с описанием аддона
 		local tmpAddonIni = iniFile:ReadString( "options", "addon"..(i-1), "" )
+		local ini = base.CLuaIniFile( nil, tmpAddonIni )
 		Log( "addon"..(i-1).."="..tmpAddonIni )
 		
 		--прочитаем параметры платформы
-		local addonName = GetString( tmpAddonIni, "internalname:string" )
-		local addonStartTime = GetDate( tmpAddonIni, "startdate:time" )
-		--local addonEndDate = GetDate( tmpPlatformIni, "enddate:time" )
+		local addonName = GetString( ini, "internalname:string" )
+		local addonStartTime = GetDate( ini, "startdate:time" )
 		
 		--проверяем попадание врмененного интервала аддона в текущее время
 		if addonStartTime <= curTime then
@@ -163,11 +164,12 @@ function CheckDiskMachines( showPdaForNewDm )
 	for i=1, dmNumber do
 		--запоминаем имя файла с описанием аддона
 		local dmIniFile = iniFile:ReadString( "options", "diskMachine"..(i-1), "" )
+		local ini = base.CLuaIniFile( nil, dmIniFile )
 		Log( "diskMachine"..(i-1).."="..dmIniFile )
 		
 		--прочитаем параметры платформы
-		local dmName = GetString( dmIniFile, "name:string" )
-		local dmStartTime = GetDate( dmIniFile, "startdate:time" )
+		local dmName = GetString( ini, "internalname:string" )
+		local dmStartTime = GetDate( ini, "startdate:time" )
 		
 		--проверяем попадание врмененного интервала аддона в текущее время
 		if dmStartTime <= curTime then
@@ -204,11 +206,12 @@ function CheckNewReklames( showPdaForNewReklame )
 	for i=1, reklamesNumber do
 		--запоминаем имя файла с описанием рекламы
 		local tmpReklameIni = iniFile:ReadString( "options", "reklame"..(i-1), "" )
+		local ini = base.CLuaIniFile( nil, tmpReklameIni )
 		
 		--если уже можно показывать пользователю рекламу
-		if GetDate( tmpReklameIni, "startdate:time" ) <= curTime then --1
+		if GetDate( ini, "startdate:time" ) <= curTime then --1
 			--попрoбуем загрузить рекламу в двигло...
-			local rName = GetString( tmpReklameIni, "internalname:string" )
+			local rName = GetString( ini, "internalname:string" )
 			local itNew = plant:LoadBaseReklame( rName, tmpReklameIni )
 			
 			if showPdaForNewReklame and itNew then
@@ -229,10 +232,11 @@ function CheckNewGames()
 	
 	for i=1, gameNumber do
 		gameIniFile = iniFile:ReadString( "options", "game"..(i-1), "" )
+		local ini = base.CLuaIniFile( nil, gameIniFile )
 		base.LogDebug( "open game "..gameIniFile )
 		
-		local gameName = GetString( gameIniFile, "internalname:string" )
-		local startDate = GetDate( gameIniFile, "startdate:time" )
+		local gameName = GetString( ini, "internalname:string" )
+		local startDate = GetDate( ini, "startdate:time" )
 		
 		if startDate <= currentDate then
 			--если такая игра уже выпущена, то её не надо показывать
@@ -263,10 +267,11 @@ function CheckNewCompanies()
 	
 	for i=1, companyNumber do
 		companyIniFile = iniFile:ReadString( "options", "company"..(i-1), "" )
+		local ini = base.CLuaIniFile( nil, companyIniFile )
 		base.LogDebug( "open company file "..companyIniFile )
 		
-		local companyName = GetString( companyIniFile, "internalname:string" )
-		local startDate = GetDate( companyIniFile, "startdate:time" )
+		local companyName = GetString( ini, "internalname:string" )
+		local startDate = GetDate( ini, "startdate:time" )
 		
 		if startDate <= currentDate then
 			--если такая компания уже есть на рынке, то её не надо показывать
@@ -297,11 +302,11 @@ function CheckNewTechs()
 	
 	for i=1, plNumber do
 		plIniFile = iniFile:ReadString( "options", "tech"..(i-1), "" ) 
-		
+		local ini = base.CLuaIniFile( nil, plIniFile )
 		base.LogDebug( "open tech "..plIniFile ) 
 		
-		local techName = base.CLuaIniFile( nil, plIniFile ):ReadString( "properties", "internalname:string", "error" )
-		local startDate = GetDate( plIniFile, "startdate:time" )
+		local techName = GetString( ini, "internalname:string" )
+		local startDate = GetDate( ini, "startdate:time" )
 		--local t = base.os.date( "*t", startDate )
 		--base.LogScript( base.string.format( "readed date %d.%d.%d", t.year, t.month, t.day ) )
 

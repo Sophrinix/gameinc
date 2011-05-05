@@ -1,6 +1,6 @@
-[PROPERTIES]
-internalname:string=game_infidel
-genreModuleNumber:int=2
 [genres]
 genre_0=genre_quest
 genre_1=genre_interactive_fiction
+[PROPERTIES]
+genreModuleNumber:int=2
+internalname:string=game_infidel

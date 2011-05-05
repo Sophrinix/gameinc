@@ -162,6 +162,8 @@ NrpText CNrpCompany::Save( const NrpText& saveFolder )
 	rv.Set( SECTION_PORTFELLE,		_portfelle,		CreateKeyItem, NAME );
 	rv.Set( SECTION_INVENTIONS,	_inventions,	CreateKeyItem, INTERNAL_NAME );
 
+	rv.Save();
+
 	return saveFile;
 }
 

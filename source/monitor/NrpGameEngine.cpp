@@ -86,6 +86,7 @@ NrpText CNrpGameEngine::Save( const NrpText& saveFolder )
 	IniFile sv( saveFile );
 	sv.Set( SECTION_GENRES, _techs );
 
+	sv.Save();
 	return localFolder;
 }
 

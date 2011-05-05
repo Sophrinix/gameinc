@@ -221,6 +221,7 @@ NrpText CNrpGameProject::Save( const NrpText& folderSave )
 
 	_SaveTech( ENGINEEXTENDED, folderSave, &sv );
 
+	sv.Save();
 	return fileName;
 }
 

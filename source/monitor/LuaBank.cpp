@@ -204,6 +204,9 @@ int CLuaBank::GetPieCostDynamic( lua_State* L )
 				lua_pushnumber( L, diff );
 				return 1;
 			}
+
+		lua_pushnumber( L, 0 );
+		return 1;
 	}
 
 	lua_pushnil( L );

@@ -10,113 +10,79 @@ namespace nrp
 IniFile::IniFile( const NrpText& fileName )
 {
 	_fileName = fileName;
+	_native.Load( fileName );
 }
 
-bool IniFile::Set( const NrpText& section, 
-						   const NrpText& key, 
-						   int amount )
+void IniFile::Set( NrpText section, NrpText key, int amount )
 {
-	return WritePrivateProfileStringW( section.ToWide(), key.ToWide(), NrpText( amount ).ToWide(), _fileName.ToWide() ) == TRUE;
+	_native.SetKeyValue( section, key, NrpText( amount ) );
 }
 //////////////////////////////////////////////////////////////////////////
 
-NrpText IniFile::Get( const NrpText& section, const NrpText& key, const NrpText& def_str )
+NrpText IniFile::Get( NrpText section, NrpText key, NrpText def_str )
 {
-	wchar_t buf[ MAX_PATH ];
-
-	GetPrivateProfileStringW( section.ToWide(),
-							  key.ToWide(), 
-							  def_str.ToWide(), 
-							  buf, 
-							  MAX_PATH, 
-							  _fileName.ToWide() );
-
-	return NrpText( buf );
+	IniKey* kr = _native.GetKey( section, key);
+	return kr ? kr->GetValue().c_str() : def_str;
 }
 //////////////////////////////////////////////////////////////////////////
 
-int IniFile::Get( const NrpText& section, 
-						 const NrpText& key, 
-						 int def_value)
+int IniFile::Get( NrpText section, NrpText key, int def_value)
 {
-	return GetPrivateProfileIntW( section.ToWide(),
-							 	  key.ToWide(), 
-								  def_value,
-								  _fileName.ToWide() );
-}
-//////////////////////////////////////////////////////////////////////////
-
-irr::core::dimension2di IniFile::Get( const NrpText& section, 
-										     const NrpText& key, 
-											 const irr::core::dimension2di& def_value)
-{
-	return Get( section, key, NrpText( def_value ) ).ToDim2di();
-}
-//////////////////////////////////////////////////////////////////////////
-
-irr::core::dimension2df IniFile::Get( const NrpText& section, 
-											 const NrpText& key, 
-											 const irr::core::dimension2df& def_value )
-{
-	return Get( section, key, NrpText( def_value ) ).ToDim2df();
-}
-//////////////////////////////////////////////////////////////////////////
-
-irr::core::vector3df IniFile::Get( const NrpText& section, 
-										  const NrpText& key, 
-										  const irr::core::vector3df& def_value )
-{
-	return Get( section, key, NrpText( def_value ) ).ToVector3df();
-}
-//////////////////////////////////////////////////////////////////////////
-
-irr::core::recti IniFile::Get( const NrpText& section,
-									  const NrpText& key,
-									  const irr::core::recti& def_value )
-{
-	return Get( section, key, NrpText( def_value ) ).ToRect();
-}
-//////////////////////////////////////////////////////////////////////////
-
-bool IniFile::Set(const NrpText& section, 
-						  const NrpText& key, 
-						  const irr::core::recti& value)
-{
-	return Set( section, key, NrpText( value ) );
+	IniKey* kr = _native.GetKey( section, key);
+	return kr ? NrpText( kr->GetValue().c_str() ).ToInt() : def_value;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-bool IniFile::Set( const NrpText& section, 
-						   const NrpText& key,
-						   const NrpText& str_value )
+irr::core::dimension2di IniFile::Get( NrpText section, NrpText key, 
+									  const irr::core::dimension2di& def_value)
 {
-	return WritePrivateProfileStringW( section.ToWide(),
-							    key.ToWide(),
-							    str_value.ToWide(),
-							    _fileName.ToWide() ) == TRUE;
+	IniKey* kr = _native.GetKey( section, key );
+	return kr ? NrpText( kr->GetValue().c_str() ).ToDim2di() : def_value;
 }
-//////////////////////////////////////////////////////////////////////////
 
-float IniFile::Get( const NrpText& section,
-					const NrpText& key, 
-					float def_value )
+irr::core::dimension2df IniFile::Get( NrpText section, NrpText key, 
+									  const irr::core::dimension2df& def_value )
 {
-	return Get( section, key, NrpText( def_value ) ).ToFloat();
+	IniKey* kr = _native.GetKey( section, key );
+	return kr ? NrpText( kr->GetValue().c_str() ).ToDim2df() : def_value;
 }
-//////////////////////////////////////////////////////////////////////////
 
-irr::core::dimension2du IniFile::Get( const NrpText& section, 
-											 const NrpText& key, 
-											 const irr::core::dimension2du& def_value )
+irr::core::vector3df IniFile::Get( NrpText section, NrpText key, 
+								   const irr::core::vector3df& def_value )
 {
-	return Get( section, key, NrpText( def_value ) ).ToDim2du();
+	IniKey* kr = _native.GetKey( section, key );
+	return kr ? NrpText( kr->GetValue().c_str() ).ToVector3df() : def_value;
 }
-//////////////////////////////////////////////////////////////////////////
 
-bool IniFile::Get( const NrpText& section, 
-						  const NrpText& key, 
-						  bool def_value )
+irr::core::recti IniFile::Get( NrpText section, NrpText key, const irr::core::recti& def_value )
+{
+	IniKey* kr = _native.GetKey( section, key );
+	return kr ? NrpText( kr->GetValue().c_str() ).ToRect() : def_value;
+}
+
+void IniFile::Set( NrpText section, NrpText key, const irr::core::recti& valuel )
+{
+	_native.SetKeyValue( section, key, NrpText( valuel ) );
+}
+
+void IniFile::Set( NrpText section, NrpText key, NrpText str_value )
+{
+	_native.SetKeyValue( section, key, str_value );
+}
+
+float IniFile::Get( NrpText section, NrpText key, float def_value )
+{
+	IniKey* kr = _native.GetKey( section, key );
+	return kr ? NrpText( kr->GetValue().c_str() ).ToFloat() : def_value;
+}
+
+irr::core::dimension2du IniFile::Get( NrpText section, NrpText key, 
+									  const irr::core::dimension2du& def_value )
+{
+	IniKey* kr = _native.GetKey( section, key );
+	return kr ? NrpText( kr->GetValue().c_str() ).ToDim2du() : def_value;
+}
+
+bool IniFile::Get( NrpText section, NrpText key, bool def_value )
 {
 	NrpText result = Get( section, key, NrpText( "null" ) );
 
@@ -129,9 +95,7 @@ bool IniFile::Get( const NrpText& section,
 	return def_value;
 }
 
-NrpTime IniFile::Get( const NrpText& section, 
-							const NrpText& key, 
-							const NrpTime& def_value )
+NrpTime IniFile::Get( NrpText section, NrpText key, const NrpTime& def_value )
 {
 	NrpTime result( def_value );
 
@@ -143,11 +107,8 @@ NrpTime IniFile::Get( const NrpText& section,
 
 	return result;	
 }
-//////////////////////////////////////////////////////////////////////////
 
-bool IniFile::Set( const NrpText& section, 
-						   const NrpText& key, 
-						   const irr::core::vector3df& amount )
+void IniFile::Set( NrpText section, NrpText key, const irr::core::vector3df& amount )
 {
 	wchar_t str[ MAX_PATH ];
 
@@ -156,9 +117,7 @@ bool IniFile::Set( const NrpText& section,
 	return Set( section, key, NrpText( str ) );
 }
 
-bool IniFile::Set( const NrpText& section, 
-						   const NrpText& key, 
-						   const NrpTime& amount )
+void IniFile::Set( NrpText section, NrpText key, const NrpTime& amount )
 {
 	wchar_t str[ MAX_PATH ];
 
@@ -169,46 +128,50 @@ bool IniFile::Set( const NrpText& section,
 	return Set( section, key, NrpText( str ) );
 }
 
-bool IniFile::Set( const NrpText& section, const NrpText& key, float valuel )
+void IniFile::Set( NrpText section, NrpText key, float valuel )
 {
-	return IniFile::Set(section, key, NrpText( valuel ) );
+	return _native.SetKeyValue( section, key, NrpText( valuel ) );
 }
 
-void IniFile::Get( const NrpText& sectionName, KNOWLEDGE_MAP& mapt )
+void IniFile::Get( NrpText sectionName, KNOWLEDGE_MAP& mapt )
 {
-	wchar_t buffer[ 32000 ];
-	memset( buffer, 0, 32000 );
-	GetPrivateProfileSectionW( sectionName.ToWide(), buffer, 32000, _fileName.ToWide() );
+	IniSection* section = _native.GetSection( sectionName );
 
-	NrpText readLine = buffer;
-	while( readLine.size() )
+	if( section )
 	{
-		NrpText name, valuel;
-		name = readLine.subString( 0, readLine.findFirst( L'=' ) );
-		valuel = readLine.subString( readLine.findFirst( L'=' ) + 1, 0xff );
-		mapt[ NrpText::LuaString( name ) ] = valuel.ToInt();
-
-		memcpy( buffer, buffer + wcslen(buffer) + 1, 32000 );  
-		readLine = buffer;
+		typedef IniSection::KeyIndexA INDEXES;
+		const INDEXES& indexes = section->GetKeys();
+		
+		for( INDEXES::const_iterator pIter=indexes.begin(); pIter != indexes.end(); pIter++ )
+			mapt[ NrpText::LuaString( (*pIter)->GetKey().c_str() ) ] = NrpText( (*pIter)->GetValue().c_str() ).ToInt();
 	}
 }
 
-void IniFile::Get( const NrpText& section, NrpText (*func)(int), u32 maxNum, STRINGS& art )
+void IniFile::Get( NrpText section, NrpText (*func)(int), u32 maxNum, STRINGS& art )
 {
 	for( u32 i=0; i < maxNum; i++ )
 		art.push_back( Get( section, func( i ), NrpText() ) );
 }
 
-void IniFile::Set( const NrpText& section, NrpText (*func)( int), const STRINGS& art )
+void IniFile::Set( NrpText section, NrpText (*func)( int), const STRINGS& art )
 {
 	for( u32 i=0; i < art.size(); i++ )
-		Set( section, func( i ), art[ i ] );
+		Set( section, func( i ), const_cast< STRINGS& >( art )[ i ] );
 }
 
-void IniFile::Set( const NrpText& section, const KNOWLEDGE_MAP& rmap )
+void IniFile::Set( NrpText section, const KNOWLEDGE_MAP& rmap )
 {
 	for( KNOWLEDGE_MAP::Iterator tIter = const_cast< KNOWLEDGE_MAP& >( rmap ).getIterator(); !tIter.atEnd() ; tIter++ )
 		 Set( section, NrpText( tIter->getKey() ), NrpText( tIter->getValue() ) );
+}
+
+IniFile::~IniFile()
+{
+}
+
+void IniFile::Save()
+{
+	_native.Save( _fileName );
 }
 
 } //namespace nrp

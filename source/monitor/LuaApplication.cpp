@@ -564,6 +564,7 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 				sv.Set( "prices", (*tech)[ NAME ], (float)(*tech)[PRICE] );
 			}
 		}
+		sv.Save();
 	}
 	return 0;
 }
@@ -686,7 +687,12 @@ int CLuaApplication::CreateDirectorySnapshot( lua_State* L )
 	NrpText itemTemplate( lua_tostring( L, 4 ) );
 	NrpText itemName( lua_tostring( L, 5 ) );
 
-	OpFileSystem::CreateDirectorySnapshot( directory, saveFile, itemTemplate, itemName );
+	OpFileSystem::Remove( saveFile );
+
+	IniFile ini( saveFile );
+	OpFileSystem::CreateDirectorySnapshot( directory, itemTemplate, itemName, &ini );
+
+	ini.Save();
 	return 0;
 }
 

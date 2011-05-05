@@ -40,6 +40,7 @@ NrpText CNrpPda::Save( const NrpText& fileName )
 		sv.Set( section, "action", (NrpText)(*item)[ ACTION ] );
 	}	
 
+	sv.Save();
 	return fileName;
 }
 
