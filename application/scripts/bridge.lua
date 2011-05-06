@@ -37,7 +37,7 @@ local function _FillTableCompanies()
 			local idx = tblCompanies:AddRow( tblCompanies.rowCount )
 			tblCompanies:SetCellText( idx, 0, cmp.name, 0xff, 0xff, 0, 0 )
 			tblCompanies:SetCellText( idx, 1, cmp.profitLastYear, 0xff, 0xff, 0, 0 )
-			tblCompanies:SetCellText( idx, 2, cmp.pieCost, 0xff, 0xff, 0, 0 )
+			tblCompanies:SetCellText( idx, 2, base.string.format( "%.3f", cmp.pieCost ), 0xff, 0xff, 0, 0 )
 			tblCompanies:SetCellText( idx, 3, (cmp.dividend * 100).."%", 0xff, 0xff, 0, 0 )
 			tblCompanies:SetCellText( idx, 4, rbank:GetPieCostDynamic( cmp ), 0xff, 0xff, 0, 0 )
 
@@ -80,6 +80,10 @@ local function _EndingChangeShare( shareCompany, newShare )
 end
 
 local function _ChangeShare()
+	if currentCompany == nil then
+		return
+	end
+	
 	local shareCur = rbank:GetShares( company.name, currentCompany )
 	base.shareSelect.Show( "", currentCompany, _EndingChangeShare )
 end

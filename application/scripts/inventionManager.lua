@@ -14,7 +14,7 @@ local labelInventionMonthMoney = nil
 local currentInvention = nil
 
 local selectedUser = nil
-local windowUserSelect = nil
+local window_UserSelect = nil
 local company = nil 
 local picFlowInvention = nil
 local lbxUsers = nil
@@ -24,15 +24,15 @@ local guienv = base.guienv
 local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
 
-local function AddLabel( textr, x1, y1, x2, y2 )
-	local lb = guienv:AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", x1, y1, x2, y2, -1, windowIM )
+local function _AddLabel( textr, x1, y1, x2, y2 )
+	local lb = guienv:_AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", x1, y1, x2, y2, -1, windowIM )
 	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )		
-	lb.color = base.toColor( 0xff, 0xff, 0xff, 0xff )
+	lb.color = base.NrpARGB( 0xff, 0xff, 0xff, 0xff )
 	return lb
 end
 
 --обновлеяет текст на метках
-local function localUpdateLabels()
+local function _UpdateLabels()
     if currentInvention ~= nil and currentInvention.isValid then 
 		labelInvestiment:SetText( currentInvention.investiment )
 		labelInventionSpeed:SetText( currentInvention.speed )
@@ -49,18 +49,18 @@ local function localUpdateLabels()
 end
 
 --увеличивает затраты на исследования
-function IncreaseInvestiment()
+local function _IncreaseInvestiment()
 	currentInvention.investiment = currentInvention.investiment * 2
 	currentInvention:CheckParams()
 end
 
 --уменьшает затраты на исследования
-function DecreaseInvestiment()
+local function _DecreaseInvestiment()
 	currentInvention.investiment = currentInvention.investiment / 2
 	currentInvention:CheckParams()
 end
 
-local function localFillListInvnentionStuff()
+local function _FillListInvnentionStuff()
 	if currentInvention == nil then
 		return
 	end
@@ -74,15 +74,15 @@ local function localFillListInvnentionStuff()
 	end
 end
 
-function InventionSelect() 		
+local function _InventionSelect() 		
 	currentInvention = base.CLuaInvention( picFlowInvention.selectedObject ) 
 end
 
-function UserSelect()	
+local function _UserSelect()	
 	selectedUser = base.CLuaUser( lbxUsers.selectedObject )
 end
 
-local function localShowUserAvaibleForInvention( listbox )
+local function _ShowUserAvaibleForInvention( listbox )
 	listbox:Clear()
 	company = applic.playerCompany
 	
@@ -96,40 +96,40 @@ local function localShowUserAvaibleForInvention( listbox )
 	end
 end
 
-function AddPeopleToInvention()
-	--создаем окно в центре экрана
-	windowUserSelect = guienv:AddWindow( "", 200, 200, "200e", "200e", -1, guienv.root )
-													  
-	local wd, hd = windowUserSelect:GetSize()												  
-	lbxUsers = guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, windowUserSelect )
-	lbxUsers.itemHeigth = 80
-		
-	localShowUserAvaibleForInvention( lbxUsers )
-	
-	local btn = guienv:AddButton( 10, hd - 35, wd / 2 - 10, hd - 5, windowUserSelect, -1, "Select")
-	btn.action = AddSelectedUserToInvention
-		
-	btn = guienv:AddButton( wd / 2 + 10, hd - 35, wd - 10, hd - 5, windowUserSelect, -1, "Close")
-	btn.action = CloseWindowUserAdding
-	
-	--обработчик выбора в списке
-	windowUserSelect:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, UserSelect )
-end
-
-function CloseWindowUserAdding()
-	windowUserSelect:Remove()
-	windowUserSelect = nil
-end
-
-function AddSelectedUserToInvention()
+local function _AddSelectedUserToInvention()
 	currentInvention:AddUser( selectedUser )
 	
 	guienv:MessageBox( base.string.format( "%s будет участвовать в проекте %s исследовательского отдела", 
 											selectedUser.name, currentInvention.name ), true, false,
 											nil, nil )
 											
-	localFillListInvnentionStuff()
-	localShowUserAvaibleForInvention( lbxUsers )
+	_FillListInvnentionStuff()
+	_ShowUserAvaibleForInvention( lbxUsers )
+end
+
+local function _CloseWindowUserAdding()
+	window_UserSelect:Remove()
+	window_UserSelect = nil
+end
+
+local function _AddPeopleToInvention()
+	--создаем окно в центре экрана
+	window_UserSelect = guienv:AddWindow( "", 200, 200, "200e", "200e", -1, guienv.root )
+													  
+	local wd, hd = window_UserSelect:GetSize()												  
+	lbxUsers = guienv:AddComponentListBox( 10, 10, wd - 10, hd - 40, -1, window_UserSelect )
+	lbxUsers.itemHeigth = 80
+		
+	_ShowUserAvaibleForInvention( lbxUsers )
+	
+	local btn = guienv:AddButton( 10, hd - 35, wd / 2 - 10, hd - 5, window_UserSelect, -1, "Select")
+	btn.action = _AddSelectedUserToInvention
+		
+	btn = guienv:AddButton( wd / 2 + 10, hd - 35, wd - 10, hd - 5, window_UserSelect, -1, "Close")
+	btn.action = _CloseWindowUserAdding
+	
+	--обработчик выбора в списке
+	window_UserSelect.onChangeSelect = _UserSelect
 end
 
 --отображает окно управления исследованиями
@@ -160,41 +160,41 @@ function Show( techName, companyName )
 
 	--кнопки изменения финансирования и метка с текущим финансированием в месяц
 	local btnPlus = guienv:AddButton( 10, ypos, "30+", "30+", windowIM, -1, "+")
-	btnPlus.action = IncreaseInvestiment
+	btnPlus.action = _IncreaseInvestiment
 	
 	local btnMinus = guienv:AddButton( btnWidth - 30, ypos, "30+", "30+", windowIM, -1, "-" )
-	btnMinus.action = DecreaseInvestiment
+	btnMinus.action = _DecreaseInvestiment
 	
-	AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT", 45, ypos - 15, btnWidth - 45, ypos + 15 )
-	labelInvestiment = AddLabel( "", 45, ypos + 16, btnWidth - 45, ypos + 46 )													
+	_AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT", 45, ypos - 15, btnWidth - 45, ypos + 15 )
+	labelInvestiment = _AddLabel( "", 45, ypos + 16, btnWidth - 45, ypos + 46 )													
 
 	ypos = ypos + 55
 	--метка с отображением скорости исследований
-	labelInventionSpeed = AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED", 10, ypos, btnWidth, ypos + 30 )
+	labelInventionSpeed = _AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED", 10, ypos, btnWidth, ypos + 30 )
 	
 	ypos = ypos + 55
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionPrognoseFinish = AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", 10, ypos, btnWidth, ypos + 30 )
+	labelInventionPrognoseFinish = _AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", 10, ypos, btnWidth, ypos + 30 )
 													
 	ypos = ypos + 55
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionDayLeft = AddLabel( "#TRANSLATE_TEXT_INVENTIONDAYLEFT", 10, ypos, btnWidth, ypos + 30 )													    
+	labelInventionDayLeft = _AddLabel( "#TRANSLATE_TEXT_INVENTIONDAYLEFT", 10, ypos, btnWidth, ypos + 30 )													    
 												    
 	ypos = ypos + 55
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionMoneyPassed = AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", 10, ypos, btnWidth, ypos + 30 )										      
+	labelInventionMoneyPassed = _AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", 10, ypos, btnWidth, ypos + 30 )										      
 	
 	ypos = ypos + 55
 	--метка месячным финансированием
-	labelInventionMonthMoney = AddLabel( "#TRANSLATE_TEXT_MONTHPAY", 10, ypos, btnWidth, ypos + 30 )
+	labelInventionMonthMoney = _AddLabel( "#TRANSLATE_TEXT_MONTHPAY", 10, ypos, btnWidth, ypos + 30 )
 
-	labelInventionName = AddLabel( "", btnWidth + 10, scrHeight / 3 + 10, "0e", scrHeight / 3 + 40 )
+	labelInventionName = _AddLabel( "", btnWidth + 10, scrHeight / 3 + 10, "0e", scrHeight / 3 + 40 )
 
 	
 	--список подключенных к проекту людей 
 	listInventionStuff = guienv:AddComponentListBox( btnWidth + 10, scrHeight / 3 + 50, scrWidth - 10, scrHeight - 45, -1, windowIM )
 	listInventionStuff.itemHeigth = 80
-	localFillListInvnentionStuff()
+	_FillListInvnentionStuff()
 	
 	--показать данные по изобретению
 	local btnShowInfo = guienv:AddButton( btnWidth + 10,  "40e", "120+", "10e", windowIM, -1, "Инфо" )
@@ -203,24 +203,16 @@ function Show( techName, companyName )
 	--кнопка добавления людей к исследованию, по которой показывается список со служащими 
 	--и возможность добавления выделенного человека
 	local btnAddPeople = guienv:AddButton( btnWidth + 130, "40e", "250+", "10e", windowIM, -1, "Добавить" )
-	btnAddPeople.action = AddPeopleToInvention
+	btnAddPeople.action = _AddPeopleToInvention
 
 	--удаление людей из списка
 	local btnRemPeople = guienv:AddButton( btnWidth + 260, "40e", "10e",  "10e", windowIM, -1, "Убрать" )
 	btnRemPeople.action = RemPeopleFromInvention
 	
 	--обновление надписей
-	windowIM:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, UpdateLabelValue )
+	guienv:AddLoopTimer( 1000, _UpdateLabels, windowIM )
 	--обработчик выбора технологии
-	windowIM:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, InventionSelect )
-end
-
-local lastTimeUpdate = 0
-function UpdateLabelValue()
-	if base.os.clock() - lastTimeUpdate > 0 then
-		lastTimeUpdate = base.os.clock()
-		localUpdateLabels()
-	end
+	windowIM:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, _InventionSelect )
 end
 
 function RemoveUser()

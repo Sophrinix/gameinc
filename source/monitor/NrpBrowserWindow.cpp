@@ -80,9 +80,15 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 			setVisible( false );
 			return true;
 		}
+
+		if( event.GUIEvent.EventType == EGET_ELEMENT_LEFT && event.GUIEvent.Caller == image_ )
+		{
+			HTMLEngine::Instance().SetFocus( false );
+			return true;
+		}
 	}
 	break;
-	
+
 	case EET_KEY_INPUT_EVENT:
 	{
 		if (event.KeyInput.PressedDown)

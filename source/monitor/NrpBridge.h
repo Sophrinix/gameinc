@@ -31,9 +31,9 @@ public:
 	static CNrpBridge& Instance();
 	static NrpText ClassName();
 
-	CShareholder* GetShares( const NrpText& name, CNrpCompany* cmp );
-	int GetAvaibleShares( CNrpCompany* cmp );
-	int ChangeShares( INrpConfig* agent, CNrpCompany* cmp, int shareNumber );
+	CShareholder* GetShares( const NrpText& name, CNrpCompany& cmp );
+	int GetAvaibleShares( CNrpCompany& cmp );
+	int ChangeShares( INrpConfig& agent, CNrpCompany& cmp, int shareNumber );
 
 	void Load( const NrpText& fileName );
 	NrpText Save( const NrpText& fileName );
@@ -52,11 +52,12 @@ private:
 	void _CheckCompany( CNrpCompany& company );
 
 	float _GetMiddlePercent( const NrpText& name );
-	bool _BuyAvaible( INrpConfig* who, CNrpCompany* cmp, int shareNumber );
-	bool _SellAvaible( INrpConfig* who, CShareholder* share, int shareNumber );
+	bool _BuyAvaible( INrpConfig& who, CNrpCompany& cmp, int shareNumber );
+	bool _SellAvaible( INrpConfig& who, CShareholder& share, int shareNumber );
 	int  _GetSelfCapital( CNrpCompany& cmp );
 	int  _GetAdditionCapital( CNrpCompany& cmp );
 	float _SplitPie( CNrpCompany& company, float price );
+	void _UpdateExpexctations( CNrpCompany& cmp );
 };
 
 }//namespace nrp

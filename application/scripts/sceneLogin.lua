@@ -7,7 +7,7 @@ IncludeScript( "button" )
 --создание названий полей ввода
 
 local label = guienv:AddLabel( "Профиль:" .. applic.profile, scrWidth / 2 - 150, "170e", "150+", "150e", -1, guienv.root )
-label.color = toColor( 0xff, 0xc0, 0xc0, 0xc0 )
+label.color = NrpARGB( 0xff, 0xc0, 0xc0, 0xc0 )
 								
 --создание полей ввода				
 local btnSelectProfile = guienv:AddButton( "80%", "100e", "0e",  "0e", guienv.root, -1, "Выбрать")

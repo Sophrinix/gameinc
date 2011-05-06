@@ -7,6 +7,8 @@ IncludeScript( "localization/russian" )
 IncludeScript( "globalVariableInitialize" )
 IncludeScript( "Tutorial" )
 
+browser.page404 = "media/html/page404.htm"
+
 --NrpLoadPlugins( "Plugins/" )
 
 --загрузка сцены авторизации пользователя

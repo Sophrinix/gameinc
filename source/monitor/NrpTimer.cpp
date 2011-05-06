@@ -15,7 +15,7 @@ CNrpTimer::~CNrpTimer(void)
 }
 
 CNrpTimer::CNrpTimer( IGUIEnvironment* environment, IGUIElement* node, size_t time, int action )
-	: IGUIAnimator( environment, node )
+	: IGUIAnimator( environment, node ), _loop( false )
 {
 	_time = time > 0 ? time : 0;
 	_startTime = GetTickCount();
@@ -30,8 +30,11 @@ void CNrpTimer::draw()
 		nrp::CNrpScript::Instance().CallFunction( _action, (void*)this );
 		_active = false;  
 
-		if( CNrpGUIEnvironment* env = dynamic_cast< CNrpGUIEnvironment* >( Environment) )
-			env->addToDeletionQueue( this );
+		if( _loop )
+			_startTime = GetTickCount();
+		else
+			if( CNrpGUIEnvironment* env = dynamic_cast< CNrpGUIEnvironment* >( Environment) )
+				env->addToDeletionQueue( this );
 	}
 }
 

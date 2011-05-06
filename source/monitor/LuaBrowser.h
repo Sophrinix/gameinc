@@ -22,6 +22,7 @@ public:
 	int Navigate( lua_State* L );
 	int GetWindow( lua_State *L );
 	int Move( lua_State *L );
+	int SetPage404( lua_State* L );
 
 	static const char* ClassName();
 };

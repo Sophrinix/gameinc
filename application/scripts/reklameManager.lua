@@ -93,7 +93,7 @@ end
 local function _AddLabel( textr, x1, y1, x2, y2 )
 	local label = guienv:AddLabel( textr, x1, y1, x2, y2, -1, campaniesWindow )
 	label:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
-	label.color = base.toColor( 0xff, 0xff, 0xff, 0xff )
+	label.color = base.NrpARGB( 0xff, 0xff, 0xff, 0xff )
 
 	return label
 end
@@ -206,11 +206,14 @@ local function _ShowCampaniesManager()
 	btnIncDayNumber.action = _IncDay
 	btnIncDayNumber.visible = false
 	
+	--обновление данных для реклам
+	guienv.AddLoopTimer( 1000, _UpdateLabels, campaniesWindow )
+	
 	for y=1, #reklames do
 		picflowReklames:AddItem( reklames[ y ].texture, reklames[ y ].name, reklames[ y ].object )
 	end
 
-	btnApplyWork = guienv:AddButton( 10, "70e", "45%", "20e", campaniesWindow, -1, base.STR_STARTREKLAME )
+	btnApplyWork = guienv:AddButton( "12%", "70e", "26%", "20e", campaniesWindow, -1, base.STR_STARTREKLAME )
 	btnApplyWork.action = _QuerryUserToApplyWork
 	btnApplyWork.visible = false
 	

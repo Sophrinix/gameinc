@@ -21,6 +21,7 @@ BEGIN_LUNA_METHODS(CLuaTechMap)
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, SetAction )
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddTechnology )
 	LUNA_AUTONAME_FUNCTION( CLuaTechMap, AddLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaTechMap, IsTechHaveUndiscoverChild )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaTechMap)
@@ -52,7 +53,7 @@ int CLuaTechMap::SetImage( lua_State *L )							//получает имя файла с текстурой
 	//video::ITexture* txs = _nrpEngine.GetVideoDriver()->getTexture( texturepath.c_str() ); //грузим текстуру в видеокарту
 	//table_->setImage( txs, rectangle );								//размещаем текстуру в кнопке			
 
-	return 1;
+	return 0;
 }
 
 int CLuaTechMap::SetAction( lua_State *L )									//устанавливает имя новой функции для этой кнопки	
@@ -63,7 +64,7 @@ int CLuaTechMap::SetAction( lua_State *L )									//устанавливает имя новой фун
 	NrpText funcName = lua_tostring( L, 2 );
 	//dynamic_cast< gui::CNrpButton* >( table_ )->setOnClickAction( funcName.c_str() );
 
-	return 1;
+	return 0;
 }
 
 int CLuaTechMap::AddTechnology( lua_State *L )
@@ -87,7 +88,7 @@ int CLuaTechMap::AddTechnology( lua_State *L )
 		}
 	}
 	
-	return 1;	
+	return 0;	
 }
 
 int CLuaTechMap::AddLuaFunction( lua_State* L )
@@ -161,4 +162,23 @@ const char* CLuaTechMap::ClassName()
 {
 	return ( CLASS_LUATECHMAP );
 }
+
+int CLuaTechMap::IsTechHaveUndiscoverChild( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaTechMap::IsTechHaveFuture need tech as parameter");
+
+	CNrpTechnology* parentt = _GetLuaObject< CNrpTechnology, CLuaTechnology >( L, 2, false );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		bool ret = _object->IsTechHaveUnknownChild( parentt );
+		lua_pushboolean( L, ret );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
 }//namespace nrp

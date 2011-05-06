@@ -101,10 +101,10 @@ function Show()
 	AddButton( mainLayout, base.sworkApplicationClose, "media/top_menu/off" )
 	
 	timeLabel = guienv:AddLabel( "Время", "180e", 0, "130+", "33%", -1, mainWindow )
-	timeLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
+	timeLabel.color = base.NrpARGB( 0xFF, 0xC0, 0xC0, 0xC0 )
 	balanceLabel = guienv:AddLabel( "UserName", "180e", "33%", "130+", "33%+", -1, mainWindow )
-	balanceLabel.color = base.toColor( 0xFF, 0xC0, 0xC0, 0xC0 )
-	mainWindow:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, _UpdateTimeLabel )
+	balanceLabel.color = base.NrpARGB( 0xFF, 0xFF, 0xFF, 0xFF )
+	guienv:AddLoopTimer( 1000, _UpdateTimeLabel, mainWindow )
 	
 	AddAdminingFunctionButton()
 	AddAdvancedFunctionButton()

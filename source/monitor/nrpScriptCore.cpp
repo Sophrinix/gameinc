@@ -353,5 +353,20 @@ int ApplicationDumpStack( lua_State* vm )
 	return 1;
 }
 
+int ApplicationNrpRgb( lua_State *L )
+{
+	int argc = lua_gettop( L );
+	luaL_argcheck(L, argc == 4, 4, "Function ApplicationNrpRgb not need any parameter");
+
+	int a = lua_tointeger( L, 1 );
+	int r = lua_tointeger( L, 2 );
+	int g = lua_tointeger( L, 3 );
+	int b = lua_tointeger( L, 4 );
+
+	a = ((a & 0xff) << 24) + ((r & 0xff) << 16) + ((g & 0xff) << 8 ) + ( b & 0xff );
+	lua_pushnumber( L, a ); 
+
+	return 1;
+}
 
 }//namespace nrp

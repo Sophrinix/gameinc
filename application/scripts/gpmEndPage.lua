@@ -18,9 +18,9 @@ local function _CreateProjectGame()
 	if company:CreateDevelopGame( project ) ~= nil then
 		--company:AddToPortfelle( prj )
 		--sworkUpdateCompanyPortfelle()
-		guienv:MessageBox( "Вы завершили создание проекта игры " .. gpm.gameName, false, false, nil, nil )
+		guienv:MessageBox( "Вы завершили создание проекта игры " .. gpm.gameName, false, false, button.CloseParent, button.NoFunction )
 	else
-		guienv:MessageBox( "Уже есть проект с таким именем", false, false, nil, nil )
+		guienv:MessageBox( "Уже есть проект с таким названием", false, false, button.CloseParent, button.NoFunction )
 	end
 end
 

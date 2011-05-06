@@ -1544,6 +1544,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\houseSelect.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\logdefs.lua"
 				>
 			</File>
@@ -1557,6 +1561,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\scripts\pda.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\scripts\projectChief.lua"
 				>
 			</File>
 			<File
@@ -1624,6 +1632,10 @@
 				</File>
 				<File
 					RelativePath="..\..\application\scripts\tutorialPlant.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialProjectManager.lua"
 					>
 				</File>
 				<File
@@ -1830,10 +1842,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\application\scripts\houseSelect.lua"
-						>
-					</File>
-					<File
 						RelativePath="..\..\application\scripts\monitor.lua"
 						>
 					</File>
@@ -1933,10 +1941,6 @@
 				<Filter
 					Name="projectManager"
 					>
-					<File
-						RelativePath="..\..\application\scripts\projectChief.lua"
-						>
-					</File>
 					<File
 						RelativePath="..\..\application\scripts\projectManager.lua"
 						>

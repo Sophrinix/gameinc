@@ -150,6 +150,8 @@ CNrpScript::CNrpScript() : INrpConfig( CLASS_NRPSCRIPT, CLASS_NRPSCRIPT ), vm_(0
 		
 		lua_register( vm_, "NrpDumpStack", ApplicationDumpStack );
 
+		lua_register( vm_, "NrpARGB", ApplicationNrpRgb );
+
 		RegisterLuaClasses_();
 	}
 	catch (...)

@@ -25,6 +25,7 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaBrowser)
 	LUNA_ILUAOBJECT_PROPERTIES( CLuaBrowser )
 	LUNA_AUTONAME_PROPERTY( CLuaBrowser, "window", GetWindow, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaBrowser, "page404", PureFunction, SetPage404 )
 END_LUNA_PROPERTIES
 
 CLuaBrowser::CLuaBrowser(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUABROWSER, ex )	//конструктор
@@ -41,7 +42,7 @@ int CLuaBrowser::Show( lua_State* L )
 		wnd.setVisible( true );
 	}
 
-	return 1;	
+	return 0;	
 }
 
 int CLuaBrowser::Navigate( lua_State* L )
@@ -51,7 +52,7 @@ int CLuaBrowser::Navigate( lua_State* L )
 
 	NrpText pathto = lua_tostring( L, 2 );
 	if( !pathto.size() )
-		return 1;
+		return 0;
 	
 	IF_OBJECT_NOT_NULL_THEN 
 	{
@@ -64,7 +65,7 @@ int CLuaBrowser::Navigate( lua_State* L )
 		_object->Navigate( NrpText("file://") + advpath );
 	}
 
-	return 1;	
+	return 0;	
 }
 
 int CLuaBrowser::Hide( lua_State* L )
@@ -78,7 +79,7 @@ int CLuaBrowser::Hide( lua_State* L )
 		wnd.setVisible( false );
 	}
 
-	return 1;	
+	return 0;	
 }
 
 int CLuaBrowser::Move( lua_State *L )
@@ -96,7 +97,7 @@ int CLuaBrowser::Move( lua_State *L )
 		_object->GetBrowserWindow().setRelativePosition( pos );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaBrowser::GetWindow( lua_State *L )
@@ -113,4 +114,12 @@ const char* CLuaBrowser::ClassName()
 	return ( CLASS_LUABROWSER );
 }
 
+int CLuaBrowser::SetPage404( lua_State* L )
+{
+	assert( lua_isstring( L, -1 ) );
+
+	IF_OBJECT_NOT_NULL_THEN _object->SetPage404( lua_tostring( L, -1 ) );
+
+	return 1;
+}
 }//namespace nrp

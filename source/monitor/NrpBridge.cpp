@@ -20,6 +20,7 @@ CNrpBridge::CNrpBridge(void) : INrpConfig( CLASS_NRPBRIDGE, CLASS_NRPBRIDGE )
 {
 	Add<int>( COMPANIESNUMBER, 0 );
 	Add<int>( SHARES_NUMBER, 0 );
+	Add<NrpTime>( LASTTIMEUPDATE, _nrpApp[ CURRENTTIME ] );
 }
 
 CNrpBridge& CNrpBridge::Instance()
@@ -54,7 +55,9 @@ int CNrpBridge::_GetAdditionCapital( CNrpCompany& cmp )
 			CShareholder* sh = share->second;
 			if( CNrpCompany* ret_cmp = (*sh)[ PARENTCOMPANY ].As<CNrpCompany*>() )
 			{
-				sum += (int)(*sh)[ PIE_NUMBER ] * (float)(*ret_cmp)[ PIE_COST ];
+				//не берем в расчет собственные активы при подсчете дополнительных активов
+				if( ret_cmp != &cmp )
+					sum += (int)(*sh)[ PIE_NUMBER ] * (float)(*ret_cmp)[ PIE_COST ];
 			}
 		}
 	}
@@ -112,8 +115,8 @@ void CNrpBridge::_CheckCompany( CNrpCompany& company )
 	//наличка + активы
 	int selfCapital = _GetSelfCapital( company );
 
-	//стоимость акций других компаний
-	int otherCapital = _GetAdditionCapital( company );
+	//стоимость акций других компаний и инвестиционных ожиданий
+	int otherCapital = _GetAdditionCapital( company ) + (int)company[ INVESTMENT_EXPECTATIONS ];
 	int investMoney = selfCapital + otherCapital;
 
 	//долги
@@ -139,11 +142,22 @@ void CNrpBridge::_CheckCompany( CNrpCompany& company )
 	if( piePrice > 150 )
 		piePrice = _SplitPie( company, piePrice );
 
-	company[ PIE_COST ] = piePrice;
+    //снизим точность вычислений до п€ти знаков
+	company[ PIE_COST ] = floor(piePrice * 10000) / 10000.f;
 
 	CNrpHistory* history = GetHistory( company[ NAME ] );
 	CNrpHistoryStep* step = history->AddStep( _nrpApp[ CURRENTTIME ].As<NrpTime>() );
-	step->AddValue( PIE_COST, piePrice );
+	step->AddValue( PIE_COST, (float)company[ PIE_COST ] );
+}
+
+void CNrpBridge::_UpdateExpexctations( CNrpCompany& cmp )
+{
+	if( _self[ LASTTIMEUPDATE ].As<NrpTime>().RMonth() == _nrpApp[ CURRENTTIME ].As<NrpTime>().RMonth() )
+		return;
+
+	_self[ LASTTIMEUPDATE ] = _nrpApp[ CURRENTTIME ];
+	int expt = cmp[ INVESTMENT_EXPECTATIONS ];
+	cmp[ INVESTMENT_EXPECTATIONS ] = static_cast< int >( expt * 0.9f ); 
 }
 
 void CNrpBridge::Update()
@@ -155,8 +169,12 @@ void CNrpBridge::Update()
 			{
 				_CheckCompany( *cmp );
 
+				//если началс€ следующий мес€ц
+				//уменьшим инвестиционные ожидани€ дл€ следующего мес€ца
+				_UpdateExpexctations( *cmp );
+
 				//все компании с акци€ми должны находитьс€ в списке	
-				CShareholder* share = GetShares( (*cmp)[ NAME], cmp );
+				CShareholder* share = GetShares( (*cmp)[ NAME], *cmp );
 				if( !share )
 				{
 					share = new CShareholder( (*cmp)[ NAME ], cmp );
@@ -172,12 +190,12 @@ float CNrpBridge::_GetMiddlePercent( const NrpText& name )
 	return 0;
 }
 
-CShareholder* CNrpBridge::GetShares( const NrpText& name, CNrpCompany* cmp )
+CShareholder* CNrpBridge::GetShares( const NrpText& name, CNrpCompany& cmp )
 {
 	OWNER_MAP::iterator owner = _stocks.find( name );
 	if( owner != _stocks.end() )
 	{
-		STOCK_MAP::iterator share = owner->second.find( cmp );
+		STOCK_MAP::iterator share = owner->second.find( &cmp );
 		if( share != owner->second.end() )
 			return share->second;
 	}
@@ -211,6 +229,8 @@ void CNrpBridge::Load( const NrpText& saveFolder )
 			}
 		}
 	}
+
+	_self[ LASTTIMEUPDATE ] = _nrpApp[ CURRENTTIME ];
 }
 
 NrpText CNrpBridge::Save( const NrpText& saveFolder )
@@ -251,20 +271,20 @@ NrpText CNrpBridge::Save( const NrpText& saveFolder )
 	return saveFile;
 }
 
-bool CNrpBridge::_BuyAvaible( INrpConfig* who, CNrpCompany* cmp, int shareNumber )
+bool CNrpBridge::_BuyAvaible( INrpConfig& who, CNrpCompany& cmp, int shareNumber )
 {
-	float price = shareNumber * (float)(*cmp)[ PIE_COST ];
-	int shareToSell = (int)(*cmp)[ PIE_NUMBER ] - (int)(*cmp)[ SELF_PIE_NUMBER ];
+	float price = shareNumber * (float)cmp[ PIE_COST ];
+	int shareToSell = (int)cmp[ PIE_NUMBER ] - (int)cmp[ SELF_PIE_NUMBER ];
 	
-	return ((int)(*who)[ BALANCE ] > price && shareToSell > shareNumber );
+	return ((int)who[ BALANCE ] > price && shareToSell > shareNumber );
 }
 
-bool CNrpBridge::_SellAvaible( INrpConfig* who, CShareholder* share, int shareNumber )
+bool CNrpBridge::_SellAvaible( INrpConfig& who, CShareholder& share, int shareNumber )
 {
-	return (int)(*share)[ PIE_NUMBER ] > shareNumber;
+	return (int)share[ PIE_NUMBER ] > shareNumber;
 }
 
-int CNrpBridge::ChangeShares( INrpConfig* agent, CNrpCompany* cmp, int shareNumber )
+int CNrpBridge::ChangeShares( INrpConfig& agent, CNrpCompany& cmp, int shareNumber )
 {
 	//игрок хочет купить акции
 	if( shareNumber > 0 )
@@ -275,13 +295,13 @@ int CNrpBridge::ChangeShares( INrpConfig* agent, CNrpCompany* cmp, int shareNumb
 		if( _BuyAvaible( agent, cmp, shareNumber ) )
 		{
 			//возможно уже есть свз€и между игроком и компанией
-			share = GetShares( (*agent)[ NAME ], cmp );
+			share = GetShares( agent[ NAME ], cmp );
 
 			//у этого игрока нет акций данной компании, но он хочет их купить
 			if( !share )
 			{
-				share = new CShareholder( (*agent)[ NAME ], cmp );
-				_stocks[ (*agent)[ NAME ] ][ cmp ] = share;
+				share = new CShareholder( agent[ NAME ], &cmp );
+				_stocks[ agent[ NAME ] ][ &cmp ] = share;
 			}
 		}
 
@@ -289,18 +309,22 @@ int CNrpBridge::ChangeShares( INrpConfig* agent, CNrpCompany* cmp, int shareNumb
 		if( share )		
 		{
 			(*share)[ PIE_NUMBER ] += shareNumber;
-			(*agent)[ BALANCE ] -= static_cast< int >( shareNumber * (float)(*cmp)[ PIE_COST ] );
+			int price = static_cast< int >( shareNumber * (float)cmp[ PIE_COST ] );
+			agent[ BALANCE ] -= price;
+			cmp[ INVESTMENT_EXPECTATIONS ] += price;
 		}
 	}
 	else //игрок хочет продать акции
 	{
 		//найдем владельца акций
-		if( CShareholder* share = GetShares( (*agent)[ NAME ], cmp ) )
+		if( CShareholder* share = GetShares( agent[ NAME ], cmp ) )
 		{
-			if( _SellAvaible( agent, share, shareNumber ) )
+			if( _SellAvaible( agent, *share, shareNumber ) )
 			{
 				(*share)[ PIE_NUMBER ] -= shareNumber;
-				(*agent)[ BALANCE ] += static_cast< int >( shareNumber * (float)(*cmp)[ PIE_COST ] );
+				int price = static_cast< int >( shareNumber * (float)cmp[ PIE_COST ] );
+				agent[ BALANCE ] += price;
+				cmp[ INVESTMENT_EXPECTATIONS ] -= price;
 			}
 		}
 	}
@@ -309,26 +333,21 @@ int CNrpBridge::ChangeShares( INrpConfig* agent, CNrpCompany* cmp, int shareNumb
 	return 0;
 }
 
-int CNrpBridge::GetAvaibleShares( CNrpCompany* cmp )
+int CNrpBridge::GetAvaibleShares( CNrpCompany& cmp )
 {
-	assert( cmp );
-
-	if( !cmp )
-		return 0;
-
 	int buyingShare = 0;
 	OWNER_MAP::iterator owner = _stocks.begin();
 	for( ; owner != _stocks.end(); owner++ )
 	{
 		//пройдемс€ по всем акционерам и подсчитаем количество купленных акций
-		STOCK_MAP::const_iterator share = owner->second.find( cmp );
+		STOCK_MAP::const_iterator share = owner->second.find( &cmp );
 		if( share != owner->second.end() )
 		{
 			buyingShare += (int)(*(share->second))[ PIE_NUMBER ];
 		}
 	}
 
-	return ((int)(*cmp)[ PIE_NUMBER ] - buyingShare );
+	return ((int)cmp[ PIE_NUMBER ] - buyingShare );
 }
 
 

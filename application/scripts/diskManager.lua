@@ -48,7 +48,7 @@ local addons = { }
 
 local function _AddLabel( text, xpos, ypos, ww, hh, parent )
 	local lb = guienv:AddLabel( text, xpos, ypos, ww, hh, -1, parent )
-	lb.color = base.toColor( 0xff, 0xff, 0xff, 0xff )	
+	lb.color = base.NrpARGB( 0xff, 0xff, 0xff, 0xff )	
 	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 	return lb, ypos + 40
 end

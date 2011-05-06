@@ -45,6 +45,7 @@ void CNrpCompany::_InitialyzeOptions()
 	Add( SELF_PIE_NUMBER, 0 );
 	Add<NrpText>( TEXTURENORMAL, "" );
 	Add<CNrpBookKeeping*>( BOOKKEEPING, NULL );
+	Add<int>( INVESTMENT_EXPECTATIONS, 0 );
 }
 
 CNrpCompany::CNrpCompany( const NrpText& name, CNrpUser* ceo ) : INrpConfig( CLASS_NRPCOMPANY, name)

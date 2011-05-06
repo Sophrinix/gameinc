@@ -148,9 +148,9 @@ void HTMLEngine::ScrollByLines( int lines )
 	llmozlib_->scrollByLines(browserWindowId_, lines);
 }
 
-void HTMLEngine::SetFocus()
+void HTMLEngine::SetFocus( bool focus )
 {
-	llmozlib_->focusBrowser(browserWindowId_, true);
+	llmozlib_->focusBrowser(browserWindowId_, focus);
 }
 
 void HTMLEngine::KeyPress( int key )
@@ -269,5 +269,10 @@ void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventI
 #ifdef _DEBUG
 	Log( SCRIPT ) << "Event: clicked on nofollow link to " << eventIn.getStringValue().c_str() << term;
 #endif
+}
+
+void HTMLEngine::SetPage404( const NrpText& pageUrl )
+{
+	llmozlib_->set404RedirectUrl( browserWindowId_, const_cast< NrpText& >( pageUrl ).ToStr() );
 }
 }

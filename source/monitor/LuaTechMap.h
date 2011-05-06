@@ -23,6 +23,7 @@ public:
 	int SetAction( lua_State *L );							//установка имени функции луа, которая будет вызвана при 
 	int AddLuaFunction( lua_State* L );
 	int AddTechnology( lua_State* L );
+	int IsTechHaveUndiscoverChild( lua_State* L );
 	int GetSelectedObjectType( lua_State* L );
 	int GetSelectedObject( lua_State* L );
 	int GetSelectedObjectName( lua_State* L );

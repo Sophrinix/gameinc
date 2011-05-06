@@ -8,6 +8,8 @@ OPTION_NAME GAME_ENGINE_NAME( L"GameEngineName" );
 OPTION_NAME LICENSE_NAME( L"licenseName" );
 OPTION_NAME SCENARIO_NAME( L"scenarioName" );
 OPTION_NAME BALANCE(L"balance");
+OPTION_NAME LASTTIMEUPDATE( L"lastTimeUpdate" );
+OPTION_NAME INVESTMENT_EXPECTATIONS( L"investmentExpectations" );
 OPTION_NAME NAME(L"name");
 OPTION_NAME QUALITY( L"quality" );
 OPTION_NAME READYWORKPERCENT( L"readyWorkPercent" );
@@ -41,16 +43,16 @@ OPTION_NAME WORKNUMBER( L"workNumber" );
 OPTION_NAME INTERNAL_NAME( L"internalName" );
 OPTION_NAME BOXNUMBER( L"boxNumber" );
 OPTION_NAME DESCRIPTIONPATH( L"descriptionPath" );
-OPTION_NAME LANGNUMBER( "langNumber" );
-OPTION_NAME PLATFORMNUMBER( "platformNumber" );
-OPTION_NAME RAM("ram");
-OPTION_NAME CPU("cpu");
+OPTION_NAME LANGNUMBER( L"langNumber" );
+OPTION_NAME PLATFORMNUMBER( L"platformNumber" );
+OPTION_NAME RAM( L"ram");
+OPTION_NAME CPU( L"cpu");
 OPTION_NAME POPULARITY( L"popularity" );/*< изветность разработчика */
 OPTION_NAME OWNER( L"owner" );
-OPTION_NAME SKILL_CODING( "skill_coding" );
-OPTION_NAME SKILL_TESTING( "skill_testing" );
-OPTION_NAME SKILL_DRAWING( "skill_drawing" );
-OPTION_NAME SKILL_SOUND( "skill_sound" );
+OPTION_NAME SKILL_CODING( L"skill_coding" );
+OPTION_NAME SKILL_TESTING( L"skill_testing" );
+OPTION_NAME SKILL_DRAWING( L"skill_drawing" );
+OPTION_NAME SKILL_SOUND( L"skill_sound" );
 OPTION_NAME ERRORNUMBER( L"moduleErrorNumber");
 
 }//end namespace nrp

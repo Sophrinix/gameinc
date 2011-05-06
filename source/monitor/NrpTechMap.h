@@ -43,6 +43,15 @@ public:
 	
 	const ATECH_ARRAY& GetChilds() { return techs_; }
 
+	bool HaveFutureTech()
+	{
+		for( size_t k=0; k < techs_.size(); k++ )
+			if( techs_[ k ]->data_ == NULL )
+				return true;
+
+		return false;
+	}
+
 	const core::stringw& GetName() { return name_; }
 
 	bool FindTech( nrp::CNrpTechnology* pTech )
@@ -94,6 +103,8 @@ public:
 	//! Added technology to map
 	virtual void AddTechnology( nrp::CNrpTechnology* parent, nrp::CNrpTechnology* child );
 	virtual void AddTechnology( nrp::CNrpTechnology* parent, const NrpText& internalName );
+
+	virtual bool IsTechHaveUnknownChild( nrp::CNrpTechnology* parent );
 
 	//! set a column width
 	virtual void setColumnWidth(u32 width);

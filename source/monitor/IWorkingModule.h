@@ -8,7 +8,6 @@ namespace nrp
 OPTION_NAME PARAMNAME("paramName");
 OPTION_NAME DURATION("duration");
 OPTION_NAME OFFSET( "offset" );
-OPTION_NAME LASTTIMEUPDATE( "lastTimeUpdate" );
 
 class IWorkingModule : public CNrpTechnology
 {

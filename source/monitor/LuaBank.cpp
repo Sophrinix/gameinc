@@ -177,7 +177,8 @@ int CLuaBank::GetShares( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CShareholder* share = CNrpBridge::Instance().GetShares( name, cmp );
+		assert( cmp );
+		CShareholder* share = CNrpBridge::Instance().GetShares( name, *cmp );
 
 		lua_pushinteger( L, share ? (int)(*share)[ PIE_NUMBER ] : 0 );
 		return 1;
@@ -218,7 +219,7 @@ int CLuaBank::GetAvaibleShares( lua_State* L )
 	CNrpCompany* cmp = _GetLuaObject< CNrpCompany, CLuaCompany >( L, 2 );
 	assert( cmp && "company must be exists" );
 
-	lua_pushinteger( L, cmp ? CNrpBridge::Instance().GetAvaibleShares( cmp ) : 0 );
+	lua_pushinteger( L, cmp ? CNrpBridge::Instance().GetAvaibleShares( *cmp ) : 0 );
 	return 1;
 }
 
@@ -241,7 +242,8 @@ int CLuaBank::ChangeShares( lua_State* L )
 
 		assert( agent );
 		
-		CNrpBridge::Instance().ChangeShares( agent, cmp, shareNumber );
+		if( agent )
+			CNrpBridge::Instance().ChangeShares( *agent, *cmp, shareNumber );
 	}
 
 	return 0;

@@ -15,10 +15,13 @@ public:
 	~CNrpTimer( void );
 
 	virtual void draw();
+
+	void SetLoop( bool loop ) { _loop = loop; }
 private:
 	size_t _time;
 	size_t _startTime;
 	bool _active;
+	bool _loop;
 	int _action;
 };
 

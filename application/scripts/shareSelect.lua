@@ -21,9 +21,9 @@ local function _UpdateLabel()
 	edMoney.text = deltaMoney
 	
 	if deltaMoney > 0 then 
-		edMoney.overrideColor = base.toColor( 0xff, 0, 0xff, 0 )
+		edMoney.overrideColor = 0xff00ff00
 	else
-		edMoney.overrideColor = base.toColor( 0xff, 0xff, 0, 0 )
+		edMoney.overrideColor = base.NrpARGB( 0xff, 0xff, 0, 0 )
 	end
 end
 
@@ -45,13 +45,13 @@ end
 local function _OnEnd()
 	mainWindow:Remove()
 	mainWindow = nil
-	onEnd( shareCompany, shareStart + wantShareNumber )
+	onEnd( shareCompany, wantShareNumber )
 end
 
 function Show( text, shrCmp, actionAfterEnd )
 	rbank = base.applic.bank
 	company = base.applic.playerCompany
-	local shareCur = rbank:GetShares( company.name, currentCompany )
+	local shareCur = rbank:GetShares( company.name, shrCmp )
 
 	shareStart = shareCur
 	onEnd = actionAfterEnd

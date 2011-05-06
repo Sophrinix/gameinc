@@ -72,6 +72,7 @@ public:
 	int AddTabControl( lua_State* vm );
 	int AddTab( lua_State* vm );
 	int AddTimer( lua_State* vm );
+	int AddLoopTimer( lua_State* vm );
 	int AddLinkBox( lua_State* vm );
 	int AddCursorPosAnimator( lua_State* vm );
 	int RemoveAnimators( lua_State* L );

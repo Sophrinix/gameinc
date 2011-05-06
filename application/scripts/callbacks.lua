@@ -36,7 +36,7 @@ function PaySalaryToWorkers()
 		user:SetParam( "lastAward", salary / 2 )
 	end
 	
-	company:AddBalance( "Выплата зарплаты сотрудникам", -needMoney )
+	company:AddBalance( "Выплата зарплат сотрудникам", -needMoney )
 end
 
 function PayMoneyToInventions()
@@ -105,7 +105,7 @@ local function localChangeSpeed( keyInput )
 	labelSpeed:SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
 	labelSpeed.font = "font_28"
 							
-	LogScript( "labelSpeed:Update" )
+	LogScript( "labelSpeed:Update to "..dd )
 	guienv:AddBlenderAnimator( labelSpeed, 255, 10, 2000, false, true, false )
 end
 
@@ -113,7 +113,7 @@ function sworkKeyboardEvent( _, ptr )
 	local event = CLuaEvent( ptr )
 	local keyInput = event.key
 
-	LogScript( "key event "..keyInput )
+	--LogScript( "key event "..keyInput )
 	if  event.keyDown and ( keyInput == 0xBD or keyInput == 0xBB ) then
 		localChangeSpeed( keyInput )
 	end

@@ -52,10 +52,22 @@ int CLuaLabel::SetDrawBackground( lua_State* L )
 
 int CLuaLabel::SetOverrideColor( lua_State* L )
 {
-	NrpText ovColor = lua_tostring( L, -1 );
-	IF_OBJECT_NOT_NULL_THEN	_object->setOverrideColor( ovColor.ToInt() );
+	IF_OBJECT_NOT_NULL_THEN	
+	{
+		unsigned int color = 0;
+		if( lua_isnumber( L, -1 ) )
+			color = lua_tointeger( L, -1 );
+		else if( lua_isstring( L, -1 ) )
+		{
+			NrpText ovColor = lua_tostring( L, -1 );
+			color = ovColor.ToInt();
+		}
+		
+			 
+		_object->setOverrideColor( color );
+	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaLabel::SetTextAlignment( lua_State* L )
@@ -68,7 +80,7 @@ int CLuaLabel::SetTextAlignment( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN	_object->setTextAlignment( gui::EGUI_ALIGNMENT(hAl), gui::EGUI_ALIGNMENT(vAl) );
 
-	return 1;
+	return 0;
 }
 
 const char* CLuaLabel::ClassName()

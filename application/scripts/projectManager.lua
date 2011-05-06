@@ -24,15 +24,15 @@ local currentEmployer = nil
 local currentProject = nil
 local currentComponent = nil
 local localBtnToggleTask = nil
-
-local comboxProjects = nil
-local comboxUsers = nil
-local lbxComponents = nil
-local lbxWorks = nil
 local selectedListBox = nil
-
 local windowProjectManager = nil
-local windowUserInfo = nil
+
+windowUserInfo = nil
+layoutUserTypes = nil
+comboxProjects = nil
+comboxUsers = nil
+lbxComponents = nil
+lbxWorks = nil
 
 local function _ShowModuleInformation()
 	local component = base.CLuaDevelopModule( lbxComponents.selectedObject )
@@ -101,10 +101,8 @@ function UpdateUsersListBox( newMode )
 end
 
 function Hide()
-
 	windowProjectManager = nil
 	windowUserInfo = nil
-	
 	base.package.loaded[ "userInfo" ] = false
 end
 
@@ -217,11 +215,11 @@ function Show()
 	comboxUsers = guienv:AddComboBox( "", "50%", "15%", "140e", "4%+", -1, windowProjectManager )
 	
 	--coders
-	local layout = guienv:AddLayout( "50%", 50, "140e", "15%", 10, -1, windowProjectManager )
-	button.LayoutButton( "", layout, -1, base.STR_CODERS, function () UpdateUsersListBox( base.STR_CODERS ) end )
-	button.LayoutButton( "", layout, -1, base.STR_DESIGNERS, function () UpdateUsersListBox( base.STR_DESIGNERS ) end )
-	button.LayoutButton( "", layout, -1, base.STR_COMPOSERS, function () UpdateUsersListBox( base.STR_COMPOSERS ) end )
-	button.LayoutButton( "", layout, -1, base.STR_TESTERS, function () UpdateUsersListBox( base.STR_TESTERS ) end )
+	layoutUserTypes = guienv:AddLayout( "50%", 50, "140e", "15%", 10, -1, windowProjectManager )
+	button.LayoutButton( "", layoutUserTypes, -1, base.STR_CODERS, function () UpdateUsersListBox( base.STR_CODERS ) end )
+	button.LayoutButton( "", layoutUserTypes, -1, base.STR_DESIGNERS, function () UpdateUsersListBox( base.STR_DESIGNERS ) end )
+	button.LayoutButton( "", layoutUserTypes, -1, base.STR_COMPOSERS, function () UpdateUsersListBox( base.STR_COMPOSERS ) end )
+	button.LayoutButton( "", layoutUserTypes, -1, base.STR_TESTERS, function () UpdateUsersListBox( base.STR_TESTERS ) end )
 	--поставим для просмотра первого кодера
 	UpdateUsersListBox( base.STR_CODERS )	
 	
@@ -230,4 +228,6 @@ function Show()
 	end 
 	
 	windowProjectManager:AddLuaFunction( base.GUIELEMENT_CMBXITEM_SELECTED, _ComboBoxItemSelected )
+	
+	base.tutorial.Update( base.tutorial.STEP_OVERVIEW_PROJECTMANAGER )
 end

@@ -9,10 +9,6 @@ ID_DATETIME_LABEL = ID_MAINMENU + 10
 Функция подключения скрипта с проверкой ошибок
 --]]
 
-function toColor( a, r, g, b )
-	return a * 16777216 + r * 65536 + g * 256 + b;
-end
-
 WHITE_COLOR = 4294967295
 BLACK_COLOR = 4278190080
 

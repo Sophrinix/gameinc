@@ -12,7 +12,7 @@ local sizeLinkBox = 80
 function LinkBox( parentr, textr, group, datar, draggable, funcSet, funcUnset )
 	local project = base.gameprojectManager.project
 	local linkModule = base.guienv:AddLinkBox( textr, 0, 0, sizeLinkBox, sizeLinkBox, -1, parentr )
-	linkModule.color = base.toColor( 0xFF, 0, 0, 0 )
+	linkModule.color = base.NrpARGB( 0xFF, 0, 0, 0 )
 			
 	base.table.insert( base.gameprojectManager.links, linkModule )
 	

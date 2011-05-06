@@ -1379,6 +1379,19 @@ int CNrpTechMap::GetSelectedObjectType()
 	return ( tech == NULL ? TS_PROJECT : tech->Param( STATUS ).As<int>() );
 }
 
+bool CNrpTechMap::IsTechHaveUnknownChild( nrp::CNrpTechnology* parent )
+{
+	if( techMap_.size() > 0 )
+	{
+		AssignTech* rAssign = rAssign = FindTechInMap_( techMap_, parent );
+
+		if( rAssign )
+			return rAssign->HaveFutureTech();
+	}
+
+	return false;
+}
+
 } // end namespace gui
 
 } // end namespace irr

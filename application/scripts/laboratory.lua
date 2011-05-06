@@ -34,7 +34,7 @@ local function CreateTechSequence( tech )
 	
 	for i=1, tech.ftNumber do
 		local internalName = tech:GetFutureTechInternalName( i-1 )
-		Log( "ƒочерн€€ технолоwги€="..internalName.." –одительска€ технологи€="..tech.name )
+		Log( "ƒочерн€€ технологи€="..internalName.." –одительска€ технологи€="..tech.name )
 
 		local futureTech = applic:GetTech( internalName );
 		--такой технологии нет на рынке
@@ -44,10 +44,14 @@ local function CreateTechSequence( tech )
 			local techInvention = applic:GetInvention( internalName, company.name )
 			
 			--исследовани€ не ведутс€
-			if techInvention.empty then
-				--добавл€ем как неизвестную технологию
-				techMap:AddTechnology( tech, internalName )
+			if techInvention.empty then			
+				--будем отрисовывать только первую неисследованную технологию
+				if not techMap:IsTechHaveUndiscoverChild( tech ) then
+					--добавл€ем как неизвестную технологию
+					techMap:AddTechnology( tech, internalName )
+				end
 			else 
+				--добавим как исследование
 				techMap:AddTechnology( tech, techInvention )			
 			end
 		else

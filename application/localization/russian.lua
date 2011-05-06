@@ -83,5 +83,8 @@ STR_SEND_TO_SCHOOL="Обучение"
 STR_RECOGNITION="Наградить"
 STR_COMMUNICATE="Пригласить \nдля разговора"
 STR_ROUTINE="Дать поручение"
+STR_HOUSE_SELECT="Выбрать офис"
+STR_PROJECT_CHIEF="Управленцы"
+STR_COMPANY_CHIEF="Отделы"
 
 

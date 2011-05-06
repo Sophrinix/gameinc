@@ -31,6 +31,7 @@ public:
 	
 	irr::gui::CNrpBrowserWindow& GetBrowserWindow(irr::core::dimension2du size=irr::core::dimension2du( 512, 512 ) );
 	void SetBrowserWindow( irr::gui::CNrpBrowserWindow* newWindow ) { browserWindow_ = newWindow; }
+	void SetPage404( const NrpText& pageUrl );
 	void Update();
 
 	//*! Событие, которое возникает при завершении навигации по ссылке
@@ -53,7 +54,7 @@ public:
 	//*! Передача в веб движок события ЛКМ
 	void MouseUp(size_t x, size_t y);
 	void ScrollByLines( int lines );
-	void SetFocus();
+	void SetFocus( bool focus );
 	void KeyPress( int key );
 	void MouseMoved( size_t x, size_t y );
 

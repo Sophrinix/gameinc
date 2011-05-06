@@ -76,6 +76,7 @@ BEGIN_LUNA_METHODS( CLuaGuiEnvironment )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, BringToFront )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SendToBack )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTimer )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLoopTimer )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTextRunner )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLigthing )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddFlick )
@@ -884,7 +885,7 @@ int CLuaGuiEnvironment::BringToFront( lua_State* L )
 int CLuaGuiEnvironment::AddTimer( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaGuiEnvironment:FadeOut need int, bool parameter" );
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaGuiEnvironment:AddTimer need int, bool parameter" );
 
 	int time = lua_tointeger( L, 2 );
 	assert( lua_isfunction( L, 3 ) );
@@ -1002,4 +1003,25 @@ int CLuaGuiEnvironment::AddTopElement( lua_State* L )
 	return 0;
 }
 
+int CLuaGuiEnvironment::AddLoopTimer( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 4, 4, "Function CLuaGuiEnvironment:AddTimer need int, bool parameter" );
+
+	int time = lua_tointeger( L, 2 );
+	assert( lua_isfunction( L, 3 ) );
+
+	int action = _GetRef( L, 3 );
+	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 4, true );
+
+	gui::CNrpTimer* timer = NULL;
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		timer = new gui::CNrpTimer( _object, elm, time, action );
+		timer->SetLoop( true );
+	}
+
+	lua_pushlightuserdata( L, timer );
+	return 1;
+}
 }//namespace nrp

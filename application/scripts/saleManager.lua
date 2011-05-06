@@ -28,7 +28,6 @@ local listboxCompanyGame = nil
 local anoncePictureFlow = nil
 local windowAnonce = nil
 local selectedGame = nil
-local lastTimeParamsUpdate = base.os.clock()
 
 local function _AddGames()
 	listboxGames:Clear()
@@ -76,12 +75,11 @@ local function _AnonceGame()
 end
 
 local function _UpdateGameParams()
-	if selectedGame and (base.os.clock() - lastTimeParamsUpdate > 0) then
+	if selectedGame then
 		labelGameName.text = "Название: " .. selectedGame.name
 		labelLastMonthSale.text = "Продаж за прошлый месяц:"..selectedGame.lastMonthSales
 		labelProfit.text = "Прибыль:" .. selectedGame.allTimeProfit
 		labelAllTimeSale.text = "Продаж за все время:" .. selectedGame.allTimeSales
-		lastTimeParamsUpdate = base.os.clock()
 		--prgRating:SetPos( selectedGame:GetCurrentQuality() ) 
 			
 		if selectedGame.company.object == company.object then
@@ -181,5 +179,5 @@ function Show()
 	buttonAnonceGame = guienv:AddButton( pos.x, 380, size.w, size.h, mainWindow, -1, "Анонсировать игру" )
 	buttonAnonceGame.action = _AnonceGame
 	
-	mainWindow:AddLuaFunction( base.GUIELEMENT_AFTER_DRAW, _UpdateGameParams )
+	guienv:AddLoopTimer( 1000, _UpdateGameParams, mainWindow )
 end
