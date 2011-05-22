@@ -53,10 +53,10 @@ const wchar_t* IRR_XML_FORMAT_GUI_ELEMENT		= L"element";
 const wchar_t* IRR_XML_FORMAT_GUI_ELEMENT_ATTR_TYPE	= L"type";
 
 //! constructor
-CGUIEnvironment::CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op)
+CGUIEnvironment::CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op, ICursorControl* cursor)
 : IGUIElement(EGUIET_ELEMENT, 0, 0, 0, core::rect<s32>(core::position2d<s32>(0,0), driver ? core::dimension2d<s32>(driver->getScreenSize()) : core::dimension2d<s32>(0,0))),
 	Driver(driver), Hovered(0), Focus(0), LastHoveredMousePos(0,0), CurrentSkin(0),
-	FileSystem(fs), UserReceiver(0), Operator(op)
+	FileSystem(fs), UserReceiver(0), Operator(op), _cursor( cursor )
 {
 	if (Driver)
 		Driver->grab();
@@ -1573,12 +1573,18 @@ bool CGUIEnvironment::isHovered( IGUIElement* element ) const
 	return (element == Hovered);
 }
 
+ICursorControl* CGUIEnvironment::getCursorControl() const
+{
+	return _cursor;
+}
+
 //! creates an GUI Environment
 IGUIEnvironment* createGUIEnvironment(io::IFileSystem* fs,
 					video::IVideoDriver* Driver,
-					IOSOperator* op)
+					IOSOperator* op, 
+					gui::ICursorControl* cursor)
 {
-	return new CGUIEnvironment(fs, Driver, op);
+	return new CGUIEnvironment(fs, Driver, op, cursor);
 }
 
 

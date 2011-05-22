@@ -59,6 +59,7 @@ class IGUIToolBar;
 class IGUIButton;
 class IGUIWindow;
 class IGUIElementFactory;
+class ICursorControl;
 
 //! GUI Environment. Used as factory and manager of all other GUI elements.
 class IGUIEnvironment : public virtual IReferenceCounted
@@ -538,6 +539,8 @@ public:
 	/** \param index Index of the factory.
 	\return Factory at given index, or 0 if no such factory exists. */
 	virtual IGUIElementFactory* getGUIElementFactory(u32 index) const = 0;
+
+	virtual ICursorControl* getCursorControl() const = 0;
 
 	//! Adds a GUI element by its name
 	/** Each factory is checked if it can create an element of the given

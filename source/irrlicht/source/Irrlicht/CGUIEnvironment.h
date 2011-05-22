@@ -28,7 +28,7 @@ class CGUIEnvironment : public IGUIEnvironment, public IGUIElement
 public:
 
 	//! constructor
-	CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op);
+	CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op, ICursorControl* cursor );
 
 	//! destructor
 	virtual ~CGUIEnvironment();
@@ -38,6 +38,9 @@ public:
 
 	//! returns the current video driver
 	virtual video::IVideoDriver* getVideoDriver() const;
+
+	//! returns the current cursor control
+	virtual ICursorControl* getCursorControl() const;
 
 	//! returns pointer to the filesystem
 	virtual io::IFileSystem* getFileSystem() const;
@@ -298,6 +301,7 @@ private:
 	video::IVideoDriver* Driver;
 	IGUIElement* Hovered;
 	IGUIElement* Focus;
+	ICursorControl* _cursor;
 	core::position2d<s32> LastHoveredMousePos;
 	IGUISkin* CurrentSkin;
 	io::IFileSystem* FileSystem;
