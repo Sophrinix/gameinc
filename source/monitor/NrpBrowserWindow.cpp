@@ -22,11 +22,11 @@ CNrpBrowserWindow::CNrpBrowserWindow( gui::IGUIEnvironment* env,
 									  core::dimension2du size ) : CNrpWindow( env, env->getRootGUIElement(), texture, id, 
 																			  core::recti( pos, size+core::dimension2du( 10, 25 ) ) )
 {
-	setRelativePosition( core::recti( 0, 0, size.Width + 14, size.Height + 15 ) );
-	image_ = Environment->addImage( core::recti( 7, 7, size.Width+7, size.Height+7 ), this, -1, 0 );
+	setRelativePosition( core::recti( 0, 0, size.Width + 50, size.Height + 75 ) );
+	image_ = Environment->addImage( core::recti( 23, 45, size.Width + 23, size.Height + 45 ), this, -1, 0 );
 	image_->setScaleImage( true );
 	bringToFront( getCloseButton() );
-	
+		
 	setDraggable( true );
 	drop();
 }

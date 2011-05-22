@@ -297,7 +297,7 @@ void CNrpCompany::BeginNewDay( const NrpTime& time )
 				INrpDevelopProject* project = _devProjects[ i ];
 				const PNrpGame game = CreateGame(	(CNrpDevelopGame*)project );
 				RemoveDevelopProject( (*project)[ NAME ] );
-				CNrpApplication::Instance().DoLuaFunctionsByType( APP_PROJECT_FINISHED, this, game );
+				CNrpApplication::Instance().PCall( APP_PROJECT_FINISHED, this, game );
 				break;
 			}
 		}
@@ -336,7 +336,6 @@ CNrpGame* CNrpCompany::CreateGame( CNrpDevelopGame* devGame )
 	CNrpGame* ptrGame = new CNrpGame( devGame, this );
 	(*ptrGame)[ STARTDATE ] = _nrpApp[ CURRENTTIME ];
 	_nrpApp.AddGame( ptrGame );
-	_nrpApp.UpdateGameRatings( ptrGame, true );
 	RemoveFromPortfelle( devGame );
 
 	_games.push_back( ptrGame );
@@ -449,7 +448,7 @@ void CNrpCompany::InventionReleased( const CNrpInvention& inv )
 			//переносом опыта...
 			//в любом случае текущие иследования прекращаются...
 			_nrpApp.InventionCanceled(  _inventions[ p ] );
-			_nrpApp.DoLuaFunctionsByType( COMPANY_DUPLICATE_INVENTION_FINISHED, this, _inventions[ p ] );
+			_nrpApp.PCall( COMPANY_DUPLICATE_INVENTION_FINISHED, this, _inventions[ p ] );
 			_inventions.erase( p );
 			break;
 		}			

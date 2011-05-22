@@ -125,7 +125,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 		//если произошло неперехваченное событие от клавы
 		case EET_KEY_INPUT_EVENT:
 		{	//отдадим его на обработку
-			DoLuaFunctionsByType( SCENE_KEY_INPUT_EVENT, this, (void*)&event );
+			PCall( SCENE_KEY_INPUT_EVENT, this, (void*)&event );
 		}
 		break;
 		//последними обрабатываем события мышки
@@ -135,7 +135,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 			{		 	
 				//нажатие пкм произошло вне гуи
 				case EMIE_RMOUSE_LEFT_UP:	
-					 DoLuaFunctionsByType( SCENE_RMOUSE_LEFT_UP, this );
+					 PCall( SCENE_RMOUSE_LEFT_UP, this );
 				break;
 				//вне гуи произошло нажатие лкм
 				case EMIE_LMOUSE_LEFT_UP:
@@ -155,7 +155,7 @@ bool CNrpMainScene::OnEvent( const irr::SEvent& event )						//обработка событий
 
 				case EMIE_MOUSE_MOVED:
 				{	//обрабатываем событие перемещения мышки
-					DoLuaFunctionsByType( SCENE_MOUSE_MOVED, this );
+					PCall( SCENE_MOUSE_MOVED, this );
 				}
 				break;
 				
@@ -189,17 +189,17 @@ void CNrpMainScene::OnUpdate()
 		video::IVideoDriver* driver = _nrpEngine.GetVideoDriver();
 		
 		//вызываем событие луа до начала сцены
-		DoLuaFunctionsByType( SCENE_BEFORE_BEGIN, this );
+		PCall( SCENE_BEFORE_BEGIN, this );
 		driver->beginScene( true, true, video::SColor(150,50,50,50) );
 		
 		try
 		{
 			//вызываем событие луа до рендера сцены
-			DoLuaFunctionsByType( SCENE_BEFORE_RENDER, this );
+			PCall( SCENE_BEFORE_RENDER, this );
 			//рендерим сцену
 			RenderScene_();
 			//вызываем событие луа после рендера сцены
-			DoLuaFunctionsByType( SCENE_AFTER_RENDER, this );			
+			PCall( SCENE_AFTER_RENDER, this );			
 
 			//отладочная вещь для просмотра выделенных объектов
 			try
@@ -234,11 +234,11 @@ void CNrpMainScene::OnUpdate()
 			
 		driver->endScene();
 		//вызываем событие луа после завершения рендера сцены
-		DoLuaFunctionsByType( SCENE_AFTER_END, this );
+		PCall( SCENE_AFTER_END, this );
 	
 		if( mouseSceneBLeftEvent_ && ( GetTickCount() - lastTimeNodeSelect_ > 200) )
 		{
-			DoLuaFunctionsByType( twinLeftMouseClick_ ? SCENE_LMOUSE_DOUBLE_CLICK : SCENE_LMOUSE_LEFT_UP, selectedNode_ );
+			PCall( twinLeftMouseClick_ ? SCENE_LMOUSE_DOUBLE_CLICK : SCENE_LMOUSE_LEFT_UP, selectedNode_ );
 			mouseSceneBLeftEvent_ = false;
 			twinLeftMouseClick_ = false;
 		}

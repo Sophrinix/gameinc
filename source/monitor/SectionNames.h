@@ -15,6 +15,7 @@ SECTION_NAME SECTION_PORTFELLE( L"portfelle" );
 SECTION_NAME SECTION_TECHS( L"techs" );
 SECTION_NAME SECTION_USERS( L"users" );
 SECTION_NAME SECTION_GENRES( L"genres" );
+SECTION_NAME SECTION_RECENSE( L"recense" );
 SECTION_NAME SECTION_VIDEO( L"video" );
 SECTION_NAME SECTION_SOUND( L"sound" );
 SECTION_NAME SECTION_LANGUGAGES( L"languages" );
@@ -43,6 +44,7 @@ NrpText CreateKeyCompany( int index );
 NrpText CreateKeyInvention( int index );
 NrpText CreateKeyTech( int index );
 NrpText CreateKeyGenre( int index );
+NrpText CreateKeyRecense( int index );
 
 NrpText CreateKeyProject( int index );
 NrpText CreateKeyEngine( int index );

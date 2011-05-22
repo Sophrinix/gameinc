@@ -31,7 +31,7 @@ CNrpGuiLigthing::CNrpGuiLigthing( IGUIEnvironment* guienv,
 	_length = 40;
 	_startTimeShow = GetTickCount();
 	_imageRect = image_ ?  core::recti( core::position2di( 0, 0 ), image_->getSize() ) : core::recti( 0, 0, 20, 20 );
-	_UpdateImagePositions();
+	_CreateNewPositions();
 }
 
 //! destructor
@@ -41,12 +41,24 @@ CNrpGuiLigthing::~CNrpGuiLigthing()
 		image_->drop();
 }
 
-void CNrpGuiLigthing::_CreateNewPositions( s32 radius, s32 step )
+void CNrpGuiLigthing::_CreateNewPositions()
 {
-	core::line2df aLine( static_cast< float >( _elm1->getAbsolutePosition().getCenter().X ),
-						 static_cast< float >(_elm1->getAbsolutePosition().getCenter().Y ), 
-						 static_cast< float >(_elm2->getAbsolutePosition().getCenter().X ),
-						 static_cast< float >(_elm2->getAbsolutePosition().getCenter().Y ) );
+	core::position2di pos1 = _elm1 ? _elm1->getAbsolutePosition().getCenter() : Environment->getCursorControl()->getPosition();
+	core::position2di pos2 = _elm2 ? _elm2->getAbsolutePosition().getCenter() : Environment->getCursorControl()->getPosition();
+
+	_positions.clear();
+	_positions.push_back( pos1 ); 
+
+	int radius = pos2.getDistanceFrom( pos1 ) / 4;
+	if( radius < _length )
+		return;
+
+	int step = (radius * 4) / _length;
+
+	core::line2df aLine( static_cast< float >( pos1.X ),
+						 static_cast< float >( pos1.Y ), 
+						 static_cast< float >( pos2.X ),
+						 static_cast< float >( pos2.Y ) );
 
 	if( image_ )
 	{
@@ -58,27 +70,8 @@ void CNrpGuiLigthing::_CreateNewPositions( s32 radius, s32 step )
 	{
 		core::vector2df tmpVector = aVector * static_cast< float >( k * step );
 		core::position2di tt( tmpVector.X + rand() % 5, tmpVector.Y + rand() % 10 );
-		_positions.push_back( tt + _elm1->getAbsolutePosition().getCenter() );
+		_positions.push_back( tt + pos1 );
 	}
-}
-
-void CNrpGuiLigthing::_UpdateImagePositions()
-{
-	assert( _elm1 && _elm2 );
-	if( !_elm1 || !_elm2 )
-		return;
-
-	_positions.clear();
-	if( _positions.empty()  )
-	{
-		_positions.push_back( _elm1->getAbsolutePosition().getCenter() ); 
-	}
-
-	int radius = _elm2->getAbsolutePosition().getCenter().getDistanceFrom(  _elm1->getAbsolutePosition().getCenter() ) / 4;
-	int step = (radius * 4) / _length;
-
-
-	_CreateNewPositions( radius, step );
 }
 
 //! draws the element and its children
@@ -99,7 +92,7 @@ void CNrpGuiLigthing::draw()
 
 	if( GetTickCount() - _lastTimeUpdate > 70 )
 	{
-		_UpdateImagePositions();
+		_CreateNewPositions();
 		_lastTimeUpdate = GetTickCount();
 
 		s32 diffTime = GetTickCount() - _startTimeShow;

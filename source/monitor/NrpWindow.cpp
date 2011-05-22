@@ -8,7 +8,7 @@
 #include <IGUIButton.h>
 #include <ITexture.h>
 #include <IVideoDriver.h>
-
+#include "ImageGUISkin.h"
 
 namespace irr
 {
@@ -17,10 +17,11 @@ namespace gui
 
 //! constructor
 CNrpWindow::CNrpWindow(IGUIEnvironment* environment, IGUIElement* parent, video::ITexture* texture, s32 id, core::rect<s32> rectangle)
-	: IGUIWindow(environment, parent, id, rectangle), Dragging(false), IsDraggable(true), DrawBackground(true), DrawTitlebar(true)
+	: IGUIWindow(environment, parent, id, rectangle), Dragging(false), IsDraggable(true), DrawBackground(true), DrawTitlebar(true),
+	  _sortType( ST_NONE )
 {
 #ifdef _DEBUG
-			setDebugName("CNrpWindow");
+	setDebugName("CNrpWindow");
 #endif
 
 	IGUISkin* skin = 0;
@@ -38,7 +39,7 @@ CNrpWindow::CNrpWindow(IGUIEnvironment* environment, IGUIElement* parent, video:
 	video::SColor color(255,255,255,255);
 
 	s32 buttonw = 15;
-	if (skin)
+	if( skin )
 	{
 		buttonw = skin->getSize(EGDS_WINDOW_BUTTON_WIDTH);
 		sprites = skin->getSpriteBank();
@@ -47,20 +48,18 @@ CNrpWindow::CNrpWindow(IGUIEnvironment* environment, IGUIElement* parent, video:
 	s32 posx = RelativeRect.getWidth() - buttonw - 4;
 
 	IGUIButton* btn = Environment->addButton( core::rect<s32>(posx, 3, posx + buttonw, 3 + buttonw), 
-													this, -1,
-													L"", 
-													skin ? skin->getDefaultText(EGDT_WINDOW_CLOSE) : L"Close" );
+											  this, -1, L"", 
+											  skin ? skin->getDefaultText(EGDT_WINDOW_CLOSE) : L"Close" );
 	btn->setSubElement(true);
 	btn->setTabStop(false);
 	btn->setAlignment(EGUIA_LOWERRIGHT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_UPPERLEFT);
 	buttons_.push_back( btn );
 	posx -= buttonw + 2;
 
-	btn = Environment->addButton( core::rect<s32>(posx, 3, posx + buttonw, 3 + buttonw), 
-														this, 
-														-1,
-														L"", 
-														skin ? skin->getDefaultText(EGDT_WINDOW_RESTORE) : L"Restore" );
+	btn = Environment->addButton( core::rect<s32>( posx, 3, posx + buttonw, 3 + buttonw), 
+												   this, -1, L"", 
+												   skin ? skin->getDefaultText(EGDT_WINDOW_RESTORE) : L"Restore" );
+
 	btn->setVisible(false);
 	btn->setSubElement(true);
 	btn->setTabStop(false);
@@ -68,11 +67,9 @@ CNrpWindow::CNrpWindow(IGUIEnvironment* environment, IGUIElement* parent, video:
 	buttons_.push_back( btn );
 	posx -= buttonw + 2;
 
-	btn = Environment->addButton(	core::rect<s32>(posx, 3, posx + buttonw, 3 + buttonw), 
-														this, 
-														-1,
-														L"", 
-														skin ? skin->getDefaultText(EGDT_WINDOW_MINIMIZE) : L"Minimize" );
+	btn = Environment->addButton(	core::rect<s32>( posx, 3, posx + buttonw, 3 + buttonw), 
+													 this, -1, L"", 
+													 skin ? skin->getDefaultText(EGDT_WINDOW_MINIMIZE) : L"Minimize" );
 	btn->setVisible(false);
 	btn->setSubElement(true);
 	btn->setTabStop(false);
@@ -87,13 +84,33 @@ CNrpWindow::CNrpWindow(IGUIEnvironment* environment, IGUIElement* parent, video:
 	setTabGroup(true);
 	setTabStop(true);
 	setTabOrder(-1);
+
+	_ApplyStyle( dynamic_cast< CImageGUISkin* >( Environment->getSkin() ) );
 }
 
+
+void CNrpWindow::_ApplyStyle( CImageGUISkin* skin )
+{
+	if( !skin )
+		return;
+
+	if( CNrpButton* btn = dynamic_cast< CNrpButton* >( buttons_[ BTNE_CLOSE ] ) )
+	{
+		SImageGUIElementStyle& style = skin->Config.WindowCloseButton;
+		btn->setImage( style.Texture );
+		btn->setRelativePosition( core::recti( style.SrcBorder.Left, style.SrcBorder.Top,
+											   style.SrcBorder.Right, style.SrcBorder.Bottom ) );
+		btn->setAlignment( EGUI_ALIGNMENT( style.align.Left ), EGUI_ALIGNMENT( style.align.Right ), 
+						   EGUI_ALIGNMENT( style.align.Top ), EGUI_ALIGNMENT( style.align.Bottom ) );
+		btn->setHoveredImage( skin->Config.WindowCloseHoveredButton.Texture );
+		btn->setPressedImage( skin->Config.WindowClosePressedButton.Texture );
+	}
+}
 
 //! destructor
 CNrpWindow::~CNrpWindow()
 {
-	DoLuaFunctionsByType( GUIELEMENT_ON_REMOVE, this, NULL );
+	PCall( GUIELEMENT_ON_REMOVE, this, NULL );
 
 	if (buttons_[ BTNE_MINIMAZE ])
 		buttons_[ BTNE_MINIMAZE ]->drop();
@@ -116,25 +133,25 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 		case EET_GUI_EVENT:
 			if( event.GUIEvent.EventType == EGET_TABLE_HEADER_CHANGED )
 			{
-				DoLuaFunctionsByType( GUIELEMENT_TABLE_HEADER_SELECTED, event.GUIEvent.Caller );
+				PCall( GUIELEMENT_TABLE_HEADER_SELECTED, event.GUIEvent.Caller );
 				return true;
 			}
 
 			if( event.GUIEvent.EventType == EGET_TABLE_CHANGED )
 			{
-				DoLuaFunctionsByType( GUIELEMENT_TABLE_CHANGED, event.GUIEvent.Caller );
+				PCall( GUIELEMENT_TABLE_CHANGED, event.GUIEvent.Caller );
 				return true;
 			}
 
 			if( event.GUIEvent.EventType == EGET_LISTBOX_CHANGED )
 			{
-				DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, event.GUIEvent.Caller );
+				PCall( GUIELEMENT_LBXITEM_SELECTED, event.GUIEvent.Caller );
 				return true;
 			}
 
 			if( event.GUIEvent.EventType == EGET_COMBO_BOX_CHANGED )
 			{
-				DoLuaFunctionsByType( GUIELEMENT_CMBXITEM_SELECTED, event.GUIEvent.Caller );
+				PCall( GUIELEMENT_CMBXITEM_SELECTED, event.GUIEvent.Caller );
 				return true;
 			}
 
@@ -183,12 +200,12 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 				Dragging = IsDraggable;
 				if (Parent)
 					Parent->bringToFront(this);
-				DoLuaFunctionsByType( GUIELEMENT_LMOUSE_DOWN, this, (void*)&event );
+				PCall( GUIELEMENT_LMOUSE_DOWN, this, (void*)&event );
 				return true;
 			case EMIE_RMOUSE_LEFT_UP:
 			case EMIE_LMOUSE_LEFT_UP:
 				Dragging = false;
-				DoLuaFunctionsByType( event.MouseInput.Event == EMIE_LMOUSE_LEFT_UP ? 
+				PCall( event.MouseInput.Event == EMIE_LMOUSE_LEFT_UP ? 
 											GUIELEMENT_LMOUSE_LEFTUP : 
 											GUIELEMENT_RMOUSE_LEFTUP , 
 									  this, (void*)&event );
@@ -220,7 +237,7 @@ bool CNrpWindow::OnEvent(const SEvent& event)
 
 		case EET_KEY_INPUT_EVENT:
 			{
-				DoLuaFunctionsByType( GUIELEMENT_KEY_INPUT, this, (void*)&event );
+				PCall( GUIELEMENT_KEY_INPUT, this, (void*)&event );
 			}
 		break;
 
@@ -243,7 +260,7 @@ void CNrpWindow::updateAbsolutePosition()
 //! draws the element and its children
 void CNrpWindow::draw()
 {
-	DoLuaFunctionsByType( GUIELEMENT_BEFORE_DRAW, this );
+	PCall( GUIELEMENT_BEFORE_DRAW, this );
 
 	if ( IsVisible )
 	{
@@ -290,7 +307,7 @@ void CNrpWindow::draw()
 
 	IGUIElement::draw();
 
-	DoLuaFunctionsByType( GUIELEMENT_AFTER_DRAW, this );
+	PCall( GUIELEMENT_AFTER_DRAW, this );
 }
 
 

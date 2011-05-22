@@ -100,19 +100,17 @@ public:
 	CNrpPlatform* GetPlatform( const NrpText& name );
 	CNrpPlatform* GetPlatform( size_t index );
 
-	void UpdateGameRatings( CNrpGame* ptrGame, bool firstTime=false );
-
 	CNrpTechnology* GetBoxAddon( size_t index ) { return index < _boxAddons.size() ? _boxAddons[ index ] : NULL; }
 	CNrpTechnology* GetBoxAddon( const NrpText& name );
 	bool AddBoxAddon( CNrpTechnology* tech );
 
-	void AddGameToMarket( CNrpGame* game );
+	void AddGameToMarket( CNrpGame& game );
 
 	CNrpRetailer* GetRetailer( const NrpText& name );
 	void RemoveRetailer( const NrpText& name );
 
-	NrpText GetFreeInternalName( CNrpGame* game );
-	CNrpScreenshot* GetScreenshot( const NrpText& name );
+	NrpText GetFreeInternalName( const CNrpGame& game );
+	CNrpExtInfo* GetExtInfo( const NrpText& name );
 	void LoadScreenshot( const NrpText& fileName );
 	float GetGameGenreInterest( CNrpGame* game );
 
@@ -155,7 +153,7 @@ private:
 
 	void _LoadUsers( const NrpText& iniFile );
 	void _InitialyzeSaveDirectories( const NrpText& profileName );
-	void _UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating );
+	void _UpdateGameRating( CNrpGame& ptrGame );
 	void _CreateDirectoriesMapForSave();
 	int _GetTechsByGroup( int type, TECHS& arrayt );
 };

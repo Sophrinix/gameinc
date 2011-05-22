@@ -30,7 +30,9 @@ void CNrpGuiTextRunnerAnimator::setText( const wchar_t* txt )
 
 void CNrpGuiTextRunnerAnimator::draw()
 {
-	if( GetTickCount() - time_ > 100 )
+	int waitTime = Environment->getVideoDriver()->getFPS() * 2 / _text.size();
+
+	if( GetTickCount() - time_ > waitTime )
 	{
 		if( _currentPos >= _text.size() )
 			return;

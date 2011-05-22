@@ -238,6 +238,8 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 				e.GUIEvent.Element = 0;
 				e.GUIEvent.EventType = EGET_LISTBOX_CHANGED;
 				Parent->OnEvent(e);
+
+				PCall( GUIELEMENT_LBXITEM_SELECTED, this );
 			}
 
 			return true;
@@ -254,7 +256,7 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 					e.GUIEvent.EventType = EGET_LISTBOX_SELECTED_AGAIN;
 					Parent->OnEvent(e);
 
-					DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, this, NULL );
+					PCall( GUIELEMENT_SELECTED_AGAIN, this, NULL );
 				}
 				return true;
 			}
@@ -305,7 +307,7 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 								e.GUIEvent.EventType = EGET_LISTBOX_CHANGED;
 								Parent->OnEvent(e);
 
-								DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, this );
+								PCall( GUIELEMENT_LBXITEM_SELECTED, this );
 							}
 							setSelected(current);
 							return true;
@@ -328,7 +330,7 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 								e.GUIEvent.EventType = EGET_LISTBOX_CHANGED;
 								Parent->OnEvent(e);
 
-								DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, this, NULL );
+								PCall( GUIELEMENT_SELECTED_AGAIN, this, NULL );
 							}
 							setSelected(current);
 							return true;
@@ -374,7 +376,7 @@ bool CNrpComponentListbox::OnEvent(const SEvent& event)
 				{ Selecting = true;	return true; }
 
 			case EMIE_RMOUSE_LEFT_UP:
-				{ DoLuaFunctionsByType( GUIELEMENT_RMOUSE_LEFTUP, this, NULL ); return true;}
+				{ PCall( GUIELEMENT_RMOUSE_LEFTUP, this, NULL ); return true;}
 
 			case EMIE_LMOUSE_LEFT_UP:
 				{
@@ -437,7 +439,7 @@ void CNrpComponentListbox::selectNew(s32 ypos, bool onlyHover)
 		event.GUIEvent.EventType = (Selected == oldSelected && now < selectTime + 500) ? EGET_LISTBOX_SELECTED_AGAIN : EGET_LISTBOX_CHANGED;
 		Parent->OnEvent(event);
 
-		DoLuaFunctionsByType( (Selected == oldSelected && now < selectTime + 500) 
+		PCall( (Selected == oldSelected && now < selectTime + 500) 
 								? GUIELEMENT_SELECTED_AGAIN : GUIELEMENT_LBXITEM_SELECTED,
 								this, NULL );
 	}
@@ -456,7 +458,7 @@ void CNrpComponentListbox::_DrawIcon( int index, core::recti rectangle, bool hig
 {
 	if (IconBank && (Items[ index ].icon > -1))
 	{
-		core::position2di iconPos = rectangle.UpperLeftCorner;
+		core::position2di iconPos = rectangle.UpperLeftCorner + core::position2di( 3, 0 );
 		iconPos.Y += rectangle.getHeight() / 2;
 		iconPos.X += ItemsIconWidth / 2;
 
@@ -490,9 +492,9 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 	rectangle.LowerRightCorner.X = AbsoluteRect.UpperLeftCorner.X + 80;
 
 	const CNrpTechnology& refTech = *tech;
-	core::recti progressRect = frameRect;
+	core::recti progressRect = frameRect + core::position2di( 3, 0 );
 	float percent = refTech[ READYWORKPERCENT ];
-	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent);
+	progressRect.LowerRightCorner.X = (s32)(progressRect.UpperLeftCorner.X + frameRect.getWidth() * percent) - 6;
 	driver->draw2DRectangle( progressRect, bgColor, bgColor, bgColor, bgColor, &clipRect );
 
 	NrpText pathToImage = refTech[ TEXTURENORMAL ];
@@ -504,7 +506,7 @@ void CNrpComponentListbox::_DrawAsTechnology( CNrpTechnology* tech, core::recti 
 							       static_cast< u32 >( txs->getSize().Height * koeff ) );
 
 		driver->draw2DImage( txs, 
-						 	 core::recti( core::position2di( 0, 0 ), imSize ) + rectangle.UpperLeftCorner,
+						 	 core::recti( core::position2di( 3, 0 ), imSize ) + rectangle.UpperLeftCorner,
 							 core::recti( core::position2di( 0, 0 ), txs->getSize() ), &clipRect );
 
 		rectangle.UpperLeftCorner.X += imSize.Width;
@@ -1040,7 +1042,7 @@ void CNrpComponentListbox::SetOverrideFont( gui::IGUIFont* newFont, video::SColo
 
 void CNrpComponentListbox::lunchToolTip()
 {
-	DoLuaFunctionsByType( GUIELEMENT_TOOLTIP_LAUNCHED, this, NULL );
+	PCall( GUIELEMENT_TOOLTIP_LAUNCHED, this, NULL );
 }
 
 }

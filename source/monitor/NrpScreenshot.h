@@ -1,4 +1,10 @@
-#pragma once
+/************************************************************************/
+/* Класс для хранения данных об скриншотах и сплешшотах игры            */
+/************************************************************************/
+
+#ifndef _INCLUDE_NRPSCREENSHOT_
+#define _INCLUDE_NRPSCREENSHOT_
+
 #include "nrpConfig.h"
 #include "nrpArrays.h"
 
@@ -9,31 +15,52 @@ OPTION_NAME IMAGESBOXNUMBER( "imagesBoxNumber" );
 
 class CNrpGame;
 
-class CNrpScreenshot : public INrpConfig
+class CNrpExtInfo : public INrpConfig
 {
-public:
-	CNrpScreenshot( const NrpText& fileName );
-	~CNrpScreenshot(void);
 
+public:
+	CNrpExtInfo( const NrpText& fileName );
+	~CNrpExtInfo(void);
+
+	//Возвращает набор сплешшотов
 	const STRINGS& GetBoxImages() { return _imagesBoxPath; }
+	//Возвращает набор скриншотов
 	const STRINGS& GetImages() { return _imagesPath; }
 
-	int GetEqualeRating( CNrpGame* game );
+	const STRINGS& GetRecenses() { return _recenses; }
+
+	//Возвращает уровень соответствия игры и этого набора скриншотов
+	int GetEqualeRating( const CNrpGame& game );
+
 	bool IsMyYear( int year );
 
 	static NrpText ClassName();
 private:
 	void InitializeOptions_();
-	CNrpScreenshot();
-	CNrpScreenshot( const CNrpScreenshot& a );
+	CNrpExtInfo();
+	CNrpExtInfo( const CNrpExtInfo& a );
 
+	//массив для хранения путей скринов
 	STRINGS _imagesPath;
+	//массив для хранения путей к сплэнам
 	STRINGS _imagesBoxPath;
-	STRINGS _genres;
 
+	//массив для хранения жанров, для которых подходит этот набор скринов
+	STRINGS _genres;
+	STRINGS _recenses;
+
+	//Загружать можно только через конструктор
 	void Load( const NrpText& fileName );
+	//Сохранять нельзя
 	NrpText Save( const NrpText& fileName ) { return ""; };
+
+	//Добавляет путь картинки к массиву
 	bool _AddImage( STRINGS& art, const NrpText& fileName );
+
+	//Находит в указанной папке картинки и формирует массив
+	void _LoadImages( STRINGS& imgs, const NrpText& folder, const NrpText& prefix );
 };
 
 }//end namespace nrp
+
+#endif

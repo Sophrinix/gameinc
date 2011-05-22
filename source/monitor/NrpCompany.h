@@ -1,7 +1,7 @@
 #pragma once
 #include "nrpConfig.h"
 #include "nrpArrays.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 
 namespace nrp
 { 

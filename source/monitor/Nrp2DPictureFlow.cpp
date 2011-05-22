@@ -282,7 +282,7 @@ void CNrp2DPictureFlow::Prev( int offset )
 
 	_UpdateImages();
 
-	DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
+	PCall( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
 }
 
 void CNrp2DPictureFlow::Next( int offset )
@@ -292,7 +292,7 @@ void CNrp2DPictureFlow::Next( int offset )
 
 	_UpdateImages();
 
-	DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
+	PCall( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
 }
 
 void CNrp2DPictureFlow::_SendEventSelected( const SEvent& event )
@@ -304,7 +304,7 @@ void CNrp2DPictureFlow::_SendEventSelected( const SEvent& event )
 	e.GUIEvent.EventType = EGET_LISTBOX_SELECTED_AGAIN;
 	Parent->OnEvent(e);
 
-	DoLuaFunctionsByType( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
+	PCall( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
 }
 
 bool CNrp2DPictureFlow::OnEvent( const SEvent& event )

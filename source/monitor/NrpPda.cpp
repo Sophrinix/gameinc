@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "nrpPda.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 #include "IniFile.h"
 
 namespace nrp

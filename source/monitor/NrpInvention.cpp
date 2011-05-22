@@ -2,10 +2,10 @@
 #include "NrpInvention.h"
 #include "NrpCompany.h"
 #include "IUser.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 #include "OpFileSystem.h"
 #include "IniFile.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 
 #include <OleAuto.h>
 

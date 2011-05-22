@@ -15,7 +15,7 @@ public:
 private:
 	CNrpGameTime() {};
 	SPEED speed_;
-	size_t lastTimeUpdate_;
+	int lastTimeUpdate_;
 };
 
 }//end namespace nrp

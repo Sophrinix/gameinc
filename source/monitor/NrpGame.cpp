@@ -13,7 +13,7 @@
 #include "NrpHistory.h"
 #include "NrpGameEngine.h"
 #include "IniFile.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 
 #include <errno.h>
 #include <OleAuto.h>
@@ -54,7 +54,7 @@ void CNrpGame::_InitializeOptions()
 	Add<PNrpGameBox>( GBOX, NULL );
 	Add<float>( FAMOUS, 0 );
 	Add<bool>( GAMEISSALING, false );
-	Add<CNrpScreenshot*>( GAMEIMAGELIST, NULL );
+	Add<CNrpExtInfo*>( GAMEIMAGELIST, NULL );
 	Add<NrpText>( GAMERETAILER, "" );
 	Add<int>( PLATFORMNUMBER, 0 );
 	Add<int>( MODULE_NUMBER, 0 );
@@ -66,6 +66,7 @@ void CNrpGame::_InitializeOptions()
 	Add<NrpText>( RECENSE, "" );
 	Add<bool>( NPC_GAME, false );
 	Add<bool>( LOADOK, false );
+	Add<bool>( BESTSALER, false );
 	_history = NULL;
 }
 
@@ -100,13 +101,13 @@ CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpCo
 	}
 
 	_self[ MODULE_NUMBER ] = refGame[ MODULE_NUMBER ];
-	for( int cnt=0; cnt < (int)Param( MODULE_NUMBER ); cnt++ )
+	for( int cnt=0; cnt < (int)_self[ MODULE_NUMBER ]; cnt++ )
 		 _techs.push_back( refGame.GetModule( cnt )->Param( INTERNAL_NAME ) );
 
-	_self[ INTERNAL_NAME ] = _nrpApp.GetFreeInternalName( this );
+	_self[ INTERNAL_NAME ] = _nrpApp.GetFreeInternalName( *this );
 	assert( ((NrpText)_self[ INTERNAL_NAME ]).size() > 0 );
 
-	CNrpScreenshot* pgList = _nrpApp.GetScreenshot( _self[ INTERNAL_NAME ] );
+	CNrpExtInfo* pgList = _nrpApp.GetExtInfo( _self[ INTERNAL_NAME ] );
 	assert( pgList != NULL );
 	if( pgList != NULL )
 	{
@@ -153,11 +154,9 @@ NrpText CNrpGame::Save( const NrpText& saveFolder )
 	}
 
 	IniFile sv( saveFile );
-	for( u32 i=0; i < _techs.size(); i++ )
-		 sv.Set( SECTION_TECHS, CreateKeyTech(i), _techs[ i ] );
-
-	for( u32 i=0; i < _genres.size(); i++ )
-		sv.Set( SECTION_GENRES, CreateKeyGenre(i),_genres[ i ] );
+	sv.Set( SECTION_TECHS, CreateKeyTech, _techs );
+	sv.Set( SECTION_GENRES, CreateKeyGenre, _genres);
+	sv.Set( SECTION_PLATFORMS, CreateKeyPlatform, _platforms );
 
 	assert( _history );
 	if( _history )
@@ -197,11 +196,15 @@ void CNrpGame::Load( const NrpText& loadPath )
 
 	INrpConfig::Load( loadFile );
 	IniFile rv( loadFile );
-	for( int i=0; i < (int)_self[ MODULE_NUMBER ]; ++i )
-		_techs.push_back( rv.Get( SECTION_TECHS, CreateKeyTech(i), NrpText("") ) );
 
-	for( int i=0; i < (int)_self[ GENRE_MODULE_NUMBER ]; ++i )
-		_genres.push_back( rv.Get( SECTION_GENRES, CreateKeyGenre(i), NrpText("") ) );
+	rv.Get( SECTION_TECHS, CreateKeyTech, -1, _techs );
+	_self[ MODULE_NUMBER ] = static_cast< int >( _techs.size() );
+
+	rv.Get( SECTION_GENRES, CreateKeyGenre, -1,	_genres );
+	_self[ GENRE_MODULE_NUMBER ] = static_cast< int >( _genres.size() );
+
+	rv.Get( SECTION_PLATFORMS, CreateKeyPlatform, -1, _platforms );
+	_self[ PLATFORMNUMBER ] = static_cast< int >( _platforms.size() );
 
 	NrpText boxIni = loadFolder + "box.ini";
 	if( OpFileSystem::IsExist( boxIni ) )
@@ -217,7 +220,10 @@ void CNrpGame::Load( const NrpText& loadPath )
 	else
 		_CreateHistory();
 
-	CNrpScreenshot* pgList = CNrpApplication::Instance().GetScreenshot( _self[ INTERNAL_NAME ] );
+	CNrpExtInfo* pgList = CNrpApplication::Instance().GetExtInfo( _self[ INTERNAL_NAME ] );
+	if( !pgList )
+		Log( HW ) << "Can't find extInfo for " << (NrpText)_self[ INTERNAL_NAME ] << " when load from " << loadFile << term;
+
 	assert( pgList != NULL );
 	if( pgList != NULL )
 	{
@@ -226,7 +232,6 @@ void CNrpGame::Load( const NrpText& loadPath )
 		assert( pgList->GetBoxImages().size() > 0 );
 		if( pgList->GetBoxImages().size() )	
 			_self[ VIEWIMAGE ] = pgList->GetBoxImages()[ 0 ];
-
 	}
 }
 
@@ -313,7 +318,7 @@ void CNrpGame::GameBoxSaling( int number )
 	}
 }
 
-bool CNrpGame::IsGenreAvaible( const NrpText& name )
+bool CNrpGame::IsGenreAvaible( const NrpText& name ) const
 {
 	for( size_t k=0; k < _genres.size(); k++ )
 		if( _genres[ k ] == name )

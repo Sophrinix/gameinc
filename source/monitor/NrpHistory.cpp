@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "NrpHistory.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 #include "IniFile.h"
 
 static const NrpText KEY_SALE( L"sale" );

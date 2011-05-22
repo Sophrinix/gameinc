@@ -41,8 +41,7 @@ protected:
 	s32 _length;
 	s32 _showTime, _startTimeShow;
 	video::SColor _opacity;
-	void _UpdateImagePositions();
-	void _CreateNewPositions(  s32 radius, s32 step );
+	void _CreateNewPositions();
 };
 
 }//namespace gui

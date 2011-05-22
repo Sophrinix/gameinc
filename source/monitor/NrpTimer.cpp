@@ -31,7 +31,10 @@ void CNrpTimer::draw()
 		_active = false;  
 
 		if( _loop )
+		{
 			_startTime = GetTickCount();
+			_active = true;
+		}
 		else
 			if( CNrpGUIEnvironment* env = dynamic_cast< CNrpGUIEnvironment* >( Environment) )
 				env->addToDeletionQueue( this );

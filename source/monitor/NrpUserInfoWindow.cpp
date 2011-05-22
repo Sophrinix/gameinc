@@ -168,12 +168,12 @@ bool CNrpUserInfoWindow::OnEvent(const SEvent& event)
 				Dragging = IsDraggable;
 				if (Parent)
 					Parent->bringToFront(this);
-				DoLuaFunctionsByType( GUIELEMENT_LMOUSE_DOWN, this, (void*)&event );
+				PCall( GUIELEMENT_LMOUSE_DOWN, this, (void*)&event );
 				return true;
 			case EMIE_RMOUSE_LEFT_UP:
 			case EMIE_LMOUSE_LEFT_UP:
 				Dragging = false;
-				DoLuaFunctionsByType( EMIE_LMOUSE_LEFT_UP ? 
+				PCall( EMIE_LMOUSE_LEFT_UP ? 
 											GUIELEMENT_LMOUSE_LEFTUP : 
 											GUIELEMENT_RMOUSE_LEFTUP , 
 									  this, (void*)&event );
@@ -220,7 +220,7 @@ void CNrpUserInfoWindow::updateAbsolutePosition()
 //! draws the element and its children
 void CNrpUserInfoWindow::draw()
 {
-	DoLuaFunctionsByType( GUIELEMENT_BEFORE_DRAW, this );
+	PCall( GUIELEMENT_BEFORE_DRAW, this );
 
 	if ( IsVisible )
 	{
@@ -267,7 +267,7 @@ void CNrpUserInfoWindow::draw()
 
 	IGUIElement::draw();
 
-	DoLuaFunctionsByType( GUIELEMENT_AFTER_DRAW, this );
+	PCall( GUIELEMENT_AFTER_DRAW, this );
 }
 
 

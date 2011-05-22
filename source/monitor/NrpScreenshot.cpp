@@ -5,20 +5,28 @@
 #include "nrpConfig.h"
 #include "NrpGame.h"
 
-#define SCREENSHOTNAME( index, psx ) "scr_" + NrpText( index ) + (psx)
-#define SPLASHSHOTNAME( index, psx ) "spl_" + NrpText( index ) + (psx)
+//Префикс для картинок, которые будем искать( скрины и сплеши )
+static const NrpText SCREEN( L"scr_" );
+static const NrpText SPLASH( L"spl_" );
+static const NrpText NO_IMAGE_PNG( L"media/textures/no_image.png" );
 
+//Функция возвращает относительное имя файла
+NrpText _GetImageFileName( const NrpText& prefix, int index, const NrpText& ext )
+{
+	return prefix + NrpText( index ) + ext;
+}
 
 namespace nrp
 {
-CLASS_NAME CLASS_IMAGEGAMELIST( "CNrpGameImageList" );
+CLASS_NAME CLASS_EXTINFO( "CNrpExtInfo" );
 
-CNrpScreenshot::CNrpScreenshot(void) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
+CNrpExtInfo::CNrpExtInfo(void) : INrpConfig( CLASS_EXTINFO, "" )
 {
+	//Инициализация переменных, которые используются в классе
 	InitializeOptions_();
 }
 
-CNrpScreenshot::CNrpScreenshot( const CNrpScreenshot& a ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
+CNrpExtInfo::CNrpExtInfo( const CNrpExtInfo& a ) : INrpConfig( CLASS_EXTINFO, "" )
 {
 	InitializeOptions_();
 	_self[ INTERNAL_NAME ] = a[ INTERNAL_NAME ];
@@ -29,33 +37,37 @@ CNrpScreenshot::CNrpScreenshot( const CNrpScreenshot& a ) : INrpConfig( CLASS_IM
 	_self[ IMAGESBOXNUMBER ] = static_cast< int >( _imagesBoxPath.size() );
 }
 
-CNrpScreenshot::CNrpScreenshot( const NrpText& fileName ) : INrpConfig( CLASS_IMAGEGAMELIST, "" )
+CNrpExtInfo::CNrpExtInfo( const NrpText& fileName ) : INrpConfig( CLASS_EXTINFO, "" )
 {
 	InitializeOptions_();
+	//Загрузка данных из файла
 	Load( fileName );
 }
 
-CNrpScreenshot::~CNrpScreenshot(void)
+CNrpExtInfo::~CNrpExtInfo(void)
 {
 }
 
-bool CNrpScreenshot::IsMyYear( int year )
+//Функция проверяет меньше ли указанный год, чем год выхода игры
+bool CNrpExtInfo::IsMyYear( int year )
 {
 	return _self[ STARTDATE ].As<NrpTime>().RYear() <= year;
 }
 
-int CNrpScreenshot::GetEqualeRating( CNrpGame* game )
+int CNrpExtInfo::GetEqualeRating( const CNrpGame& game )
 {
 	int equale = 0;
+	//подсчитаем количество совпавших жанров
 	for( u32 i=0; i < _genres.size(); i++ )
 	{
-		equale += game->IsGenreAvaible( _genres[ i ] ) ? 1 : 0;
+		equale += game.IsGenreAvaible( _genres[ i ] ) ? 1 : 0;
 	}
 
+	//вычислим процент совпадения для игры по жанрам
 	return ( equale * 100 / _genres.size() );
 }
 
-bool CNrpScreenshot::_AddImage( STRINGS& art, const NrpText& fileName )
+bool CNrpExtInfo::_AddImage( STRINGS& art, const NrpText& fileName )
 {
 	if( OpFileSystem::IsExist( fileName ) )
 	{
@@ -66,46 +78,63 @@ bool CNrpScreenshot::_AddImage( STRINGS& art, const NrpText& fileName )
 	return false;
 }
 
-void CNrpScreenshot::Load( const NrpText& fileName )
+void CNrpExtInfo::_LoadImages( STRINGS& imgs, const NrpText& folder, const NrpText& prefix )
 {
+	int k = 0;
+	bool mayAdded = true;
+
+	while( mayAdded )
+	{
+		mayAdded = false;
+
+		mayAdded |= _AddImage( imgs, folder + _GetImageFileName( prefix, k, ".png" ) );
+		mayAdded |= _AddImage( imgs, folder + _GetImageFileName( prefix, k, ".jpg" ) );
+
+		k++;
+	}
+
+	if( !imgs.size() )
+	{
+		Log(HW) << "can't find any image for game " << (NrpText)_self[ INTERNAL_NAME ] << " with prefix " << prefix << term;
+		imgs.push_back( NO_IMAGE_PNG );
+	}
+}
+
+void CNrpExtInfo::Load( const NrpText& fileName )
+{
+	//Загрузим данные из файла
 	INrpConfig::Load( fileName );
+	//теперь получим доступ к файлу с данными, для дальнейшей работы
 	IniFile rv( fileName );
 
 	assert( ((NrpText)_self[ INTERNAL_NAME ]).size() );
 
+	//получим имя корневой папки
 	NrpText folder = OpFileSystem::UpDir( fileName );
 	//найдем все скриншоты игры
-	int k = 0;
-	bool mayAdded = true;
-	
-	while( mayAdded )
-	{
-		mayAdded = false;
-
-		mayAdded |= _AddImage( _imagesPath, folder + SCREENSHOTNAME( k, ".png" ) );
-		mayAdded |= _AddImage( _imagesPath, folder + SCREENSHOTNAME( k, ".jpg" ) );
-
-		k++;
-	}
+	_LoadImages( _imagesPath, folder, SCREEN );
 	_self[ IMAGESNUMBER ] = static_cast< int >( _imagesPath.size() );
-	//найдем все скриншоты заставок
-	k = 0;
-	mayAdded = true;
-	while( mayAdded )
-	{
-		mayAdded = false;
-		mayAdded |= _AddImage( _imagesBoxPath, folder + SPLASHSHOTNAME( k, ".png" ) );
-		mayAdded |= _AddImage( _imagesBoxPath, folder + SPLASHSHOTNAME( k, ".jpg" ) );
 
-		k++;
-	}
+	//найдем все скриншоты заставок
+	_LoadImages( _imagesBoxPath, folder, SPLASH );
 	_self[ IMAGESBOXNUMBER ] = static_cast< int >( _imagesBoxPath.size() );
 	_self[ NAME ] = _self[ INTERNAL_NAME ];
 
-	rv.Get( SECTION_GENRES, CreateKeyGenre,(int)_self[ GENRE_MODULE_NUMBER ], _genres );
+	//загрузим жанры, которые связаны с этим набором изображений
+	rv.Get( SECTION_GENRES, CreateKeyGenre, -1, _genres );
+	assert( _genres.size() > 0 && "can't find any genres for CNrpScreenshot" );
+	if( _genres.size() == 0 )
+		Log( HW ) << "CNrpScreenshot Warning: Can't find any genres in " << fileName << term;
+
+	_self[ GENRE_MODULE_NUMBER ] = static_cast< int >( _genres.size() );
+
+	rv.Get( SECTION_RECENSE, CreateKeyRecense, -1, _recenses );
+	if( _recenses.size() == 0 )
+		Log( HW ) << "CNrpScreenshot Warning: Can't find any recenses in " << fileName << term;
+	
 }
 
-void CNrpScreenshot::InitializeOptions_()
+void CNrpExtInfo::InitializeOptions_()
 {
 	Add<NrpText>( INTERNAL_NAME, "" );
 	Add( STARTDATE, NrpTime( 0. ) );
@@ -115,9 +144,9 @@ void CNrpScreenshot::InitializeOptions_()
 	Add<int>( GENRE_MODULE_NUMBER, 0 );
 }
 
-NrpText CNrpScreenshot::ClassName()
+NrpText CNrpExtInfo::ClassName()
 {
-	return CLASS_IMAGEGAMELIST;
+	return CLASS_EXTINFO;
 }
 
 }//end namespace nrp

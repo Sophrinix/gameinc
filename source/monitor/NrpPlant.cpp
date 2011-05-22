@@ -124,7 +124,7 @@ void CNrpPlant::BeginNewDay()
 		//не кончился ли срок рекламирования товара
 		if( _reklameWorks[ k ]->Param( FINISHED ) )
 		{
-			_nrpApp.DoLuaFunctionsByType( APP_REKLAME_FINISHED, _reklameWorks[ k ] );
+			_nrpApp.PCall( APP_REKLAME_FINISHED, _reklameWorks[ k ] );
 			delete _reklameWorks[ k ];
 			//если кончился, то надо удалить его из списка активных заданий
 			_reklameWorks.erase( k );

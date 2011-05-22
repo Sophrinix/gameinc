@@ -131,8 +131,8 @@ void CNrpTechnology::Load( const NrpText& fileName )
 	rv.Get( SECTION_REQUIRE_TECH, _techRequires );
 	rv.Get( SECTION_REQUIRE_SKILL, _skillRequires );
 
-	if( _self[ STATUS ] == (int)TS_READY )
-		rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, (int)_self[ NEXTTECHNUMBER ], _futureTech );
+	rv.Get( SECTION_FUTURE_TECH, CreateKeyTech, -1, _futureTech );
+	_self[ NEXTTECHNUMBER ] = static_cast< int >( _futureTech.size() );
 }
 
 float CNrpTechnology::GetEmployerPosibility( CNrpUser* ptrUser )

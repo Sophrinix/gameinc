@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "NrpGuiTextTimeAnimator.h"
-#include "TimeHelpers.h"
+#include "NrpTime.h"
 
 using namespace nrp;
 

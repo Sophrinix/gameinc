@@ -180,7 +180,19 @@ void CNrpProjectModule::Load( const NrpText& fileName )
 {
 	assert( OpFileSystem::IsExist( fileName ) );
 		
+	//загрузка параметров из общей секции
 	INrpProject::Load( fileName );
+
+	assert( (int)_self[ CODEPASSED ] <= (int)_self[ CODEVOLUME] );
+	//костыль!!!
+	if( (int)_self[ CODEPASSED ] > (int)_self[ CODEVOLUME ] )
+	{
+		Log( HW ) << "Ошибочные значения параметров CODEVOLUME < CODEPASSED файле " << fileName << term;
+		Log( HW ) << "Параметр будет изменен, значение " << (int)_self[ CODEPASSED ] + 10 << term;
+		_self[ CODEVOLUME ] = (int)_self[ CODEPASSED ] + 10;
+	}
+
+	//загрузка спцифических параметров
 	IniFile rv( fileName );
 	rv.Get( SECTION_REQUIRE_TECH, _techRequires );
 	rv.Get( SECTION_REQUIRE_SKILL, _skillRequires );

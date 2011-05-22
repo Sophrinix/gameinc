@@ -2,7 +2,7 @@
 #define _INCLUDE_NRPBOOKKEEPING_H_
 
 #include "NrpText.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 
 namespace nrp
 {

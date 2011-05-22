@@ -38,6 +38,7 @@ void CLoadingScreen::render( int progress, const nrp::NrpText& text  )
 	core::recti rect_fill( sizer.Width / 4 + 2, sizer.Height * 4 / 5 + 2,
 							sizer.Width * 3 / 4 - 2, sizer.Height * 4 / 5 + 20 - 2 );
 
+	core::recti rectText = rect_fill;
 	core::dimension2di rf_size = rect_fill.getSize();
 
 	rect_fill.LowerRightCorner.X = rect_fill.UpperLeftCorner.X + (s32)(progress / 100.f * rf_size.Width);
@@ -45,7 +46,7 @@ void CLoadingScreen::render( int progress, const nrp::NrpText& text  )
 	_driver->draw2DRectangle( video::SColor( 0xffffffff ), rect_fill );
 
 	if( _font )
-		_font->draw( const_cast< NrpText& >( text ), rect_fill - core::position2di( 0, rect_fill.getHeight() ), video::SColor( 0xffffffff ), true, true, NULL );
+		_font->draw( const_cast< NrpText& >( text ), rectText - core::position2di( 0, rect_fill.getHeight() ), video::SColor( 0xffffffff ), true, true, NULL );
 
 	_driver->endScene();
 }

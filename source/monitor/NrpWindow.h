@@ -3,16 +3,19 @@
 #include <vector>
 #include "LuaFunctionality.h"
 
+
 namespace irr
 {
 namespace gui
 {
+	class CImageGUISkin;
+
 class IGUIButton;
 
 class CNrpWindow : public IGUIWindow, public ILuaFunctionality
 {
 public:
-	
+	typedef enum { ST_NONE=0, ST_25D } SORT_TYPE;	
 	//! constructor
 	CNrpWindow( IGUIEnvironment* environment, IGUIElement* parent, video::ITexture* texture, s32 id, core::rect<s32> rectangle);
 
@@ -73,7 +76,6 @@ public:
 	virtual void setAlphaBlend( u32 new_alpha );
 
 	virtual void setModal();
-
 protected:
 	
 	typedef enum { BTNE_CLOSE=0, BTNE_MINIMAZE, BTNE_MAXIMAZE } BUTTON_NAME;
@@ -84,8 +86,9 @@ protected:
 	bool Dragging, IsDraggable;
 	bool DrawBackground;
 	bool DrawTitlebar;
+	SORT_TYPE _sortType;
 
-
+	void _ApplyStyle( CImageGUISkin* skin );
 };
 
 } // end namespace gui

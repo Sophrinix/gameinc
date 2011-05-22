@@ -162,7 +162,7 @@ void CNrpButton::_ClickButton()
 		Parent->OnEvent(newEvent);
 	}
 
-	DoLuaFunctionsByType( EGET_BUTTON_CLICKED, (void*)this );
+	PCall( EGET_BUTTON_CLICKED, (void*)this );
 }
 
 bool CNrpButton::isPointInside(const core::position2di& point) const
@@ -389,7 +389,8 @@ void CNrpButton::setImage(video::ITexture* image, const core::rect<s32>& pos)
 //! Sets an image which should be displayed on the button when it is in pressed state. 
 void CNrpButton::setPressedImage(video::ITexture* image)
 {
-	_SwapImage( pressedImage_, image, pressedImageRect_, core::rect<s32>(core::position2d<s32>(0,0), image->getOriginalSize() ) );
+	_SwapImage( pressedImage_, image, pressedImageRect_, core::rect<s32>(core::position2d<s32>(0,0),
+																		 image ? image->getOriginalSize() : core::dimension2du( 0, 0 ) ) );
 }
 
 //! Sets the image which should be displayed on the button when it is in its pressed state.
@@ -521,7 +522,7 @@ bool CNrpButton::isScalingImage() const
 
 void CNrpButton::setOnClickAction( int funcRef )
 {
-	AddLuaFunction( EGET_BUTTON_CLICKED, funcRef );
+	Bind( EGET_BUTTON_CLICKED, funcRef );
 }
 
 }//namespace gui

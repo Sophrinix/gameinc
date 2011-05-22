@@ -284,6 +284,7 @@ private:
 	gui::IGUIScrollBar* HorizontalScrollBar;
 	bool Clip;
 	bool _drawBack;
+	core::position2di _cursorPos;
 	bool MoveOverSelect;
 	bool Selecting;
 	s32  CurrentResizedColumn;

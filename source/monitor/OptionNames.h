@@ -4,6 +4,7 @@
 namespace nrp
 {
 
+OPTION_NAME MODULE_NUMBER( L"moduleNumber" );
 OPTION_NAME GAME_ENGINE_NAME( L"GameEngineName" );
 OPTION_NAME LICENSE_NAME( L"licenseName" );
 OPTION_NAME SCENARIO_NAME( L"scenarioName" );

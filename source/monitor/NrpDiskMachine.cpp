@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "NrpDiskMachine.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 
 namespace nrp
 {

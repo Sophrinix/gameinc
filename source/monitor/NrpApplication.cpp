@@ -23,7 +23,7 @@
 #include "NrpPda.h"
 #include "NrpHistory.h"
 #include "NrpGameTime.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 #include "IniFile.h"
 #include "nrpScript.h"
 #include "NrpHtmlEngineConfig.h"
@@ -443,7 +443,10 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 		PNrpGame game = new CNrpGame( fileName );
 		if( (bool)(*game)[ LOADOK ] )
 			_games.push_back( game );
+		else
+			Log( HW ) << "!!!WARNING!!! Can't load game from " << fileName << term;
 	}
+	_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
 
 	for( int k=0; k < (int)_self[ INVENTIONSNUMBER ]; k++ )
 	{
@@ -480,9 +483,9 @@ void CNrpApplication::LoadScreenshot( const NrpText& fileName )
 	{
 		NrpText scrFile = rv.Get( SECTION_OPTIONS, CreateKeyScreenshot( i ), NrpText("") );
 
-		CNrpScreenshot* pScr = new CNrpScreenshot( scrFile );
+		CNrpExtInfo* pScr = new CNrpExtInfo( scrFile );
 		
-		if( FindByNameAndIntName< SCREENSHOTS, CNrpScreenshot>( _screenshots, (*pScr)[ INTERNAL_NAME ], NULL ) == NULL )
+		if( FindByNameAndIntName< SCREENSHOTS, CNrpExtInfo>( _screenshots, (*pScr)[ INTERNAL_NAME ], NULL ) == NULL )
 			_screenshots.push_back( pScr );
 		else
 		{
@@ -494,8 +497,8 @@ void CNrpApplication::LoadScreenshot( const NrpText& fileName )
 
 void CNrpApplication::CreateProfile( const NrpText& profileName, const NrpText& companyName )
 {
-	Param( PROFILENAME ) = profileName;
-	Param( PROFILECOMPANY ) = companyName;
+	_self[ PROFILENAME ] = profileName;
+	_self[ PROFILECOMPANY ] = companyName;
 
 	_InitialyzeSaveDirectories( profileName );
 }
@@ -687,7 +690,7 @@ void CNrpApplication::CreateNewFreeUsers()
 			_users.push_back( (*gIter->getValue())[ cnt ] );
 
 	if( _self[ USERNUMBER ] != static_cast< int >( _users.size() ) )
-		DoLuaFunctionsByType( APP_USER_MARKETUPDATE, NULL );
+		PCall( APP_USER_MARKETUPDATE, NULL );
 
 	_self[ USERNUMBER ] = static_cast< int >( _users.size() );
 }
@@ -727,52 +730,64 @@ CNrpApplication& nrp::CNrpApplication::Instance()
 	return *globalApplication;
 }
 
-template< class B > int GetQuality_( B* ptrObject )
+void CNrpApplication::_UpdateGameRating( CNrpGame& game )
 {
-	if( ptrObject )
-		return (*ptrObject)[ QUALITY ];
-	return 0;
-}
+	if( !(bool)game[ GAMEISSALING ] )
+		return;
 
-void CNrpApplication::_UpdateGameRating( CNrpGame* ptrGame, GAME_RATING_TYPE typeRating )
-{
-	assert( ptrGame );
-	int rating = 0;
+	std::map< int, int > qualityMap;
 
-	CNrpCompany* cmp = ptrGame->Param( PARENTCOMPANY ).As<PNrpCompany>();
-	if( ptrGame && cmp )
-	{		
-		CNrpGame& refGame = *ptrGame;
-		int number = 0;
+	//вычисляем сколько месяцев на рынке игра понижаем рейтинг из-за времени на рынке
+	int monthInMarket = game[ STARTDATE ].As<NrpTime>().GetMonthToDate( _self[ CURRENTTIME ].As<NrpTime>() ) + 1;
+	int bs = (bool)game[ BESTSALER ] ? 50 : 0;
 
-		rating = GetQuality_( cmp->GetGameEngine( refGame[ GAME_ENGINE ].As<NrpText>() ) );
-
-		for( int k=0; k < (int)refGame[ MODULE_NUMBER ]; k++ )
-		{
-			NrpText name = ptrGame->GetTechName( k );
-			rating += GetQuality_( GetTechnology( name ) );
-			rating /= 2;
-		}
-
-		//вычисляем сколько месяцев на рынке игра
-		int monthInMarket = refGame[ STARTDATE ].As<NrpTime>().GetMonthToDate( _self[ CURRENTTIME ].As<NrpTime>() ) + 1;
-		//понижаем рейтинг из-за времени на рынке
-		rating = static_cast< int >( rating / (monthInMarket > 12 ? 12 :  monthInMarket) );
-
-		//результат подсчета рейтинга
-		//todo: надо както обходить рейтинг хитовых игр
-		if( CNrpHistoryStep* step = ptrGame->GetHistory()->AddStep( _self[ CURRENTTIME ].As<NrpTime>() ) )
-			(*step)[ CURRENTGAMERATING ] += (int)rating;
+	if( (bool)game[ NPC_GAME ] )
+	{
+		//игры которые не выпущены игроком, расчитывают рейтинг простым снижением
+		qualityMap[ PT_VIDEOTECH ] = (int)game[ STARTGRAPHICRATING ] / monthInMarket;
+		qualityMap[ PT_SOUNDTECH ] = (int)game[ STARTSOUNDRATING ] / monthInMarket;
+		qualityMap[ PT_GENRE ] = (int)game[ CURRENTGENRERATING ] / monthInMarket;
 	}
-}
+	else
+	{
+		//подсчитаем рейтинги модулей для игр, которые были выпущены игроком
+		for( int k=0; k < (int)game[ MODULE_NUMBER ]; k++ )
+		{
+			NrpText name = game.GetTechName( k );
+			if( CNrpTechnology* tech = GetTechnology( name ) )
+			{
+				int tg = (*tech)[ TECHGROUP ];
+				int rt = (int)(*tech)[ QUALITY ] / monthInMarket;
+				
+				//распределим технологии по группам
+				if( qualityMap[ tg ] == 0 )
+					qualityMap[ tg ] = rt;
+				else
+					qualityMap[ tg ] = (qualityMap[ tg ] + rt) / 2;		
+			}
+		}
+	}
 
-void CNrpApplication::UpdateGameRatings( CNrpGame* ptrGame, bool firstTime )
-{
-		_UpdateGameRating( ptrGame, GRT_GENERAL );
-	/*	ptrGame->SetValue<int>( STARTGRAPHICRATING, GetGameRating_( ptrGame, GRT_VIDEO ) );
-		ptrGame->SetValue<int>( STARTGENRERATING, GetGameRating_( ptrGame, GRT_GENRE ) );
-		ptrGame->SetValue<int>( STARTSOUNDRATING, GetGameRating_( ptrGame, GRT_SOUND ) );
-		ptrGame->SetValue<int>( STARTADVFUNCRATING, GetGameRating_( ptrGame, GRT_ADVFUNC ) ); */
+	//результат подсчета рейтинга
+	if( CNrpHistoryStep* step = game.GetHistory()->AddStep( _self[ CURRENTTIME ].As<NrpTime>() ) )
+	{
+		//занесем рейтинг в историю игры
+		//если игрушка хитовая, то её рейтинг не опускается ниже 50%
+		//todo: Слежение за хитовостью игры ограничением рейтинга можно перенести в саму игру
+		game[ CURRENTGRAPHICRATING ] = (std::max)( bs, qualityMap[ PT_VIDEOTECH ] );
+		step->AddValue( CURRENTGRAPHICRATING, (int)game[ CURRENTGRAPHICRATING ] );
+		
+		game[ CURRENTSOUNDRATING ] = (std::max)( bs, qualityMap[ PT_SOUNDTECH ] );
+		step->AddValue( CURRENTSOUNDRATING, (int)game[ CURRENTSOUNDRATING ] );
+
+		game[ CURRENTGENRERATING ] = (std::max)( bs, qualityMap[ PT_GENRE ] );
+		step->AddValue( CURRENTGENRERATING, (int)game[ CURRENTGENRERATING ] );
+
+		step->AddValue( CURRENTBUGRATING, (int)game[ CURRENTBUGRATING ] );
+	
+		int midRating = ( qualityMap[ PT_VIDEOTECH ] + qualityMap[ PT_SOUNDTECH ] + qualityMap[ PT_GENRE ] ) / 3;
+		step->AddValue( CURRENTGAMERATING, midRating );
+	}
 }
 
 int CNrpApplication::_GetTechsByGroup( int type, TECHS& arrayt )
@@ -850,8 +865,7 @@ void CNrpApplication::_BeginNewMonth()
 
 	//обновляем рейтинги игр
 	for( u32 i=0; i < _games.size(); i++ )
-		 if( _games[ i ]->Param( GAMEISSALING ) )
-			 UpdateGameRatings( _games[ i ] );
+		_UpdateGameRating( *_games[ i ] );
 
 	CNrpBridge::Instance().Update();
 }
@@ -879,33 +893,53 @@ CNrpTechnology* CNrpApplication::GetBoxAddon( const NrpText& name )
 	return FindByNameAndIntName< TECHS, CNrpTechnology >( _boxAddons, name );
 }
 
-void CNrpApplication::AddGameToMarket( CNrpGame* game )
+void CNrpApplication::AddGameToMarket( CNrpGame& game )
 {
-	assert( game != NULL );
-	if( !game || game->Param( GAMEISSALING ) )
+	if( (bool)game[ GAMEISSALING ] )
 		return;
 
-	CNrpGame& refGame = *game;
-	refGame[ GAMEISSALING ] = true;
+	game[ GAMEISSALING ] = true;
 
-	if( FindByNameAndIntName< GAMES, CNrpGame >( _games, refGame[ INTERNAL_NAME ] ) == NULL )
+	//посмотрим чтобы такой игры не было на рынке
+	if( FindByNameAndIntName< GAMES, CNrpGame >( _games, game[ INTERNAL_NAME ] ) == NULL )
 	{
-		//когда игра выходит на рынок, то она влияет на него
-		for( int i=0; i < (int)refGame[ GENRE_MODULE_NUMBER ]; i++ )
+		//если игра не скриптовая, то надо расчитать и запомнить начальные рейтинги
+		if( !(bool)game[ NPC_GAME ] )
 		{
-			NrpText genreName = game->GetGenreName( i );
+			_UpdateGameRating( game );
+			game[ STARTGAMERATING ] = game[ CURRENTGAMERATING ];
+			game[ STARTGRAPHICRATING ] = game[ CURRENTGRAPHICRATING ];
+			game[ STARTSOUNDRATING ] = game[ CURRENTSOUNDRATING ];
+			game[ STARTGENRERATING ] = game[ CURRENTGENRERATING ];
+		}
+		else
+		{//когда игра загружается по ходу игры, то её начальные рейтинги становятся текущими
+			//до первого обновления рейтингов
+			game[ CURRENTGAMERATING ] = game[ STARTGAMERATING ];
+			game[ CURRENTGRAPHICRATING ] = game[ STARTGRAPHICRATING ];
+			game[ CURRENTSOUNDRATING ] = game[ STARTSOUNDRATING ];
+			game[ CURRENTGENRERATING ] = game[ STARTGENRERATING ];
+		}
+
+		//когда игра выходит на рынок, то она влияет на него
+		for( int i=0; i < (int)game[ GENRE_MODULE_NUMBER ]; i++ )
+		{
+			NrpText genreName = game.GetGenreName( i );
 			//влияние приводит к изменению интереса к жанру игры
 			CNrpTechnology* tech = GetTechnology( genreName );
 			//такой жанр уже есть на рынке
 			if( tech != NULL )
 			{
-				(*tech)[ INTEREST ] -= (int)refGame[ STARTGAMERATING ] / 1000.f * (float)(*tech)[ INTEREST ];
+				//значение каждого последующего жанра в игре оказывает все меньшее влияние
+				float koeff = (int)game[ STARTGAMERATING ] / (1000.f + i*300.f) * (float)(*tech)[ INTEREST ];
+				(*tech)[ INTEREST ] -= koeff;
 				Log(HW) << "techName " << (NrpText)(*tech)[ NAME ] << ": Interest " << (float)(*tech)[ INTEREST ] << term;
 			}
 			else //игры такого жанра на рынке нет, значит надо добавить интереса к игре
 			{
 				NrpText fileName = GetLink( genreName );
 				assert( fileName.size() > 0 );
+				//и вывести технологию на рынок
 				if( fileName.size() > 0 )
 				{
 					CNrpTechnology* newGenre = new CNrpTechnology( fileName );
@@ -914,9 +948,11 @@ void CNrpApplication::AddGameToMarket( CNrpGame* game )
 			}
 		}
 
-		_games.push_back( game );
-		_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
+		AddGame( &game );
+		PCall( APP_NEWGAME_ONMARKET, this, &game );
 	}
+	else
+		Log( HW ) << "!!!CNrpApplication::AddGameToMarket::Warning!!! Game " << (NrpText)game[ INTERNAL_NAME ] << " also have on market" << term;
 }
 
 //интерес к жанру меняется в противоположную сторону на 10% от рейтинга игры
@@ -950,14 +986,14 @@ CNrpRetailer* CNrpApplication::GetRetailer( const NrpText& name )
 }
 
 //получение имени изображения с которым будет дальше связана игра
-NrpText CNrpApplication::GetFreeInternalName( CNrpGame* game )
+NrpText CNrpApplication::GetFreeInternalName( const CNrpGame& game )
 {
 	SCREENSHOTS	thisYearAndGenreImgs;
 	
 	int minimumRating = 1;
 	int year = _self[ CURRENTTIME ].As<NrpTime>().RYear();
 	
-	if( CNrpGameEngine* ge = GetGameEngine( (*game)[ GAME_ENGINE ].As<NrpText>() ) )
+	if( CNrpGameEngine* ge = GetGameEngine( game[ GAME_ENGINE ].As<NrpText>() ) )
 		year = (*ge)[ STARTDATE ].As<NrpTime>().RYear();
 
 	for( u32 i=0; i < _screenshots.size(); i++ )
@@ -991,13 +1027,13 @@ NrpText CNrpApplication::GetFreeInternalName( CNrpGame* game )
 	}
 
 	//!!!!!!!!надо както обработать эту ситуацию!!!!!!!!!!!!!!!!!
-	assert( NrpText("No find free name").size() == 0 );
+	assert( false && "No find free name" );
 	return "";
 }
 
-CNrpScreenshot* CNrpApplication::GetScreenshot( const NrpText& name )
+CNrpExtInfo* CNrpApplication::GetExtInfo( const NrpText& name )
 {
-	return FindByNameAndIntName< SCREENSHOTS, CNrpScreenshot >( _screenshots, name, NULL );
+	return FindByNameAndIntName< SCREENSHOTS, CNrpExtInfo >( _screenshots, name, NULL );
 }
 
 CNrpGame* CNrpApplication::GetGame( const NrpText& name )
@@ -1072,8 +1108,15 @@ void CNrpApplication::RemoveDevelopProject( const NrpText& name )
 void CNrpApplication::AddGame( CNrpGame* ptrGame )
 {
 	assert( ptrGame != NULL );
-	_games.push_back( ptrGame );
-	_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
+	CNrpGame* hG = GetGame( (NrpText)(*ptrGame)[ INTERNAL_NAME ] );
+
+	if( !hG ) 
+	{
+		_games.push_back( ptrGame );
+		_self[ GAMENUMBER ] = static_cast< int >( _games.size() );
+	}
+	else
+		Log( HW ) << "Also have game " << (NrpText)(*ptrGame)[ INTERNAL_NAME ] << " on market" << term;
 }
 
 void CNrpApplication::AddInvention( const NrpText& fileName, CNrpCompany& parentCompany )
@@ -1119,7 +1162,7 @@ void CNrpApplication::InventionFinished( CNrpInvention& ptrInvention )
 		}
 	}
 
-	DoLuaFunctionsByType( APP_INVENTION_FINISHED, tech );
+	PCall( APP_INVENTION_FINISHED, tech );
 	
 	delete _inventions[ delPos ];
 	_inventions.erase( delPos );
@@ -1185,13 +1228,15 @@ bool CNrpApplication::AddPlatform( CNrpPlatform* platform )
 
 void CNrpApplication::SetLink( const NrpText& name, const NrpText& pathto )
 {
-	assert( !_links.find( name )  );
+	LINK_MAP::Node* linkNode = _links.find( name );
+	assert( !linkNode  );
+
 	assert( pathto.size() > 0 );
 
-	if( _links.find( name ) == NULL )
-	{
+	if( !linkNode )
 		_links[ name ] = pathto;
-	}
+	else
+		Log( HW ) << "Link with internal name " << name << " also exist in " << linkNode->getValue() << term;
 }
 
 NrpText CNrpApplication::GetLink( const NrpText& name )

@@ -119,13 +119,16 @@ bool CNrpGuiLinkBox::_ButtonMouseUp( const irr::SEvent& event )
 	{
 		CNrpGUIEnvironment* ge = dynamic_cast< CNrpGUIEnvironment* >( Environment );
 		if( ge && ge->getDragObject() )
-			DoLuaFunctionsByType( GUIELEMENT_SET_DATA, this, ge->getDragObject() );
+			PCall( GUIELEMENT_SET_DATA, this, ge->getDragObject() );
 
 		if( isDraggable_ && ge)
+		{
 			ge->setDragObject( this, image_ );
+			PCall( GUIELEMENT_DRAG_START, this, NULL );
+		}
 	}
 
-	DoLuaFunctionsByType( event.MouseInput.Event == EMIE_LMOUSE_LEFT_UP
+	PCall( event.MouseInput.Event == EMIE_LMOUSE_LEFT_UP
 		                  ? GUIELEMENT_LMOUSE_LEFTUP
 						  : GUIELEMENT_RMOUSE_LEFTUP, this );
 	return true;
@@ -144,7 +147,7 @@ bool CNrpGuiLinkBox::_ButtonLMouseDown( const irr::SEvent& event )
 		setPressed(true);
 
 	Environment->setFocus(this);
-	DoLuaFunctionsByType( GUIELEMENT_LMOUSE_DOWN, this );
+	PCall( GUIELEMENT_LMOUSE_DOWN, this );
 	return true;
 }
 

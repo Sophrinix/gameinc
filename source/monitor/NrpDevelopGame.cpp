@@ -160,7 +160,7 @@ void CNrpDevelopGame::ModuleFinished( IWorkingModule& module )
 	}
 
 	//вызовем функцию скрипта, которая отвечает за обработку события завершения обработки модуля
-	_nrpApp.DoLuaFunctionsByType( APP_MODULE_FINISHED, this, &module );
+	_nrpApp.PCall( APP_MODULE_FINISHED, this, &module );
 }
 
 NrpText CNrpDevelopGame::Save( const NrpText& folderSave )
@@ -209,6 +209,7 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 	for( int i=0; i < (int)_self[ MODULE_NUMBER ]; ++i )
 	{
 		NrpText saveFile = rf.Get( SECTION_MODULES, CreateKeyModule(i), NrpText("") );
+		
 		CNrpProjectModule* tech = new CNrpProjectModule( PROJECT_TYPE( 0 ), *this );
 		tech->Load( saveFile );
 		_modules.push_back( tech );		
@@ -264,6 +265,7 @@ CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index )
 
 CNrpProjectModule* CNrpDevelopGame::GetModule( u32 index )
 {
+	assert( index < _modules.size() && "CNrpDevelopGame::GetModule index out of range" );
 	return index < _modules.size() ? _modules[ index ] : NULL; 
 }
 
@@ -275,6 +277,7 @@ CNrpProjectModule* CNrpDevelopGame::GetModule( const NrpText& name )
 			return _modules[ i ];
 	}
 
+	assert( false && "CNrpDevelopGame::GetModule can't find module with getting name" );
 	return NULL;
 }
 
@@ -291,6 +294,6 @@ void CNrpDevelopGame::ModuleTested( IWorkingModule& module )
 		uList[ k ]->SetSkill( SKILL_TESTING, growExp );
 	}
 
-	_nrpApp.DoLuaFunctionsByType( APP_MODULE_TESTED, this, &module );
+	_nrpApp.PCall( APP_MODULE_TESTED, this, &module );
 }
 }//end namespace nrp

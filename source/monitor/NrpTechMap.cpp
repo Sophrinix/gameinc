@@ -536,7 +536,6 @@ bool CNrpTechMap::OnEvent(const SEvent &event)
 {
 	if (IsEnabled)
 	{
-
 		switch(event.EventType)
 		{
 		case EET_GUI_EVENT:
@@ -581,8 +580,9 @@ bool CNrpTechMap::OnEvent(const SEvent &event)
 				case EMIE_RMOUSE_PRESSED_DOWN:
 					_rMouseDown = event.MouseInput.Event == EMIE_RMOUSE_PRESSED_DOWN;
 					_startTimeMouseDown = GetTickCount();
+					_cursorPos = core::position2di( event.MouseInput.X, event.MouseInput.Y );
 
-					if (Environment->hasFocus(this) &&
+					/*if (Environment->hasFocus(this) &&
 						VerticalScrollBar->isVisible() &&
 						VerticalScrollBar->getAbsolutePosition().isPointInside(p) &&
 						VerticalScrollBar->OnEvent(event))
@@ -593,7 +593,7 @@ bool CNrpTechMap::OnEvent(const SEvent &event)
 						HorizontalScrollBar->getAbsolutePosition().isPointInside(p) &&
 						HorizontalScrollBar->OnEvent(event))
 						return true;
-
+*/
 					if ( dragColumnStart( event.MouseInput.X, event.MouseInput.Y ) )
 					{
 						Environment->setFocus(this);
@@ -617,7 +617,7 @@ bool CNrpTechMap::OnEvent(const SEvent &event)
 						Environment->removeFocus(this);
 					}
 
-					if (Environment->hasFocus(this) &&
+					/*if (Environment->hasFocus(this) &&
 						VerticalScrollBar->isVisible() &&
 						VerticalScrollBar->getAbsolutePosition().isPointInside(p) &&
 						VerticalScrollBar->OnEvent(event))
@@ -631,24 +631,26 @@ bool CNrpTechMap::OnEvent(const SEvent &event)
 						HorizontalScrollBar->OnEvent(event))
 					{
 						return true;
-					}
+					}*/
 
 					selectNew( core::position2di( event.MouseInput.X, event.MouseInput.Y ) );
-					return true;
+				return true;
+
 				case EMIE_RMOUSE_LEFT_UP:
 					 _rMouseDown = false;
 				return true;
 
 				case EMIE_MOUSE_MOVED:
-					if (Selecting || MoveOverSelect)
+					if( Selecting )
 					{
-						if (getAbsolutePosition().isPointInside(p))
-						{
-							selectNew( core::position2di( event.MouseInput.X, event.MouseInput.Y) );
-							return true;
-						}
+						core::position2di currentPos( event.MouseInput.X, event.MouseInput.Y);				
+						VerticalScrollBar->setPos( VerticalScrollBar->getPos() + (_cursorPos - currentPos).Y );
+						HorizontalScrollBar->setPos( HorizontalScrollBar->getPos() + (_cursorPos - currentPos).X );
+						_cursorPos = currentPos;
+						return true;
 					}
-					break;
+				break;
+	
 				default:
 					break;
 				}
@@ -839,7 +841,7 @@ void CNrpTechMap::selectNew( core::position2di cell, bool onlyHover)
 			_selected.Y < static_cast< s32 >( Rows.size() ) &&
 			_selected.X < static_cast< s32 >( Rows[ _selected.Y ].Items.size() ) &&
 			Rows[ _selected.Y ].Items[ _selected.X ].assignTech )
-			DoLuaFunctionsByType( GUIELEMENT_SELECTED_AGAIN, this, Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology() );			
+			PCall( GUIELEMENT_SELECTED_AGAIN, this, Rows[ _selected.Y ].Items[ _selected.X ].assignTech->GetTechnology() );			
 
 		_selected = newSelected;
 	}
@@ -962,7 +964,7 @@ void CNrpTechMap::draw()
 						core::recti rr = scaleTextRect;
 						rr.UpperLeftCorner -= core::position2di( 2, 2 );
 						rr.LowerRightCorner += core::position2di( 2, 2 );
-						driver->draw2DRectangle( rr, colors[ 0 ], colors[ 1 ], colors[ 2 ], colors[ 3 ], &AbsoluteClippingRect );
+						//driver->draw2DRectangle( rr, colors[ 0 ], colors[ 1 ], colors[ 2 ], colors[ 3 ], &AbsoluteClippingRect );
 
 						driver->draw2DImage( txs, scaleTextRect, core::recti( core::position2di( 0, 0 ), txsSize ), 
 											&AbsoluteClippingRect, colors, true );
@@ -1008,7 +1010,7 @@ void CNrpTechMap::draw()
 
 	if( _rMouseDown && (GetTickCount() - _startTimeMouseDown > 1000) )
 	{
-		DoLuaFunctionsByType( GUIELEMENT_RMOUSE_HOLD, this );
+		PCall( GUIELEMENT_RMOUSE_HOLD, this );
 	}
 
 	IGUIElement::draw();

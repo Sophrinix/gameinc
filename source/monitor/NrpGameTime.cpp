@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "NrpGameTime.h"
 #include "NrpApplication.h"
-#include "TimeHelpers.h"
+#include "NrpTime.h"
 #include "irrlicht.h"
 
 //янв фев мрт апр май июн июл авг снт окт ноя дек	
@@ -35,7 +35,7 @@ bool CNrpGameTime::Update()
 	NrpTime& time = _nrpApp[ CURRENTTIME ].As<NrpTime>();
 	NrpTime oldTime( time );
 
-	if( GetTickCount() - lastTimeUpdate_ > static_cast< size_t >( (int)_nrpApp[ PAUSEBTWSTEP ] ) )
+	if( GetTickCount() - lastTimeUpdate_ > (int)_nrpApp[ PAUSEBTWSTEP ] )
 	{
 		lastTimeUpdate_ = GetTickCount();
 
@@ -49,19 +49,19 @@ bool CNrpGameTime::Update()
 			time.AppendDay();
 			time.RHour() = 8;
 			_nrpApp._BeginNewDay();
-			_nrpApp.DoLuaFunctionsByType( APP_DAY_CHANGE, this );
+			_nrpApp.PCall( APP_DAY_CHANGE, this );
 		}
 
 		if( time.RMonth() != oldTime.RMonth() )
 		{
 			_nrpApp._BeginNewMonth();
-			_nrpApp.DoLuaFunctionsByType( APP_MONTH_CHANGE, this );
+			_nrpApp.PCall( APP_MONTH_CHANGE, this );
 		}
 
 		if( time.RYear() != oldTime.RMonth() )
 		{
 			//app.BeginNewYear_();
-			_nrpApp.DoLuaFunctionsByType( APP_YEAR_CHANGE, this );
+			_nrpApp.PCall( APP_YEAR_CHANGE, this );
 		}
 
 		return true;

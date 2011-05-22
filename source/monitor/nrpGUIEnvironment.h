@@ -10,7 +10,6 @@
 
 #include <irrlicht.h>
 #include "NrpText.h"
-class CImageGUISkin;
 
 namespace irr
 {
@@ -28,6 +27,9 @@ class CNrpGUIEnvironment : public irr::gui::IGUIEnvironment
 public:
 	CNrpGUIEnvironment( gui::IGUIEnvironment* native_gui, ICursorControl* cursor );
 	~CNrpGUIEnvironment();
+
+	ICursorControl* getCursorControl() const;
+
 	IGUIComboBox* addComboBox(const core::recti& rectangle,
 									gui::IGUIElement* parent=0, 
 									s32 id=-1);
@@ -145,7 +147,7 @@ public:
 
 	gui::IGUIAnimator* addMoveAnimator( IGUIElement* parent, core::position2di stopPos, u32 step, 
 										bool visibleOnStop, bool removeOnStop, bool removeParentOnStop );
-	gui::IGUIAnimator* addLuaAnimator( IGUIElement* parent, const nrp::NrpText& funcName );
+	gui::IGUIAnimator* addLuaAnimator( IGUIElement* parent, int funcRef );
 
 	gui::IGUIAnimator* addTextTimeAnimator( IGUIElement* parent );
 

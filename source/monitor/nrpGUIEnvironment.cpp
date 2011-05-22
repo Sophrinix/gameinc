@@ -206,10 +206,14 @@ void CNrpGUIEnvironment::drawAll()
 		core::position2di pos = _cursor->getPosition() - size / 2;
 		core::recti rectangle( pos, core::dimension2du( size.Width, size.Height ) );
 		if( _dragTexture  )
+		{
+			video::SColor rt( 0x80ffffff );
+			video::SColor t[] = { rt, rt, rt, rt };
 			driver->draw2DImage( _dragTexture, rectangle, core::recti( core::position2di( 0, 0 ), _dragTexture->getOriginalSize() ),
-				                 0, 0, true );
+					0, t, true );
+		}
 		else
-			driver->draw2DRectangle( video::SColor( 0xffff0000 ), rectangle);
+			driver->draw2DRectangle( video::SColor( 0x80ff0000 ), rectangle);
 	}
 }
 //////////////////////////////////////////////////////////////////////////
@@ -276,22 +280,26 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 	core::dimension2du scrsize = getVideoDriver()->getScreenSize();
 	core::recti rectangle( scrsize.Width / 2 - 200, scrsize.Height / 2 - 100, scrsize.Width / 2 + 200, scrsize.Height / 2 + 100 );
 	IGUIWindow* wnd = new CNrpWindow( this, getRootGUIElement(), NULL, -1, rectangle );
-	rectangle = wnd->getRelativePosition();
-	addStaticText( text, core::recti( 20, 20, rectangle.getWidth() - 20, rectangle.getHeight() - 50 ), false, false, wnd, -1, false );
+	int buttonHeight = wnd->getRelativePosition().getHeight() / 10;
 
-	core::recti btnRect( 30, rectangle.getHeight() - 50, rectangle.getWidth() / 2 - 30,  rectangle.getHeight() - 20 );
-	if( flags & gui::EMBF_YES )
+	wnd->setDraggable( false );
+
+	core::recti margin( 0, 0, 0, 0 );
+	rectangle = core::recti( core::position2di( 0, 0 ), wnd->getRelativePosition().getSize() );
+
+	if( CImageGUISkin* skin = dynamic_cast< CImageGUISkin* >( getSkin() ) )
 	{
-		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"Yes", 0 );
-		btn->setOnClickAction( funcRefs[ 0 ] );
+		margin.UpperLeftCorner.X = skin->Config.Window.DstBorder.Left;
+		margin.UpperLeftCorner.Y = skin->Config.Window.DstBorder.Top;
+		margin.LowerRightCorner.X = skin->Config.Window.DstBorder.Right;
+		margin.LowerRightCorner.Y = skin->Config.Window.DstBorder.Bottom ;
 	}
 
-	btnRect += core::position2di( rectangle.getWidth() / 2, 0 );
-	if( flags & gui::EMBF_NO )
-	{
-		CNrpButton* btn = (CNrpButton*)addButton( btnRect, wnd, -1, L"No", 0 );
-		btn->setOnClickAction( funcRefs[ 1 ] );
-	}
+	rectangle.UpperLeftCorner += margin.UpperLeftCorner;
+	rectangle.LowerRightCorner -= (margin.LowerRightCorner + core::position2di( 0, buttonHeight) );
+
+	IGUIStaticText* lb = addStaticText( text, rectangle, false, false, wnd, -1, false );
+	lb->setTextAlignment( EGUIA_CENTER, EGUIA_CENTER );
 
 	if( flags == 0 )
 	{
@@ -299,6 +307,25 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 												        	   rectangle.getWidth() * 2 / 3, rectangle.getHeight() - 20 ),
 												  wnd, -1, L"OK", 0 );
 		btn->setOnClickAction( funcRefs[ 0 ] );
+	}
+	else
+	{
+		rectangle.UpperLeftCorner.Y = rectangle.LowerRightCorner.Y;
+		rectangle.LowerRightCorner.Y += buttonHeight;
+		rectangle.LowerRightCorner.X /= 2;
+
+		if( flags & gui::EMBF_YES )
+		{
+			CNrpButton* btn = (CNrpButton*)addButton( rectangle, wnd, -1, L"Yes", 0 );
+			btn->setOnClickAction( funcRefs[ 0 ] );
+		}
+
+		if( flags & gui::EMBF_NO )
+		{
+			rectangle += core::position2di( rectangle.getWidth(), 0 );
+			CNrpButton* btn = (CNrpButton*)addButton( rectangle, wnd, -1, L"No", 0 );
+			btn->setOnClickAction( funcRefs[ 1 ] );
+		}
 	}
 
 	return wnd;
@@ -579,6 +606,7 @@ IGUIWindow* CNrpGUIEnvironment::addWindow( video::ITexture* texture,
 {
 	IGUIWindow* window = new CNrpWindow( this, parent, texture, id, rectangle );
 	window->setText( text );
+
 	return window;
 }
 
@@ -590,9 +618,9 @@ gui::IGUIAnimator* CNrpGUIEnvironment::addBlendAnimator( IGUIElement* parent, u3
 	return anim;
 }
 
-gui::IGUIAnimator* CNrpGUIEnvironment::addLuaAnimator( IGUIElement* parent, const nrp::NrpText& funcName )
+gui::IGUIAnimator* CNrpGUIEnvironment::addLuaAnimator( IGUIElement* parent, int funcRef )
 {
-	IGUIAnimator* anim = new CNrpGuiLuaAnimator( this, parent, funcName );
+	IGUIAnimator* anim = new CNrpGuiLuaAnimator( this, parent, funcRef );
 
 	return anim;
 }
@@ -694,7 +722,8 @@ void CNrpGUIEnvironment::setDragObject( IGUIElement* elm, video::ITexture* image
 	_dragTexture = image;
 	if( _dragTexture )
 		_dragTexture->grab();
-	
+
+	_nativeEnv->getCursorControl()->setVisible( !_dragTexture );
 }
 
 gui::IGUIListBox* CNrpGUIEnvironment::addComponentListBox( const core::recti& rectangle, gui::IGUIElement* parent, s32 id )
@@ -729,6 +758,11 @@ void CNrpGUIEnvironment::AddTopElement( IGUIElement* elm )
 {
 	if( elm )
 		_overlay.push_back( elm );
+}
+
+ICursorControl* CNrpGUIEnvironment::getCursorControl() const
+{
+	return _nativeEnv->getCursorControl();
 }
 
 }//namespace gui

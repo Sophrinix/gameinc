@@ -33,6 +33,7 @@ OPTION_NAME GAMERETAILER( L"gameRetailer" );
 OPTION_NAME RECENSE( L"recense" );
 OPTION_NAME NPC_GAME( L"npcGame" );
 OPTION_NAME LOADOK( L"loadok" );
+OPTION_NAME BESTSALER( L"bestsaler" );
 
 class CNrpGame : public INrpConfig
 {
@@ -46,7 +47,7 @@ public:
 
 	NrpText GetTechName( size_t index );
 	NrpText GetGenreName( size_t index );
-	bool IsGenreAvaible( const NrpText& name );
+	bool IsGenreAvaible( const NrpText& name ) const;
 
 	float GetAuthorFamous();
 
@@ -66,6 +67,7 @@ private:
 	STRINGS _developers;
 	STRINGS _genres;
 	STRINGS _techs;
+	STRINGS _platforms;
 	CNrpHistory*  _history;
 };
 

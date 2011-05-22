@@ -65,8 +65,7 @@ void CNrpConfigLooder::Load( const NrpText& fileName )
 	_fileName = fileName;
 	IniFile ini( fileName );
 
-	NrpText section = SECTION_PROPERTIES;
-	const IniSection::KeyIndexA& indexes = ini.GetNative().GetSection( section.ToStr() )->GetKeys();
+	const IniSection::KeyIndexA& indexes = ini.GetSection( SECTION_PROPERTIES )->GetKeys();
 
 	for( IniSection::KeyIndexA::const_iterator pIter = indexes.begin(); pIter != indexes.end(); pIter++ )
 	{

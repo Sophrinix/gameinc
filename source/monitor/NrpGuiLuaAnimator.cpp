@@ -12,16 +12,17 @@ CNrpGuiLuaAnimator::~CNrpGuiLuaAnimator(void)
 {
 }
 
-CNrpGuiLuaAnimator::CNrpGuiLuaAnimator( IGUIEnvironment* environment, IGUIElement* node, const NrpText& funcName )
+CNrpGuiLuaAnimator::CNrpGuiLuaAnimator( IGUIEnvironment* environment, IGUIElement* node, int funcRef )
 	: IGUIAnimator( environment, node )
 {
-	funcName_ = funcName;
+	assert( funcRef > 0 );
+	_funcRef = funcRef;
 }
 
 void CNrpGuiLuaAnimator::draw()
 {
-	if( funcName_.size() )
-		nrp::CNrpScript::Instance().CallFunction( funcName_ );
+	if( _funcRef > 0 )
+		nrp::CNrpScript::Instance().CallFunction( _funcRef );
 }
 
 }//namespace gui
