@@ -1,5 +1,7 @@
 local base = _G
 
+IncludeScript( "reklameCampanies" )
+
 module( "reklameManager" ) 
 
 btnReklame = nil
@@ -105,7 +107,7 @@ local function _CreateReklames()
 end
 
 local function _Hide()
-
+	base.package.loaded[ "reklameCampanies" ] = false
 end
 
 local function _IncDay()
@@ -161,6 +163,7 @@ local function _QuerryUserToApplyWork()
 		text = text .. "Стоимость:" .. currentWork.dayCost * currentWork.numberDay .. "\n"
 		text = text .. "Длительность:" .. currentWork.numberDay
 		guienv:MessageBox( text, true, true, _ApplyNewWork, button.CloseParent )
+		_UpdateLabels()
 	else
 		guienv:MessageBox( "Выберите количество дней кампании", false, false, nil, nil )
 	end
@@ -177,7 +180,7 @@ local function _ShowCampaniesManager()
 	local txsBlur = base.driver:CreateBlur( "marketing.png", 2, 4 )
 	campaniesWindow = window.fsWindow( txsBlur.path, _HideCampaniesWindow )	
 	
-	tutorial.Update( tutorial.STEP_OVERVIEW_REKLAMECAMPANY )
+	tutorial.Update( "reklame/campany" )
 		
 	if #reklames == 0 then _CreateReklames() end
 	
@@ -207,7 +210,7 @@ local function _ShowCampaniesManager()
 	btnIncDayNumber.visible = false
 	
 	--обновление данных для реклам
-	guienv.AddLoopTimer( 1000, _UpdateLabels, campaniesWindow )
+	guienv:AddLoopTimer( 1000, _UpdateLabels, campaniesWindow )
 	
 	for y=1, #reklames do
 		picflowReklames:AddItem( reklames[ y ].texture, reklames[ y ].name, reklames[ y ].object )
@@ -227,12 +230,21 @@ local function _ShowCampaniesManager()
 	--список журналов
 end
 
+local function _ShowReklameCampanies()
+	base.reklameCampanies.Show()
+end
+
+function ShowHelp()
+	tutorial.Update( "reklame/main" )
+end
+
 function Show()
 	mainWindow = window.fsWindow( "marketing.png", _Hide )
 	
-	tutorial.Update( tutorial.STEP_OVERVIEW_REKLAME )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о рекламе?", ShowHelp, button.CloseParent )
 	
 	--get loan
 	btnReklame = button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow, -1, "", _ShowCampaniesManager )
+	btnCampanies = button.EqualeTexture( 142, 457, "reklameCampanies", mainWindow, -1, "", _ShowReklameCampanies )
 end
 

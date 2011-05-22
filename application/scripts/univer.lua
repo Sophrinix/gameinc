@@ -23,6 +23,7 @@ mode[ base.STR_TESTERS ] = "tester"
 
 local modeUserView = "coder"
 local windowUpEmployer = nil
+local layoutWindows  = nil
 
 local userToUp = nil
 local company = nil
@@ -40,7 +41,7 @@ function Show()
 
 	univerWindow = base.window.fsWindow( "univer_dvor.png", _Hide )
 	
-	tutorial.Update( tutorial.STEP_OVERVIEW_UNIVER )
+	tutorial.Update( "univer/main" )
 
 	--stuff plate	
 	btnDesk = button.EqualeTexture( 122, 320, "stuffPlate", univerWindow, -1, "", ShowEmployersWindow )
@@ -81,13 +82,12 @@ function ShowAvaibleEmployers()
 	usersWindow = nil
 	usersWindow = {}
 
-	local layout = guienv:AddLayout( "5%", 100, "95%", "95%", 2, -1, windowUpEmployer )
 	local position=1
 	for i=1, maxuser do
 		local mUser = applic:GetUser( i-1 )
 		
 		if modeUserView == mUser.typeName and mUser.freeUser then
-			usersWindow[ position ] = { window=guienv:AddWindow( "", 0, 0, 0, 0, -1, layout ), user=mUser }
+			usersWindow[ position ] = { window=guienv:AddWindow( "", 0, 0, 0, 0, -1, layoutWindows ), user=mUser }
 		    position = position + 1
 		end
 		
@@ -117,6 +117,8 @@ end
 
 function ShowEmployersWindow()
 	windowUpEmployer = window.fsWindow( "media/textures/stuffUpWindowBg.png", _CloseUpWindow )
+
+	layoutWindows = guienv:AddLayout( "5%", "15%", "95%", "95%", 2, -1, windowUpEmployer )
 	
 	local layout = guienv:AddLayout( 20, 20, "20e", "70+", 4, -1, windowUpEmployer ) 	
 	button.LayoutButton( "", layout, -1, base.STR_CODERS, function () _ChangeUserType( base.STR_CODERS ) end )

@@ -26,6 +26,8 @@ local currentComponent = nil
 local localBtnToggleTask = nil
 local selectedListBox = nil
 local windowProjectManager = nil
+local _windowParams = nil
+local _btnShowParams = nil
 
 windowUserInfo = nil
 layoutUserTypes = nil
@@ -159,6 +161,7 @@ local function _ComboBoxItemSelected( mp )
 		_ShowWindowUserInfo( base.CLuaUser( cmbx.selectedObject ) ) 	
 	elseif cmbx.object == comboxProjects.object then
 		currentProject = base.CLuaDevelopProject( cmbx.selectedObject )
+		_btnShowParams.visible = true
 		
 		if currentProject.techGroup == base.PT_GAME then
 			_ShowUnworkedGameProjectComponent()
@@ -170,7 +173,6 @@ end
 
 local function _WorkedSelect()
 	currentComponent = base.CLuaDevelopModule( lbxWorks.selectedObject )
-	LogScript( "!!!!!!!!!!!! CurrentComponent "..currentComponent.name )
 
 	localBtnToggleTask.tooltip = "Убрать задание"
 	button.SetEqualeImage( localBtnToggleTask, "suda" )	
@@ -179,11 +181,45 @@ end
 
 local function _UnworkedSelect()
 	currentComponent = base.CLuaDevelopModule( lbxComponents.selectedObject )
-	LogScript( "!!!!!!!!!!!! CurrentComponent "..currentComponent.name )
 
 	localBtnToggleTask.tooltip = "Добавить задание"
+	localBtnToggleTask.visible = true
 	button.SetEqualeImage( localBtnToggleTask, "tuda" )	
 	selectedListBox = lbxComponents
+end
+
+local function _CreateProjectParamWindow( left, top, right, bottom )
+	local ret = base.guienv:AddWindow( "", left, top, right, bottom, -1, windowProjectManager )
+	ret.closeButton.visible = false
+	ret.draggable = false
+	ret.visible = false
+	--ret.drawBody = false
+	
+	lbReady = guienv:AddLabel( "", "30", "45", "30e", "30+", -1, ret )
+	lbVideo = guienv:AddLabel( "", lbReady.bottom + 10, "45", "30e", "30+", -1, ret )
+	lbSound = guienv:AddLabel( "", lbVideo.bottom + 10, "45", "30e", "30+", -1, ret )
+	lbGenre = guienv:AddLabel( "", lbSound.bottom + 10, "45", "30e", "30+", -1, ret )
+	lbCode = guienv:AddLabel( "", lbGenre.bottom + 10, "45", "30e", "30+", -1, ret )
+	lbBalance = guienv:AddLabel( "", lbCode.bottom + 10, "45", "30e", "30+", -1, ret )
+	lbEngine = guienv:AddLabel( "", lbBalance.bottom + 10, "45", "30e", "30+", -1, ret )
+	
+	return ret
+end	
+
+local function _ToggleParamsVisible()
+	_windowParams.visible = not _windowParams.visible
+	
+	lbReady.text = "Готовность: " .. currentProject.percentDone
+	--lbVideo.text = "Видео: " .. currentProject.videoQuality
+	--lbSound.text = "Звук: " .. currentProject.soundQuality
+	--lbGenre.text = "Геймплей: " .. currentProject.codeQuality
+	lbCode.text = "Сложность: " .. currentProject.codeVolume
+	--lbBalance = guienv:AddLabel( "Бюджет: " .. currentProject.balance, lbCode.bottom + 10, "45", "30e", "30+", -1, ret )
+	--lbEngine.text = "SDK: " .. currentProject.gameEngine.name
+end
+
+function ShowHelp()
+	base.tutorial.Update( "projectManager/main" )
 end
 
 function Show()	
@@ -207,10 +243,19 @@ function Show()
 	lbxWorks.itemHeigth = 40
 	lbxWorks.onChangeSelect = _WorkedSelect
 	lbxWorks.onLmbDblClick = _ToggleComponentLider
+	
+	_windowParams = _CreateProjectParamWindow( "55%", "75%", "150e", "60e" )
 
-	localBtnToggleTask = button.Stretch( "50%", "50%", "50+", "60+", "tuda",
+	localBtnToggleTask = button.Stretch( "50%", "50%", "50+", "50+", "tuda",
 								     	 windowProjectManager, -1, "",
 								    	 _ToggleComponentLider )
+	localBtnToggleTask.visible = false
+	
+	_btnShowParams = base.button.Stretch( "50%", localBtnToggleTask.bottom + 10, "50+", "50+", 
+										  "pageprev", windowProjectManager, 
+										  -1, "", _ToggleParamsVisible )
+	_btnShowParams.visible = false
+
 	--users combobox
 	comboxUsers = guienv:AddComboBox( "", "50%", "15%", "140e", "4%+", -1, windowProjectManager )
 	
@@ -227,7 +272,7 @@ function Show()
 		comboxProjects.itemIndex = 0
 	end 
 	
-	windowProjectManager:AddLuaFunction( base.GUIELEMENT_CMBXITEM_SELECTED, _ComboBoxItemSelected )
+	windowProjectManager:Bind( base.GUIELEMENT_CMBXITEM_SELECTED, _ComboBoxItemSelected )
 	
-	base.tutorial.Update( base.tutorial.STEP_OVERVIEW_PROJECTMANAGER )
+	base.rightPanel.AddYesNo( "Хотите больше узнать об управлении проектами?", ShowHelp, button.CloseParent )
 end

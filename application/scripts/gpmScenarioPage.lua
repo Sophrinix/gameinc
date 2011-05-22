@@ -80,6 +80,7 @@ function Show()
 	local lnk = base.gpmFunctions.LinkBox( flick, base.STR_SCENARIO, base.PT_SCENARIO, tech, 	
 										   base.NDRG, _SetScenario, _UnsetScenario )
 	lnk.defaultTexture = "media/buttons/scenarioNoImage.jpg"
+	base.table.insert( gpm.links, lnk )
 	
 	if not tech.empty then lnk.text = tech.name end
 	
@@ -87,6 +88,7 @@ function Show()
 	lnk = base.gpmFunctions.LinkBox( flick, base.STR_LICENSE, base.PT_LICENSE, lic, 		
 									 base.NDRG, _SetLicense, _UnsetLicense )
 	lnk.defaultTexture = "media/buttons/licenseNoImage.jpg"
+	base.table.insert( gpm.links, lnk )
 
 	if not lic.empty then linkLicense.text = lic.name end
 	

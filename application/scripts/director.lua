@@ -23,10 +23,14 @@ function Hide()
 	base.package.loaded[ "safe" ] = false
 end
 
+function ShowHelp()
+	tutorial.Update( "office/director" )
+end
+
 function Show( ptr )
 	mainWindow = window.fsWindow( "media/maps/director_cabinet.png", Hide )
 	
-	tutorial.Update( tutorial.STEP_OVERVIEW_DIRECTORS_ROOM )
+	base.rightPanel.AddYesNo( "Хотите больше узнать об управлении предприятием?", ShowHelp, button.CloseParent )
 	
 	btnProject = button.EqualeTexture( 0, 227, "newProject", mainWindow, -1, "", base.projectSelect.Show )
 	--employers manager

@@ -27,7 +27,7 @@ showHelp = true
 
 function ShowHelp()
 	if showHelp then
-		base.tutorial.Update( base.tutorial.STEP_OVERVIEW_CITY )
+		base.tutorial.Update( "city/main" )
 	end
 end	
 
@@ -60,13 +60,15 @@ function Show()
 		mainWindow.visible = false
 		
 		_CreateButtons()
+		base.browser:Hide()
 	end	
 	
-	ShowHelp()
+	base.rightPanel.AddYesNo( "Хотите больше узнать о городе?", ShowHelp, button.CloseParent )
 	
 	guienv:FadeAction( 20, base.FADE_OUT, true )
 	guienv:AddTimer( 520, function () 
 								guienv:FadeAction( 1000, base.FADE_IN, base.REMOVE_ON_END )
 								mainWindow.visible = true
-						   end )
+						   end,
+				     nil )
 end

@@ -65,7 +65,7 @@ function Show( textr )
 								 
 		animTextRunner = guienv:AddTextRunner( lbMessage, "" )
 		
-		mainWindow:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, _ToggleVisible )
+		mainWindow.onLmbClick = _ToggleVisible
 		
 		appPda = base.applic.pda
 		

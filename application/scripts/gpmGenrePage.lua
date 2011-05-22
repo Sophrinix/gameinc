@@ -1,3 +1,4 @@
+
 local base = _G
 
 module( "gpmGenrePage" )
@@ -60,6 +61,8 @@ function Show()
 											   base.PT_GENRE, genre, base.NDRG, _Set, _Unset )
 											   
 		lnk.defaultTexture = "media/buttons/genreNoImage2.png"
+		
+		base.table.insert( gpm.links, lnk )
 	end
 	
 	gpm.ShowParams()

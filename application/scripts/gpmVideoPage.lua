@@ -78,6 +78,7 @@ function Show()
 	local vq = project.videoQuality
 	local lnk = base.gpmFunctions.LinkBox( flick, vq.name, base.PT_VIDEOQUALITY, vq, base.NDRG, _Set, _Unset )
 	lnk.defaultTexture = "media/buttons/SoundQualityNoImage.png"						  	
+	base.table.insert( gpm.links, lnk )
 	local maxProjectVideoTech = project:GetNumber( base.PT_VIDEOTECH )
 	
 	for i=0, maxProjectVideoTech do
@@ -87,6 +88,7 @@ function Show()
 		if not tech.empty then name = tech.name end
 		base.gpmFunctions.LinkBox( flick, name, base.PT_VIDEOTECH, tech, base.NDRG, _Set, _Unset )
 		lnk.defaultTexture = "media/buttons/videoTechNoImage.png"
+		base.table.insert( gpm.links, lnk )
 	end	
 
 	gpm.ShowParams()

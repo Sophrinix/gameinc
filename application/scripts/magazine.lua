@@ -31,7 +31,7 @@ function Show( header, text, font, texture )
 		image.scale = true
 		image.alphaChannel = true
 		
-		mainWindow:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, _Hide )
+		mainWindow.onLmbClick = _Hide
 	end
 	
 	lbHeader.text = header

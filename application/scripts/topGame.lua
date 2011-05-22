@@ -17,7 +17,7 @@ local tblGames = nil
 local gamesChart = nil
 local games = nil
 
-local maxGameInChart = 20
+local maxGameInChart = 10
 local saveTypeTop = 2 
 
 local SORT_PROFIT = 2
@@ -151,8 +151,8 @@ function Show( typeTop )
 	img.alphaChannel = true
 	guienv:SendToBack( img )
 		
-	mainWindow:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, _CellSelected )
-	mainWindow:AddLuaFunction( base.GUIELEMENT_TABLE_HEADER_SELECTED, _HeaderSelected )
+	mainWindow:Bind( base.GUIELEMENT_SELECTED_AGAIN, _CellSelected )
+	mainWindow:Bind( base.GUIELEMENT_TABLE_HEADER_SELECTED, _HeaderSelected )
 	
 	local lb = guienv:AddLabel( "", "33%", 20, "66%", 120, -1, mainWindow )
 	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )

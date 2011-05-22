@@ -27,6 +27,13 @@ btnGenre = nil
 local function _Hide()
 end
 
+local function _CloseConfirmationWindow( ptr )
+	btnOk:Remove()
+	btnCancel:Remove()
+	browser:Hide()
+end
+
+
 local function CreateTechSequence( tech )
 	if tech.empty then
 		return 
@@ -78,7 +85,7 @@ local function CreateWindow( typef )
 	base.LogScript( "sworkCreateGenreTechMapWindow="..company.name )
 	
 	techMap = guienv:AddTechMap( 10, 40, "10e", "10e", -1, windowMap )
-	techMap:AddLuaFunction( base.GUIELEMENT_SELECTED_AGAIN, TechSelected )
+	techMap.onActivate = TechSelected
 	techMap.drawBack = false
 	
 	local tech = nil
@@ -119,7 +126,7 @@ function TechSelected()
 		--технология уже в ходу
 	    selectedTech = base.CLuaTech( techMap.selectedObject )
 		base.LogScript( base.string.format( "Выбрана технология=%s Описание=%s Статус=%s", 
-											selectedTech.name, selectedTech.description, selectedTech.datus ) )
+											selectedTech.name, selectedTech.description, selectedTech.status ) )
 	    
 	    browser:Show()
 	    browser:Navigate( selectedTech.description )
@@ -133,20 +140,17 @@ function TechSelected()
 	end
 end
 
-function StartInvention()
-	browser:Show()
-	browser:Navigate( "media/html/unknownTechnology.htm" )
+local function _AssignInvention()
+	local inventionName = techMap.selectedName
 	
-	btnOk = guienv:AddButton( "5%", 30, "45%+", "20+", browser.window, -1, "Начать исследования" )
-	btnOk.action = AssignInvention
-	
-	btnCancel = guienv:AddButton( "55%", 30, "45%+", "20+", browser.window, -1, "Закрыть" )
-	btnCancel.action = CloseConfirmationWindow
-end
-
-function AssignInvention()
-	local inventionName = techMap.selectedObjectName
+	base.LogScript( "Want start invention "..inventionName )
 	local loadFile = base.updates.FindInventionLoadFile( inventionName )
+	
+	if inventionName == "" or loadFile == "" then
+		base.LogScript( "Unknown invention" )
+		return
+	end
+	
 	company:StartInvention( loadFile )
 	
 	base.inventionManager.Show( inventionName, company.name )
@@ -158,16 +162,25 @@ function AssignInvention()
 	browser:Hide()
 end
 
-function CloseConfirmationWindow( ptr )
-	btnOk:Remove()
-	btnCancel:Remove()
-	browser:Hide()
+function StartInvention()
+	browser:Show()
+	browser:Navigate( "media/html/unknownTechnology.htm" )
+	
+	btnOk = guienv:AddButton( "5%", 30, "45%+", "20+", browser.window, -1, "Начать исследования" )
+	btnOk.action = _AssignInvention
+	
+	btnCancel = guienv:AddButton( "55%", 30, "45%+", "20+", browser.window, -1, "Закрыть" )
+	btnCancel.action = _CloseConfirmationWindow
+end
+
+function ShowHelp()
+	tutorial.Update( "lab/main" )
 end
 
 function Show()	
 	lab = window.fsWindow( "laboratory.png", _Hide )
-	
-	tutorial.Update( tutorial.STEP_OVERVIEW_LABORATORY )
+
+	base.rightPanel.AddYesNo( "Хотите узнать больше о лаборатории?", ShowHelp, button.CloseParent )
 	
 	btnVideo = button.EqualeTexture( 545, 330, "techMapVideo", lab, -1, "", ShowVideoTechMap )
 	btnSound = button.EqualeTexture( 372, 213, "techMapSound", lab, -1, "", ShowSoundTechMap )

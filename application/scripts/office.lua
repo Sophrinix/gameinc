@@ -21,10 +21,15 @@ function OpenLabRoom()
 	base.inventionManager.Show( "", base.applic.playerCompany.name )
 end
 
+function ShowHelp()
+	tutorial.Update( "office/reception" )
+end
+
 function Show()
 	receptionWindow = window.fsWindow( "media/maps/reception.png", nil )
 	
-	tutorial.Update( tutorial.STEP_OVERVIEW_RECEPTION )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о вашем офисе?", ShowHelp, button.CloseParent )
+
 	--directors room
 	btnDirector = button.EqualeTexture( 448, 242, "director", receptionWindow, -1, "Dbg:Director", base.director.Show )
 	btnDevRoom = button.EqualeTexture( 355, 249, "developers", receptionWindow, -1, "Dbg:DevRoom", base.devRoom.Show )

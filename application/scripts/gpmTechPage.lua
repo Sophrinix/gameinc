@@ -94,16 +94,19 @@ function Show()
 	local se = project.scriptEngine
 	local lnk = base.gpmFunctions.LinkBox( flick, "Скрипты", base.PT_SCRIPTS, se, base.NDRG, _Set, _Unset )
 	lnk.defaultTexture = "media/buttons/scriptsNoImage.png"
+	base.table.insert( gpm.links, lnk )
 	if not se.empty then lnk.text = se.name	end
 	
 	local mg = project.miniGameEngine
 	lnk = base.gpmFunctions.LinkBox( flick, "Миниигры", base.PT_MINIGAME, mg, base.NDRG, _Set, _Unset )
 	lnk.defaultTexture = "media/buttons/minigameNoImage.png"						   
+	base.table.insert( gpm.links, lnk )
 	if not mg.empty then	lnk.text = mg.name end
 
 	local ph = project.physicEngine
 	lnk = base.gpmFunctions.LinkBox( flick, "Физика", base.PT_PHYSIC, ph, base.NDRG, _Set, _Unset )
 	lnk.defaultTexture = "media/buttons/physicNoImage.png" 
+	base.table.insert( gpm.links, lnk )
 	if not ph.empty then lnk.text = ph.name end
 
 	local maxProjectAdvTech = project.gameEngine.techNumber
@@ -111,6 +114,7 @@ function Show()
 		local tech = project:GetTech( i-1, base.PT_ADVTECH )
 		lnk = base.gpmFunctions.LinkBox( flick, tech.name, base.PT_ADVTECH, tech, base.NDRG, _Set, _Unset )
     	lnk.defaultTexture = "media/buttons/advTechNoImage.png"
+   		base.table.insert( gpm.links, lnk 
 	end
 	
 	gpm.ShowParams()

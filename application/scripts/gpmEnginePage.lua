@@ -46,13 +46,15 @@ function Show()
 	_ShowAvaibleEngines()
 
 	local ge = project.gameEngine
-	--create linkbox for gameEngine
 	
+	--create linkbox for gameEngine
 	local lnk = base.gpmFunctions.LinkBox( projectWindow, "",  
 										   base.PT_GAMEENGINE, ge, base.NDRG, 
 										   _Set, _Unset )
 	lnk:SetPosition( "25%", "33%" )
 	lnk.defaultTexture = "media/buttons/GameNoEngine.png"
+	
+	base.table.insert( gpm.links, lnk )
 	
 	--lnk = base.gpmFunctions.LinkBox( projectWindow, "Продолжение", base.PT_GAME, nil, base.NDRG, base.ENBL, 
 	--								 nil, nil )

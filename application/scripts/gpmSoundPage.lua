@@ -82,6 +82,8 @@ function Show()
 	local sq = project.soundQuality
 	local lnk = base.gpmFunctions.LinkBox( flick, sq.name, base.PT_SOUNDQUALITY, sq, base.NDRG, _Set, _Unset )
 	lnk.defaultTexture = "media/buttons/SoundQualityNoImage.png"
+	--добавим в таблицу линков, для молнии
+	base.table.insert( gpm.links, lnk )
 		
 	local maxProjectSoundTech = project:GetNumber( base.PT_SOUNDTECH )
 	
@@ -93,6 +95,7 @@ function Show()
 
 		lnk = base.gpmFunctions.LinkBox( flick, name, base.PT_SOUNDTECH, tech, base.NDRG, _Set, _Unset )
 		lnk.defaultTexture = "media/buttons/soundTechNoImage.png"
+		base.table.insert( gpm.links, lnk )
 	end	
 	gpm.ShowParams()
 end

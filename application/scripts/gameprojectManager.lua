@@ -10,6 +10,7 @@ IncludeScript( "gpmEndPage" )
 IncludeScript( "gpmVideoPage" )
 IncludeScript( "gpmSoundPage" )
 IncludeScript( "gpmEnginePage" )
+IncludeScript( "gameNames" )
 
 module( "gameprojectManager" )
 
@@ -23,10 +24,11 @@ local guienv = base.guienv
 local window = base.window
 local Log = base.LogScript
 local company = nil
-local labelCodeVolume = nil
+
+lbCodeVolume = nil
 gameName = "withoutName"
-local editGameName = nil
-local prgProjectQuality = nil
+editGameName = nil
+lbProjectQuality = nil
 
 -- "name" "engine"
 local step = "name"
@@ -37,9 +39,39 @@ local lastData = nil
 local REMOVE = true
 local ADD = false
 
+local function _CodeVolumeToText( kode )
+	if kode < 10000 then
+		return kode .. " bytes"
+	elseif kode >= 10000 then
+		return ( kode / 10000 ) * 10 .. "Kb"
+	elseif kode >= 1000000 then
+		return ( kode / 1000000 ) .. "Mb"
+	elseif kode >= 1000000000 then
+		return ( kode / 1000000000 ) .. "Gb"
+	end
+end
+
+local function _CodeQualityToText( qua )
+	if qua == 0 then
+		return "А есть ли концепция?"
+	elseif qua > 0 and qua < 10 then
+		return "Треш"
+	elseif qua >= 10 and qua < 25 then
+		return "Второсортная игра"
+	elseif qua >= 25 and qua < 50 then
+		return "Ниже среднего"
+	elseif qua >= 50 and qua < 75 then
+		return "Середнячок"
+	elseif qua >= 75 and qua < 90 then
+		return "Крутая игра"
+	elseif qua >= 90 and qua <= 100 then
+		return "Потенциальный хит"
+	end	
+end
+
 function ShowParams()
-	labelCodeVolume.text = "Код:" .. project.codeVolume
-	prgProjectQuality.position = project.codeQuality
+	lbCodeVolume.text = "Сложность: " .. _CodeVolumeToText( project.codeVolume )
+	lbProjectQuality.position = "Рейтинг: " .. _CodeQualityToText( project.codeQuality )
 end
 
 function Hide()
@@ -66,10 +98,24 @@ function UpdateProjectWindow( pageName )
 	links = {}
 end
 
+local function _SwitchName()
+	editGameName.text = base.gameNames.GetName()
+end
+
+function ShowHelp()
+	base.tutorial.Update( "creator/name" )
+end
+
 local function _ShowChangeNamePage()
     UpdateProjectWindow( "name" )
-	editGameName = guienv:AddEdit( "Название игры", "55%", "50%", "90%", "60%", -1, projectWindow )
+	editGameName = guienv:AddEdit( "", "55%", "50%", "95%", "60%", -1, projectWindow )
 	editGameName.font = "font_16"
+	editGameName.text = base.gameNames.GetName()
+		
+	local hh = editGameName.height
+	button.StretchOne( editGameName.right - hh, editGameName.top, hh.."+", hh.."+", "", projectWindow, -1, "", _SwitchName )
+	
+	base.rightPanel.AddYesNo( "Хотите узнать больше о выборе имени?", ShowHelp, button.CloseParent )
 end
 
 function NextPage()
@@ -102,6 +148,15 @@ local function _ClearDragObject()
 	guienv:SetDragObject( nil, "" )
 end
 
+local function _KeyEvent( _, ptr )
+	local event = base.CLuaEvent( ptr )
+
+	base.LogScript( "key event "..event.key )
+	if  event.keyDown and event.key == 0x1B then
+		_ClearDragObject()
+	end
+end
+
 function Show()
 	company = applic.playerCompany
 
@@ -112,12 +167,11 @@ function Show()
 		
 	projectWindow = guienv:AddWindow( "media/maps/newProject.png", 60, 90, "60e", "30e", -1, mainWindow )
 	projectWindow.draggable = false
-	--projectWindow:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, _ClearDragObject )
+	projectWindow.onLmbClick = _ClearDragObject
+	projectWindow.onKeyEvent = _KeyEvent 
 	
-	prgProjectQuality = guienv:AddProgressBar( mainWindow, 10, 40, "140+", "20+", -1 )
-	labelCodeVolume = guienv:AddLabel( "Код", "150e", 40, "10e", "20+", -1, mainWindow )
+	lbProjectQuality = guienv:AddLabel( "Рейтинг:", "25%", 60, "50%", "40+", -1, mainWindow )
+	lbCodeVolume = guienv:AddLabel( "Сложность:", "50%", 60, "75%", "40+", -1, mainWindow )
 
 	_ShowChangeNamePage()	
-	--guienv:FadeAction( base.FADE_TIME, false, false )			
-	--guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
 end

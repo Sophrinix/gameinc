@@ -21,10 +21,14 @@ local function _Hide()
 	base.package.loaded[ "projectChief" ] = false
 end
 
+function ShowHelp()
+	tutorial.Update( "devRoom/main" )
+end
+
 function Show( ptr )
 	mainWindow = window.fsWindow( "developers.png", _Hide )
 	
-	tutorial.Update( tutorial.STEP_OVERVIEW_DEVELOPERS_ROOM )
+	base.rightPanel.AddYesNo( "’отите больше узнать об управлении разработкой?", ShowHelp, button.CloseParent )
 	
 	btnTester = button.EqualeTexture( 820, 384, "devComp", mainWindow, -1, "", base.testerComp.Show )
 	btnProgress = button.Stretch( "9%", "22%", "28%", "62%", "btnProjectProgress", mainWindow, -1, "", base.projectManager.Show ) 

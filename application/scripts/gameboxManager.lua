@@ -111,7 +111,7 @@ local function localCreateWindowForBoxAddedAddons()
 		wndBoxPreview = guienv:AddWindow( "media/textures/gameBox.png", 220, 130, 520, 520, -1, wndGBM )	
 		wndBoxPreview.drawBody = false
 		wndBoxPreview.draggable = false
-		wndBoxPreview:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, ViewerLeftMouseButtonUp )
+		wndBoxPreview.onLmbClick = ViewerLeftMouseButtonUp
 		flickAdded = guienv:AddFlick( "5%", "5%", "95%", "95%", 3, -1, wndBoxPreview )
 	else
 		flickAdded:Clear()
@@ -125,7 +125,7 @@ local function localCreateWindowForBoxAddedAddons()
 		lbu.draggable = true
 		lbu.data = tech
 		lbu.texture = tech.texture
-	    lbu:AddLuaFunction( base.GUIELEMENT_RMOUSE_LEFTUP, AddonRigthMouseButtonUp )
+	    lbu.unsetFunction = AddonRigthMouseButtonUp
 	end
 end
 
@@ -149,7 +149,7 @@ local function localCreateWindowForBoxAvaibleAddons()
 		linkt.draggable = true
 		linkt.data = boxAddon
 		linkt.texture = boxAddon.texture
-		linkt:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, LinkLeftMouseButtonUp )
+		linkt.setFunction = LinkLeftMouseButtonUp
 	end
 end
 
@@ -254,7 +254,7 @@ function Show()
 	local txsBlur = base.driver:CreateBlur( "plant.png", 2, 4 )
 	wndGBM = window.fsWindow( txsBlur.path, _Hide )	
 	wndGBM.visible = false
-	wndGBM:AddLuaFunction( base.GUIELEMENT_LMOUSE_LEFTUP, WindowLeftMouseButtonUp )
+	wndGBM.onLmbClick = WindowLeftMouseButtonUp
 	
 	_CreateElementsForGameSelect()
 end

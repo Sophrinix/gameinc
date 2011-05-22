@@ -25,10 +25,14 @@ local function _Hide()
 	base.package.loaded[ "deposit" ] = false
 end
 
+function ShowHelp()
+	tutorial.Update( "bank/main" )
+end
+
 function Show()
 	bankWindow = window.fsWindow( "bank.png", _Hide )
 	
-	tutorial.Update( tutorial.STEP_OVERVIEW_BANK )
+	base.rightPanel.AddYesNo( "Хотите узнать больше о банке?", ShowHelp, button.CloseParent )
 	
 	--get loan
 	btnLoan = button.EqualeTexture( 80, 402, "loans", bankWindow, -1, "", base.loans.Show )

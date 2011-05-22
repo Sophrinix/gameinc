@@ -91,7 +91,7 @@ end
 
 function ArrowToElement( elm, textureName, time )
 	local x, y = elm:GetCenter()
-	local image = guienv:AddImage( x-64, y-32, x+128, y+64, guienv.root, -1, "" );
+	local image = guienv:AddImage( x, y, "100+", "50+", guienv.root, -1, "" );
 	image.texture = textureName
 	image.scale = true
 	image.alphaChannel = true

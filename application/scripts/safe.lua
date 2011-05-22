@@ -22,7 +22,7 @@ end
 
 function Hide()
 	guienv:FadeAction( base.FADE_TIME, false, false )			
-	guienv:AddTimer( base.AFADE_TIME, FadeExitAction )	
+	guienv:AddTimer( base.AFADE_TIME, FadeExitAction, nil )	
 end
 
 function Show()
@@ -34,7 +34,7 @@ function Show()
 		mainWindow = window.fsWindow( "media/maps/safe_open.png", Hide )
 		
 		guienv:FadeAction( base.FADE_TIME, false, false )			
-		guienv:AddTimer( base.AFADE_TIME, FadeEnterAction )
+		guienv:AddTimer( base.AFADE_TIME, FadeEnterAction, nil )
 	end
 	
 end

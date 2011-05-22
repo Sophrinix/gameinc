@@ -118,3 +118,14 @@ function sworkKeyboardEvent( _, ptr )
 		localChangeSpeed( keyInput )
 	end
 end
+
+function sworkNewGameOnMarket( _, ptr )
+	local game = CLuaGame( ptr )
+	--покажем пользователю что вышла нова€ игра
+	pda.Show( "Ќа рынке по€вилась нова€ игра "..game.name )
+	
+	--выход игры повышает инвестиционные ожидани€ компании на 10%
+	if game.company then
+		game.company.invexp = game.company.invexp * 1.1 
+	end
+end

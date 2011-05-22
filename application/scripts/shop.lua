@@ -28,6 +28,10 @@ function Hide()
 	base.package.loaded[ "saleManager" ] = false
 end
 
+function ShowHelp()
+	tutorial.Update( "shop/main" )
+end
+
 function Show()  
 	mainWindow = window.fsWindow( "windowShop.png", Hide )
 	
@@ -40,5 +44,5 @@ function Show()
 	--игровые журналы
 	btnJournals = button.EqualeTexture( 861, 268, "showMagazines", mainWindow, -1, "", base.journals.Show )
 
-	tutorial.Update( tutorial.STEP_OVERVIEW_SHOP )
+	base.rightPanel.AddYesNo( "’отите больше узнать о магазине?", ShowHelp, button.CloseParent )
 end

@@ -132,7 +132,7 @@ function Show()
 	btnChangeShare = button.Stretch( "76%", labelPrice.bottom + 10, "95%", "30+", "changeShare", mainWindow, -1, "Изменить", _ChangeShare )
 	btnTryControl = button.Stretch( "76%", btnChangeShare.bottom + 10, "95%", "30+", "tryControl", mainWindow, -1, "Слияние", _TryControl )
 	
-	mainWindow:AddLuaFunction( base.GUIELEMENT_TABLE_CHANGED, _CellSelected )
+	mainWindow:Bind( base.GUIELEMENT_TABLE_CHANGED, _CellSelected )
 	
 	_FillTableCompanies()
 end

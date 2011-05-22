@@ -8,9 +8,10 @@ local function _Hide( sender )
 	parent = base.CLuaWindow( sender.parent )
 
 	base.guienv:AddTimer( base.AFADE_TIME, function() 
-													  parent:Remove() 
+													  base.guienv:AddToDeletionQueue( parent ) 
 													  base.guienv:FadeAction( base.FADE_TIME, true, true )			
-										   end )	
+										   end,
+						  nil )	
 end
 
 function fsWindow( txs, action )
@@ -30,6 +31,7 @@ function fsWindow( txs, action )
 	base.guienv:AddTimer( base.AFADE_TIME, function()
 												wnd.visible = true
 												base.guienv:FadeAction( base.FADE_TIME, true, true )
-										   end )
+										   end,
+						  nil )
 	return wnd
 end

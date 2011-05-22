@@ -33,7 +33,7 @@ function FadeEnterAction()
 end
 
 function Show()
-	tutorial.Update( tutorial.STEP_CREATE_NEW_PROJECT )
+	tutorial.Update( "creator/selectProject" )
 
 	local txsBlur = base.driver:CreateBlur( "director_cabinet.png", 2, 4 )	
 	mainWindow = window.fsWindow( txsBlur.path, Hide )

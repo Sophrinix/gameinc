@@ -67,8 +67,9 @@ local function AddAdminingFunctionButton()
 	AddButton( adminLayout, function () ShowAdminButtons( false ) end , "media/top_menu/back" )
 end
 
-local function _UpdateTimeLabel()
-	base.applic:UpdateGameTime( timeLabel )	
+function UpdateTime()
+	local y, mh, d, hr, min = base.applic:GetGameTime()
+	timeLabel.text = base.string.format( "%04d/%02d/%02d  %02d:%02d", y, mh, d, hr, min )
 	balanceLabel.text = "$"..base.applic.playerCompany.balance
 end
 
@@ -104,7 +105,6 @@ function Show()
 	timeLabel.color = base.NrpARGB( 0xFF, 0xC0, 0xC0, 0xC0 )
 	balanceLabel = guienv:AddLabel( "UserName", "180e", "33%", "130+", "33%+", -1, mainWindow )
 	balanceLabel.color = base.NrpARGB( 0xFF, 0xFF, 0xFF, 0xFF )
-	guienv:AddLoopTimer( 1000, _UpdateTimeLabel, mainWindow )
 	
 	AddAdminingFunctionButton()
 	AddAdvancedFunctionButton()

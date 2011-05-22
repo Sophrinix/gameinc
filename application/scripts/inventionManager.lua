@@ -25,7 +25,7 @@ local scrWidth = base.scrWidth
 local scrHeight = base.scrHeight
 
 local function _AddLabel( textr, x1, y1, x2, y2 )
-	local lb = guienv:_AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", x1, y1, x2, y2, -1, windowIM )
+	local lb = guienv:AddLabel( textr, x1, y1, x2, y2, -1, windowIM )
 	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )		
 	lb.color = base.NrpARGB( 0xff, 0xff, 0xff, 0xff )
 	return lb
@@ -33,9 +33,9 @@ end
 
 --обновле€ет текст на метках
 local function _UpdateLabels()
-    if currentInvention ~= nil and currentInvention.isValid then 
-		labelInvestiment:SetText( currentInvention.investiment )
-		labelInventionSpeed:SetText( currentInvention.speed )
+    if currentInvention ~= nil and currentInvention.valid then 
+		labelInvestiment.text = currentInvention.investiment
+		labelInventionSpeed.text = currentInvention.speed
 		local day, month, year = currentInvention:GetPrognoseDateFinish()
 		
 		labelInventionPrognoseFinish.text = day.."."..month.."."..year
@@ -132,6 +132,14 @@ local function _AddPeopleToInvention()
 	window_UserSelect.onChangeSelect = _UserSelect
 end
 
+local function _ShowInfoAboutInvention()
+
+end
+
+local function _RemPeopleFromInvention()
+
+end
+
 --отображает окно управлени€ исследовани€ми
 function Show( techName, companyName )
 	company = applic:GetCompanyByName( companyName )
@@ -198,7 +206,7 @@ function Show( techName, companyName )
 	
 	--показать данные по изобретению
 	local btnShowInfo = guienv:AddButton( btnWidth + 10,  "40e", "120+", "10e", windowIM, -1, "»нфо" )
-	btnShowInfo.action = ShowInfoAboutInvention
+	btnShowInfo.action = _ShowInfoAboutInvention
 
 	--кнопка добавлени€ людей к исследованию, по которой показываетс€ список со служащими 
 	--и возможность добавлени€ выделенного человека
@@ -207,12 +215,12 @@ function Show( techName, companyName )
 
 	--удаление людей из списка
 	local btnRemPeople = guienv:AddButton( btnWidth + 260, "40e", "10e",  "10e", windowIM, -1, "”брать" )
-	btnRemPeople.action = RemPeopleFromInvention
+	btnRemPeople.action = _RemPeopleFromInvention
 	
 	--обновление надписей
 	guienv:AddLoopTimer( 1000, _UpdateLabels, windowIM )
 	--обработчик выбора технологии
-	windowIM:AddLuaFunction( base.GUIELEMENT_LBXITEM_SELECTED, _InventionSelect )
+	windowIM:Bind( base.GUIELEMENT_LBXITEM_SELECTED, _InventionSelect )
 end
 
 function RemoveUser()

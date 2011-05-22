@@ -1,4 +1,4 @@
- local base = _G
+local base = _G
 
 module( "updates" )
 
@@ -247,9 +247,6 @@ function CheckNewGames()
 			if game == nil or game.empty then
 				game = base.CLuaGame():Create( gameIniFile )
 				applic:AddGameToMarket( game )
-				if base.pda then
-					base.pda.Show( "На рынке появилась новая игра "..game.name )
-				end
 			else
 				base.LogDebug("Игра "..game.name.." уже кем-то создана")
 			end

@@ -8,14 +8,25 @@ DSBL = false
 module( "gpmFunctions" )
 
 local sizeLinkBox = 80
+local lighting = nil
+
+local function _Ligthing( sender, _ )
+	local dlink = base.CLuaLinkBox( sender )	
+	base.LogScript( "gpmFunction.Ligthing to #links="..#(base.gameprojectManager.links) )
+	--проидемся по вкладке
+	for i=1, #(base.gameprojectManager.links) do
+		--проверим их на соответствие с заданным типом
+		if base.gameprojectManager.links[ i ].type == dlink.type and not base.gameprojectManager.links[ i ].draggable then
+			lighting = base.guienv:AddLigthing( base.gameprojectManager.links[ i ], nil, "media/textures/sphere.png", 10 )		
+	    end	
+	end
+end
 
 function LinkBox( parentr, textr, group, datar, draggable, funcSet, funcUnset )
 	local project = base.gameprojectManager.project
 	local linkModule = base.guienv:AddLinkBox( textr, 0, 0, sizeLinkBox, sizeLinkBox, -1, parentr )
 	linkModule.color = base.NrpARGB( 0xFF, 0, 0, 0 )
-			
-	base.table.insert( base.gameprojectManager.links, linkModule )
-	
+				
 	linkModule.type = group
 	linkModule.enabled = true
 	if datar then 
@@ -34,18 +45,9 @@ function LinkBox( parentr, textr, group, datar, draggable, funcSet, funcUnset )
 	if funcSet then linkModule.setFunction = funcSet end
 	if funcUnset then linkModule.unsetFunction = funcUnset end
 	
+	if draggable then linkModule.dragStartFunction = _Ligthing end
+	
 	return linkModule
-end
-
-function Ligthing( dlink )
-	Log( "localCreateLigthingBetweenElements elements"..#links )
-	--проидемся по вкладке
-	for i=1, #links do
-		--проверим их на соответствие с заданным типом
-		if links[ i ].moduleType == dlink.moduleType() and not links[ i ].draggable then
-				guienv:AddLigthing( links[ i ], dlink, "media/textures/sphere.png", 10 )		
-	    end	
-	end
 end
 
 function CheckType( m, s, t )
