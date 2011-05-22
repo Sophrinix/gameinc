@@ -69,6 +69,8 @@ private:
 	int browserWindowId_;
 	size_t browserRasterSize_;
 	size_t _lastTimeUpdate;
+
+	NrpText _page404;
 	irr::gui::CNrpBrowserWindow* browserWindow_;
 
 	bool dataUpdated_;

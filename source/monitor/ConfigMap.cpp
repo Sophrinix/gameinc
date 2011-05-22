@@ -76,10 +76,8 @@ bool CConfigMap::hasConfig( const core::stringc& name )
 
     return ( node != 0 );
 }
-//////////////////////////////////////////////////////////////////////
 
 void CConfigMap::setConfig( const core::stringc& name, const core::stringc& value )
 {
     Map.set(name,value);
 }
-//////////////////////////////////////////////////////////////////////

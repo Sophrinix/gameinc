@@ -124,8 +124,13 @@ void HTMLEngine::onPageChanged( const LLEmbeddedBrowserWindowEvent& eventIn )
 
 void HTMLEngine::Navigate( const NrpText& url )
 {
-	Log( SCRIPT ) << "Navigate to " << url << term;
-	llmozlib_->navigateTo( browserWindowId_, const_cast< NrpText& >( url ).ToStr() );
+	bool ret = llmozlib_->navigateTo( browserWindowId_, const_cast< NrpText& >( url ).ToStr() );
+
+	if( !ret )
+	{
+		Log( SCRIPT ) << "Can't open url " << url << term;
+		llmozlib_->navigateTo( browserWindowId_, _page404.ToStr() );
+	}
 }
 
 void HTMLEngine::MouseDown( size_t x, size_t y )
@@ -274,5 +279,6 @@ void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventI
 void HTMLEngine::SetPage404( const NrpText& pageUrl )
 {
 	llmozlib_->set404RedirectUrl( browserWindowId_, const_cast< NrpText& >( pageUrl ).ToStr() );
+	_page404 = pageUrl;
 }
 }
