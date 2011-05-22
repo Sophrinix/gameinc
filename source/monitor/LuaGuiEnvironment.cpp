@@ -233,10 +233,10 @@ int CLuaGuiEnvironment::AddLuaAnimator( lua_State *vm )
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaGuiEnvironment:AddLuaAnimator need 2 parameter");
 
-	gui::IGUIElement* parentElem = (gui::IGUIElement*)lua_touserdata( vm, 2 );
-	NrpText funcName = lua_tostring( vm, 3 );
+	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
+	int funcRef = _GetRef( vm, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN _object->addLuaAnimator( parentElem, funcName );
+	IF_OBJECT_NOT_NULL_THEN _object->addLuaAnimator( parentElem, funcRef );
 
 	return 1;
 }
@@ -771,9 +771,17 @@ int CLuaGuiEnvironment::MessageBox( lua_State* L )
 	{
 		gui::IGUIWindow* wnd = _object->addMessageBox( text.ToWide(), flags, funcs );
 		if( gui::CNrpWindow* nrpw = dynamic_cast< gui::CNrpWindow* >( wnd ) )
+		{
 			nrpw->setModal();
+			nrpw->getCloseButton()->setVisible( false );
+
+			lua_pushlightuserdata( L, wnd );
+			Luna< CLuaWindow >::constructor( L );
+			return 1;
+		}
 	}
 
+	lua_pushnil( L );
 	return 1;	
 }
 
@@ -788,14 +796,15 @@ int CLuaGuiEnvironment::AddPictureFlow( lua_State* L )
 	u32 minside = min( rectangle.getWidth(), rectangle.getHeight() );
 	core::recti pictureRect( core::position2di( 0, 0 ), core::dimension2du( minside, minside ) );
 
-	gui::IGUIElement* elm = NULL;
 	IF_OBJECT_NOT_NULL_THEN
-		elm = (gui::IGUIElement*)_object->addPictureFlow( rectangle, pictureRect, iid, parent );
+	{
+		gui::IGUIElement* elm = (gui::IGUIElement*)_object->addPictureFlow( rectangle, pictureRect, iid, parent );
+		lua_pushlightuserdata( L, elm );
+		Luna< CLuaPictureFlow >::constructor( L );
+		return 1;
+	}
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, elm );
-	Luna< CLuaPictureFlow >::constructor( L );
-
+	lua_pushnil( L );
 	return 1;	
 }
 
@@ -824,7 +833,7 @@ int CLuaGuiEnvironment::FadeAction( lua_State* L )
 			fader->getParent()->bringToFront( fader );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaGuiEnvironment::AddTechMap( lua_State *vm )
@@ -836,13 +845,15 @@ int CLuaGuiEnvironment::AddTechMap( lua_State *vm )
 	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 7, true );
 	core::recti rectangle = _ReadRect( vm, 2, parentElem );
 
-	gui::CNrpTechMap* techMap = NULL;
-	IF_OBJECT_NOT_NULL_THEN techMap = _object->AddTechMap( rectangle, parentElem, id, false );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::CNrpTechMap* techMap = _object->AddTechMap( rectangle, parentElem, id, false );
+		lua_pushlightuserdata( vm, techMap );
+		Luna< CLuaTechMap >::constructor( vm );
+		return 1;
+	}
 
-	//lua_pop( vm, argc );
-	lua_pushlightuserdata( vm, techMap );
-	Luna< CLuaTechMap >::constructor( vm );
-
+	lua_pushnil( vm );
 	return 1;
 }
 
@@ -861,7 +872,7 @@ int CLuaGuiEnvironment::SendToBack( lua_State* L )
 			parent->sendToBack( elm );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaGuiEnvironment::BringToFront( lua_State* L )
@@ -879,22 +890,23 @@ int CLuaGuiEnvironment::BringToFront( lua_State* L )
 			parent->bringToFront( elm );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaGuiEnvironment::AddTimer( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaGuiEnvironment:AddTimer need int, bool parameter" );
+	luaL_argcheck(L, argc == 4, 4, "Function CLuaGuiEnvironment:AddTimer need int, bool parameter" );
 
 	int time = lua_tointeger( L, 2 );
 	assert( lua_isfunction( L, 3 ) );
 	int action = _GetRef( L, 3 );
+	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 4 );
 
 	gui::CNrpTimer* timer = NULL;
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		timer = new gui::CNrpTimer( _object, _object->getRootGUIElement(), time, action );
+		timer = new gui::CNrpTimer( _object, elm ? elm : _object->getRootGUIElement(), time, action );
 	}
 
 	lua_pushlightuserdata( L, timer );
@@ -909,12 +921,14 @@ int CLuaGuiEnvironment::AddTextRunner( lua_State* vm )
 	gui::IGUIElement* parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
 	NrpText text( lua_tostring( vm, 3 ) );
 
-	gui::IGUIAnimator* anim = NULL;
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		gui::IGUIAnimator* anim = _object->addTextRunnerAnimator( parent, text.ToWide() );
+		lua_pushlightuserdata( vm, (void*)anim );
+		return 1;
+	}
 
-	IF_OBJECT_NOT_NULL_THEN anim = _object->addTextRunnerAnimator( parent, text.ToWide() );
-
-	lua_pushlightuserdata( vm, (void*)anim );
-
+	lua_pushnil( vm );
 	return 1;
 }
 
@@ -925,7 +939,7 @@ int CLuaGuiEnvironment::AddLigthing( lua_State* L )
 
 	gui::IGUIElement* p1 = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 2, true );
 	gui::IGUIElement* p2 = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 3, true );
-	assert( p1 && p2 );
+	assert( p1 );
 	NrpText textureName( lua_tostring( L, 4 ) );
 	int timeToDeath = lua_tointeger( L, 5 );
 
@@ -934,9 +948,12 @@ int CLuaGuiEnvironment::AddLigthing( lua_State* L )
 		video::ITexture* txs = NULL;
 
 		txs = _object->getVideoDriver()->getTexture( textureName );
-		new gui::CNrpGuiLigthing( _object, p1, p2, -1, txs, timeToDeath );
+		gui::CNrpGuiLigthing* lg = new gui::CNrpGuiLigthing( _object, p1, p2, -1, txs, timeToDeath );
+		lua_pushlightuserdata( L, lg );
+		return 1;
 	}
 
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -955,13 +972,15 @@ int CLuaGuiEnvironment::AddFlick( lua_State* L )
 	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 8, true );
 	core::recti rectangle = _ReadRect( L, 2, parentElem );
 
-	gui::CNrpGuiFlick* elm = NULL;
-	IF_OBJECT_NOT_NULL_THEN elm = new gui::CNrpGuiFlick( _object, parentElem, rectangle, column, id );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		gui::CNrpGuiFlick* elm = new gui::CNrpGuiFlick( _object, parentElem, rectangle, column, id );
+		lua_pushlightuserdata( L, elm );
+		Luna< CLuaFlick >::constructor( L );
+		return 1;
+	}
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, elm );
-	Luna< CLuaFlick >::constructor( L );
-
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -1019,9 +1038,12 @@ int CLuaGuiEnvironment::AddLoopTimer( lua_State* L )
 	{
 		timer = new gui::CNrpTimer( _object, elm, time, action );
 		timer->SetLoop( true );
+
+		lua_pushlightuserdata( L, timer );
+		return 1;
 	}
 
-	lua_pushlightuserdata( L, timer );
+	lua_pushnil( L );
 	return 1;
 }
 }//namespace nrp

@@ -25,6 +25,8 @@ public:
 	int SetTextAlignment( lua_State* L );
 	int SetFont( lua_State* L );
 	int SetDrawBackground( lua_State* L );
+	int SetWordWrap( lua_State* L );
+	int SetImage( lua_State* L );
 };
 
 }//namespace nrp
