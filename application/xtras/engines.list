@@ -1,4 +1,8 @@
 [options]
-engine0=xtras/engines/simpleEngine/item.engine
-engineNumber=1
-name0=simple_engine
+engine0=xtras/engines/betaengine3/item.engine
+engine1=xtras/engines/ligthText/item.engine
+engine2=xtras/engines/simpleEngine/item.engine
+engineNumber=3
+name0=betaengine3_engine
+name1=lighttext_engine
+name2=simple_engine

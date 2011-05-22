@@ -19,10 +19,10 @@ techgroup:int=#PT_GENRE
 texturehover:string=
 texturenormal:path=image.png
 volumecode:int=0
-nexttechnumber:int=0
+nexttechnumber:int=3
 [nexttechs]
-tech_0=
-tech_1=
-tech_2=
+tech_0=genre_space_moon
+tech_1=genre_space_solarsystem
+tech_2=genre_space_universe
 [skillRequire]
 skill_coding=10

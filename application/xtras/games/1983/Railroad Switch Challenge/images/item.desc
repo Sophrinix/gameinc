@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_logic
+genre_1=genre_puzzle
+genre_2=genre_machines_train
+[properties]
+genreModuleNumber:int=3
+internalname:string=game_rrswithchallenge

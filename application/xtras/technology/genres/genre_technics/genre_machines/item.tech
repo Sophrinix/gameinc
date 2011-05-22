@@ -19,7 +19,7 @@ techgroup:int=#PT_GENRE
 texturehover:string=
 texturenormal:path=image.png
 volumecode:int=0
-nexttechnumber:int=6
+nexttechnumber:int=7
 [nexttechs]
 tech_0=genre_machines_ship
 tech_1=genre_machines_spaceship
@@ -27,6 +27,7 @@ tech_2=genre_machines_flight
 tech_3=genre_machines_car
 tech_4=genre_machines_tank
 tech_5=genre_machines_submarine
+tech_6=genre_machines_train
 [techRequire]
 video_24bitcolor=30
 [skillRequire]

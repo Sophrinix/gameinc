@@ -10,7 +10,7 @@ lastworker:user=
 level:int=0
 moduleerrornumber:int=0
 name:string=#TRANSLATE_GT_FOOTBALL
-internalname:string=genre_foorball
+internalname:string=genre_football
 price:float=0
 quality:int=100
 readyworkpercent:float=0
@@ -19,7 +19,7 @@ techgroup:int=#PT_GENRE
 texturehover:string=
 texturenormal:path=image.png
 volumecode:int=0
-nexttechnumber:int0
+nexttechnumber:int=0
 [nexttechs]
 tech_0=
 [skillRequire]

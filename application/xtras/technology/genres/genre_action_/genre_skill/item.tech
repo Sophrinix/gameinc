@@ -19,7 +19,7 @@ techgroup:int=#PT_GENRE
 texturehover:string=
 texturenormal:path=image.png
 volumecode:int=0
-nexttechnumber:int=2
+nexttechnumber:int=3
 [nexttechs]
 tech_0=genre_arcade
 tech_1=genre_fighting

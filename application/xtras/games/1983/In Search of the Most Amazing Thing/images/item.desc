@@ -1,9 +1,6 @@
 [genres]
-genre_0=genre_simulator
-genre_1=genre_action
-genre_2=genre_scroll
-genre_3=genre_flight
-genre_4=genre_shooter
+genre_0=genre_quest
+genre_1=genre_interactive_fiction
 [PROPERTIES]
 genreModuleNumber:int=5
-internalname:string=game_amazingthing
+internalname:string=game_insearchofthemostamazingthing

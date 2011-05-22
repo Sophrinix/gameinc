@@ -1,0 +1,19 @@
+[properties]
+avgenrecount:int=1
+balance:int=0
+company:string=
+cpu:float=0.0001
+genremodulenumber:int=2
+name:string=LigthText
+internalName:string=lighttext_engine
+startdate:time=y=1982 m=01 d=01 h=0 mi=0
+parentcompany:unknown=
+quality:int=20
+skill_coding:int=10
+;techgroup:int=#PT_GAMEENGINE
+timeactual:int=0
+volumecode:int=10000
+textureNormal:path=image.png
+advTechNumber:int=2
+[genres]
+genre_skill=1

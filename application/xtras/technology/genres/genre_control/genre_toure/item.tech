@@ -19,8 +19,9 @@ techgroup:int=#PT_GENRE
 texturehover:string=
 texturenormal:path=image.png
 volumecode:int=0
-nexttechnumber:int=1
+nexttechnumber:int=2
 [nexttechs]
 tech_0=genre_quest
+tech_1=genre_rpg
 [skillRequire]
 skill_coding=10

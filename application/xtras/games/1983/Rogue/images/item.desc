@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_rogue
+genre_1=genre_rpg
+[properties]
+genreModuleNumber:int=2
+internalname:string=game_rogue

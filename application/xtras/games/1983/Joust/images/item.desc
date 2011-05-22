@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_arcade
+genre_1=genre_action
+genre_2=genre_scroll
+[properties]
+genreModuleNumber:int=3
+internalname:string=game_joust

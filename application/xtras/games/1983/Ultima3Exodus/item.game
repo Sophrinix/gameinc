@@ -1,0 +1,40 @@
+[properties]
+name:string=Ultima III: Exodus
+internalname:string=game_ultima3exodus
+owner:string=origin_system_company
+startdate:time=y=1983 m=08 d=10 h=0 mi=0
+enddate:time=y=1987 m=01 d=02 h=0 mi=0
+moneyDevelop:int=200000
+cash:int=28000000
+copySell:int=120000
+startrating:int=90
+startGameRating:int=90
+startGraphicRating:int=90
+startGenreRating:int=90
+startSoundRating:int=94
+startBugRating:int=90
+startAdvFuncRating:int=90
+localizationRating:int=90
+gameEngine:string=betaengine3_engine
+platformnumber:int=1
+descriptionpath:path=desc.htm
+recense:path=recense.mht
+texturenormal:path=images/spl_0.png
+readyWorkPercent:float=1
+genreModuleNumber:int=3
+moduleNumber:int=1
+famous:float=0.5
+gameIsSaling:bool=false
+;imageName:string=
+[platforms]
+platform_0=platform_amigacd32
+platfrom_1=platform_apple2
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_dendy
+[genres]
+genre_0=genre_rpg
+genre_1=genre_quest
+genre_2=genre_place_fantasy
+[techs]
+tech_0=tech_keyboard

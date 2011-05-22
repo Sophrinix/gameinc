@@ -1,0 +1,36 @@
+[properties]
+name:string=Moria
+internalname:string=game_moria
+owner:string=
+startdate:time=y=1983 m=04 d=06 h=0 mi=0
+enddate:time=y=1987 m=01 d=02 h=0 mi=0
+moneyDevelop:int=200000
+cash:int=28000000
+copySell:int=180000
+startrating:int=64
+startGameRating:int=64
+startGraphicRating:int=70
+startGenreRating:int=60
+startSoundRating:int=64
+startBugRating:int=80
+startAdvFuncRating:int=80
+localizationRating:int=80
+gameEngine:string=lighttext_engine
+platformnumber:int=1
+descriptionpath:path=desc.htm
+recense:path=recense.htm
+texturenormal:path=images/spl_0.png
+readyWorkPercent:float=1
+genreModuleNumber:int=2
+moduleNumber:int=1
+famous:float=0.5
+gameIsSaling:bool=false
+;imageName:string=
+[platforms]
+platform_0=platform_dos
+platfrom1=
+[genres]
+genre_0=genre_rpg
+genre_1=genre_rogue
+[techs]
+tech_0=tech_keyboard

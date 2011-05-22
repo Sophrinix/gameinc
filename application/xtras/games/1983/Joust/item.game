@@ -1,0 +1,38 @@
+[properties]
+name:string=Joust
+internalname:string=game_joust
+owner:string=Williams Electronics
+startdate:time=y=1983 m=03 d=02 h=0 mi=0
+enddate:time=y=1985 m=01 d=02 h=0 mi=0
+moneyDevelop:int=200000
+cash:int=28000000
+copySell:int=180000
+startrating:int=64
+startGameRating:int=64
+startGraphicRating:int=70
+startGenreRating:int=60
+startSoundRating:int=64
+startBugRating:int=80
+startAdvFuncRating:int=80
+localizationRating:int=80
+gameEngine:string=alpha_engine2
+platformnumber:int=4
+descriptionpath:path=desc.htm
+recense:path=recense.htm
+texturenormal:path=images/spl_0.png
+readyWorkPercent:float=1
+genreModuleNumber:int=2
+moduleNumber:int=1
+famous:float=0.5
+gameIsSaling:bool=false
+;imageName:string=
+[platforms]
+platform_0=platform_atari2600
+platform_1=platform_atarilynx
+platform_2=platform_atari7800
+platform_3=platform_nintendo64
+[genres]
+genre_0=genre_quest
+genre_1=genre_interactive_fiction
+[techs]
+tech_0=tech_keyboard

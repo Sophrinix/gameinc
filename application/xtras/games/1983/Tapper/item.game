@@ -1,0 +1,36 @@
+[properties]
+name:string=Tapper
+internalname:string=game_tapper
+owner:string=windmill_company
+startdate:time=y=1983 m=08 d=08 h=0 mi=0
+enddate:time=y=1987 m=01 d=02 h=0 mi=0
+moneyDevelop:int=200000
+cash:int=28000000
+copySell:int=180000
+startrating:int=90
+startGameRating:int=90
+startGraphicRating:int=90
+startGenreRating:int=90
+startSoundRating:int=94
+startBugRating:int=90
+startAdvFuncRating:int=90
+localizationRating:int=90
+gameEngine:string=betaengine3_engine
+platformnumber:int=1
+descriptionpath:path=desc.mht
+recense:path=recense.mht
+texturenormal:path=images/spl_0.png
+readyWorkPercent:float=1
+genreModuleNumber:int=2
+moduleNumber:int=1
+famous:float=0.5
+gameIsSaling:bool=false
+;imageName:string=
+[platforms]
+platform_0=platform_dos
+platfrom_1=
+[genres]
+genre_0=genre_arcade
+genre_1=genre_human
+[techs]
+tech_0=tech_keyboard

@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_logic
+genre_1=genre_strategy
+genre_2=genre_place_space
+genre_3=genre_space_universe
+[properties]
+genreModuleNumber:int=4
+internalname:string=game_reachofthestars
