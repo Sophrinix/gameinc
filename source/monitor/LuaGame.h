@@ -40,6 +40,14 @@ public:
 	int GetLastMonthProfit( lua_State* L );
 	int GetCompany( lua_State* L );
 	int GetDescriptionLink( lua_State* L );
+	int GetRandomRecense( lua_State* L );
+
+	int GetRating( lua_State* L );
+	int GetGraphikRating( lua_State* L );
+	int GetSoundRating( lua_State* L );
+	int GetGameplayRating( lua_State* L );
+	int GetBugsRating( lua_State* L );
+
 private:
 	template< class R > R GetImageLisParam_( lua_State* L, 
 		                                     const NrpText& funcName, 

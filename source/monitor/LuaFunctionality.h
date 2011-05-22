@@ -27,14 +27,14 @@ public:
 	/*
 	Добавление пользовательской функции 
 	*/
-	virtual void AddLuaFunction( int actionType, int funcRef );
+	virtual void Bind( int actionType, int funcRef );
 
 	/*
 	Удаление пользовательской функции из списка
 	*/
-	virtual void RemoveLuaFunction( int actionType, int m );
+	virtual void Unbind( int actionType, int m );
 
-	virtual void DoLuaFunctionsByType( int funcType, void* sender, void* param = NULL );
+	virtual void PCall( int funcType, void* sender, void* param = NULL );
 };
 
 #endif

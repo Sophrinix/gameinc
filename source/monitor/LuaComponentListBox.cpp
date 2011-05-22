@@ -53,7 +53,7 @@ int CLuaComponentListBox::SetTooltipLaunched( lua_State* L )
 	assert( lua_isfunction( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		_object->AddLuaFunction( GUIELEMENT_TOOLTIP_LAUNCHED, _GetRef( L, -1 ) );			
+		_object->Bind( GUIELEMENT_TOOLTIP_LAUNCHED, _GetRef( L, -1 ) );			
 		_object->setToolTipText( L" " );
 	}
 
@@ -63,7 +63,7 @@ int CLuaComponentListBox::SetTooltipLaunched( lua_State* L )
 int CLuaComponentListBox::SetRmbClick( lua_State* L )
 {
 	assert( lua_isfunction( L, -1 ) );
-	IF_OBJECT_NOT_NULL_THEN	_object->AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, _GetRef( L, -1 ) );			
+	IF_OBJECT_NOT_NULL_THEN	_object->Bind( GUIELEMENT_RMOUSE_LEFTUP, _GetRef( L, -1 ) );			
 
 	return 0;
 }
@@ -71,7 +71,7 @@ int CLuaComponentListBox::SetRmbClick( lua_State* L )
 int CLuaComponentListBox::SetLmbDblClick( lua_State* L )
 {
 	assert( lua_isfunction( L, -1 ) );
-	IF_OBJECT_NOT_NULL_THEN	_object->AddLuaFunction( GUIELEMENT_SELECTED_AGAIN, _GetRef( L, -1 ) );			
+	IF_OBJECT_NOT_NULL_THEN	_object->Bind( GUIELEMENT_SELECTED_AGAIN, _GetRef( L, -1 ) );			
 	
 	return 0;
 }
@@ -79,7 +79,7 @@ int CLuaComponentListBox::SetLmbDblClick( lua_State* L )
 int  CLuaComponentListBox::SetOnChangeSelect( lua_State* L )
 {
 	assert( lua_isfunction( L, -1 ) );
-	IF_OBJECT_NOT_NULL_THEN	_object->AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, _GetRef( L, -1 ) );			
+	IF_OBJECT_NOT_NULL_THEN	_object->Bind( GUIELEMENT_LBXITEM_SELECTED, _GetRef( L, -1 ) );			
 	
 	return 0;
 }

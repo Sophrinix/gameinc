@@ -11,7 +11,7 @@ ILuaFunctionality::~ILuaFunctionality( void )
 	luaFunctions_.clear();
 }
 
-void ILuaFunctionality::AddLuaFunction( int actionType, int funcRef )
+void ILuaFunctionality::Bind( int actionType, int funcRef )
 {
 	assert( actionType > 0 && funcRef != -1);
 	assert( luaFunctions_.find( actionType ) == luaFunctions_.end() );
@@ -22,7 +22,7 @@ void ILuaFunctionality::AddLuaFunction( int actionType, int funcRef )
 	luaFunctions_[ actionType ] = funcRef;
 }
 
-void ILuaFunctionality::RemoveLuaFunction( int actionType, int m )
+void ILuaFunctionality::Unbind( int actionType, int m )
 {
 	assert( actionType > 0 );
 	assert( luaFunctions_.find( actionType ) != luaFunctions_.end() );
@@ -32,7 +32,7 @@ void ILuaFunctionality::RemoveLuaFunction( int actionType, int m )
 		luaFunctions_.erase( pIter );
 }
 
-void ILuaFunctionality::DoLuaFunctionsByType( int funcType, void* sender, void* param /*= NULL */ )
+void ILuaFunctionality::PCall( int funcType, void* sender, void* param /*= NULL */ )
 {
 	try
 	{

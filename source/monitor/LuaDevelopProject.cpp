@@ -19,6 +19,7 @@ BEGIN_LUNA_PROPERTIES(CLuaDevelopProject)
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopProject, "moduleNumber", GetModuleNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopProject, "famous", GetFamous, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaDevelopProject, "percentDone", GetWorkPercentDone, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaDevelopProject, "codeVolume", GetCodeVolume, PureFunction )
 END_LUNA_PROPERTIES 
 
 CLuaDevelopProject::CLuaDevelopProject(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUADEVPROJECT, ex)							//конструктор

@@ -10,7 +10,7 @@
 #include "LuaTechnology.h"
 #include "LuaCompany.h"
 #include "NrpHistory.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 #include "NrpApplication.h"
 
 using namespace irr;
@@ -48,6 +48,12 @@ BEGIN_LUNA_PROPERTIES(CLuaGame)
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "allTimeSales", GetAllTimeSales, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "allTimeProfit", GetAllTimeProfit, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "description", GetDescriptionLink, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "rating", GetRating, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "graphikRating", GetGraphikRating, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "soundRating", GetSoundRating, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "gameplayRating", GetGameplayRating, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "bugsRating", GetBugsRating, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "randomRecense", GetRandomRecense, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaGame::CLuaGame(lua_State *L, bool ex) : ILuaBaseProject(L, CLASS_LUAGAME, ex )							//конструктор
@@ -221,7 +227,7 @@ int CLuaGame::GetImagePath_( lua_State* L, const NrpText& funcName, OPTION_NAME&
 	NrpText pathTexture;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpScreenshot* imageList = (*_object)[ GAMEIMAGELIST ].As<CNrpScreenshot*>();
+		CNrpExtInfo* imageList = (*_object)[ GAMEIMAGELIST ].As<CNrpExtInfo*>();
 		if( imageList )
 		{
 			int maxImage = (*imageList)[ nameParam ];
@@ -251,7 +257,7 @@ template< class R > R CLuaGame::GetImageLisParam_( lua_State* L, const NrpText& 
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpScreenshot* imageList = (*_object)[ GAMEIMAGELIST ].As<CNrpScreenshot*>();
+		CNrpExtInfo* imageList = (*_object)[ GAMEIMAGELIST ].As<CNrpExtInfo*>();
 		if( imageList )
 			defValue = (*imageList)[ name ];
 	}
@@ -382,12 +388,12 @@ int CLuaGame::GetCompany( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		CNrpCompany* cmp = (*_object)[ PARENTCOMPANY ].As<CNrpCompany*>();
-
-		//lua_pop( L, lua_gettop( L ) );
-		lua_pushlightuserdata( L, cmp );
-		Luna< CLuaCompany >::constructor( L );
-		return 1;
+		if( CNrpCompany* cmp = (*_object)[ PARENTCOMPANY ].As<CNrpCompany*>() )
+		{
+			lua_pushlightuserdata( L, cmp );
+			Luna< CLuaCompany >::constructor( L );
+			return 1;
+		}
 	}
 
 	lua_pushnil( L );
@@ -439,6 +445,56 @@ int CLuaGame::GetAllTimeProfit( lua_State* L )
 	}
 
 	lua_pushnil( L );
+	return 1;		
+}
+
+int CLuaGame::GetRandomRecense( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( CNrpExtInfo* imageList = (*_object)[ GAMEIMAGELIST ].As<CNrpExtInfo*>() )
+		{
+			const STRINGS& recenses = imageList->GetRecenses();
+			NrpText randRecense = "CLuaGame:GetRandomRecense:NoRecense"; 
+			if( recenses.size() > 0 )
+				randRecense = recenses[ rand() % recenses.size() ];
+
+			lua_pushstring( L, randRecense );
+			return 1;
+		}
+	}
+
+	lua_pushnil( L );
+	return 1;			
+}
+
+int CLuaGame::GetGraphikRating( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, CURRENTGRAPHICRATING, 0 ) );
+	return 1;		
+}
+
+int CLuaGame::GetSoundRating( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, CURRENTSOUNDRATING, 0 ) );
+	return 1;		
+}
+
+int CLuaGame::GetGameplayRating( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, CURRENTGENRERATING, 0 ) );
+	return 1;		
+}
+
+int CLuaGame::GetBugsRating( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, CURRENTBUGRATING, 0 ) );
+	return 1;		
+}
+
+int CLuaGame::GetRating( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, CURRENTGAMERATING, 0 ) );
 	return 1;		
 }
 
