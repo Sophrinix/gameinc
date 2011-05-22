@@ -4,7 +4,7 @@
 #include "nrpConfig.h"
 #include "nrpArrays.h"
 #include "NrpTypes.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 
 namespace nrp
 {

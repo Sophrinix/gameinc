@@ -1,6 +1,6 @@
 #pragma once
 #include "NrpTechnology.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 
 namespace nrp
 {

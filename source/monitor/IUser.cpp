@@ -12,7 +12,7 @@
 #include "NrpRelation.h"
 #include "OpFileSystem.h"
 #include "NrpConfigModificator.h"
-#include "timeHelpers.h"
+#include "NrpTime.h"
 
 #include <io.h>
 #include <errno.h>
