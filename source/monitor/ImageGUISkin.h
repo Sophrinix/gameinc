@@ -28,23 +28,31 @@ struct SImageGUIElementStyle						//описание как надо рисовать элемент
 	struct SBorder
 	{
 		s32 Top, Left, Bottom, Right;
+		bool valid;
 		SBorder() : Top(0), Left(0), Bottom(0), Right(0) {}
 	};
 	
 	SBorder SrcBorder;
 	SBorder DstBorder;
+	SBorder align;
+	SBorder margin;
+
 	video::ITexture* Texture;						//текстура для отрисовки
 	video::SColor Color;							//
+	core::dimension2du minSize;
 
 	SImageGUIElementStyle() : Texture(0), Color(255,255,255,255) {}
 };
-	
+
 struct SImageGUISkinConfig							//карта элементов которые может отрисовывать скин
 {
 	SImageGUIElementStyle SunkenPane,				//обычная панель	
 						  Window,					//окно
 						  WindowCaption,			//шапка окна
 						  Button,					//кнопка в обычном состоянии
+						  WindowCloseButton,		//Кнопка закрытия окна
+						  WindowCloseHoveredButton,
+						  WindowClosePressedButton,
 						  ButtonPressed,			//кнопка в нажатом состоянии
 						  ButtonHovered,			//кнопка, когда над ней курсор находится, а также в фокусе
 						  ButtonDisabled,			//нажатая кнопка	

@@ -34,8 +34,15 @@ namespace nrp
 											  LUNA_AUTONAME_PROPERTY(class, "childCount", GetChildCount, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "name", GetName, SetName )\
 											  LUNA_AUTONAME_PROPERTY(class, "width", GetWidth, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "height", GetHeight, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "left", GetLeft, PureFunction )\
-											  LUNA_AUTONAME_PROPERTY(class, "bottom", GetBottom, PureFunction )
+											  LUNA_AUTONAME_PROPERTY(class, "screenLeft", GetScreenLeft, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "right", GetRight, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "screenRight", GetScreenRight, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "top", GetTop, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "screenTop", GetScreenTop, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "bottom", GetBottom, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "screenBottom", GetScreenBottom, PureFunction )
 														
 
 template< class T > class ILuaGuiElement : public ILuaObject< T >
@@ -43,6 +50,66 @@ template< class T > class ILuaGuiElement : public ILuaObject< T >
 public:
 	ILuaGuiElement(lua_State *L, NrpText luaName, bool exist) : ILuaObject( L, luaName, exist )
 	{}
+
+	int GetScreenRight( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushinteger( L, _object->getAbsolutePosition().LowerRightCorner.X );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
+	int GetRight( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushinteger( L, _object->getRelativePosition().LowerRightCorner.X );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
+	int GetTop( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushinteger( L, _object->getRelativePosition().UpperLeftCorner.Y );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
+	int GetScreenTop( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushinteger( L, _object->getAbsolutePosition().UpperLeftCorner.Y );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
+	int GetHeight( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushinteger( L, _object->getAbsolutePosition().getHeight() );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
 
 	int GetName( lua_State* L )
 	{
@@ -73,6 +140,18 @@ public:
 	{
 		IF_OBJECT_NOT_NULL_THEN 
 		{
+			lua_pushinteger( L, _object->getRelativePosition().UpperLeftCorner.X );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
+	int GetScreenLeft( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
 			lua_pushinteger( L, _object->getAbsolutePosition().UpperLeftCorner.X );
 			return 1;
 		}
@@ -82,6 +161,18 @@ public:
 	}
 
 	int GetBottom( lua_State* L )
+	{
+		IF_OBJECT_NOT_NULL_THEN 
+		{
+			lua_pushinteger( L, _object->getRelativePosition().LowerRightCorner.Y );
+			return 1;
+		}
+
+		lua_pushnil( L );
+		return 1;
+	}
+
+	int GetScreenBottom( lua_State* L )
 	{
 		IF_OBJECT_NOT_NULL_THEN 
 		{
