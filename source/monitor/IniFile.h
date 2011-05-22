@@ -6,7 +6,7 @@
 #include "nrpArrays.h"
 #include "SectionNames.h"
 #include "NativeIniFile.h"
-#include "TimeHelpers.h"
+#include "NrpTime.h"
 
 namespace nrp
 {
@@ -29,7 +29,8 @@ public:
 	IniFile( const NrpText& fileName ); 
 	~IniFile();
 
-	NativeIniFile& GetNative() { return _native; }
+	IniKey* GetKey( NrpText section, NrpText key );
+	IniSection* GetSection( NrpText section );
 
 	//! Функция записывает в конфигурационный файл целочисленное значение
 	/*! 

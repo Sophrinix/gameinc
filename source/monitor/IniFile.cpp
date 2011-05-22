@@ -150,7 +150,15 @@ void IniFile::Get( NrpText sectionName, KNOWLEDGE_MAP& mapt )
 void IniFile::Get( NrpText section, NrpText (*func)(int), u32 maxNum, STRINGS& art )
 {
 	for( u32 i=0; i < maxNum; i++ )
-		art.push_back( Get( section, func( i ), NrpText() ) );
+	{
+		if( IniKey* key = GetKey( section, func( i ) ) )
+			if( key->GetValue().size() > 0 )
+				art.push_back( key->GetValue().c_str() );
+			else
+				Log( HW ) << "Value is null for key=" << key->GetKey().c_str() << " in file=" << _fileName << term;
+		else
+			break;
+	}
 }
 
 void IniFile::Set( NrpText section, NrpText (*func)( int), const STRINGS& art )
@@ -172,6 +180,16 @@ IniFile::~IniFile()
 void IniFile::Save()
 {
 	_native.Save( _fileName );
+}
+
+IniKey* IniFile::GetKey( NrpText section, NrpText key )
+{
+	return _native.GetKey( section.ToStr(), key.ToStr() );
+}
+
+IniSection* IniFile::GetSection( NrpText section )
+{
+	return _native.GetSection( section.ToStr() );
 }
 
 } //namespace nrp
