@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="GameDev"
 	ProjectGUID="{F0B95852-AABA-43DD-A8EA-AD9F440FB9E6}"
 	RootNamespace="nerpa_sc"
@@ -378,6 +378,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NrpTime.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NrpTranslate.h"
 				>
 			</File>
@@ -407,10 +411,6 @@
 			</File>
 			<File
 				RelativePath=".\SectionNames.h"
-				>
-			</File>
-			<File
-				RelativePath=".\timeHelpers.h"
 				>
 			</File>
 			<Filter
@@ -1540,6 +1540,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\application\scripts\gameNames.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\..\application\scripts\globalVariableInitialize.lua"
 				>
 			</File>
@@ -1667,6 +1671,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\application\scripts\rightPanel.lua"
+					>
+				</File>
+				<File
 					RelativePath="..\..\application\scripts\userFullInfo.lua"
 					>
 				</File>
@@ -1709,6 +1717,10 @@
 				<Filter
 					Name="shop"
 					>
+					<File
+						RelativePath="..\..\application\scripts\gameRecense.lua"
+						>
+					</File>
 					<File
 						RelativePath="..\..\application\scripts\journals.lua"
 						>
@@ -1825,6 +1837,10 @@
 				<Filter
 					Name="reklame"
 					>
+					<File
+						RelativePath="..\..\application\scripts\reklameCampanies.lua"
+						>
+					</File>
 					<File
 						RelativePath="..\..\application\scripts\reklameManager.lua"
 						>

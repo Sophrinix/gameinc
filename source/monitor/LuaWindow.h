@@ -23,10 +23,12 @@ public:
 	int GetCloseButton( lua_State *L );
 	int SetDraggable( lua_State *L );
 	int SetDrawBody( lua_State *L );
-	int AddLuaFunction( lua_State* L );
-	int RemoveLuaFunction( lua_State* L );
+	int Bind( lua_State* L );
+	int Unbind( lua_State* L );
 	int Draw( lua_State* L );
 	int SetOnRemove( lua_State* L );
+	int SetOnLmbClick( lua_State* L );
+	int SetOnKeyEvent( lua_State* L );
 
 	int SetTexture( lua_State* L );
 	int GetTexture( lua_State* L );

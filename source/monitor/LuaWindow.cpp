@@ -15,8 +15,8 @@ CLASS_NAME CLASS_LUAWINDOW( "CLuaWindow" );
 BEGIN_LUNA_METHODS(CLuaWindow)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaWindow )
 	/*                */
-	LUNA_AUTONAME_FUNCTION( CLuaWindow, AddLuaFunction )
-	LUNA_AUTONAME_FUNCTION( CLuaWindow, RemoveLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaWindow, Bind )
+	LUNA_AUTONAME_FUNCTION( CLuaWindow, Unbind )
 	LUNA_AUTONAME_FUNCTION( CLuaWindow, Draw )
 END_LUNA_METHODS
 
@@ -27,6 +27,8 @@ BEGIN_LUNA_PROPERTIES(CLuaWindow)
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "draggable", PureFunction, SetDraggable )
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "drawBody", PureFunction, SetDrawBody )
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "onRemove", PureFunction, SetOnRemove )
+	LUNA_AUTONAME_PROPERTY( CLuaWindow, "onLmbClick", PureFunction, SetOnLmbClick )
+	LUNA_AUTONAME_PROPERTY( CLuaWindow, "onKeyEvent", PureFunction, SetOnKeyEvent )
 END_LUNA_PROPERTIES
 
 CLuaWindow::CLuaWindow(lua_State *L, bool exist) : ILuaGuiElement(L, CLASS_LUAWINDOW, exist )
@@ -51,7 +53,15 @@ int CLuaWindow::GetCloseButton( lua_State *L )
 int CLuaWindow::SetOnRemove( lua_State* L )
 {
 	assert( lua_isfunction( L, -1 ) );
-	IF_OBJECT_NOT_NULL_THEN _object->AddLuaFunction( GUIELEMENT_ON_REMOVE, _GetRef( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN _object->Bind( GUIELEMENT_ON_REMOVE, _GetRef( L, -1 ) );
+
+	return 0;
+}
+
+int CLuaWindow::SetOnLmbClick( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN _object->Bind( GUIELEMENT_LMOUSE_LEFTUP, _GetRef( L, -1 ) );
 
 	return 0;
 }
@@ -107,7 +117,7 @@ int CLuaWindow::SetDrawBody( lua_State *L )
 	return 0;
 }
 
-int CLuaWindow::AddLuaFunction( lua_State* L )
+int CLuaWindow::Bind( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 3, 3, "Function CLuaWindow:AddLuaFunction need 2 parameter ");
@@ -118,23 +128,23 @@ int CLuaWindow::AddLuaFunction( lua_State* L )
 		int typef = lua_tointeger( L, 2 );
 		int name = _GetRef( L, 3 );
 		assert( typef );
-		_object->AddLuaFunction( typef, name );
+		_object->Bind( typef, name );
 	}
 
 	return 0;
 }
 
-int CLuaWindow::RemoveLuaFunction( lua_State* L )
+int CLuaWindow::Unbind( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaWindow:RemoveLuaFunction need 2 parameter ");
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaWindow:Unbind need 2 parameter ");
 
 	IF_OBJECT_NOT_NULL_THEN	
 	{
 		int typef = lua_tointeger( L, 2 );
 		int name = lua_tointeger( L, 3 );
 		assert( typef && name );
-		_object->RemoveLuaFunction( typef, name );
+		_object->Unbind( typef, name );
 	}
 
 	return 0;
@@ -154,4 +164,13 @@ const char* CLuaWindow::ClassName()
 {
 	return CLASS_LUAWINDOW;
 }
+
+int CLuaWindow::SetOnKeyEvent( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN _object->Bind( GUIELEMENT_KEY_INPUT, _GetRef( L, -1 ) );
+
+	return 0;
+}
+
 }//namespace nrp
