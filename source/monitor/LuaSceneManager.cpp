@@ -37,8 +37,8 @@ BEGIN_LUNA_METHODS(CLuaSceneManager)
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, DrawProgress )
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetWorldSize )
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, LinkTerrain )
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, AddSceneFunction )
-	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, RemoveSceneFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, Bind )
+	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, Unbind )
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetRayFromCursorCollisionWithTerrains )
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, GetMarkText )
 	LUNA_AUTONAME_FUNCTION( CLuaSceneManager, SetMarkText )
@@ -330,20 +330,20 @@ int CLuaSceneManager::GetSceneNodeByName( lua_State* vm )
 	return 1;
 }
 
-int CLuaSceneManager::AddSceneFunction( lua_State* vm )
+int CLuaSceneManager::Bind( lua_State* vm )
 {
 	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:AddSceneFunction need 2 parameter ");
+	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:Bind need 2 parameter ");
 
 	int typef = lua_tointeger( vm, 2 );
 	int name = _GetRef( vm, 3 );
 	assert( typef && name != -1 );
-	_nrpEngine.GetCurrentScene()->AddLuaFunction( typef, name );
+	_nrpEngine.GetCurrentScene()->Bind( typef, name );
 
 	return 1;
 }
 
-int CLuaSceneManager::RemoveSceneFunction( lua_State* vm )
+int CLuaSceneManager::Unbind( lua_State* vm )
 {
 	int argc = lua_gettop(vm);
 	luaL_argcheck(vm, argc == 3, 3, "Function CLuaSceneManager:RemoveSceneFunction need 2 parameter ");
@@ -351,7 +351,7 @@ int CLuaSceneManager::RemoveSceneFunction( lua_State* vm )
 	int typef = lua_tointeger( vm, 2 );
 	int name = lua_tointeger( vm, 3 );
 	assert( typef && name );
-	_nrpEngine.GetCurrentScene()->RemoveLuaFunction( typef, name );
+	_nrpEngine.GetCurrentScene()->Unbind( typef, name );
 
 	return 1;
 }

@@ -13,8 +13,6 @@ CLASS_NAME CLASS_LINKBOX( "CLuaLinkBox" );
 
 BEGIN_LUNA_METHODS(CLuaLinkBox)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaLinkBox )
-	//LUNA_AUTONAME_FUNCTION( CLuaLinkBox, AddLuaFunction )
-	//LUNA_AUTONAME_FUNCTION( CLuaLinkBox, RemoveLuaFunction )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaLinkBox)
@@ -27,13 +25,14 @@ BEGIN_LUNA_PROPERTIES(CLuaLinkBox)
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "defaultTexture", PureFunction, SetDefaultTexture )
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "setFunction", PureFunction, SetFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "unsetFunction", PureFunction, UnsetFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "dragStartFunction", PureFunction, SetDragStartFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "color", PureFunction, SetColor )
 END_LUNA_PROPERTIES
 
 CLuaLinkBox::CLuaLinkBox(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LINKBOX, ex )							//конструктор
 {}
 
-int CLuaLinkBox::AddLuaFunction( lua_State *L )									//устанавливает имя новой функции для этой кнопки	
+int CLuaLinkBox::Bind( lua_State *L )									//устанавливает имя новой функции для этой кнопки	
 {
 	return AddRemLuaFunction_( L, "AddLuaFunction", true );
 }
@@ -49,9 +48,9 @@ int CLuaLinkBox::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool
 	IF_OBJECT_NOT_NULL_THEN	
 	{
 		if( add )
-			_object->AddLuaFunction( id, funRef );
+			_object->Bind( id, funRef );
 		else 
-			_object->RemoveLuaFunction( id, funRef );
+			_object->Unbind( id, funRef );
 		return 1;
 	}
 
@@ -66,7 +65,7 @@ int CLuaLinkBox::SetModuleType( lua_State* L )
 	return 0;	
 }
 
-int CLuaLinkBox::RemoveLuaFunction( lua_State* L )
+int CLuaLinkBox::Unbind( lua_State* L )
 {
 	return AddRemLuaFunction_( L, "RemoveLuaFunction", false );
 }
@@ -187,23 +186,34 @@ const char* CLuaLinkBox::ClassName()
 
 int CLuaLinkBox::SetFunction( lua_State* L )
 {
+	assert( lua_isfunction( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
-		_object->AddLuaFunction( GUIELEMENT_SET_DATA, _GetRef( L, -1 ) );
+		_object->Bind( GUIELEMENT_SET_DATA, _GetRef( L, -1 ) );
+
+	return 0;	
+}
+
+int CLuaLinkBox::SetDragStartFunction( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+		_object->Bind( GUIELEMENT_DRAG_START, _GetRef( L, -1 ) );
 
 	return 0;	
 }
 
 int CLuaLinkBox::UnsetFunction( lua_State* L )
 {
+	assert( lua_isfunction( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
-		_object->AddLuaFunction( GUIELEMENT_RMOUSE_LEFTUP, _GetRef( L, -1 ) );
+		_object->Bind( GUIELEMENT_RMOUSE_LEFTUP, _GetRef( L, -1 ) );
 
 	return 0;	
 }
 
 int CLuaLinkBox::SetColor( lua_State* L )
 {
-	assert( lua_isnumber( L , -1) );
+	assert( lua_isnumber( L, -1) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		_object->setOverrideColor( lua_tointeger( L, -1 ) );

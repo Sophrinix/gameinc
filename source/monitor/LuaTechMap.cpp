@@ -30,6 +30,7 @@ BEGIN_LUNA_PROPERTIES(CLuaTechMap)
 	LUNA_AUTONAME_PROPERTY( CLuaTechMap, "selectedType", GetSelectedObjectType, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTechMap, "selectedObject", GetSelectedObject, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTechMap, "selectedName", GetSelectedObjectName, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaTechMap, "onActivate", PureFunction, SetOnActivate )
 END_LUNA_PROPERTIES
 
 CLuaTechMap::CLuaTechMap(lua_State *L, bool ex) : ILuaGuiElement(L, CLASS_LUATECHMAP, ex)						//конструктор
@@ -91,6 +92,14 @@ int CLuaTechMap::AddTechnology( lua_State *L )
 	return 0;	
 }
 
+int CLuaTechMap::SetOnActivate( lua_State* L )
+{
+	assert( lua_isfunction( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN _object->Bind( GUIELEMENT_SELECTED_AGAIN, _GetRef( L, -1 ) );
+
+	return 0;
+}
+
 int CLuaTechMap::AddLuaFunction( lua_State* L )
 {
 	int argc = lua_gettop(L);
@@ -101,10 +110,10 @@ int CLuaTechMap::AddLuaFunction( lua_State* L )
 		int	funcType = lua_tointeger( L, 2 );
 		int funcName = _GetRef( L, 3 );
 		assert( funcName && funcType );
-		_object->AddLuaFunction( funcType, funcName );
+		_object->Bind( funcType, funcName );
 	}
 
-	return 1;		
+	return 0;		
 }
 
 int CLuaTechMap::GetSelectedObjectType( lua_State* L )

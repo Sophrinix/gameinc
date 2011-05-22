@@ -14,8 +14,8 @@ public:
 	static const char* ClassName();
 	CLuaLinkBox(lua_State *L, bool);		
 																//нажатии на эту кнопку
-	int AddLuaFunction( lua_State* L );
-	int RemoveLuaFunction( lua_State* L );
+	int Bind( lua_State* L );
+	int Unbind( lua_State* L );
 	int SetModuleType( lua_State* L );
 	int GetModuleType( lua_State* L );
 	int SetDraggable( lua_State* L );
@@ -33,6 +33,7 @@ public:
 private:
 	typedef enum { TI_IMAGE=0, TI_HOVER, TI_PRESSED } TYPE_IMAGE;
 	int AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool add );
+	int SetDragStartFunction( lua_State* L );
 };
 
 }//namespace nrp

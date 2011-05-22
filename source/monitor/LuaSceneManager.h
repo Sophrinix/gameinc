@@ -40,8 +40,8 @@ public:
 
 	int CreateCollisionResponseAnimator( lua_State* vm );
 
-	int AddSceneFunction( lua_State* vm );
-	int RemoveSceneFunction( lua_State* vm );
+	int Bind( lua_State* vm );
+	int Unbind( lua_State* vm );
 
 	int DrawProgress( lua_State* vm );
 	int SetWorldSize( lua_State *vm );

@@ -28,6 +28,7 @@ public:
 	int GetSelectedObject( lua_State* L );
 	int GetSelectedObjectName( lua_State* L );
 	int SetDrawBack( lua_State* L );
+	int SetOnActivate( lua_State* L );
 };
 
 }//namespace nrp

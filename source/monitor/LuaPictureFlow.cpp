@@ -180,7 +180,7 @@ int CLuaPictureFlow::SetOnNewSelect( lua_State* L )
 	assert( lua_isfunction( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		_object->AddLuaFunction( GUIELEMENT_LBXITEM_SELECTED, _GetRef( L, -1 ) );			
+		_object->Bind( GUIELEMENT_LBXITEM_SELECTED, _GetRef( L, -1 ) );			
 	}
 
 	return 0;
