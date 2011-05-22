@@ -25,7 +25,7 @@ public:
 	int SinceCompany( lua_State* L );
 	int GetCompanyByName( lua_State* L );
 
-	int UpdateGameTime( lua_State* L );
+	int Update( lua_State* L );
 	int GetBank( lua_State* L );
 	int GetPlayerCompany( lua_State* L );
 
@@ -36,8 +36,8 @@ public:
 
 	int LoadLinks( lua_State* L );
 
-	int RemoveLuaFunction( lua_State* L );
-	int AddLuaFunction( lua_State* L );
+	int Unbind( lua_State* L );
+	int Bind( lua_State* L );
 	int GetTechNumber( lua_State* L );
 	int GetTech( lua_State* L );
 	int AddPublicTechnology( lua_State* L );

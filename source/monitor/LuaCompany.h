@@ -55,6 +55,8 @@ public:
 
 	int GetAllPie( lua_State* L );
 	int GetSelfPie( lua_State* L );
+	int SetInvExp( lua_State* L );
+	int GetInvExp( lua_State* L );
 };
 
 }//namespace nrp

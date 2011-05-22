@@ -41,11 +41,11 @@ BEGIN_LUNA_METHODS(CLuaApplication)
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompany )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, SinceCompany )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetCompanyByName )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, UpdateGameTime )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, Update )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetPlatform )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, LoadPlatform )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddLuaFunction )
-	LUNA_AUTONAME_FUNCTION( CLuaApplication, RemoveLuaFunction )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, Bind )
+	LUNA_AUTONAME_FUNCTION( CLuaApplication, Unbind )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetTech )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, AddPublicTechnology )
 	LUNA_AUTONAME_FUNCTION( CLuaApplication, GetUser )
@@ -110,30 +110,12 @@ int CLuaApplication::GetPlant( lua_State* L )
 	return 1;
 }
 
-int CLuaApplication::UpdateGameTime( lua_State* L )
+int CLuaApplication::Update( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:UpdateGameTime need 2 parameter" );
+	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:Update need 2 parameter" );
 
-	irr::gui::IGUIStaticText* lb = _GetLuaObject< irr::gui::IGUIStaticText, CLuaLabel >( L, 2, false );
-	assert( lb );
-	if( !lb )
-		return 0;
-
-	IF_OBJECT_NOT_NULL_THEN 
-	{
-		bool needUpdate = (*_object)[ GAME_TIME ].As<CNrpGameTime*>()->Update();
-
-		wchar_t text[ 32 ] = { 0 };
-
-		NrpTime& time = (*_object)[ CURRENTTIME ].As<NrpTime>();
-		if( lb && needUpdate )
-		{
-			swprintf_s( text, 31, L"%4d.%02d.%02d  %02d:%02d", time.RYear(), time.RMonth(), time.RDay(), 
-															   time.RHour(), time.RMinute() );
-			lb->setText( text );
-		}
-	}
+	IF_OBJECT_NOT_NULL_THEN (*_object)[ GAME_TIME ].As<CNrpGameTime*>()->Update();
 
 	return 0;
 }
@@ -176,8 +158,8 @@ int CLuaApplication::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, 
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( rem ) _object->RemoveLuaFunction( typea, refFunc );
-		else _object->AddLuaFunction( typea, refFunc );
+		if( rem ) _object->Unbind( typea, refFunc );
+		else _object->Bind( typea, refFunc );
 
 #ifdef _DEBUG
 		Log(HW) << NrpText(rem ? "remove " : "added ") << "application:" << refFunc << term;
@@ -187,14 +169,14 @@ int CLuaApplication::AddRemLuaFunction_( lua_State* L, const NrpText& funcName, 
 	return 0;
 }
 
-int CLuaApplication::AddLuaFunction( lua_State* L )
+int CLuaApplication::Bind( lua_State* L )
 {
-	return AddRemLuaFunction_( L, "AddLuaFunction", false );
+	return AddRemLuaFunction_( L, "Bind", false );
 }
 
-int CLuaApplication::RemoveLuaFunction( lua_State* L )
+int CLuaApplication::Unbind( lua_State* L )
 {
-	return AddRemLuaFunction_( L, "RemoveLuaFunction", true );
+	return AddRemLuaFunction_( L, "Unbind", true );
 }
 
 int CLuaApplication::GetTechNumber( lua_State* L )
@@ -612,7 +594,7 @@ int CLuaApplication::AddGameToMarket( lua_State* L )
 	CNrpGame* game = _GetLuaObject< CNrpGame, CLuaGame >( L, 2, false );
 	assert( game != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN _object->AddGameToMarket( game );
+	IF_OBJECT_NOT_NULL_THEN _object->AddGameToMarket( *game );
 
 	return 0;	
 }

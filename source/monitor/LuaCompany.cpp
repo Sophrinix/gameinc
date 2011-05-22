@@ -59,6 +59,7 @@ BEGIN_LUNA_PROPERTIES(CLuaCompany)
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "allPie", GetAllPie, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "selfPie", GetSelfPie, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "texture", GetTexture, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "invexp", GetInvExp, SetInvExp )
 END_LUNA_PROPERTIES
 
 CLuaCompany::CLuaCompany(lua_State *L, bool ex)	: ILuaProject(L, CLASS_LUACOMPANY, ex)	//конструктор
@@ -462,6 +463,29 @@ int CLuaCompany::GetDividend( lua_State* L )
 
 	lua_pushnil( L );
 	return 1;
+}
+
+int CLuaCompany::GetInvExp( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pushinteger( L, (*_object)[ INVESTMENT_EXPECTATIONS ] ); 
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaCompany::SetInvExp( lua_State* L )
+{
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		(*_object)[ INVESTMENT_EXPECTATIONS ] = (int)lua_tointeger( L, -1 );
+	}
+
+	return 0;
 }
 
 int CLuaCompany::GetTexture( lua_State* L )
