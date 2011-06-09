@@ -3,5 +3,6 @@ genre_0=genre_logic
 genre_1=genre_puzzle
 genre_2=genre_machines_train
 [properties]
+startdate:time=y=1983 m=01 d=02 h=0 mi=0
 genreModuleNumber:int=3
 internalname:string=game_rrswithchallenge

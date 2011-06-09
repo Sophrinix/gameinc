@@ -5,5 +5,6 @@ genre_2=genre_scroll
 genre_3=genre_flight
 genre_4=genre_shooter
 [PROPERTIES]
+startdate:time=y=1983 m=01 d=02 h=0 mi=0
 genreModuleNumber:int=5
 internalname:string=game_harrierattack

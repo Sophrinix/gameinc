@@ -1,8 +1,0 @@
-[properties]
-square:int=60
-squaremetecost:float=20
-yearkoeffmetergrow:float=0.1
-texturenormal:path=image.png
-receptionscript:path=scripts/office/small/reception.lua
-directorroomscript:path=scripts/office/small/director.lua
-developersroomscript:path=scripts/office/small/developers.lua

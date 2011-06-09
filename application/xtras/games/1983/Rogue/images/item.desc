@@ -2,5 +2,6 @@
 genre_0=genre_rogue
 genre_1=genre_rpg
 [properties]
+startdate:time=y=1983 m=01 d=02 h=0 mi=0
 genreModuleNumber:int=2
 internalname:string=game_rogue

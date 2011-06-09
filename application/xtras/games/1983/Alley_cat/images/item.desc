@@ -1,5 +1,6 @@
 [genres]
 genre_0=genre_quest
 [PROPERTIES]
+startdate:time=y=1983 m=01 d=02 h=0 mi=0
 genreModuleNumber:int=1
 internalname:string=game_alleycat

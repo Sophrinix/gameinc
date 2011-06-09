@@ -6,7 +6,6 @@ company:string=
 descriptionpath:string=
 enddate:time=y=0000 m=00 d=00 h=00 mi=00 s=0
 enginecode:float=0.3
-lastworker:user=
 level:int=0
 moduleerrornumber:int=0
 name:string=#TRANSLATE_GT_FIGHTING

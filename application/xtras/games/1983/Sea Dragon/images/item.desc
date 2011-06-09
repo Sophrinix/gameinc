@@ -4,5 +4,6 @@ genre_1=genre_scroll
 genre_2=genre_place_underwater
 genre_3=genre_machines_submarine
 [properties]
+startdate:time=y=1983 m=01 d=02 h=0 mi=0
 genreModuleNumber:int=2
 internalname:string=game_seadragon
