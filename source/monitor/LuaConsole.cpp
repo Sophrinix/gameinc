@@ -4,6 +4,7 @@
 #include "nrpConsole.h"
 #include "nrpEngine.h"
 #include "NrpText.h"
+#include "IC_Console_LuaCommand.h"
 
 using namespace irr;
 
@@ -53,4 +54,28 @@ const char* CLuaConsole::ClassName()
 {
 	return ( CLASS_LUACONSOLE );
 }
+
+int CLuaConsole::Bind( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 4, 4, "Function CLuaConsole::Bind need name, description, funcRef parameter");
+
+	NrpText name = lua_tostring( L, 2 );
+	NrpText desc = lua_tostring( L, 3 );
+	int funcRef = _GetRef( L, 4 );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		_object->RegisterCommand( new core::IC_Console_LuaCommand( name, desc, funcRef ) );
+	}
+
+	return 0;
+}
+
+int CLuaConsole::Unbind( lua_State* L )
+{
+
+	return 0;
+}
+
 }//namespace nrp

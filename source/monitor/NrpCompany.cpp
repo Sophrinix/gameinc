@@ -12,6 +12,7 @@
 #include "IniFile.h"
 #include "NrpTester.h"
 #include "NrpBookKeeping.h"
+#include "NrpLaborMarket.h"
 
 #include <errno.h>
 #include <assert.h>
@@ -183,11 +184,10 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		{
 			AddGameEngine( _nrpApp.GetGameEngine( rName ) );
 		}
-		else if( type == CNrpUser::ClassName() || type == L"coder" || type == L"designer" 
-				 || type == L"composer" 
-				 || type == NrpTester::ClassName())
+		else if( type == CNrpUser::ClassName() || type == NrpCoder::ClassName() || type == NrpDesigner::ClassName()
+				 || type == NrpComposer::ClassName() || type == NrpTester::ClassName())
 		{
-			AddUser( _nrpApp.GetUser( rName ) );
+			AddUser( _nrpLaborMarkt.GetUser( rName ) );
 		}
 		else if( type == CNrpTechnology::ClassName() )
 		{
@@ -294,9 +294,8 @@ void CNrpCompany::BeginNewDay( const NrpTime& time )
 		{
 			if( prj->IsReady() )
 			{
-				INrpDevelopProject* project = _devProjects[ i ];
-				const PNrpGame game = CreateGame(	(CNrpDevelopGame*)project );
-				RemoveDevelopProject( (*project)[ NAME ] );
+				const PNrpGame game = CreateGame( *prj );
+				RemoveDevelopProject( (*prj)[ NAME ] );
 				CNrpApplication::Instance().PCall( APP_PROJECT_FINISHED, this, game );
 				break;
 			}
@@ -331,12 +330,12 @@ void CNrpCompany::AddGame( CNrpGame* game )
 	}
 }
 
-CNrpGame* CNrpCompany::CreateGame( CNrpDevelopGame* devGame )
+CNrpGame* CNrpCompany::CreateGame( const CNrpDevelopGame& devGame )
 {
 	CNrpGame* ptrGame = new CNrpGame( devGame, this );
 	(*ptrGame)[ STARTDATE ] = _nrpApp[ CURRENTTIME ];
 	_nrpApp.AddGame( ptrGame );
-	RemoveFromPortfelle( devGame );
+	//!!!!!!!!!!!!!!!!RemoveFromPortfelle( devGame );
 
 	_games.push_back( ptrGame );
 	_self[ GAMENUMBER ] = static_cast< int >( _games.size() );

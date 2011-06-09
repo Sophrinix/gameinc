@@ -14,7 +14,7 @@ public:
 	CNrpGuiMoveAnimator( IGUIEnvironment* environment, 
 						 IGUIElement* node, 
 						 const core::position2di& stopPos,
-						 s32 step=1,
+						 s32 time=1,
 						 bool visibleOnStop=true,
 						 bool removeOnStop=true, 
 						 bool removeParentOnStop=false );
@@ -23,8 +23,8 @@ public:
 
 	virtual void draw();
 private:
-	core::position2di stopPos_;
-	s32 step_;
+	core::position2di _stopPos, _startPos;
+	s32 _time;
 	bool visibleOnStop_, remOnStop_, remParentOnStop_;
 };
 

@@ -21,6 +21,7 @@ class IGUIAnimator;
 class CNrpGuiLinkBox;
 class CNrp2DPictureFlow;
 class CNrpTechMap;
+class CNrpGuiLink;
 
 class CNrpGUIEnvironment : public irr::gui::IGUIEnvironment
 {
@@ -44,6 +45,12 @@ public:
 									 s32 id=-1, 
 									 const wchar_t* text = 0, 
 									 const wchar_t* tooltiptext = 0);
+
+	gui::CNrpGuiLink* addLink( const core::recti& rectangle,
+							  gui::IGUIElement* parent = 0, 
+							  s32 id=-1, 
+							  const wchar_t* text = 0, 
+							  const wchar_t* tooltiptext = 0);
 
 	gui::IGUIButton* addButton( const core::recti& rectangle, 
 									 gui::IGUIElement* parent/*=0*/, 
@@ -221,6 +228,11 @@ public:
 										const core::recti& minrect, 
 										const core::recti& maxrect, 
 										s32 step );
+
+	gui::IGUIAnimator* addSpringAnimator( IGUIElement* parent, 
+										  const core::recti& startrect, 
+										  const core::recti& endrect, 
+										  s32 time );
 
 	gui::IGUIAnimator* addCursorPosAnimator( IGUIElement* parent, core::position2di offset );
 

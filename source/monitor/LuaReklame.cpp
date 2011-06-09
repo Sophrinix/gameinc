@@ -24,6 +24,8 @@ BEGIN_LUNA_PROPERTIES(CLuaReklame)
 	LUNA_AUTONAME_PROPERTY( CLuaReklame, "famous", GetFamous, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaReklame, "company", GetCompanyName, SetCompanyName )
 	LUNA_AUTONAME_PROPERTY( CLuaReklame, "reklameObject", PureFunction, SetReklameObject )
+	LUNA_AUTONAME_PROPERTY( CLuaReklame, "objectName", GetObjectName, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaReklame, "objectType", GetObjectRType, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaReklame, "quality", GetQuality, PureFunction )
 END_LUNA_PROPERTIES
 
@@ -33,7 +35,7 @@ CLuaReklame::CLuaReklame(lua_State *L, bool ex) : ILuaProject( L, CLASS_LUAREKLA
 int CLuaReklame::Create( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 4, 4, "Function CLuaReklame:CreateTechnology need string, string parameter" );
+	luaL_argcheck(L, argc == 4, 4, "Function CLuaReklame:CreateTechnology need string, string, string parameter" );
 
 	NrpText typeName = lua_tostring( L, 2 );
 	NrpText gameName = lua_tostring( L, 3 );
@@ -41,7 +43,6 @@ int CLuaReklame::Create( lua_State* L )
 
 	_object = CNrpPlant::Instance().CreateReklame( typeName, gameName, company );
 
-	//lua_pop( L, argc );
 	lua_pushlightuserdata(L, _object );
 	Luna< CLuaReklame >::constructor( L );
 
@@ -62,6 +63,31 @@ int CLuaReklame::Remove( lua_State* L )
 	return 1;	
 }
 
+int CLuaReklame::GetObjectRType( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		NrpText dd = (*_object)[ TYPEOBJECT ];
+		lua_pushstring( L, (NrpText)(*_object)[ TYPEOBJECT ] );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaReklame::GetObjectName( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pushstring( L, (NrpText)(*_object)[ GAMENAME ] );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
 int CLuaReklame::SetReklameObject( lua_State* L ) 
 {	
 	IF_OBJECT_NOT_NULL_THEN
@@ -71,7 +97,7 @@ int CLuaReklame::SetReklameObject( lua_State* L )
 		if( reklameObject )
 		{
 			(*_object)[ GAMENAME ] = (*reklameObject)[ NAME ];
-			(*_object)[ TYPEOBJECT ] = reklameObject->ObjectTypeName();
+			(*_object)[ TYPEOBJECT ] = (*reklameObject)[ CLASSOBJECT ];
 			(*_object)[ COMPANYNAME ] = (*reklameObject)[ COMPANYNAME ];
 		}
 	}

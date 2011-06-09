@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../lua5.1/include;../irrlicht/include;../LLMozLib;../mysql/include"
+				AdditionalIncludeDirectories="..\irrKlang\include;../lua5.1/include;../irrlicht/include;../LLMozLib;../mysql/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,10 +62,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="irrlichtd.lib Version.lib libmysql.lib luad.lib Ws2_32.lib llmozlib2d.lib shell32.lib"
+				AdditionalDependencies="irrlichtd.lib Version.lib libmysql.lib luad.lib Ws2_32.lib llmozlib2d.lib shell32.lib irrKlang.lib"
 				OutputFile="$(OutDir)\gameInc.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="lib"
+				AdditionalLibraryDirectories="../irrKlang/lib;lib"
 				GenerateManifest="true"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames="MSVCRTD"
@@ -464,6 +464,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\icon1.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\nerpa_sc.h"
 				>
 			</File>
@@ -666,6 +670,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\NrpGuiLink.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpGuiLink.h"
+						>
+					</File>
+					<File
 						RelativePath=".\nrpGuiLinkBox.cpp"
 						>
 					</File>
@@ -746,6 +758,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\LuaAnimator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaAnimator.h"
+						>
+					</File>
+					<File
 						RelativePath=".\NrpGuiBlendAnimator.cpp"
 						>
 					</File>
@@ -810,6 +830,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\NrpGuiSpringAnimator.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NrpGuiSpringAnimator.h"
+						>
+					</File>
+					<File
 						RelativePath=".\NrpGuiTextRunnerAnimator.cpp"
 						>
 					</File>
@@ -870,6 +898,14 @@
 			<Filter
 				Name="Console"
 				>
+				<File
+					RelativePath=".\IC_Console_LuaCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\IC_Console_LuaCommand.h"
+					>
+				</File>
 				<File
 					RelativePath=".\nrpCommandDispatcher.cpp"
 					>
@@ -1171,6 +1207,14 @@
 					</File>
 					<File
 						RelativePath=".\LuaLabel.h"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaLink.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaLink.h"
 						>
 					</File>
 					<File
@@ -1505,6 +1549,34 @@
 						RelativePath=".\LuaPlant.h"
 						>
 					</File>
+					<File
+						RelativePath=".\LuaSoundEngine.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaSoundEngine.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="quests"
+					>
+					<File
+						RelativePath=".\LuaQuest.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaQuest.h"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaQuestEngine.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\LuaQuestEngine.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -1532,19 +1604,7 @@
 			Name="Scripts"
 			>
 			<File
-				RelativePath="..\..\application\scripts\callbacks.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\companyChief.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\gameNames.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\globalVariableInitialize.lua"
 				>
 			</File>
 			<File
@@ -1552,19 +1612,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\logdefs.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\magazine.lua"
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\NerpaActionType.lua"
+				RelativePath="..\..\application\scripts\mail.lua"
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\pda.lua"
+				RelativePath="..\..\application\scripts\phone.lua"
 				>
 			</File>
 			<File
@@ -1572,19 +1628,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\localization\russian.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\sceneWork.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\swork_StoreWindow.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\swork_wndCompanyInfo.lua"
 				>
 			</File>
 			<File
@@ -1686,6 +1730,10 @@
 					RelativePath="..\..\application\scripts\window.lua"
 					>
 				</File>
+				<File
+					RelativePath="..\..\application\scripts\windowTalk.lua"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="init"
@@ -1699,6 +1747,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\application\scripts\globalVariableInitialize.lua"
+					>
+				</File>
+				<File
 					RelativePath="..\..\application\scripts\initApp.lua"
 					>
 				</File>
@@ -1708,6 +1760,14 @@
 				>
 				<File
 					RelativePath="..\..\application\scripts\year1983.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\year1984.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\year2003.lua"
 					>
 				</File>
 			</Filter>
@@ -1802,17 +1862,49 @@
 					Name="plant"
 					>
 					<File
-						RelativePath="..\..\application\scripts\diskManager.lua"
-						>
-					</File>
-					<File
-						RelativePath="..\..\application\scripts\gameboxManager.lua"
-						>
-					</File>
-					<File
 						RelativePath="..\..\application\scripts\plantrd.lua"
 						>
 					</File>
+					<Filter
+						Name="boxCreator"
+						>
+						<File
+							RelativePath="..\..\application\scripts\gameboxAddonManager.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\gameboxManager.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\gameboxSelectBoxSize.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\gameboxSelectGame.lua"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="produceManager"
+						>
+						<File
+							RelativePath="..\..\application\scripts\diskManager.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\diskManagerReport.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\selectDiskGame.lua"
+							>
+						</File>
+						<File
+							RelativePath="..\..\application\scripts\selectDiskMachine.lua"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="lab"
@@ -1867,6 +1959,10 @@
 					</File>
 					<File
 						RelativePath="..\..\application\scripts\safe.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\worldMap.lua"
 						>
 					</File>
 				</Filter>
@@ -1962,6 +2058,78 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="main"
+					>
+					<File
+						RelativePath="..\..\application\scripts\callbacks.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\sceneWork.lua"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="modules"
+				>
+				<Filter
+					Name="pda"
+					>
+					<File
+						RelativePath="..\..\application\scripts\pda.lua"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="stuff"
+				>
+				<Filter
+					Name="randomName"
+					>
+					<File
+						RelativePath="..\..\application\scripts\gameNames.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="definitions"
+					>
+					<File
+						RelativePath="..\..\application\scripts\logdefs.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\NerpaActionType.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="localization"
+					>
+					<File
+						RelativePath="..\..\application\localization\russian.lua"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="story"
+				>
+				<File
+					RelativePath="..\..\application\story\quest2.lua"
+					>
+				</File>
+				<Filter
+					Name="prologue"
+					>
+					<File
+						RelativePath="..\..\application\story\quest1.lua"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1979,6 +2147,14 @@
 		<Filter
 			Name="SoundEngine"
 			>
+			<File
+				RelativePath=".\NrpSoundEngine.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpSoundEngine.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Application"
@@ -2005,6 +2181,14 @@
 			</File>
 			<File
 				RelativePath=".\NrpGameTime.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpLaborMarket.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpLaborMarket.h"
 				>
 			</File>
 			<Filter
@@ -2359,6 +2543,26 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="QuestEngine"
+			>
+			<File
+				RelativePath=".\NrpQuest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpQuest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpQuestEngine.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpQuestEngine.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

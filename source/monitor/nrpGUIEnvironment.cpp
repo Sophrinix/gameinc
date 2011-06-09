@@ -20,6 +20,9 @@
 #include "NrpTechMap.h"
 #include "NrpGuiElementDestructor.h"
 #include "NrpGuiTextRunnerAnimator.h"
+#include "NrpGuiSpringAnimator.h"
+#include "logger.h"
+#include "NrpGuiLink.h"
 
 #include <stdexcept>
 
@@ -280,12 +283,12 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 	core::dimension2du scrsize = getVideoDriver()->getScreenSize();
 	core::recti rectangle( scrsize.Width / 2 - 200, scrsize.Height / 2 - 100, scrsize.Width / 2 + 200, scrsize.Height / 2 + 100 );
 	IGUIWindow* wnd = new CNrpWindow( this, getRootGUIElement(), NULL, -1, rectangle );
-	int buttonHeight = wnd->getRelativePosition().getHeight() / 10;
+	int buttonHeight = wnd->getRelativePosition().getHeight() / 5;
 
 	wnd->setDraggable( false );
+	rectangle = core::recti( core::position2di( 0, 0 ), wnd->getAbsolutePosition().getSize() );
 
 	core::recti margin( 0, 0, 0, 0 );
-	rectangle = core::recti( core::position2di( 0, 0 ), wnd->getRelativePosition().getSize() );
 
 	if( CImageGUISkin* skin = dynamic_cast< CImageGUISkin* >( getSkin() ) )
 	{
@@ -301,11 +304,15 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 	IGUIStaticText* lb = addStaticText( text, rectangle, false, false, wnd, -1, false );
 	lb->setTextAlignment( EGUIA_CENTER, EGUIA_CENTER );
 
+
 	if( flags == 0 )
 	{
-		CNrpButton* btn = (CNrpButton*)addButton( core::recti( rectangle.getWidth() / 3, rectangle.getHeight() - 50,
-												        	   rectangle.getWidth() * 2 / 3, rectangle.getHeight() - 20 ),
-												  wnd, -1, L"OK", 0 );
+		rectangle.UpperLeftCorner.X = wnd->getRelativePosition().getWidth() / 3;
+		rectangle.LowerRightCorner.X = wnd->getRelativePosition().getWidth() * 2 / 3;
+		rectangle.UpperLeftCorner.Y = rectangle.LowerRightCorner.Y;
+		rectangle.LowerRightCorner.Y += buttonHeight;
+
+		CNrpButton* btn = (CNrpButton*)addButton( rectangle, wnd, -1, L"OK", 0 );
 		btn->setOnClickAction( funcRefs[ 0 ] );
 	}
 	else
@@ -632,6 +639,14 @@ gui::IGUIScrollBar* CNrpGUIEnvironment::addCicrcleScrollBar( IGUIElement* parent
 	return scrb;
 }
 
+gui::IGUIAnimator* CNrpGUIEnvironment::addSpringAnimator( IGUIElement* parent, const core::recti& startrect,
+													      const core::recti& endrect, s32 time )
+{
+	IGUIAnimator* anim = new CNrpGuiSpringAnimator( this, parent, startrect, endrect, time );
+
+	return anim;
+}
+
 gui::IGUIAnimator* CNrpGUIEnvironment::addRectAnimator( IGUIElement* parent, const core::recti& minrect,
 														const core::recti& maxrect, s32 step )
 {
@@ -655,12 +670,23 @@ gui::IGUIAnimator* CNrpGUIEnvironment::addMoveAnimator( IGUIElement* parent, cor
 
 void CNrpGUIEnvironment::addToDeletionQueue( IGUIElement* ptrElement )
 {
-	core::list< IGUIElement* >::Iterator pIter = _deletionQueue.begin();
-	for( ; pIter != _deletionQueue.end(); pIter++ )
-		if( (*pIter) == ptrElement )
+	try
+	{
+		if( !_nativeEnv->getRootGUIElement()->isMyChild( ptrElement ) )
+		{
+			nrp::Log( nrp::HW ) << "Elm isn't my child";
 			return;
+		}
 
-	_deletionQueue.push_back( ptrElement );
+		core::list< IGUIElement* >::Iterator pIter = _deletionQueue.begin();
+		for( ; pIter != _deletionQueue.end(); pIter++ )
+			if( (*pIter) == ptrElement )
+				return;
+
+		_deletionQueue.push_back( ptrElement );
+	}
+	catch(...)
+	{}
 }
 
 gui::IGUIAnimator* CNrpGUIEnvironment::addHoveredAnimator( IGUIElement* parent, u32 min, u32 max, u32 step, bool visOnStop, bool remSelf, bool remParent )
@@ -763,6 +789,15 @@ void CNrpGUIEnvironment::AddTopElement( IGUIElement* elm )
 ICursorControl* CNrpGUIEnvironment::getCursorControl() const
 {
 	return _nativeEnv->getCursorControl();
+}
+
+gui::CNrpGuiLink* CNrpGUIEnvironment::addLink( const core::recti& rectangle, gui::IGUIElement* parent /*= 0*/, s32 id/*=-1*/, const wchar_t* text /*= 0*/, const wchar_t* tooltiptext /*= 0*/ )
+{
+	CNrpGuiLink* link = new CNrpGuiLink( this, parent, id, rectangle );
+	link->setText( text );
+	link->setToolTipText( tooltiptext );
+	link->drop();
+	return link;
 }
 
 }//namespace gui

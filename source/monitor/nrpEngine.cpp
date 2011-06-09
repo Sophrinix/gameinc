@@ -41,7 +41,7 @@ void CNrpEngine::Run() //создание нерпы
 
 		while ( device_->run() )
 		{
-			device_->setWindowCaption( NrpText( L"GameInc 0.1.80/" ) + NrpText( device_->getVideoDriver()->getFPS() ).ToWide() );
+			//device_->setWindowCaption( NrpText( L"GameInc 0.1.80/" ) + NrpText( device_->getVideoDriver()->getFPS() ).ToWide() );
 			try
 			{
 				switch( run_state_ )

@@ -51,7 +51,8 @@ CNrpExtInfo::~CNrpExtInfo(void)
 //Функция проверяет меньше ли указанный год, чем год выхода игры
 bool CNrpExtInfo::IsMyYear( int year )
 {
-	return _self[ STARTDATE ].As<NrpTime>().RYear() <= year;
+	int myYear = _self[ STARTDATE ].As<NrpTime>().RYear();
+	return core::abs_(year -  myYear) <= 1;
 }
 
 int CNrpExtInfo::GetEqualeRating( const CNrpGame& game )

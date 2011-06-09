@@ -8,6 +8,7 @@ class CNrpGameProject;
 class CNrpCompany;
 class CNrpDevelopGame;
 class CNrpHistory;
+class CNrpExtInfo;
 
 OPTION_NAME CASH( L"cash" );
 OPTION_NAME COPYSELL( L"copySell" );
@@ -27,7 +28,8 @@ OPTION_NAME STARTADVFUNCRATING( L"startAdvFuncRating" );
 OPTION_NAME CURRENTADVFUNCRATING( L"currentAdvFuncRating" );
 OPTION_NAME GBOX( L"box" );
 OPTION_NAME GAMEISSALING( L"gameIsSaling" );
-OPTION_NAME GAMEIMAGELIST( L"gameImageList" );
+OPTION_NAME EXTINFO( L"gameImageList" );
+OPTION_NAME EXTINFOLINK( L"extInfoLink" );
 OPTION_NAME VIEWIMAGE( L"viewImage" );
 OPTION_NAME GAMERETAILER( L"gameRetailer" );
 OPTION_NAME RECENSE( L"recense" );
@@ -43,7 +45,7 @@ public:
 	CNrpGame( const NrpText& fileName );
 	~CNrpGame(void);
 
-	CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany );
+	CNrpGame( const CNrpDevelopGame& devGame, CNrpCompany* ptrCompany );
 
 	NrpText GetTechName( size_t index );
 	NrpText GetGenreName( size_t index );
@@ -61,6 +63,7 @@ public:
 private:
 	void _InitializeOptions();
 	void _CreateHistory();
+	CNrpExtInfo* _SearchExtInfo();
 
 	CNrpGame();;
 

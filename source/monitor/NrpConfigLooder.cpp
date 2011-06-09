@@ -5,6 +5,7 @@
 #include "IniFile.h"
 #include "OpFileSystem.h"
 #include "NrpApplication.h"
+#include "NrpLaborMarket.h"
 #include "NrpTechnology.h"
 
 #include <memory>
@@ -148,7 +149,7 @@ void CNrpConfigLooder::_ReadTime( IniKey* p )
 
 void CNrpConfigLooder::_ReadUser( IniKey* p )
 {
-	CNrpUser* user = _nrpApp.GetUser( p->GetValue().c_str() );
+	CNrpUser* user = _nrpLaborMarkt.GetUser( p->GetValue().c_str() );
 
 	if( user )
 		(*_config)[ p->GetShortKey().c_str() ] = user;

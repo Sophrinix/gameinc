@@ -18,7 +18,7 @@ CNrpGameBox::~CNrpGameBox(void)
 int CNrpGameBox::_FindAddon( const NrpText& name )
 {
 	for( u32 i=0; i < _addons.size(); i++ )
-		if( (*_addons[ i ])[NAME] == name )
+		if( (*_addons[ i ])[NAME] == name || (*_addons[ i ])[INTERNAL_NAME] == name )
 			return i;
 
 	return -1;
@@ -35,10 +35,22 @@ void CNrpGameBox::RemoveAddon( const NrpText& name )
 	if( pos != -1 )
 	{
 		_addons.erase( pos );
-		Param( NUMBERADDON ) = static_cast< int >( _addons.size() );
+		_self[ NUMBERADDON ] = static_cast< int >( _addons.size() );
 	}
 	else
 		Log(HW) << "Не нашел подходящего элемента = " << name << term;
+}
+
+void CNrpGameBox::RemoveAddon( const CNrpTechnology& tech )
+{
+	int pos = _FindAddon( tech[ INTERNAL_NAME ] );
+	if( pos != -1 )
+	{
+		_addons.erase( pos );
+		_self[ NUMBERADDON ] = static_cast< int >( _addons.size() );
+	}
+	else
+		Log(HW) << "Не нашел подходящего элемента = " << (NrpText)tech[ INTERNAL_NAME ] << term;
 }
 
 int CNrpGameBox::_GetAddonSumLevel()

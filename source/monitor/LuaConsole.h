@@ -18,6 +18,9 @@ public:
 
 	CLuaConsole(lua_State *L, bool);
 	int ToggleVisible( lua_State *L );
+	int Bind( lua_State* L );
+	int Unbind( lua_State* L );
+
 	int Draw( lua_State* L );
 
 	static const char* ClassName();

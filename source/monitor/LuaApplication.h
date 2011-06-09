@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _INLCLUDE_LUAAPPLICATION_
+#define _INLCLUDE_LUAAPPLICATION_
 
 #include "ILuaProject.h"
 
@@ -71,9 +72,14 @@ public:
 	int GetPauseBetweenStep( lua_State* L );
 	int SetPauseBetweenStep( lua_State* L );
 	int AddResourceDirectory( lua_State* L );
+	int SetDevForce( lua_State* L );
+	int GetSoundEngine( lua_State* L );
+	int GetQuestEngine( lua_State* L );
 
 private:
 	int AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool rem );
 };
 
 }//namespace nrp
+
+#endif

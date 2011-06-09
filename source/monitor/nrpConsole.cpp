@@ -27,7 +27,7 @@ CNrpConsole::CNrpConsole( IGUIEnvironment* env, IGUIElement* parent, s32 id, cor
 	
 	CalculateConsoleRect( env->getVideoDriver()->getScreenSize() );										//calculate the console rectangle
 
-	AppendMessage( NrpText( L"NerpaConsole initialized" ) );								//append a message
+	AppendMessage( NrpText( L"Game, Inc console initialized" ) );								//append a message
 
 	ResizeMessages();														//resize message array
 
@@ -94,8 +94,8 @@ void CNrpConsole::RegisterDefaultCommands_()			//! loads a few default commands 
 	RegisterCommand(new core::IC_Command_ECHO());
 	RegisterCommand(new core::IC_Command_HELP());
 	RegisterCommand(new core::IC_Command_LIST());
+	RegisterCommand(new core::IC_Command_CLS());
 	RegisterCommand(new core::IC_Command_INFO( _nrpEngine.GetDevice() ) );
-	RegisterCommand(new core::IC_Command_ACTIONDATA() );
 	RegisterCommand(new core::IC_Command_SCRIPT() );
 	RegisterCommand(new core::IC_Command_UPDATE() );
 }
@@ -106,11 +106,11 @@ void CNrpConsole::ResizeMessages()											//! resize the message count
 	u32 maxLines = 0;
 	u32 lineHeight = 0;
 	s32 fontHeight = 0;
-	if(CalculateLimits(maxLines,lineHeight,fontHeight))						//вычислям сколько сообщения помещаяется в консоли
+	if( CalculateLimits(maxLines,lineHeight,fontHeight) )						//вычислям сколько сообщения помещаяется в консоли
 	{
 		u32 messageCount = console_messages_.size();	
 		if(messageCount > maxLines)											//остальные удаляем
-			console_history_.erase( 0, messageCount - maxLines );
+			console_messages_.erase( 0, messageCount - maxLines );
 	}
 }
 //////////////////////////////////////////////////////////////////////////

@@ -48,6 +48,7 @@ class CNrpUser : public INrpConfig
 	friend class CLuaUser;
 public:
 	CNrpUser(const NrpText& className, const NrpText& systemName );
+	~CNrpUser(void);
 
 	void SetSkill( const NrpText& name, int valuel ); 
 	int GetSkill( const NrpText& name );
@@ -71,7 +72,6 @@ public:
 
 	CNrpRelation* GetRelation( const NrpText& name );
 
-	~CNrpUser(void);
 	NrpText Save( const NrpText& folderPath );
 	void Load( const NrpText& fileName );
 
@@ -97,6 +97,31 @@ protected:
 	MODIFICATORS modificators_;
 	RELATION_MAP _relations;	
 };
+
+class NrpCoder : public CNrpUser
+{
+public:
+	NrpCoder( const NrpText& systemName );
+
+	static NrpText ClassName();
+};
+
+class NrpDesigner : public CNrpUser
+{
+public:
+	NrpDesigner( const NrpText& systemName );
+
+	static NrpText ClassName();
+};
+
+class NrpComposer : public CNrpUser
+{
+public:
+	NrpComposer( const NrpText& systemName );
+
+	static NrpText ClassName();
+};
+
 
 typedef CNrpUser* PUser;
 

@@ -20,19 +20,20 @@ CNrpReklameWork::CNrpReklameWork( const NrpText& typeName,
 
 void CNrpReklameWork::InitializeOptions_()
 {
-	Add<int>( NUMBERDAY, 0 );
-	Add<int>( LEVEL, 0 );
+	Add<NrpText>( CLASSOBJECT, CLASS_REKLAMEWORK );
+	Add( NUMBERDAY, 0 );
+	Add( LEVEL, 0 );
 	Add<NrpText>( NAME, "" );
-	Add<int>( DAYCOST, 0 );
-	Add<float>( QUALITY, 0.f );
-	Add<float>( MAXQUALITY, 0.f );
+	Add( DAYCOST, 0 );
+	Add( QUALITY, 0.f );
+	Add( MAXQUALITY, 0.f );
 	Add<NrpText>( GAMENAME, "" );
-	Add<bool>( FINISHED, false );
+	Add( FINISHED, false );
 	Add<NrpText>( TEXTURENORMAL, "" );
-	Add<int>( BALANCE, 0 );
+	Add( BALANCE, 0 );
 	Add<NrpText>( COMPANYNAME, "" );
 	Add<NrpText>( TYPEOBJECT, "" );
-	Add<int>( POPULARITY, 0 );
+	Add( POPULARITY, 0 );
 	Add<NrpText>( INTERNAL_NAME, "" );
 	Add( STARTDATE, NrpTime( 0. ) );
 }
@@ -48,6 +49,7 @@ CNrpReklameWork::CNrpReklameWork( const CNrpReklameWork& p ) : INrpConfig( CLASS
 	_self[ DAYCOST ] = p[ DAYCOST ];
 	_self[ QUALITY ] = p[ QUALITY ];
 	_self[ MAXQUALITY ] = p[ MAXQUALITY ];
+	_self[ TYPEOBJECT ] = p[ TYPEOBJECT ];
 	_self[ GAMENAME ] = p[ GAMENAME ];
 	_self[ INTERNAL_NAME ] = p[ INTERNAL_NAME ];
 	_self[ TEXTURENORMAL ] = p[ TEXTURENORMAL ];

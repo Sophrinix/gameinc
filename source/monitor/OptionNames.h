@@ -4,6 +4,7 @@
 namespace nrp
 {
 
+OPTION_NAME CLASSOBJECT( "classObject" );
 OPTION_NAME MODULE_NUMBER( L"moduleNumber" );
 OPTION_NAME GAME_ENGINE_NAME( L"GameEngineName" );
 OPTION_NAME LICENSE_NAME( L"licenseName" );
@@ -55,5 +56,6 @@ OPTION_NAME SKILL_TESTING( L"skill_testing" );
 OPTION_NAME SKILL_DRAWING( L"skill_drawing" );
 OPTION_NAME SKILL_SOUND( L"skill_sound" );
 OPTION_NAME ERRORNUMBER( L"moduleErrorNumber");
+OPTION_NAME BASEFILE( L"baseFile" );
 
 }//end namespace nrp

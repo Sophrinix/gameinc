@@ -163,11 +163,11 @@ bool CNrpPlant::AddBaseReklame( CNrpReklameWork* pReklame )
 	bool ret = false;
 	if( GetBaseReklame( (NrpText)(*pReklame)[ INTERNAL_NAME ] ) == NULL )
 	{
-		baseReklame_.push_back( pReklame );
+		_baseReklame.push_back( pReklame );
 		ret = true;
 	}
 
-	_self[ BASEREKLAMENUMBER ] = static_cast< int >( baseReklame_.size() );
+	_self[ BASEREKLAMENUMBER ] = static_cast< int >( _baseReklame.size() );
 	return ret;
 }
 
@@ -175,9 +175,9 @@ CNrpReklameWork* CNrpPlant::GetBaseReklame( const NrpText& name )
 {
 	assert( name.size() != 0 );
 
-	for( u32 i=0; i < baseReklame_.size(); i++ ) 
-		if( (*baseReklame_[ i ])[ INTERNAL_NAME ] == name )
-			return baseReklame_[ i ];
+	for( u32 i=0; i < _baseReklame.size(); i++ ) 
+		if( (*_baseReklame[ i ])[ INTERNAL_NAME ] == name )
+			return _baseReklame[ i ];
 
 	return NULL;
 }
@@ -206,10 +206,15 @@ CNrpReklameWork* CNrpPlant::GetReklame( const NrpText& type,
 	return NULL;
 }
 
+CNrpReklameWork* CNrpPlant::GetReklame( u32 index )
+{
+	return index < _reklameWorks.size() ? _reklameWorks[ index ] : NULL;
+}
+
 CNrpReklameWork* CNrpPlant::GetBaseReklame( int index )
 {
-	if( index < (int)baseReklame_.size() )
-		return baseReklame_[ index ];
+	if( index < (int)_baseReklame.size() )
+		return _baseReklame[ index ];
 
 	return NULL;
 }
@@ -224,22 +229,22 @@ CNrpPlant& nrp::CNrpPlant::Instance()
 
 CNrpDiskMachine* CNrpPlant::GetDiskMachine( const NrpText& name )
 {
-	for( u32 i=0; i < diskMachines_.size(); i++)
-		if( diskMachines_[ i ]->Param( NAME ) == name )
-			return diskMachines_[ i ];
+	for( u32 i=0; i < _diskMachines.size(); i++)
+		if( _diskMachines[ i ]->Param( NAME ) == name )
+			return _diskMachines[ i ];
 
 	return NULL;		
 }
 
 CNrpDiskMachine* CNrpPlant::GetDiskMachine( size_t index )
 {
-	return index < diskMachines_.size() ? diskMachines_[ index ] : NULL;
+	return index < _diskMachines.size() ? _diskMachines[ index ] : NULL;
 }
 
 void CNrpPlant::AddDiskMachine( CNrpDiskMachine* pDm )
 {
-	diskMachines_.push_back( pDm );
-	Param( DISKMACHINENUMBER) = static_cast< int >( diskMachines_.size() );
+	_diskMachines.push_back( pDm );
+	Param( DISKMACHINENUMBER) = static_cast< int >( _diskMachines.size() );
 }
 
 NrpText CNrpPlant::ClassName()

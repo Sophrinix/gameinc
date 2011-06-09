@@ -22,8 +22,8 @@ public:
 	virtual void ModuleFinished( IWorkingModule& module ) = 0;
 	virtual void ModuleTested( IWorkingModule& module ) = 0;
 	virtual bool IsReady() = 0; 
-	virtual CNrpProjectModule* GetModule( u32 index ) = 0;
-	virtual CNrpProjectModule* GetModule( const NrpText& name ) = 0;
+	virtual CNrpProjectModule* GetModule( u32 index ) const = 0;
+	virtual CNrpProjectModule* GetModule( const NrpText& name ) const= 0;
 
 	virtual NrpText Save( const NrpText& amount );
 	virtual void Load( const NrpText& pathTo );

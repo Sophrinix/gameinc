@@ -28,6 +28,7 @@ BEGIN_LUNA_PROPERTIES(CLuaPictureFlow)
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "selectedIndex", GetSelected, SetSelected )
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "selectedObject", GetSelectedObject, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "selectedText", GetSelectedText, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "count", GetCount, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "drawBody", PureFunction, SetDrawBorder )
 	LUNA_AUTONAME_PROPERTY( CLuaPictureFlow, "onSelect", PureFunction, SetOnNewSelect )
 END_LUNA_PROPERTIES
@@ -68,10 +69,22 @@ int CLuaPictureFlow::GetSelected( lua_State *L )
 
 int CLuaPictureFlow::SetSelected( lua_State *L )
 {
-	assert( lua_isnumber( L, 2 ) );
+	assert( lua_isnumber( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN _object->setSelected( lua_tointeger( L, -1 ) );			
 
 	return 0;
+}
+
+int CLuaPictureFlow::GetCount( lua_State *L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		lua_pushinteger( L, _object->getItemCount() );			
+		return 1;
+	}
+	
+	lua_pushnil( L );
+	return 1;
 }
 
 int CLuaPictureFlow::Clear( lua_State* L )

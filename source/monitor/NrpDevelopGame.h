@@ -21,9 +21,9 @@ public:
 
 	NrpText Save( const NrpText& folderSave );
 	void Load( const NrpText& loadFolder );
-	CNrpProjectModule* GetGenre( u32 index );
-	CNrpProjectModule* GetModule( u32 index );
-	CNrpProjectModule* GetModule( const NrpText& name );
+	CNrpProjectModule* GetGenre( u32 index ) const;
+	CNrpProjectModule* GetModule( u32 index ) const;
+	CNrpProjectModule* GetModule( const NrpText& name ) const;
 
 	void CalculateCodeVolume();
 	bool IsReady();

@@ -27,7 +27,7 @@ BEGIN_LUNA_PROPERTIES(CLuaPlantWork)
 	LUNA_AUTONAME_PROPERTY( CLuaPlantWork, "hourPrice", GetHourPrice, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPlantWork, "numberMachine", GetNumberMachine, SetNumberMachine )
 	LUNA_AUTONAME_PROPERTY( CLuaPlantWork, "numberDay", GetNumberDay, SetNumberDay )
-	LUNA_AUTONAME_PROPERTY( CLuaPlantWork, "game", PureFunction, SetGame )
+	LUNA_AUTONAME_PROPERTY( CLuaPlantWork, "game", GetGame, SetGame )
 	LUNA_AUTONAME_PROPERTY( CLuaPlantWork, "numberDisk", GetNumberDisk, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPlantWork, "produceType", PureFunction, SetProduceType ) 
 	LUNA_AUTONAME_PROPERTY( CLuaPlantWork, "diskPrice", GetDiskPrice, PureFunction )
@@ -218,8 +218,8 @@ int CLuaPlantWork::SetGame( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		CNrpGame* dm = _GetLuaObject< CNrpGame, CLuaGame >( L, -1, false );
-		(*_object)[ PARENT ] = dm;
+		CNrpGame* game = _GetLuaObject< CNrpGame, CLuaGame >( L, -1, false );
+		(*_object)[ PARENT ] = game;
 	}
 
 	return 0;		
@@ -262,4 +262,19 @@ const char* CLuaPlantWork::ClassName()
 {
 	return ( CLASS_LUAPLANTWORK );
 }
+
+int CLuaPlantWork::GetGame( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		CNrpGame* game = (*_object)[ PARENT ].As<CNrpGame*>();
+		lua_pushlightuserdata( L, game );
+		Luna< CLuaGame >::constructor( L );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;	
+}
+
 }

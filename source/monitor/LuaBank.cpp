@@ -7,6 +7,7 @@
 #include "NrpHistory.h"
 #include "LuaCompany.h"
 #include "NrpApplication.h"
+#include "NrpLaborMarket.h"
 #include <assert.h>
 
 namespace nrp
@@ -238,7 +239,7 @@ int CLuaBank::ChangeShares( lua_State* L )
 	{
 		INrpConfig* agent = _nrpApp.GetCompany( name );
 		if( !agent )
-			agent = _nrpApp.GetUser( name );
+			agent = _nrpLaborMarkt.GetUser( name );
 
 		assert( agent );
 		

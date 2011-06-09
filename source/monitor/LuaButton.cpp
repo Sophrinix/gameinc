@@ -84,7 +84,7 @@ int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функ
 	IF_OBJECT_NOT_NULL_THEN
 		dynamic_cast< gui::CNrpButton* >( _object )->setOnClickAction( _GetRef( L, -1 ) );
 
-	return 1;
+	return 0;
 }
 
 int CLuaButton::SetImage_( lua_State* L, const NrpText& funcName, TYPE_IMAGE typeimg )

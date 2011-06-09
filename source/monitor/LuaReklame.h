@@ -31,6 +31,8 @@ public:
 	int SetReklameObject( lua_State* L );
 	int SetCompanyName( lua_State* L );
 	int GetCompanyName( lua_State* L );
+	int GetObjectName( lua_State* L );
+	int GetObjectRType( lua_State* L );
 };
 
 }//namespace nrp

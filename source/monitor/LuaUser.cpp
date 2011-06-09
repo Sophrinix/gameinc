@@ -14,6 +14,7 @@
 #include "NrpConfigModificator.h"
 #include "NrpTimework.h"
 #include "NrpLearning.h"
+#include "NrpLaborMarket.h"
 
 using namespace irr;
 
@@ -138,17 +139,17 @@ int CLuaUser::Create( lua_State *L )
 	if( userType == CNrpPlayer::ClassName() )
 	{
 		_object = new CNrpPlayer( name, NULL );
-		_nrpApp.AddUser( _object );
+		_nrpLaborMarkt.AddUser( _object );
 	}
 	else if( userType == CNrpAiUser::ClassName() )
 	{
 		_object = new CNrpAiUser( name, NULL );
-		_nrpApp.AddUser( _object );
+		_nrpLaborMarkt.AddUser( _object );
 	}
 	else 
 	{
 		_object = new CNrpUser( userType, name );
-		_nrpApp.AddUser( _object );
+		_nrpLaborMarkt.AddUser( _object );
 	}
 
 	lua_pushlightuserdata( L, (void*)_object );

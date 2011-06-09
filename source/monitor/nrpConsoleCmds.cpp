@@ -77,8 +77,8 @@ bool IC_Command_HELP::invoke(const array<stringw>& args, CCommandDispatcher* pDi
 
 IC_Command_LIST::IC_Command_LIST(): CNrpConsoleCommand(L"list")
 {
-	SetUsage("list <detailed>");
-	AddDescLine("Выводит на экран список доступных комманд");
+	SetUsage(L"list <detailed>");
+	AddDescLine(L"Выводит на экран список доступных комманд");
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -95,10 +95,10 @@ bool IC_Command_LIST::invoke(const array<stringw>& args, CCommandDispatcher* pDi
 IC_Command_INFO::IC_Command_INFO(irr::IrrlichtDevice *pDevice) 
 					   : CNrpConsoleCommand("info"),device(pDevice)
 {
-	SetUsage("info");
-	AddDescLine("Команда выводит данные о параметрах работы");
-	AddDescLine("-system программные и аппаратные средства");
-	AddDescLine("-objlist состояние массива системных объектов");
+	SetUsage(L"info");
+	AddDescLine(L"Команда выводит данные о параметрах работы");
+	AddDescLine(L"-system программные и аппаратные средства");
+	AddDescLine(L"-objlist состояние массива системных объектов");
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -168,7 +168,7 @@ bool IC_Command_INFO::invoke(const array<stringw>& args,
 
 IC_Command_CLS::IC_Command_CLS() : CNrpConsoleCommand(L"cls")
 {
-	SetUsage("cls");
+	SetUsage(L"cls");
 	AddDescLine(L"Очистка экрана консоли");
 }
 //////////////////////////////////////////////////////////////////////////
@@ -235,7 +235,7 @@ bool irr::core::IC_Command_UPDATE::invoke( const array< stringw >& args, CComman
 {
 	if(args.size() == 0)
 	{
-		stringw wstr = L"Укажите путь к файлу update-rif-xxxx.exe";
+		stringw wstr = L"Укажите путь к файлу update-xxxx.upd";
 		pOutput->AppendMessage( wstr );
 	}
 	else
@@ -246,49 +246,3 @@ bool irr::core::IC_Command_UPDATE::invoke( const array< stringw >& args, CComman
 
 	return true;
 }
-
-irr::core::IC_Command_ACTIONDATA::IC_Command_ACTIONDATA(): CNrpConsoleCommand(L"data")
-{
-
-}
-
-irr::core::IC_Command_ACTIONDATA::~IC_Command_ACTIONDATA() {}
-
-bool irr::core::IC_Command_ACTIONDATA::invoke( const array< stringw >& args, CCommandDispatcher* pDispatcher, CMessageSink* pOutput )
-{
-	if(args.size() == 0)
-	{
-		stringw wstr = L"Доступные параметры: ";
-		pOutput->AppendMessage( wstr );
-
-		wstr = "-rand [-snr X] [-ch Y] [-dt Z]: добавление произвольных данных к сонару";
-		pOutput->AppendMessage( wstr );
-
-		wstr = "-gold [-snr X] [-ch Y] [-dt Z]: добавление золотой серии данных к сонару";
-		pOutput->AppendMessage( wstr );
-
-		wstr = "-gold_ti [-snr X] [-ch Y]: добавление золотой трассовой серии к сонару";
-		pOutput->AppendMessage( wstr );
-	}
-	else
-	{
-		
-	}
-
-	return true;
-}
-//////////////////////////////////////////////////////////////////////////
-
-IC_Command_SONAR::IC_Command_SONAR() : CNrpConsoleCommand(L"sonar")
-{
-	SetUsage("sonar");
-	AddDescLine(L"Работа с блоками ПОГУ");
-}
-
-IC_Command_SONAR::~IC_Command_SONAR() {}
-
-bool IC_Command_SONAR::invoke(const array< stringw >& args, CCommandDispatcher* pDispatcher, CMessageSink* pOutput)
-{
-	return true;
-}
-//////////////////////////////////////////////////////////////////////////

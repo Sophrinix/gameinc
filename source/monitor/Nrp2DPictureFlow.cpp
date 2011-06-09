@@ -282,7 +282,7 @@ void CNrp2DPictureFlow::Prev( int offset )
 
 	_UpdateImages();
 
-	PCall( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
+	_SendEventSelected( SEvent() );
 }
 
 void CNrp2DPictureFlow::Next( int offset )
@@ -292,7 +292,7 @@ void CNrp2DPictureFlow::Next( int offset )
 
 	_UpdateImages();
 
-	PCall( GUIELEMENT_LBXITEM_SELECTED, this, NULL );
+	_SendEventSelected( SEvent() );
 }
 
 void CNrp2DPictureFlow::_SendEventSelected( const SEvent& event )
@@ -393,6 +393,8 @@ void CNrp2DPictureFlow::setSelected( s32 index )
 {
 	if( index < (int)_images.size() && index >= 0 )
 		_activeIndex = index;
+
+	_SendEventSelected( SEvent() );
 }
 
 void CNrp2DPictureFlow::removeItem( u32 index )

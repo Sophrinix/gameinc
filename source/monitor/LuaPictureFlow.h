@@ -32,6 +32,7 @@ public:
 	int SetItemBlend( lua_State* L );
 	int SetOnNewSelect( lua_State* L );
 	int Clear( lua_State* L );
+	int GetCount( lua_State *L );
 };
 
 }//namespace nrp

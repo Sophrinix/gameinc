@@ -2,6 +2,7 @@
 
 #include <irrArray.h>
 #include <irrMap.h>
+#include <assert.h>
 #include "nrpText.h"
 
 namespace nrp
@@ -70,6 +71,7 @@ OBJECT_TYPE* FindByName( const ARRAY_TYPE& arrayT, const NrpText& someName )
 template< typename ARRAY_TYPE, typename OBJECT_TYPE >  
 OBJECT_TYPE* FindByNameAndIntName( const ARRAY_TYPE& arrayT, const NrpText& someName, int* position=NULL )
 {
+	assert( someName.size() > 0 );
 	for( u32 pos=0; pos < arrayT.size(); pos++ )
 	{
 		const OBJECT_TYPE& obj = *arrayT[ pos ];
@@ -99,6 +101,14 @@ void AddArrayTo( ARRAYT& dst, const ARRAYT& src )
 	ARRAYT& pm = const_cast< ARRAYT& >( src );
 	for( u32 i=0; i < src.size(); i++ )
 		 dst.push_back( src[ i ] );
+}
+
+template< class T > 
+void ClearArray( T& arrayt )
+{
+	for( u32 i=0; i < arrayt.size(); i++ )
+		delete arrayt[ i ];
+	arrayt.clear();
 }
 
 }//end namespace nrp

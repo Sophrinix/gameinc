@@ -6,6 +6,7 @@
 *********************************************************************/
 #pragma once
 #include "iguielement.h"
+#include "LuaFunctionality.h"
 
 namespace irr
 {
@@ -17,7 +18,7 @@ namespace gui
 const int EGUIET_ANIMATOR=EGUIET_COUNT+2;
 
 //! Аниматор отвечает за изменение прозрачности элемента, к которому поодуключен
-class IGUIAnimator : public IGUIElement
+class IGUIAnimator : public IGUIElement, public ILuaFunctionality
 {
 public:
 	//! Коструктор
@@ -33,9 +34,9 @@ public:
 	}
 
 	//! Деструктор
-	~IGUIAnimator(void)
+	virtual ~IGUIAnimator(void)
 	{
-
+		PCall( GUIELEMENT_ON_REMOVE, this );
 	}
 
 	//! Тип элемента

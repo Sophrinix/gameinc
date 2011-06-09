@@ -46,29 +46,31 @@ struct SImageGUIElementStyle						//описание как надо рисовать элемент
 
 struct SImageGUISkinConfig							//карта элементов которые может отрисовывать скин
 {
-	SImageGUIElementStyle SunkenPane,				//обычная панель	
-						  Window,					//окно
-						  WindowCaption,			//шапка окна
-						  Button,					//кнопка в обычном состоянии
-						  WindowCloseButton,		//Кнопка закрытия окна
-						  WindowCloseHoveredButton,
-						  WindowClosePressedButton,
-						  ButtonPressed,			//кнопка в нажатом состоянии
-						  ButtonHovered,			//кнопка, когда над ней курсор находится, а также в фокусе
-						  ButtonDisabled,			//нажатая кнопка	
-						  ProgressBar,				//прогрессбар
-						  ProgressBarFilled,		//заполнение прогрессбара	
-						  CheckBox,					//флажок пустой
-						  CheckBoxChecked,			//флажок установленный	
-						  CheckBoxDisabled,			//отключенный
-						  EditBox,					//поле ввода
-						  EditBoxHovered,			//поле ввода когда над ним курсор находится
-						  EditBoxDisabled,			//отключенный элемент
-						  ComboBox,					//выпадаюзий список
-						  ComboBoxHovered,			//он же, на ним курсор
-						  ComboBoxDisabled,			//отключенный
-						  ContextMenu,				//контекстное меню
-						  ListBox;					//список
+	static const core::stringw SunkenPane;				//обычная панель	
+	static const core::stringw Window;					//окно
+	static const core::stringw WindowCaption;			//шапка окна
+	static const core::stringw Button;					//кнопка в обычном состоянии
+	static const core::stringw WindowCloseButton;		//Кнопка закрытия окна
+	static const core::stringw WindowCloseHoveredButton;
+	static const core::stringw WindowClosePressedButton;
+	static const core::stringw ButtonPressed;			//кнопка в нажатом состоянии
+	static const core::stringw ButtonHovered;			//кнопка, когда над ней курсор находится, а также в фокусе
+	static const core::stringw ButtonDisabled;			//нажатая кнопка	
+	static const core::stringw ProgressBar;				//прогрессбар
+	static const core::stringw ProgressBarFilled;		//заполнение прогрессбара	
+	static const core::stringw CheckBox;					//флажок пустой
+	static const core::stringw CheckBoxChecked;			//флажок установленный	
+	static const core::stringw CheckBoxDisabled;			//отключенный
+	static const core::stringw EditBox;					//поле ввода
+	static const core::stringw EditBoxHovered;			//поле ввода когда над ним курсор находится
+	static const core::stringw EditBoxDisabled;			//отключенный элемент
+	static const core::stringw ComboBox;					//выпадаюзий список
+	static const core::stringw ComboBoxHovered;			//он же, на ним курсор
+	static const core::stringw ComboBoxDisabled;			//отключенный
+	static const core::stringw ContextMenu;				//контекстное меню
+	static const core::stringw ListBox;					//список
+
+	std::map< core::stringw, SImageGUIElementStyle > configs; 
 };
 
 class CImageGUISkin : public IGUISkin

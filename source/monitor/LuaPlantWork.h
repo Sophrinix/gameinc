@@ -17,6 +17,7 @@ public:
 	int Remove( lua_State* L );
 	int SetProduceType( lua_State* L );
 	int SetGame( lua_State* L );
+	int GetGame( lua_State* L );
 	int GetRentPrice( lua_State* L );
 	int GetHourPerfomance( lua_State* L );
 	int GetHourPrice( lua_State* L );

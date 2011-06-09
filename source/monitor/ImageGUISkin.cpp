@@ -9,6 +9,31 @@ namespace irr
 namespace gui
 {
 
+#define INIT_SIMCONFIG_CONSTANT( name ) const core::stringw SImageGUISkinConfig::name = #name;
+INIT_SIMCONFIG_CONSTANT( SunkenPane )				//обычная панель	
+INIT_SIMCONFIG_CONSTANT( Window )					//окно
+INIT_SIMCONFIG_CONSTANT( WindowCaption )			//шапка окна
+INIT_SIMCONFIG_CONSTANT( Button )					//кнопка в обычном состоянии
+INIT_SIMCONFIG_CONSTANT( WindowCloseButton )		//Кнопка закрытия окна
+INIT_SIMCONFIG_CONSTANT( WindowCloseHoveredButton )
+INIT_SIMCONFIG_CONSTANT( WindowClosePressedButton )
+INIT_SIMCONFIG_CONSTANT( ButtonPressed )			//кнопка в нажатом состоянии
+INIT_SIMCONFIG_CONSTANT( ButtonHovered )			//кнопка, когда над ней курсор находится, а также в фокусе
+INIT_SIMCONFIG_CONSTANT( ButtonDisabled )			//нажатая кнопка	
+INIT_SIMCONFIG_CONSTANT( ProgressBar )				//прогрессбар
+INIT_SIMCONFIG_CONSTANT( ProgressBarFilled )		//заполнение прогрессбара	
+INIT_SIMCONFIG_CONSTANT( CheckBox )					//флажок пустой
+INIT_SIMCONFIG_CONSTANT( CheckBoxChecked )			//флажок установленный	
+INIT_SIMCONFIG_CONSTANT( CheckBoxDisabled )			//отключенный
+INIT_SIMCONFIG_CONSTANT( EditBox )					//поле ввода
+INIT_SIMCONFIG_CONSTANT( EditBoxHovered )			//поле ввода когда над ним курсор находится
+INIT_SIMCONFIG_CONSTANT( EditBoxDisabled )			//отключенный элемент
+INIT_SIMCONFIG_CONSTANT( ComboBox )					//выпадаюзий список
+INIT_SIMCONFIG_CONSTANT( ComboBoxHovered )			//он же, на ним курсор
+INIT_SIMCONFIG_CONSTANT( ComboBoxDisabled )			//отключенный
+INIT_SIMCONFIG_CONSTANT( ContextMenu )				//контекстное меню
+INIT_SIMCONFIG_CONSTANT( ListBox )					//список
+
 CImageGUISkin::CImageGUISkin( IGUIEnvironment* env )				//конструктор расширенного скина
 {
 	native_gui_ = env;			
@@ -121,17 +146,17 @@ void CImageGUISkin::draw3DButtonPaneStandard(	IGUIElement* element,
 	if (!driver)									//нельзя работать с пустым драйвером
 		return;
 
-	SImageGUIElementStyle style = Config.Button;	//этот элемент отрисуется если не будет замен	
+	SImageGUIElementStyle style = Config.configs[ SImageGUISkinConfig::Button ];	//этот элемент отрисуется если не будет замен	
 	bool need_posteffect = false;					//пост эффекты для кнопок, чтобы было плавное угасание ховеред текстуры
 
 	if(  element->getType() == EGUIET_BUTTON )		//если элемент, который пытается отрисоваться кнопка
 	{
 		if( !element->isEnabled() )					//и он не запрещен
-			style = Config.ButtonDisabled;				
+			style = Config.configs[ SImageGUISkinConfig::ButtonDisabled ];				
 		else										//проверяем состояние нажатости		
 		{
 			if( static_cast< IGUIButton* >( element )->isPressed() )		
-				style = Config.ButtonPressed;		//если нажат ставим соответсвующий конфиг	
+				style = Config.configs[ SImageGUISkinConfig::ButtonPressed ];		//если нажат ставим соответсвующий конфиг	
 		}
 
 		need_posteffect = true;						//нужен постэффект для кнопки
@@ -147,7 +172,7 @@ void CImageGUISkin::draw3DButtonPaneStandard(	IGUIElement* element,
 		video::SColor color( 0xff, 0xff, 0xff, 0xff );				//видна вся текстура
 		drawElementStyle( element, style, r, clip, &color  );		//рисуем текстуру из конфига
 
-		if( need_posteffect && Config.ButtonHovered.Texture )       //добавляем свистелок
+		if( need_posteffect && Config.configs[ SImageGUISkinConfig::ButtonHovered ].Texture )       //добавляем свистелок
 			draw3DButtonPostEffect( element, r, clip );				//	
 	}
 }

@@ -57,6 +57,11 @@
 #include "LuaTab.h"
 #include "LuaPlatform.h"
 #include "LuaFlick.h"
+#include "LuaAnimator.h"
+#include "LuaSoundEngine.h"
+#include "LuaQuest.h"
+#include "LuaQuestEngine.h"
+#include "LuaLink.h"
 
 static nrp::CNrpScript* global_script_engine = NULL;
 
@@ -217,6 +222,11 @@ void CNrpScript::RegisterLuaClasses_()
 	Luna< CLuaPda >::Register( vm_ );
 	Luna< CLuaPlatform >::Register( vm_ );
 	Luna< CLuaFlick >::Register( vm_ );
+	Luna< CLuaAnimator >::Register( vm_ );
+	Luna< CLuaSoundEngine >::Register( vm_ );
+	Luna< CLuaGuiLink >::Register( vm_ );
+	Luna< CLuaQuest >::Register( vm_ );
+	Luna< CLuaQuestEngine >::Register( vm_ );
 }
 
 CNrpScript::~CNrpScript()
@@ -255,7 +265,7 @@ void CNrpScript::LoadFile( const NrpText& fileName )
 		lua_pcall( vm_, 0, LUA_MULTRET, 0 );
 }
 
-void CNrpScript::DoFile( const NrpText& fileName )
+bool CNrpScript::DoFile( const NrpText& fileName )
 {
 	// !0 в случае ошибки в скрипте
 	if (luaL_dofile(vm_, const_cast< NrpText& >( fileName ) ) != 0)
@@ -268,7 +278,11 @@ void CNrpScript::DoFile( const NrpText& fileName )
 			Log(SCRIPT, FATAL)  << errMsg << term;
 		else
 			Log(SCRIPT, FATAL)  << "Неизвестная ошибка скрипта \"" << fileName  << term;
+
+		return 1;
 	}
+
+	return 0;
 }
 
 void CNrpScript::DoString( const NrpText& s )

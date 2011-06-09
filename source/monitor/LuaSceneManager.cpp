@@ -241,11 +241,11 @@ int CLuaSceneManager::DrawProgress( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		scene::CLoadingScreen ld( _object->getVideoDriver(), _nrpEngine.GetGuiEnvironment()->getFont( "font_14" ) );
+		scene::CLoadingScreen ld( _nrpEngine.GetVideoDriver(), _nrpEngine.GetGuiEnvironment()->getFont( "font_14" ) );
 		ld.render( progress, text.ToWide() );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaSceneManager::SetWorldSize( lua_State *vm )
@@ -259,7 +259,7 @@ int CLuaSceneManager::SetWorldSize( lua_State *vm )
 
 	CNrpWorldConfig::Instance()[WORLD_REAL_SIZE] = wsize;
 
-	return 1;
+	return 0;
 }
 
 int CLuaSceneManager::LinkTerrain( lua_State *vm )
@@ -271,7 +271,7 @@ int CLuaSceneManager::LinkTerrain( lua_State *vm )
 
 	RecalculateWorldParams_( terrain );
 
-	return 1;
+	return 0;
 }
 
 void CLuaSceneManager::RecalculateWorldParams_( scene::ITerrainSceneNode* newTerrain )
@@ -340,7 +340,7 @@ int CLuaSceneManager::Bind( lua_State* vm )
 	assert( typef && name != -1 );
 	_nrpEngine.GetCurrentScene()->Bind( typef, name );
 
-	return 1;
+	return 0;
 }
 
 int CLuaSceneManager::Unbind( lua_State* vm )
@@ -353,7 +353,7 @@ int CLuaSceneManager::Unbind( lua_State* vm )
 	assert( typef && name );
 	_nrpEngine.GetCurrentScene()->Unbind( typef, name );
 
-	return 1;
+	return 0;
 }
 
 int CLuaSceneManager::GetCurrentWorldPosition( lua_State* vm )
@@ -494,7 +494,7 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 	assert( ptrNode != NULL );
 	
 	if( ptrNode == NULL )
-		return 1;
+		return 0;
 	
 	scene::ISceneNode* textNode = GetTextSceneNode_( ptrNode );
 	IF_OBJECT_NOT_NULL_THEN
@@ -503,7 +503,7 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 		if( text.size() && textNode != NULL )
 		{
 			_object->addToDeletionQueue( textNode );
-			return 1;
+			return 0;
 		}
 
 		//есть какойто текст передан
@@ -523,7 +523,7 @@ int CLuaSceneManager::SetMarkText( lua_State* L )
 
 	}
 
-	return 1;
+	return 0;
 }
 
 scene::ISceneNode* CLuaSceneManager::GetTextSceneNode_( scene::ISceneNode* ptrNode )
@@ -550,7 +550,7 @@ int CLuaSceneManager::AddToDeletionQueue( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN _object->addToDeletionQueue( ptrNode );
 
-	return 1;
+	return 0;
 }
 
 int CLuaSceneManager::RenderScene( lua_State* L )
@@ -560,7 +560,7 @@ int CLuaSceneManager::RenderScene( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN _object->drawAll();
 
-	return 2;	
+	return 0;	
 }
 
 int CLuaSceneManager::LoadIrrlichtScene( lua_State* L )
@@ -575,7 +575,7 @@ int CLuaSceneManager::LoadIrrlichtScene( lua_State* L )
 		_object->loadScene( fileName );
 	}
 
-	return 1;	
+	return 0;	
 }
 
 int CLuaSceneManager::GetSceneNodeByID( lua_State* vm )
@@ -588,7 +588,6 @@ int CLuaSceneManager::GetSceneNodeByID( lua_State* vm )
 
 	IF_OBJECT_NOT_NULL_THEN node = _object->getSceneNodeFromId( id );
 
-	//lua_pop( vm, argc );
 	lua_pushlightuserdata( vm, node );
 	Luna< CLuaSceneNode >::constructor( vm );
 

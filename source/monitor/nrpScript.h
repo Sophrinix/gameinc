@@ -31,7 +31,7 @@ public:
 
 	static CNrpScript& Instance();
 	lua_State* GetVirtualMachine() { return vm_; }
-	void DoFile( const NrpText& file );
+	bool DoFile( const NrpText& file );
 	void DoString( const NrpText& s );
 	void LoadFile( const NrpText& fileName );
 	void CallFunction( const NrpText& funcName, void* sender=NULL, void* userData=NULL );

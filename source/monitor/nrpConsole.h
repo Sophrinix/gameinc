@@ -26,7 +26,7 @@ public:
 
 	void AppendMessage( const core::stringw& message );						//добавление строки к консоли
 	void ClearMessages();													//очистка сообщений
-	const c8* getTypeName() const { return "nrpConsole"; }
+	const c8* getTypeName() const { return "CNrpConsole"; }
 
 	void KeyPress( const irr::SEvent& event );								//передача нажатий клавы в обработчик консоли
 

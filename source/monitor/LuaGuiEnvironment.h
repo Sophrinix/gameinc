@@ -59,6 +59,7 @@ public:
 	int GetElementByID( lua_State* vm );
 	int GetElementByName( lua_State* vm );
 	int AddRectAnimator( lua_State *vm );
+	int AddSpringAnimator( lua_State *vm );
 	int AddTable( lua_State *vm );
 	int AddTechMap( lua_State *vm );
 	int AddGlobalMap( lua_State* vm );
@@ -68,6 +69,7 @@ public:
 	int AddMoveAnimator( lua_State* vm );
 	int AddToDeletionQueue( lua_State* vm );
 	int AddEdit( lua_State* vm );
+	int SetCursor( lua_State* vm );
 	int AddImage(  lua_State* vm ); 
 	int AddTabControl( lua_State* vm );
 	int AddTab( lua_State* vm );
@@ -92,6 +94,9 @@ public:
 	int AddFlick( lua_State* L );
 	int AddLayout( lua_State* L );
 	int AddTopElement( lua_State* L );
+	int GetConsole( lua_State* L );
+	int AddLink( lua_State* L );
+	int GetTextSize( lua_State* L );
 	
 	static const char* ClassName();
 };

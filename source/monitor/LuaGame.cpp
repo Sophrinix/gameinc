@@ -27,15 +27,15 @@ BEGIN_LUNA_METHODS(CLuaGame)
 	LUNA_AUTONAME_FUNCTION( CLuaGame, RemoveBox )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxAddon )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImage )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImageNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshot )
-	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshotNumber )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, Create )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaGame)
 	LUNA_ILUABASEPROJECT_PROPERTIES( CLuaGame )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "boxAddonsNumber", GetBoxAddonsNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "boxImageNumber", GetBoxImageNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "screenshotNumber", GetScreenshotNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "inSale", IsSaling, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "name", GetName, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "haveBox", HaveBox, PureFunction )
@@ -93,15 +93,26 @@ int CLuaGame::IsMyBoxAddon( lua_State* L )
 int CLuaGame::RemoveBoxAddon( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:RemoveBoxAddon need string parameter" );
-
-	NrpText name = lua_tostring( L, 2 );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:RemoveBoxAddon need string parameter" );	
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
-		if( box != NULL )
-			box->RemoveAddon( name );
+		if( lua_islightuserdata( L, 2 ) )
+		{
+			CNrpTechnology* tech = _GetLuaObject< CNrpTechnology, ILuaObject >( L, 2, true );
+			PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
+			assert( box && tech );
+			if( box && tech )
+				box->RemoveAddon( *tech );
+		}
+		else if( lua_isstring( L, 2 ) )
+		{
+			NrpText name = lua_tostring( L, 2 );
+			PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
+			assert( box );
+			if( box != NULL )
+				box->RemoveAddon( name );
+		}
 	}
 	return 1;	
 }
@@ -167,7 +178,7 @@ int CLuaGame::RemoveBox( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
-		(*_object)[ GBOX ] = NULL;
+		(*_object)[ GBOX ] = (PNrpGameBox)NULL;
 		delete box;
 	}
 
@@ -227,7 +238,7 @@ int CLuaGame::GetImagePath_( lua_State* L, const NrpText& funcName, OPTION_NAME&
 	NrpText pathTexture;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpExtInfo* imageList = (*_object)[ GAMEIMAGELIST ].As<CNrpExtInfo*>();
+		CNrpExtInfo* imageList = (*_object)[ EXTINFO ].As<CNrpExtInfo*>();
 		if( imageList )
 		{
 			int maxImage = (*imageList)[ nameParam ];
@@ -252,12 +263,9 @@ int CLuaGame::GetBoxImage( lua_State* L )
 
 template< class R > R CLuaGame::GetImageLisParam_( lua_State* L, const NrpText& funcName, OPTION_NAME& name, R defValue )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, _ErrStr(NrpText(":") + funcName + " not need any parameters") );
-
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		CNrpExtInfo* imageList = (*_object)[ GAMEIMAGELIST ].As<CNrpExtInfo*>();
+		CNrpExtInfo* imageList = (*_object)[ EXTINFO ].As<CNrpExtInfo*>();
 		if( imageList )
 			defValue = (*imageList)[ name ];
 	}
@@ -267,13 +275,13 @@ template< class R > R CLuaGame::GetImageLisParam_( lua_State* L, const NrpText& 
 
 int CLuaGame::GetBoxImageNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetImageLisParam_<int>( L, "GetBoxImageNumber", IMAGESBOXNUMBER, 0 ) );
+	lua_pushinteger( L, GetImageLisParam_<int>( L, PROP, IMAGESBOXNUMBER, 0 ) );
 	return 1;		
 }
 
 int CLuaGame::GetScreenshotNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetImageLisParam_<int>( L, "GetScreenshotNumber", IMAGESNUMBER, 0 ) ); 
+	lua_pushinteger( L, GetImageLisParam_<int>( L, PROP, IMAGESNUMBER, 0 ) ); 
 	return 1;
 }
 
@@ -452,7 +460,7 @@ int CLuaGame::GetRandomRecense( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		if( CNrpExtInfo* imageList = (*_object)[ GAMEIMAGELIST ].As<CNrpExtInfo*>() )
+		if( CNrpExtInfo* imageList = (*_object)[ EXTINFO ].As<CNrpExtInfo*>() )
 		{
 			const STRINGS& recenses = imageList->GetRecenses();
 			NrpText randRecense = "CLuaGame:GetRandomRecense:NoRecense"; 

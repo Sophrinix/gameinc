@@ -32,6 +32,7 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 {
 	INrpDevelopProject::InitializeOptions_();
 
+	Add<NrpText>( CLASSOBJECT, CLASS_DEVELOPGAME );
 	Add<int>( USERNUMBER, 0 );
 	Add<NrpText>( PROJECTSTATUS, "unknown" );
 	Add<CNrpCompany*>( PARENTCOMPANY, NULL );
@@ -52,6 +53,7 @@ void CNrpDevelopGame::_InitializeOptions( const NrpText& name )
 	Add<NrpText>( SCENARIO_NAME, "" );
 
 	_self[ NAME ] = name;
+	_self[ INTERNAL_NAME ] = name + "_game";
 	_self[ TECHGROUP ] = static_cast< int >( PT_GAME );
 }
 
@@ -246,7 +248,7 @@ bool CNrpDevelopGame::IsReady()
 	return ready;
 }
 
-CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index )
+CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index ) const
 {
 	int position = 0;
 	for( u32 i=0; i < _modules.size(); i++ )
@@ -263,13 +265,13 @@ CNrpProjectModule* CNrpDevelopGame::GetGenre( size_t index )
 	return NULL;
 }
 
-CNrpProjectModule* CNrpDevelopGame::GetModule( u32 index )
+CNrpProjectModule* CNrpDevelopGame::GetModule( u32 index ) const
 {
 	assert( index < _modules.size() && "CNrpDevelopGame::GetModule index out of range" );
 	return index < _modules.size() ? _modules[ index ] : NULL; 
 }
 
-CNrpProjectModule* CNrpDevelopGame::GetModule( const NrpText& name )
+CNrpProjectModule* CNrpDevelopGame::GetModule( const NrpText& name ) const
 {
 	for( u32 i=0; i < _modules.size(); i++ )
 	{

@@ -21,6 +21,9 @@
 namespace nrp
 {
 CLASS_NAME CLASS_USER( "IUser" );
+CLASS_NAME CLASS_CODER( "coder" );
+CLASS_NAME CLASS_DESIGNER( "designer" );
+CLASS_NAME CLASS_COMPOSER( "composer" );
 
 CNrpUser::CNrpUser(const NrpText& className, const NrpText& systemName ) : INrpConfig( className.size() ? className : CLASS_USER, systemName )
 {
@@ -369,4 +372,33 @@ bool CNrpUser::operator==( const CNrpUser& other )
 	return (&other == this) || ((NrpText)other[ NAME ] == (NrpText)_self[ NAME ] );
 }
 
+NrpText NrpCoder::ClassName()
+{
+	return CLASS_CODER;
+}
+
+NrpCoder::NrpCoder( const NrpText& systemName ) : CNrpUser( CLASS_CODER, systemName )
+{
+}
+
+
+NrpDesigner::NrpDesigner( const NrpText& systemName ) : CNrpUser( CLASS_DESIGNER, systemName )
+{
+
+}
+
+NrpText NrpDesigner::ClassName()
+{
+	return CLASS_DESIGNER;
+}
+
+NrpComposer::NrpComposer( const NrpText& systemName ) : CNrpUser( CLASS_COMPOSER, systemName )
+{
+
+}
+
+NrpText NrpComposer::ClassName()
+{
+	return CLASS_COMPOSER;
+}
 }//namespace nrp

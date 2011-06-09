@@ -31,6 +31,10 @@
 #include "LuaElement.h"
 #include "LuaFlick.h"
 #include "layout/irrlayout.h"
+#include "LuaAnimator.h"
+#include "LuaConsole.h"
+#include "NrpGuiLink.h"
+#include "LuaLink.h"
 
 using namespace irr;
 
@@ -51,6 +55,7 @@ BEGIN_LUNA_METHODS( CLuaGuiEnvironment )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetElementByName )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddCircleScrollBar )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddRectAnimator )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddSpringAnimator )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTable )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTechMap )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddGlobalMap )
@@ -82,15 +87,18 @@ BEGIN_LUNA_METHODS( CLuaGuiEnvironment )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddFlick )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLayout )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddTopElement )
-	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetDragObject )
 	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SetDragObject )
-
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, SetCursor )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, AddLink )
+	LUNA_AUTONAME_FUNCTION( CLuaGuiEnvironment, GetTextSize )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaGuiEnvironment)
 	LUNA_ILUAOBJECT_PROPERTIES( CLuaGuiEnvironment )
 	LUNA_AUTONAME_PROPERTY( CLuaGuiEnvironment, "focus", GetFocusedElement, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGuiEnvironment, "root", GetRootGUIElement, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGuiEnvironment, "dragObject", GetDragObject, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaGuiEnvironment, "console", GetConsole, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaGuiEnvironment::CLuaGuiEnvironment(lua_State *L, bool ex) : ILuaObject(L, CLASS_LUAGUI, ex )
@@ -221,10 +229,15 @@ int CLuaGuiEnvironment::AddRectAnimator( lua_State *vm )
 
 	gui::IGUIAnimator* anim = NULL; 
 	
-	IF_OBJECT_NOT_NULL_THEN anim = _object->addRectAnimator( parentElem, minr, maxr, step );
-	
-	lua_pushlightuserdata( vm, (void*)anim );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		anim = _object->addRectAnimator( parentElem, minr, maxr, step );
+		lua_pushlightuserdata( vm, (void*)anim );
+		Luna< CLuaAnimator >::constructor( vm );
+		return 1;
+	}
 
+	lua_pushnil( vm );
 	return 1;
 }
 
@@ -236,8 +249,15 @@ int CLuaGuiEnvironment::AddLuaAnimator( lua_State *vm )
 	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
 	int funcRef = _GetRef( vm, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN _object->addLuaAnimator( parentElem, funcRef );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::IGUIAnimator* anim = _object->addLuaAnimator( parentElem, funcRef );
+		lua_pushlightuserdata( vm, anim );
+		Luna< CLuaAnimator >::constructor( vm );
+		return 1;
+	}
 
+	lua_pushnil( vm );
 	return 1;
 }
 
@@ -482,14 +502,14 @@ int CLuaGuiEnvironment::AddMoveAnimator( lua_State* vm )
 		pos.X = _ReadParam( vm, 3, size.Width, 0 );
 		pos.Y = _ReadParam( vm, 4, size.Height, 0 );
 
-		int step = _ReadParam( vm, 5, parent->getAbsolutePosition().getWidth(), 0 );
+		int time = lua_tointeger( vm, 5 );
 		bool visibleOnStop = lua_toboolean( vm, 6 ) > 0;
 		bool removeOnStop = lua_toboolean( vm, 7 ) > 0;
 		bool removeParentOnStop =  lua_toboolean( vm, 8 ) > 0;
 
 		gui::IGUIAnimator* anim = NULL;
 
-		IF_OBJECT_NOT_NULL_THEN anim = _object->addMoveAnimator( parent, pos, step, 
+		IF_OBJECT_NOT_NULL_THEN anim = _object->addMoveAnimator( parent, pos, time, 
 																 visibleOnStop,
 																 removeOnStop,
 																 removeParentOnStop );
@@ -698,9 +718,6 @@ int CLuaGuiEnvironment::SetDragObject( lua_State* L )
 
 int CLuaGuiEnvironment::GetDragObject( lua_State* L )
 {
-	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 1, 1, "Function CLuaSceneManager:GetDragObject not need parameter");
-
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		gui::IGUIElement* elm = _object->getDragObject();
@@ -1046,4 +1063,114 @@ int CLuaGuiEnvironment::AddLoopTimer( lua_State* L )
 	lua_pushnil( L );
 	return 1;
 }
+
+int CLuaGuiEnvironment::AddSpringAnimator( lua_State *vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 11, 11, "Function CLuaGuiEnvironment:AddSpringAnimator need 10 parameter");
+
+	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
+	core::recti minr, maxr;
+	minr = _ReadRect( vm, 3, parentElem );
+	maxr = _ReadRect( vm, 7, parentElem );
+	s32 step = lua_tointeger( vm, 11 );
+
+	gui::IGUIAnimator* anim = NULL; 
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		anim = _object->addSpringAnimator( parentElem, minr, maxr, step );
+		lua_pushlightuserdata( vm, (void*)anim );
+		Luna< CLuaAnimator >::constructor( vm );
+		return 1;
+	}
+
+	lua_pushnil( vm );
+	return 1;
+}
+
+int CLuaGuiEnvironment::SetCursor( lua_State* vm )
+{
+	int argc = lua_gettop(vm);
+	luaL_argcheck(vm, argc == 2, 2, "Function CLuaGuiEnvironment:SetCursor need path to texture");
+
+	NrpText text( lua_tostring( vm, 2 ) );
+
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		//
+	}
+
+	return 0;
+}
+
+int CLuaGuiEnvironment::GetConsole( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::CNrpConsole* console = _nrpEngine.GetConsole();
+		if( console )
+		{
+			lua_pushlightuserdata( L, console );
+			Luna< CLuaConsole >::constructor( L );
+			return 1;
+		}
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaGuiEnvironment::AddLink( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 9, 9, "Function CLuaGuiEnvironment:AddButton need 7 parameter");
+
+	gui::IGUIElement* parent = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 6, true );
+	core::recti rec = _ReadRect( L, 2, parent );
+	s32 id = lua_tointeger( L, 7 );
+	NrpText text = lua_tostring( L, 8 );
+	int action = _GetRef( L, 9 );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::CNrpGuiLink* elm = _object->addLink( rec,  parent, id, text.ToWide() );
+		elm->setOnClickAction( action );
+		//lua_pop( vm, argc );
+		lua_pushlightuserdata( L, (void*)elm );
+		Luna< CLuaGuiLink >::constructor( L );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;	
+}
+
+int CLuaGuiEnvironment::GetTextSize( lua_State* L )
+{
+	int argc = lua_gettop(L);
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaGuiEnvironment:GetTextWidth need fontName, string as parameter");
+	
+	NrpText fontName = lua_tostring( L, 2 );
+	NrpText text = lua_tostring( L, 3 );
+
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		gui::IGUIFont* font = _object->getFont( fontName );
+		
+		if( font )
+		{
+			core::dimension2du size = font->getDimension( text );
+
+			lua_pushinteger( L, size.Width );
+			lua_pushinteger( L, size.Height );
+			return 2;
+		}
+	}
+
+	lua_pushnil( L );
+	lua_pushnil( L );
+	return 2;
+}
+
 }//namespace nrp

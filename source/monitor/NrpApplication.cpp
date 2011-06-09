@@ -10,7 +10,6 @@
 #include "NrpPlayer.h"
 #include "OpFileSystem.h"
 #include "nrpEngine.h"
-#include "PeopleName.h"
 #include "NrpGame.h"
 #include "NrpDiskMachine.h"
 #include "NrpPlant.h"
@@ -21,6 +20,7 @@
 #include "NrpInvention.h"
 #include "NrpActionType.h"
 #include "NrpPda.h"
+#include "nrploadingscreen.h"
 #include "NrpHistory.h"
 #include "NrpGameTime.h"
 #include "NrpTime.h"
@@ -38,7 +38,8 @@
 #include "NrpConsoleConfig.h"
 #include "NrpPlatform.h"
 #include "NrpBridge.h"
-#include "NrpTester.h"
+#include "NrpLaborMarket.h"
+#include "NrpSoundEngine.h"
 
 #include <io.h>
 #include <errno.h>
@@ -53,7 +54,6 @@ CLASS_NAME CLASS_NRPAPPLICATION( "CNrpApplication" );
 CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS_NRPAPPLICATION )
 {
 	Add( TECHNUMBER, (int)0 );
-	Add( USERNUMBER, (int)0 );
 	Add( COMPANIESNUMBER, (int)0 );
 
 	Add<NrpText>( WORKDIR, "" );
@@ -92,6 +92,7 @@ CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS
 	Add<CNrpGameTime*>( GAME_TIME, new CNrpGameTime( this ) );
 	Add( PAUSEBTWSTEP, 100 );
 	Add( INFLATION, 0.02f );
+	Add( DEV_FORCE, 1.f );
 	Add( PROFIT_TAX, 0.18f );
 
 	srand( GetTickCount() );
@@ -135,19 +136,6 @@ int CNrpApplication::AddCompany( CNrpCompany* company )
 	return 0;
 }
 
-int CNrpApplication::AddUser( CNrpUser* user )
-{
-	CNrpUser* tmpUser = GetUser( (*user)[ NAME ] );
-	assert( tmpUser == NULL );
-
-	if( user && tmpUser == NULL )
-		_users.push_back( user );
-
-	_self[ USERNUMBER ] = static_cast< int >( _users.size() );
-	return 1;
-}
-
-
 void CNrpApplication::AddProject( INrpProject* project )
 {
 	if( FindByName<PROJECTS, INrpProject>( _projects, project->Param( NAME ) ) == NULL )
@@ -173,30 +161,6 @@ void CNrpApplication::AddTechnology( CNrpTechnology* ptrTech )
 	_self[ TECHNUMBER ] = static_cast<int>( _technologies.size() );
 }
 
-CNrpUser* CNrpApplication::GetUser( u32 index )
-{
-	return index < _users.size() ? _users[ index ] : NULL;
-}
-
-CNrpUser* CNrpApplication::GetUser( const NrpText& name )
-{
-	return FindByNameAndIntName<USERS, CNrpUser>( _users, name );
-}
-
-int CNrpApplication::RemoveUser( CNrpUser* user )
-{
-	for( u32 pos=0; pos < _users.size(); pos++ )
-		if( _users[ pos ] == user )
-		{
-			delete _users[ pos ];
-			_users.erase( pos );
-			_self[ USERNUMBER ] = static_cast< int >( _users.size() );
-			return 0;
-		}
-
-	return 1;
-}
-
 void CNrpApplication::_CreateDirectoriesMapForSave()
 {
 	OpFileSystem::CreateDirectory( _self[ SAVEDIR ] );
@@ -216,9 +180,12 @@ void CNrpApplication::_CreateDirectoriesMapForSave()
 
 void CNrpApplication::Save()
 {
+	scene::CLoadingScreen ld( _nrpEngine.GetVideoDriver(), _nrpEngine.GetGuiEnvironment()->getFont( "font_14" ) );
+
 	NrpText prevSaveFolder = (NrpText)_self[ SAVEDIR ] + (NrpText)_self[ PROFILENAME ] + "Old/";
 	NrpText profileIni = (NrpText)_self[ SAVEDIR_PROFILE ] + "profile.ini";
 
+	ld.render( 10, "Создаем структуру для сохранения" );
 	OpFileSystem::Remove( prevSaveFolder );
 	OpFileSystem::Copy( _self[ SAVEDIR_PROFILE ], prevSaveFolder );
 	OpFileSystem::Remove( _self[ SAVEDIR_PROFILE ] );
@@ -227,6 +194,7 @@ void CNrpApplication::Save()
 
 	assert( !OpFileSystem::IsExist( profileIni ) );
 
+	ld.render( 10, "Сохраняем основные данные" );
 	INrpConfig::Save( profileIni );
 
 	IniFile sv( profileIni );
@@ -234,12 +202,14 @@ void CNrpApplication::Save()
 	sv.Set( SECTION_OPTIONS, "currentProfile", (NrpText)_self[ PROFILENAME ] );
 	sv.Set( SECTION_OPTIONS, "currentCompany", (NrpText)_self[ PROFILECOMPANY ] );
 	
+	ld.render( 10, "Сохраняем данные о компаниях" );
 	for( u32 i=0; i < _companies.size(); i++ )
 	{
 		_companies[ i ]->Save( _self[ SAVEDIR_COMPANIES ] );
 		sv.Set( SECTION_COMPANIES, CreateKeyCompany( i ), (NrpText)(*_companies[ i ])[ NAME ]);
 	}
 
+	ld.render( 10, "Сохраняем данные о проектах в разработке" );
 	for( u32 i=0; i < _devProjects.size(); i++ )
 	{
 		NrpText saveFile = _devProjects[ i ]->Save( _self[ SAVEDIR_DEVPR ] );
@@ -247,6 +217,7 @@ void CNrpApplication::Save()
 		sv.Set( SECTION_DEVPROJECTS, CreateKeyProject(i), saveFile );
 	}
 
+	ld.render( 10, "Сохраняем данные о проектах" );
 	for( u32 i=0; i < _projects.size(); i++ )
 	{
 		NrpText saveFile = _projects[ i ]->Save( _self[ SAVEDIR_PROJECTS ] );
@@ -254,19 +225,14 @@ void CNrpApplication::Save()
 		sv.Set( SECTION_PROJECTS, CreateKeyProject(i), saveFile );
 	}
 
-	for( u32 i=0; i < _users.size(); i++ )
-	{
-		_users[ i ]->Save( _self[ SAVEDIR_USERS ] );
-		sv.Set( SECTION_USERS, CreateKeyType(i), _users[ i ]->ObjectTypeName() );
-		sv.Set( SECTION_USERS, CreateKeyUser(i), (NrpText)_users[ i ]->Param( NAME ) );
-	}
-
+	ld.render( 10, "Сохраняем данные о технологиях" );
 	for( u32 i=0; i < _technologies.size(); i++ )
 	{
 		NrpText saveFile = _technologies[ i ]->Save( _self[ SAVEDIR_TECHS ] );
 		sv.Set( SECTION_TECHS, CreateKeyTech(i), saveFile );
 	}
 
+	ld.render( 10, "Сохраняем данные oб изобретениях" );
 	for( u32 i=0; i < _inventions.size(); i++ )
 	{
 		NrpText inventSaveFile = _inventions[ i ]->Save( (NrpText)_self[ SAVEDIR_INVENTIONS ] + 
@@ -274,18 +240,21 @@ void CNrpApplication::Save()
 		sv.Set( SECTION_INVENTIONS, CreateKeyInvention( i ), inventSaveFile );
 	}
 
+	ld.render( 10, "Сохраняем данные о видеодвижках" );
 	for( u32 i=0; i < _engines.size(); i++ )
 	{
 		NrpText saveFolder = _engines[ i ]->Save( _self[ SAVEDIR_ENGINES ] );
 		sv.Set( SECTION_ENGINES, CreateKeyEngine(i), saveFolder );
 	}
 
+	ld.render( 10, "Сохраняем данные об играх" );
 	for( u32 i=0; i < _games.size(); i++ )
 	{
 		NrpText saveDir = _games[ i ]->Save( _self[ SAVEDIR_GAMES ] );
 		sv.Set( SECTION_GAMES, CreateKeyGame( i ), saveDir );
 	}
 
+	ld.render( 10, "Сохраняем данные о платформах" );
 	for( u32 i=0; i < _platforms.size(); i++ )
 	{
 		NrpText saveDir = _platforms[ i ]->Save( _self[ SAVEDIR_PLATFORMS ] );
@@ -294,49 +263,14 @@ void CNrpApplication::Save()
 
 	sv.Save();
 
+	ld.render( 10, "Сохраняем данные банка" );
 	CNrpBank::Instance().Save( _self[ SAVEDIR_BANK ] );
+
+	ld.render( 10, "Сохраняем данные о биржи" );
 	CNrpBridge::Instance().Save( _self[ SAVEDIR_BRIDGE ] );
-}
 
-void CNrpApplication::_LoadUsers( const NrpText& fileName )
-{
-	IniFile sv( fileName );
-	int maxUser = _self[ USERNUMBER ];
-	for( int i=0; i < maxUser; i++ )
-	{
-		NrpText name = sv.Get( SECTION_USERS, CreateKeyUser(i), NrpText("") );
-		NrpText className = sv.Get( SECTION_USERS, CreateKeyType(i), NrpText("") );
-
-		NrpText fileName = (NrpText)_self[ SAVEDIR_USERS ] + name + ".user";
-
- 		if( !OpFileSystem::IsExist( fileName ) )
-		{
-			assert( false && "user config file not found" );
-			continue;
-		}
-	
-		CNrpUser* user = NULL;
-		if( className == CNrpPlayer::ClassName() ) 
-			user = new CNrpPlayer( fileName );
-		else
-		{
-			if( className == CNrpAiUser::ClassName() )
-				user = new CNrpAiUser( fileName );
-			else
-			{
-				if( className == NrpTester::ClassName() )
-					user = new NrpTester( name );
-				else
-					user = new CNrpUser( className, name );
-
-
-				user->Load( fileName );
-			}
-		}
-
-		assert( user );
-		AddUser( user );
-	}
+	ld.render( 10, "Сохраняем данные о сотрудниках" );
+	CNrpLaborMarket::Instance().Save( _self[ SAVEDIR_PROFILE ] );
 }
 
 void CNrpApplication::_InitialyzeSaveDirectories( const NrpText& profileName )
@@ -380,7 +314,7 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 	NrpText profileIni = _self[ SAVEINI_PROFILE ];
 	INrpConfig::Load( profileIni );
 
-	_LoadUsers( profileIni );	
+	CNrpLaborMarket::Instance().Load( _self[ SAVEDIR_PROFILE ] );
 
 	IniFile rv( profileIni );
 
@@ -503,18 +437,10 @@ void CNrpApplication::CreateProfile( const NrpText& profileName, const NrpText& 
 	_InitialyzeSaveDirectories( profileName );
 }
 
-template< class T > 
-void ClearArray( T& arrayt )
-{
-	for( u32 i=0; i < arrayt.size(); i++ )
-		delete arrayt[ i ];
-	arrayt.clear();
-}
-
 void CNrpApplication::ResetData()
 {
 	ClearArray( _companies );
-	ClearArray( _users );
+	CNrpLaborMarket::Instance().Reset();
 	ClearArray( _technologies );
 }
 
@@ -649,52 +575,6 @@ void CNrpApplication::_UpdateMarketGames()
 	}
 }
 
-void CNrpApplication::CreateNewFreeUsers()
-{
-	USERS coders, designer, composer, tester;
-	core::map< NrpText, USERS* > group;
-	group[ "coder" ] = &coders;
-	group[ "designer" ] = &designer;
-	group[ "composer" ] = &composer;
-	group[ NrpTester::ClassName() ] = &tester;
-	
-	for( u32 i=0; i < _users.size(); i++ )
-	{
-		CNrpUser* user = _users[ i ];
-		NrpText typeName = user->ObjectTypeName();
-		if( (*user)[ PARENTCOMPANY ].As<PNrpCompany>() != NULL )
-			continue;
-
-		if( core::map< NrpText, USERS* >::Node* node = group.find( typeName ) )
-			node->getValue()->push_back( user );
-	}
-
-	size_t USER_GROUP_COUNT = 6;
-
-	core::map< NrpText, USERS* >::Iterator gIter = group.getIterator();
-	for( ; !gIter.atEnd(); gIter++ )
-	{
-		USERS& tmpList = *(gIter->getValue());
-		for( u32 k=0; k < tmpList.size(); k++ )
-			RemoveUser( tmpList[ k ] );
-
-		tmpList.clear();
-
-		for( size_t cnt=tmpList.size(); cnt < USER_GROUP_COUNT; cnt++ )
-			tmpList.push_back( CreateRandomUser( gIter->getKey() ) );
-	}
-
-	gIter = group.getIterator();
-	for( ; !gIter.atEnd(); gIter++ )
-		for( u32 cnt=0; cnt < gIter->getValue()->size(); cnt++ )
-			_users.push_back( (*gIter->getValue())[ cnt ] );
-
-	if( _self[ USERNUMBER ] != static_cast< int >( _users.size() ) )
-		PCall( APP_USER_MARKETUPDATE, NULL );
-
-	_self[ USERNUMBER ] = static_cast< int >( _users.size() );
-}
-
 void CNrpApplication::Init()
 {
 #ifdef _DEBUG
@@ -708,6 +588,7 @@ void CNrpApplication::Init()
 	plugin::CNrpPluginEngine::Instance();
 	//инициализация систем
 	CNrpHUDConfig::Instance();
+	_nrpSound.Instance();
 	CNrpVideoConfig::Instance();
 	CNrpConsoleConfig::Instance();
 	CNrpPlant::Instance();
@@ -788,70 +669,6 @@ void CNrpApplication::_UpdateGameRating( CNrpGame& game )
 		int midRating = ( qualityMap[ PT_VIDEOTECH ] + qualityMap[ PT_SOUNDTECH ] + qualityMap[ PT_GENRE ] ) / 3;
 		step->AddValue( CURRENTGAMERATING, midRating );
 	}
-}
-
-int CNrpApplication::_GetTechsByGroup( int type, TECHS& arrayt )
-{
-	for( u32 i=0; i < _technologies.size(); i++ )
-		if( (*_technologies[ i ])[ TECHGROUP ] == type )
-			arrayt.push_back( _technologies[ i ] );
-
-	return arrayt.size();
-}
-
-CNrpUser* CNrpApplication::CreateRandomUser( NrpText userType )
-{
-	TECHS genres;
-	_GetTechsByGroup( PT_GENRE, genres );
-	size_t randomParams = 1 + rand() % genres.size();//сколько параметров будем создавать
-	int maxParamValue = 1 + rand() % 100;//максимальное значение параметров
-
-	std::map< NrpText, NrpText > skillMap;
-	skillMap[ "coder" ] = SKILL_CODING;
-	skillMap[ "designer" ] = SKILL_DRAWING;
-	skillMap[ "composer" ] = SKILL_SOUND;
-	skillMap[ NrpTester::ClassName() ] = SKILL_TESTING;
-
-	NrpText userName;
-
-	CNrpUser* ptrUser = NULL;
-	do 
-	{
-		userName = GlobalPeopleName[ rand() % PEOPLE_NAME_COUNT ] + " " + GlobalPeopleSurname[ rand() % PEOPLE_SURNAME_COUNT ];
-		ptrUser = GetUser( userName );
-	} while ( ptrUser != NULL );
-
-	if( userType == CNrpAiUser::ClassName() )
-		ptrUser = new CNrpAiUser( userName, NULL );
-	else if( userType == NrpTester::ClassName() )
-		ptrUser = new NrpTester( userName );
-	else
-		ptrUser = new CNrpUser( userType, userName );
-
-	CNrpUser& refUser = *ptrUser;
-	ptrUser->SetSkill( skillMap[ userType ], maxParamValue );
-	refUser[ WORK_QUALITY ] = rand() % maxParamValue;
-	refUser[ WORK_SPEED ] = rand() % maxParamValue;
-	refUser[ TALANT ] = rand() % maxParamValue;
-	refUser[ STAMINA ] = rand() % maxParamValue;
-	refUser[ STABILITY ] = rand() % maxParamValue;
-	refUser[ CHARACTER ] = rand() % maxParamValue;
-
-	if( (int)refUser[ WANTMONEY ] < (int)_self[ MINIMUM_USER_SALARY ] )
-		refUser[ WANTMONEY ] = _self[ MINIMUM_USER_SALARY ];
-
-	char name[64] = { 0 };
-	snprintf( name, 64, "media/face/face%03d.png", rand() % 2 );
-	refUser[ TEXTURENORMAL ] = NrpText( name );
-
-	for( size_t cnt=0; cnt < randomParams; cnt++ )
-	{
-		NrpText genreName = (*genres[ rand() % genres.size() ])[ INTERNAL_NAME ];
-		ptrUser->SetGenreExperience( genreName, rand() % maxParamValue );
-		ptrUser->SetGenrePreferences( genreName, rand() % maxParamValue );
-	} 
-
-	return ptrUser;
 }
 
 void CNrpApplication::_BeginNewMonth()
@@ -991,33 +808,29 @@ NrpText CNrpApplication::GetFreeInternalName( const CNrpGame& game )
 	SCREENSHOTS	thisYearAndGenreImgs;
 	
 	int minimumRating = 1;
+	//инициализация года выпуска игры
 	int year = _self[ CURRENTTIME ].As<NrpTime>().RYear();
 	
+	//если у игры есть движок, то возьмем год его выпуска... +-1 год
 	if( CNrpGameEngine* ge = GetGameEngine( game[ GAME_ENGINE ].As<NrpText>() ) )
 		year = (*ge)[ STARTDATE ].As<NrpTime>().RYear();
 
 	for( u32 i=0; i < _screenshots.size(); i++ )
 	{
-		CNrpGame* alsoMargetGame = GetGame( (NrpText)_screenshots[ i ]->Param( INTERNAL_NAME ) );
+		//получим процент совпадения жанров
+		int eqRating = _screenshots[ i ]->GetEqualeRating( game );
 
-		if( !alsoMargetGame ) 
+		//если слишком разнятся годы выпуска или не совпадает по жанрам
+		if( !_screenshots[ i ]->IsMyYear( year ) || !eqRating || eqRating < minimumRating )
+			continue;
+
+		if( minimumRating < eqRating )
 		{
-			if( !_screenshots[ i ]->IsMyYear( year ) )
-				continue;
-			
-			int eqRating = _screenshots[ i ]->GetEqualeRating( game );
-
-			if( !eqRating )
-				continue;
-
-			if( minimumRating < eqRating )
-			{
-				thisYearAndGenreImgs.clear();
-				minimumRating = eqRating;
-			}
-			
-			thisYearAndGenreImgs.push_back( _screenshots[ i ] );
+			thisYearAndGenreImgs.clear();
+			minimumRating = eqRating;
 		}
+
+		thisYearAndGenreImgs.push_back( _screenshots[ i ] );
 	}
 
 	if( thisYearAndGenreImgs.size() )
@@ -1033,7 +846,7 @@ NrpText CNrpApplication::GetFreeInternalName( const CNrpGame& game )
 
 CNrpExtInfo* CNrpApplication::GetExtInfo( const NrpText& name )
 {
-	return FindByNameAndIntName< SCREENSHOTS, CNrpExtInfo >( _screenshots, name, NULL );
+	return FindByNameAndIntName< SCREENSHOTS, CNrpExtInfo >( _screenshots, name, NULL ); 
 }
 
 CNrpGame* CNrpApplication::GetGame( const NrpText& name )
@@ -1061,10 +874,11 @@ void CNrpApplication::RemoveTechnology( CNrpTechnology* ptrTech )
 
 void CNrpApplication::AddGameEngine( nrp::CNrpGameEngine* ptrEngine )
 {
-	if( GetGameEngine( ptrEngine->Param( INTERNAL_NAME ) ) == NULL )
+	CNrpGameEngine* engine = GetGameEngine( (*ptrEngine)[ INTERNAL_NAME ] );
+	if( engine == NULL )
 	{
 		_engines.push_back( ptrEngine );
-		Param( ENGINES_NUMBER ) = static_cast<int>( _engines.size() );
+		_self[ ENGINES_NUMBER ] = static_cast<int>( _engines.size() );
 		return;
 	}
 

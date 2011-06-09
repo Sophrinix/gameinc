@@ -35,6 +35,10 @@ bool CNrpGameTime::Update()
 	NrpTime& time = _nrpApp[ CURRENTTIME ].As<NrpTime>();
 	NrpTime oldTime( time );
 
+	//пауза
+	if( (int)_nrpApp[ PAUSEBTWSTEP ] >= 1000 )
+		return true;
+
 	if( GetTickCount() - lastTimeUpdate_ > (int)_nrpApp[ PAUSEBTWSTEP ] )
 	{
 		lastTimeUpdate_ = GetTickCount();

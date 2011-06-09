@@ -15,6 +15,7 @@
 #include "LuaInvention.h"
 #include "LuaGameEngine.h"
 #include "LuaGameProject.h"
+#include "NrpLaborMarket.h"
 
 namespace nrp
 {
@@ -73,7 +74,7 @@ int CLuaCompany::Create( lua_State* L )
 	NrpText name = lua_tostring( L, 2 );
 	NrpText ceo = lua_tostring( L, 3 );
 
-	PUser user = _nrpApp.GetUser( ceo );
+	PUser user = _nrpLaborMarkt.GetUser( ceo );
  
 	assert( user != NULL );
 
@@ -359,14 +360,17 @@ int CLuaCompany::GetGame( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetGame need int parameter" );
 
 	int index = lua_tointeger( L, 2 );
-	INrpConfig* prj = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN	prj = _object->GetGame( index );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		INrpConfig* prj = _object->GetGame( index );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, prj );
-	Luna< CLuaGame >::constructor( L );
+		lua_pushlightuserdata( L, prj );
+		Luna< CLuaGame >::constructor( L );
+		return 1;
+	}
 
+	lua_pushnil( L );
 	return 1;	
 }
 

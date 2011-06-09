@@ -19,6 +19,7 @@ public:
 	CNrpGameBox( CNrpGame* ptrGame );
 	bool IsMyAddon( const NrpText& name );
 	void RemoveAddon( const NrpText& name );
+	void RemoveAddon( const CNrpTechnology& tech );
 	bool AddAddon( CNrpBoxAddon* tech );
 	CNrpBoxAddon* GetAddon( size_t index );
 	float GetBoxAddonsPrice();

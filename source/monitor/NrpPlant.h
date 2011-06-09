@@ -21,8 +21,8 @@ class CNrpPlant : public INrpConfig
 	~CNrpPlant(void);
 
 	PLANTWORKS _works;
-	REKLAMES baseReklame_;
-	DISKMACHINES diskMachines_;
+	REKLAMES _baseReklame;
+	DISKMACHINES _diskMachines;
 	REKLAMES _reklameWorks;
 public:
 	static CNrpPlant& Instance();
@@ -34,6 +34,8 @@ public:
 	void AddReklame( CNrpReklameWork& reklame );
 	CNrpReklameWork* GetReklame( const NrpText& type, 
 								 const NrpText& gameName );
+	CNrpReklameWork* GetReklame( u32 index );
+
 	void RemoveReklame( NrpText type, const NrpText& gameName );
 	CNrpReklameWork* CreateReklame( const NrpText& type, 
 									const NrpText& gameName, 

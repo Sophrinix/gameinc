@@ -23,6 +23,7 @@ OPTION_NAME SAVEDIR_PROFILE( L"saveDirProfile" );
 OPTION_NAME SAVEDIR_TECHS( L"saveDirTechs" );
 OPTION_NAME SAVEDIR_BRIDGE( L"saveDirBridge" );
 OPTION_NAME SAVEDIR_BANK( L"saveDirBank" );
+OPTION_NAME SOUND_ENGINE( L"soundEngine" );
 OPTION_NAME CURRENTTIME( L"currentTime" );
 OPTION_NAME BOXADDONNUMBER( L"boxAdonNumber" );
 OPTION_NAME MARKETGAMENUMBER( L"marketGameNumber" );
@@ -34,6 +35,7 @@ OPTION_NAME GAME_TIME( L"objectGameTime" );
 OPTION_NAME PAUSEBTWSTEP( L"pausebtwstep" );
 OPTION_NAME INFLATION( L"infaltion" );
 OPTION_NAME PROFIT_TAX( L"profit_tax" );
+OPTION_NAME DEV_FORCE( L"dev_force" );
 
 class CNrpUser;
 class INrpProject;
@@ -45,6 +47,7 @@ class CNrpGameEngine;
 class CNrpInvention;
 class INrpDevelopProject;
 class CNrpBridge;
+class CNrpLaborMarket;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
@@ -62,15 +65,6 @@ public:
 	CNrpCompany* GetCompany( const NrpText& companyName );
 	CNrpCompany* GetCompany( u32 index );
 	int AddCompany( CNrpCompany* company );
-
-	int AddUser( CNrpUser* user );
-	int RemoveUser( CNrpUser* user );
-
-	void CreateNewFreeUsers();
-	CNrpUser* CreateRandomUser( NrpText userType );
-	
-	CNrpUser* GetUser( u32 index );
-	CNrpUser* GetUser( const NrpText& name );
 
 	void AddDevelopProject( INrpDevelopProject* project );
 	void RemoveDevelopProject( const NrpText& name );
@@ -91,6 +85,7 @@ public:
 	int GetTechsNumber() { return _technologies.size(); }
 	CNrpTechnology* GetTechnology( int index );
 	CNrpTechnology* GetTechnology( const NrpText& name );
+	const TECHS& GetTechnologies() { return _technologies; }
 
 	void AddTechnology( CNrpTechnology* ptrTech );
 	void RemoveTechnology( CNrpTechnology* ptrTech );
@@ -110,8 +105,10 @@ public:
 	void RemoveRetailer( const NrpText& name );
 
 	NrpText GetFreeInternalName( const CNrpGame& game );
+
 	CNrpExtInfo* GetExtInfo( const NrpText& name );
 	void LoadScreenshot( const NrpText& fileName );
+
 	float GetGameGenreInterest( CNrpGame* game );
 
 	void AddInvention( const NrpText& startTech, CNrpCompany& parentCompany );
@@ -131,7 +128,6 @@ private:
 
 	COMPANIES _companies;
 	SCREENSHOTS _screenshots;
-	USERS _users;
 	TECHS _technologies;					//хранит все технологии игрового мира
 	INVENTIONS _inventions;
 	TECHS _boxAddons;
@@ -151,11 +147,9 @@ private:
 	int _GetSalesNumber( CNrpGame* game );
 	void _UpdateInvention();
 
-	void _LoadUsers( const NrpText& iniFile );
 	void _InitialyzeSaveDirectories( const NrpText& profileName );
 	void _UpdateGameRating( CNrpGame& ptrGame );
 	void _CreateDirectoriesMapForSave();
-	int _GetTechsByGroup( int type, TECHS& arrayt );
 };
 
 #define _nrpApp CNrpApplication::Instance()

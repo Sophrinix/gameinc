@@ -32,6 +32,7 @@ BEGIN_LUNA_PROPERTIES(CLuaPlant)
 	LUNA_ILUAOBJECT_PROPERTIES( CLuaPlant )
 	LUNA_AUTONAME_PROPERTY( CLuaPlant, "machineNumber", GetDiskMachineNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPlant, "reklameNumber", GetBaseReklameNumber, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaPlant, "campaniesNumber", GetCampaniesNumber, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaPlant::CLuaPlant(lua_State *L, bool ex)	: ILuaBaseProject(L, CLASS_LUAPLANT, ex )							//конструктор
@@ -47,7 +48,7 @@ int CLuaPlant::Load( lua_State* L )
 		_object->Load( _nrpApp[ SAVEDIR_PLANT ] );
 	}
 
-	return 1;
+	return 0;
 }
 
 int CLuaPlant::GetDiskMachine( lua_State* L )
@@ -55,15 +56,26 @@ int CLuaPlant::GetDiskMachine( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant:GetDiskMachine need integer parameter" );
 
+	assert( lua_isnumber( L, 2 ) );
+
 	int dmNumber = lua_tointeger( L, 2 );
-	CNrpDiskMachine* dm = NULL;
-	IF_OBJECT_NOT_NULL_THEN	dm = _object->GetDiskMachine( dmNumber );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		CNrpDiskMachine* dm = _object->GetDiskMachine( dmNumber );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, dm );
-	Luna< CLuaDiskMachine >::constructor( L );
+		lua_pushlightuserdata( L, dm );
+		Luna< CLuaDiskMachine >::constructor( L );
+		return 1;
+	}
 
+	lua_pushnil( L );
 	return 1;	
+}
+
+int CLuaPlant::GetCampaniesNumber( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, REKLAMENUMBER, 0 ) );
+	return 1;
 }
 
 int CLuaPlant::GetDiskMachineNumber( lua_State* L )
@@ -218,20 +230,34 @@ int CLuaPlant::AddReklameWork( lua_State* L )
 int CLuaPlant::GetReklame( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 3, 3, "Function CLuaPlant::GetReklame need string parameter");
 
-	NrpText typeName = lua_tostring( L, 2 );
-	NrpText game = lua_tostring( L, 3 );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( argc == 3 )
+		{
+			NrpText typeName = lua_tostring( L, 2 );
+			NrpText game = lua_tostring( L, 3 );
 
-	if( !typeName.size() || !game.size() ) 
-		return 1;
+			CNrpReklameWork* r = _object->GetReklame( typeName, game );
 
-	CNrpReklameWork* r = NULL;
-	IF_OBJECT_NOT_NULL_THEN r = _object->GetReklame( typeName, game );
+			lua_pushlightuserdata( L, r );
+			Luna< CLuaReklame >::constructor( L );
+			return 1;
+		}
+		else if( argc == 2 )
+		{
+			assert( lua_isnumber( L, 2 ) );
+			CNrpReklameWork* r = _object->GetReklame( lua_tointeger( L, 2 ) );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, r );
-	Luna< CLuaReklame >::constructor( L );
+			lua_pushlightuserdata( L, r );
+			Luna< CLuaReklame >::constructor( L );
+			return 1;
+		}
+
+		luaL_argcheck(L, argc == 0, 0, "Function CLuaPlant::GetReklame need #1(string, string) or #2(int) parameter");
+	}
+
+	lua_pushnil( L );
 	return 1;
 }
 

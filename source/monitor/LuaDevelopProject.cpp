@@ -38,13 +38,24 @@ int CLuaDevelopProject::GetModule( lua_State* L )
 
 	CNrpProjectModule* prj = NULL;
 	int index = lua_tointeger( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN prj = _object->GetModule( index );
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		prj = _object->GetModule( index );
+		lua_pushlightuserdata( L, prj );
+		Luna< CLuaDevelopModule >::constructor( L );
+		return 1;
+	}
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, prj );
-	Luna< CLuaDevelopModule >::constructor( L );
+	lua_pushnil( L );
 	return 1;	
 }
+
+int CLuaDevelopProject::GetCodeVolume( lua_State* L )
+{
+	lua_pushinteger( L, GetParam_<int>( L, PROP, CODEVOLUME, 0 ) );
+	return 1;
+}
+
 
 int CLuaDevelopProject::GetFamous( lua_State* L )
 {

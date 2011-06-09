@@ -23,6 +23,7 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaWindow)
 	LUNA_ILUAGUIELEMENT_PROPERTIES(CLuaWindow)
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "texture", GetTexture, SetTexture )
+	LUNA_AUTONAME_PROPERTY( CLuaWindow, "modal", PureFunction, SetModal )
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "closeButton", GetCloseButton, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "draggable", PureFunction, SetDraggable )
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "drawBody", PureFunction, SetDrawBody )
@@ -169,6 +170,18 @@ int CLuaWindow::SetOnKeyEvent( lua_State* L )
 {
 	assert( lua_isfunction( L, -1 ) );
 	IF_OBJECT_NOT_NULL_THEN _object->Bind( GUIELEMENT_KEY_INPUT, _GetRef( L, -1 ) );
+
+	return 0;
+}
+
+int CLuaWindow::SetModal( lua_State* L )
+{
+	assert( lua_isboolean( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		if( lua_toboolean( L, -1 ) != 0)
+			_object->setModal();
+	}
 
 	return 0;
 }

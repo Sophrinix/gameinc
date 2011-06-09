@@ -346,12 +346,7 @@ public:
 	{
 		IF_OBJECT_NOT_NULL_THEN 
 		{
-			NrpText typen("");
-
-			if( _object->getType() < gui::EGUIET_COUNT )
-				typen = _object->getTypeName();
-
-			lua_pushstring( L, typen );
+			lua_pushstring( L, _object->getTypeName() );
 			return 1;
 		}
 
@@ -498,7 +493,13 @@ public:
 		{
 			try
 			{
-				_object->remove();
+				//безопасное удаление
+				if( gui::CNrpGUIEnvironment* env = dynamic_cast< gui::CNrpGUIEnvironment* >( _nrpEngine.Instance().GetGuiEnvironment() ) )
+				{
+					env->addToDeletionQueue( _object );
+				}
+				else
+					_object->remove();
 				_object = NULL;
 			}
 			catch(...)

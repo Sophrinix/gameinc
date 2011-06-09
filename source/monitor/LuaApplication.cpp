@@ -13,6 +13,9 @@
 #include "NrpPlatform.h"
 #include "NrpPlant.h"
 #include "NrpBridge.h"
+#include "NrpSoundEngine.h"
+#include "NrpQuestEngine.h"
+#include "NrpLaborMarket.h"
 
 #include "LuaCompany.h"
 #include "LuaUser.h"
@@ -27,6 +30,8 @@
 #include "LuaTechnology.h"
 #include "LuaPlant.h"
 #include "lualabel.h"
+#include "LuaSoundEngine.h"
+#include "LuaQuestEngine.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -86,6 +91,9 @@ BEGIN_LUNA_PROPERTIES(CLuaApplication)
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "pda", GetPda, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "speed", GetPauseBetweenStep, SetPauseBetweenStep )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "plant", GetPlant, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "complexity", PureFunction, SetDevForce )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "soundEngine", GetSoundEngine, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "questEngine", GetQuestEngine, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaApplication::CLuaApplication(lua_State *L, bool ex)	: ILuaProject(L, CLASS_CLUAPPLICATION, ex )	//конструктор
@@ -240,7 +248,7 @@ int CLuaApplication::GetUserNumber( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		lua_pushinteger( L, GetParam_<int>( L, PROP, USERNUMBER, 0 ) );
+		lua_pushinteger( L, _nrpLaborMarkt[ USERNUMBER ] );
 		return 1;
 	}
 
@@ -257,7 +265,7 @@ int CLuaApplication::GetUser( lua_State* L )
 	CNrpUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN	
 	{
-		user = _object->GetUser( userNumber );
+		user = _nrpLaborMarkt.GetUser( userNumber );
 		//lua_pop( L, argc );
 		lua_pushlightuserdata( L, user );
 		Luna< CLuaUser >::constructor( L );
@@ -278,19 +286,13 @@ int CLuaApplication::GetUserByName( lua_State* L )
 	CNrpUser* user = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		int userNum = (*_object)[ USERNUMBER ];
-		for( int k = 0; k < userNum; k++ )
-		{
-			CNrpUser* ptrUser = _object->GetUser( k );
-			if( (*ptrUser)[ NAME ] == userName )
-			{
-				user = ptrUser;
+		CNrpUser* ptrUser = _nrpLaborMarkt.GetUser( userName );
 
-				//lua_pop( L, argc );
-				lua_pushlightuserdata( L, user );
-				Luna< CLuaUser >::constructor( L );
-				return 1;	
-			}
+		if( ptrUser )
+		{
+			lua_pushlightuserdata( L, ptrUser );
+			Luna< CLuaUser >::constructor( L );
+			return 1;	
 		}
 	}
 
@@ -304,7 +306,7 @@ int CLuaApplication::RemoveUser( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:RemoveUser need IUser* parameter" );
 
 	CNrpUser* user = _GetLuaObject< CNrpUser, CLuaUser >( L, 2 );
-	IF_OBJECT_NOT_NULL_THEN	_object->RemoveUser( user );
+	IF_OBJECT_NOT_NULL_THEN	_nrpLaborMarkt.RemoveUser( user );
 	return 0;	
 }
 
@@ -365,7 +367,7 @@ int CLuaApplication::CreateNewFreeUsers( lua_State* L )
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 1, 1, "Function CLuaApplication:UpdateUsers not need parameter" );
 
-	IF_OBJECT_NOT_NULL_THEN	_object->CreateNewFreeUsers();
+	IF_OBJECT_NOT_NULL_THEN	_nrpLaborMarkt.CreateNewFreeUsers();
 
 	return 0;		
 }
@@ -718,6 +720,17 @@ int CLuaApplication::SetPauseBetweenStep( lua_State* L )
 	return 0;	
 }
 
+int CLuaApplication::SetDevForce( lua_State* L )
+{
+	assert( lua_isnumber( L, -1 ) );
+	IF_OBJECT_NOT_NULL_THEN
+	{
+		(*_object)[ DEV_FORCE ] =  (float)lua_tonumber( L, -1 );
+	}
+
+	return 0;	
+}
+
 const char* CLuaApplication::ClassName()
 {
 	return ( CLASS_CLUAPPLICATION );
@@ -768,7 +781,7 @@ int CLuaApplication::LoadPlatform( lua_State* L )
 	{	
 		IniFile r( pathTo );
 
-		NrpText plName = r.Get( SECTION_PROPERTIES, "internalname::string", NrpText("") );
+		NrpText plName = r.Get( SECTION_PROPERTIES, "internalname:string", NrpText("") );
 		if( !_object->GetPlatform( plName ) )
 		{
 			CNrpPlatform* plt = new CNrpPlatform( pathTo );
@@ -803,14 +816,40 @@ int CLuaApplication::SinceCompany( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		CNrpCompany* cmp = new CNrpCompany( pathTo );
-		CNrpUser* user = _object->CreateRandomUser( CNrpAiUser::ClassName() );
-		_object->AddUser( user );
+		CNrpUser* user = _nrpLaborMarkt.CreateRandomUser( CNrpAiUser::ClassName() );
+		_nrpLaborMarkt.AddUser( user );
 		(*cmp)[ CEO ] = user;
 		_object->AddCompany( cmp );
 		CNrpBridge::Instance().Update();
 
 		lua_pushlightuserdata( L, cmp );
 		Luna< CLuaCompany >::constructor( L );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaApplication::GetSoundEngine( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		lua_pushlightuserdata( L, &CNrpSoundEngine::Instance() );
+		Luna< CLuaSoundEngine >::constructor( L );
+		return 1;
+	}
+
+	lua_pushnil( L );
+	return 1;
+}
+
+int CLuaApplication::GetQuestEngine( lua_State* L )
+{
+	IF_OBJECT_NOT_NULL_THEN 
+	{
+		lua_pushlightuserdata( L, &CNrpQuestEngine::Instance() );
+		Luna< CLuaQuestEngine >::constructor( L );
 		return 1;
 	}
 

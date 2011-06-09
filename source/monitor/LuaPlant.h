@@ -25,6 +25,7 @@ public:
 	int LoadDiskMachine( lua_State* L );
 	int GetDiskMachineNumber( lua_State* L );
 	int GetDiskMachine( lua_State* L );
+	int GetCampaniesNumber( lua_State* L );
 																//нажатии на эту кнопку
 	static const char* ClassName();
 };

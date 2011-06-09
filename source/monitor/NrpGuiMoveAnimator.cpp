@@ -2,6 +2,7 @@
 #include "NrpGuiMoveAnimator.h"
 #include "nrpGUIEnvironment.h"
 #include <IGUIEnvironment.h>
+#include <assert.h>
 
 namespace irr
 {
@@ -12,14 +13,16 @@ namespace gui
 CNrpGuiMoveAnimator::CNrpGuiMoveAnimator( IGUIEnvironment* environment, 
 										  IGUIElement* node, 
 										  const core::position2di& stopPos,
-										  s32 step,
+										  s32 time,
 										  bool visibleOnStop,
 										  bool removeOnStop, 
 										  bool removeParentOnStop )
 	: IGUIAnimator( environment, node ), 
-					stopPos_( stopPos ), step_( step ), visibleOnStop_( visibleOnStop ),
+					_stopPos( stopPos ), _time( time ), visibleOnStop_( visibleOnStop ),
 					remOnStop_( removeOnStop ), remParentOnStop_( removeParentOnStop )
 {
+	assert( node );
+	_startPos = node ? node->getRelativePosition().UpperLeftCorner : core::position2di( 0, 0 );
 }
 
 void CNrpGuiMoveAnimator::draw()
@@ -29,14 +32,16 @@ void CNrpGuiMoveAnimator::draw()
 
 	core::recti cuRect = Parent->getRelativePosition();
 
-	if( cuRect.UpperLeftCorner != stopPos_ )
+	if( cuRect.UpperLeftCorner != _stopPos )
 	{
-		int offsetX = stopPos_.X - cuRect.UpperLeftCorner.X;
+		s32 step = _stopPos.getDistanceFrom( _startPos ) * _time / Environment->getVideoDriver()->getFPS();
+		step = (std::max)( 1, step );
+		int offsetX = _stopPos.X - cuRect.UpperLeftCorner.X;
 		int signX = offsetX < 0 ? -1 : 1;
-		int offsetY = stopPos_.Y - cuRect.UpperLeftCorner.Y;
+		int offsetY = _stopPos.Y - cuRect.UpperLeftCorner.Y;
 		int signY = offsetY < 0 ? -1 : 1;
-		Parent->setRelativePosition( cuRect + core::position2di( signX * min( step_, abs( offsetX ) ),
-																 signY * min( step_, abs( offsetY ) ) ) );
+		Parent->setRelativePosition( cuRect + core::position2di( signX * (std::min)( step, abs( offsetX ) ),
+																 signY * (std::min)( step, abs( offsetY ) ) ) );
 	}
 	else
 	{

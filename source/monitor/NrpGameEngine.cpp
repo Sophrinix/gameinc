@@ -15,6 +15,7 @@ CNrpGameEngine::CNrpGameEngine( const NrpText& name ) : INrpProject( CLASS_GAMEE
 	_InitialyzeOptions();
 
 	_self[ NAME ] = name;
+	_self[ INTERNAL_NAME ] = name + NrpText(L"_engine");
 }
 
 void CNrpGameEngine::_InitialyzeOptions()

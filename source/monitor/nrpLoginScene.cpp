@@ -113,7 +113,7 @@ void CNrpLoginScene::OnEnter()
 	for( int k=0; k < 15; k++ )
 		pf->addItem( driver->getTexture( "media/devka.jpg" ), L"" );
 */
-	env->addImage( driver->getTexture("media/textures/splash.png"), core::position2di( 0, 0 ) );
+	env->addImage( driver->getTexture("splash.png"), core::position2di( 0, 0 ) );
 
 	//gui::CNrpGuiFlick* flick = new gui::CNrpGuiFlick( env, env->getRootGUIElement(), core::recti( 0, 0, 400, 400 ) );
 

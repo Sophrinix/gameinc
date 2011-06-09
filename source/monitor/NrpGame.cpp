@@ -14,6 +14,7 @@
 #include "NrpGameEngine.h"
 #include "IniFile.h"
 #include "NrpTime.h"
+#include "NrpLaborMarket.h"
 
 #include <errno.h>
 #include <OleAuto.h>
@@ -25,6 +26,7 @@ CLASS_NAME CLASS_NRPGAME( "CNrpGame" );
 void CNrpGame::_InitializeOptions()
 {
 	Add<PNrpCompany>( PARENTCOMPANY, NULL );
+	Add<NrpText>( CLASSOBJECT, CLASS_NRPGAME );
 	Add<NrpText>( COMPANYNAME, "" );
 	Add<NrpText>( NAME, "" );
 	Add<NrpText>( INTERNAL_NAME, "" );
@@ -54,7 +56,8 @@ void CNrpGame::_InitializeOptions()
 	Add<PNrpGameBox>( GBOX, NULL );
 	Add<float>( FAMOUS, 0 );
 	Add<bool>( GAMEISSALING, false );
-	Add<CNrpExtInfo*>( GAMEIMAGELIST, NULL );
+	Add<CNrpExtInfo*>( EXTINFO, NULL );
+	Add<NrpText>( EXTINFOLINK, "" );
 	Add<NrpText>( GAMERETAILER, "" );
 	Add<int>( PLATFORMNUMBER, 0 );
 	Add<int>( MODULE_NUMBER, 0 );
@@ -70,49 +73,46 @@ void CNrpGame::_InitializeOptions()
 	_history = NULL;
 }
 
-CNrpGame::CNrpGame( CNrpDevelopGame* devGame, CNrpCompany* ptrCompany ) : INrpConfig( CLASS_NRPGAME, devGame->Text( NAME ) )
+CNrpGame::CNrpGame( const CNrpDevelopGame& devGame, CNrpCompany* ptrCompany ) : INrpConfig( CLASS_NRPGAME, (NrpText)devGame[ NAME ] )
 {
 	_InitializeOptions(); 
 
-	assert( devGame );
-	CNrpDevelopGame& refGame = *devGame;
 	_self[ PARENTCOMPANY ] = ptrCompany;
 	_self[ COMPANYNAME ] = (*ptrCompany)[ NAME ];
-	_self[ NAME ] = refGame[ NAME ];
-	_self[ MONEYONDEVELOP ] = refGame[ MONEYONDEVELOP ];
-	CNrpGameEngine* ge = refGame[ GAME_ENGINE ].As<CNrpGameEngine*>();
+	_self[ NAME ] = devGame[ NAME ];
+	_self[ INTERNAL_NAME ] = devGame[ INTERNAL_NAME ];
+	_self[ MONEYONDEVELOP ] = devGame[ MONEYONDEVELOP ];
+	CNrpGameEngine* ge = devGame[ GAME_ENGINE ].As<CNrpGameEngine*>();
 	if( ge )
 		_self[ GAME_ENGINE ] = (*ge)[ NAME ];
 
-	_self[ FAMOUS ] = refGame[ FAMOUS ];
-	assert( refGame[ PLATFORMNUMBER ] != (int)0 );
-	_self[ PLATFORMNUMBER ] = refGame[ PLATFORMNUMBER ];
-	_self[ USERNUMBER ] = refGame[ USERNUMBER ];
-	_self[ PREV_GAME ] = refGame[ NAME ]; 
+	_self[ FAMOUS ] = devGame[ FAMOUS ];
+	assert( devGame[ PLATFORMNUMBER ] != (int)0 );
+	_self[ PLATFORMNUMBER ] = devGame[ PLATFORMNUMBER ];
+	_self[ USERNUMBER ] = devGame[ USERNUMBER ];
+	//_self[ PREV_GAME ] = devGame[ NAME ]; 
 	
-	_developers = devGame->GetDevelopers();
+	AddArrayTo( _developers, const_cast< CNrpDevelopGame& >( devGame ).GetDevelopers() );
 
-	_self[ GENRE_MODULE_NUMBER ] = refGame[ GENRE_MODULE_NUMBER ];
+	_self[ GENRE_MODULE_NUMBER ] = devGame[ GENRE_MODULE_NUMBER ];
 	for( int cnt=0; cnt < (int)_self[ GENRE_MODULE_NUMBER ]; cnt++ )
 	{
-		 CNrpTechnology* genre = devGame->GetGenre( cnt );
+		 CNrpTechnology* genre = devGame.GetGenre( cnt );
 		 if( genre )
 			_genres.push_back( (*genre)[ INTERNAL_NAME ] );
 	}
 
-	_self[ MODULE_NUMBER ] = refGame[ MODULE_NUMBER ];
+	_self[ MODULE_NUMBER ] = devGame[ MODULE_NUMBER ];
 	for( int cnt=0; cnt < (int)_self[ MODULE_NUMBER ]; cnt++ )
-		 _techs.push_back( refGame.GetModule( cnt )->Param( INTERNAL_NAME ) );
+		 _techs.push_back( (*devGame.GetModule( cnt ))[ INTERNAL_NAME ] );
 
-	_self[ INTERNAL_NAME ] = _nrpApp.GetFreeInternalName( *this );
-	assert( ((NrpText)_self[ INTERNAL_NAME ]).size() > 0 );
-
-	CNrpExtInfo* pgList = _nrpApp.GetExtInfo( _self[ INTERNAL_NAME ] );
-	assert( pgList != NULL );
-	if( pgList != NULL )
+	_self[ EXTINFOLINK ] = _nrpApp.GetFreeInternalName( *this );
+	CNrpExtInfo* extInfo = _SearchExtInfo();
+	assert( extInfo != NULL );
+	if( extInfo != NULL )
 	{
-		_self[ GAMEIMAGELIST ] = pgList;
-		_self[ VIEWIMAGE ] = pgList->GetBoxImages()[ 0 ];
+		_self[ EXTINFO ] = extInfo;
+		_self[ VIEWIMAGE ] = extInfo->GetBoxImages()[ 0 ];
 	}
 
 	_history = new CNrpHistory();
@@ -165,6 +165,19 @@ NrpText CNrpGame::Save( const NrpText& saveFolder )
 	sv.Save();
 
 	return localFolder;
+}
+
+CNrpExtInfo* CNrpGame::_SearchExtInfo()
+{
+	CNrpExtInfo* info = _nrpApp.GetExtInfo( _self[ INTERNAL_NAME ] );
+
+	if( !info )
+		info = _nrpApp.GetExtInfo( _self[ NAME ] );
+
+	if( !info )
+		info = _nrpApp.GetExtInfo( _self[ EXTINFOLINK ] );
+
+	return info;
 }
 
 void CNrpGame::Load( const NrpText& loadPath )
@@ -220,19 +233,23 @@ void CNrpGame::Load( const NrpText& loadPath )
 	else
 		_CreateHistory();
 
-	CNrpExtInfo* pgList = CNrpApplication::Instance().GetExtInfo( _self[ INTERNAL_NAME ] );
+	CNrpExtInfo* pgList = _SearchExtInfo();
 	if( !pgList )
 		Log( HW ) << "Can't find extInfo for " << (NrpText)_self[ INTERNAL_NAME ] << " when load from " << loadFile << term;
 
 	assert( pgList != NULL );
 	if( pgList != NULL )
 	{
-		_self[ GAMEIMAGELIST ] = pgList;
+		_self[ EXTINFO ] = pgList;
 
 		assert( pgList->GetBoxImages().size() > 0 );
-		if( pgList->GetBoxImages().size() )	
+		//если у игры не изображения обложки
+		if( ((NrpText)_self[ VIEWIMAGE ]).size() > 0 && pgList->GetBoxImages().size() > 0 )	
 			_self[ VIEWIMAGE ] = pgList->GetBoxImages()[ 0 ];
 	}
+
+	//конфиг файл был нормально загружен
+	_self[ LOADOK ] = true;
 }
 
 void CNrpGame::_CreateHistory()
@@ -263,7 +280,7 @@ float CNrpGame::GetAuthorFamous()
 	float summ = 0.1f;
 	for( u32 i=0; i < _developers.size(); i++ )
 	{
-		CNrpUser* user = _nrpApp.GetUser( _developers[ i ] );
+		CNrpUser* user = _nrpLaborMarkt.GetUser( _developers[ i ] );
 		if( user )
 		{
 			summ += (*user)[ FAMOUS ].As<float>();

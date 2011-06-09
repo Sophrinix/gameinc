@@ -65,29 +65,11 @@ public:
 
 };
 
-class IC_Command_ACTIONDATA : public CNrpConsoleCommand
-{
-public:
-	IC_Command_ACTIONDATA();
-	virtual ~IC_Command_ACTIONDATA();
-	bool invoke(const array< stringw >& args, CCommandDispatcher* pDispatcher, CMessageSink* pOutput);
-
-};
-
 class IC_Command_SCRIPT : public CNrpConsoleCommand
 {
 public:
 	IC_Command_SCRIPT();
 	virtual ~IC_Command_SCRIPT();
-	bool invoke(const array< stringw >& args, CCommandDispatcher* pDispatcher, CMessageSink* pOutput);
-
-};
-
-class IC_Command_SONAR : public CNrpConsoleCommand
-{
-public:
-	IC_Command_SONAR();
-	virtual ~IC_Command_SONAR();
 	bool invoke(const array< stringw >& args, CCommandDispatcher* pDispatcher, CMessageSink* pOutput);
 
 };

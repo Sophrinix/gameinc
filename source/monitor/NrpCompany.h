@@ -63,7 +63,7 @@ public:
 	void AddGame( CNrpGame* game );
 	CNrpGame* GetGame( const NrpText& gameName ) const;
 	CNrpGame* GetGame( size_t index ) const;
-	CNrpGame* CreateGame( CNrpDevelopGame* ptrProject );
+	CNrpGame* CreateGame( const CNrpDevelopGame& ptrProject );
 
 	void BeginNewHour( const NrpTime& time );
 	void BeginNewDay( const NrpTime& time );
