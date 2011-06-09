@@ -62,7 +62,7 @@ function Show( text, shrCmp, actionAfterEnd )
 		mainWindow:Remove()
 	end
 	
-	mainWindow = guienv:AddWindow( "media/textures/money_select.png", "33%", "33%", "284+", "142+", -1, guienv.root )
+	mainWindow = guienv:AddWindow( "money_select.png", "33%", "33%", "284+", "142+", -1, guienv.root )
 	mainWindow.closeButton.visible = false
 	
 	guienv:AddLabel( text, 80, 45, "195+", "55+", -1, mainWindow )

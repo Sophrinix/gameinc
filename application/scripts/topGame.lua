@@ -147,7 +147,7 @@ function Show( typeTop )
 	mainWindow = window.fsWindow( txsBlur.path, Hide )
 	
 	local img = guienv:AddImage( 0, 0, "0e", "0e", mainWindow, -1, "" );
-	img.texture = "media/textures/chartsMonth.png"
+	img.texture = "chartsMonth.png"
 	img.alphaChannel = true
 	guienv:SendToBack( img )
 		

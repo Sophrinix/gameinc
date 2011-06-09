@@ -15,7 +15,7 @@ IncludeScript( "tutorialReklame" )
 IncludeScript( "tutorialShop" )
 IncludeScript( "tutorialProjectManager" )
 
-module('tutorial')
+module("tutorial")
 
 local guienv = base.guienv
 local browser = base.browser
@@ -33,7 +33,10 @@ local function _ShowPage()
 end
 
 function ArrowToElm( elm )
-	elm = base.button.ArrowToElement( elm, "media/buttons/mouse_left.png", 5000 )
+	
+	local elm = base.button.ArrowToElement( elm, "TutorialArrow.png", 52, 56, 5000 )
+	guienv:AddSpringAnimator( elm, elm.left + 10, elm.top - 20, elm.right - 10, elm.bottom,
+								   elm.left - 10, elm.top + 20, elm.right + 10, elm.bottom, 1 )
 	base.browser:Move( elm.screenLeft, elm.screenBottom )
 end
 

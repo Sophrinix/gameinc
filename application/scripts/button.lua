@@ -68,7 +68,7 @@ function Stretch( x1, y1, x2, y2, texturePrefix, parentr, idr, textr, actionr )
 end
 
 function LayoutButton( texturePrefix, parentr, idr, textr, actionr )
-	Stretch( 0, 0, 1, 1, texturePrefix, parentr, idr, textr, actionr )
+	return Stretch( 0, 0, 1, 1, texturePrefix, parentr, idr, textr, actionr )
 end
 
 function LayoutPushButton( texturePrefix, parentr, idr, textr, actionr )
@@ -89,9 +89,9 @@ function StretchOne( x1, y1, x2, y2, pathToTexture, parentr, idr, textr, actionr
 	return btn
 end
 
-function ArrowToElement( elm, textureName, time )
+function ArrowToElement( elm, textureName, w, h, time )
 	local x, y = elm:GetCenter()
-	local image = guienv:AddImage( x, y, "100+", "50+", guienv.root, -1, "" );
+	local image = guienv:AddImage( x - w / 2, y - h, w.."+", h.."+", guienv.root, -1, "" );
 	image.texture = textureName
 	image.scale = true
 	image.alphaChannel = true

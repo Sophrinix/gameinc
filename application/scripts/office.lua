@@ -25,8 +25,14 @@ function ShowHelp()
 	tutorial.Update( "office/reception" )
 end
 
+local function _Hide()
+	base.package.loaded[ "director" ] = false
+	base.package.loaded[ "devRoom" ] = false
+	base.package.loaded[ "inventionManager" ] = false
+end
+
 function Show()
-	receptionWindow = window.fsWindow( "media/maps/reception.png", nil )
+	receptionWindow = window.fsWindow( "media/maps/reception.png", _Hide )
 	
 	base.rightPanel.AddYesNo( "Хотите больше узнать о вашем офисе?", ShowHelp, button.CloseParent )
 

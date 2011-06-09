@@ -36,12 +36,16 @@ end
 local function ShowOutsourcingWindow()
 end
 
+function ShowHelp()
+	tutorial.Update( "univer/main" )
+end
+
 function Show()
 	company = applic.playerCompany
 
 	univerWindow = base.window.fsWindow( "univer_dvor.png", _Hide )
 	
-	tutorial.Update( "univer/main" )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о рынке труда?", ShowHelp, button.CloseParent )
 
 	--stuff plate	
 	btnDesk = button.EqualeTexture( 122, 320, "stuffPlate", univerWindow, -1, "", ShowEmployersWindow )
@@ -87,7 +91,8 @@ function ShowAvaibleEmployers()
 		local mUser = applic:GetUser( i-1 )
 		
 		if modeUserView == mUser.typeName and mUser.freeUser then
-			usersWindow[ position ] = { window=guienv:AddWindow( "", 0, 0, 0, 0, -1, layoutWindows ), user=mUser }
+			usersWindow[ position ] = { window=guienv:AddWindow( "smplMessage.png", 0, 0, 0, 0, -1, layoutWindows ), user=mUser }
+			usersWindow[ position ].window.drawBody = false
 		    position = position + 1
 		end
 		
@@ -116,7 +121,7 @@ local function _ChangeUserType( name )
 end
 
 function ShowEmployersWindow()
-	windowUpEmployer = window.fsWindow( "media/textures/stuffUpWindowBg.png", _CloseUpWindow )
+	windowUpEmployer = window.fsWindow( "stuffUpWindowBg.png", _CloseUpWindow )
 
 	layoutWindows = guienv:AddLayout( "5%", "15%", "95%", "95%", 2, -1, windowUpEmployer )
 	

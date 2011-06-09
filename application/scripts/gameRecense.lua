@@ -98,7 +98,7 @@ end
 local function _AddLabel( text )
 	local ret = guienv:AddLabel( text, 0, 0, 0, 0, -1, layoutAppRec )
 	ret.wordWrap = true
-	ret.image = "media/textures/recenseJournal.png"
+	ret.image = "recenseJournal.png"
 	
 	return ret
 end
@@ -112,7 +112,7 @@ function Show()
 	
 	for i=1, 6 do
 		local ret = guienv:AddLabel( game.randomRecense, 0, 0, 0, 0, -1, layoutRecenses )
-		ret.image = "media/textures/recenseGame.png"
+		ret.image = "recenseGame.png"
 	end	
 	
 	layoutAppRec = guienv:AddLayout( "5%", "70%", "95%", "95%", 2, -1, mainWindow ) 	

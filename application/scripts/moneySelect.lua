@@ -37,7 +37,7 @@ function Show( text, start, interval, actionAfterEnd )
 	moneyEnd = start
 	moneyStart = start
 	onEnd = actionAfterEnd
-	mainWindow = guienv:AddWindow( "media/textures/money_select.png", "33%", "33%", "284+", "142+", -1, guienv.root )
+	mainWindow = guienv:AddWindow( "money_select.png", "33%", "33%", "284+", "142+", -1, guienv.root )
 	mainWindow.closeButton.visible = false
 	
 	label = guienv:AddLabel( text, 80, 45, "195+", "55+", -1, mainWindow )

@@ -1,11 +1,14 @@
 local base = _G
 
+IncludeScript( "mail" )
+
 module( "mainmenu" )
 
 local guienv = base.guienv
 local driver = base.driver
-local scrWidth = base.scrWidth
-local scrHeight = base.scrHeight
+local button = base.button
+
+local _height = 50
 
 local funcLayout = nil
 local adminLayout = nil
@@ -15,26 +18,10 @@ local balanceLabel = nil
 
 mainWindow = nil
 
-function ShowFuncsButtons( vis )
-	mainLayout.visible = not vis
-	adminLayout.visible = false
-	funcLayout.visible = vis
-end
-
 function ShowAdminButtons( vis )
 	mainLayout.visible = not vis
 	adminLayout.visible = vis
 	funcLayout.visible = false
-end
-
-local function AddButton( window, action, pathToTexture )
-		local btn = guienv:AddButton( 0, 0, 1, 1, window, -1, "" )
-		btn.action = action
-		btn:SetImage( 0, 0, 70, 70, pathToTexture.."_normal.png" )
-		btn:SetHoveredImage( 0, 0, 70, 70, pathToTexture.."_select.png" )
-		btn:SetPressedImage( 0, 0, 70, 70, pathToTexture.."_pressed.png" )
-
-		return btn
 end
 
 function ToggleConsole()
@@ -42,29 +29,20 @@ function ToggleConsole()
 	con:ToggleVisible()
 end
 
-function PureFunction()
-
-end
-
-local function AddAdvancedFunctionButton()
-	funcLayout = guienv:AddLayout( "15%", "5%", "80%", "95%", 10, -1, mainWindow ) 	
-
-	AddButton( funcLayout, ToggleConsole, "media/top_menu/cmd" )
-	AddButton( funcLayout, base.userManager.Show, "media/top_menu/ue" )
-	AddButton( funcLayout, PureFunction, "media/top_menu/graf" )
-	AddButton( funcLayout, PureFunction, "media/top_menu/move" )
-	AddButton( funcLayout, PureFunction, "media/top_menu/move" )
-	AddButton( funcLayout, function () ShowFuncsButtons( false ) end , "media/top_menu/back" )	
+local function _AddButton( prefix, lt, action )
+	if lt == nil then
+		base.LogScript( "layout == nil for button "..prefix )
+		return
+	end
+	
+	local ret = button.LayoutButton( prefix, lt, -1, "", action )
+	ret:SetMaxSize( _height, _height )
 end
 
 local function AddAdminingFunctionButton()
-	adminLayout = guienv:AddLayout( "15%", "5%", "80%", "95%", 10, -1, mainWindow ) 	
+	adminLayout = guienv:AddLayout( "300", 0, "300e", "0e", 10, -1, mainWindow ) 	
 
-	AddButton( adminLayout, PureFunction, "media/top_menu/report" )
-	AddButton( adminLayout, PureFunction, "media/top_menu/targets" )
-	AddButton( adminLayout, PureFunction, "media/top_menu/hard" )
-	AddButton( adminLayout, PureFunction, "media/top_menu/replay" )
-	AddButton( adminLayout, function () ShowAdminButtons( false ) end , "media/top_menu/back" )
+	_AddButton( "tm_back", adminLayout, function () ShowAdminButtons( false ) end )
 end
 
 function UpdateTime()
@@ -77,42 +55,40 @@ local function _ShowHelp()
 
 end
 
-function Show()
-	local txs = driver:GetTexture( "media/top_menu/top_nerpa.png")
-	local txsWidth = 0
-	local txsHeight = 0
-	txsWidth, txsHeight = txs:GetSize()
-						  
-	mainWindow = guienv:AddWindow(	"media/top_menu/top_nerpa.png",
-			 						scrWidth/2 - txsWidth/2, 0, scrWidth/2 + txsWidth/2, 50,
-									-1, guienv.root )
-																						
+function Show()					  
+	mainWindow = guienv:AddWindow(	"", 0, 0, "0e", _height, -1, guienv.root )																					
 	mainWindow.draggable = false
 	mainWindow.drawBody = false
 	mainWindow.closeButton.visible = false
 	
-	guienv:AddHoveredAnimator( mainWindow, 100, 255, 4, true, false, false )
+	mainLayout = guienv:AddLayout( 300, 0, "300e", "0e", 10, -1, mainWindow ) 
+	
+	_AddButton( "vopros", mainLayout, _ShowHelp )
+	_AddButton( "tm_settings", mainLayout, function () ShowAdminButtons( true ) end )
+	_AddButton( "email", mainLayout, base.mail.Show )
+	_AddButton( "tm_off", mainLayout, base.sworkApplicationClose )
 
-	mainLayout = guienv:AddLayout( "15%", "5%", "50%", "60%", 10, -1, mainWindow ) 
+	timeWindow = guienv:AddWindow( "timeBar.png", 0, 0, "296+", "0e", -1, mainWindow )			
+	timeWindow.draggable = false
+	timeWindow.drawBody = false
+	timeWindow.closeButton.visible = false
+	timeLabel = guienv:AddLabel( "Время", 70, 0, "200+", "0e", -1, timeWindow )
+	timeLabel:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+	timeLabel.color = base.NrpARGB( 0xFF, 0xFF, 0xFF, 0xFF )
 	
-	AddButton( mainLayout, _ShowHelp, "media/top_menu/trass" )
-	AddButton( mainLayout, PureFunction, "media/top_menu/play" )
-	AddButton( mainLayout, function () ShowAdminButtons( true ) end, "media/top_menu/settings" )
-	AddButton( mainLayout, function () ShowFuncsButtons( true ) end, "media/top_menu/one" )	
-	AddButton( mainLayout, base.sworkApplicationClose, "media/top_menu/off" )
-	
-	timeLabel = guienv:AddLabel( "Время", "180e", 0, "130+", "33%", -1, mainWindow )
-	timeLabel.color = base.NrpARGB( 0xFF, 0xC0, 0xC0, 0xC0 )
-	balanceLabel = guienv:AddLabel( "UserName", "180e", "33%", "130+", "33%+", -1, mainWindow )
+	moneyWindow = guienv:AddWindow(	"moneyBar.png", "300e", 0, "296+", "0e", -1, mainWindow )	
+	moneyWindow.draggable = false
+	moneyWindow.drawBody = false
+	moneyWindow.closeButton.visible = false		
+	balanceLabel = guienv:AddLabel( "UserName", 20, 0, "70e", "0e", -1, moneyWindow )
+	balanceLabel:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 	balanceLabel.color = base.NrpARGB( 0xFF, 0xFF, 0xFF, 0xFF )
 	
 	AddAdminingFunctionButton()
-	AddAdvancedFunctionButton()
 										   
 	--покажем кнопки главного меню	
 	mainLayout.visible = true
 	adminLayout.visible = false
-	funcLayout.visible = false
 	
 	guienv:AddTopElement( mainWindow )
 end

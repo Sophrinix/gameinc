@@ -23,6 +23,7 @@ local function _Hide()
 	base.package.loaded[ "houseSelect" ] = false
 	base.package.loaded[ "projectChief" ] = false
 	base.package.loaded[ "companyChief" ] = false
+	base.package.loaded[ "mail" ] = false
 end
 
 local function _ShowProjectManager()
@@ -37,7 +38,7 @@ end
 function Show()
 	company = applic.playerCompany
 	
-	mainWindow = window.fsWindow( "media/textures/monitor.png", _Hide )
+	mainWindow = window.fsWindow( "monitor.png", _Hide )
 	local flick = guienv:AddFlick( 150, 90, "150e", "90e", 4, -1, mainWindow )
 	
 	button.Stretch( 0, 0, width, width, "m_inDevelop", flick, -1, base.STR_DEVPROJECTS, _ShowProjectManager )

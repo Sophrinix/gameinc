@@ -17,7 +17,7 @@ local function _Ligthing( sender, _ )
 	for i=1, #(base.gameprojectManager.links) do
 		--проверим их на соответствие с заданным типом
 		if base.gameprojectManager.links[ i ].type == dlink.type and not base.gameprojectManager.links[ i ].draggable then
-			lighting = base.guienv:AddLigthing( base.gameprojectManager.links[ i ], nil, "media/textures/sphere.png", 10 )		
+			lighting = base.guienv:AddLigthing( base.gameprojectManager.links[ i ], nil, "sphere.png", 10 )		
 	    end	
 	end
 end

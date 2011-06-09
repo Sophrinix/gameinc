@@ -15,6 +15,8 @@ IncludeScript("rightPanel")
 NrpInitializeWorkScene()
 sceneManager:DrawProgress( 75, "Инициализирую сцену" )
 
+guienv:SetCursor( "media/textures/MouseCursor.png" )
+
 --создание главного меню
 mainmenu.Show()
 --правая панель с новостями

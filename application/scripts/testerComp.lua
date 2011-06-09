@@ -50,7 +50,7 @@ local function _SelectGame()
 end
 
 function Show( ptr )
-	local txs = base.driver:CreateBlur( "media/textures/testComp.png", 2, 4 )	
+	local txs = base.driver:CreateBlur( "testComp.png", 2, 4 )	
 	mainWindow = window.fsWindow( txs.path, _Hide )
 	
 	lbDesc = guienv:AddLabel( "", 278, 417, 770, 655, -1, mainWindow )

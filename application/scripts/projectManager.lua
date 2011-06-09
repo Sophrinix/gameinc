@@ -23,7 +23,7 @@ local OUTPUT_ALL = base.ODS|base.CON
 local currentEmployer = nil
 local currentProject = nil
 local currentComponent = nil
-local localBtnToggleTask = nil
+local _BtnToggleTask = nil
 local selectedListBox = nil
 local windowProjectManager = nil
 local _windowParams = nil
@@ -174,17 +174,17 @@ end
 local function _WorkedSelect()
 	currentComponent = base.CLuaDevelopModule( lbxWorks.selectedObject )
 
-	localBtnToggleTask.tooltip = "Убрать задание"
-	button.SetEqualeImage( localBtnToggleTask, "suda" )	
+	_BtnToggleTask.tooltip = "Убрать задание"
+	button.SetEqualeImage( _BtnToggleTask, "suda" )	
 	selectedListBox = lbxWorks
 end
 
 local function _UnworkedSelect()
 	currentComponent = base.CLuaDevelopModule( lbxComponents.selectedObject )
 
-	localBtnToggleTask.tooltip = "Добавить задание"
-	localBtnToggleTask.visible = true
-	button.SetEqualeImage( localBtnToggleTask, "tuda" )	
+	_BtnToggleTask.tooltip = "Добавить задание"
+	_BtnToggleTask.visible = true
+	button.SetEqualeImage( _BtnToggleTask, "tuda" )	
 	selectedListBox = lbxComponents
 end
 
@@ -196,17 +196,19 @@ local function _CreateProjectParamWindow( left, top, right, bottom )
 	--ret.drawBody = false
 	
 	lbReady = guienv:AddLabel( "", "30", "45", "30e", "30+", -1, ret )
-	lbVideo = guienv:AddLabel( "", lbReady.bottom + 10, "45", "30e", "30+", -1, ret )
-	lbSound = guienv:AddLabel( "", lbVideo.bottom + 10, "45", "30e", "30+", -1, ret )
-	lbGenre = guienv:AddLabel( "", lbSound.bottom + 10, "45", "30e", "30+", -1, ret )
-	lbCode = guienv:AddLabel( "", lbGenre.bottom + 10, "45", "30e", "30+", -1, ret )
-	lbBalance = guienv:AddLabel( "", lbCode.bottom + 10, "45", "30e", "30+", -1, ret )
-	lbEngine = guienv:AddLabel( "", lbBalance.bottom + 10, "45", "30e", "30+", -1, ret )
+	lbVideo = guienv:AddLabel( "", "30", lbReady.bottom + 10, "30e", "30+", -1, ret )
+	lbSound = guienv:AddLabel( "", "30", lbVideo.bottom + 10, "30e", "30+", -1, ret )
+	lbGenre = guienv:AddLabel( "", "30", lbSound.bottom + 10, "30e", "30+", -1, ret )
+	lbCode = guienv:AddLabel( "", "30", lbGenre.bottom + 10, "30e", "30+", -1, ret )
+	lbBalance = guienv:AddLabel( "", "30", lbCode.bottom + 10, "30e", "30+", -1, ret )
+	lbEngine = guienv:AddLabel( "", "30", lbBalance.bottom + 10, "30e", "30+", -1, ret )
 	
 	return ret
 end	
 
 local function _ToggleParamsVisible()
+	base.LogScript( "open params window" )
+	
 	_windowParams.visible = not _windowParams.visible
 	
 	lbReady.text = "Готовность: " .. currentProject.percentDone
@@ -225,7 +227,7 @@ end
 function Show()	
 	company = applic.playerCompany
 	if windowProjectManager == nil then
-		windowProjectManager = window.fsWindow( "media/textures/monitor.png", Hide )
+		windowProjectManager = window.fsWindow( "monitor.png", Hide )
 	else
 		windowProjectManager.visible = true
 		return
@@ -244,16 +246,16 @@ function Show()
 	lbxWorks.onChangeSelect = _WorkedSelect
 	lbxWorks.onLmbDblClick = _ToggleComponentLider
 	
-	_windowParams = _CreateProjectParamWindow( "55%", "75%", "150e", "60e" )
+	_windowParams = _CreateProjectParamWindow( lbxWorks.left - 30, lbxWorks.top - 45, lbxWorks.right + 30, lbxWorks.bottom + 30 )
 
-	localBtnToggleTask = button.Stretch( "50%", "50%", "50+", "50+", "tuda",
+	_BtnToggleTask = button.Stretch( "50%", "50%", "50+", "50+", "tuda",
 								     	 windowProjectManager, -1, "",
 								    	 _ToggleComponentLider )
-	localBtnToggleTask.visible = false
+	_BtnToggleTask.visible = false
 	
-	_btnShowParams = base.button.Stretch( "50%", localBtnToggleTask.bottom + 10, "50+", "50+", 
-										  "pageprev", windowProjectManager, 
-										  -1, "", _ToggleParamsVisible )
+	_btnShowParams = button.Stretch( lbxWorks.right - 12, lbxWorks.top -12, "25+", "5+", 
+									 "vopros", windowProjectManager, 
+									 -1, "", _ToggleParamsVisible )
 	_btnShowParams.visible = false
 
 	--users combobox
@@ -268,11 +270,12 @@ function Show()
 	--поставим для просмотра первого кодера
 	UpdateUsersListBox( base.STR_CODERS )	
 	
+	windowProjectManager:Bind( base.GUIELEMENT_CMBXITEM_SELECTED, _ComboBoxItemSelected )
+	
+	--откроем первый проект в списке
 	if comboxProjects.itemCount > 0 then
 		comboxProjects.itemIndex = 0
 	end 
-	
-	windowProjectManager:Bind( base.GUIELEMENT_CMBXITEM_SELECTED, _ComboBoxItemSelected )
 	
 	base.rightPanel.AddYesNo( "Хотите больше узнать об управлении проектами?", ShowHelp, button.CloseParent )
 end

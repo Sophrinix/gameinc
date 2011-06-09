@@ -58,16 +58,22 @@ function sworkInventionFinished( ptr )
 	pda.Show( "Закончена работа над изобретением "..inv.name )
 end
 
-function sworkPlayerCompanyReadyProject( ptr )
-	local game = CLuaGame( ptr )
+function sworkPlayerCompanyReadyProject( company, ptrGm )
+	local game = CLuaGame( ptrGm )
 	pda.Show( "Закончена работа над проектом "..game.name )
 end
 
 function sworkApplicationClose( ptr )
 	NrpApplicationSave()
 	applic:SaveBoxAddonsPrice()
+	
+	sceneManager:DrawProgress( 90, "Сохраняю данные PDA" )
 	applic.pda:Save()
+	
+	sceneManager:DrawProgress( 100, "Сохраняю данные производства" )
 	applic.plant:Save()
+	
+	sceneManager:DrawProgress( 100, "Освобождаю ресурсы" )	
 	NrpApplicationClose()
 end
 
@@ -101,11 +107,19 @@ local function localChangeSpeed( keyInput )
 	end
 	
 	local dd = ( 1000 - applic.speed ) / 100
-	labelSpeed = guienv:AddLabel( "Скорость игры " .. dd, "25%", "45%", "50%+", "20%+", -1, guienv.root )
+	
+	local text = ""
+	if dd ~= 0 then
+		text = "Скорость игры " .. dd
+	else
+		text = "Пауза"
+	end
+	
+	labelSpeed = guienv:AddLabel( text, "25%", "45%", "50%+", "20%+", -1, guienv.root )
 	labelSpeed:SetTextAlignment( EGUIA_CENTER, EGUIA_CENTER )
 	labelSpeed.font = "font_28"
 							
-	LogScript( "labelSpeed:Update to "..dd )
+	--LogScript( "labelSpeed:Update to "..dd )
 	guienv:AddBlenderAnimator( labelSpeed, 255, 10, 2000, false, true, false )
 end
 

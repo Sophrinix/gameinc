@@ -22,10 +22,11 @@ btnTopAllTime = nil
 btnJournals = nil
 
 function Hide()
-    base.LogScript( "shop.Hide" )
 	base.package.loaded[ "topGame" ] = false
 	base.package.loaded[ "journals" ] = false
 	base.package.loaded[ "saleManager" ] = false
+	
+	base.soundenv:PlayBackground( "" )
 end
 
 function ShowHelp()
@@ -45,4 +46,6 @@ function Show()
 	btnJournals = button.EqualeTexture( 861, 268, "showMagazines", mainWindow, -1, "", base.journals.Show )
 
 	base.rightPanel.AddYesNo( "Хотите больше узнать о магазине?", ShowHelp, button.CloseParent )
+	
+	base.soundenv:PlayBackground( "gameshop.wav" )
 end

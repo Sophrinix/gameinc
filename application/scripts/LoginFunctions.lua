@@ -27,6 +27,11 @@ local function CloseNewGame( ptr )
 	wndNewGame:Remove()
 end
 
+function About()
+	base.browser:Show()
+	base.browser:Navigate( "media/html/intro.htm" )
+end
+
 function ShowOptions()
 
 end
@@ -78,7 +83,7 @@ function CreateNewProfileAndStartGame( ptr )
 	--загружаем базовую рекламу
 	localPlantLoadBaseReklame( false )
 	sceneManager:DrawProgress( 55, "Создаем базовую рекламу" )
-
+	
 	--переходим на следующую сцену
 	base.NrpSetNextScene( "sceneWork" )
 end
@@ -118,16 +123,16 @@ function Continue( ptr )
 	updates.LoadLinks()
 	sceneManager:DrawProgress( 8, "Создаем ресурсы" )
 	
-	--загружаем профиль
-	applic:LoadProfile( applic.profile, applic:GetCurrentProfileCompany() )
-	sceneManager:DrawProgress( 10, "Создам профиль игрока" )
-	
 	--загружаем текущие аддоны для коробки для текущего времени
 	updates.CheckGameBoxAddons()
 	sceneManager:DrawProgress( 20, "Ищем аддоны к коробкам" )
 
 	applic:LoadBoxAddonsPrice()
 	sceneManager:DrawProgress( 30, "Устанавливаем цены на аддоны" )
+	
+	--загружаем профиль
+	applic:LoadProfile( applic.profile, applic:GetCurrentProfileCompany() )
+	sceneManager:DrawProgress( 10, "Создам профиль игрока" )
 	
 	applic.pda:Load()
 	sceneManager:DrawProgress( 40, "Загружаем историю" )

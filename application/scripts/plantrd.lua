@@ -24,7 +24,7 @@ local function _IsHaveGameToProduce()
 	for i=1, company.gameNumber do
 		local game = company:GetGame( i-1 )
 		
-		if game.haveBox and game.inSale then 
+		if game and game.haveBox then 
 			return true
 		end
 	end
@@ -49,7 +49,7 @@ function Show()
 	company = base.applic.playerCompany
 	plantWindow = window.fsWindow( "plant.png", _Hide )
 	
-	base.rightPanel.AddYesNo( "Хотите больше узнать о лаборатории?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о производстве?", ShowHelp, button.CloseParent )
 
 	--box manager
 	btnBoxCreate = button.EqualeTexture( 94, 29, "boxManager", plantWindow, -1, "", base.gameboxManager.Show )

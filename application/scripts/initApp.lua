@@ -22,3 +22,7 @@ NrpSetNextScene( "sceneLogin" )
 
 applic:AddResourceDirectory( "media/maps" )
 applic:AddResourceDirectory( "media/textures" )
+
+soundenv:AddResourceDirectory( "media/sounds" )
+
+questenv:AddResourceDirectory( "story" )

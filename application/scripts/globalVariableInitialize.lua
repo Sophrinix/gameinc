@@ -5,6 +5,8 @@ driver = NrpGetVideoDriver()
 sceneManager = NrpGetSceneManager()
 browser = NrpGetBrowser()
 autoscript = CLuaAutoScript()
+soundenv = applic.soundEngine
+questenv = applic.questEngine
 
 scrWidth, scrHeight = driver:GetScreenSize()
 FADE_TIME = 200

@@ -13,6 +13,7 @@ local window = base.window
 local button = base.button
 local tutorial = base.tutorial
 local guienv = base.guienv
+local soundenv = base.soundenv
 
 local mainWindow = nil
 local campaniesWindow = nil
@@ -143,7 +144,6 @@ local function _SelectNewWork()
 end
 
 local function _ApplyNewWork( mp )
-	local parent = base.CLuaElement( mp ).parent
 	local parentCompany = applic:GetCompanyByName( currentWork.company )
 	
 	plant:AddReklameWork( currentWork )
@@ -153,7 +153,9 @@ local function _ApplyNewWork( mp )
 	--снимем деньги со счета компании для проведения рекламной акции
 	parentCompany:AddBalance( "Проведение рекламной кампании", -1 * currentWork.dayCost * currentWork.numberDay )
 	
-	base.CLuaElement( parent ):Remove()
+	soundenv:Play( "gold.wav" )
+	
+	button.CloseParent( mp )
 end
 
 local function _QuerryUserToApplyWork()
@@ -173,6 +175,10 @@ local function _HideCampaniesWindow()
 
 end
 
+function ShowHelp()
+	tutorial.Update( "reklame/campany" )
+end
+
 local function _ShowCampaniesManager()
 	company = applic.playerCompany
 	plant = applic.plant
@@ -180,7 +186,7 @@ local function _ShowCampaniesManager()
 	local txsBlur = base.driver:CreateBlur( "marketing.png", 2, 4 )
 	campaniesWindow = window.fsWindow( txsBlur.path, _HideCampaniesWindow )	
 	
-	tutorial.Update( "reklame/campany" )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о рекламе?", ShowHelp, button.CloseParent )
 		
 	if #reklames == 0 then _CreateReklames() end
 	
@@ -245,6 +251,6 @@ function Show()
 	
 	--get loan
 	btnReklame = button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow, -1, "", _ShowCampaniesManager )
-	btnCampanies = button.EqualeTexture( 142, 457, "reklameCampanies", mainWindow, -1, "", _ShowReklameCampanies )
+	btnCampanies = button.EqualeTexture( 145, 464, "activeCampanies", mainWindow, -1, "", _ShowReklameCampanies )
 end
 

@@ -157,7 +157,7 @@ function Show()
 	mainWindow = window.fsWindow( txsBlur.path, Hide )
 	
 	local img = guienv:AddImage( 0, 0, "0e", "0e", mainWindow, -1, "" );
-	img.texture = "media/textures/gameInSale.png"
+	img.texture = "gameInSale.png"
 	img.alphaChannel = true
 	guienv:SendToBack( img )
 		

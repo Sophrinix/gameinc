@@ -24,9 +24,9 @@ local function _ToggleVisible()
 	base.LogScript( "pda _ToggleVisible offsethhEnd=".. offsethhEnd.. "  hhEnd="..hhEnd ) 
 	
 	if visible then	
-		guienv:AddMoveAnimator( mainWindow, 0, offsethhEnd, 1, true, true, false )
+		guienv:AddMoveAnimator( mainWindow, 0, offsethhEnd, 2, true, true, false )
 	else
-		guienv:AddMoveAnimator( mainWindow, 0, hhEnd, 1, true, true, false )
+		guienv:AddMoveAnimator( mainWindow, 0, hhEnd, 2, true, true, false )
 	end
 	
 	visible = not visible
@@ -49,8 +49,7 @@ end
 function Show( textr )
 	if mainWindow == nil then
 		base.LogScript( "pda show ofsethh=".. offsethh.. "  hh="..hh ) 
-		mainWindow = guienv:AddWindow( "media/textures/pda.png", 0, hh.."e", hw, "0e", -1, 
-							 		   guienv.root )
+		mainWindow = guienv:AddWindow( "pda.png", 0, hh.."e", hw, "0e", -1, guienv.root )
 							 		   
 		mainWindow.closeButton.visible = false
 		mainWindow.drawBody = false
@@ -81,12 +80,14 @@ function Show( textr )
 	end
 	
 	guienv:RemoveAnimators( mainWindow )
-	guienv:AddMoveAnimator( mainWindow, 0, hhEnd, 1, true, true, false )
+	guienv:AddMoveAnimator( mainWindow, 0, hhEnd, 2, true, true, false )
 	visible = true
+	
+	base.soundenv:Play( "Reminder.wav" )
 end
 
 function Hide()
 	guienv:RemoveAnimators( mainWindow )
-	guienv:AddMoveAnimator( mainWindow, 0, offsethhEnd, 1, true, true, false )
+	guienv:AddMoveAnimator( mainWindow, 0, offsethhEnd, 2, true, true, false )
 	visible = false
 end
