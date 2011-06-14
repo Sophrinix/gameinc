@@ -56,6 +56,7 @@ public:
 
 	int SetRenderTarget( lua_State* L );
 	int CreateBlur( lua_State* L );
+    int CreateGrayscale( lua_State* L );
 };
 
 }//namespace nrp

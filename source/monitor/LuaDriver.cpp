@@ -20,6 +20,7 @@ BEGIN_LUNA_METHODS(CLuaDriver)
 	LUNA_AUTONAME_FUNCTION( CLuaDriver, GetScreenSize )
 	LUNA_AUTONAME_FUNCTION( CLuaDriver, GetTexture )
 	LUNA_AUTONAME_FUNCTION( CLuaDriver, CreateBlur )
+    LUNA_AUTONAME_FUNCTION( CLuaDriver, CreateGrayscale )
 	LUNA_AUTONAME_FUNCTION( CLuaDriver, AddTexture )
 	LUNA_AUTONAME_FUNCTION( CLuaDriver, AddRenderTargetTexture )
 	LUNA_AUTONAME_FUNCTION( CLuaDriver, RemoveTexture )
@@ -294,4 +295,59 @@ const char* CLuaDriver::ClassName()
 {
 	return ( CLASS_LUADRIVER );
 }
+
+int CLuaDriver::CreateGrayscale( lua_State* L )
+{
+    int argc = lua_gettop(L);
+    luaL_argcheck(L, argc == 2, 2, "Function CLuaDriver:CreateGrayscale need name parameter");
+
+    NrpText fileName = lua_tostring( L, 2 );
+
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        NrpText grayTxsName = NrpText( "grayscale_" ) + fileName;
+        video::ITexture* grayTxs = _object->getTexture( grayTxsName );
+        video::ITexture* txs = _object->getTexture( fileName );
+
+        if( txs != NULL && grayTxs == NULL )
+        {
+            int* pixelsTxs = (int*)txs->lock();
+
+            grayTxs = _object->addTexture( txs->getOriginalSize(), grayTxsName );
+            int* pixelsGray = (int*)grayTxs->lock();
+
+            //set the number of bytes per pixel
+            int pixelSize = 3;
+
+            core::dimension2du size = txs->getOriginalSize();
+            for (u32 y = 0; y < size.Height; y++)
+            {
+                //get the data from the original image
+                int offset = y * size.Width;
+
+                for (u32 x = 0; x < size.Width; x++)
+                {
+                    //create the grayscale version                    
+                    int pixel = pixelsTxs[ x + offset ];
+                    u8 grayScale = (u8)((( pixel >> 16) & 0xff ) * 0.3) + (u8)(((pixel >> 8) & 0xff ) * 0.59) + (u8)((pixel & 0xff) * 0.11);
+
+                    //set the new image's pixel to the grayscale version
+                    pixelsGray[ x + offset ] = video::SColor( (pixel>>24) & 0xff, grayScale, grayScale, grayScale ).color; //B
+                }
+            }
+
+            txs->unlock();
+            grayTxs->unlock();
+        }
+
+        //lua_pop( L, argc );
+        lua_pushlightuserdata( L, grayTxs );
+        Luna< CLuaTexture >::constructor( L );
+        return 1;
+    }
+
+    lua_pushnil( L );
+    return 1;
+}
+
 }
