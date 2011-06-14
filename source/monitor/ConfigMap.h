@@ -42,8 +42,11 @@ public:
 	//*! размещение нового значения в карте конфига
     void setConfig( const core::stringc& name, const core::stringc& value );	
 
+    const core::array< core::stringc >& GetControls() { return _controls; }
+
 private:
-    core::map<core::stringc,core::stringc> Map;
+    core::array< core::stringc > _controls;
+    core::map<core::stringc,core::stringc> _configs;
 };
 
 #endif

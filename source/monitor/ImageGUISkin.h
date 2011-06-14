@@ -14,13 +14,15 @@
 
 #include <irrlicht.h>
 #include <IGUISkin.h>
-#include "nrpButton.h"
+#include <map>
 
 namespace irr
 {
 
 namespace gui
 {
+
+class CNrpButton;
 	
 struct SImageGUIElementStyle						//описание как надо рисовать элемент
 {													//для всех элементов отрисовка происходит 
@@ -32,45 +34,46 @@ struct SImageGUIElementStyle						//описание как надо рисовать элемент
 		SBorder() : Top(0), Left(0), Bottom(0), Right(0) {}
 	};
 	
-	SBorder SrcBorder;
-	SBorder DstBorder;
+	SBorder srcBorder;
+	SBorder dstBorder;
 	SBorder align;
 	SBorder margin;
 
-	video::ITexture* Texture;						//текстура для отрисовки
+	video::ITexture* texture;						//текстура для отрисовки
 	video::SColor Color;							//
 	core::dimension2du minSize;
 
-	SImageGUIElementStyle() : Texture(0), Color(255,255,255,255) {}
+	SImageGUIElementStyle() : texture(0), Color(255,255,255,255) {}
 };
 
 struct SImageGUISkinConfig							//карта элементов которые может отрисовывать скин
 {
-	static const core::stringw SunkenPane;				//обычная панель	
-	static const core::stringw Window;					//окно
-	static const core::stringw WindowCaption;			//шапка окна
-	static const core::stringw Button;					//кнопка в обычном состоянии
-	static const core::stringw WindowCloseButton;		//Кнопка закрытия окна
-	static const core::stringw WindowCloseHoveredButton;
-	static const core::stringw WindowClosePressedButton;
-	static const core::stringw ButtonPressed;			//кнопка в нажатом состоянии
-	static const core::stringw ButtonHovered;			//кнопка, когда над ней курсор находится, а также в фокусе
-	static const core::stringw ButtonDisabled;			//нажатая кнопка	
-	static const core::stringw ProgressBar;				//прогрессбар
-	static const core::stringw ProgressBarFilled;		//заполнение прогрессбара	
-	static const core::stringw CheckBox;					//флажок пустой
-	static const core::stringw CheckBoxChecked;			//флажок установленный	
-	static const core::stringw CheckBoxDisabled;			//отключенный
-	static const core::stringw EditBox;					//поле ввода
-	static const core::stringw EditBoxHovered;			//поле ввода когда над ним курсор находится
-	static const core::stringw EditBoxDisabled;			//отключенный элемент
-	static const core::stringw ComboBox;					//выпадаюзий список
-	static const core::stringw ComboBoxHovered;			//он же, на ним курсор
-	static const core::stringw ComboBoxDisabled;			//отключенный
-	static const core::stringw ContextMenu;				//контекстное меню
-	static const core::stringw ListBox;					//список
+    static const core::stringc Normal;
+    static const core::stringc Hovered;
+    static const core::stringc Pressed;
+    static const core::stringc Disabled;
+    static const core::stringc Checked;
+    static const core::stringc Filled;
 
-	std::map< core::stringw, SImageGUIElementStyle > configs; 
+    static const core::stringc ElementUnknown;          //стиль не определен
+	static const core::stringc SunkenPane;				//обычная панель	
+	static const core::stringc Window;					//окно
+	static const core::stringc WindowCaption;			//шапка окна
+	static const core::stringc Button;					//кнопка в обычном состоянии
+	static const core::stringc WindowCloseButton;		//Кнопка закрытия окна
+	static const core::stringc ProgressBar;				//прогрессбар
+	static const core::stringc CheckBox;					//флажок пустой
+	static const core::stringc EditBox;					//поле ввода
+	static const core::stringc ComboBox;					//выпадаюзий список
+	static const core::stringc ContextMenu;				//контекстное меню
+	static const core::stringc ListBox;					//список
+
+    SImageGUISkinConfig();
+
+    typedef std::map< core::stringc, SImageGUIElementStyle > CONFIG_MAP;
+	CONFIG_MAP configs; 
+
+    SImageGUIElementStyle& GetConfig( IGUIElement* elm, const core::stringc& defaultName, const core::stringc& state );
 };
 
 class CImageGUISkin : public IGUISkin

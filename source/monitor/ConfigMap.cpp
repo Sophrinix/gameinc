@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "ConfigMap.h"
+#include <assert.h>
 
 core::stringc CConfigMap::getConfig( const core::stringc& name )				//получаем весь конфиг элемента или пустую строку
 {																				//если такового не было найдено
-    core::map<core::stringc,core::stringc>::Node* node = Map.find(name);		//
+    core::map<core::stringc,core::stringc>::Node* node = _configs.find(name);		//
 
     if ( node == NULL )
         return core::stringc();
@@ -72,12 +73,19 @@ core::vector3df CConfigMap::getConfigAsVector3df( const core::stringc& name )
 
 bool CConfigMap::hasConfig( const core::stringc& name )
 {
-    core::map<core::stringc,core::stringc>::Node* node = Map.find(name);
+    core::map<core::stringc,core::stringc>::Node* node = _configs.find(name);
 
     return ( node != 0 );
 }
 
 void CConfigMap::setConfig( const core::stringc& name, const core::stringc& value )
 {
-    Map.set(name,value);
+    int posDelim = name.findFirst( '.' );
+    assert( posDelim > 0 );
+    core::stringc controlName = name.subString( 0, posDelim );
+ 
+    if( _controls.linear_search( controlName ) == -1 )
+        _controls.push_back( controlName );
+
+    _configs.set(name,value);
 }

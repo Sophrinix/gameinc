@@ -1,7 +1,11 @@
 #include "StdAfx.h"
 #include "ImageGUISkin.h"
 #include "clipRects.h"
+#include "nrpButton.h"
+#include "NrpText.h"
+#include "Logger.h"
 #include "nrpGUIEnvironment.h"
+#include <assert.h>
 
 namespace irr
 {
@@ -9,28 +13,24 @@ namespace irr
 namespace gui
 {
 
-#define INIT_SIMCONFIG_CONSTANT( name ) const core::stringw SImageGUISkinConfig::name = #name;
+#define INIT_SIMCONFIG_CONSTANT( name ) const core::stringc SImageGUISkinConfig::name = #name;
+const core::stringc SImageGUISkinConfig::Normal = "";
+INIT_SIMCONFIG_CONSTANT( Hovered )
+INIT_SIMCONFIG_CONSTANT( Pressed )
+INIT_SIMCONFIG_CONSTANT( Disabled )
+INIT_SIMCONFIG_CONSTANT( Checked )
+INIT_SIMCONFIG_CONSTANT( Filled )
+
+INIT_SIMCONFIG_CONSTANT( ElementUnknown )
 INIT_SIMCONFIG_CONSTANT( SunkenPane )				//обычная панель	
 INIT_SIMCONFIG_CONSTANT( Window )					//окно
 INIT_SIMCONFIG_CONSTANT( WindowCaption )			//шапка окна
 INIT_SIMCONFIG_CONSTANT( Button )					//кнопка в обычном состоянии
 INIT_SIMCONFIG_CONSTANT( WindowCloseButton )		//Кнопка закрытия окна
-INIT_SIMCONFIG_CONSTANT( WindowCloseHoveredButton )
-INIT_SIMCONFIG_CONSTANT( WindowClosePressedButton )
-INIT_SIMCONFIG_CONSTANT( ButtonPressed )			//кнопка в нажатом состоянии
-INIT_SIMCONFIG_CONSTANT( ButtonHovered )			//кнопка, когда над ней курсор находится, а также в фокусе
-INIT_SIMCONFIG_CONSTANT( ButtonDisabled )			//нажатая кнопка	
 INIT_SIMCONFIG_CONSTANT( ProgressBar )				//прогрессбар
-INIT_SIMCONFIG_CONSTANT( ProgressBarFilled )		//заполнение прогрессбара	
 INIT_SIMCONFIG_CONSTANT( CheckBox )					//флажок пустой
-INIT_SIMCONFIG_CONSTANT( CheckBoxChecked )			//флажок установленный	
-INIT_SIMCONFIG_CONSTANT( CheckBoxDisabled )			//отключенный
 INIT_SIMCONFIG_CONSTANT( EditBox )					//поле ввода
-INIT_SIMCONFIG_CONSTANT( EditBoxHovered )			//поле ввода когда над ним курсор находится
-INIT_SIMCONFIG_CONSTANT( EditBoxDisabled )			//отключенный элемент
-INIT_SIMCONFIG_CONSTANT( ComboBox )					//выпадаюзий список
-INIT_SIMCONFIG_CONSTANT( ComboBoxHovered )			//он же, на ним курсор
-INIT_SIMCONFIG_CONSTANT( ComboBoxDisabled )			//отключенный
+INIT_SIMCONFIG_CONSTANT( ComboBox )					//выпадающий список
 INIT_SIMCONFIG_CONSTANT( ContextMenu )				//контекстное меню
 INIT_SIMCONFIG_CONSTANT( ListBox )					//список
 
@@ -138,31 +138,32 @@ EGDC_3D_FACE for this. See EGUI_DEFAULT_COLOR for details.
 \param element: Pointer to the element which wishes to draw this. This parameter
 is usually not used by ISkin, but can be used for example by more complex
 implementations to find out how to draw the part exactly. */
-void CImageGUISkin::draw3DButtonPaneStandard(	IGUIElement* element,
-												const core::rect<s32>& r,
-												const core::rect<s32>* clip)
+void CImageGUISkin::draw3DButtonPaneStandard( IGUIElement* element,
+											  const core::rect<s32>& r,
+											  const core::rect<s32>* clip)
 {
 	video::IVideoDriver* driver = native_gui_->getVideoDriver();		
 	if (!driver)									//нельзя работать с пустым драйвером
 		return;
 
-	SImageGUIElementStyle style = Config.configs[ SImageGUISkinConfig::Button ];	//этот элемент отрисуется если не будет замен	
+    SImageGUIElementStyle& style = Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Normal );	//этот элемент отрисуется если не будет замен	
 	bool need_posteffect = false;					//пост эффекты для кнопок, чтобы было плавное угасание ховеред текстуры
 
 	if(  element->getType() == EGUIET_BUTTON )		//если элемент, который пытается отрисоваться кнопка
 	{
 		if( !element->isEnabled() )					//и он не запрещен
-			style = Config.configs[ SImageGUISkinConfig::ButtonDisabled ];				
+            style = Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Disabled );				
 		else										//проверяем состояние нажатости		
 		{
-			if( static_cast< IGUIButton* >( element )->isPressed() )		
-				style = Config.configs[ SImageGUISkinConfig::ButtonPressed ];		//если нажат ставим соответсвующий конфиг	
+            IGUIButton* btn = static_cast< IGUIButton* >( element );
+            if( btn && btn->isPressed() )		
+                style = Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Pressed );		//если нажат ставим соответсвующий конфиг	
 		}
 
 		need_posteffect = true;						//нужен постэффект для кнопки
 	}
 
-	if ( !style.Texture )											//рисованная текстура отсутсвует
+	if ( !style.texture )											//рисованная текстура отсутсвует
 	{
 		native_skin_->draw3DButtonPaneStandard( element, r, clip );			//поэтому рисуем дефолтовый элемент
 		return;
@@ -172,7 +173,7 @@ void CImageGUISkin::draw3DButtonPaneStandard(	IGUIElement* element,
 		video::SColor color( 0xff, 0xff, 0xff, 0xff );				//видна вся текстура
 		drawElementStyle( element, style, r, clip, &color  );		//рисуем текстуру из конфига
 
-		if( need_posteffect && Config.configs[ SImageGUISkinConfig::ButtonHovered ].Texture )       //добавляем свистелок
+        if( need_posteffect && Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Hovered ).texture )       //добавляем свистелок
 			draw3DButtonPostEffect( element, r, clip );				//	
 	}
 }
@@ -204,15 +205,17 @@ void CImageGUISkin::draw3DButtonPostEffect(	 IGUIElement* element,		//свистелка 
 		core::dimension2di half_size;									//рассчитываем на сколько надо сдвинуть границы элемента
 																		//чтобы центр остался на месте, если разные размеры
 																		//текстур
-		half_size.Width = Config.ButtonHovered.Texture->getOriginalSize().Width - Config.Button.Texture->getOriginalSize().Width;
-		half_size.Height = Config.ButtonHovered.Texture->getOriginalSize().Height - Config.Button.Texture->getOriginalSize().Height;
+        SImageGUIElementStyle& bh = Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Hovered );
+        SImageGUIElementStyle& bb = Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Normal );
+		half_size.Width = bh.texture->getOriginalSize().Width - bb.texture->getOriginalSize().Width;
+		half_size.Height = bh.texture->getOriginalSize().Height - bb.texture->getOriginalSize().Height;
 		half_size /= 2;
 		draw_rect.UpperLeftCorner -= half_size;
 		draw_rect.LowerRightCorner += half_size;
 		clip_rect.UpperLeftCorner -= half_size;
 		clip_rect.LowerRightCorner += half_size;
 		video::SColor color( ab, 0xff, 0xff, 0xff );
-		drawElementStyle( element, Config.ButtonHovered, draw_rect, &clip_rect, &color  );
+		drawElementStyle( element, bh, draw_rect, &clip_rect, &color  );
 	}
 }
 
@@ -229,8 +232,8 @@ void CImageGUISkin::draw3DButtonPanePressed(	IGUIElement* element,
 										      const core::rect<s32>& r,
 										      const core::rect<s32>* clip)
 {
-	SImageGUIElementStyle style =  Config.ButtonPressed;								//рисуем нажатую кнопку
-	if ( !style.Texture )														//если нет текстуры
+    SImageGUIElementStyle& style =  Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Pressed );								//рисуем нажатую кнопку
+	if ( !style.texture )														//если нет текстуры
 	{
 		native_skin_->draw3DButtonPanePressed( element, r, clip );							//рисуем дефолтовую кнопку
 		return;
@@ -263,13 +266,9 @@ void CImageGUISkin::draw3DSunkenPane(IGUIElement* element, video::SColor bgcolor
 			IGUICheckBox* cbx = static_cast< IGUICheckBox* >( element );
 
 			if( cbx->isEnabled() )
-			{
-				elstyle = cbx->isChecked() 
-							? Config.CheckBoxChecked 
-							: Config.CheckBox;
-			}
+				elstyle = Config.GetConfig( element, SImageGUISkinConfig::CheckBox, cbx->isChecked() ? SImageGUISkinConfig::Checked : SImageGUISkinConfig::Normal );
 			else
-				elstyle = Config.CheckBoxDisabled;
+                elstyle = Config.GetConfig( element, SImageGUISkinConfig::CheckBox, SImageGUISkinConfig::Disabled );
 		}
 	break;
 	
@@ -279,13 +278,10 @@ void CImageGUISkin::draw3DSunkenPane(IGUIElement* element, video::SColor bgcolor
 			if( ebox->getDrawBorder() )
 			{
 				if( ebox->isEnabled() )
-				{
-					elstyle = native_gui_->isHovered( element )
-						? Config.EditBoxHovered
-						: Config.EditBox;				
-				}
+                    elstyle = Config.GetConfig( element, SImageGUISkinConfig::EditBox, 
+                                                native_gui_->isHovered( element ) ? SImageGUISkinConfig::Hovered : SImageGUISkinConfig::Normal );
 				else 
-					elstyle = Config.EditBoxDisabled;
+                    elstyle = Config.GetConfig( element, SImageGUISkinConfig::EditBox, SImageGUISkinConfig::Disabled );
 			}
 		}
 	break;
@@ -294,22 +290,18 @@ void CImageGUISkin::draw3DSunkenPane(IGUIElement* element, video::SColor bgcolor
 		{
 			IGUIComboBox* combo = static_cast< IGUIComboBox* >( element );
 			if (combo->isEnabled())
-			{
-				elstyle = native_gui_->isHovered( element )
-											? Config.ComboBoxHovered
-											: Config.ComboBox;
-			}
+                elstyle = Config.GetConfig( element, SImageGUISkinConfig::ComboBox, native_gui_->isHovered( element ) ? SImageGUISkinConfig::Hovered : SImageGUISkinConfig::Normal );
 			else
-				elstyle = Config.ComboBoxDisabled;
+                elstyle = Config.GetConfig( element, SImageGUISkinConfig::ComboBox, SImageGUISkinConfig::Disabled );
 		}
 	break;
 
 	default:																				//другие
-		 elstyle = Config.SunkenPane;
+        elstyle = Config.GetConfig( element, SImageGUISkinConfig::SunkenPane, SImageGUISkinConfig::Normal );
 	break;
 	}
 
-	if ( !elstyle.Texture )
+	if ( !elstyle.texture )
 		native_skin_->draw3DSunkenPane(element, bgcolor, flat, fillBackGround, r, clip);
 	else 
 	{
@@ -334,18 +326,18 @@ core::rect<s32> CImageGUISkin::draw3DWindowBackground(IGUIElement* element,
 													const core::rect<s32>* cl, 
 													core::rect<s32>* checkClientArea )
 {
-	SImageGUIElementStyle elstyle = Config.Window;
-	if ( !elstyle.Texture )																	//рисование окошка если нет скина
+    SImageGUIElementStyle elstyle = Config.GetConfig( element, SImageGUISkinConfig::Window, SImageGUISkinConfig::Normal );
+	if ( !elstyle.texture )																	//рисование окошка если нет скина
 	{
 		return native_skin_->draw3DWindowBackground(element, drawTitleBar, titleBarColor, r, cl, checkClientArea );
 	}
 
 	drawElementStyle( element, elstyle, r, cl );
 
-	return core::rect<s32>( r.UpperLeftCorner.X+Config.Window.DstBorder.Left, 		//со скином
+	return core::rect<s32>( r.UpperLeftCorner.X+elstyle.dstBorder.Left, 		//со скином
 							r.UpperLeftCorner.Y, 
-							r.LowerRightCorner.X-Config.Window.DstBorder.Right, 
-							r.UpperLeftCorner.Y+Config.Window.DstBorder.Top 
+							r.LowerRightCorner.X-elstyle.dstBorder.Right, 
+							r.UpperLeftCorner.Y+elstyle.dstBorder.Top 
 						   );
 }
 
@@ -365,11 +357,11 @@ void CImageGUISkin::draw3DMenuPane(IGUIElement* element,
 	if (!driver)
 		return;
 
-	SImageGUIElementStyle elstyle = Config.Window;	
+    SImageGUIElementStyle elstyle = Config.GetConfig( element, SImageGUISkinConfig::Window, SImageGUISkinConfig::Normal );	
 	if( element->getType() == EGUIET_CONTEXT_MENU || element->getType() == EGUIET_MENU )
-		elstyle = Config.ContextMenu;
+        elstyle = Config.GetConfig( element, SImageGUISkinConfig::ContextMenu, SImageGUISkinConfig::Normal );
 
-	if( elstyle.Texture != NULL )
+	if( elstyle.texture != NULL )
 		drawElementStyle( element, elstyle, r, clip );
 	else
 		driver->draw2DRectangle( getColor( EGDC_3D_FACE), r, clip );
@@ -617,18 +609,19 @@ void CImageGUISkin::deserializeAttributes(io::IAttributes* in, io::SAttributeRea
 {
 	native_skin_->deserializeAttributes( in, options );
 }
-//////////////////////////////////////////////////////////////////////////
 
 void CImageGUISkin::drawHorizontalProgressBar( IGUIElement* element, const core::rect<s32>& rectangle, const core::rect<s32>* clip,
 											  f32 filledRatio, video::SColor fillColor )
 {
-	if ( !Config.ProgressBar.Texture || !Config.ProgressBarFilled.Texture )
+    SImageGUIElementStyle& prg = Config.GetConfig( element, SImageGUISkinConfig::ProgressBar, SImageGUISkinConfig::Normal );
+    SImageGUIElementStyle& fill = Config.GetConfig( element, SImageGUISkinConfig::ProgressBar, SImageGUISkinConfig::Filled );
+    if ( !prg.texture || !fill.texture )
 	{
 		return;
 	}
 
 	// Draw empty progress bar
-	drawElementStyle( element, Config.ProgressBar, rectangle, clip );
+    drawElementStyle( element, prg, rectangle, clip );
 
 	// Draw filled progress bar on top
 	if ( filledRatio < 0.0f )
@@ -657,18 +650,17 @@ void CImageGUISkin::drawHorizontalProgressBar( IGUIElement* element, const core:
 			rectangle.UpperLeftCorner.X + filledPixels, 
 			rectangle.LowerRightCorner.Y );
 
-		drawElementStyle( element, Config.ProgressBarFilled, filledRect, &clipRect, &fillColor );
+        drawElementStyle( element, fill, filledRect, &clipRect, &fillColor );
 	}
 }
-//////////////////////////////////////////////////////////////////////////
 
 void CImageGUISkin::drawElementStyle( IGUIElement* element, const SImageGUIElementStyle& elem, const core::rect<s32>& rect, const core::rect<s32>* clip, video::SColor* pcolor  )
 {
 	core::rect<s32> srcRect;
 	core::rect<s32> dstRect;
 	video::IVideoDriver* driver = native_gui_->getVideoDriver();
-	core::dimension2du tsize = elem.Texture->getOriginalSize();
-	video::ITexture* texture = elem.Texture;
+	core::dimension2du tsize = elem.texture->getOriginalSize();
+	video::ITexture* texture = elem.texture;
 
 	video::SColor color = elem.Color;
 	if ( pcolor )
@@ -681,7 +673,7 @@ void CImageGUISkin::drawElementStyle( IGUIElement* element, const SImageGUIEleme
 	core::dimension2di dstSize = rect.getSize();
 
 	// Scale the border if there is insufficient room
-	SImageGUIElementStyle::SBorder dst = elem.DstBorder;
+	SImageGUIElementStyle::SBorder dst = elem.dstBorder;
 	f32 scale = 1.0f;
 	if ( dstSize.Width < dst.Left + dst.Right )
 	{
@@ -704,7 +696,7 @@ void CImageGUISkin::drawElementStyle( IGUIElement* element, const SImageGUIEleme
 		dst.Bottom = (s32)( dst.Bottom * scale );
 	}
 
-	const SImageGUIElementStyle::SBorder& src = elem.SrcBorder;
+	const SImageGUIElementStyle::SBorder& src = elem.srcBorder;
 
 	// Draw the top left corner
 	srcRect = core::rect<s32>( 0, 0, src.Left, src.Top );
@@ -760,13 +752,39 @@ void CImageGUISkin::drawElementStyle( IGUIElement* element, const SImageGUIEleme
 	if ( !clip || clipRects( dstRect, srcRect, *clip ) )
 		driver->draw2DImage( texture, dstRect, srcRect, clip, colors, true );
 }
-//////////////////////////////////////////////////////////////////////////
 
 void CImageGUISkin::LoadConfig( const SImageGUISkinConfig& config )
 {
 	Config = config;
 }
-//////////////////////////////////////////////////////////////////////////
+
+SImageGUIElementStyle& SImageGUISkinConfig::GetConfig( IGUIElement* elm, const core::stringc& defaultName, const core::stringc& state )
+{
+    core::stringc fullName = defaultName + state;
+    bool haveDefaultConf = configs.find( fullName ) != configs.end();
+    assert( elm && haveDefaultConf );
+    if( !haveDefaultConf )
+        nrp::Log( nrp::HW ) << "default style for " << defaultName.c_str() << " not found " << nrp::term;
+
+    if( elm && wcslen( elm->getStyleName() ) > 0 )
+    {
+        fullName = (NrpText( elm->getStyleName() ) + NrpText( state )).ToStr();
+        CONFIG_MAP::iterator pIter = configs.find( fullName );
+        assert( pIter != configs.end() );
+        
+        if( pIter != configs.end() )
+            return pIter->second;
+        else
+            nrp::Log( nrp::HW ) << "style for " << fullName.c_str() << " not found " << nrp::term;
+    }
+
+    return haveDefaultConf ? configs[ defaultName ] : configs[ ElementUnknown ];
+}
+
+SImageGUISkinConfig::SImageGUISkinConfig()
+{
+    configs[ ElementUnknown ] = SImageGUIElementStyle();
+}
 
 }//namespace gui
 

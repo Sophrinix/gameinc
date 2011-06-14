@@ -5,9 +5,11 @@
 #include "Logger.h"
 #include <IReadFile.h>
 #include <IVideoDriver.h>
+#include <assert.h>
 
 #define SRCBORDER ".SrcBorder"
 #define DSTBORDER ".DstBorder"
+#define MARGIN ".Margin"
 #define LEFTUP "leftup"
 
 using namespace nrp;
@@ -49,7 +51,7 @@ CConfigMap* CNrpImageSkinLoader::LoadConfig_( io::IFileSystem* fileSystem, const
         core::stringc name = reader.GetName();
         core::stringc value = reader.GetValue();
 
-        map->setConfig(name,value);
+        map->setConfig( name, value );
     }
 
     return map;
@@ -58,24 +60,34 @@ CConfigMap* CNrpImageSkinLoader::LoadConfig_( io::IFileSystem* fileSystem, const
 
 void CNrpImageSkinLoader::ParseGUIElementStyle_( video::IVideoDriver* driver, 
 												 CConfigMap* cfg, 
-												 SImageGUIElementStyle& elem, 
+												 SImageGUISkinConfig& config, 
 												 const core::stringc& name, 
 												 const core::stringc& context )
 {
+    assert( config.configs.find( name ) == config.configs.end() );
+    
+    SImageGUIElementStyle elem;
+
     core::stringc s = cfg->getConfig( name + SRCBORDER );
-    int ret = sscanf_s( s.c_str(), "%d , %d , %d , %d", &elem.SrcBorder.Top, &elem.SrcBorder.Left, &elem.SrcBorder.Bottom, &elem.SrcBorder.Right );
-	elem.SrcBorder.valid = (ret == 4);
-	if( s.size() > 0 && !elem.SrcBorder.valid )
+    int ret = sscanf_s( s.c_str(), "%d , %d , %d , %d", &elem.srcBorder.Top, &elem.srcBorder.Left, &elem.srcBorder.Bottom, &elem.srcBorder.Right );
+	elem.srcBorder.valid = (ret == 4);
+	if( s.size() > 0 && !elem.srcBorder.valid )
 		Log( HW ) << "Can't parse config " << name.c_str() << SRCBORDER << " = " << s.c_str() << term;
 
+    s = cfg->getConfig(name+MARGIN);
+    ret = sscanf_s( s.c_str(), "%d , %d , %d , %d", &elem.margin.Top, &elem.margin.Left, &elem.margin.Bottom, &elem.margin.Right );
+    elem.margin.valid = (ret == 4);
+    if( s.size() > 0 && !elem.margin.valid )
+        Log( HW ) << "Can't parse config " << name.c_str() << MARGIN << " = " << s.c_str() << term;
+
     s = cfg->getConfig(name+DSTBORDER);
-    ret = sscanf_s( s.c_str(), "%d , %d , %d , %d", &elem.DstBorder.Top, &elem.DstBorder.Left, &elem.DstBorder.Bottom, &elem.DstBorder.Right );
-	elem.DstBorder.valid = (ret == 4);
-	if( s.size() > 0 && !elem.DstBorder.valid )
+    ret = sscanf_s( s.c_str(), "%d , %d , %d , %d", &elem.dstBorder.Top, &elem.dstBorder.Left, &elem.dstBorder.Bottom, &elem.dstBorder.Right );
+	elem.dstBorder.valid = (ret == 4);
+	if( s.size() > 0 && !elem.dstBorder.valid )
 		Log( HW ) << "Can't parse config " << name.c_str() << DSTBORDER << " = " << s.c_str() << term;
 
     s = cfg->getConfig(name+".Texture");
-    elem.Texture = driver->getTexture((context + s).c_str());
+    elem.texture = driver->getTexture((context + s).c_str());
 
     s = cfg->getConfig(name+".Color");
     if ( s.size() > 0 )
@@ -108,6 +120,8 @@ void CNrpImageSkinLoader::ParseGUIElementStyle_( video::IVideoDriver* driver,
 		elem.align.Right = rMap[ right ];
 		elem.align.valid = ( ret == 4 );
 	}	
+
+    config.configs[ name ] = elem;
 }
 
 void CNrpImageSkinLoader::Load( io::IFileSystem* fileSystem, 
@@ -124,32 +138,37 @@ void CNrpImageSkinLoader::Load( io::IFileSystem* fileSystem,
 
 		core::stringc context = GetContextPath_(filename);
     
-		ParseGUIElementStyle_( driver, cfg, skin_config.Button, "Button", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.ButtonPressed, "ButtonPressed", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.ButtonHovered, "ButtonHovered", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.ButtonDisabled, "ButtonDisabled", context );
+        const core::array< core::stringc >& items = cfg->GetControls();
 
-		ParseGUIElementStyle_( driver, cfg, skin_config.SunkenPane, "SunkenPane", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.Window, "Window", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.WindowCaption, "WindowCaption", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.ProgressBar, "ProgressBar", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.ProgressBarFilled, "ProgressBarFilled", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.CheckBox, "CheckBox", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.CheckBoxChecked, "CheckBoxChecked", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.CheckBoxDisabled, "CheckBoxDisabled", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.CheckBoxDisabled, "CheckBoxHovered", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.EditBox, "EditBox", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.EditBoxHovered, "EditBoxFocused", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.EditBoxDisabled, "EditBoxDisabled", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.ComboBox, "ComboBox", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.ComboBoxHovered, "ComboBoxFocused", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.ComboBoxDisabled, "ComboBoxDisabled", context );
+        for( int i=0; i < items.size(); i++ )
+            ParseGUIElementStyle_( driver, cfg, skin_config, items[ i ], context );
+        /*
+        ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::Button ], "Button", context );
+        ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ButtonPressed ], "ButtonPressed", context );
+        ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ButtonHovered ], "ButtonHovered", context );
+        ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ButtonDisabled ], "ButtonDisabled", context );
+
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::SunkenPane ], "SunkenPane", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::Window ], "Window", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::WindowCaption ], "WindowCaption", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ProgressBar ], "ProgressBar", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ProgressBarFilled ], "ProgressBarFilled", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::CheckBox ], "CheckBox", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::CheckBoxChecked ], "CheckBoxChecked", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::CheckBoxDisabled ], "CheckBoxDisabled", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::CheckBoxDisabled ], "CheckBoxHovered", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::EditBox ], "EditBox", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::EditBoxHovered ], "EditBoxFocused", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::EditBoxDisabled ], "EditBoxDisabled", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ComboBox ], "ComboBox", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ComboBoxHovered ], "ComboBoxFocused", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ComboBoxDisabled ], "ComboBoxDisabled", context );
 		//ParseGUIElementStyle( driver, cfg, skin.ListBox, "ListBox", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.ContextMenu, "ContextMenu", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.WindowCloseButton, "WindowCloseButton", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.WindowCloseHoveredButton, "WindowCloseHoveredButton", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.WindowClosePressedButton, "WindowClosePressedButton", context );
-
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ContextMenu ], "ContextMenu", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::WindowCloseButton ], "WindowCloseButton", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::WindowCloseHoveredButton ], "WindowCloseHoveredButton", context );
+		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::WindowClosePressedButton ], "WindowClosePressedButton", context );
+*/
 		delete cfg;
 	}
 	catch(...)

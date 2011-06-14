@@ -31,7 +31,7 @@ private:
 	static CConfigMap* LoadConfig_( io::IFileSystem* fileSystem, const core::stringc& filename );
 	static void ParseGUIElementStyle_( video::IVideoDriver* driver, 
 									   CConfigMap* cfg, 
-									   SImageGUIElementStyle& elem, 
+									   SImageGUISkinConfig& elem, 
 									   const core::stringc& name, 
 									   const core::stringc& context );
 };
