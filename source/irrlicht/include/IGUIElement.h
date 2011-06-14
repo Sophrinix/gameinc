@@ -493,6 +493,18 @@ public:
 		return Name.c_str();
 	}
 
+    //! Sets the new using style name of this element.
+    virtual void setStyleName( const wchar_t* styleName )
+    {
+        _styleName = styleName;
+    }
+
+    //! Returns using style name of this element.
+    virtual const wchar_t* getStyleName() const
+    {
+        return _styleName.c_str();
+    }
+
 	//! Sets the new caption of this element.
 	virtual void setText(const wchar_t* text)
 	{
@@ -1027,6 +1039,7 @@ protected:
 
 	//Unique name
 	core::stringw Name;
+    core::stringw _styleName;
 
 	//! id
 	s32 ID;
