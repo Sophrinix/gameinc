@@ -34,7 +34,7 @@ namespace nrp
 											  LUNA_AUTONAME_PROPERTY(class, "childCount", GetChildCount, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "name", GetName, SetName )\
 											  LUNA_AUTONAME_PROPERTY(class, "width", GetWidth, PureFunction )\
-											  LUNA_AUTONAME_PROPERTY(class, "height", GetHeight, PureFunction )\
+											  LUNA_AUTONAME_PROPERTY(class, "height", GetHeight, SetHeight )\
 											  LUNA_AUTONAME_PROPERTY(class, "left", GetLeft, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "screenLeft", GetScreenLeft, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "right", GetRight, PureFunction )\
@@ -42,8 +42,8 @@ namespace nrp
 											  LUNA_AUTONAME_PROPERTY(class, "top", GetTop, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "screenTop", GetScreenTop, PureFunction )\
 											  LUNA_AUTONAME_PROPERTY(class, "bottom", GetBottom, PureFunction )\
-											  LUNA_AUTONAME_PROPERTY(class, "screenBottom", GetScreenBottom, PureFunction )
-														
+											  LUNA_AUTONAME_PROPERTY(class, "screenBottom", GetScreenBottom, PureFunction )\
+                                              LUNA_AUTONAME_PROPERTY(class, "style", GetStyle, SetStyle )													
 
 template< class T > class ILuaGuiElement : public ILuaObject< T >
 {
@@ -111,6 +111,22 @@ public:
 		return 1;
 	}
 
+    int SetHeight( lua_State* L )
+    {
+        assert( lua_isnumber( L, -1 ) ); 
+        IF_OBJECT_NOT_NULL_THEN 
+        {
+            int hgth = lua_tointeger( L, -1 );
+            core::recti cr = _object->getRelativePosition();
+            cr.LowerRightCorner.Y = cr.UpperLeftCorner.Y + hgth;
+            _object->setRelativePosition( cr );
+            return 1;
+        }
+
+        lua_pushnil( L );
+        return 1;
+    }
+
 	int GetName( lua_State* L )
 	{
 		IF_OBJECT_NOT_NULL_THEN 
@@ -124,6 +140,31 @@ public:
 		return 1;
 	}
 	
+    int GetStyle( lua_State* L )
+    {
+        IF_OBJECT_NOT_NULL_THEN 
+        {
+            NrpText name = _object->getStyleName();
+            lua_pushstring( L, name );
+            return 1;
+        }
+
+        lua_pushnil( L );
+        return 1;
+    }
+
+    int SetStyle( lua_State* L )
+    {	
+        assert( lua_isstring( L, -1 ) );
+        IF_OBJECT_NOT_NULL_THEN 
+        {
+            NrpText styleName = lua_tostring( L, -1 );
+            _object->setStyleName( styleName );
+        }
+
+        return 0;			
+    }
+
 	int GetWidth( lua_State* L )
 	{
 		IF_OBJECT_NOT_NULL_THEN 
@@ -232,7 +273,7 @@ public:
 		IF_OBJECT_NOT_NULL_THEN	_object->setAlignment( gui::EGUI_ALIGNMENT(left), gui::EGUI_ALIGNMENT(right),
 													   gui::EGUI_ALIGNMENT(top), gui::EGUI_ALIGNMENT(bottom) );
 
-		return 1;
+		return 0;
 	}
 
 	int SetFont( lua_State* L )
@@ -245,7 +286,7 @@ public:
 			_object->setRFont( fontName != NULL ? guienv->getFont( fontName ) : NULL );
 		}
 
-		return 1;			
+		return 0;			
 	}
 
 	int RemoveChilds( lua_State* L )
@@ -339,7 +380,7 @@ public:
 		assert( lua_isstring( L, -1 ) );
 		NrpText text( lua_tostring( L, -1 ) );
 		IF_OBJECT_NOT_NULL_THEN	_object->setText( text.ToWide() );
-		return 1;
+		return 0;
 	}
 
 	int GetTypeName( lua_State *L )	
@@ -408,7 +449,7 @@ public:
 
 		IF_OBJECT_NOT_NULL_THEN	_object->setRelativePosition( wndRect + offset );
 
-		return 1;
+		return 0;
 	}
 
 	int SetMaxSize( lua_State* L )
@@ -425,14 +466,14 @@ public:
 			_object->setMaxSize( offset );
 		}
 
-		return 1;
+		return 0;
 	}
 
 	int SetVisible(lua_State *L)							//установка видимости
 	{
 		assert( lua_isboolean( L, -1 ) );
 		IF_OBJECT_NOT_NULL_THEN _object->setVisible( lua_toboolean( L, -1 ) > 0 );		
-		return 1;
+		return 0;
 	}
 
 	int GetVisible(lua_State *L)							//получение видимости
@@ -468,7 +509,7 @@ public:
 			_object->setAlphaBlend( alpha );
 		}
 
-		return 1;
+		return 0;
 	}
 
 	int GetAlpha( lua_State* L )
@@ -532,7 +573,7 @@ public:
 			_object->setRelativePosition( newPos );
 		}
 
-		return 1;
+		return 0;
 	}
 
 	/*
@@ -551,7 +592,7 @@ public:
 
 		IF_OBJECT_NOT_NULL_THEN	_object->setRelativePosition( newRect );
 
-		return 1;
+		return 0;
 	}
 };
 
