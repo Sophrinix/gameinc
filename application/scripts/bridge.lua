@@ -57,7 +57,7 @@ local function _UpdateInfo()
 
 	labelAcNumber.text = "Куплено: "..sharesNumber
 	labelAllAc.text = "Всего: "..currentCompany.allPie
-	labelPrice.text = "Цена: $"..currentCompany.pieCost
+	labelPrice.text = "Цена: $" .. base.string.format( "%.3f", currentCompany.pieCost )
 	labelSelfAc.text = "Доступно: ".. rbank:GetAvaibleShares( currentCompany )
 	
 	--если есть возможность взять контроль над компанией 

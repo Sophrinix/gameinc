@@ -15,15 +15,21 @@ local onEnd = nil
 local shareStart = nil
 local wantShareNumber = nil
 
+local lbComission = nil
+local _BridgeComissionText = "Комиссия биржи 2%:"
+
 local function _UpdateLabel()
 	edShare.text = shareStart + wantShareNumber
 	local deltaMoney = wantShareNumber * shareCompany.pieCost
-	edMoney.text = deltaMoney
+	edMoney.text = base.string.format( "%d", -deltaMoney )
+	
+	local comission = base.string.format( "%d", base.math.ceil( deltaMoney * 0.02 ) );
+	lbComission.text = _BridgeComissionText.."\nВы заплатите $"..comission.." за оформление сделки"; 
 	
 	if deltaMoney > 0 then 
-		edMoney.overrideColor = 0xff00ff00
-	else
 		edMoney.overrideColor = base.NrpARGB( 0xff, 0xff, 0, 0 )
+	else
+		edMoney.overrideColor = base.NrpARGB( 0xff, 0, 0xff, 0 )
 	end
 end
 
@@ -69,10 +75,16 @@ function Show( text, shrCmp, actionAfterEnd )
 	
 	edShare = guienv:AddEdit( shareStart,  58, 10, "166+", "25+", -1, mainWindow )
 	edShare.drawBody = false
-	edMoney = guienv:AddEdit( shareStart * shrCmp.pieCost,  66, 110, "110+", "25+", -1, mainWindow )
+	edMoney = guienv:AddEdit( base.string.format( "%.03f", shareStart * shrCmp.pieCost ),  
+							  66, 110, "110+", "25+", -1, mainWindow )
 	edMoney.drawBody = false
 	
 	button.EqualeTexture( 182, 110, "money_select_minus", mainWindow, -1, "", _DownShare )
 	button.EqualeTexture( 212, 110, "money_select_plus", mainWindow, -1, "", _UpShare )
 	button.Stretch( "30e", "30e", "0e", "0e", "button_ok", mainWindow, -1, "",	_OnEnd )
+	
+	lbComission = guienv:AddLabel( _BridgeComissionText, edShare.left, edShare.bottom, 
+								   "5e", edMoney.top, -1, mainWindow )
+	lbComission:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
+	lbComission.font = "font_12" 
 end

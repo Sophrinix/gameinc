@@ -8,10 +8,14 @@ local _mainWindow = nil
 local _portretWindow = nil
 local _dialogWindow = nil
 
+local answerFont = "font_12"
+local marginLeft = 40
+
 function Show( txsPath, text, x, y )
 	_dialogWindow = nil
 	 
-	_mainWindow = guienv:AddWindow( "", 0, 0, "0e", "0e", -1, guienv.root )
+	local txs = driver:CreateGrayscale( "city_map.png" )
+	_mainWindow = guienv:AddWindow( txs.path, 0, 0, "0e", "0e", -1, guienv.root )
 	_mainWindow.closeButton.visible = false
 	_mainWindow.draggable = false
 	_mainWindow.drawBody = false
@@ -24,11 +28,29 @@ function Show( txsPath, text, x, y )
 	_portretWindow.drawBody = false
 	_portretWindow.visible = true
 	
+	local frame =  guienv:AddWindow( "", 0, 0, "0e", "0e", -1, _portretWindow )
+	frame.closeButton.visible = false
+	frame.draggable = false
+	frame.style = "BoxFrame"
+	
 	return _mainWindow
 end
 
 function Hide()
 	_mainWindow:Remove()
+end
+
+local function _CheckDialogWidth( tblAction )
+	local ret = _mainWindow.width * 0.3
+	local answerNumber = #tblAction / 2
+	for i=1, answerNumber do
+		local varAnswerText = tblAction[ i * 2 - 1 ]
+		local fw, fh = guienv:GetTextSize( answerFont, varAnswerText )
+		
+		ret = base.math.max( ret, fw )
+	end
+	
+	return ret + 60
 end
 
 function Dialog( text, tblAction )
@@ -37,36 +59,36 @@ function Dialog( text, tblAction )
 	   _dialogWindow:Remove()	
 	end
 	
-	local fw, fh = guienv:GetTextSize( "font_12", text )
-
-	local width = _mainWindow.width * 0.3
-	fh = fh * 1.5
-	local height = base.math.ceil( fw / width ) * fh;
+	local fw, fh = guienv:GetTextSize( answerFont, text )
+	
+	local width = _CheckDialogWidth( tblAction )
+	local height = base.math.ceil( fw / width + 3 ) * fh;
 	
 	local answerNumber = #tblAction / 2
-	local answerHeight = answerNumber * fh
+	local answerHeight = ( answerNumber + 2 ) * fh
 	height = height + answerHeight
 	
 	base.LogScript( "width="..width.." height="..height )
 	
-	_dialogWindow = guienv:AddWindow( "dialogSmall.png", _portretWindow.right - 50, _portretWindow.top + 20, 
+	_dialogWindow = guienv:AddWindow( "", _portretWindow.right - 50, _portretWindow.top + 20, 
 									  width .. "+", height .. "+", -1, _mainWindow )
 									  
 	_dialogWindow.closeButton.visible = false
 	_dialogWindow.draggable = false
-	_dialogWindow.drawBody = false
-	_dialogWindow.visible = true									  
-
-	local lb = guienv:AddLabel( text, 10, 10, "10e", answerHeight .. "e", -1, _dialogWindow )
-	lb.font = "font_12"
+	_dialogWindow.style = "DialogWindow"
+	_dialogWindow.drawBody = true
+	_dialogWindow.visible = true	
+									  
+	local lb = guienv:AddLabel( text, marginLeft, 10, "20e", answerHeight .. "e", -1, _dialogWindow )
+	lb.font = answerFont
 	
 	for i=1, answerNumber do
 		local varAnswerText = tblAction[ i * 2 - 1 ]
 		local varAnswerFunction = tblAction[ i * 2 ]
 		
-		local link = guienv:AddLink( 30, _dialogWindow.height - i * fh, "30e", "30+", 
+		local link = guienv:AddLink( marginLeft, height - 10 - i * fh, "20e", fh.."+", 
 									 _dialogWindow, -1, varAnswerText, varAnswerFunction )
-		link.font = "font_12"
-		link.color = base.NrpARGB( 0xff, 0, 0, 0 )
+		link.font = answerFont
+		link.color = base.NrpARGB( 0xff, 0, 0, 0xff )
 	end
 end

@@ -200,7 +200,7 @@ function Show()
 	btnStartWork.enabled = false
 end
 
-function localChangeProducerDiscount()
+function ChangeProducerDiscount()
 --[[	local lastOrder = produceDiskWork:GetNumberDisk()
 	local nDisk = currentDiskMachine:GetDiskProduced( company:GetName() )
 	local discount = currentDiskMachine:GetDiscount()

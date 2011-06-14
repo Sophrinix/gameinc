@@ -14,6 +14,8 @@ local updates = base.updates
 local sceneManager = base.sceneManager
 --переменные для работы
 local plant = base.applic.plant
+local profiles = "save/profiles.list"
+local names = nil
 
 --размеры окна
 local width = 200
@@ -22,10 +24,6 @@ local height = 100
 local editName = nil
 local editCompany = nil
 local wndNewGame = nil
-
-local function CloseNewGame( ptr )
-	wndNewGame:Remove()
-end
 
 function About()
 	base.browser:Show()
@@ -95,24 +93,23 @@ function NewGame( ptr )
 	editName = guienv:AddEdit(  "Player",  "10%", 40, "80%+", "20+", -1, wndNewGame )
 	editCompany = guienv:AddEdit(  "CompanyName", "10%", 70, "80%+", "20+", -1, wndNewGame )				
 	
-	button.Stretch( "12%", "60e", "49%", "10e", "ok", wndNewGame, -1, "Готово", CreateNewProfileAndStartGame )
-	button.Stretch( "51%", "60e", "88%", "10e", "cancel", wndNewGame, -1, "Отмена", CloseNewGame )
+	button.Stretch( "12%", "70e", "49%", "30e", "ok", wndNewGame, -1, "Готово", CreateNewProfileAndStartGame )
+	button.Stretch( "51%", "70e", "88%", "30e", "cancel", wndNewGame, -1, "Отмена", button.CloseParent )
 end
 
 function LoadCity()
 	base.NrpSetNextScene( "sceneWork" )
 end
 
-function Continue( ptr )
-	local lastProfile = applic.profile
+local function _LoadSaveGame( index )
+	local prof = names[ index + 1 ]
 	
-	local dd = base.io.open( "save/"..lastProfile.."/profile.ini", "r" )
-	if dd == nil then
-		guienv:MessageBox( "Нет сохраненных игр", false, false, button.CloseParent, button.NoFunction )
-		return 0
+	if prof.name == nil then
+		guienv:MessageBox( "Не выбран профиль", false, false, button.CloseParent, button.NoFunction )
+		return 
 	end
 	--устанавливаем текущее времся
-	applic:LoadGameTimeFromProfile( applic.profile )
+	applic:LoadGameTimeFromProfile( prof.name )
 	sceneManager:DrawProgress( 1, "Подгружаем данные из сохранения" )
 	
 	--загружаем скриншоты для игр
@@ -131,7 +128,7 @@ function Continue( ptr )
 	sceneManager:DrawProgress( 30, "Устанавливаем цены на аддоны" )
 	
 	--загружаем профиль
-	applic:LoadProfile( applic.profile, applic:GetCurrentProfileCompany() )
+	applic:LoadProfile( prof.name, prof.company )
 	sceneManager:DrawProgress( 10, "Создам профиль игрока" )
 	
 	applic.pda:Load()
@@ -151,6 +148,47 @@ function Continue( ptr )
 	
 	guienv:FadeAction( 1000, FADE_OUT, REMOVE_ON_END )
 	guienv:AddTimer( 1010, LoadCity, nil );
+end
+
+function Continue()
+	applic:CreateDirectorySnapshot( "save", profiles, "profile", "profile.ini" )
+		
+	local iniFile = base.CLuaIniFile( nil, profiles )
+	local profilesNumber = iniFile:ReadInteger( "options", "profileNumber", 0 ) 
+	
+	local profileWindow = guienv:AddWindow( "", "25%", "25%", "50%+", "50%+", -1, guienv.root )
+	profileWindow.closeButton.visible = false
+	profileWindow.draggable = false
+	profileWindow.modal = true
+	local lbx = guienv:AddListBox( 30, 45, "30e", "80e", -1, profileWindow )
+	names = nil
+	names = {}
+	
+	if profilesNumber == 0 then
+		guienv:MessageBox( "Нет сохраненных игр", false, false, button.CloseParent, button.NoFunction )
+		return
+	end
+
+	for i=1, profilesNumber do
+	 	local configPath = iniFile:ReadString( "options", "profile"..(i-1), "" )	
+	 	
+	 	base.LogScript( "path to config="..configPath )
+
+	 	local config = base.CLuaIniFile( nil, configPath )
+	 	local profileName = config:ReadString( "properties", "profilename:string", "UnknownName" )
+	 	local profileCompany = config:ReadString( "properties", "profilecompany:string", "UnknownCompany" )
+	 	local cYear, cMonth, cDay = config:ReadTime( "properties", "currentTime:time" )
+	 	
+	 	local str = base.string.format( "%s(%s) [%04d-%02d-%02d]", profileName, profileCompany, cYear, cMonth, cDay ) 
+	 	lbx:AddItem( str, nil )
+	 	
+	 	base.table.insert( names, { name=profileName, company=profileCompany } )
+	end
+ 
+    lbx.itemIndex = 0
+		
+	button.Stretch( "12%", "70e", "49%", "30e", "ok", profileWindow, -1, "Загрузить", function() _LoadSaveGame( lbx.itemIndex ) end )
+	button.Stretch( "51%", "70e", "88%", "30e", "cancel", profileWindow, -1, "Отмена", button.CloseParent )
 end
 
 function Quit()
