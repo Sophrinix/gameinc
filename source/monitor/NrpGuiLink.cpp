@@ -215,10 +215,10 @@ void CNrpGuiLink::draw()
 	{
 		rect = AbsoluteRect;
 
-		int color = overrideColorEnabled_ ? overrideColor_.color : 0xff000088;
+		int color = overrideColorEnabled_ ? overrideColor_.color : 0xff00ff00;
 
 		if( IsEnabled )
-			color &= ( pressed_ ? 0xffffffff : 0x80ffffff );
+			color &= ( (Environment->isHovered( this ) || pressed_) ? 0xffffffff : 0x80ffffff );
 		else
 			color &= 0xff707070;
 		

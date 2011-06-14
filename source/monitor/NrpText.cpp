@@ -4,7 +4,6 @@
 #include <sstream>
 #include <cwchar>
 #include <memory>
-#include <regex>
 #include <assert.h>
 #include "NrpTranslate.h"
 

@@ -2,6 +2,7 @@
 #include <irrlicht.h>
 #include "nrpHUDConfig.h"
 #include "NrpText.h"
+#include "IniFile.h"
 //////////////////////////////////////////////////////////////////////////
 
 static nrp::CNrpHUDConfig * global_hud_config_instance = 0;
@@ -20,8 +21,6 @@ CNrpHUDConfig::CNrpHUDConfig() : INrpConfig(CLASS_HUDCONFIG, CLASS_HUDCONFIG)
 {		
 	Add( FONT_SIMPLE, NrpText("") );
 	Add( FONT_TOOLTIP, NrpText("") );
-	for( int i=0; i < 50; i++ )
-		Add( NrpText(L"font_") + NrpText( i ), NrpText("") );
 
 	Load( L"config/hud.ini" );
 }
@@ -38,5 +37,25 @@ CNrpHUDConfig& CNrpHUDConfig::Instance()
 NrpText CNrpHUDConfig::ClassName()
 {
 	return CLASS_HUDCONFIG;
+}
+
+void CNrpHUDConfig::Load( const NrpText& fileName )
+{
+    INrpConfig::Load( fileName );
+
+    IniFile rv( fileName );
+
+    IniSection* fonts = rv.GetSection( SECTION_FONTS );
+   
+    assert( fonts );
+    if( fonts )
+    {
+        const IniSection::KeyIndexA& keys = fonts->GetKeys();
+        for( IniSection::KeyIndexA::const_iterator pIter = keys.begin();
+             pIter != keys.end(); pIter++ )
+             Add<NrpText>( (*pIter)->GetShortKey().c_str(), (*pIter)->GetValue().c_str() );
+    }
+    else
+        Log( HW ) << "Can't find section \"fonts\" in " << fileName << term;
 }
 } //namespace nrp

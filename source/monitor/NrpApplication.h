@@ -122,6 +122,8 @@ public:
 	void LoadLinks( const NrpText& fileName, const NrpText& templateName );
 
 	static NrpText ClassName();
+
+    static const NrpText FileName;
 private:
 	CNrpApplication(void);
 	~CNrpApplication(void);

@@ -1,11 +1,13 @@
 #include "StdAfx.h"
 #include "LuaQuest.h"
+#include "NrpQuestEngine.h"
 
 namespace nrp
 {
 CLASS_NAME CLASS_CLUAQUEST( "CLuaQuest" );
 
 BEGIN_LUNA_METHODS(CLuaQuest)
+    LUNA_AUTONAME_FUNCTION( CLuaQuest, SetResult )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaQuest)
@@ -14,6 +16,7 @@ BEGIN_LUNA_PROPERTIES(CLuaQuest)
 	LUNA_AUTONAME_PROPERTY( CLuaQuest, "y", GetY, SetY )
 	//LUNA_AUTONAME_PROPERTY( CLuaQuest, "timeStart", GetTimeStart, SetTimeStart )
 	LUNA_AUTONAME_PROPERTY( CLuaQuest, "start", PureFunction, SetFuncStart )
+    LUNA_AUTONAME_PROPERTY( CLuaQuest, "obsolete", PureFunction, Obsolete )
 END_LUNA_PROPERTIES
 	
 CLuaQuest::CLuaQuest(lua_State *L, bool ex) : ILuaProject(L, CLASS_CLUAQUEST, ex )
@@ -62,4 +65,32 @@ int CLuaQuest::SetFuncStart( lua_State* L )
 		(*_object)[ STARTFUNCREF ] = _GetRef( L, -1 );
 	return 0;
 }
+
+int CLuaQuest::Obsolete( lua_State* L )
+{
+    lua_isboolean( L, -1 );
+
+    IF_OBJECT_NOT_NULL_THEN 
+    {
+        bool obsolete = lua_toboolean( L, -1 ) != 0;
+        CNrpQuestEngine::Instance().ObsoleteQuest( (*_object)[ INTERNAL_NAME ] );
+    }
+
+    return 0;
+}
+
+int CLuaQuest::SetResult( lua_State* L )
+{
+    int argc = lua_gettop(L);
+    luaL_argcheck(L, argc == 3, 3, "Function CLuaQuest:SetResult need quest param, text as parameter" );
+
+    NrpText paramName = lua_tostring( L, 2 );
+    NrpText text = lua_tostring( L, 3 );
+
+    IF_OBJECT_NOT_NULL_THEN 
+        CNrpQuestEngine::Instance().SetResult( (*_object)[ INTERNAL_NAME ], paramName, text );
+
+    return 0;
+}
+
 }

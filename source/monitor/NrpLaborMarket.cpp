@@ -224,7 +224,7 @@ NrpText CNrpLaborMarket::Save( const NrpText& folderName )
 {
 	assert( OpFileSystem::IsExist( folderName ) );
 
-	NrpText fileName = OpFileSystem::CheckEndSlash( folderName + MY_SAVE );
+	NrpText fileName = OpFileSystem::CheckEndSlash( folderName ) + MY_SAVE;
 
 	INrpConfig::Save( fileName );
 

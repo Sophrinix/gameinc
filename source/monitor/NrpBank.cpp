@@ -120,8 +120,8 @@ NrpText CNrpBank::Save( const NrpText& saveFolder )
 
 	for( u32 index=0; index < _loans.size(); index++ )
 	{
-		NrpText ret = _loans[ index ]->Save( _GetLoanSaveFileName( index ) );
-		sv.Set( SECTION_PROPERTIES, CreateKeyItem( index ), ret );
+        NrpText ret = _loans[ index ]->Save( OpFileSystem::CheckEndSlash( _nrpApp[ SAVEDIR_BANK ] ) + _GetLoanSaveFileName( index ) );
+		sv.Set( SECTION_LOANS, CreateKeyItem( index ), ret );
 	}
 
 	sv.Save();
@@ -141,7 +141,7 @@ void CNrpBank::Load( const NrpText& saveFolder )
 
 		for( int j=0; j < loanNum; j++ )
 		{
-			NrpText loanSaveFile = rv.Get( SECTION_PROPERTIES, CreateKeyItem( j ), NrpText("") );
+			NrpText loanSaveFile = rv.Get( SECTION_LOANS, CreateKeyItem( j ), NrpText("") );
 
 			CNrpLoan* loan = new CNrpLoan( loanSaveFile );
 			_loans.push_back( loan );

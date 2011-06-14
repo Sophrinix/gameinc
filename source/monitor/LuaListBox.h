@@ -22,6 +22,7 @@ public:
 
 	int AddItem( lua_State *L );
 	int GetSelectedObject( lua_State* L );
+    int GetSelectedText( lua_State* L );
 };
 
 }//namespace nrp

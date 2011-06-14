@@ -123,7 +123,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="false"
-				AdditionalIncludeDirectories="../irrlicht/include;../LLMozLib;../lua5.1/include;../mysql/include"
+				AdditionalIncludeDirectories="..\irrKlang\include;../irrlicht/include;../LLMozLib;../lua5.1/include;../mysql/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -143,10 +143,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="irrlicht.lib Version.lib lua.lib Ws2_32.lib llmozlib2.lib"
+				AdditionalDependencies="irrlicht.lib Version.lib lua.lib Ws2_32.lib llmozlib2.lib irrKlang.lib"
 				OutputFile="$(OutDir)\gameInc.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="lib"
+				AdditionalLibraryDirectories="../irrKlang/lib;lib"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
@@ -461,6 +461,10 @@
 			</File>
 			<File
 				RelativePath="..\..\application\config\db.ini"
+				>
+			</File>
+			<File
+				RelativePath="..\..\application\skin\guiskin.cfg"
 				>
 			</File>
 			<File
@@ -2127,6 +2131,18 @@
 					>
 					<File
 						RelativePath="..\..\application\story\quest1.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\story\quest_first_outsource.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\story\quest_get_money.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\story\quest_talent_artist.lua"
 						>
 					</File>
 				</Filter>

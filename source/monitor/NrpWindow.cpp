@@ -9,6 +9,7 @@
 #include <ITexture.h>
 #include <IVideoDriver.h>
 #include "ImageGUISkin.h"
+#include "nrpButton.h"
 
 namespace irr
 {
@@ -96,14 +97,12 @@ void CNrpWindow::_ApplyStyle( CImageGUISkin* skin )
 
 	if( CNrpButton* btn = dynamic_cast< CNrpButton* >( buttons_[ BTNE_CLOSE ] ) )
 	{
-		SImageGUIElementStyle& style = skin->Config.WindowCloseButton;
-		btn->setImage( style.Texture );
-		btn->setRelativePosition( core::recti( style.SrcBorder.Left, style.SrcBorder.Top,
-											   style.SrcBorder.Right, style.SrcBorder.Bottom ) );
+        SImageGUIElementStyle& style = skin->Config.GetConfig( btn, SImageGUISkinConfig::WindowCloseButton, SImageGUISkinConfig::Normal );
+        btn->setStyleName( NrpText( SImageGUISkinConfig::WindowCloseButton.c_str() ).ToWide() );
+		btn->setRelativePosition( core::recti( style.margin.Left, style.margin.Top,
+											   style.margin.Right, style.margin.Bottom ) );
 		btn->setAlignment( EGUI_ALIGNMENT( style.align.Left ), EGUI_ALIGNMENT( style.align.Right ), 
 						   EGUI_ALIGNMENT( style.align.Top ), EGUI_ALIGNMENT( style.align.Bottom ) );
-		btn->setHoveredImage( skin->Config.WindowCloseHoveredButton.Texture );
-		btn->setPressedImage( skin->Config.WindowClosePressedButton.Texture );
 	}
 }
 

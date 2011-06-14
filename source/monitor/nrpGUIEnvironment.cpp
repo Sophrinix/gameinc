@@ -23,8 +23,11 @@
 #include "NrpGuiSpringAnimator.h"
 #include "logger.h"
 #include "NrpGuiLink.h"
+#include "Logger.h"
 
 #include <stdexcept>
+
+using namespace nrp;
 
 namespace irr
 {
@@ -52,18 +55,6 @@ bool CNrpGUIEnvironment::CreateSkin_()
 
 void CNrpGUIEnvironment::LoadFonts_()
 {
-	for( int cnt=0; ; cnt++ )
-	{
-		NrpText option = NrpText( "font_" ) + NrpText( cnt );
-		if( !nrp::CNrpHUDConfig::Instance().IsExist( option ) )
-			break;
-
-		NrpText filename = nrp::CNrpHUDConfig::Instance()[ option ];
-	
-		IGUIFont* font = _nativeEnv->getFont( filename );
-		fonts_[ option ] = font ? font : _nativeEnv->getBuiltInFont();
-	}
-	
 	{
 		NrpText filename = nrp::CNrpHUDConfig::Instance()[ nrp::FONT_TOOLTIP ];
 		IGUIFont* font = _nativeEnv->getFont( filename );
@@ -199,7 +190,8 @@ void CNrpGUIEnvironment::drawAll()
 	{
 		if( _overlay[ i ]->getParent() )
 			_overlay[ i ]->getParent()->bringToFront( _overlay[ i ] );
-		_overlay[ i ]->draw();
+		
+        _overlay[ i ]->draw();
 	}
 
 	if( _dragObjectSave )
@@ -292,10 +284,11 @@ gui::IGUIWindow* CNrpGUIEnvironment::addMessageBox( const wchar_t* text, s32 fla
 
 	if( CImageGUISkin* skin = dynamic_cast< CImageGUISkin* >( getSkin() ) )
 	{
-		margin.UpperLeftCorner.X = skin->Config.Window.DstBorder.Left;
-		margin.UpperLeftCorner.Y = skin->Config.Window.DstBorder.Top;
-		margin.LowerRightCorner.X = skin->Config.Window.DstBorder.Right;
-		margin.LowerRightCorner.Y = skin->Config.Window.DstBorder.Bottom ;
+        SImageGUIElementStyle& st = skin->Config.configs[ SImageGUISkinConfig::Window ]; 
+		margin.UpperLeftCorner.X = st.dstBorder.Left;
+		margin.UpperLeftCorner.Y = st.dstBorder.Top;
+		margin.LowerRightCorner.X = st.dstBorder.Right;
+		margin.LowerRightCorner.Y = st.dstBorder.Bottom ;
 	}
 
 	rectangle.UpperLeftCorner += margin.UpperLeftCorner;
@@ -394,7 +387,25 @@ irr::gui::IGUIImage* CNrpGUIEnvironment::addImage(  irr::video::ITexture* image,
 irr::gui::IGUIFont* CNrpGUIEnvironment::getFont( const io::path& font_name )
 {
 	core::map< stringw, gui::IGUIFont* >::Node* pIter = fonts_.find( font_name.c_str() );
-	return pIter ? pIter->getValue() : _nativeEnv->getFont( font_name );
+	if( !pIter )
+    {
+        if( !nrp::CNrpHUDConfig::Instance().IsExist( font_name ) )
+            return _nativeEnv->getFont( font_name );
+
+        NrpText filename = nrp::CNrpHUDConfig::Instance()[ font_name ];
+
+        IGUIFont* font = _nativeEnv->getFont( filename );
+        fonts_[ font_name ] = font ? font : _nativeEnv->getBuiltInFont();
+
+        if( !font )
+            Log( HW ) << "Can't load font from name=" << font_name.c_str() << " when fileName=" << filename << term;
+
+        return fonts_[ font_name ];
+    }
+    else
+    {
+        return pIter->getValue(); 
+    }
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -434,6 +445,8 @@ io::IFileSystem* CNrpGUIEnvironment::getFileSystem() const
 void CNrpGUIEnvironment::clear()
 {
 	_nativeEnv->clear();
+    _overlay.clear();
+    _deletionQueue.clear();
 }
 
 bool CNrpGUIEnvironment::postEventFromUser( const SEvent& event )
@@ -678,6 +691,13 @@ void CNrpGUIEnvironment::addToDeletionQueue( IGUIElement* ptrElement )
 			return;
 		}
 
+        for( u32 i=0; i < _overlay.size(); i++ )
+            if( _overlay[ i ] == ptrElement )
+            {
+                _overlay.erase( i );
+                i--;
+            }
+
 		core::list< IGUIElement* >::Iterator pIter = _deletionQueue.begin();
 		for( ; pIter != _deletionQueue.end(); pIter++ )
 			if( (*pIter) == ptrElement )
@@ -783,7 +803,13 @@ gui::IGUIAnimator* CNrpGUIEnvironment::addTextRunnerAnimator( IGUIElement* paren
 void CNrpGUIEnvironment::AddTopElement( IGUIElement* elm )
 {
 	if( elm )
+    {
+        for( u32 i=0; i < _overlay.size(); i++ )
+            if( _overlay[ i ] == elm )
+                return;
+
 		_overlay.push_back( elm );
+    }
 }
 
 ICursorControl* CNrpGUIEnvironment::getCursorControl() const

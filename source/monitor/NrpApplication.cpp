@@ -40,6 +40,7 @@
 #include "NrpBridge.h"
 #include "NrpLaborMarket.h"
 #include "NrpSoundEngine.h"
+#include "NrpQuestEngine.h"
 
 #include <io.h>
 #include <errno.h>
@@ -50,6 +51,8 @@ static nrp::CNrpApplication* globalApplication = NULL;
 namespace nrp
 {
 CLASS_NAME CLASS_NRPAPPLICATION( "CNrpApplication" );
+
+const NrpText CNrpApplication::FileName = "profile.ini";
 
 CNrpApplication::CNrpApplication(void) : INrpConfig( CLASS_NRPAPPLICATION, CLASS_NRPAPPLICATION )
 {
@@ -183,11 +186,12 @@ void CNrpApplication::Save()
 	scene::CLoadingScreen ld( _nrpEngine.GetVideoDriver(), _nrpEngine.GetGuiEnvironment()->getFont( "font_14" ) );
 
 	NrpText prevSaveFolder = (NrpText)_self[ SAVEDIR ] + (NrpText)_self[ PROFILENAME ] + "Old/";
-	NrpText profileIni = (NrpText)_self[ SAVEDIR_PROFILE ] + "profile.ini";
+    NrpText profileIni = (NrpText)_self[ SAVEDIR_PROFILE ] + CNrpApplication::FileName;
 
 	ld.render( 10, "Создаем структуру для сохранения" );
 	OpFileSystem::Remove( prevSaveFolder );
 	OpFileSystem::Copy( _self[ SAVEDIR_PROFILE ], prevSaveFolder );
+    OpFileSystem::Rename( prevSaveFolder + CNrpApplication::FileName, prevSaveFolder + CNrpApplication::FileName + ".bak" );
 	OpFileSystem::Remove( _self[ SAVEDIR_PROFILE ] );
 
 	_CreateDirectoriesMapForSave();
@@ -271,6 +275,9 @@ void CNrpApplication::Save()
 
 	ld.render( 10, "Сохраняем данные о сотрудниках" );
 	CNrpLaborMarket::Instance().Save( _self[ SAVEDIR_PROFILE ] );
+
+    ld.render( 10, "Сохраняем результаты квестов" );
+    CNrpQuestEngine::Instance().Save( _self[ SAVEDIR_PROFILE ] );
 }
 
 void CNrpApplication::_InitialyzeSaveDirectories( const NrpText& profileName )
@@ -403,6 +410,7 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 	CNrpBridge::Instance().Load( _self[ SAVEDIR_BRIDGE ] );
 	CNrpBank::Instance().Load( _self[ SAVEDIR_BANK ] );
 	CNrpScript::Instance().TemporaryScript( AFTER_LOAD_SCRIPT, CNrpScript::SA_EXEC );
+    CNrpQuestEngine::Instance().Load( (NrpText)_self[ SAVEDIR_PROFILE ] );
 }
 
 void CNrpApplication::LoadScreenshot( const NrpText& fileName )

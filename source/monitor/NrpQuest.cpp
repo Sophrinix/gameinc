@@ -13,8 +13,10 @@ CNrpQuest::CNrpQuest(void) : INrpConfig( CLASS_NRPQUEST, "" )
 	Add( POSY, 0 );
 	Add<NrpText>( INTERNAL_NAME, "" );
 	Add<NrpText>( NAME, "" );
+    Add<bool>( OBSOLETE, false );
 	Add( STARTFUNCREF, -1 );
 	Add<NrpText>( BASEFILE, "" );
+    Add<bool>( ACTIVE, false );
 }
 
 CNrpQuest::~CNrpQuest(void)

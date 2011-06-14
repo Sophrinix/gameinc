@@ -6,6 +6,8 @@ namespace nrp
 
 typedef const NrpText SECTION_NAME;
 	
+SECTION_NAME SECTION_ACTIVE_QUESTS( L"activeQuests" );
+SECTION_NAME SECTIONS_QUEST_RESULTS( L"questResults" );
 SECTION_NAME SECTION_OPTIONS( L"options" );
 SECTION_NAME SECTION_PROPERTIES( L"properties" );
 SECTION_NAME SECTION_SHARES( L"shares" );
@@ -36,11 +38,14 @@ SECTION_NAME SECTION_BOXIMAGES( L"imagesBox" );
 SECTION_NAME SECTION_GENREPREFERENCE( L"genrePreference" );
 SECTION_NAME SECTION_GENREEXPIRIENCE( L"genreExperience" );
 SECTION_NAME SECTION_KNOWLEDGES( L"knowledges" );
+SECTION_NAME SECTION_FONTS( L"fonts" );
+SECTION_NAME SECTION_LOANS(L"loans");
 
 NrpText CreateKeyImage( int index );
 NrpText CreateKeyBoxImage( int index );
 
 NrpText CreateKeyCompany( int index );
+NrpText CreateKeyQuest( int inedx );
 NrpText CreateKeyInvention( int index );
 NrpText CreateKeyTech( int index );
 NrpText CreateKeyGenre( int index );

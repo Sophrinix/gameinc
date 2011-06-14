@@ -19,8 +19,8 @@ CNrpGameTime::CNrpGameTime( CNrpApplication* parent )
 	time.wYear = 1983;
 	time.wMonth = 1;
 	time.wDay = 1;
-	time.wHour = 0;
-	time.wMinute = 0;
+	time.wHour = 18;
+	time.wMinute = 50;
 	time.wSecond = 0;
 
 	(*parent)[ CURRENTTIME ] = NrpTime( time );

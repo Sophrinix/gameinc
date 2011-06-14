@@ -8,10 +8,11 @@
 
 namespace nrp
 {
-OPTION_NAME POSX( "posx" );
-OPTION_NAME POSY( "posy" );
-OPTION_NAME STARTFUNCREF( "startfuncref" );
-OPTION_NAME OBSOLETE( "obsolete" );
+OPTION_NAME POSX( L"posx" );
+OPTION_NAME POSY( L"posy" );
+OPTION_NAME STARTFUNCREF( L"startfuncref" );
+OPTION_NAME OBSOLETE( L"obsolete" );
+OPTION_NAME ACTIVE( L"active" );
 
 class CNrpQuest : public INrpConfig, ILuaFunctionality
 {

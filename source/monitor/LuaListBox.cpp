@@ -22,6 +22,7 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaListBox)
 	LUNA_ILUALISTBOX_PROPERTIES(CLuaListBox)
 	LUNA_AUTONAME_PROPERTY( CLuaListBox, "selectedObject", GetSelectedObject, PureFunction )
+    LUNA_AUTONAME_PROPERTY( CLuaListBox, "selectedText", GetSelectedText, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaListBox::CLuaListBox(lua_State *L, bool ex)	: ILuaListBox(L, CLASS_LUALISTBOX, ex )							//конструктор
@@ -38,6 +39,23 @@ int CLuaListBox::AddItem( lua_State *L )	//добавляет текст в списко отображения
 	IF_OBJECT_NOT_NULL_THEN	_object->addItem( text.ToWide(), (u32)object );			
 
 	return 1;
+}
+
+int CLuaListBox::GetSelectedText( lua_State* L )
+{
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        int selected = _object->getSelected();
+        if( selected >= 0 )
+        {
+            NrpText text = _object->getListItem( selected );
+            lua_pushstring( L, text );
+            return 1;
+        }
+    }
+
+    lua_pushnil( L );
+    return 1;
 }
 
 int CLuaListBox::GetSelectedObject( lua_State* L )

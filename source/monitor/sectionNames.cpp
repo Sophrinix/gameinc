@@ -24,5 +24,5 @@ NrpText CreateKeyAddon( int index) { return NrpText("addon_") + NrpText( index )
 NrpText CreateKeyUser( int index ) { return NrpText("user_") + NrpText( index ); }
 NrpText CreateSectionStep( int index ) { return NrpText("step_") + NrpText( index ); }
 NrpText CreateKeyRecense( int index ) { return NrpText("recense_") + NrpText( index ); }
-
+NrpText CreateKeyQuest( int index ) { return NrpText("quest_") + NrpText( index ); }
 }

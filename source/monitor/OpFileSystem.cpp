@@ -167,7 +167,7 @@ void OpFileSystem::CreateDirectory( NrpText pathTo )
 
 bool OpFileSystem::IsExist( const NrpText& pathTo )
 {
-	bool ex = ( _waccess( pathTo.ToWide(), 0 ) != -1);
+	bool ex = ( _waccess( pathTo.ToWide(), 0 ) != -1 );
 
 /*
 #ifdef _DEBUG
@@ -181,7 +181,8 @@ bool OpFileSystem::IsExist( const NrpText& pathTo )
 bool OpFileSystem::IsFolder( const NrpText& pathTo )
 {
 	NrpText myPath = RemoveEndSlash( pathTo );
-	assert( IsExist( myPath ) );
+	if( !IsExist( myPath ) )
+        Log( HW ) << "Try delete unexisting file " << myPath << term;
 	
 	_wfinddata_t fdata;	
 	intptr_t hFile;
@@ -239,4 +240,10 @@ NrpText OpFileSystem::CheckFile( const NrpText& dir, const NrpText& fileName )
 	return fileName;
 }
 
+void OpFileSystem::Rename( const NrpText& pathOld, const NrpText& pathNew )
+{
+    assert( IsExist( pathOld ) );
+
+    _wrename( pathOld.ToWide(), pathNew.ToWide() );
+}
 }//end namespace nrp

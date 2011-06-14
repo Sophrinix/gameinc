@@ -12,8 +12,11 @@ BEGIN_LUNA_METHODS(CLuaQuestEngine)
 	LUNA_AUTONAME_FUNCTION( CLuaQuestEngine, GetActiveQuest )
 	LUNA_AUTONAME_FUNCTION( CLuaQuestEngine, GetQuest )
 	LUNA_AUTONAME_FUNCTION( CLuaQuestEngine, StartQuest )
-	LUNA_AUTONAME_FUNCTION( CLuaQuestEngine, EndQuest )
+	LUNA_AUTONAME_FUNCTION( CLuaQuestEngine, ObsoleteQuest )
 	LUNA_AUTONAME_FUNCTION( CLuaQuestEngine, AddResourceDirectory )
+	LUNA_AUTONAME_FUNCTION( CLuaQuestEngine, AddActiveQuest )
+    LUNA_AUTONAME_FUNCTION( CLuaQuestEngine, SetResult )
+    LUNA_AUTONAME_FUNCTION( CLuaQuestEngine, GetResult )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaQuestEngine)
@@ -94,14 +97,26 @@ int CLuaQuestEngine::StartQuest( lua_State* L )
 	return 0;
 }
 
-int CLuaQuestEngine::EndQuest( lua_State* L )
+int CLuaQuestEngine::AddActiveQuest( lua_State* L )
+{
+	int argc = lua_gettop( L );
+	luaL_argcheck(L, argc == 2, 2, "Function CLuaQuestEngine:AddActiveQuest need quest name as parameter" );
+
+	NrpText name = lua_tostring( L, 2 );
+
+	IF_OBJECT_NOT_NULL_THEN _object->AddActiveQuest( name );
+
+	return 0;
+}
+
+int CLuaQuestEngine::ObsoleteQuest( lua_State* L )
 {
 	int argc = lua_gettop(L);
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaQuestEngine:EndQuest need quest name as parameter" );
 
 	NrpText name = lua_tostring( L, 2 );
 
-	IF_OBJECT_NOT_NULL_THEN _object->EndQuest( name );
+	IF_OBJECT_NOT_NULL_THEN _object->ObsoleteQuest( name );
 
 	return 0;
 }
@@ -139,6 +154,43 @@ int CLuaQuestEngine::GetQuest( lua_State* L )
 
 	lua_pushnil( L );
 	return 1;
+}
+
+int CLuaQuestEngine::SetResult( lua_State* L )
+{
+    int argc = lua_gettop(L);
+    luaL_argcheck(L, argc == 4, 4, "Function CLuaQuestEngine:SetResult need quest name, param, string as parameter" );
+
+    NrpText quest = lua_tostring( L, 2 );
+    NrpText paramName = lua_tostring( L, 3 );
+    NrpText text = lua_tostring( L, 4 );
+
+    IF_OBJECT_NOT_NULL_THEN _object->SetResult( quest, paramName, text );
+
+    return 0;
+}
+
+int CLuaQuestEngine::GetResult( lua_State* L )
+{
+    int argc = lua_gettop(L);
+    luaL_argcheck(L, argc == 3, 3, "Function CLuaQuestEngine:GetResult need quest name, param as parameter" );
+
+    NrpText quest = lua_tostring( L, 2 );
+    NrpText paramName = lua_tostring( L, 3 );
+
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        NrpText ret = _object->GetResult( quest, paramName );
+
+        if( ret != CNrpQuestEngine::UnExist )
+        {
+            lua_pushstring( L, ret );
+            return 1;
+        }
+    }
+
+    lua_pushnil( L );
+    return 1;
 }
 
 }

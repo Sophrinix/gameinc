@@ -18,8 +18,11 @@ public:
 	int GetNumAQuests( lua_State* L );
 	int GetQuest( lua_State* L );
 	int StartQuest( lua_State* L );
-	int EndQuest( lua_State* L );
+	int ObsoleteQuest( lua_State* L );
 	int AddResourceDirectory( lua_State* L );
+    int AddActiveQuest( lua_State* L );
+    int SetResult( lua_State* L );
+    int GetResult( lua_State* L );
 
 	//int AddResourceDirectory( lua_State* L );
 

@@ -13,6 +13,7 @@ class OpFileSystem
 public:
 	static void Remove( const NrpText& pathTo );
 	static void Copy( const NrpText& pathOld, const NrpText& pathNew );
+    static void Rename( const NrpText& pathOld, const NrpText& pathNew );
 	static void CreateDirectorySnapshot( const NrpText& directory,
 										 const NrpText& templateName,
 										 const NrpText& itemName,

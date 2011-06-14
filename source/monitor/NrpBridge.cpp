@@ -311,6 +311,8 @@ int CNrpBridge::ChangeShares( INrpConfig& agent, CNrpCompany& cmp, int shareNumb
 			(*share)[ PIE_NUMBER ] += shareNumber;
 			int price = static_cast< int >( shareNumber * (float)cmp[ PIE_COST ] );
 			agent[ BALANCE ] -= price;
+            //стоимость совершения сделки
+            agent[ BALANCE ] -= static_cast< int >( abs( price ) * 0.02 );
 			cmp[ INVESTMENT_EXPECTATIONS ] += price;
 		}
 	}
@@ -322,8 +324,10 @@ int CNrpBridge::ChangeShares( INrpConfig& agent, CNrpCompany& cmp, int shareNumb
 			if( _SellAvaible( agent, *share, shareNumber ) )
 			{
 				(*share)[ PIE_NUMBER ] -= shareNumber;
-				int price = static_cast< int >( shareNumber * (float)cmp[ PIE_COST ] );
+				int price = static_cast< int >( abs( shareNumber ) * (float)cmp[ PIE_COST ] );
 				agent[ BALANCE ] += price;
+                //стоимость совершения сделки
+                agent[ BALANCE ] -= static_cast< int >( abs( price ) * 0.02 );
 				cmp[ INVESTMENT_EXPECTATIONS ] -= price;
 			}
 		}

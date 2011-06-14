@@ -306,13 +306,17 @@ int CLuaGuiEnvironment::AddButton( lua_State *vm )
 
 	IF_OBJECT_NOT_NULL_THEN
 	{
-		gui::IGUIButton* elm = _object->addButton( rec,  parent, id, text.ToWide() );
-		if( action > 0 )
-			dynamic_cast< gui::CNrpButton* >( elm )->setOnClickAction( action );
-		//lua_pop( vm, argc );
-		lua_pushlightuserdata( vm, (void*)elm );
-		Luna< CLuaButton >::constructor( vm );
-		return 1;
+        assert( parent );
+        if( parent )
+        {
+		    gui::IGUIButton* elm = _object->addButton( rec,  parent, id, text.ToWide() );
+		    if( action > 0 )
+			    dynamic_cast< gui::CNrpButton* >( elm )->setOnClickAction( action );
+		    //lua_pop( vm, argc );
+		    lua_pushlightuserdata( vm, (void*)elm );
+		    Luna< CLuaButton >::constructor( vm );
+		    return 1;
+        }
 	}
 
 	lua_pushnil( vm );
@@ -839,15 +843,18 @@ int CLuaGuiEnvironment::FadeAction( lua_State* L )
 	{
 		gui::IGUIInOutFader* fader = (gui::IGUIInOutFader*)_object->getRootGUIElement()->getElementFromId( 2002002 );
 		if( fader == NULL )
+        {
 			fader = _object->addInOutFader(0, _object->getRootGUIElement(), 2002002 );
+            _object->AddTopElement( fader );
+        }
 
 		if( inaction )
 			fader->fadeIn( time );
 		else
 			fader->fadeOut( time );
 
-		if( fader->getParent() )
-			fader->getParent()->bringToFront( fader );
+//		if( fader->getParent() )
+//			fader->getParent()->bringToFront( fader );
 	}
 
 	return 0;

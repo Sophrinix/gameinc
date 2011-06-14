@@ -17,7 +17,6 @@ BEGIN_LUNA_PROPERTIES(CLuaGuiLink)
 	LUNA_AUTONAME_PROPERTY( CLuaGuiLink, "action", PureFunction, SetAction )
 	LUNA_AUTONAME_PROPERTY( CLuaGuiLink, "tooltip", PureFunction, SetTooltip )
 	LUNA_AUTONAME_PROPERTY( CLuaGuiLink, "color", PureFunction, SetOverrideColor )
-)
 END_LUNA_PROPERTIES
 
 

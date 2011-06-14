@@ -14,6 +14,7 @@ class CNrpHUDConfig : public INrpConfig
 private:
 	CNrpHUDConfig();
 
+    void Load( const NrpText& fileName );
 public:
 	static CNrpHUDConfig& Instance();
 
