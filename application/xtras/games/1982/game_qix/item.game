@@ -1,0 +1,39 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_puzzle
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_10=platform_lynx
+platform_11=platform_nes
+platform_2=platform_unknown
+platform_3=platform_atari5200
+platform_4=platform_atari8b
+platform_5=platform_commodore
+platform_6=platform_commodore
+platform_7=platform_dos
+platform_8=platform_gameboy
+platform_9=platform_unknown
+[properties]
+cash:int=310726000
+copySell:int=8398000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=0 d=28 h=0 mi=0
+famous:float=0.88
+gameIsSaling:bool=false
+internalname:string=game_qix
+localizationRating:int=12
+name:string=QIX
+owner:string=Atari, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=35
+startBugRating:int=12
+startdate:time=y=1982 m=1 d=27 h=0 mi=0
+startGenreRating:int=93
+startGraphicRating:int=28
+startrating:int=44
+startSoundRating:int=56
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/qix

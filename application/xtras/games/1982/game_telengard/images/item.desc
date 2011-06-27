@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[properties]
+internalname:string=game_telengard
+startdate:time=y=1982 m=9 d=5 h=0 mi=0
+url:string=http://www.mobygames.com/game/telengard

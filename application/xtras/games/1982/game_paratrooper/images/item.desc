@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[properties]
+internalname:string=game_paratrooper
+startdate:time=y=1982 m=1 d=10 h=0 mi=0

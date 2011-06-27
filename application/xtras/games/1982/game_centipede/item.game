@@ -1,0 +1,39 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_10=platform_gameboycolor
+platform_11=platform_intellivision
+platform_12=platform_pcbooter
+platform_13=platform_ti994a
+platform_14=platform_vic20
+platform_2=platform_atari5200
+platform_3=platform_atari7800
+platform_4=platform_atari8b
+platform_5=platform_unknown
+platform_6=platform_unknown
+platform_7=platform_colecovision
+platform_8=platform_commodore
+platform_9=platform_gameboy
+[properties]
+cash:int=57069000
+copySell:int=6341000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=4 d=4 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_centipede
+localizationRating:int=67
+name:string=Centipede
+owner:string=Atari, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=14
+startBugRating:int=54
+startdate:time=y=1982 m=7 d=16 h=0 mi=0
+startGenreRating:int=24
+startGraphicRating:int=17
+startrating:int=30
+startSoundRating:int=45
+textureNormal:path=images/spl_0.jpg

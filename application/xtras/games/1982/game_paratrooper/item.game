@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_pcbooter
+[properties]
+cash:int=258962000
+copySell:int=3278000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=9 d=12 h=0 mi=0
+famous:float=0.71
+gameIsSaling:bool=false
+internalname:string=game_paratrooper
+localizationRating:int=15
+name:string=Paratrooper
+owner:string=Orion Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=91
+startBugRating:int=46
+startdate:time=y=1982 m=1 d=10 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=29
+startrating:int=49
+startSoundRating:int=47

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_colecovision
+platform_2=platform_commodore
+platform_3=platform_pcbooter
+[properties]
+cash:int=78275000
+copySell:int=2525000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=5 d=15 h=0 mi=0
+famous:float=0.58
+gameIsSaling:bool=false
+internalname:string=game_evolution
+localizationRating:int=90
+name:string=Evolution
+owner:string=Sydney Development Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=65
+startBugRating:int=55
+startdate:time=y=1982 m=8 d=27 h=0 mi=0
+startGenreRating:int=78
+startGraphicRating:int=86
+startrating:int=56
+startSoundRating:int=0
+textureNormal:path=images/spl_0.jpg

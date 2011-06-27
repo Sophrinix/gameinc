@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[properties]
+internalname:string=game_a.e.
+startdate:time=y=1982 m=8 d=25 h=0 mi=0

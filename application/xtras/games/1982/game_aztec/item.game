@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_pc88
+[properties]
+cash:int=149706000
+copySell:int=8317000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=9 d=2 h=0 mi=0
+famous:float=0.95
+gameIsSaling:bool=false
+internalname:string=game_aztec
+localizationRating:int=54
+name:string=Aztec
+owner:string=Datamost, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=53
+startBugRating:int=30
+startdate:time=y=1982 m=6 d=10 h=0 mi=0
+startGenreRating:int=49
+startGraphicRating:int=57
+startrating:int=53
+startSoundRating:int=78
+textureNormal:path=images/spl_0.jpg

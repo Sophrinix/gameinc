@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_msx
+platform_3=platform_pc88
+[properties]
+cash:int=422208000
+copySell:int=6597000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=1 d=25 h=0 mi=0
+famous:float=0.05
+gameIsSaling:bool=false
+internalname:string=game_a.e.
+localizationRating:int=10
+name:string=A.E.
+owner:string=Br?derbund Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=69
+startBugRating:int=15
+startdate:time=y=1982 m=8 d=25 h=0 mi=0
+startGenreRating:int=52
+startGraphicRating:int=11
+startrating:int=34
+startSoundRating:int=27

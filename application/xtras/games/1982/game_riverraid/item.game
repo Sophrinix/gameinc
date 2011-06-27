@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_atari2600
+platform_1=platform_atari5200
+platform_2=platform_atari8b
+platform_3=platform_colecovision
+platform_4=platform_commodore
+platform_5=platform_intellivision
+platform_6=platform_msx
+platform_7=platform_pcbooter
+platform_8=platform_zxspectrum
+[properties]
+cash:int=117045000
+copySell:int=2601000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=5 d=13 h=0 mi=0
+famous:float=0.5
+gameIsSaling:bool=false
+internalname:string=game_riverraid
+localizationRating:int=57
+name:string=RiverRaid
+owner:string=Activision, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=97
+startBugRating:int=89
+startdate:time=y=1982 m=8 d=5 h=0 mi=0
+startGenreRating:int=61
+startGraphicRating:int=14
+startrating:int=71
+startSoundRating:int=96
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_atari8b
+platform_1=platform_commodore
+platform_2=platform_vic20
+[properties]
+cash:int=44220000
+copySell:int=1474000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=1 d=21 h=0 mi=0
+famous:float=0.16
+gameIsSaling:bool=false
+internalname:string=game_aztecchallenge
+localizationRating:int=70
+name:string=AztecChallenge
+owner:string=Cosmi Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=72
+startBugRating:int=17
+startdate:time=y=1982 m=9 d=6 h=0 mi=0
+startGenreRating:int=67
+startGraphicRating:int=82
+startrating:int=65
+startSoundRating:int=87
+textureNormal:path=images/spl_0.jpg

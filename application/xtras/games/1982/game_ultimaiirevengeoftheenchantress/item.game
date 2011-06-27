@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_scifi
+genre_3=genre_turnbased
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_unknown
+platform_6=platform_msx
+platform_7=platform_pc88
+platform_8=platform_pc98
+[properties]
+cash:int=285271000
+copySell:int=3437000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=2 d=5 h=0 mi=0
+famous:float=0.01
+gameIsSaling:bool=false
+internalname:string=game_ultimaiirevengeoftheenchantress
+localizationRating:int=80
+name:string=UltimaIIRevengeoftheEnchantress
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=5
+startBugRating:int=57
+startdate:time=y=1982 m=7 d=12 h=0 mi=0
+startGenreRating:int=99
+startGraphicRating:int=95
+startrating:int=69
+startSoundRating:int=91
+textureNormal:path=images/spl_0.jpg

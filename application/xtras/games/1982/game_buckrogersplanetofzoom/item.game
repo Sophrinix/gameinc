@@ -1,0 +1,37 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_10=platform_zxspectrum
+platform_2=platform_atari5200
+platform_3=platform_atari8b
+platform_4=platform_colecovision
+platform_5=platform_commodore
+platform_6=platform_msx
+platform_7=platform_pcbooter
+platform_8=platform_ti994a
+platform_9=platform_vic20
+[properties]
+cash:int=63315000
+copySell:int=1809000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=2 d=16 h=0 mi=0
+famous:float=0.67
+gameIsSaling:bool=false
+internalname:string=game_buckrogersplanetofzoom
+localizationRating:int=39
+name:string=BuckRogersPlanetofZoom
+owner:string=SEGA Enterprises, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=64
+startBugRating:int=13
+startdate:time=y=1982 m=9 d=19 h=0 mi=0
+startGenreRating:int=87
+startGraphicRating:int=27
+startrating:int=49
+startSoundRating:int=54
+textureNormal:path=images/spl_0.jpg

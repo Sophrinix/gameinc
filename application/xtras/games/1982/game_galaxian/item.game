@@ -1,0 +1,39 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_10=platform_vic20
+platform_11=platform_zxspectrum
+platform_2=platform_atari5200
+platform_3=platform_atari8b
+platform_4=platform_colecovision
+platform_5=platform_commodore
+platform_6=platform_msx
+platform_7=platform_nes
+platform_8=platform_pc88
+platform_9=platform_pcbooter
+[properties]
+cash:int=8528000
+copySell:int=164000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=8 d=23 h=0 mi=0
+famous:float=0.67
+gameIsSaling:bool=false
+internalname:string=game_galaxian
+localizationRating:int=83
+name:string=Galaxian
+owner:string=Atari, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=67
+startdate:time=y=1982 m=9 d=1 h=0 mi=0
+startGenreRating:int=48
+startGraphicRating:int=60
+startrating:int=39
+startSoundRating:int=1
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/galaxian

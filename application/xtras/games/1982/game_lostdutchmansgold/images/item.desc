@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+[properties]
+internalname:string=game_lostdutchmansgold
+startdate:time=y=1982 m=3 d=1 h=0 mi=0

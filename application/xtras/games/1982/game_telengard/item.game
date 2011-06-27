@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_trs80
+platform_6=platform_windows
+[properties]
+cash:int=78680000
+copySell:int=7868000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=0 d=15 h=0 mi=0
+famous:float=0.95
+gameIsSaling:bool=false
+internalname:string=game_telengard
+localizationRating:int=12
+name:string=Telengard
+owner:string=Avalon Hill
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=62
+startBugRating:int=56
+startdate:time=y=1982 m=9 d=5 h=0 mi=0
+startGenreRating:int=63
+startGraphicRating:int=54
+startrating:int=49
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/telengard

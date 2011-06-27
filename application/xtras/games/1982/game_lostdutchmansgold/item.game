@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=252075000
+copySell:int=3361000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=11 d=6 h=0 mi=0
+famous:float=0.27
+gameIsSaling:bool=false
+internalname:string=game_lostdutchmansgold
+localizationRating:int=11
+name:string=LostDutchmansGold
+owner:string=International PC Owners
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=11
+startBugRating:int=1
+startdate:time=y=1982 m=3 d=1 h=0 mi=0
+startGenreRating:int=74
+startGraphicRating:int=58
+startrating:int=44
+startSoundRating:int=76

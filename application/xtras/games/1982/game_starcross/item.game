@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_atari8b
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_unknown
+platform_7=platform_pcbooter
+platform_8=platform_trs80
+[properties]
+cash:int=359154000
+copySell:int=6651000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=2 d=15 h=0 mi=0
+famous:float=0.16
+gameIsSaling:bool=false
+internalname:string=game_starcross
+localizationRating:int=35
+name:string=Starcross
+owner:string=Infocom, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=81
+startBugRating:int=29
+startdate:time=y=1982 m=3 d=10 h=0 mi=0
+startGenreRating:int=5
+startGraphicRating:int=36
+startrating:int=33
+startSoundRating:int=14
+textureNormal:path=images/spl_0.jpg

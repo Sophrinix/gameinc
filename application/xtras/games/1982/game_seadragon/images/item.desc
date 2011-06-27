@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[properties]
+internalname:string=game_seadragon
+startdate:time=y=1982 m=8 d=7 h=0 mi=0
