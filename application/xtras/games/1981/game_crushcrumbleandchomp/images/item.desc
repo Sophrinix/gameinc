@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_horror
+[properties]
+internalname:string=game_crushcrumbleandchomp
+startdate:time=y=1981 m=4 d=24 h=0 mi=0

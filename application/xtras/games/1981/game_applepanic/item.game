@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_pcbooter
+platform_3=platform_vic20
+[properties]
+cash:int=17498000
+copySell:int=673000
+descriptionpath:path=desc.htm
+enddate:time=y=1984 m=2 d=6 h=0 mi=0
+famous:float=0.89
+gameIsSaling:bool=false
+internalname:string=game_applepanic
+localizationRating:int=87
+name:string=Apple Panic
+owner:string=Br?derbund Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=96
+startBugRating:int=41
+startdate:time=y=1981 m=0 d=12 h=0 mi=0
+startGenreRating:int=73
+startGraphicRating:int=93
+startrating:int=64
+startSoundRating:int=21
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/apple-panic

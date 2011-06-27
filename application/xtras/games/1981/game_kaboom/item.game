@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_atari2600
+platform_1=platform_atari5200
+platform_2=platform_atari8b
+[properties]
+cash:int=155235000
+copySell:int=1965000
+descriptionpath:path=desc.htm
+enddate:time=y=1984 m=9 d=14 h=0 mi=0
+famous:float=0.48
+gameIsSaling:bool=false
+internalname:string=game_kaboom
+localizationRating:int=87
+name:string=Kaboom!
+owner:string=Activision, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=96
+startBugRating:int=39
+startdate:time=y=1981 m=3 d=27 h=0 mi=0
+startGenreRating:int=63
+startGraphicRating:int=29
+startrating:int=49
+startSoundRating:int=19
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/kaboom

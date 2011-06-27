@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_trs80
+[properties]
+cash:int=361200000
+copySell:int=8400000
+descriptionpath:path=desc.htm
+enddate:time=y=1984 m=10 d=14 h=0 mi=0
+famous:float=0.08
+gameIsSaling:bool=false
+internalname:string=game_thebattleofthebulgetigersinthesnow
+localizationRating:int=65
+name:string=TheBattleoftheBulgeTigersintheSnow
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=68
+startBugRating:int=53
+startdate:time=y=1981 m=1 d=27 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=36
+startrating:int=57
+startSoundRating:int=94
+textureNormal:path=images/spl_0.jpg

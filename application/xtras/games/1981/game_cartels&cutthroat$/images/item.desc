@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_managerial
+[properties]
+internalname:string=game_cartels&cutthroat$
+startdate:time=y=1981 m=9 d=17 h=0 mi=0

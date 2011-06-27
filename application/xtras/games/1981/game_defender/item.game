@@ -1,0 +1,36 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_10=platform_xbox360
+platform_2=platform_atari5200
+platform_3=platform_atari8b
+platform_4=platform_colecovision
+platform_5=platform_commodore
+platform_6=platform_intellivision
+platform_7=platform_pcbooter
+platform_8=platform_ti994a
+platform_9=platform_vic20
+[properties]
+cash:int=128822000
+copySell:int=1571000
+descriptionpath:path=desc.htm
+enddate:time=y=1984 m=8 d=4 h=0 mi=0
+famous:float=0.84
+gameIsSaling:bool=false
+internalname:string=game_defender
+localizationRating:int=49
+name:string=Defender
+owner:string=Sears, Roebuck and Co.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=33
+startBugRating:int=14
+startdate:time=y=1981 m=10 d=27 h=0 mi=0
+startGenreRating:int=3
+startGraphicRating:int=87
+startrating:int=43
+startSoundRating:int=79
+textureNormal:path=images/spl_0.jpg

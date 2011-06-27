@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+[properties]
+internalname:string=game_thebattleofthebulgetigersinthesnow
+startdate:time=y=1981 m=1 d=27 h=0 mi=0

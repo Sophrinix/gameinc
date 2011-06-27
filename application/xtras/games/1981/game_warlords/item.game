@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_pong
+[platforms]
+platform_0=platform_atari2600
+[properties]
+cash:int=6556000
+copySell:int=149000
+descriptionpath:path=desc.htm
+enddate:time=y=1984 m=8 d=21 h=0 mi=0
+famous:float=0.1
+gameIsSaling:bool=false
+internalname:string=game_warlords
+localizationRating:int=22
+name:string=Warlords
+owner:string=Sears, Roebuck and Co.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=28
+startBugRating:int=27
+startdate:time=y=1981 m=4 d=27 h=0 mi=0
+startGenreRating:int=32
+startGraphicRating:int=90
+startrating:int=54
+startSoundRating:int=93
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/atari-2600/warlords_

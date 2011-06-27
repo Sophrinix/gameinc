@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+[properties]
+internalname:string=game_adventureseries
+startdate:time=y=1981 m=1 d=11 h=0 mi=0

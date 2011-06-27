@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_wizardryprovinggroundsofthemadoverlord
+startdate:time=y=1981 m=04 d=25 h=0 mi=0

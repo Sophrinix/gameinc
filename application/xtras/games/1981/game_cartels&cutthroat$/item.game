@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_managerial
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_commodore
+platform_2=platform_dos
+[properties]
+cash:int=694080000
+copySell:int=7230000
+descriptionpath:path=desc.htm
+enddate:time=y=1984 m=9 d=7 h=0 mi=0
+famous:float=0.19
+gameIsSaling:bool=false
+internalname:string=game_cartels&cutthroat$
+localizationRating:int=39
+name:string=Cartels&Cutthroat$
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=89
+startBugRating:int=43
+startdate:time=y=1981 m=9 d=17 h=0 mi=0
+startGenreRating:int=99
+startGraphicRating:int=31
+startrating:int=64
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg

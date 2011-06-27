@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_horror
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_trs80
+platform_5=platform_vic20
+[properties]
+cash:int=111302000
+copySell:int=3838000
+descriptionpath:path=desc.htm
+enddate:time=y=1984 m=6 d=3 h=0 mi=0
+famous:float=0.67
+gameIsSaling:bool=false
+internalname:string=game_crushcrumbleandchomp
+localizationRating:int=25
+name:string=CrushCrumbleandChomp
+owner:string=Automated Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=35
+startBugRating:int=61
+startdate:time=y=1981 m=4 d=24 h=0 mi=0
+startGenreRating:int=38
+startGraphicRating:int=46
+startrating:int=55
+startSoundRating:int=95
+textureNormal:path=images/spl_0.jpg
