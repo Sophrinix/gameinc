@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[properties]
+internalname:string=game_freddyfish
+startdate:time=y=1983 m=5 d=6 h=0 mi=0

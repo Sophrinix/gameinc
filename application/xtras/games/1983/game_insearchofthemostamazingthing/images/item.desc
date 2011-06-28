@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_scifi
+[properties]
+internalname:string=game_insearchofthemostamazingthing
+startdate:time=y=1983 m=10 d=1 h=0 mi=0

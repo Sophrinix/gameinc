@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_colecovision
+platform_1=platform_msx
+platform_2=platform_nes
+platform_3=platform_wii
+[properties]
+cash:int=768210000
+copySell:int=8830000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=7 d=25 h=0 mi=0
+famous:float=0
+gameIsSaling:bool=false
+internalname:string=game_antarcticadventure
+localizationRating:int=90
+name:string=AntarcticAdventure
+owner:string=Konami Industry Co. Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=68
+startBugRating:int=88
+startdate:time=y=1983 m=1 d=17 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=98
+startrating:int=61
+startSoundRating:int=2
+textureNormal:path=images/spl_0.jpg

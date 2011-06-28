@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_arcade
+genre_3=genre_tank
+[properties]
+internalname:string=game_battlezone
+startdate:time=y=1983 m=3 d=0 h=0 mi=0

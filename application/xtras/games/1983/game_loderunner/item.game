@@ -1,0 +1,40 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_apple2
+platform_10=platform_pc88
+platform_11=platform_pcbooter
+platform_12=platform_vic20
+platform_13=platform_wii
+platform_14=platform_wonderswan
+platform_15=platform_zxspectrum
+platform_2=platform_atari8b
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_unknown
+platform_7=platform_unknown
+platform_8=platform_msx
+platform_9=platform_nes
+[properties]
+cash:int=237016000
+copySell:int=5512000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=4 d=3 h=0 mi=0
+famous:float=0.6
+gameIsSaling:bool=false
+internalname:string=game_loderunner
+localizationRating:int=87
+name:string=LodeRunner
+owner:string=Br?derbund Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=17
+startBugRating:int=16
+startdate:time=y=1983 m=10 d=22 h=0 mi=0
+startGenreRating:int=16
+startGraphicRating:int=84
+startrating:int=30
+startSoundRating:int=19
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_pcbooter
+platform_4=platform_wii
+[properties]
+cash:int=81675000
+copySell:int=3025000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=2 d=7 h=0 mi=0
+famous:float=0.54
+gameIsSaling:bool=false
+internalname:string=game_jumpman
+localizationRating:int=81
+name:string=Jumpman
+owner:string=Epyx, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=82
+startBugRating:int=27
+startdate:time=y=1983 m=11 d=4 h=0 mi=0
+startGenreRating:int=75
+startGraphicRating:int=27
+startrating:int=57
+startSoundRating:int=75
+textureNormal:path=images/spl_0.jpg

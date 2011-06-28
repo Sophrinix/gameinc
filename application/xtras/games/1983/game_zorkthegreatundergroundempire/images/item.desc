@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_zorkthegreatundergroundempire
+startdate:time=y=1983 m=4 d=16 h=0 mi=0

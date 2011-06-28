@@ -1,0 +1,5 @@
+[genres]
+genre_0=genre_action
+[properties]
+internalname:string=game_jumpman
+startdate:time=y=1983 m=11 d=4 h=0 mi=0

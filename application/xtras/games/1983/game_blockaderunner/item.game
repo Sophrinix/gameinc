@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_colecovision
+platform_1=platform_intellivision
+platform_2=platform_msx
+platform_3=platform_zxspectrum
+[properties]
+cash:int=42528000
+copySell:int=1329000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=6 d=25 h=0 mi=0
+famous:float=0.41
+gameIsSaling:bool=false
+internalname:string=game_blockaderunner
+localizationRating:int=61
+name:string=BlockadeRunner
+owner:string=Interphase Technologies Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=66
+startdate:time=y=1983 m=8 d=4 h=0 mi=0
+startGenreRating:int=11
+startGraphicRating:int=25
+startrating:int=58
+startSoundRating:int=96

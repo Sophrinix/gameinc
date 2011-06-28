@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_dragon
+platform_1=platform_trs80
+[properties]
+cash:int=648374000
+copySell:int=7907000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=5 d=16 h=0 mi=0
+famous:float=0.05
+gameIsSaling:bool=false
+internalname:string=game_buzzardbait
+localizationRating:int=98
+name:string=BuzzardBait
+owner:string=Tom Mix
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=19
+startdate:time=y=1983 m=11 d=14 h=0 mi=0
+startGenreRating:int=83
+startGraphicRating:int=22
+startrating:int=51
+startSoundRating:int=96

@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_detective
+genre_2=genre_interactivefiction
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_atari8b
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_unknown
+platform_7=platform_pcbooter
+platform_8=platform_trs80
+[properties]
+cash:int=179462000
+copySell:int=2942000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=8 d=18 h=0 mi=0
+famous:float=0.04
+gameIsSaling:bool=false
+internalname:string=game_thewitness
+localizationRating:int=68
+name:string=The Witness
+owner:string=Infocom, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=86
+startBugRating:int=44
+startdate:time=y=1983 m=11 d=13 h=0 mi=0
+startGenreRating:int=73
+startGraphicRating:int=67
+startrating:int=55
+startSoundRating:int=9
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/witness

@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_helicopter
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_apple2
+platform_2=platform_atari8b
+platform_3=platform_commodore
+platform_4=platform_msx
+platform_5=platform_zxspectrum
+[properties]
+cash:int=190215000
+copySell:int=4227000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=6 d=25 h=0 mi=0
+famous:float=0.91
+gameIsSaling:bool=false
+internalname:string=game_beachhead
+localizationRating:int=7
+name:string=BeachHead
+owner:string=U.S. Gold Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=22
+startdate:time=y=1983 m=4 d=3 h=0 mi=0
+startGenreRating:int=67
+startGraphicRating:int=0
+startrating:int=35
+startSoundRating:int=48
+textureNormal:path=images/spl_0.jpg

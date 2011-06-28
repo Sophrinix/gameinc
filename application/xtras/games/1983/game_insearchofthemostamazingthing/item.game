@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_scifi
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_dos
+[properties]
+cash:int=183002000
+copySell:int=4946000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=11 d=4 h=0 mi=0
+famous:float=0.81
+gameIsSaling:bool=false
+internalname:string=game_insearchofthemostamazingthing
+localizationRating:int=84
+name:string=InSearchoftheMostAmazingThing
+owner:string=Spinnaker Software Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=5
+startBugRating:int=43
+startdate:time=y=1983 m=10 d=1 h=0 mi=0
+startGenreRating:int=14
+startGraphicRating:int=4
+startrating:int=20
+startSoundRating:int=35

@@ -1,9 +1,0 @@
-[genres]
-genre_0=genre_strategy
-genre_1=genre_war
-genre_2=genre_place_earth
-genre_3=genre_real_time
-[properties]
-startdate:time=y=1983 m=01 d=02 h=0 mi=0
-genreModuleNumber:int=4
-internalname:string=game_stonkers

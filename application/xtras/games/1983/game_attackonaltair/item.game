@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_pcbooter
+[properties]
+cash:int=282404000
+copySell:int=4153000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=6 d=4 h=0 mi=0
+famous:float=0.71
+gameIsSaling:bool=false
+internalname:string=game_attackonaltair
+localizationRating:int=0
+name:string=AttackOnAltair
+owner:string=Windmill Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=48
+startBugRating:int=98
+startdate:time=y=1983 m=3 d=18 h=0 mi=0
+startGenreRating:int=37
+startGraphicRating:int=65
+startrating:int=62
+startSoundRating:int=64

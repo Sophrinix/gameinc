@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_apple2
+platform_2=platform_atari2600
+platform_3=platform_atari8b
+platform_4=platform_unknown
+platform_5=platform_colecovision
+platform_6=platform_commodore
+platform_7=platform_pcbooter
+platform_8=platform_zxspectrum
+[properties]
+cash:int=112380000
+copySell:int=1873000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=0 d=20 h=0 mi=0
+famous:float=0.13
+gameIsSaling:bool=false
+internalname:string=game_tapper
+localizationRating:int=87
+name:string=Tapper
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=20
+startBugRating:int=88
+startdate:time=y=1983 m=2 d=6 h=0 mi=0
+startGenreRating:int=95
+startGraphicRating:int=39
+startrating:int=58
+startSoundRating:int=52
+textureNormal:path=images/spl_0.jpg

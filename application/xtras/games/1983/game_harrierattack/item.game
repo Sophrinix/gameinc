@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_flight
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_commodore
+platform_2=platform_zxspectrum
+[properties]
+cash:int=9750000
+copySell:int=195000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=8 d=11 h=0 mi=0
+famous:float=0.08
+gameIsSaling:bool=false
+internalname:string=game_harrierattack
+localizationRating:int=2
+name:string=HarrierAttack
+owner:string=Durell Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=97
+startdate:time=y=1983 m=6 d=25 h=0 mi=0
+startGenreRating:int=75
+startGraphicRating:int=61
+startrating:int=72
+startSoundRating:int=37
+textureNormal:path=images/spl_0.jpg

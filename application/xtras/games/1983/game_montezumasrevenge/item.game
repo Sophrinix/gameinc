@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_2=platform_atari5200
+platform_3=platform_atari8b
+platform_4=platform_colecovision
+platform_5=platform_commodore
+platform_6=platform_pcbooter
+platform_7=platform_segamastersystem
+[properties]
+cash:int=177120000
+copySell:int=5535000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=2 d=10 h=0 mi=0
+famous:float=0.34
+gameIsSaling:bool=false
+internalname:string=game_montezumasrevenge
+localizationRating:int=20
+name:string=MontezumasRevenge
+owner:string=Parker Brothers
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=80
+startdate:time=y=1983 m=8 d=26 h=0 mi=0
+startGenreRating:int=7
+startGraphicRating:int=99
+startrating:int=48
+startSoundRating:int=19
+textureNormal:path=images/spl_0.jpg

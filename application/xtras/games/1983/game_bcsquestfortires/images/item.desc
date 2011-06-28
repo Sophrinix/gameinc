@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_comics
+[properties]
+internalname:string=game_bcsquestfortires
+startdate:time=y=1983 m=5 d=20 h=0 mi=0

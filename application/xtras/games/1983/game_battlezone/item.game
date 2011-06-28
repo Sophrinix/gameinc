@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_arcade
+genre_3=genre_tank
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_2=platform_atari8b
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_pcbooter
+platform_6=platform_vic20
+platform_7=platform_zxspectrum
+[properties]
+cash:int=669960000
+copySell:int=9305000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=6 d=2 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_battlezone
+localizationRating:int=69
+name:string=Battlezone
+owner:string=Atarisoft
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=46
+startBugRating:int=28
+startdate:time=y=1983 m=3 d=0 h=0 mi=0
+startGenreRating:int=19
+startGraphicRating:int=51
+startrating:int=33
+startSoundRating:int=22
+textureNormal:path=images/spl_0.jpg

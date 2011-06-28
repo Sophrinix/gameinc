@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_atari2600
+platform_1=platform_atari5200
+platform_2=platform_atari7800
+platform_3=platform_atari8b
+platform_4=platform_atarist
+platform_5=platform_lynx
+platform_6=platform_unknown
+platform_7=platform_nes
+platform_8=platform_pcbooter
+platform_9=platform_xbox360
+[properties]
+cash:int=50232000
+copySell:int=728000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=0 d=7 h=0 mi=0
+famous:float=0.69
+gameIsSaling:bool=false
+internalname:string=game_joust
+localizationRating:int=54
+name:string=Joust
+owner:string=Atarisoft
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=27
+startBugRating:int=70
+startdate:time=y=1983 m=7 d=0 h=0 mi=0
+startGenreRating:int=71
+startGraphicRating:int=88
+startrating:int=63
+startSoundRating:int=62
+textureNormal:path=images/spl_0.jpg

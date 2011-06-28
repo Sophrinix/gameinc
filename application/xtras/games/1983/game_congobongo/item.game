@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_10=platform_vic20
+platform_2=platform_atari5200
+platform_3=platform_atari8b
+platform_4=platform_colecovision
+platform_5=platform_commodore
+platform_6=platform_intellivision
+platform_7=platform_msx
+platform_8=platform_pcbooter
+platform_9=platform_ti994a
+[properties]
+cash:int=137858000
+copySell:int=9847000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=2 d=22 h=0 mi=0
+famous:float=0.89
+gameIsSaling:bool=false
+internalname:string=game_congobongo
+localizationRating:int=15
+name:string=CongoBongo
+owner:string=SEGA Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=34
+startBugRating:int=53
+startdate:time=y=1983 m=5 d=3 h=0 mi=0
+startGenreRating:int=31
+startGraphicRating:int=49
+startrating:int=39
+startSoundRating:int=31
+textureNormal:path=images/spl_0.jpg

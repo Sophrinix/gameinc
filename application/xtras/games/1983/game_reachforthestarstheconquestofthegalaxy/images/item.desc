@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_scifi
+[properties]
+internalname:string=game_reachforthestarstheconquestofthegalaxy
+startdate:time=y=1983 m=8 d=11 h=0 mi=0

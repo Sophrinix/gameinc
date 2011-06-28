@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_olympiad
+[properties]
+internalname:string=game_theactivisiondecathlon
+startdate:time=y=1983 m=10 d=17 h=0 mi=0

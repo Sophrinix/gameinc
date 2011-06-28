@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_arcade
+[platforms]
+platform_0=platform_pcbooter
+[properties]
+cash:int=163856000
+copySell:int=2926000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=3 d=21 h=0 mi=0
+famous:float=0.62
+gameIsSaling:bool=false
+internalname:string=game_bigtop
+localizationRating:int=11
+name:string=BigTop
+owner:string=Funtastic, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=73
+startBugRating:int=33
+startdate:time=y=1983 m=2 d=5 h=0 mi=0
+startGenreRating:int=41
+startGraphicRating:int=31
+startrating:int=36
+startSoundRating:int=4
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_commodore
+platform_2=platform_nes
+platform_3=platform_pc88
+platform_4=platform_pc98
+platform_5=platform_pcbooter
+[properties]
+cash:int=141726000
+copySell:int=3634000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=1 d=26 h=0 mi=0
+famous:float=0.74
+gameIsSaling:bool=false
+internalname:string=game_wizardrylegacyofllylgamynthethirdscenario
+localizationRating:int=94
+name:string=Wizardry: Legacy of Llylgamyn - The Third Scenario
+owner:string=Sir-tech Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=81
+startBugRating:int=37
+startdate:time=y=1983 m=0 d=15 h=0 mi=0
+startGenreRating:int=89
+startGraphicRating:int=3
+startrating:int=43
+startSoundRating:int=5
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/wizardry-legacy-of-llylgamyn-the-third-scenario

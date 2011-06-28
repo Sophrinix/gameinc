@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_unknown
+platform_3=platform_commodore
+platform_4=platform_dos
+[properties]
+cash:int=716144000
+copySell:int=8138000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=10 d=7 h=0 mi=0
+famous:float=0.04
+gameIsSaling:bool=false
+internalname:string=game_reachforthestarstheconquestofthegalaxy
+localizationRating:int=81
+name:string=ReachfortheStarsTheConquestoftheGalaxy
+owner:string=SSG Strategic Studies Group Pty Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=6
+startBugRating:int=49
+startdate:time=y=1983 m=8 d=11 h=0 mi=0
+startGenreRating:int=20
+startGraphicRating:int=87
+startrating:int=37
+startSoundRating:int=23
+textureNormal:path=images/spl_0.jpg

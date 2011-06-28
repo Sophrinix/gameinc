@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_commodore
+platform_1=platform_zxspectrum
+[properties]
+cash:int=110075000
+copySell:int=3145000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=6 d=8 h=0 mi=0
+famous:float=0.05
+gameIsSaling:bool=false
+internalname:string=game_androidtwo
+localizationRating:int=74
+name:string=AndroidTwo
+owner:string=Vortex Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=79
+startBugRating:int=9
+startdate:time=y=1983 m=2 d=24 h=0 mi=0
+startGenreRating:int=72
+startGraphicRating:int=59
+startrating:int=58
+startSoundRating:int=73
+textureNormal:path=images/spl_0.jpg

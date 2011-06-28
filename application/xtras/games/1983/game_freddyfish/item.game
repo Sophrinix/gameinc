@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_pcbooter
+[properties]
+cash:int=24128000
+copySell:int=464000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=8 d=15 h=0 mi=0
+famous:float=0.74
+gameIsSaling:bool=false
+internalname:string=game_freddyfish
+localizationRating:int=58
+name:string=FreddyFish
+owner:string=Mirror Images Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=20
+startBugRating:int=0
+startdate:time=y=1983 m=5 d=6 h=0 mi=0
+startGenreRating:int=63
+startGraphicRating:int=13
+startrating:int=21
+startSoundRating:int=12

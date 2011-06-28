@@ -1,0 +1,39 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_pc98
+platform_11=platform_pcbooter
+platform_12=platform_trs80
+platform_13=platform_trs80
+platform_2=platform_apple2
+platform_3=platform_atari8b
+platform_4=platform_atarist
+platform_5=platform_unknown
+platform_6=platform_commodore
+platform_7=platform_dos
+platform_8=platform_unknown
+platform_9=platform_msx
+[properties]
+cash:int=2970000
+copySell:int=66000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=9 d=23 h=0 mi=0
+famous:float=0.87
+gameIsSaling:bool=false
+internalname:string=game_zorkthegreatundergroundempire
+localizationRating:int=10
+name:string=ZorkTheGreatUndergroundEmpire
+owner:string=Infocom, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=71
+startBugRating:int=35
+startdate:time=y=1983 m=4 d=16 h=0 mi=0
+startGenreRating:int=10
+startGraphicRating:int=74
+startrating:int=48
+startSoundRating:int=52
+textureNormal:path=images/spl_0.jpg

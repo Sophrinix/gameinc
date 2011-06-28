@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_arcade
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_2=platform_atari5200
+platform_3=platform_atari8b
+platform_4=platform_colecovision
+platform_5=platform_commodore
+platform_6=platform_pcbooter
+platform_7=platform_ti994a
+platform_8=platform_vic20
+[properties]
+cash:int=40608000
+copySell:int=846000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=9 d=20 h=0 mi=0
+famous:float=0.35
+gameIsSaling:bool=false
+internalname:string=game_junglehunt
+localizationRating:int=12
+name:string=JungleHunt
+owner:string=Atarisoft
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=47
+startBugRating:int=52
+startdate:time=y=1983 m=11 d=5 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=83
+startrating:int=43
+startSoundRating:int=1
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,36 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_apple2
+platform_10=platform_wii
+platform_11=platform_zxspectrum
+platform_2=platform_atari2600
+platform_3=platform_atari5200
+platform_4=platform_atari7800
+platform_5=platform_atari8b
+platform_6=platform_commodore
+platform_7=platform_gameboyadvance
+platform_8=platform_nes
+platform_9=platform_pc88
+[properties]
+cash:int=108805000
+copySell:int=2315000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=11 d=11 h=0 mi=0
+famous:float=0.34
+gameIsSaling:bool=false
+internalname:string=game_mariobros.
+localizationRating:int=18
+name:string=MarioBros.
+owner:string=Atari, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=59
+startBugRating:int=76
+startdate:time=y=1983 m=4 d=8 h=0 mi=0
+startGenreRating:int=88
+startGraphicRating:int=73
+startrating:int=59
+startSoundRating:int=0
+textureNormal:path=images/spl_0.jpg
