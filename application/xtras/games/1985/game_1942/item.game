@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_unknown
+platform_2=platform_commodore
+platform_3=platform_gameboycolor
+platform_4=platform_unknown
+platform_5=platform_msx
+platform_6=platform_nes
+platform_7=platform_pc88
+platform_8=platform_wii
+platform_9=platform_zxspectrum
+[properties]
+cash:int=85224000
+copySell:int=1608000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=7 d=9 h=0 mi=0
+famous:float=0.8
+gameIsSaling:bool=false
+internalname:string=game_1942
+localizationRating:int=77
+name:string=1942
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=32
+startBugRating:int=58
+startdate:time=y=1985 m=1 d=27 h=0 mi=0
+startGenreRating:int=97
+startGraphicRating:int=77
+startrating:int=68
+startSoundRating:int=76
+textureNormal:path=images/spl_0.jpg

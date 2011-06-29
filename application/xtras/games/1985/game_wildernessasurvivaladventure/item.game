@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_simulation
+genre_2=genre_managerial
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_dos
+[properties]
+cash:int=7722000
+copySell:int=99000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=4 d=24 h=0 mi=0
+famous:float=0.43
+gameIsSaling:bool=false
+internalname:string=game_wildernessasurvivaladventure
+localizationRating:int=20
+name:string=Wilderness: A Survival Adventure
+owner:string=Electric Transit, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=82
+startBugRating:int=82
+startdate:time=y=1985 m=9 d=27 h=0 mi=0
+startGenreRating:int=79
+startGraphicRating:int=3
+startrating:int=67
+startSoundRating:int=92
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/wilderness-a-survival-adventure

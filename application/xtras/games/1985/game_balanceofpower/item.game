@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_historicalbattle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_atarist
+platform_3=platform_dos
+platform_4=platform_unknown
+platform_5=platform_msx
+platform_6=platform_pc88
+platform_7=platform_pc98
+[properties]
+cash:int=58050000
+copySell:int=6450000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=5 d=18 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_balanceofpower
+localizationRating:int=42
+name:string=Balance of Power
+owner:string=Mindscape, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=51
+startBugRating:int=17
+startdate:time=y=1985 m=5 d=7 h=0 mi=0
+startGenreRating:int=56
+startGraphicRating:int=43
+startrating:int=35
+startSoundRating:int=8
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/balance-of-power

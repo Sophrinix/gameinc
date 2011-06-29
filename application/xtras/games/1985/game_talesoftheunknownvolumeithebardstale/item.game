@@ -1,0 +1,36 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_zxspectrum
+platform_2=platform_apple2
+platform_3=platform_unknown
+platform_4=platform_atarist
+platform_5=platform_commodore
+platform_6=platform_dos
+platform_7=platform_unknown
+platform_8=platform_nes
+platform_9=platform_pc98
+[properties]
+cash:int=150480000
+copySell:int=1710000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=1 d=8 h=0 mi=0
+famous:float=0.6
+gameIsSaling:bool=false
+internalname:string=game_talesoftheunknownvolumeithebardstale
+localizationRating:int=54
+name:string=TalesoftheUnknownVolumeITheBardsTale
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=51
+startBugRating:int=71
+startdate:time=y=1985 m=6 d=18 h=0 mi=0
+startGenreRating:int=40
+startGraphicRating:int=69
+startrating:int=60
+startSoundRating:int=70
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+genre_2=genre_fighting
+genre_3=genre_martialarts
+[properties]
+internalname:string=game_internationalkarate
+startdate:time=y=1985 m=8 d=28 h=0 mi=0

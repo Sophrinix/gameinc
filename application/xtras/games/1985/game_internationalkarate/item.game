@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+genre_2=genre_fighting
+genre_3=genre_martialarts
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_atari8b
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_msx
+platform_6=platform_wii
+platform_7=platform_zxspectrum
+[properties]
+cash:int=215988000
+copySell:int=2634000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=3 d=5 h=0 mi=0
+famous:float=0.88
+gameIsSaling:bool=false
+internalname:string=game_internationalkarate
+localizationRating:int=23
+name:string=International Karate
+owner:string=System 3 Software, Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=6
+startBugRating:int=28
+startdate:time=y=1985 m=8 d=28 h=0 mi=0
+startGenreRating:int=74
+startGraphicRating:int=68
+startrating:int=47
+startSoundRating:int=62
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_puzzle
+genre_3=genre_scifi
+[properties]
+internalname:string=game_marsport
+startdate:time=y=1985 m=9 d=28 h=0 mi=0
+url:string=http://www.mobygames.com/game/marsport

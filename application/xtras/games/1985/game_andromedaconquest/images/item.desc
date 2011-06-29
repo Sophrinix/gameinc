@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_board
+genre_2=genre_scifi
+[properties]
+internalname:string=game_andromedaconquest
+startdate:time=y=1982 m=5 d=25 h=0 mi=0

@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_atari8b
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_msx
+platform_7=platform_pc88
+platform_8=platform_pc98
+[properties]
+cash:int=117587000
+copySell:int=1993000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=4 d=0 h=0 mi=0
+famous:float=0.71
+gameIsSaling:bool=false
+internalname:string=game_phantasie
+localizationRating:int=52
+name:string=Phantasie
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=30
+startBugRating:int=16
+startdate:time=y=1985 m=6 d=8 h=0 mi=0
+startGenreRating:int=73
+startGraphicRating:int=4
+startrating:int=26
+startSoundRating:int=9
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/phantasie

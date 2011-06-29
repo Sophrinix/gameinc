@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_pong
+[properties]
+internalname:string=game_3dbrickaway
+startdate:time=y=1982 m=9 d=6 h=0 mi=0

@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_msx
+platform_1=platform_nes
+platform_2=platform_wii
+[properties]
+cash:int=119508000
+copySell:int=1299000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=11 d=2 h=0 mi=0
+famous:float=0.36
+gameIsSaling:bool=false
+internalname:string=game_roadfighter
+localizationRating:int=90
+name:string=RoadFighter
+owner:string=Konami Industry Co. Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=50
+startdate:time=y=1985 m=11 d=18 h=0 mi=0
+startGenreRating:int=37
+startGraphicRating:int=97
+startrating:int=52
+startSoundRating:int=57
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_wrestling
+[properties]
+internalname:string=game_bopnwrestle
+startdate:time=y=1985 m=0 d=28 h=0 mi=0

@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[properties]
+internalname:string=game_balloonfight
+startdate:time=y=1985 m=1 d=13 h=0 mi=0

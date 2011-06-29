@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_cavequest
+startdate:time=y=1985 m=6 d=26 h=0 mi=0

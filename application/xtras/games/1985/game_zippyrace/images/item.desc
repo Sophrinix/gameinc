@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_sports
+genre_2=genre_arcade
+[properties]
+internalname:string=game_zippyrace
+startdate:time=y=1985 m=6 d=17 h=0 mi=0

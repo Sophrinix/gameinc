@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_historicalbattle
+[properties]
+internalname:string=game_battleofantietam
+startdate:time=y=1985 m=9 d=11 h=0 mi=0

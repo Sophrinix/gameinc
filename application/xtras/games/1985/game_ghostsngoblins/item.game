@@ -1,0 +1,39 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_wii
+platform_11=platform_windowsmobile
+platform_12=platform_wonderswan
+platform_13=platform_zxspectrum
+platform_2=platform_atarist
+platform_3=platform_unknown
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_doja
+platform_7=platform_gameboyadvance
+platform_8=platform_gameboycolor
+platform_9=platform_nes
+[properties]
+cash:int=823192000
+copySell:int=9572000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=4 d=5 h=0 mi=0
+famous:float=0.68
+gameIsSaling:bool=false
+internalname:string=game_ghostsngoblins
+localizationRating:int=13
+name:string=GhostsNGoblins
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=95
+startBugRating:int=16
+startdate:time=y=1985 m=7 d=6 h=0 mi=0
+startGenreRating:int=80
+startGraphicRating:int=98
+startrating:int=65
+startSoundRating:int=38
+textureNormal:path=images/spl_0.jpg

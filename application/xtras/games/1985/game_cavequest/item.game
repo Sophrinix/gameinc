@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=82159000
+copySell:int=1067000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=11 d=18 h=0 mi=0
+famous:float=0.65
+gameIsSaling:bool=false
+internalname:string=game_cavequest
+localizationRating:int=70
+name:string=Cavequest
+owner:string=Lightwave Consultants
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=57
+startBugRating:int=88
+startdate:time=y=1985 m=6 d=26 h=0 mi=0
+startGenreRating:int=56
+startGraphicRating:int=76
+startrating:int=57
+startSoundRating:int=11

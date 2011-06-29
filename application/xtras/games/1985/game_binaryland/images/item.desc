@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_puzzle
+[properties]
+internalname:string=game_binaryland
+startdate:time=y=1985 m=8 d=8 h=0 mi=0

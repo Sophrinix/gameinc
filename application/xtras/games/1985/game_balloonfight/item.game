@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_nes
+platform_2=platform_pc88
+platform_3=platform_wii
+[properties]
+cash:int=308172000
+copySell:int=5052000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=8 d=18 h=0 mi=0
+famous:float=0.38
+gameIsSaling:bool=false
+internalname:string=game_balloonfight
+localizationRating:int=86
+name:string=BalloonFight
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=55
+startBugRating:int=37
+startdate:time=y=1985 m=1 d=13 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=42
+startrating:int=42
+startSoundRating:int=29
+textureNormal:path=images/spl_0.jpg

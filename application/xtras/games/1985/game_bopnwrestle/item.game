@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_wrestling
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_zxspectrum
+[properties]
+cash:int=398268000
+copySell:int=7659000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=2 d=8 h=0 mi=0
+famous:float=0.94
+gameIsSaling:bool=false
+internalname:string=game_bopnwrestle
+localizationRating:int=13
+name:string=Bop'N Wrestle
+owner:string=Melbourne House
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=40
+startBugRating:int=61
+startdate:time=y=1985 m=0 d=28 h=0 mi=0
+startGenreRating:int=5
+startGraphicRating:int=76
+startrating:int=46
+startSoundRating:int=52
+textureNormal:path=images/spl_0.jpg

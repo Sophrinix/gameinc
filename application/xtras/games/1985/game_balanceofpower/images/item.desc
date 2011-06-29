@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_historicalbattle
+[properties]
+internalname:string=game_balanceofpower
+startdate:time=y=1985 m=5 d=7 h=0 mi=0
+url:string=http://www.mobygames.com/game/balance-of-power

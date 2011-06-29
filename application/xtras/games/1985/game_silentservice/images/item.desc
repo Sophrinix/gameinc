@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_historicalbattle
+genre_2=genre_naval
+genre_3=genre_realtime
+[properties]
+internalname:string=game_silentservice
+startdate:time=y=1985 m=9 d=6 h=0 mi=0
+url:string=http://www.mobygames.com/game/silent-service

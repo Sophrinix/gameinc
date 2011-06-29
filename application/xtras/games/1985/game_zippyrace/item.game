@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_sports
+genre_2=genre_arcade
+[platforms]
+platform_0=platform_nes
+[properties]
+cash:int=167090000
+copySell:int=3410000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=7 d=8 h=0 mi=0
+famous:float=0.33
+gameIsSaling:bool=false
+internalname:string=game_zippyrace
+localizationRating:int=20
+name:string=ZippyRace
+owner:string=Irem Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=39
+startBugRating:int=37
+startdate:time=y=1985 m=6 d=17 h=0 mi=0
+startGenreRating:int=37
+startGraphicRating:int=33
+startrating:int=40
+startSoundRating:int=55

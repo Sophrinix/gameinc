@@ -1,0 +1,39 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_arcade
+genre_3=genre_battlemech
+genre_4=genre_scifi
+genre_5=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_unknown
+platform_3=platform_dos
+platform_4=platform_unknown
+platform_5=platform_msx
+platform_6=platform_nes
+platform_7=platform_pc88
+platform_8=platform_pc98
+platform_9=platform_trs80
+[properties]
+cash:int=217911000
+copySell:int=3823000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=0 d=21 h=0 mi=0
+famous:float=0.41
+gameIsSaling:bool=false
+internalname:string=game_thexder
+localizationRating:int=27
+name:string=Thexder
+owner:string=Game Arts Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=95
+startBugRating:int=81
+startdate:time=y=1985 m=0 d=11 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=36
+startrating:int=65
+startSoundRating:int=66
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/thexder

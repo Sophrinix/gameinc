@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_msx
+platform_1=platform_nes
+[properties]
+cash:int=398877000
+copySell:int=4289000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=6 d=27 h=0 mi=0
+famous:float=0.92
+gameIsSaling:bool=false
+internalname:string=game_10yardfight
+localizationRating:int=98
+name:string=10YardFight
+owner:string=Irem Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=67
+startBugRating:int=92
+startdate:time=y=1985 m=7 d=19 h=0 mi=0
+startGenreRating:int=47
+startGraphicRating:int=81
+startrating:int=76
+startSoundRating:int=94

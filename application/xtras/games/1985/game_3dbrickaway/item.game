@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_pong
+[platforms]
+platform_0=platform_atari2600
+platform_1=platform_commodore
+platform_2=platform_trs80
+[properties]
+cash:int=12771000
+copySell:int=473000
+descriptionpath:path=desc.htm
+enddate:time=y=1985 m=2 d=10 h=0 mi=0
+famous:float=0.32
+gameIsSaling:bool=false
+internalname:string=game_3dbrickaway
+localizationRating:int=71
+name:string=3DBrickaway
+owner:string=Avalon Hill
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=86
+startBugRating:int=22
+startdate:time=y=1982 m=9 d=6 h=0 mi=0
+startGenreRating:int=11
+startGraphicRating:int=89
+startrating:int=43
+startSoundRating:int=9
+textureNormal:path=images/spl_0.jpg

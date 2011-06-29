@@ -1,0 +1,39 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_historicalbattle
+genre_2=genre_naval
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_pcbooter
+platform_11=platform_zxspectrum
+platform_2=platform_apple2
+platform_3=platform_unknown
+platform_4=platform_atari8b
+platform_5=platform_atarist
+platform_6=platform_commodore
+platform_7=platform_dos
+platform_8=platform_nes
+platform_9=platform_pc98
+[properties]
+cash:int=50414000
+copySell:int=7202000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=5 d=5 h=0 mi=0
+famous:float=0.5
+gameIsSaling:bool=false
+internalname:string=game_silentservice
+localizationRating:int=57
+name:string=Silent Service
+owner:string=MicroProse Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=53
+startBugRating:int=50
+startdate:time=y=1985 m=9 d=6 h=0 mi=0
+startGenreRating:int=95
+startGraphicRating:int=68
+startrating:int=65
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/silent-service

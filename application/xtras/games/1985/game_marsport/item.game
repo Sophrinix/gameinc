@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_puzzle
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_zxspectrum
+[properties]
+cash:int=183736000
+copySell:int=5404000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=4 d=17 h=0 mi=0
+famous:float=0.49
+gameIsSaling:bool=false
+internalname:string=game_marsport
+localizationRating:int=88
+name:string=Marsport
+owner:string=Gargoyle Games Ltd
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=55
+startdate:time=y=1985 m=9 d=28 h=0 mi=0
+startGenreRating:int=7
+startGraphicRating:int=17
+startrating:int=28
+startSoundRating:int=43
+url:string=http://www.mobygames.com/game/marsport

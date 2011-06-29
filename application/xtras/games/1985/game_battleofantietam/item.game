@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_historicalbattle
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_dos
+[properties]
+cash:int=180994000
+copySell:int=4763000
+descriptionpath:path=desc.htm
+enddate:time=y=1988 m=8 d=18 h=0 mi=0
+famous:float=0.69
+gameIsSaling:bool=false
+internalname:string=game_battleofantietam
+localizationRating:int=49
+name:string=BattleofAntietam
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=82
+startBugRating:int=85
+startdate:time=y=1985 m=9 d=11 h=0 mi=0
+startGenreRating:int=24
+startGraphicRating:int=0
+startrating:int=41
+startSoundRating:int=17
+textureNormal:path=images/spl_0.jpg
