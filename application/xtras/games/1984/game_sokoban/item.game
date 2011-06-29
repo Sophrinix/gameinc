@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_commodore
+platform_2=platform_dos
+platform_3=platform_msx
+platform_4=platform_trs80
+[properties]
+cash:int=189126000
+copySell:int=9006000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=10 d=14 h=0 mi=0
+famous:float=0.99
+gameIsSaling:bool=false
+internalname:string=game_sokoban
+localizationRating:int=49
+name:string=SokoBan
+owner:string=Spectrum Holobyte, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=59
+startBugRating:int=21
+startdate:time=y=1984 m=5 d=8 h=0 mi=0
+startGenreRating:int=56
+startGraphicRating:int=37
+startrating:int=52
+startSoundRating:int=88
+textureNormal:path=images/spl_0.jpg

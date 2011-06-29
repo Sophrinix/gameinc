@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_strategy
+genre_3=genre_flight
+genre_4=genre_managerial
+genre_5=genre_scifi
+[properties]
+internalname:string=game_elite
+startdate:time=y=1984 m=9 d=5 h=0 mi=0

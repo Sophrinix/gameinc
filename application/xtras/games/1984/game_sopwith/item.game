@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_flight
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=307955000
+copySell:int=3623000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=4 d=7 h=0 mi=0
+famous:float=0.59
+gameIsSaling:bool=false
+internalname:string=game_sopwith
+localizationRating:int=49
+name:string=Sopwith
+owner:string=BMB Compuscience
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=20
+startBugRating:int=36
+startdate:time=y=1984 m=4 d=16 h=0 mi=0
+startGenreRating:int=7
+startGraphicRating:int=69
+startrating:int=38
+startSoundRating:int=60

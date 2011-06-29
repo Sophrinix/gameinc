@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_zxspectrum
+[properties]
+cash:int=88600000
+copySell:int=3544000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=0 d=20 h=0 mi=0
+famous:float=0.58
+gameIsSaling:bool=false
+internalname:string=game_alchemist
+localizationRating:int=87
+name:string=Alchemist
+owner:string=Imagine
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=23
+startBugRating:int=45
+startdate:time=y=1984 m=2 d=1 h=0 mi=0
+startGenreRating:int=55
+startGraphicRating:int=44
+startrating:int=36
+startSoundRating:int=17
+textureNormal:path=images/spl_0.jpg

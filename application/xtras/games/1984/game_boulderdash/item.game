@@ -1,0 +1,41 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_apple2
+platform_10=platform_msx
+platform_11=platform_nes
+platform_12=platform_pc88
+platform_13=platform_pcbooter
+platform_14=platform_wii
+platform_15=platform_zxspectrum
+platform_2=platform_atari8b
+platform_3=platform_atarist
+platform_4=platform_unknown
+platform_5=platform_colecovision
+platform_6=platform_commodore
+platform_7=platform_electron
+platform_8=platform_gameboy
+platform_9=platform_iphone
+[properties]
+cash:int=98747000
+copySell:int=2101000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=1 d=25 h=0 mi=0
+famous:float=0.02
+gameIsSaling:bool=false
+internalname:string=game_boulderdash
+localizationRating:int=53
+name:string=BoulderDash
+owner:string=First Star Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=40
+startBugRating:int=31
+startdate:time=y=1984 m=11 d=19 h=0 mi=0
+startGenreRating:int=68
+startGraphicRating:int=45
+startrating:int=41
+startSoundRating:int=24
+textureNormal:path=images/spl_0.jpg

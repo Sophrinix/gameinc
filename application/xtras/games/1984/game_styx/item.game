@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_arcade
+[platforms]
+platform_0=platform_dos
+platform_1=platform_pcbooter
+[properties]
+cash:int=344056000
+copySell:int=5932000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=7 d=23 h=0 mi=0
+famous:float=0.25
+gameIsSaling:bool=false
+internalname:string=game_styx
+localizationRating:int=84
+name:string=Styx
+owner:string=Windmill Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=54
+startBugRating:int=27
+startdate:time=y=1984 m=11 d=9 h=0 mi=0
+startGenreRating:int=43
+startGraphicRating:int=42
+startrating:int=41
+startSoundRating:int=39
+textureNormal:path=images/spl_0.jpg

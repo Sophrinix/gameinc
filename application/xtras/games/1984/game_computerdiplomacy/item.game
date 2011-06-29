@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_board
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=63720000
+copySell:int=1062000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=1 d=24 h=0 mi=0
+famous:float=0.49
+gameIsSaling:bool=false
+internalname:string=game_computerdiplomacy
+localizationRating:int=77
+name:string=ComputerDiplomacy
+owner:string=Avalon Hill
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=30
+startBugRating:int=46
+startdate:time=y=1984 m=6 d=15 h=0 mi=0
+startGenreRating:int=23
+startGraphicRating:int=7
+startrating:int=38
+startSoundRating:int=85

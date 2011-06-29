@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+genre_2=genre_realtime
+[properties]
+internalname:string=game_theancientartofwar
+startdate:time=y=1984 m=10 d=10 h=0 mi=0

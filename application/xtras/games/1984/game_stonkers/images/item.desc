@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_fighting
+genre_2=genre_managerial
+genre_3=genre_realtime
+genre_4=genre_tank
+[properties]
+internalname:string=game_stonkers
+startdate:time=y=1984 m=10 d=9 h=0 mi=0

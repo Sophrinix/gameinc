@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_board
+[properties]
+internalname:string=game_computerdiplomacy
+startdate:time=y=1984 m=6 d=15 h=0 mi=0

@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_atari8b
+platform_2=platform_atarist
+platform_3=platform_unknown
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_msx
+platform_7=platform_zxspectrum
+[properties]
+cash:int=612360000
+copySell:int=9720000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=3 d=7 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_starquake
+localizationRating:int=99
+name:string=Starquake
+owner:string=Bubble Bus Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=67
+startBugRating:int=38
+startdate:time=y=1984 m=6 d=21 h=0 mi=0
+startGenreRating:int=99
+startGraphicRating:int=97
+startrating:int=74
+startSoundRating:int=73
+textureNormal:path=images/spl_0.jpg

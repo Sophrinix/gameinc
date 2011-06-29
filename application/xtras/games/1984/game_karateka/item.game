@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_apple2
+platform_2=platform_atari7800
+platform_3=platform_atari8b
+platform_4=platform_atarist
+platform_5=platform_commodore
+platform_6=platform_dos
+platform_7=platform_nes
+platform_8=platform_pc98
+platform_9=platform_zxspectrum
+[properties]
+cash:int=324392000
+copySell:int=7912000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=9 d=7 h=0 mi=0
+famous:float=0.12
+gameIsSaling:bool=false
+internalname:string=game_karateka
+localizationRating:int=89
+name:string=Karateka
+owner:string=Soft Pro International
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=45
+startBugRating:int=81
+startdate:time=y=1984 m=9 d=9 h=0 mi=0
+startGenreRating:int=12
+startGraphicRating:int=64
+startrating:int=57
+startSoundRating:int=86
+textureNormal:path=images/spl_0.jpg

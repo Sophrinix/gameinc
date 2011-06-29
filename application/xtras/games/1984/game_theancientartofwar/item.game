@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_apple2
+platform_2=platform_atarist
+platform_3=platform_dos
+platform_4=platform_unknown
+[properties]
+cash:int=257972000
+copySell:int=3146000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=6 d=0 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_theancientartofwar
+localizationRating:int=77
+name:string=TheAncientArtofWar
+owner:string=Br?derbund Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=12
+startBugRating:int=33
+startdate:time=y=1984 m=10 d=10 h=0 mi=0
+startGenreRating:int=86
+startGraphicRating:int=84
+startrating:int=45
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg

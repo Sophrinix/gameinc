@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_2=platform_commodore
+platform_3=platform_nes
+platform_4=platform_pcbooter
+[properties]
+cash:int=69122000
+copySell:int=2033000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=6 d=3 h=0 mi=0
+famous:float=0.18
+gameIsSaling:bool=false
+internalname:string=game_stargate
+localizationRating:int=15
+name:string=Stargate
+owner:string=Atarisoft
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=44
+startBugRating:int=34
+startdate:time=y=1983 m=10 d=28 h=0 mi=0
+startGenreRating:int=49
+startGraphicRating:int=24
+startrating:int=34
+startSoundRating:int=19
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[properties]
+internalname:string=game_ninja
+startdate:time=y=1984 m=10 d=4 h=0 mi=0

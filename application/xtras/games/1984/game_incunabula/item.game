@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=5184000
+copySell:int=144000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=5 d=9 h=0 mi=0
+famous:float=0.48
+gameIsSaling:bool=false
+internalname:string=game_incunabula
+localizationRating:int=95
+name:string=Incunabula
+owner:string=Avalon Hill
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=8
+startBugRating:int=93
+startdate:time=y=1984 m=9 d=3 h=0 mi=0
+startGenreRating:int=40
+startGraphicRating:int=31
+startrating:int=51
+startSoundRating:int=86
+textureNormal:path=images/spl_0.jpg

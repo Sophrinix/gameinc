@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_horror
+genre_2=genre_interactivefiction
+[properties]
+internalname:string=game_themist
+startdate:time=y=1985 m=10 d=10 h=0 mi=0

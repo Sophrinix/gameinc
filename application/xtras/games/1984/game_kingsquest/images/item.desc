@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+[properties]
+internalname:string=game_kingsquest
+startdate:time=y=1984 m=3 d=15 h=0 mi=0

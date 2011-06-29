@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_stealth
+[properties]
+internalname:string=game_beyondcastlewolfenstein
+startdate:time=y=1984 m=6 d=22 h=0 mi=0

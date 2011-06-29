@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_puzzle
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=57258000
+copySell:int=9543000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=10 d=1 h=0 mi=0
+famous:float=0.07
+gameIsSaling:bool=false
+internalname:string=game_xonix
+localizationRating:int=80
+name:string=Xonix
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=78
+startBugRating:int=45
+startdate:time=y=1984 m=2 d=23 h=0 mi=0
+startGenreRating:int=29
+startGraphicRating:int=33
+startrating:int=38
+startSoundRating:int=9

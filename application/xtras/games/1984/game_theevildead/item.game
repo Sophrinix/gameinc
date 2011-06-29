@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_horror
+[platforms]
+platform_0=platform_commodore
+[properties]
+cash:int=45100000
+copySell:int=9020000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=7 d=7 h=0 mi=0
+famous:float=0.88
+gameIsSaling:bool=false
+internalname:string=game_theevildead
+localizationRating:int=68
+name:string=TheEvilDead
+owner:string=Palace Software, LTD.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=1
+startBugRating:int=79
+startdate:time=y=1984 m=9 d=28 h=0 mi=0
+startGenreRating:int=60
+startGraphicRating:int=65
+startrating:int=54
+startSoundRating:int=67

@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_historicalbattle
+genre_2=genre_naval
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_atarist
+platform_3=platform_dos
+platform_4=platform_unknown
+[properties]
+cash:int=391680000
+copySell:int=4080000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=0 d=10 h=0 mi=0
+famous:float=0.36
+gameIsSaling:bool=false
+internalname:string=game_gato
+localizationRating:int=67
+name:string=GATO
+owner:string=Spectrum Holobyte, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=91
+startBugRating:int=87
+startdate:time=y=1984 m=7 d=4 h=0 mi=0
+startGenreRating:int=57
+startGraphicRating:int=61
+startrating:int=60
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg

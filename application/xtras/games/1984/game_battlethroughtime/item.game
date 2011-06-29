@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_commodore
+[properties]
+cash:int=691256000
+copySell:int=9736000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=4 d=21 h=0 mi=0
+famous:float=0.34
+gameIsSaling:bool=false
+internalname:string=game_battlethroughtime
+localizationRating:int=12
+name:string=BattleThroughTime
+owner:string=Artworx Software Co, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=93
+startBugRating:int=86
+startdate:time=y=1984 m=0 d=16 h=0 mi=0
+startGenreRating:int=20
+startGraphicRating:int=53
+startrating:int=56
+startSoundRating:int=29
+textureNormal:path=images/spl_0.jpg

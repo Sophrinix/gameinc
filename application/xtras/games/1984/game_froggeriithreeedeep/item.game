@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari2600
+platform_2=platform_atari5200
+platform_3=platform_atari8b
+platform_4=platform_colecovision
+platform_5=platform_commodore
+platform_6=platform_pcbooter
+[properties]
+cash:int=250452000
+copySell:int=4638000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=1 d=21 h=0 mi=0
+famous:float=0.13
+gameIsSaling:bool=false
+internalname:string=game_froggeriithreeedeep
+localizationRating:int=0
+name:string=FroggerIIThreeeDeep
+owner:string=SEGA Enterprises, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=18
+startdate:time=y=1984 m=10 d=17 h=0 mi=0
+startGenreRating:int=27
+startGraphicRating:int=64
+startrating:int=40
+startSoundRating:int=57
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[properties]
+internalname:string=game_karateka
+startdate:time=y=1984 m=9 d=9 h=0 mi=0

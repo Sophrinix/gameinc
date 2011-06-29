@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_horror
+[properties]
+internalname:string=game_theevildead
+startdate:time=y=1984 m=9 d=28 h=0 mi=0

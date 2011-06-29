@@ -1,0 +1,38 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_strategy
+genre_3=genre_flight
+genre_4=genre_managerial
+genre_5=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_apple2
+platform_3=platform_atarist
+platform_4=platform_unknown
+platform_5=platform_commodore
+platform_6=platform_dos
+platform_7=platform_msx
+platform_8=platform_nes
+platform_9=platform_zxspectrum
+[properties]
+cash:int=280829000
+copySell:int=9059000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=11 d=2 h=0 mi=0
+famous:float=0.83
+gameIsSaling:bool=false
+internalname:string=game_elite
+localizationRating:int=34
+name:string=Elite
+owner:string=Acornsoft Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=32
+startdate:time=y=1984 m=9 d=5 h=0 mi=0
+startGenreRating:int=98
+startGraphicRating:int=83
+startrating:int=64
+startSoundRating:int=14
+textureNormal:path=images/spl_0.jpg

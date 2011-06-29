@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_msx
+[properties]
+cash:int=274170000
+copySell:int=7030000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=5 d=9 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_ninja
+localizationRating:int=77
+name:string=Ninja
+owner:string=Kuma Computers Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=46
+startBugRating:int=24
+startdate:time=y=1984 m=10 d=4 h=0 mi=0
+startGenreRating:int=74
+startGraphicRating:int=17
+startrating:int=37
+startSoundRating:int=28
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+[properties]
+internalname:string=game_athleticland
+startdate:time=y=1984 m=8 d=0 h=0 mi=0

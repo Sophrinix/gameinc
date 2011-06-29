@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_fighting
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=69900000
+copySell:int=2330000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=2 d=6 h=0 mi=0
+famous:float=0.56
+gameIsSaling:bool=false
+internalname:string=game_byfire&sword
+localizationRating:int=88
+name:string=ByFire&Sword
+owner:string=Avalon Hill
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=75
+startBugRating:int=42
+startdate:time=y=1984 m=6 d=24 h=0 mi=0
+startGenreRating:int=35
+startGraphicRating:int=3
+startrating:int=47
+startSoundRating:int=84
+textureNormal:path=images/spl_0.jpg

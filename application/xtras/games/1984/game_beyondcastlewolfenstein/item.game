@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_stealth
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_pcbooter
+[properties]
+cash:int=162778000
+copySell:int=1661000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=6 d=4 h=0 mi=0
+famous:float=0.27
+gameIsSaling:bool=false
+internalname:string=game_beyondcastlewolfenstein
+localizationRating:int=87
+name:string=BeyondCastleWolfenstein
+owner:string=Muse Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=83
+startBugRating:int=34
+startdate:time=y=1984 m=6 d=22 h=0 mi=0
+startGenreRating:int=29
+startGraphicRating:int=68
+startrating:int=44
+startSoundRating:int=10
+textureNormal:path=images/spl_0.jpg

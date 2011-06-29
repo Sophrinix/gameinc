@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_colecovision
+[properties]
+cash:int=423432000
+copySell:int=5881000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=1 d=24 h=0 mi=0
+famous:float=0.35
+gameIsSaling:bool=false
+internalname:string=game_thegraphicactiongame
+localizationRating:int=56
+name:string=2010TheGraphicActionGame
+owner:string=Coleco
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=74
+startBugRating:int=69
+startdate:time=y=1984 m=6 d=23 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=67
+startrating:int=57
+startSoundRating:int=39

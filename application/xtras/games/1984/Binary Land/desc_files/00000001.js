@@ -1,1 +1,0 @@
-Geo = {"city":"Saint Petersburg","country":"RU","lat":"59.894402","lon":"30.264200","IP":"94.140.216.2","netmask":"21"}

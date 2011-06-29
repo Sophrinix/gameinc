@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_atarist
+platform_1=platform_commodore
+[properties]
+cash:int=165696000
+copySell:int=6904000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=7 d=22 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_astropanic
+localizationRating:int=32
+name:string=AstroPanic
+owner:string=COMPUTE! Publications, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=62
+startBugRating:int=9
+startdate:time=y=1984 m=2 d=14 h=0 mi=0
+startGenreRating:int=51
+startGraphicRating:int=20
+startrating:int=40
+startSoundRating:int=60

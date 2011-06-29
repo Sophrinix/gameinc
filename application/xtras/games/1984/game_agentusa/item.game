@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_educational
+genre_2=genre_strategy
+genre_3=genre_puzzle
+genre_4=genre_scifi
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_pcbooter
+[properties]
+cash:int=369759000
+copySell:int=6487000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=4 d=8 h=0 mi=0
+famous:float=0.89
+gameIsSaling:bool=false
+internalname:string=game_agentusa
+localizationRating:int=88
+name:string=AgentUSA
+owner:string=Scholastic, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=80
+startBugRating:int=51
+startdate:time=y=1984 m=5 d=18 h=0 mi=0
+startGenreRating:int=33
+startGraphicRating:int=52
+startrating:int=53
+startSoundRating:int=49
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[properties]
+internalname:string=game_battlethroughtime
+startdate:time=y=1984 m=0 d=16 h=0 mi=0

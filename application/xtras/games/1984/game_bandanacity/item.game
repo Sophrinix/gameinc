@@ -1,0 +1,23 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_commodore
+[properties]
+cash:int=403532000
+copySell:int=5108000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=11 d=4 h=0 mi=0
+famous:float=0.04
+gameIsSaling:bool=false
+internalname:string=game_bandanacity
+localizationRating:int=91
+name:string=BandanaCity
+owner:string=Interceptor Micros
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=76
+startBugRating:int=92
+startdate:time=y=1984 m=8 d=2 h=0 mi=0
+startGenreRating:int=25
+startGraphicRating:int=52
+startrating:int=52
+startSoundRating:int=19

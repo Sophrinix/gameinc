@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+genre_2=genre_puzzle
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atarist
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_unknown
+platform_5=platform_msx
+[properties]
+cash:int=26542000
+copySell:int=577000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=5 d=26 h=0 mi=0
+famous:float=0.21
+gameIsSaling:bool=false
+internalname:string=game_fahrenheit451
+localizationRating:int=22
+name:string=Fahrenheit451
+owner:string=Trillium Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=77
+startBugRating:int=87
+startdate:time=y=1984 m=9 d=12 h=0 mi=0
+startGenreRating:int=97
+startGraphicRating:int=15
+startrating:int=66
+startSoundRating:int=55
+textureNormal:path=images/spl_0.jpg

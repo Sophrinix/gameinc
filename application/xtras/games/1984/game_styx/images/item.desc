@@ -1,0 +1,5 @@
+[genres]
+genre_0=genre_arcade
+[properties]
+internalname:string=game_styx
+startdate:time=y=1984 m=11 d=9 h=0 mi=0

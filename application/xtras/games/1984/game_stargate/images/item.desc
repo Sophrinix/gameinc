@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[properties]
+internalname:string=game_stargate
+startdate:time=y=1983 m=10 d=28 h=0 mi=0

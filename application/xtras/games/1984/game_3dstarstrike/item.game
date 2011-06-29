@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_zxspectrum
+[properties]
+cash:int=590852000
+copySell:int=8689000
+descriptionpath:path=desc.htm
+enddate:time=y=1987 m=7 d=16 h=0 mi=0
+famous:float=0.12
+gameIsSaling:bool=false
+internalname:string=game_3dstarstrike
+localizationRating:int=89
+name:string=3DStarstrike
+owner:string=Realtime Games Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=57
+startBugRating:int=53
+startdate:time=y=1984 m=3 d=25 h=0 mi=0
+startGenreRating:int=76
+startGraphicRating:int=44
+startrating:int=49
+startSoundRating:int=18
+textureNormal:path=images/spl_0.jpg

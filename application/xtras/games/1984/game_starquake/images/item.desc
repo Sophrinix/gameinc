@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_scifi
+[properties]
+internalname:string=game_starquake
+startdate:time=y=1984 m=6 d=21 h=0 mi=0

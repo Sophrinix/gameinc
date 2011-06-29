@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+[properties]
+internalname:string=game_incunabula
+startdate:time=y=1984 m=9 d=3 h=0 mi=0

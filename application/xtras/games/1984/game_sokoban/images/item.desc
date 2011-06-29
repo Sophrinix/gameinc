@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+[properties]
+internalname:string=game_sokoban
+startdate:time=y=1984 m=5 d=8 h=0 mi=0

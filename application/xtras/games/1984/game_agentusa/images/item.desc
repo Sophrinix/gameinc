@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_educational
+genre_2=genre_strategy
+genre_3=genre_puzzle
+genre_4=genre_scifi
+[properties]
+internalname:string=game_agentusa
+startdate:time=y=1984 m=5 d=18 h=0 mi=0

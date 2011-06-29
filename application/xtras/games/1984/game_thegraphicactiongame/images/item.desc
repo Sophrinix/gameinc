@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+genre_2=genre_scifi
+[properties]
+internalname:string=game_thegraphicactiongame
+startdate:time=y=1984 m=6 d=23 h=0 mi=0

@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_puzzle
+genre_3=genre_realtime
+[properties]
+internalname:string=game_xonix
+startdate:time=y=1984 m=2 d=23 h=0 mi=0
