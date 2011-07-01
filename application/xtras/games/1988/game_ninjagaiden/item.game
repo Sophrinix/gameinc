@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_nes
+platform_1=platform_turbografx
+platform_2=platform_wii
+[properties]
+cash:int=123450000
+copySell:int=2469000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=4 d=28 h=0 mi=0
+famous:float=0.73
+gameIsSaling:bool=false
+internalname:string=game_ninjagaiden
+localizationRating:int=30
+name:string=NinjaGaiden
+owner:string=Tecmo, Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=91
+startBugRating:int=92
+startdate:time=y=1988 m=9 d=23 h=0 mi=0
+startGenreRating:int=21
+startGraphicRating:int=70
+startrating:int=72
+startSoundRating:int=86
+textureNormal:path=images/spl_0.jpg

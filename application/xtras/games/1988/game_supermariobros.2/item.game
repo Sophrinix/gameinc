@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_nes
+platform_1=platform_wii
+[properties]
+cash:int=99360000
+copySell:int=4320000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=10 d=20 h=0 mi=0
+famous:float=0.87
+gameIsSaling:bool=false
+internalname:string=game_supermariobros.2
+localizationRating:int=66
+name:string=SuperMarioBros.2
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=16
+startBugRating:int=94
+startdate:time=y=1988 m=1 d=14 h=0 mi=0
+startGenreRating:int=28
+startGraphicRating:int=13
+startrating:int=35
+startSoundRating:int=27
+textureNormal:path=images/spl_0.jpg

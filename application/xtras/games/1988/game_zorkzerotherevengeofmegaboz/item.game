@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+genre_2=genre_interactivefiction
+genre_3=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_dos
+platform_3=platform_unknown
+[properties]
+cash:int=56598000
+copySell:int=9433000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=5 d=6 h=0 mi=0
+famous:float=0.7
+gameIsSaling:bool=false
+internalname:string=game_zorkzerotherevengeofmegaboz
+localizationRating:int=37
+name:string=ZorkZeroTheRevengeofMegaboz
+owner:string=Infocom, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=69
+startBugRating:int=18
+startdate:time=y=1988 m=3 d=13 h=0 mi=0
+startGenreRating:int=86
+startGraphicRating:int=52
+startrating:int=45
+startSoundRating:int=2
+textureNormal:path=images/spl_0.jpg

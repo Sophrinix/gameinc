@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_cyberpunk
+[properties]
+internalname:string=game_neuromancer
+startdate:time=y=1988 m=4 d=28 h=0 mi=0
+url:string=http://www.mobygames.com/game/neuromancer

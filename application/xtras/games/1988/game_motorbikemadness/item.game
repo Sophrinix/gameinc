@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+genre_2=genre_motorcycle
+genre_3=genre_stunts
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_zxspectrum
+[properties]
+cash:int=354816000
+copySell:int=4608000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=9 d=19 h=0 mi=0
+famous:float=0.32
+gameIsSaling:bool=false
+internalname:string=game_motorbikemadness
+localizationRating:int=77
+name:string=Motorbike Madness
+owner:string=M.A.D.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=20
+startBugRating:int=29
+startdate:time=y=1988 m=7 d=17 h=0 mi=0
+startGenreRating:int=56
+startGraphicRating:int=91
+startrating:int=49
+startSoundRating:int=53
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/motorbike-madness

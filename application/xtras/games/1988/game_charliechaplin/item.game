@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_dos
+platform_2=platform_zxspectrum
+[properties]
+cash:int=379080000
+copySell:int=8424000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=2 d=4 h=0 mi=0
+famous:float=0.62
+gameIsSaling:bool=false
+internalname:string=game_charliechaplin
+localizationRating:int=27
+name:string=Charlie Chaplin
+owner:string=U.S. Gold Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=12
+startBugRating:int=80
+startdate:time=y=1988 m=9 d=20 h=0 mi=0
+startGenreRating:int=98
+startGraphicRating:int=59
+startrating:int=61
+startSoundRating:int=59
+url:string=http://www.mobygames.com/game/charlie-chaplin

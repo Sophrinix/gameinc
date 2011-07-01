@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_doja
+platform_1=platform_iphone
+platform_2=platform_nes
+platform_3=platform_playstation
+platform_4=platform_wii
+[properties]
+cash:int=127904000
+copySell:int=2284000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=3 d=6 h=0 mi=0
+famous:float=0.78
+gameIsSaling:bool=false
+internalname:string=game_megaman2
+localizationRating:int=19
+name:string=MegaMan2
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=22
+startBugRating:int=64
+startdate:time=y=1988 m=5 d=5 h=0 mi=0
+startGenreRating:int=15
+startGraphicRating:int=43
+startrating:int=29
+startSoundRating:int=4
+textureNormal:path=images/spl_0.jpg

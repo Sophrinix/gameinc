@@ -1,0 +1,38 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_wii
+platform_11=platform_zxspectrum
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_fmtowns
+platform_6=platform_msx
+platform_7=platform_nes
+platform_8=platform_segamastersystem
+platform_9=platform_turbografx
+[properties]
+cash:int=242775000
+copySell:int=6225000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=10 d=26 h=0 mi=0
+famous:float=0.78
+gameIsSaling:bool=false
+internalname:string=game_operationwolf
+localizationRating:int=83
+name:string=Operation Wolf
+owner:string=Ocean Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=80
+startBugRating:int=59
+startdate:time=y=1988 m=3 d=20 h=0 mi=0
+startGenreRating:int=90
+startGraphicRating:int=78
+startrating:int=69
+startSoundRating:int=39
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/operation-wolf

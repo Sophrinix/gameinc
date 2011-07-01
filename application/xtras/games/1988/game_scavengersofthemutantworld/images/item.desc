@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_rpg
+genre_2=genre_postapocalyptic
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[properties]
+internalname:string=game_scavengersofthemutantworld
+startdate:time=y=1988 m=2 d=13 h=0 mi=0
+url:string=http://www.mobygames.com/game/dos/scavengers-of-the-mutant-world

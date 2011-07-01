@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_gameboy
+platform_1=platform_nes
+[properties]
+cash:int=325128000
+copySell:int=8556000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=0 d=6 h=0 mi=0
+famous:float=0.06
+gameIsSaling:bool=false
+internalname:string=game_bioniccommando
+localizationRating:int=81
+name:string=Bionic Commando
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=43
+startBugRating:int=95
+startdate:time=y=1988 m=6 d=4 h=0 mi=0
+startGenreRating:int=47
+startGraphicRating:int=35
+startrating:int=46
+startSoundRating:int=13
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/bionic-commando_

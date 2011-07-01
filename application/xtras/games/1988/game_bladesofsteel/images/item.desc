@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+genre_2=genre_hockey
+[properties]
+internalname:string=game_bladesofsteel
+startdate:time=y=1988 m=9 d=12 h=0 mi=0

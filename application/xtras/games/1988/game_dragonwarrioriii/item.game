@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_gameboycolor
+platform_1=platform_nes
+platform_2=platform_snes
+[properties]
+cash:int=498316000
+copySell:int=9583000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=3 d=19 h=0 mi=0
+famous:float=0.38
+gameIsSaling:bool=false
+internalname:string=game_dragonwarrioriii
+localizationRating:int=5
+name:string=DragonWarriorIII
+owner:string=Enix Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=87
+startBugRating:int=42
+startdate:time=y=1988 m=5 d=13 h=0 mi=0
+startGenreRating:int=77
+startGraphicRating:int=57
+startrating:int=71
+startSoundRating:int=95
+textureNormal:path=images/spl_0.jpg

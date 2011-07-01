@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_rpg
+genre_2=genre_postapocalyptic
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=37350000
+copySell:int=1245000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=7 d=8 h=0 mi=0
+famous:float=0.53
+gameIsSaling:bool=false
+internalname:string=game_scavengersofthemutantworld
+localizationRating:int=26
+name:string=Scavengers of the Mutant World
+owner:string=Interstel Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=98
+startdate:time=y=1988 m=2 d=13 h=0 mi=0
+startGenreRating:int=11
+startGraphicRating:int=69
+startrating:int=61
+startSoundRating:int=33
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/dos/scavengers-of-the-mutant-world

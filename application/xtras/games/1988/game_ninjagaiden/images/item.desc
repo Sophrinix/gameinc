@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[properties]
+internalname:string=game_ninjagaiden
+startdate:time=y=1988 m=9 d=23 h=0 mi=0

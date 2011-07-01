@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+genre_2=genre_hockey
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_commodore
+platform_2=platform_dos
+platform_3=platform_gameboy
+platform_4=platform_nes
+platform_5=platform_wii
+[properties]
+cash:int=280925000
+copySell:int=3305000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=8 d=8 h=0 mi=0
+famous:float=0.3
+gameIsSaling:bool=false
+internalname:string=game_bladesofsteel
+localizationRating:int=81
+name:string=BladesofSteel
+owner:string=Konami, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=57
+startBugRating:int=99
+startdate:time=y=1988 m=9 d=12 h=0 mi=0
+startGenreRating:int=0
+startGraphicRating:int=93
+startrating:int=66
+startSoundRating:int=81
+textureNormal:path=images/spl_0.jpg

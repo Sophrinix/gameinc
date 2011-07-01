@@ -1,0 +1,39 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_turbografx
+platform_11=platform_wii
+platform_12=platform_zxspectrum
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_gameboy
+platform_5=platform_iphone
+platform_6=platform_unknown
+platform_7=platform_msx
+platform_8=platform_segamastersystem
+platform_9=platform_turbografx
+[properties]
+cash:int=90016000
+copySell:int=1552000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=10 d=27 h=0 mi=0
+famous:float=0.36
+gameIsSaling:bool=false
+internalname:string=game_rtype
+localizationRating:int=16
+name:string=RType
+owner:string=Electric Dreams Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=87
+startBugRating:int=62
+startdate:time=y=1988 m=1 d=8 h=0 mi=0
+startGenreRating:int=33
+startGraphicRating:int=96
+startrating:int=68
+startSoundRating:int=64
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+genre_2=genre_motorcycle
+genre_3=genre_stunts
+[properties]
+internalname:string=game_motorbikemadness
+startdate:time=y=1988 m=7 d=17 h=0 mi=0
+url:string=http://www.mobygames.com/game/motorbike-madness

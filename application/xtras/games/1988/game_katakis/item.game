@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amiga
+[properties]
+cash:int=615963000
+copySell:int=8927000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=2 d=1 h=0 mi=0
+famous:float=0.07
+gameIsSaling:bool=false
+internalname:string=game_katakis
+localizationRating:int=35
+name:string=Katakis
+owner:string=Rainbow Arts Software GmbH
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=88
+startBugRating:int=83
+startdate:time=y=1988 m=5 d=5 h=0 mi=0
+startGenreRating:int=79
+startGraphicRating:int=42
+startrating:int=61
+startSoundRating:int=15
+textureNormal:path=images/spl_0.jpg

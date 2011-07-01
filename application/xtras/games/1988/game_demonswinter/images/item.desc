@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_demonswinter
+startdate:time=y=1988 m=2 d=2 h=0 mi=0

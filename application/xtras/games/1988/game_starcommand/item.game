@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_scifi
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=312272000
+copySell:int=5384000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=8 d=17 h=0 mi=0
+famous:float=0.29
+gameIsSaling:bool=false
+internalname:string=game_starcommand
+localizationRating:int=79
+name:string=Star Command
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=71
+startBugRating:int=3
+startdate:time=y=1988 m=0 d=13 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=23
+startrating:int=45
+startSoundRating:int=81
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/star-command

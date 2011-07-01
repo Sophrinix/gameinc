@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_scifi
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_lasersquad
+startdate:time=y=1988 m=10 d=8 h=0 mi=0

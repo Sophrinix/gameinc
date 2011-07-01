@@ -1,0 +1,11 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_comics
+genre_3=genre_flight
+genre_4=genre_naval
+genre_5=genre_shooter
+[properties]
+internalname:string=game_projectneptune
+startdate:time=y=1988 m=0 d=9 h=0 mi=0
+url:string=http://www.mobygames.com/game/project-neptune

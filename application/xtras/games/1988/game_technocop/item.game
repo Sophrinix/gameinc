@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_cyberpunk
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_genesis
+platform_6=platform_zxspectrum
+[properties]
+cash:int=1757000
+copySell:int=251000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=6 d=16 h=0 mi=0
+famous:float=0.93
+gameIsSaling:bool=false
+internalname:string=game_technocop
+localizationRating:int=57
+name:string=Techno Cop
+owner:string=U.S. Gold Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=99
+startBugRating:int=39
+startdate:time=y=1988 m=5 d=6 h=0 mi=0
+startGenreRating:int=0
+startGraphicRating:int=43
+startrating:int=47
+startSoundRating:int=58
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/techno-cop

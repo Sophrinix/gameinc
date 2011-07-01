@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_educational
+genre_1=genre_simulation
+genre_2=genre_strategy
+genre_3=genre_managerial
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+[properties]
+cash:int=124899000
+copySell:int=4029000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=5 d=26 h=0 mi=0
+famous:float=0.81
+gameIsSaling:bool=false
+internalname:string=game_hiddenagenda
+localizationRating:int=6
+name:string=Hidden Agenda
+owner:string=Springboard Software Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=89
+startBugRating:int=88
+startdate:time=y=1988 m=2 d=7 h=0 mi=0
+startGenreRating:int=5
+startGraphicRating:int=57
+startrating:int=64
+startSoundRating:int=81
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/hidden-agenda

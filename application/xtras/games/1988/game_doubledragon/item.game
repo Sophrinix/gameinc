@@ -1,0 +1,42 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_lynx
+platform_11=platform_msx
+platform_12=platform_nes
+platform_13=platform_segamastersystem
+platform_14=platform_wii
+platform_15=platform_xbox360
+platform_16=platform_zxspectrum
+platform_2=platform_atari2600
+platform_3=platform_atari7800
+platform_4=platform_atarist
+platform_5=platform_commodore
+platform_6=platform_dos
+platform_7=platform_gameboy
+platform_8=platform_gameboyadvance
+platform_9=platform_genesis
+[properties]
+cash:int=33948000
+copySell:int=492000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=3 d=25 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_doubledragon
+localizationRating:int=12
+name:string=DoubleDragon
+owner:string=Arcadia Systems, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=82
+startBugRating:int=24
+startdate:time=y=1988 m=11 d=4 h=0 mi=0
+startGenreRating:int=55
+startGraphicRating:int=56
+startrating:int=54
+startSoundRating:int=56
+textureNormal:path=images/spl_0.jpg

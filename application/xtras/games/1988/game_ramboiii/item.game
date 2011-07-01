@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_msx
+platform_6=platform_zxspectrum
+[properties]
+cash:int=138520000
+copySell:int=6926000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=11 d=8 h=0 mi=0
+famous:float=0.97
+gameIsSaling:bool=false
+internalname:string=game_ramboiii
+localizationRating:int=40
+name:string=Rambo III
+owner:string=Ocean Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=24
+startBugRating:int=78
+startdate:time=y=1988 m=7 d=20 h=0 mi=0
+startGenreRating:int=96
+startGraphicRating:int=62
+startrating:int=68
+startSoundRating:int=80
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/rambo-iii

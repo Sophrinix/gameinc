@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_commodore
+platform_3=platform_dos
+[properties]
+cash:int=449200000
+copySell:int=5615000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=1 d=23 h=0 mi=0
+famous:float=0.43
+gameIsSaling:bool=false
+internalname:string=game_willow
+localizationRating:int=44
+name:string=Willow
+owner:string=Mindscape, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=53
+startBugRating:int=95
+startdate:time=y=1988 m=7 d=15 h=0 mi=0
+startGenreRating:int=19
+startGraphicRating:int=77
+startrating:int=54
+startSoundRating:int=30
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/willow

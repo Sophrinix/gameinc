@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_postapocalyptic
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_commodore
+platform_2=platform_dos
+[properties]
+cash:int=136900000
+copySell:int=6845000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=11 d=9 h=0 mi=0
+famous:float=0.55
+gameIsSaling:bool=false
+internalname:string=game_wasteland
+localizationRating:int=7
+name:string=Wasteland
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=34
+startBugRating:int=55
+startdate:time=y=1988 m=10 d=16 h=0 mi=0
+startGenreRating:int=15
+startGraphicRating:int=12
+startrating:int=39
+startSoundRating:int=82
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/wasteland

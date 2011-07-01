@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+[properties]
+cash:int=448140000
+copySell:int=8148000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=5 d=18 h=0 mi=0
+famous:float=0.58
+gameIsSaling:bool=false
+internalname:string=game_demonswinter
+localizationRating:int=15
+name:string=Demon's Winter
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=14
+startBugRating:int=2
+startdate:time=y=1988 m=2 d=2 h=0 mi=0
+startGenreRating:int=57
+startGraphicRating:int=36
+startrating:int=39
+startSoundRating:int=86
+textureNormal:path=images/spl_0.jpg

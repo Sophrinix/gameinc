@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[properties]
+internalname:string=game_doubledragon
+startdate:time=y=1988 m=11 d=4 h=0 mi=0

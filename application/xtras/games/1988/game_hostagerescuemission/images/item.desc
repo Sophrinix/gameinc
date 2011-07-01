@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_realtime
+genre_3=genre_shooter
+genre_4=genre_spy
+[properties]
+internalname:string=game_hostagerescuemission
+startdate:time=y=1988 m=6 d=25 h=0 mi=0
+url:string=http://www.mobygames.com/game/hostage-rescue-mission

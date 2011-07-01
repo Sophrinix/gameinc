@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=263590000
+copySell:int=6130000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=7 d=11 h=0 mi=0
+famous:float=0.4
+gameIsSaling:bool=false
+internalname:string=game_powerdrome
+localizationRating:int=80
+name:string=Powerdrome
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=89
+startBugRating:int=4
+startdate:time=y=1988 m=6 d=9 h=0 mi=0
+startGenreRating:int=39
+startGraphicRating:int=36
+startrating:int=40
+startSoundRating:int=32
+textureNormal:path=images/spl_0.jpg

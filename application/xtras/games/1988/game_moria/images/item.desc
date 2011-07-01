@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+[properties]
+internalname:string=game_moria
+startdate:time=y=1988 m=8 d=28 h=0 mi=0

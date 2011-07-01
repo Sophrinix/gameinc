@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_unknown
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_gamegear
+platform_5=platform_msx
+platform_6=platform_segamastersystem
+platform_7=platform_zxspectrum
+[properties]
+cash:int=83260000
+copySell:int=4163000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=7 d=6 h=0 mi=0
+famous:float=0.08
+gameIsSaling:bool=false
+internalname:string=game_rastan
+localizationRating:int=29
+name:string=Rastan
+owner:string=Tonka Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=90
+startBugRating:int=79
+startdate:time=y=1988 m=1 d=28 h=0 mi=0
+startGenreRating:int=92
+startGraphicRating:int=35
+startrating:int=62
+startSoundRating:int=15
+textureNormal:path=images/spl_0.jpg

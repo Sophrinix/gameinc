@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_strategy
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_paladin
+startdate:time=y=1988 m=2 d=19 h=0 mi=0
+url:string=http://www.mobygames.com/game/paladin

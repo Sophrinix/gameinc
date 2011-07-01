@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_postapocalyptic
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_wasteland
+startdate:time=y=1988 m=10 d=16 h=0 mi=0
+url:string=http://www.mobygames.com/game/wasteland

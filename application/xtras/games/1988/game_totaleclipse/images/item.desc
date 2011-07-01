@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_detective
+genre_3=genre_puzzle
+genre_4=genre_realtime
+[properties]
+internalname:string=game_totaleclipse
+startdate:time=y=1988 m=6 d=4 h=0 mi=0
+url:string=http://www.mobygames.com/game/total-eclipse

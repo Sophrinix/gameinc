@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_rastan
+startdate:time=y=1988 m=1 d=28 h=0 mi=0

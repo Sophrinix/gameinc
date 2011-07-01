@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_educational
+genre_1=genre_simulation
+genre_2=genre_strategy
+genre_3=genre_managerial
+[properties]
+internalname:string=game_hiddenagenda
+startdate:time=y=1988 m=2 d=7 h=0 mi=0
+url:string=http://www.mobygames.com/game/hidden-agenda
