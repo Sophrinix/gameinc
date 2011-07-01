@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_zxspectrum
+[properties]
+cash:int=91701000
+copySell:int=1329000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=0 d=9 h=0 mi=0
+famous:float=0.87
+gameIsSaling:bool=false
+internalname:string=game_airborneranger
+localizationRating:int=96
+name:string=Airborne Ranger
+owner:string=MicroProse Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=66
+startdate:time=y=1987 m=4 d=14 h=0 mi=0
+startGenreRating:int=46
+startGraphicRating:int=83
+startrating:int=50
+startSoundRating:int=19
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/airborne-ranger

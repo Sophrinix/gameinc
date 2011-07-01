@@ -1,0 +1,40 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_nes
+platform_11=platform_segamastersystem
+platform_12=platform_trs80
+platform_13=platform_zxspectrum
+platform_2=platform_apple2
+platform_3=platform_atari2600
+platform_4=platform_atari7800
+platform_5=platform_atari8b
+platform_6=platform_atarist
+platform_7=platform_commodore
+platform_8=platform_dos
+platform_9=platform_lynx
+[properties]
+cash:int=210598000
+copySell:int=3631000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=1 d=9 h=0 mi=0
+famous:float=0.38
+gameIsSaling:bool=false
+internalname:string=game_rampage
+localizationRating:int=59
+name:string=Rampage
+owner:string=Activision, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=84
+startBugRating:int=2
+startdate:time=y=1987 m=6 d=19 h=0 mi=0
+startGenreRating:int=60
+startGraphicRating:int=51
+startrating:int=58
+startSoundRating:int=95
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/rampage

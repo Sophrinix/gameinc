@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atari8b
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_msx
+platform_6=platform_zxspectrum
+[properties]
+cash:int=383316000
+copySell:int=5637000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=0 d=13 h=0 mi=0
+famous:float=0.18
+gameIsSaling:bool=false
+internalname:string=game_headoverheels
+localizationRating:int=97
+name:string=Head Over Heels
+owner:string=Ocean Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=28
+startBugRating:int=85
+startdate:time=y=1987 m=4 d=10 h=0 mi=0
+startGenreRating:int=86
+startGraphicRating:int=77
+startrating:int=59
+startSoundRating:int=21
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/head-over-heels

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_motorcycle
+genre_2=genre_arcade
+[properties]
+internalname:string=game_superhangon
+startdate:time=y=1987 m=10 d=13 h=0 mi=0

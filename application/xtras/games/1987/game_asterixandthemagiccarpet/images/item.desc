@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_comics
+[properties]
+internalname:string=game_asterixandthemagiccarpet
+startdate:time=y=1987 m=2 d=25 h=0 mi=0
+url:string=http://www.mobygames.com/game/asterix-and-the-magic-carpet

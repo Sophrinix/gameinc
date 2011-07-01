@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_helicopter
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=459699000
+copySell:int=4943000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=10 d=27 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_3dhelicoptersimulator
+localizationRating:int=77
+name:string=3-D Helicopter Simulator
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=27
+startBugRating:int=40
+startdate:time=y=1987 m=0 d=19 h=0 mi=0
+startGenreRating:int=97
+startGraphicRating:int=61
+startrating:int=46
+startSoundRating:int=8
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/dos/3-d-helicopter-simulator

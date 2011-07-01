@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_commodore
+platform_2=platform_msx
+platform_3=platform_nes
+platform_4=platform_turbografx
+platform_5=platform_wii
+platform_6=platform_zxspectrum
+[properties]
+cash:int=153760000
+copySell:int=4960000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=9 d=1 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_lifeforce
+localizationRating:int=32
+name:string=LifeForce
+owner:string=Konami Industry Co. Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=98
+startBugRating:int=76
+startdate:time=y=1987 m=9 d=17 h=0 mi=0
+startGenreRating:int=32
+startGraphicRating:int=45
+startrating:int=67
+startSoundRating:int=87
+textureNormal:path=images/spl_0.jpg

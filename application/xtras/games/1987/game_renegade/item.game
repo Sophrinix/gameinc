@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_apple2
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_nes
+platform_7=platform_segamastersystem
+platform_8=platform_wii
+platform_9=platform_zxspectrum
+[properties]
+cash:int=475392000
+copySell:int=9904000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=10 d=5 h=0 mi=0
+famous:float=0.72
+gameIsSaling:bool=false
+internalname:string=game_renegade
+localizationRating:int=4
+name:string=Renegade
+owner:string=Taito America Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=55
+startBugRating:int=90
+startdate:time=y=1987 m=8 d=23 h=0 mi=0
+startGenreRating:int=23
+startGraphicRating:int=87
+startrating:int=52
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg

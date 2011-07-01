@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[properties]
+internalname:string=game_renegade
+startdate:time=y=1987 m=8 d=23 h=0 mi=0

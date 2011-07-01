@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_scifi
+[properties]
+internalname:string=game_deepspaceoperationcopernicus
+startdate:time=y=1987 m=1 d=5 h=0 mi=0

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_boxing
+genre_2=genre_arcade
+[properties]
+internalname:string=game_miketysonspunchout
+startdate:time=y=1987 m=11 d=26 h=0 mi=0

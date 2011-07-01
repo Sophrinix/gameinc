@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_atarist
+platform_1=platform_commodore
+platform_2=platform_dos
+[properties]
+cash:int=62128000
+copySell:int=7766000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=4 d=23 h=0 mi=0
+famous:float=0.02
+gameIsSaling:bool=false
+internalname:string=game_startrektherebeluniverse
+localizationRating:int=47
+name:string=Star Trek: The Rebel Universe
+owner:string=Firebird Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=12
+startBugRating:int=13
+startdate:time=y=1987 m=9 d=28 h=0 mi=0
+startGenreRating:int=27
+startGraphicRating:int=66
+startrating:int=33
+startSoundRating:int=50
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/star-trek-the-rebel-universe

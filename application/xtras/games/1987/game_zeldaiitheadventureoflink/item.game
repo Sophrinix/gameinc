@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_nes
+platform_2=platform_wii
+[properties]
+cash:int=275616000
+copySell:int=7656000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=9 d=7 h=0 mi=0
+famous:float=0.9
+gameIsSaling:bool=false
+internalname:string=game_zeldaiitheadventureoflink
+localizationRating:int=71
+name:string=ZeldaIITheAdventureofLink
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=17
+startBugRating:int=0
+startdate:time=y=1987 m=3 d=2 h=0 mi=0
+startGenreRating:int=35
+startGraphicRating:int=39
+startrating:int=24
+startSoundRating:int=33
+textureNormal:path=images/spl_0.jpg

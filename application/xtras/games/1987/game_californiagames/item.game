@@ -1,0 +1,44 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_olympiad
+genre_2=genre_skateboarding
+genre_3=genre_surfing
+genre_4=genre_stunts
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_lynx
+platform_11=platform_msx
+platform_12=platform_nes
+platform_13=platform_segamastersystem
+platform_14=platform_wii
+platform_15=platform_zxspectrum
+platform_2=platform_apple2
+platform_3=platform_unknown
+platform_4=platform_atari2600
+platform_5=platform_atarist
+platform_6=platform_commodore
+platform_7=platform_dos
+platform_8=platform_genesis
+platform_9=platform_unknown
+[properties]
+cash:int=272476000
+copySell:int=4007000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=1 d=27 h=0 mi=0
+famous:float=0.41
+gameIsSaling:bool=false
+internalname:string=game_californiagames
+localizationRating:int=2
+name:string=California Games
+owner:string=Epyx, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=33
+startBugRating:int=50
+startdate:time=y=1987 m=0 d=6 h=0 mi=0
+startGenreRating:int=53
+startGraphicRating:int=77
+startrating:int=54
+startSoundRating:int=57
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/california-games

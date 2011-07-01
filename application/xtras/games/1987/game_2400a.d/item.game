@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_rpg
+genre_2=genre_postapocalyptic
+genre_3=genre_puzzle
+genre_4=genre_scifi
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_dos
+[properties]
+cash:int=135940000
+copySell:int=6797000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=3 d=21 h=0 mi=0
+famous:float=0.36
+gameIsSaling:bool=false
+internalname:string=game_2400a.d.
+localizationRating:int=85
+name:string=2400 A.D.
+owner:string=ORIGIN Systems, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=87
+startBugRating:int=15
+startdate:time=y=1987 m=3 d=11 h=0 mi=0
+startGenreRating:int=25
+startGraphicRating:int=17
+startrating:int=32
+startSoundRating:int=17
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/2400-ad

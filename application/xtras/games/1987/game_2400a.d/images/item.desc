@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_rpg
+genre_2=genre_postapocalyptic
+genre_3=genre_puzzle
+genre_4=genre_scifi
+[properties]
+internalname:string=game_2400a.d.
+startdate:time=y=1987 m=3 d=11 h=0 mi=0
+url:string=http://www.mobygames.com/game/2400-ad

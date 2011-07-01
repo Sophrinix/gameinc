@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_pc98
+[properties]
+cash:int=118611000
+copySell:int=5157000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=2 d=28 h=0 mi=0
+famous:float=0.72
+gameIsSaling:bool=false
+internalname:string=game_testdrive
+localizationRating:int=58
+name:string=Test Drive
+owner:string=Accolade, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=95
+startBugRating:int=50
+startdate:time=y=1987 m=3 d=27 h=0 mi=0
+startGenreRating:int=0
+startGraphicRating:int=1
+startrating:int=47
+startSoundRating:int=93
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/test-drive

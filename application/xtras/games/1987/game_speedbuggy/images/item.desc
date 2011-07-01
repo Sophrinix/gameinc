@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_arcade
+[properties]
+internalname:string=game_speedbuggy
+startdate:time=y=1987 m=10 d=0 h=0 mi=0

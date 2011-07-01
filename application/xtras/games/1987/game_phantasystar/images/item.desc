@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_scifi
+genre_3=genre_turnbased
+[properties]
+internalname:string=game_phantasystar
+startdate:time=y=1987 m=1 d=20 h=0 mi=0

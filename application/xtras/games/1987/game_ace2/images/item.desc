@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_flight
+[properties]
+internalname:string=game_ace2
+startdate:time=y=1987 m=3 d=17 h=0 mi=0
+url:string=http://www.mobygames.com/game/ace-2

@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_arcade
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_doja
+platform_2=platform_nes
+platform_3=platform_playstation
+platform_4=platform_playstation3
+platform_5=platform_wii
+[properties]
+cash:int=420420000
+copySell:int=9555000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=11 d=22 h=0 mi=0
+famous:float=0.11
+gameIsSaling:bool=false
+internalname:string=game_megaman
+localizationRating:int=8
+name:string=MegaMan
+owner:string=Capcom U.S.A., Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=80
+startdate:time=y=1987 m=5 d=18 h=0 mi=0
+startGenreRating:int=53
+startGraphicRating:int=57
+startrating:int=70
+startSoundRating:int=70
+textureNormal:path=images/spl_0.jpg

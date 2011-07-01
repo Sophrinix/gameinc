@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_fmtowns
+platform_6=platform_nes
+platform_7=platform_zxspectrum
+[properties]
+cash:int=360718000
+copySell:int=8798000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=7 d=24 h=0 mi=0
+famous:float=0.55
+gameIsSaling:bool=false
+internalname:string=game_skyshark
+localizationRating:int=32
+name:string=Sky Shark
+owner:string=Firebird Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=73
+startBugRating:int=49
+startdate:time=y=1987 m=1 d=15 h=0 mi=0
+startGenreRating:int=17
+startGraphicRating:int=36
+startrating:int=50
+startSoundRating:int=75
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/sky-shark

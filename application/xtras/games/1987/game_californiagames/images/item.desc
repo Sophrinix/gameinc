@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_olympiad
+genre_2=genre_skateboarding
+genre_3=genre_surfing
+genre_4=genre_stunts
+[properties]
+internalname:string=game_californiagames
+startdate:time=y=1987 m=0 d=6 h=0 mi=0
+url:string=http://www.mobygames.com/game/california-games

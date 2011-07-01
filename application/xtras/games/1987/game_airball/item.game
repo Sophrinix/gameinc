@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_strategy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_unknown
+platform_2=platform_atari8b
+platform_3=platform_atarist
+platform_4=platform_dos
+platform_5=platform_dragon
+[properties]
+cash:int=627648000
+copySell:int=6538000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=8 d=13 h=0 mi=0
+famous:float=0.63
+gameIsSaling:bool=false
+internalname:string=game_airball
+localizationRating:int=71
+name:string=Airball
+owner:string=MicroDeal
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=32
+startBugRating:int=79
+startdate:time=y=1987 m=3 d=17 h=0 mi=0
+startGenreRating:int=27
+startGraphicRating:int=96
+startrating:int=63
+startSoundRating:int=82
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/airball

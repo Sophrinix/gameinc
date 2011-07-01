@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_realtime
+[properties]
+internalname:string=game_edenblues
+startdate:time=y=1987 m=5 d=21 h=0 mi=0
+url:string=http://www.mobygames.com/game/eden-blues

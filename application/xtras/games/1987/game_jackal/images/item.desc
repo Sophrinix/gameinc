@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_arcade
+genre_3=genre_shooter
+genre_4=genre_tank
+[properties]
+internalname:string=game_jackal
+startdate:time=y=1987 m=11 d=27 h=0 mi=0
+url:string=http://www.mobygames.com/game/jackal

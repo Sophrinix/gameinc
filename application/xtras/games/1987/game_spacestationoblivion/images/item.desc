@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_scifi
+[properties]
+internalname:string=game_spacestationoblivion
+startdate:time=y=1987 m=1 d=3 h=0 mi=0
+url:string=http://www.mobygames.com/game/space-station-oblivion

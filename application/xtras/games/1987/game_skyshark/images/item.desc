@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[properties]
+internalname:string=game_skyshark
+startdate:time=y=1987 m=1 d=15 h=0 mi=0
+url:string=http://www.mobygames.com/game/sky-shark

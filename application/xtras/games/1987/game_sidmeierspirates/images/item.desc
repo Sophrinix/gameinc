@@ -1,0 +1,11 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_strategy
+genre_3=genre_sailing
+genre_4=genre_naval
+genre_5=genre_realtime
+[properties]
+internalname:string=game_sidmeierspirates
+startdate:time=y=1987 m=7 d=2 h=0 mi=0
+url:string=http://www.mobygames.com/game/sid-meiers-pirates

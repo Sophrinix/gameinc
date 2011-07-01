@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+[properties]
+cash:int=125875000
+copySell:int=1325000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=6 d=0 h=0 mi=0
+famous:float=0.91
+gameIsSaling:bool=false
+internalname:string=game_thegreatgianasisters
+localizationRating:int=99
+name:string=The Great Giana Sisters
+owner:string=Rainbow Arts Software GmbH
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=57
+startBugRating:int=66
+startdate:time=y=1987 m=5 d=2 h=0 mi=0
+startGenreRating:int=24
+startGraphicRating:int=40
+startrating:int=55
+startSoundRating:int=90
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/great-giana-sisters

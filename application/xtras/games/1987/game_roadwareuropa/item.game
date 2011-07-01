@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_postapocalyptic
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+[properties]
+cash:int=28161000
+copySell:int=447000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=2 d=9 h=0 mi=0
+famous:float=0.33
+gameIsSaling:bool=false
+internalname:string=game_roadwareuropa
+localizationRating:int=80
+name:string=Roadwar Europa
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=64
+startBugRating:int=64
+startdate:time=y=1987 m=3 d=18 h=0 mi=0
+startGenreRating:int=42
+startGraphicRating:int=53
+startrating:int=50
+startSoundRating:int=28
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/roadwar-europa

@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_flight
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_apple2
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_unknown
+platform_5=platform_msx
+platform_6=platform_pc98
+platform_7=platform_zxspectrum
+[properties]
+cash:int=56530000
+copySell:int=5653000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=0 d=10 h=0 mi=0
+famous:float=0.43
+gameIsSaling:bool=false
+internalname:string=game_chuckyeagersadvancedflighttrainer
+localizationRating:int=19
+name:string=Chuck Yeager's Advanced Flight Trainer
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=58
+startBugRating:int=63
+startdate:time=y=1987 m=11 d=5 h=0 mi=0
+startGenreRating:int=74
+startGraphicRating:int=64
+startrating:int=54
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/chuck-yeagers-advanced-flight-trainer

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=486495000
+copySell:int=5121000
+descriptionpath:path=desc.htm
+enddate:time=y=1990 m=2 d=27 h=0 mi=0
+famous:float=0.22
+gameIsSaling:bool=false
+internalname:string=game_breach
+localizationRating:int=85
+name:string=Breach
+owner:string=Artronic Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=35
+startBugRating:int=24
+startdate:time=y=1987 m=4 d=18 h=0 mi=0
+startGenreRating:int=44
+startGraphicRating:int=34
+startrating:int=42
+startSoundRating:int=75
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/breach
