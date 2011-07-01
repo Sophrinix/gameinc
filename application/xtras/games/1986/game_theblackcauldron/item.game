@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_unknown
+platform_3=platform_atarist
+platform_4=platform_dos
+platform_5=platform_pcbooter
+[properties]
+cash:int=515520000
+copySell:int=5728000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=1 d=7 h=0 mi=0
+famous:float=0.21
+gameIsSaling:bool=false
+internalname:string=game_theblackcauldron
+localizationRating:int=97
+name:string=The Black Cauldron
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=69
+startBugRating:int=43
+startdate:time=y=1986 m=5 d=8 h=0 mi=0
+startGenreRating:int=26
+startGraphicRating:int=56
+startrating:int=52
+startSoundRating:int=69
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/black-cauldron

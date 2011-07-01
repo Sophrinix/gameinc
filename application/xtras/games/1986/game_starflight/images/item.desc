@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_realtime
+genre_3=genre_scifi
+[properties]
+internalname:string=game_starflight
+startdate:time=y=1986 m=5 d=10 h=0 mi=0

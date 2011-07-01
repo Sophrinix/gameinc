@@ -1,0 +1,23 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=224373000
+copySell:int=7737000
+descriptionpath:path=desc.htm
+enddate:time=y=1986 m=5 d=25 h=0 mi=0
+famous:float=0.69
+gameIsSaling:bool=false
+internalname:string=game_3demon
+localizationRating:int=13
+name:string=3Demon
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=37
+startBugRating:int=64
+startdate:time=y=1983 m=7 d=14 h=0 mi=0
+startGenreRating:int=39
+startGraphicRating:int=31
+startrating:int=51
+startSoundRating:int=85

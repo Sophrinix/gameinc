@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_flight
+[properties]
+internalname:string=game_aceofaces
+startdate:time=y=1986 m=8 d=26 h=0 mi=0
+url:string=http://www.mobygames.com/game/ace-of-aces

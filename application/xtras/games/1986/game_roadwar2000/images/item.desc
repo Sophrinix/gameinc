@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_strategy
+genre_2=genre_postapocalyptic
+[properties]
+internalname:string=game_roadwar2000
+startdate:time=y=1986 m=3 d=24 h=0 mi=0
+url:string=http://www.mobygames.com/game/roadwar-2000

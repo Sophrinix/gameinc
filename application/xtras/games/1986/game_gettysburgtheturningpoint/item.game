@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_atari8b
+platform_3=platform_commodore
+platform_4=platform_dos
+[properties]
+cash:int=741210000
+copySell:int=7970000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=4 d=7 h=0 mi=0
+famous:float=0.07
+gameIsSaling:bool=false
+internalname:string=game_gettysburgtheturningpoint
+localizationRating:int=63
+name:string=Gettysburg: The Turning Point
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=16
+startBugRating:int=98
+startdate:time=y=1986 m=6 d=2 h=0 mi=0
+startGenreRating:int=46
+startGraphicRating:int=97
+startrating:int=62
+startSoundRating:int=55
+textureNormal:path=images/spl_0.jpg

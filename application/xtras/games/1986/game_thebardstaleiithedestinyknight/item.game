@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_unknown
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_nes
+platform_6=platform_pc98
+[properties]
+cash:int=116815000
+copySell:int=1915000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=5 d=3 h=0 mi=0
+famous:float=0.65
+gameIsSaling:bool=false
+internalname:string=game_thebardstaleiithedestinyknight
+localizationRating:int=32
+name:string=The Bard's Tale II: The Destiny Knight
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=34
+startBugRating:int=52
+startdate:time=y=1986 m=1 d=14 h=0 mi=0
+startGenreRating:int=90
+startGraphicRating:int=53
+startrating:int=65
+startSoundRating:int=96
+textureNormal:path=images/spl_0.jpg

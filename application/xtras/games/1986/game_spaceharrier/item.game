@@ -1,0 +1,41 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_segasaturn
+platform_11=platform_turbografx
+platform_12=platform_wii
+platform_13=platform_zxspectrum
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_gamegear
+platform_6=platform_nes
+platform_7=platform_pc88
+platform_8=platform_sega32x
+platform_9=platform_segamastersystem
+[properties]
+cash:int=5290000
+copySell:int=1058000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=10 d=25 h=0 mi=0
+famous:float=0.08
+gameIsSaling:bool=false
+internalname:string=game_spaceharrier
+localizationRating:int=96
+name:string=Space Harrier
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=88
+startBugRating:int=88
+startdate:time=y=1986 m=1 d=22 h=0 mi=0
+startGenreRating:int=17
+startGraphicRating:int=24
+startrating:int=58
+startSoundRating:int=75
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/space-harrier

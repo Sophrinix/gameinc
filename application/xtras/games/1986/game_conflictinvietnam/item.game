@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_historicalbattle
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_atari8b
+platform_2=platform_commodore
+platform_3=platform_pcbooter
+[properties]
+cash:int=439254000
+copySell:int=6366000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=3 d=0 h=0 mi=0
+famous:float=0.38
+gameIsSaling:bool=false
+internalname:string=game_conflictinvietnam
+localizationRating:int=94
+name:string=Conflict in Vietnam
+owner:string=MicroProse Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=81
+startBugRating:int=66
+startdate:time=y=1986 m=5 d=25 h=0 mi=0
+startGenreRating:int=22
+startGraphicRating:int=77
+startrating:int=65
+startSoundRating:int=83
+textureNormal:path=images/spl_0.jpg

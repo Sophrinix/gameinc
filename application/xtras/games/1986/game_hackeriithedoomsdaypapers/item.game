@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_apple2
+platform_3=platform_unknown
+platform_4=platform_atarist
+platform_5=platform_commodore
+platform_6=platform_pcbooter
+platform_7=platform_zxspectrum
+[properties]
+cash:int=490392000
+copySell:int=5838000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=2 d=19 h=0 mi=0
+famous:float=0.6
+gameIsSaling:bool=false
+internalname:string=game_hackeriithedoomsdaypapers
+localizationRating:int=95
+name:string=Hacker II: The Doomsday Papers
+owner:string=Activision, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=30
+startBugRating:int=15
+startdate:time=y=1986 m=2 d=13 h=0 mi=0
+startGenreRating:int=87
+startGraphicRating:int=88
+startrating:int=53
+startSoundRating:int=46
+textureNormal:path=images/spl_0.jpg

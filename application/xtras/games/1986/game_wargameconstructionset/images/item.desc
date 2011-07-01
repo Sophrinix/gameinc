@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_historicalbattle
+[properties]
+internalname:string=game_wargameconstructionset
+startdate:time=y=1986 m=6 d=6 h=0 mi=0
+url:string=http://www.mobygames.com/game/wargame-construction-set

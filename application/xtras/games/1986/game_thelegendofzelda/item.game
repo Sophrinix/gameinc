@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_anime
+genre_3=genre_fantasy
+genre_4=genre_puzzle
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_nes
+platform_2=platform_wii
+platform_3=platform_windows
+[properties]
+cash:int=419790000
+copySell:int=5997000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=7 d=10 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_thelegendofzelda
+localizationRating:int=31
+name:string=TheLegendofZelda
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=95
+startBugRating:int=30
+startdate:time=y=1986 m=8 d=3 h=0 mi=0
+startGenreRating:int=86
+startGraphicRating:int=86
+startrating:int=63
+startSoundRating:int=20
+textureNormal:path=images/spl_0.jpg

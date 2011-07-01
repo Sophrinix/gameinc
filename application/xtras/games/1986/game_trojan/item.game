@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_dos
+platform_1=platform_nes
+[properties]
+cash:int=1023000
+copySell:int=33000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=8 d=25 h=0 mi=0
+famous:float=0.68
+gameIsSaling:bool=false
+internalname:string=game_trojan
+localizationRating:int=63
+name:string=Trojan
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=75
+startBugRating:int=53
+startdate:time=y=1986 m=4 d=11 h=0 mi=0
+startGenreRating:int=8
+startGraphicRating:int=25
+startrating:int=49
+startSoundRating:int=87
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/trojan

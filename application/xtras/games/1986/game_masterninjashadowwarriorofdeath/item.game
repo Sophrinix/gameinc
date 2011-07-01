@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_commodore
+platform_2=platform_dos
+[properties]
+cash:int=72660000
+copySell:int=1730000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=5 d=6 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_masterninjashadowwarriorofdeath
+localizationRating:int=59
+name:string=Master Ninja: Shadow Warrior of Death
+owner:string=Paragon Software Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=30
+startBugRating:int=90
+startdate:time=y=1986 m=4 d=20 h=0 mi=0
+startGenreRating:int=39
+startGraphicRating:int=7
+startrating:int=51
+startSoundRating:int=92
+textureNormal:path=images/spl_0.jpg

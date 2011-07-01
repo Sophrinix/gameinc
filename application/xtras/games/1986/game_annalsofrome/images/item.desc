@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_turnbased
+[properties]
+internalname:string=game_annalsofrome
+startdate:time=y=1986 m=6 d=13 h=0 mi=0
+url:string=http://www.mobygames.com/game/annals-of-rome

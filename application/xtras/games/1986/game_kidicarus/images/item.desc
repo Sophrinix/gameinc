@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+[properties]
+internalname:string=game_kidicarus
+startdate:time=y=1986 m=0 d=3 h=0 mi=0

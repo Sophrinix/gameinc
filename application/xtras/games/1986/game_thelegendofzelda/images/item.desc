@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_anime
+genre_3=genre_fantasy
+genre_4=genre_puzzle
+[properties]
+internalname:string=game_thelegendofzelda
+startdate:time=y=1986 m=8 d=3 h=0 mi=0

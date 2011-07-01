@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_helicopter
+[properties]
+internalname:string=game_gunship
+startdate:time=y=1986 m=11 d=7 h=0 mi=0

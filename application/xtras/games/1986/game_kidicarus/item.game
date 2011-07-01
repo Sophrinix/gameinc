@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_nes
+platform_2=platform_wii
+[properties]
+cash:int=330214000
+copySell:int=8054000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=2 d=3 h=0 mi=0
+famous:float=0.67
+gameIsSaling:bool=false
+internalname:string=game_kidicarus
+localizationRating:int=79
+name:string=KidIcarus
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=1
+startBugRating:int=2
+startdate:time=y=1986 m=0 d=3 h=0 mi=0
+startGenreRating:int=49
+startGraphicRating:int=44
+startrating:int=31
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg

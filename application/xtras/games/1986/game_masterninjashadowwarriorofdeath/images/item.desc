@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[properties]
+internalname:string=game_masterninjashadowwarriorofdeath
+startdate:time=y=1986 m=4 d=20 h=0 mi=0

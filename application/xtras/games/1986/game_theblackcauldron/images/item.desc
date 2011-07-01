@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_fantasy
+[properties]
+internalname:string=game_theblackcauldron
+startdate:time=y=1986 m=5 d=8 h=0 mi=0
+url:string=http://www.mobygames.com/game/black-cauldron

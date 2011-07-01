@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_commodore
+platform_2=platform_dos
+platform_3=platform_unknown
+platform_4=platform_msx
+platform_5=platform_nes
+platform_6=platform_pc88
+platform_7=platform_pc98
+[properties]
+cash:int=374920000
+copySell:int=7210000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=3 d=12 h=0 mi=0
+famous:float=0.28
+gameIsSaling:bool=false
+internalname:string=game_mightandmagicbooki
+localizationRating:int=13
+name:string=Might and Magic: Book I
+owner:string=New World Computing, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=5
+startBugRating:int=52
+startdate:time=y=1986 m=9 d=3 h=0 mi=0
+startGenreRating:int=12
+startGraphicRating:int=78
+startrating:int=44
+startSoundRating:int=77
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/might-and-magic-book-i

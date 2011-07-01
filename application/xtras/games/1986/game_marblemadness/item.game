@@ -1,0 +1,38 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_10=platform_genesis
+platform_11=platform_nes
+platform_12=platform_pcbooter
+platform_13=platform_segamastersystem
+platform_2=platform_unknown
+platform_3=platform_atarist
+platform_4=platform_unknown
+platform_5=platform_commodore
+platform_6=platform_fmtowns
+platform_7=platform_gameboy
+platform_8=platform_gamegear
+platform_9=platform_gameboycolor
+[properties]
+cash:int=80928000
+copySell:int=5058000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=6 d=16 h=0 mi=0
+famous:float=0.87
+gameIsSaling:bool=false
+internalname:string=game_marblemadness
+localizationRating:int=39
+name:string=MarbleMadness
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=14
+startBugRating:int=5
+startdate:time=y=1986 m=8 d=13 h=0 mi=0
+startGenreRating:int=1
+startGraphicRating:int=52
+startrating:int=22
+startSoundRating:int=42
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,11 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_anime
+genre_3=genre_battlemech
+genre_4=genre_scifi
+genre_5=genre_shooter
+[properties]
+internalname:string=game_wibarm
+startdate:time=y=1986 m=4 d=15 h=0 mi=0
+url:string=http://www.mobygames.com/game/wibarm

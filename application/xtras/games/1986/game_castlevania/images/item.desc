@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[properties]
+internalname:string=game_castlevania
+startdate:time=y=1986 m=11 d=10 h=0 mi=0

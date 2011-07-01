@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_bike
+genre_2=genre_arcade
+[properties]
+internalname:string=game_paperboy
+startdate:time=y=1986 m=4 d=22 h=0 mi=0
+url:string=http://www.mobygames.com/game/paperboy

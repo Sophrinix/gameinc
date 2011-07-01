@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_historicalbattle
+genre_2=genre_naval
+[platforms]
+platform_0=platform_commodore
+platform_1=platform_dos
+[properties]
+cash:int=11781000
+copySell:int=231000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=5 d=5 h=0 mi=0
+famous:float=0.01
+gameIsSaling:bool=false
+internalname:string=game_upperiscope
+localizationRating:int=97
+name:string=Up Periscope!
+owner:string=Actionsoft
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=61
+startBugRating:int=16
+startdate:time=y=1986 m=10 d=20 h=0 mi=0
+startGenreRating:int=8
+startGraphicRating:int=21
+startrating:int=25
+startSoundRating:int=20
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/up-periscope

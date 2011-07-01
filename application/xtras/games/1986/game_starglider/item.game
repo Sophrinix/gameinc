@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_scifi
+genre_3=genre_shooter
+genre_4=genre_tank
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_apple2
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_zxspectrum
+[properties]
+cash:int=518784000
+copySell:int=6176000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=10 d=6 h=0 mi=0
+famous:float=0.11
+gameIsSaling:bool=false
+internalname:string=game_starglider
+localizationRating:int=44
+name:string=Starglider
+owner:string=Rainbird Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=87
+startBugRating:int=61
+startdate:time=y=1986 m=6 d=12 h=0 mi=0
+startGenreRating:int=64
+startGraphicRating:int=81
+startrating:int=75
+startSoundRating:int=85
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/starglider

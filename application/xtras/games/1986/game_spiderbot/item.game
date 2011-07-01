@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_commodore
+platform_2=platform_pcbooter
+[properties]
+cash:int=459200000
+copySell:int=7175000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=3 d=15 h=0 mi=0
+famous:float=0.28
+gameIsSaling:bool=false
+internalname:string=game_spiderbot
+localizationRating:int=93
+name:string=Spiderbot
+owner:string=Addictive Games Ltd
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=73
+startdate:time=y=1986 m=3 d=1 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=15
+startrating:int=42
+startSoundRating:int=34
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/spiderbot

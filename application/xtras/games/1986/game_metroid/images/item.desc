@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_metroid
+startdate:time=y=1986 m=5 d=11 h=0 mi=0

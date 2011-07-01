@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_arcade
+genre_3=genre_puzzle
+[properties]
+internalname:string=game_superboulderdash
+startdate:time=y=1986 m=4 d=18 h=0 mi=0
+url:string=http://www.mobygames.com/game/super-boulder-dash

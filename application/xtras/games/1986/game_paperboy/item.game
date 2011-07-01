@@ -1,0 +1,45 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_bike
+genre_2=genre_arcade
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_gameboycolor
+platform_11=platform_gamegear
+platform_12=platform_genesis
+platform_13=platform_unknown
+platform_14=platform_lynx
+platform_15=platform_nes
+platform_16=platform_segamastersystem
+platform_17=platform_xbox360
+platform_18=platform_zxspectrum
+platform_2=platform_unknown
+platform_3=platform_atarist
+platform_4=platform_unknown
+platform_5=platform_unknown
+platform_6=platform_commodore
+platform_7=platform_dos
+platform_8=platform_electron
+platform_9=platform_gameboy
+[properties]
+cash:int=10730000
+copySell:int=290000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=0 d=17 h=0 mi=0
+famous:float=0.58
+gameIsSaling:bool=false
+internalname:string=game_paperboy
+localizationRating:int=87
+name:string=Paperboy
+owner:string=Mindscape, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=7
+startBugRating:int=99
+startdate:time=y=1986 m=4 d=22 h=0 mi=0
+startGenreRating:int=91
+startGraphicRating:int=40
+startrating:int=56
+startSoundRating:int=45
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/paperboy

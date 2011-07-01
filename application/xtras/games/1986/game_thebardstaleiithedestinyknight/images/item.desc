@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_thebardstaleiithedestinyknight
+startdate:time=y=1986 m=1 d=14 h=0 mi=0

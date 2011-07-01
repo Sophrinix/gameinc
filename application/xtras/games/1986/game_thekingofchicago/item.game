@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_adventure
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_unknown
+[properties]
+cash:int=248024000
+copySell:int=8858000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=1 d=7 h=0 mi=0
+famous:float=0.65
+gameIsSaling:bool=false
+internalname:string=game_thekingofchicago
+localizationRating:int=23
+name:string=The King of Chicago
+owner:string=Cinemaware Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=68
+startBugRating:int=44
+startdate:time=y=1986 m=8 d=24 h=0 mi=0
+startGenreRating:int=7
+startGraphicRating:int=83
+startrating:int=55
+startSoundRating:int=77
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/king-of-chicago

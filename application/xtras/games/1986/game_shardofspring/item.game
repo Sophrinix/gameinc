@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_commodore
+platform_2=platform_dos
+[properties]
+cash:int=4059000
+copySell:int=369000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=11 d=6 h=0 mi=0
+famous:float=0.62
+gameIsSaling:bool=false
+internalname:string=game_shardofspring
+localizationRating:int=86
+name:string=Shard of Spring
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=60
+startBugRating:int=96
+startdate:time=y=1986 m=0 d=11 h=0 mi=0
+startGenreRating:int=33
+startGraphicRating:int=18
+startrating:int=47
+startSoundRating:int=29
+textureNormal:path=images/spl_0.jpg

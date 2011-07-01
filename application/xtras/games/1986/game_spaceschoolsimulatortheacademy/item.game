@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_dos
+platform_4=platform_zxspectrum
+[properties]
+cash:int=380835000
+copySell:int=8463000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=10 d=14 h=0 mi=0
+famous:float=0.34
+gameIsSaling:bool=false
+internalname:string=game_spaceschoolsimulatortheacademy
+localizationRating:int=57
+name:string=Space School Simulator: The Academy
+owner:string=CRL Group PLC
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=58
+startBugRating:int=17
+startdate:time=y=1986 m=9 d=6 h=0 mi=0
+startGenreRating:int=72
+startGraphicRating:int=26
+startrating:int=37
+startSoundRating:int=15
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/space-school-simulator-the-academy

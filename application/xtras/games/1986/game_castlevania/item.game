@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_commodore
+platform_2=platform_dos
+platform_3=platform_gameboyadvance
+platform_4=platform_unknown
+platform_5=platform_nes
+platform_6=platform_wii
+[properties]
+cash:int=446985000
+copySell:int=9933000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=5 d=3 h=0 mi=0
+famous:float=0.97
+gameIsSaling:bool=false
+internalname:string=game_castlevania
+localizationRating:int=29
+name:string=Castlevania
+owner:string=Konami Industry Co. Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=32
+startBugRating:int=19
+startdate:time=y=1986 m=11 d=10 h=0 mi=0
+startGenreRating:int=37
+startGraphicRating:int=79
+startrating:int=39
+startSoundRating:int=32
+textureNormal:path=images/spl_0.jpg

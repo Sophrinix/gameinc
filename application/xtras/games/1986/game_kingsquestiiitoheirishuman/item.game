@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_unknown
+platform_3=platform_atarist
+platform_4=platform_dos
+platform_5=platform_trs80
+[properties]
+cash:int=55200000
+copySell:int=600000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=5 d=22 h=0 mi=0
+famous:float=0.77
+gameIsSaling:bool=false
+internalname:string=game_kingsquestiiitoheirishuman
+localizationRating:int=26
+name:string=King's Quest III: To Heir is Human
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=48
+startBugRating:int=84
+startdate:time=y=1986 m=8 d=27 h=0 mi=0
+startGenreRating:int=23
+startGraphicRating:int=53
+startrating:int=56
+startSoundRating:int=73
+textureNormal:path=images/spl_0.jpg

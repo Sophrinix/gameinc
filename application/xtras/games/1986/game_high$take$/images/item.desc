@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_detective
+genre_2=genre_interactivefiction
+[properties]
+internalname:string=game_high$take$
+startdate:time=y=1986 m=6 d=23 h=0 mi=0

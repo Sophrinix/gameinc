@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_flight
+[platforms]
+platform_0=platform_amigacpc
+platform_1=platform_commodore
+platform_2=platform_dos
+platform_3=platform_zxspectrum
+[properties]
+cash:int=224455000
+copySell:int=6413000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=7 d=26 h=0 mi=0
+famous:float=0.09
+gameIsSaling:bool=false
+internalname:string=game_aceaircombatemulator
+localizationRating:int=91
+name:string=ACEAirCombatEmulator
+owner:string=Spinnaker Software Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=92
+startBugRating:int=70
+startdate:time=y=1986 m=8 d=3 h=0 mi=0
+startGenreRating:int=72
+startGraphicRating:int=17
+startrating:int=52
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg

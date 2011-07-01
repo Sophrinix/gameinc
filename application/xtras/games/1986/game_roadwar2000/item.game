@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_strategy
+genre_2=genre_postapocalyptic
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_unknown
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_pc88
+platform_7=platform_pc98
+[properties]
+cash:int=18700000
+copySell:int=275000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=5 d=4 h=0 mi=0
+famous:float=0.93
+gameIsSaling:bool=false
+internalname:string=game_roadwar2000
+localizationRating:int=50
+name:string=Roadwar 2000
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=56
+startBugRating:int=43
+startdate:time=y=1986 m=3 d=24 h=0 mi=0
+startGenreRating:int=72
+startGraphicRating:int=60
+startrating:int=51
+startSoundRating:int=26
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/roadwar-2000

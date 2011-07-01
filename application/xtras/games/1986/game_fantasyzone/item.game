@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_msx
+platform_1=platform_nes
+platform_2=platform_segamastersystem
+platform_3=platform_segasaturn
+platform_4=platform_turbografx
+platform_5=platform_wii
+[properties]
+cash:int=52096000
+copySell:int=1184000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=3 d=1 h=0 mi=0
+famous:float=0.31
+gameIsSaling:bool=false
+internalname:string=game_fantasyzone
+localizationRating:int=12
+name:string=FantasyZone
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=61
+startBugRating:int=93
+startdate:time=y=1986 m=3 d=12 h=0 mi=0
+startGenreRating:int=89
+startGraphicRating:int=45
+startrating:int=70
+startSoundRating:int=62
+textureNormal:path=images/spl_0.jpg

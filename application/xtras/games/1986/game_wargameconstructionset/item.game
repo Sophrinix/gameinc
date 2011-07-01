@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_historicalbattle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atari8b
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+[properties]
+cash:int=75276000
+copySell:int=8364000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=4 d=11 h=0 mi=0
+famous:float=0.21
+gameIsSaling:bool=false
+internalname:string=game_wargameconstructionset
+localizationRating:int=76
+name:string=Wargame Construction Set
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=97
+startBugRating:int=90
+startdate:time=y=1986 m=6 d=6 h=0 mi=0
+startGenreRating:int=88
+startGraphicRating:int=66
+startrating:int=84
+startSoundRating:int=81
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/wargame-construction-set

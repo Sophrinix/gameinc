@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_helicopter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_apple2
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_fmtowns
+platform_7=platform_msx
+platform_8=platform_pc98
+platform_9=platform_zxspectrum
+[properties]
+cash:int=11515000
+copySell:int=235000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=11 d=27 h=0 mi=0
+famous:float=0.14
+gameIsSaling:bool=false
+internalname:string=game_gunship
+localizationRating:int=93
+name:string=Gunship
+owner:string=MicroProse Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=26
+startBugRating:int=33
+startdate:time=y=1986 m=11 d=7 h=0 mi=0
+startGenreRating:int=69
+startGraphicRating:int=46
+startrating:int=49
+startSoundRating:int=74
+textureNormal:path=images/spl_0.jpg

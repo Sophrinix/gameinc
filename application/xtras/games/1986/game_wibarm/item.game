@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_anime
+genre_3=genre_battlemech
+genre_4=genre_scifi
+genre_5=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_pc88
+[properties]
+cash:int=658000000
+copySell:int=8225000
+descriptionpath:path=desc.htm
+enddate:time=y=1989 m=11 d=4 h=0 mi=0
+famous:float=0.27
+gameIsSaling:bool=false
+internalname:string=game_wibarm
+localizationRating:int=80
+name:string=Wibarm
+owner:string=Arsys Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=87
+startdate:time=y=1986 m=4 d=15 h=0 mi=0
+startGenreRating:int=80
+startGraphicRating:int=87
+startrating:int=60
+startSoundRating:int=27
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/wibarm

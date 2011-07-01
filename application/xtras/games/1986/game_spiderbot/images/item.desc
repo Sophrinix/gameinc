@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[properties]
+internalname:string=game_spiderbot
+startdate:time=y=1986 m=3 d=1 h=0 mi=0
+url:string=http://www.mobygames.com/game/spiderbot
