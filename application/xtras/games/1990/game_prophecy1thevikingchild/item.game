@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_lynx
+[properties]
+cash:int=483800000
+copySell:int=9676000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=6 d=20 h=0 mi=0
+famous:float=0.89
+gameIsSaling:bool=false
+internalname:string=game_prophecy1thevikingchild
+localizationRating:int=27
+name:string=Prophecy 1: The Viking Child
+owner:string=Electronic Zoo
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=24
+startBugRating:int=56
+startdate:time=y=1990 m=9 d=2 h=0 mi=0
+startGenreRating:int=88
+startGraphicRating:int=52
+startrating:int=58
+startSoundRating:int=70
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/prophecy-1-the-viking-child

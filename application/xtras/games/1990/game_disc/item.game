@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_dos
+[properties]
+cash:int=618282000
+copySell:int=9814000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=5 d=0 h=0 mi=0
+famous:float=0.82
+gameIsSaling:bool=false
+internalname:string=game_disc
+localizationRating:int=11
+name:string=Disc
+owner:string=Loriciels
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=28
+startBugRating:int=87
+startdate:time=y=1990 m=6 d=19 h=0 mi=0
+startGenreRating:int=8
+startGraphicRating:int=91
+startrating:int=60
+startSoundRating:int=90
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/disc

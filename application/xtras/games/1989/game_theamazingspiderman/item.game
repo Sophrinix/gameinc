@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_commodore
+platform_3=platform_dos
+[properties]
+cash:int=281658000
+copySell:int=7222000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=0 d=25 h=0 mi=0
+famous:float=0.54
+gameIsSaling:bool=false
+internalname:string=game_theamazingspiderman
+localizationRating:int=10
+name:string=The Amazing Spider-Man
+owner:string=Paragon Software Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=88
+startdate:time=y=1989 m=0 d=15 h=0 mi=0
+startGenreRating:int=17
+startGraphicRating:int=95
+startrating:int=68
+startSoundRating:int=50
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/amazing-spider-man

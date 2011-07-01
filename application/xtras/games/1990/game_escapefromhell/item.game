@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_horror
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=103878000
+copySell:int=1194000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=8 d=4 h=0 mi=0
+famous:float=0.01
+gameIsSaling:bool=false
+internalname:string=game_escapefromhell
+localizationRating:int=49
+name:string=Escape from Hell
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=80
+startBugRating:int=76
+startdate:time=y=1990 m=7 d=14 h=0 mi=0
+startGenreRating:int=15
+startGraphicRating:int=72
+startrating:int=61
+startSoundRating:int=63
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/dos/escape-from-hell

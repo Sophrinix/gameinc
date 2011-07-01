@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+platform_2=platform_pc98
+platform_3=platform_segacd
+platform_4=platform_snes
+[properties]
+cash:int=12890000
+copySell:int=1289000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=3 d=20 h=0 mi=0
+famous:float=0.99
+gameIsSaling:bool=false
+internalname:string=game_eyeofthebeholder
+localizationRating:int=72
+name:string=EyeoftheBeholder
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=11
+startBugRating:int=84
+startdate:time=y=1991 m=2 d=5 h=0 mi=0
+startGenreRating:int=7
+startGraphicRating:int=48
+startrating:int=36
+startSoundRating:int=32
+textureNormal:path=images/spl_0.jpg

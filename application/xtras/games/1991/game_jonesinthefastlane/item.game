@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_simulation
+genre_2=genre_board
+genre_3=genre_managerial
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=52402000
+copySell:int=2758000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=5 d=3 h=0 mi=0
+famous:float=0.76
+gameIsSaling:bool=false
+internalname:string=game_jonesinthefastlane
+localizationRating:int=53
+name:string=Jones in the Fast Lane
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=61
+startBugRating:int=54
+startdate:time=y=1991 m=0 d=27 h=0 mi=0
+startGenreRating:int=20
+startGraphicRating:int=73
+startrating:int=42
+startSoundRating:int=5
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/dos/jones-in-the-fast-lane

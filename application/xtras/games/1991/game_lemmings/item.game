@@ -1,0 +1,47 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_amiga
+platform_10=platform_gameboycolor
+platform_11=platform_gamegear
+platform_12=platform_genesis
+platform_13=platform_unknown
+platform_14=platform_lynx
+platform_15=platform_unknown
+platform_16=platform_nes
+platform_17=platform_pc98
+platform_18=platform_segamastersystem
+platform_19=platform_snes
+platform_2=platform_amigacd32
+platform_20=platform_windows3x
+platform_21=platform_zxspectrum
+platform_3=platform_amigacpc
+platform_4=platform_atarist
+platform_5=platform_unknown
+platform_6=platform_commodore
+platform_7=platform_dos
+platform_8=platform_fmtowns
+platform_9=platform_gameboy
+[properties]
+cash:int=61457000
+copySell:int=1661000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=0 d=20 h=0 mi=0
+famous:float=0.94
+gameIsSaling:bool=false
+internalname:string=game_lemmings
+localizationRating:int=9
+name:string=Lemmings
+owner:string=Psygnosis Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=33
+startBugRating:int=7
+startdate:time=y=1991 m=2 d=28 h=0 mi=0
+startGenreRating:int=84
+startGraphicRating:int=54
+startrating:int=48
+startSoundRating:int=64
+textureNormal:path=images/spl_0.jpg

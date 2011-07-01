@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_genesis
+platform_6=platform_segamastersystem
+platform_7=platform_turbografx
+platform_8=platform_zxspectrum
+[properties]
+cash:int=351168000
+copySell:int=5487000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=11 d=5 h=0 mi=0
+famous:float=0.1
+gameIsSaling:bool=false
+internalname:string=game_strider
+localizationRating:int=77
+name:string=Strider
+owner:string=U.S. Gold Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=73
+startBugRating:int=41
+startdate:time=y=1989 m=0 d=2 h=0 mi=0
+startGenreRating:int=22
+startGraphicRating:int=5
+startrating:int=45
+startSoundRating:int=84
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_dos
+platform_1=platform_msx
+platform_2=platform_nes
+platform_3=platform_pc98
+[properties]
+cash:int=265210000
+copySell:int=4822000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=0 d=24 h=0 mi=0
+famous:float=0.02
+gameIsSaling:bool=false
+internalname:string=game_nobunagasambitionii
+localizationRating:int=11
+name:string=Nobunaga's Ambition II
+owner:string=KOEI Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=70
+startBugRating:int=2
+startdate:time=y=1989 m=3 d=2 h=0 mi=0
+startGenreRating:int=1
+startGraphicRating:int=6
+startrating:int=25
+startSoundRating:int=50
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/nobunagas-ambition-ii

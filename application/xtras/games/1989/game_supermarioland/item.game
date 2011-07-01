@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_gameboy
+[properties]
+cash:int=143472000
+copySell:int=5124000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=5 d=0 h=0 mi=0
+famous:float=0.75
+gameIsSaling:bool=false
+internalname:string=game_supermarioland
+localizationRating:int=28
+name:string=SuperMarioLand
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=27
+startBugRating:int=27
+startdate:time=y=1989 m=11 d=23 h=0 mi=0
+startGenreRating:int=42
+startGraphicRating:int=46
+startrating:int=41
+startSoundRating:int=64
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_detective
+[properties]
+internalname:string=game_itcamefromthedesert
+startdate:time=y=1989 m=10 d=14 h=0 mi=0

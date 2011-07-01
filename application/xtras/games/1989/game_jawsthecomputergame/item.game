@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_msx
+platform_5=platform_zxspectrum
+[properties]
+cash:int=356150000
+copySell:int=4190000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=10 d=18 h=0 mi=0
+famous:float=0.51
+gameIsSaling:bool=false
+internalname:string=game_jawsthecomputergame
+localizationRating:int=35
+name:string=Jaws: The Computer Game
+owner:string=Screen 7 Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=70
+startBugRating:int=66
+startdate:time=y=1989 m=1 d=1 h=0 mi=0
+startGenreRating:int=39
+startGraphicRating:int=85
+startrating:int=57
+startSoundRating:int=27
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/jaws-the-computer-game

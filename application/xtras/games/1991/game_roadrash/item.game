@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_motorcycle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_gameboy
+platform_3=platform_gamegear
+platform_4=platform_gameboycolor
+platform_5=platform_genesis
+platform_6=platform_segamastersystem
+[properties]
+cash:int=433710000
+copySell:int=5490000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=2 d=8 h=0 mi=0
+famous:float=0.37
+gameIsSaling:bool=false
+internalname:string=game_roadrash
+localizationRating:int=91
+name:string=RoadRash
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=12
+startBugRating:int=76
+startdate:time=y=1991 m=9 d=12 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=87
+startrating:int=56
+startSoundRating:int=69
+textureNormal:path=images/spl_0.jpg

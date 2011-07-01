@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+[properties]
+internalname:string=game_m.u.d.s.meanuglydirtysport
+startdate:time=y=1990 m=11 d=20 h=0 mi=0
+url:string=http://www.mobygames.com/game/muds-mean-ugly-dirty-sport

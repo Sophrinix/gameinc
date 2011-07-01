@@ -1,0 +1,41 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_unknown
+platform_11=platform_nes
+platform_12=platform_snes
+platform_13=platform_windows3x
+platform_14=platform_zxspectrum
+platform_2=platform_apple2
+platform_3=platform_unknown
+platform_4=platform_atarist
+platform_5=platform_unknown
+platform_6=platform_commodore
+platform_7=platform_dos
+platform_8=platform_electron
+platform_9=platform_gameboy
+[properties]
+cash:int=223080000
+copySell:int=9295000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=11 d=11 h=0 mi=0
+famous:float=0
+gameIsSaling:bool=false
+internalname:string=game_pipedream
+localizationRating:int=15
+name:string=Pipe Dream
+owner:string=Empire Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=30
+startBugRating:int=6
+startdate:time=y=1989 m=3 d=26 h=0 mi=0
+startGenreRating:int=24
+startGraphicRating:int=65
+startrating:int=27
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/pipe-dream

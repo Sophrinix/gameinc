@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+genre_2=genre_realtime
+[properties]
+internalname:string=game_atomino
+startdate:time=y=1990 m=8 d=1 h=0 mi=0
+url:string=http://www.mobygames.com/game/atomino

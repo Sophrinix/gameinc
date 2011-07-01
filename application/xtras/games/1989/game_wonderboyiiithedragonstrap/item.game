@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+[platforms]
+platform_0=platform_gamegear
+platform_1=platform_segamastersystem
+platform_2=platform_turbografx
+platform_3=platform_wii
+[properties]
+cash:int=243375000
+copySell:int=9735000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=1 d=3 h=0 mi=0
+famous:float=0.18
+gameIsSaling:bool=false
+internalname:string=game_wonderboyiiithedragonstrap
+localizationRating:int=34
+name:string=WonderBoyIIITheDragonsTrap
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=71
+startBugRating:int=72
+startdate:time=y=1989 m=9 d=13 h=0 mi=0
+startGenreRating:int=24
+startGraphicRating:int=14
+startrating:int=47
+startSoundRating:int=57
+textureNormal:path=images/spl_0.jpg

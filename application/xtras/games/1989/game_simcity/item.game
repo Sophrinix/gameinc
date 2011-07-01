@@ -1,0 +1,38 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_managerial
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_wii
+platform_11=platform_windows3x
+platform_12=platform_zxspectrum
+platform_2=platform_atarist
+platform_3=platform_unknown
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_fmtowns
+platform_7=platform_unknown
+platform_8=platform_pc98
+platform_9=platform_snes
+[properties]
+cash:int=161294000
+copySell:int=3934000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=3 d=12 h=0 mi=0
+famous:float=0.4
+gameIsSaling:bool=false
+internalname:string=game_simcity
+localizationRating:int=56
+name:string=SimCity
+owner:string=Infogrames Europe SA
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=52
+startBugRating:int=89
+startdate:time=y=1989 m=6 d=10 h=0 mi=0
+startGenreRating:int=92
+startGraphicRating:int=91
+startrating:int=77
+startSoundRating:int=61
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/simcity

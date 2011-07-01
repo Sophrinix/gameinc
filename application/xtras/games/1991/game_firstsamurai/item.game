@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+genre_3=genre_martialarts
+genre_4=genre_fantasy
+genre_5=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_snes
+[properties]
+cash:int=478712000
+copySell:int=9206000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=6 d=18 h=0 mi=0
+famous:float=0.32
+gameIsSaling:bool=false
+internalname:string=game_firstsamurai
+localizationRating:int=12
+name:string=FirstSamurai
+owner:string=Image Works
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=20
+startdate:time=y=1991 m=1 d=22 h=0 mi=0
+startGenreRating:int=33
+startGraphicRating:int=22
+startrating:int=29
+startSoundRating:int=37
+textureNormal:path=images/spl_0.jpg

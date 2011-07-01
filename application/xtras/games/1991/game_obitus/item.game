@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_snes
+[properties]
+cash:int=55664000
+copySell:int=3976000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=5 d=17 h=0 mi=0
+famous:float=0.91
+gameIsSaling:bool=false
+internalname:string=game_obitus
+localizationRating:int=72
+name:string=Obitus
+owner:string=Psygnosis Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=80
+startdate:time=y=1991 m=10 d=26 h=0 mi=0
+startGenreRating:int=35
+startGraphicRating:int=3
+startrating:int=41
+startSoundRating:int=53
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/obitus

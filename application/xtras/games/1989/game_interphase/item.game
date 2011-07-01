@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_cyberpunk
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=360935000
+copySell:int=9755000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=1 d=14 h=0 mi=0
+famous:float=0.19
+gameIsSaling:bool=false
+internalname:string=game_interphase
+localizationRating:int=66
+name:string=Interphase
+owner:string=Image Works
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=91
+startBugRating:int=10
+startdate:time=y=1989 m=6 d=10 h=0 mi=0
+startGenreRating:int=70
+startGraphicRating:int=30
+startrating:int=52
+startSoundRating:int=63
+textureNormal:path=images/spl_0.jpg

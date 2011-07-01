@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_sports
+genre_3=genre_olympiad
+genre_4=genre_scifi
+[properties]
+internalname:string=game_purplesaturnday
+startdate:time=y=1989 m=9 d=17 h=0 mi=0
+url:string=http://www.mobygames.com/game/purple-saturn-day

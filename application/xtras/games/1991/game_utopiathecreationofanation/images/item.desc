@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_realtime
+genre_3=genre_scifi
+[properties]
+internalname:string=game_utopiathecreationofanation
+startdate:time=y=1991 m=7 d=0 h=0 mi=0
+url:string=http://www.mobygames.com/game/utopia-the-creation-of-a-nation

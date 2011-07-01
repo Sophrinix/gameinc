@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_arcade
+genre_3=genre_puzzle
+[platforms]
+platform_0=platform_gameboycolor
+platform_1=platform_nes
+[properties]
+cash:int=158797000
+copySell:int=9341000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=11 d=17 h=0 mi=0
+famous:float=0.17
+gameIsSaling:bool=false
+internalname:string=game_crystalis
+localizationRating:int=63
+name:string=Crystalis
+owner:string=SNK Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=51
+startBugRating:int=18
+startdate:time=y=1990 m=7 d=14 h=0 mi=0
+startGenreRating:int=99
+startGraphicRating:int=84
+startrating:int=64
+startSoundRating:int=69
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/crystalis

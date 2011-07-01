@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_educational
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+platform_2=platform_unknown
+platform_3=platform_pc98
+[properties]
+cash:int=39817000
+copySell:int=1373000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=3 d=19 h=0 mi=0
+famous:float=0.59
+gameIsSaling:bool=false
+internalname:string=game_castleofdr.brain
+localizationRating:int=6
+name:string=Castle of Dr. Brain
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=37
+startBugRating:int=30
+startdate:time=y=1991 m=1 d=28 h=0 mi=0
+startGenreRating:int=66
+startGraphicRating:int=62
+startrating:int=47
+startSoundRating:int=44
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/castle-of-dr-brain

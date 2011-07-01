@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_realtime
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_scorchedearth
+startdate:time=y=1991 m=3 d=13 h=0 mi=0
+url:string=http://www.mobygames.com/game/dos/scorched-earth

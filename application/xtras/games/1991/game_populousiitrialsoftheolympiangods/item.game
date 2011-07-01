@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_genesis
+platform_4=platform_unknown
+platform_5=platform_pc98
+platform_6=platform_snes
+[properties]
+cash:int=203962000
+copySell:int=2794000
+descriptionpath:path=desc.htm
+enddate:time=y=1991 m=5 d=1 h=0 mi=0
+famous:float=0.64
+gameIsSaling:bool=false
+internalname:string=game_populousiitrialsoftheolympiangods
+localizationRating:int=49
+name:string=PopulousIITrialsoftheOlympianGods
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=97
+startBugRating:int=73
+startdate:time=y=1991 m=10 d=14 h=0 mi=0
+startGenreRating:int=51
+startGraphicRating:int=66
+startrating:int=60
+startSoundRating:int=13
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+genre_3=genre_horror
+[platforms]
+platform_0=platform_fmtowns
+platform_1=platform_iphone
+platform_2=platform_turbografx
+platform_3=platform_wii
+[properties]
+cash:int=359970000
+copySell:int=9230000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=8 d=0 h=0 mi=0
+famous:float=0.08
+gameIsSaling:bool=false
+internalname:string=game_splatterhouse
+localizationRating:int=86
+name:string=Splatterhouse
+owner:string=NEC Technologies, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=46
+startdate:time=y=1990 m=8 d=2 h=0 mi=0
+startGenreRating:int=48
+startGraphicRating:int=26
+startrating:int=58
+startSoundRating:int=78
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/splatterhouse

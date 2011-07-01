@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[properties]
+internalname:string=game_taitossuperspaceinvaders
+startdate:time=y=1991 m=6 d=27 h=0 mi=0
+url:string=http://www.mobygames.com/game/taitos-super-space-invaders

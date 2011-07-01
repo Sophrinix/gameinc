@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_turbografx
+platform_1=platform_wii
+[properties]
+cash:int=363998000
+copySell:int=8878000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=1 d=21 h=0 mi=0
+famous:float=0.83
+gameIsSaling:bool=false
+internalname:string=game_bonksrevenge
+localizationRating:int=94
+name:string=BonksRevenge
+owner:string=Hudson Soft Company, Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=68
+startBugRating:int=35
+startdate:time=y=1991 m=11 d=15 h=0 mi=0
+startGenreRating:int=68
+startGraphicRating:int=66
+startrating:int=59
+startSoundRating:int=59
+textureNormal:path=images/spl_0.jpg

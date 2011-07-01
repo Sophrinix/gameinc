@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+platform_2=platform_fmtowns
+platform_3=platform_pc98
+[properties]
+cash:int=296148000
+copySell:int=3219000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=11 d=22 h=0 mi=0
+famous:float=0.29
+gameIsSaling:bool=false
+internalname:string=game_eyeofthebeholderiithelegendofdarkmoon
+localizationRating:int=37
+name:string=EyeoftheBeholderIITheLegendofDarkmoon
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=25
+startBugRating:int=8
+startdate:time=y=1991 m=0 d=8 h=0 mi=0
+startGenreRating:int=5
+startGraphicRating:int=93
+startrating:int=36
+startSoundRating:int=52
+textureNormal:path=images/spl_0.jpg

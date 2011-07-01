@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=689316000
+copySell:int=7412000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=1 d=17 h=0 mi=0
+famous:float=0.47
+gameIsSaling:bool=false
+internalname:string=game_thequestforthetimebird
+localizationRating:int=49
+name:string=The Quest for the Time-Bird
+owner:string=Infogrames Europe SA
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=0
+startBugRating:int=1
+startdate:time=y=1989 m=6 d=15 h=0 mi=0
+startGenreRating:int=22
+startGraphicRating:int=59
+startrating:int=31
+startSoundRating:int=76
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/quest-for-the-time-bird

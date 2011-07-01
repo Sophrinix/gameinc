@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+[properties]
+internalname:string=game_theamazingspiderman
+startdate:time=y=1989 m=0 d=15 h=0 mi=0
+url:string=http://www.mobygames.com/game/amazing-spider-man

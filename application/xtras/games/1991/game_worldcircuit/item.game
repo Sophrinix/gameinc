@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=157225000
+copySell:int=1655000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=2 d=27 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_worldcircuit
+localizationRating:int=96
+name:string=WorldCircuit
+owner:string=MicroProse Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=99
+startBugRating:int=38
+startdate:time=y=1991 m=2 d=11 h=0 mi=0
+startGenreRating:int=28
+startGraphicRating:int=83
+startrating:int=63
+startSoundRating:int=71
+textureNormal:path=images/spl_0.jpg

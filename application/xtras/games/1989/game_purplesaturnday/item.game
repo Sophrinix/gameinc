@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_sports
+genre_3=genre_olympiad
+genre_4=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_dos
+platform_4=platform_zxspectrum
+[properties]
+cash:int=23616000
+copySell:int=738000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=7 d=14 h=0 mi=0
+famous:float=0.96
+gameIsSaling:bool=false
+internalname:string=game_purplesaturnday
+localizationRating:int=9
+name:string=Purple Saturn Day
+owner:string=Epyx, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=92
+startBugRating:int=99
+startdate:time=y=1989 m=9 d=17 h=0 mi=0
+startGenreRating:int=77
+startGraphicRating:int=26
+startrating:int=63
+startSoundRating:int=25
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/purple-saturn-day

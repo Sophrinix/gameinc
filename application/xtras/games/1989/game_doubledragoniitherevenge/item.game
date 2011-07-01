@@ -1,0 +1,36 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_zxspectrum
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_gameboy
+platform_6=platform_genesis
+platform_7=platform_msx
+platform_8=platform_nes
+platform_9=platform_turbografx
+[properties]
+cash:int=309342000
+copySell:int=4687000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=8 d=25 h=0 mi=0
+famous:float=0.03
+gameIsSaling:bool=false
+internalname:string=game_doubledragoniitherevenge
+localizationRating:int=0
+name:string=DoubleDragonIITheRevenge
+owner:string=Virgin Games, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=84
+startBugRating:int=10
+startdate:time=y=1989 m=6 d=23 h=0 mi=0
+startGenreRating:int=99
+startGraphicRating:int=16
+startrating:int=43
+startSoundRating:int=10
+textureNormal:path=images/spl_0.jpg

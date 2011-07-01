@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_strategy
+genre_2=genre_postapocalyptic
+genre_3=genre_tank
+[properties]
+internalname:string=game_twilight2000
+startdate:time=y=1991 m=8 d=20 h=0 mi=0
+url:string=http://www.mobygames.com/game/dos/twilight-2000

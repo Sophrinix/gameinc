@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_arcade
+[properties]
+internalname:string=game_turbooutrun
+startdate:time=y=1989 m=3 d=16 h=0 mi=0
+url:string=http://www.mobygames.com/game/turbo-out-run

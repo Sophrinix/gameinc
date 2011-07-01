@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_detective
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+[properties]
+cash:int=44935000
+copySell:int=817000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=4 d=4 h=0 mi=0
+famous:float=0.31
+gameIsSaling:bool=false
+internalname:string=game_policequest3thekindred
+localizationRating:int=48
+name:string=Police Quest 3: The Kindred
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=62
+startBugRating:int=38
+startdate:time=y=1991 m=0 d=1 h=0 mi=0
+startGenreRating:int=21
+startGraphicRating:int=20
+startrating:int=31
+startSoundRating:int=16
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/police-quest-3-the-kindred

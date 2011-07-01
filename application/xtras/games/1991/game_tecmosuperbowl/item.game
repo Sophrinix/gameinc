@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+[platforms]
+platform_0=platform_nes
+[properties]
+cash:int=315736000
+copySell:int=5176000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=5 d=0 h=0 mi=0
+famous:float=0.5
+gameIsSaling:bool=false
+internalname:string=game_tecmosuperbowl
+localizationRating:int=86
+name:string=TecmoSuperBowl
+owner:string=Tecmo, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=8
+startdate:time=y=1991 m=11 d=7 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=13
+startrating:int=25
+startSoundRating:int=35
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_managerial
+[properties]
+internalname:string=game_madtv
+startdate:time=y=1991 m=3 d=9 h=0 mi=0
+url:string=http://www.mobygames.com/game/mad-tv

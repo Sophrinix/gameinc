@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_comics
+genre_3=genre_detective
+genre_4=genre_shooter
+[properties]
+internalname:string=game_thepunisher
+startdate:time=y=1990 m=10 d=9 h=0 mi=0
+url:string=http://www.mobygames.com/game/punisher

@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_racing
+[platforms]
+platform_0=platform_jaguar
+platform_1=platform_lynx
+[properties]
+cash:int=166320000
+copySell:int=7920000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=0 d=23 h=0 mi=0
+famous:float=0.33
+gameIsSaling:bool=false
+internalname:string=game_checkeredflag
+localizationRating:int=49
+name:string=Checkered Flag
+owner:string=Atari Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=14
+startBugRating:int=62
+startdate:time=y=1991 m=11 d=18 h=0 mi=0
+startGenreRating:int=35
+startGraphicRating:int=20
+startrating:int=31
+startSoundRating:int=25
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/checkered-flag

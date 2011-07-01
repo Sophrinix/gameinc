@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=10660000
+copySell:int=205000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=6 d=0 h=0 mi=0
+famous:float=0.26
+gameIsSaling:bool=false
+internalname:string=game_supaplex
+localizationRating:int=78
+name:string=Supaplex
+owner:string=Digital Integration Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=50
+startBugRating:int=32
+startdate:time=y=1991 m=4 d=18 h=0 mi=0
+startGenreRating:int=23
+startGraphicRating:int=73
+startrating:int=53
+startSoundRating:int=91
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/supaplex

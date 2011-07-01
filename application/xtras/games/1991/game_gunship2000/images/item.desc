@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_flight
+genre_2=genre_helicopter
+[properties]
+internalname:string=game_gunship2000
+startdate:time=y=1991 m=1 d=15 h=0 mi=0

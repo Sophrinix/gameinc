@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_strategy
+genre_2=genre_postapocalyptic
+genre_3=genre_tank
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=113484000
+copySell:int=9457000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=3 d=10 h=0 mi=0
+famous:float=0.91
+gameIsSaling:bool=false
+internalname:string=game_twilight2000
+localizationRating:int=7
+name:string=Twilight: 2000
+owner:string=Empire Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=24
+startBugRating:int=47
+startdate:time=y=1991 m=8 d=20 h=0 mi=0
+startGenreRating:int=82
+startGraphicRating:int=53
+startrating:int=53
+startSoundRating:int=59
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/dos/twilight-2000

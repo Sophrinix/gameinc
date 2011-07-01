@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_genesis
+[properties]
+cash:int=225300000
+copySell:int=3004000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=9 d=13 h=0 mi=0
+famous:float=0.73
+gameIsSaling:bool=false
+internalname:string=game_thunderforceiii
+localizationRating:int=24
+name:string=Thunder Force III
+owner:string=Technosoft Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=28
+startBugRating:int=54
+startdate:time=y=1990 m=6 d=18 h=0 mi=0
+startGenreRating:int=73
+startGraphicRating:int=89
+startrating:int=68
+startSoundRating:int=99
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/thunder-force-iii

@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_lynx
+platform_5=platform_msx
+platform_6=platform_zxspectrum
+[properties]
+cash:int=183872000
+copySell:int=5746000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=10 d=25 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_xybots
+localizationRating:int=44
+name:string=Xybots
+owner:string=Domark Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=44
+startBugRating:int=52
+startdate:time=y=1989 m=3 d=2 h=0 mi=0
+startGenreRating:int=64
+startGraphicRating:int=12
+startrating:int=43
+startSoundRating:int=45
+textureNormal:path=images/spl_0.jpg

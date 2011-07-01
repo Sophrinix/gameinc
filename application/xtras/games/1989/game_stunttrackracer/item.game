@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_racing
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_zxspectrum
+[properties]
+cash:int=490048000
+copySell:int=7657000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=10 d=16 h=0 mi=0
+famous:float=0.51
+gameIsSaling:bool=false
+internalname:string=game_stunttrackracer
+localizationRating:int=93
+name:string=Stunt Track Racer
+owner:string=MicroStyle
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=71
+startBugRating:int=42
+startdate:time=y=1989 m=11 d=14 h=0 mi=0
+startGenreRating:int=56
+startGraphicRating:int=48
+startrating:int=58
+startSoundRating:int=75
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/stunt-track-racer

@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_managerial
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=101712000
+copySell:int=2119000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=10 d=22 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_rockstar
+localizationRating:int=7
+name:string=Rockstar
+owner:string=Wizard Games
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=71
+startBugRating:int=16
+startdate:time=y=1989 m=9 d=5 h=0 mi=0
+startGenreRating:int=2
+startGraphicRating:int=4
+startrating:int=20
+startSoundRating:int=10
+url:string=http://www.mobygames.com/game/dos/rockstar

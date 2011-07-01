@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_postapocalyptic
+genre_3=genre_scifi
+genre_4=genre_shooter
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=262440000
+copySell:int=6561000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=4 d=25 h=0 mi=0
+famous:float=0.06
+gameIsSaling:bool=false
+internalname:string=game_deathtrack
+localizationRating:int=60
+name:string=Deathtrack
+owner:string=Activision, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=87
+startBugRating:int=42
+startdate:time=y=1989 m=0 d=27 h=0 mi=0
+startGenreRating:int=74
+startGraphicRating:int=18
+startrating:int=58
+startSoundRating:int=72
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/dos/deathtrack

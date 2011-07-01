@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_nes
+[properties]
+cash:int=413504000
+copySell:int=4544000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=10 d=6 h=0 mi=0
+famous:float=0.46
+gameIsSaling:bool=false
+internalname:string=game_diehard
+localizationRating:int=14
+name:string=Die Hard
+owner:string=Activision Publishing, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=26
+startBugRating:int=40
+startdate:time=y=1991 m=0 d=19 h=0 mi=0
+startGenreRating:int=72
+startGraphicRating:int=82
+startrating:int=44
+startSoundRating:int=0
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/nes/die-hard_

@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_gamegear
+platform_1=platform_segamastersystem
+[properties]
+cash:int=22902000
+copySell:int=2082000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=8 d=26 h=0 mi=0
+famous:float=0.28
+gameIsSaling:bool=false
+internalname:string=game_theluckydimecaperstarringdonaldduck
+localizationRating:int=83
+name:string=The Lucky Dime Caper starring Donald Duck
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=91
+startBugRating:int=5
+startdate:time=y=1991 m=2 d=27 h=0 mi=0
+startGenreRating:int=56
+startGraphicRating:int=54
+startrating:int=53
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/lucky-dime-caper-starring-donald-duck

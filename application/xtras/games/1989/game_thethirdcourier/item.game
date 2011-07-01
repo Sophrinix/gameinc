@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_detective
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_unknown
+platform_2=platform_atarist
+platform_3=platform_dos
+[properties]
+cash:int=116117000
+copySell:int=1399000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=7 d=8 h=0 mi=0
+famous:float=0.46
+gameIsSaling:bool=false
+internalname:string=game_thethirdcourier
+localizationRating:int=86
+name:string=The Third Courier
+owner:string=Accolade, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=98
+startBugRating:int=99
+startdate:time=y=1989 m=7 d=3 h=0 mi=0
+startGenreRating:int=57
+startGraphicRating:int=36
+startrating:int=72
+startSoundRating:int=73
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/third-courier

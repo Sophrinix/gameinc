@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_flight
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=662706000
+copySell:int=6694000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=8 d=28 h=0 mi=0
+famous:float=0.51
+gameIsSaling:bool=false
+internalname:string=game_hyperspeed
+localizationRating:int=16
+name:string=Hyperspeed
+owner:string=MicroProse Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=18
+startBugRating:int=84
+startdate:time=y=1991 m=5 d=6 h=0 mi=0
+startGenreRating:int=29
+startGraphicRating:int=58
+startrating:int=54
+startSoundRating:int=83
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/dos/hyperspeed

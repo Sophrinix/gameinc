@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_simulation
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+platform_2=platform_unknown
+platform_3=platform_pc98
+platform_4=platform_snes
+platform_5=platform_windows3x
+[properties]
+cash:int=305320000
+copySell:int=8980000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=7 d=15 h=0 mi=0
+famous:float=0.99
+gameIsSaling:bool=false
+internalname:string=game_simanttheelectronicantcolony
+localizationRating:int=36
+name:string=SimAnt: The Electronic Ant Colony
+owner:string=Ocean Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=47
+startBugRating:int=87
+startdate:time=y=1991 m=10 d=13 h=0 mi=0
+startGenreRating:int=65
+startGraphicRating:int=30
+startrating:int=59
+startSoundRating:int=70
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/simant-the-electronic-ant-colony

@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_doja
+platform_2=platform_unknown
+platform_3=platform_nes
+platform_4=platform_playstation
+platform_5=platform_wii
+[properties]
+cash:int=830067000
+copySell:int=9541000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=6 d=11 h=0 mi=0
+famous:float=0.91
+gameIsSaling:bool=false
+internalname:string=game_megaman3
+localizationRating:int=54
+name:string=MegaMan3
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=72
+startdate:time=y=1990 m=3 d=21 h=0 mi=0
+startGenreRating:int=78
+startGraphicRating:int=92
+startrating:int=67
+startSoundRating:int=2
+textureNormal:path=images/spl_0.jpg

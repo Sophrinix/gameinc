@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_persuniverse
+genre_3=genre_turnbased
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=149220000
+copySell:int=4145000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=11 d=11 h=0 mi=0
+famous:float=0.21
+gameIsSaling:bool=false
+internalname:string=game_neverwinternights
+localizationRating:int=63
+name:string=Neverwinter Nights
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=25
+startBugRating:int=12
+startdate:time=y=1991 m=10 d=0 h=0 mi=0
+startGenreRating:int=39
+startGraphicRating:int=28
+startrating:int=31
+startSoundRating:int=51
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/dos/neverwinter-nights_

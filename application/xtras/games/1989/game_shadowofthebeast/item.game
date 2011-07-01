@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_fmtowns
+platform_5=platform_genesis
+platform_6=platform_lynx
+platform_7=platform_segamastersystem
+platform_8=platform_turbografx
+platform_9=platform_zxspectrum
+[properties]
+cash:int=69156000
+copySell:int=1356000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=7 d=17 h=0 mi=0
+famous:float=0.89
+gameIsSaling:bool=false
+internalname:string=game_shadowofthebeast
+localizationRating:int=8
+name:string=ShadowoftheBeast
+owner:string=Psygnosis Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=40
+startBugRating:int=32
+startdate:time=y=1989 m=7 d=28 h=0 mi=0
+startGenreRating:int=37
+startGraphicRating:int=41
+startrating:int=34
+startSoundRating:int=23
+textureNormal:path=images/spl_0.jpg

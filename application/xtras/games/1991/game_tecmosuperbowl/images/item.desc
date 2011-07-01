@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+[properties]
+internalname:string=game_tecmosuperbowl
+startdate:time=y=1991 m=11 d=7 h=0 mi=0

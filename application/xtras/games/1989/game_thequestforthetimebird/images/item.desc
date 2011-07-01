@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_fantasy
+[properties]
+internalname:string=game_thequestforthetimebird
+startdate:time=y=1989 m=6 d=15 h=0 mi=0
+url:string=http://www.mobygames.com/game/quest-for-the-time-bird

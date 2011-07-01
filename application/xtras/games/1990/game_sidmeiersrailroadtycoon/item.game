@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_managerial
+genre_3=genre_realtime
+genre_4=genre_train
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_fmtowns
+platform_4=platform_pc98
+[properties]
+cash:int=488746000
+copySell:int=7883000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=10 d=10 h=0 mi=0
+famous:float=0.2
+gameIsSaling:bool=false
+internalname:string=game_sidmeiersrailroadtycoon
+localizationRating:int=16
+name:string=SidMeiersRailroadTycoon
+owner:string=MicroProse Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=25
+startdate:time=y=1990 m=1 d=2 h=0 mi=0
+startGenreRating:int=9
+startGraphicRating:int=48
+startrating:int=42
+startSoundRating:int=93
+textureNormal:path=images/spl_0.jpg

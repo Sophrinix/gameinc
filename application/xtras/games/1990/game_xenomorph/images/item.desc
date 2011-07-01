@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_horror
+genre_2=genre_realtime
+genre_3=genre_scifi
+[properties]
+internalname:string=game_xenomorph
+startdate:time=y=1990 m=11 d=23 h=0 mi=0
+url:string=http://www.mobygames.com/game/xenomorph

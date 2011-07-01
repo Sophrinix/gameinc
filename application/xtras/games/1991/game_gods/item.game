@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_genesis
+platform_4=platform_pc98
+platform_5=platform_snes
+[properties]
+cash:int=340938000
+copySell:int=8742000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=7 d=12 h=0 mi=0
+famous:float=0.65
+gameIsSaling:bool=false
+internalname:string=game_gods
+localizationRating:int=54
+name:string=Gods
+owner:string=Renegade Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=81
+startBugRating:int=28
+startdate:time=y=1991 m=11 d=2 h=0 mi=0
+startGenreRating:int=43
+startGraphicRating:int=49
+startrating:int=47
+startSoundRating:int=34
+textureNormal:path=images/spl_0.jpg

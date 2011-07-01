@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_fmtowns
+platform_4=platform_unknown
+platform_5=platform_segacd
+[properties]
+cash:int=30102000
+copySell:int=1038000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=3 d=16 h=0 mi=0
+famous:float=0.61
+gameIsSaling:bool=false
+internalname:string=game_thesecretofmonkeyisland
+localizationRating:int=84
+name:string=TheSecretofMonkeyIsland
+owner:string=Softgold Computerspiele GmbH
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=50
+startBugRating:int=99
+startdate:time=y=1990 m=5 d=26 h=0 mi=0
+startGenreRating:int=29
+startGraphicRating:int=35
+startrating:int=60
+startSoundRating:int=87
+textureNormal:path=images/spl_0.jpg

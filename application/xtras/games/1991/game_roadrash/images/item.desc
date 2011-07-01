@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_motorcycle
+[properties]
+internalname:string=game_roadrash
+startdate:time=y=1991 m=9 d=12 h=0 mi=0

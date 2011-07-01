@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+genre_2=genre_puzzle
+genre_3=genre_scifi
+[properties]
+internalname:string=game_timequest
+startdate:time=y=1991 m=0 d=7 h=0 mi=0
+url:string=http://www.mobygames.com/game/dos/timequest

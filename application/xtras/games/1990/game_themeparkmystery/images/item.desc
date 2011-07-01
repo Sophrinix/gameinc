@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_arcade
+genre_2=genre_puzzle
+[properties]
+internalname:string=game_themeparkmystery
+startdate:time=y=1990 m=8 d=2 h=0 mi=0
+url:string=http://www.mobygames.com/game/theme-park-mystery

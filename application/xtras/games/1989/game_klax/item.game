@@ -1,0 +1,47 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_arcade
+genre_3=genre_puzzle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_gameboycolor
+platform_11=platform_gamegear
+platform_12=platform_genesis
+platform_13=platform_lynx
+platform_14=platform_msx
+platform_15=platform_nes
+platform_16=platform_pc88
+platform_17=platform_pc98
+platform_18=platform_segamastersystem
+platform_19=platform_turbografx
+platform_2=platform_atari2600
+platform_20=platform_zxspectrum
+platform_3=platform_atari5200
+platform_4=platform_atari7800
+platform_5=platform_atarist
+platform_6=platform_unknown
+platform_7=platform_commodore
+platform_8=platform_dos
+platform_9=platform_gameboy
+[properties]
+cash:int=61952000
+copySell:int=7744000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=5 d=4 h=0 mi=0
+famous:float=0.11
+gameIsSaling:bool=false
+internalname:string=game_klax
+localizationRating:int=32
+name:string=Klax
+owner:string=Erbe Software, S.A.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=81
+startBugRating:int=36
+startdate:time=y=1989 m=0 d=2 h=0 mi=0
+startGenreRating:int=15
+startGraphicRating:int=69
+startrating:int=40
+startSoundRating:int=3
+textureNormal:path=images/spl_0.jpg

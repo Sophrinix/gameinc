@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+genre_2=genre_scifi
+[properties]
+internalname:string=game_speedball2brutaldeluxe
+startdate:time=y=1990 m=0 d=3 h=0 mi=0

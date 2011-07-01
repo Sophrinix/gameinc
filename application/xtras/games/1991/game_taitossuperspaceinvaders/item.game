@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_gamegear
+platform_6=platform_segamastersystem
+platform_7=platform_zxspectrum
+[properties]
+cash:int=474636000
+copySell:int=6414000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=7 d=2 h=0 mi=0
+famous:float=0.94
+gameIsSaling:bool=false
+internalname:string=game_taitossuperspaceinvaders
+localizationRating:int=35
+name:string=Taito's Super Space Invaders
+owner:string=Domark Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=65
+startBugRating:int=71
+startdate:time=y=1991 m=6 d=27 h=0 mi=0
+startGenreRating:int=51
+startGraphicRating:int=91
+startrating:int=60
+startSoundRating:int=22
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/taitos-super-space-invaders

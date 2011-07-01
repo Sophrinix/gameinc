@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_flight
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_fmtowns
+platform_4=platform_pc98
+[properties]
+cash:int=44616000
+copySell:int=858000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=8 d=25 h=0 mi=0
+famous:float=0.77
+gameIsSaling:bool=false
+internalname:string=game_f29retaliator
+localizationRating:int=24
+name:string=F29Retaliator
+owner:string=Ocean Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=51
+startdate:time=y=1989 m=10 d=8 h=0 mi=0
+startGenreRating:int=9
+startGraphicRating:int=37
+startrating:int=40
+startSoundRating:int=86
+textureNormal:path=images/spl_0.jpg

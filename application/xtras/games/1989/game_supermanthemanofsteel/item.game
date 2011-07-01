@@ -1,0 +1,37 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_comics
+genre_3=genre_flight
+genre_4=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_apple2
+platform_3=platform_atarist
+platform_4=platform_unknown
+platform_5=platform_commodore
+platform_6=platform_dos
+platform_7=platform_msx
+platform_8=platform_zxspectrum
+[properties]
+cash:int=18676000
+copySell:int=322000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=10 d=1 h=0 mi=0
+famous:float=0.49
+gameIsSaling:bool=false
+internalname:string=game_supermanthemanofsteel
+localizationRating:int=53
+name:string=Superman: The Man of Steel
+owner:string=Tynesoft Computer Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=66
+startdate:time=y=1989 m=8 d=11 h=0 mi=0
+startGenreRating:int=8
+startGraphicRating:int=61
+startrating:int=51
+startSoundRating:int=86
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/superman-the-man-of-steel__

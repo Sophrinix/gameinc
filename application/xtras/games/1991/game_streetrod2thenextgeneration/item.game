@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+genre_2=genre_managerial
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+[properties]
+cash:int=54392000
+copySell:int=2092000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=8 d=28 h=0 mi=0
+famous:float=0.95
+gameIsSaling:bool=false
+internalname:string=game_streetrod2thenextgeneration
+localizationRating:int=85
+name:string=Street Rod 2: The Next Generation
+owner:string=California Dreams
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=14
+startBugRating:int=38
+startdate:time=y=1991 m=7 d=26 h=0 mi=0
+startGenreRating:int=65
+startGraphicRating:int=91
+startrating:int=60
+startSoundRating:int=94
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/street-rod-2-the-next-generation

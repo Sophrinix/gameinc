@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_racing
+[properties]
+internalname:string=game_micromachines
+startdate:time=y=1991 m=11 d=10 h=0 mi=0
+url:string=http://www.mobygames.com/game/micro-machines

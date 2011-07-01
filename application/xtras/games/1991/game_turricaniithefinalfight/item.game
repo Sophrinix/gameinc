@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_zxspectrum
+[properties]
+cash:int=345735000
+copySell:int=5319000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=3 d=2 h=0 mi=0
+famous:float=0.03
+gameIsSaling:bool=false
+internalname:string=game_turricaniithefinalfight
+localizationRating:int=12
+name:string=TurricanIITheFinalFight
+owner:string=Rainbow Arts Software GmbH
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=50
+startBugRating:int=62
+startdate:time=y=1991 m=11 d=8 h=0 mi=0
+startGenreRating:int=28
+startGraphicRating:int=45
+startrating:int=41
+startSoundRating:int=21
+textureNormal:path=images/spl_0.jpg

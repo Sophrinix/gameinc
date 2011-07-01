@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_commodore
+platform_3=platform_dos
+[properties]
+cash:int=90446000
+copySell:int=2206000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=1 d=0 h=0 mi=0
+famous:float=0.83
+gameIsSaling:bool=false
+internalname:string=game_spiritofadventure
+localizationRating:int=65
+name:string=Spirit of Adventure
+owner:string=Starbyte Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=24
+startBugRating:int=1
+startdate:time=y=1991 m=10 d=26 h=0 mi=0
+startGenreRating:int=83
+startGraphicRating:int=51
+startrating:int=44
+startSoundRating:int=61
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/spirit-of-adventure

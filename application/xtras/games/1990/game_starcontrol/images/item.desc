@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_scifi
+genre_3=genre_shooter
+[properties]
+internalname:string=game_starcontrol
+startdate:time=y=1990 m=4 d=3 h=0 mi=0
+url:string=http://www.mobygames.com/game/star-control

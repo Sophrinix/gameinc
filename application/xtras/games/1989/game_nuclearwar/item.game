@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_strategy
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+[properties]
+cash:int=40716000
+copySell:int=4524000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=2 d=17 h=0 mi=0
+famous:float=0.09
+gameIsSaling:bool=false
+internalname:string=game_nuclearwar
+localizationRating:int=69
+name:string=Nuclear War
+owner:string=New World Computing, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=27
+startBugRating:int=47
+startdate:time=y=1989 m=0 d=20 h=0 mi=0
+startGenreRating:int=3
+startGraphicRating:int=81
+startrating:int=34
+startSoundRating:int=16
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/nuclear-war

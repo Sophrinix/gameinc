@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_unknown
+platform_3=platform_atarist
+platform_4=platform_commodore
+platform_5=platform_dos
+platform_6=platform_pc98
+[properties]
+cash:int=484215000
+copySell:int=8495000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=4 d=15 h=0 mi=0
+famous:float=0.19
+gameIsSaling:bool=false
+internalname:string=game_omega
+localizationRating:int=12
+name:string=Omega
+owner:string=ORIGIN Systems, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=25
+startdate:time=y=1989 m=9 d=1 h=0 mi=0
+startGenreRating:int=48
+startGraphicRating:int=54
+startrating:int=33
+startSoundRating:int=2
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/omega_

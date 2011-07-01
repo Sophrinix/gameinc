@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_zen
+genre_3=genre_puzzle
+genre_4=genre_realtime
+[properties]
+internalname:string=game_thegameofharmony
+startdate:time=y=1990 m=7 d=21 h=0 mi=0
+url:string=http://www.mobygames.com/game/game-of-harmony

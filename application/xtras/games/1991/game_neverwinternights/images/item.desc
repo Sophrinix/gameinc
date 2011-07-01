@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_persuniverse
+genre_3=genre_turnbased
+[properties]
+internalname:string=game_neverwinternights
+startdate:time=y=1991 m=10 d=0 h=0 mi=0
+url:string=http://www.mobygames.com/game/dos/neverwinter-nights_

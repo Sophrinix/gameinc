@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_flight
+genre_2=genre_historicalbattle
+[properties]
+internalname:string=game_redbaron
+startdate:time=y=1990 m=9 d=13 h=0 mi=0
+url:string=http://www.mobygames.com/game/red-baron

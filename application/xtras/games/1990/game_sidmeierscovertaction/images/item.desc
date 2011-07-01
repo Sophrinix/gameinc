@@ -1,0 +1,11 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_simulation
+genre_3=genre_puzzle
+genre_4=genre_realtime
+genre_5=genre_spy
+[properties]
+internalname:string=game_sidmeierscovertaction
+startdate:time=y=1990 m=3 d=21 h=0 mi=0
+url:string=http://www.mobygames.com/game/sid-meiers-covert-action

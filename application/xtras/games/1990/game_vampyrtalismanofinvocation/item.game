@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=52806000
+copySell:int=2031000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=9 d=8 h=0 mi=0
+famous:float=0.25
+gameIsSaling:bool=false
+internalname:string=game_vampyrtalismanofinvocation
+localizationRating:int=44
+name:string=Vampyr: Talisman of Invocation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=86
+startBugRating:int=81
+startdate:time=y=1990 m=6 d=2 h=0 mi=0
+startGenreRating:int=12
+startGraphicRating:int=86
+startrating:int=60
+startSoundRating:int=36
+url:string=http://www.mobygames.com/game/dos/vampyr-talisman-of-invocation

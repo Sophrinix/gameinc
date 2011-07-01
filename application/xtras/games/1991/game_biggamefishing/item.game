@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_sports
+genre_2=genre_fishing
+genre_3=genre_managerial
+genre_4=genre_naval
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_commodore
+platform_3=platform_dos
+[properties]
+cash:int=451416000
+copySell:int=5374000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=9 d=23 h=0 mi=0
+famous:float=0.27
+gameIsSaling:bool=false
+internalname:string=game_biggamefishing
+localizationRating:int=31
+name:string=Big Game Fishing
+owner:string=Simulmondo
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=44
+startBugRating:int=73
+startdate:time=y=1991 m=9 d=6 h=0 mi=0
+startGenreRating:int=66
+startGraphicRating:int=65
+startrating:int=59
+startSoundRating:int=48
+url:string=http://www.mobygames.com/game/big-game-fishing

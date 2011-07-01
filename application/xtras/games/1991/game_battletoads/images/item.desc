@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_surfing
+genre_2=genre_fighting
+genre_3=genre_scifi
+[properties]
+internalname:string=game_battletoads
+startdate:time=y=1991 m=4 d=11 h=0 mi=0
+url:string=http://www.mobygames.com/game/battletoads

@@ -1,0 +1,38 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_amiga
+platform_10=platform_windows
+platform_11=platform_windows3x
+platform_2=platform_unknown
+platform_3=platform_atarist
+platform_4=platform_dos
+platform_5=platform_gameboyadvance
+platform_6=platform_genesis
+platform_7=platform_unknown
+platform_8=platform_snes
+platform_9=platform_symbian
+[properties]
+cash:int=554499000
+copySell:int=5601000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=8 d=15 h=0 mi=0
+famous:float=0.16
+gameIsSaling:bool=false
+internalname:string=game_outofthisworld
+localizationRating:int=89
+name:string=Out of This World
+owner:string=Interplay Productions, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=9
+startBugRating:int=68
+startdate:time=y=1991 m=3 d=17 h=0 mi=0
+startGenreRating:int=49
+startGraphicRating:int=81
+startrating:int=53
+startSoundRating:int=59
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/out-of-this-world

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_commodore
+platform_2=platform_dos
+[properties]
+cash:int=423108000
+copySell:int=6132000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=6 d=9 h=0 mi=0
+famous:float=0.79
+gameIsSaling:bool=false
+internalname:string=game_panzerbattles
+localizationRating:int=42
+name:string=Panzer Battles
+owner:string=SSG Strategic Studies Group Pty Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=58
+startBugRating:int=76
+startdate:time=y=1989 m=10 d=3 h=0 mi=0
+startGenreRating:int=58
+startGraphicRating:int=68
+startrating:int=67
+startSoundRating:int=77
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/panzer-battles

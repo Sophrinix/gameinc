@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_flight
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=710345000
+copySell:int=8357000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=4 d=17 h=0 mi=0
+famous:float=0.74
+gameIsSaling:bool=false
+internalname:string=game_killingcloud
+localizationRating:int=64
+name:string=Killing Cloud
+owner:string=Image Works
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=97
+startBugRating:int=67
+startdate:time=y=1991 m=8 d=20 h=0 mi=0
+startGenreRating:int=1
+startGraphicRating:int=99
+startrating:int=71
+startSoundRating:int=94
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/killing-cloud

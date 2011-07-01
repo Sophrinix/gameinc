@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_flight
+genre_2=genre_scifi
+[properties]
+internalname:string=game_killingcloud
+startdate:time=y=1991 m=8 d=20 h=0 mi=0
+url:string=http://www.mobygames.com/game/killing-cloud

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[properties]
+internalname:string=game_doubledragoniitherevenge
+startdate:time=y=1989 m=6 d=23 h=0 mi=0

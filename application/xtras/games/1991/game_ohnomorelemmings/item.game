@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_unknown
+[properties]
+cash:int=614728000
+copySell:int=7148000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=3 d=25 h=0 mi=0
+famous:float=0.68
+gameIsSaling:bool=false
+internalname:string=game_ohnomorelemmings
+localizationRating:int=56
+name:string=OhNoMoreLemmings
+owner:string=Psygnosis Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=45
+startBugRating:int=79
+startdate:time=y=1991 m=6 d=24 h=0 mi=0
+startGenreRating:int=37
+startGraphicRating:int=65
+startrating:int=57
+startSoundRating:int=63
+textureNormal:path=images/spl_0.jpg

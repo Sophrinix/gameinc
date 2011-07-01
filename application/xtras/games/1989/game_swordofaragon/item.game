@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_strategy
+genre_2=genre_managerial
+genre_3=genre_fantasy
+genre_4=genre_turnbased
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+[properties]
+cash:int=522456000
+copySell:int=7916000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=9 d=0 h=0 mi=0
+famous:float=0.45
+gameIsSaling:bool=false
+internalname:string=game_swordofaragon
+localizationRating:int=73
+name:string=Sword of Aragon
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=50
+startBugRating:int=14
+startdate:time=y=1989 m=5 d=16 h=0 mi=0
+startGenreRating:int=42
+startGraphicRating:int=63
+startrating:int=53
+startSoundRating:int=97
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/sword-of-aragon

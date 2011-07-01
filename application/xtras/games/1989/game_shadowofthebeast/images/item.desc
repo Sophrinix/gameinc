@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+[properties]
+internalname:string=game_shadowofthebeast
+startdate:time=y=1989 m=7 d=28 h=0 mi=0

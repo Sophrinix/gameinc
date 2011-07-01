@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_blazinglazers
+startdate:time=y=1989 m=10 d=9 h=0 mi=0
+url:string=http://www.mobygames.com/game/blazing-lazers

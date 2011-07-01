@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_segamastersystem
+[properties]
+cash:int=199440000
+copySell:int=5540000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=10 d=22 h=0 mi=0
+famous:float=0.43
+gameIsSaling:bool=false
+internalname:string=game_psychofox
+localizationRating:int=47
+name:string=Psycho Fox
+owner:string=SEGA Enterprises Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=41
+startBugRating:int=65
+startdate:time=y=1989 m=8 d=25 h=0 mi=0
+startGenreRating:int=28
+startGraphicRating:int=65
+startrating:int=49
+startSoundRating:int=46
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/psycho-fox

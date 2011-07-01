@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_puzzle
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_pc98
+[properties]
+cash:int=18050000
+copySell:int=190000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=7 d=8 h=0 mi=0
+famous:float=0.98
+gameIsSaling:bool=false
+internalname:string=game_futurewarsadventuresintime
+localizationRating:int=44
+name:string=FutureWarsAdventuresinTime
+owner:string=Palace Software, LTD.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=6
+startBugRating:int=23
+startdate:time=y=1989 m=0 d=26 h=0 mi=0
+startGenreRating:int=60
+startGraphicRating:int=35
+startrating:int=33
+startSoundRating:int=43
+textureNormal:path=images/spl_0.jpg

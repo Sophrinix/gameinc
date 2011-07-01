@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_surfing
+genre_2=genre_fighting
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacd32
+platform_2=platform_gamegear
+platform_3=platform_genesis
+platform_4=platform_nes
+[properties]
+cash:int=647088000
+copySell:int=8296000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=0 d=21 h=0 mi=0
+famous:float=0.17
+gameIsSaling:bool=false
+internalname:string=game_battletoads
+localizationRating:int=22
+name:string=Battletoads
+owner:string=SEGA Enterprises Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=81
+startBugRating:int=5
+startdate:time=y=1991 m=4 d=11 h=0 mi=0
+startGenreRating:int=71
+startGraphicRating:int=91
+startrating:int=49
+startSoundRating:int=0
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/battletoads

@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_simulation
+genre_3=genre_scifi
+genre_4=genre_shooter
+[properties]
+internalname:string=game_spacerogue
+startdate:time=y=1989 m=7 d=12 h=0 mi=0

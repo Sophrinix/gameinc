@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_arcade
+genre_3=genre_puzzle
+[properties]
+internalname:string=game_crystalis
+startdate:time=y=1990 m=7 d=14 h=0 mi=0
+url:string=http://www.mobygames.com/game/crystalis

@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_flight
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_zxspectrum
+[properties]
+cash:int=120357000
+copySell:int=2799000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=5 d=26 h=0 mi=0
+famous:float=0.35
+gameIsSaling:bool=false
+internalname:string=game_f16combatpilot
+localizationRating:int=32
+name:string=F16CombatPilot
+owner:string=Digital Integration Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=11
+startBugRating:int=80
+startdate:time=y=1989 m=1 d=12 h=0 mi=0
+startGenreRating:int=64
+startGraphicRating:int=51
+startrating:int=55
+startSoundRating:int=72
+textureNormal:path=images/spl_0.jpg

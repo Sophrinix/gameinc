@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_simulation
+genre_2=genre_board
+genre_3=genre_managerial
+[properties]
+internalname:string=game_jonesinthefastlane
+startdate:time=y=1991 m=0 d=27 h=0 mi=0
+url:string=http://www.mobygames.com/game/dos/jones-in-the-fast-lane

@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_arcade
+genre_3=genre_flight
+genre_4=genre_realtime
+[properties]
+internalname:string=game_paragliding
+startdate:time=y=1991 m=7 d=1 h=0 mi=0
+url:string=http://www.mobygames.com/game/paragliding

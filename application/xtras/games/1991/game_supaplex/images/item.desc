@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+[properties]
+internalname:string=game_supaplex
+startdate:time=y=1991 m=4 d=18 h=0 mi=0
+url:string=http://www.mobygames.com/game/supaplex

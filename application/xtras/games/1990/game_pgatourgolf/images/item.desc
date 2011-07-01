@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_golf
+[properties]
+internalname:string=game_pgatourgolf
+startdate:time=y=1990 m=3 d=5 h=0 mi=0

@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_lynx
+platform_6=platform_windows3x
+platform_7=platform_zxspectrum
+[properties]
+cash:int=159515000
+copySell:int=2615000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=8 d=27 h=0 mi=0
+famous:float=0.73
+gameIsSaling:bool=false
+internalname:string=game_chipschallenge
+localizationRating:int=94
+name:string=Chip's Challenge
+owner:string=Atari Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=62
+startBugRating:int=79
+startdate:time=y=1989 m=10 d=3 h=0 mi=0
+startGenreRating:int=91
+startGraphicRating:int=82
+startrating:int=68
+startSoundRating:int=29
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/chips-challenge

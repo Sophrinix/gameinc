@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+[properties]
+internalname:string=game_spiritofadventure
+startdate:time=y=1991 m=10 d=26 h=0 mi=0
+url:string=http://www.mobygames.com/game/spirit-of-adventure

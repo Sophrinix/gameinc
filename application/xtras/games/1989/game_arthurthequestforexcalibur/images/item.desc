@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+genre_2=genre_fantasy
+genre_3=genre_puzzle
+[properties]
+internalname:string=game_arthurthequestforexcalibur
+startdate:time=y=1989 m=11 d=28 h=0 mi=0

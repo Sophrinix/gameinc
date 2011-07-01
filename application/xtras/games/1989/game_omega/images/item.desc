@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_scifi
+[properties]
+internalname:string=game_omega
+startdate:time=y=1989 m=9 d=1 h=0 mi=0
+url:string=http://www.mobygames.com/game/omega_

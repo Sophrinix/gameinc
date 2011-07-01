@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_realtime
+genre_3=genre_turnbased
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_playstation
+platform_2=platform_snes
+platform_3=platform_wii
+platform_4=platfrom_wonderswan
+[properties]
+cash:int=78300000
+copySell:int=900000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=0 d=24 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_finalfantasyii
+localizationRating:int=91
+name:string=FinalFantasyII
+owner:string=Square Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=35
+startBugRating:int=40
+startdate:time=y=1991 m=8 d=13 h=0 mi=0
+startGenreRating:int=84
+startGraphicRating:int=14
+startrating:int=48
+startSoundRating:int=68
+textureNormal:path=images/spl_0.jpg

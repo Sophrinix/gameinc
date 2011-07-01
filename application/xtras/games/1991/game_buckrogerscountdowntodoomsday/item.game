@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_scifi
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_genesis
+[properties]
+cash:int=760032000
+copySell:int=9744000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=3 d=1 h=0 mi=0
+famous:float=0.31
+gameIsSaling:bool=false
+internalname:string=game_buckrogerscountdowntodoomsday
+localizationRating:int=78
+name:string=Buck Rogers: Countdown to Doomsday
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=67
+startBugRating:int=44
+startdate:time=y=1991 m=6 d=3 h=0 mi=0
+startGenreRating:int=1
+startGraphicRating:int=66
+startrating:int=39
+startSoundRating:int=20
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/buck-rogers-countdown-to-doomsday_

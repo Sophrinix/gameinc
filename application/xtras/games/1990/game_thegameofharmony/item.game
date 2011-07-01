@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_zen
+genre_3=genre_puzzle
+genre_4=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_gameboy
+platform_6=platform_zxspectrum
+[properties]
+cash:int=328119000
+copySell:int=9943000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=1 d=7 h=0 mi=0
+famous:float=0.55
+gameIsSaling:bool=false
+internalname:string=game_thegameofharmony
+localizationRating:int=26
+name:string=The Game of Harmony
+owner:string=U.S. Gold Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=83
+startBugRating:int=21
+startdate:time=y=1990 m=7 d=21 h=0 mi=0
+startGenreRating:int=87
+startGraphicRating:int=1
+startrating:int=50
+startSoundRating:int=62
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/game-of-harmony

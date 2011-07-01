@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[properties]
+internalname:string=game_therevengeofshinobi
+startdate:time=y=1989 m=3 d=19 h=0 mi=0

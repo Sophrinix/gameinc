@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_interactivefiction
+genre_2=genre_fantasy
+genre_3=genre_puzzle
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_dos
+platform_3=platform_unknown
+[properties]
+cash:int=141066000
+copySell:int=4149000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=8 d=17 h=0 mi=0
+famous:float=0.69
+gameIsSaling:bool=false
+internalname:string=game_arthurthequestforexcalibur
+localizationRating:int=75
+name:string=ArthurTheQuestforExcalibur
+owner:string=Infocom, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=61
+startBugRating:int=9
+startdate:time=y=1989 m=11 d=28 h=0 mi=0
+startGenreRating:int=41
+startGraphicRating:int=64
+startrating:int=46
+startSoundRating:int=59
+textureNormal:path=images/spl_0.jpg

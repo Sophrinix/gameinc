@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_horror
+genre_3=genre_fantasy
+[platforms]
+platform_0=platform_nes
+platform_1=platform_wii
+[properties]
+cash:int=239960000
+copySell:int=5999000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=1 d=12 h=0 mi=0
+famous:float=0.61
+gameIsSaling:bool=false
+internalname:string=game_castlevaniaiiidraculascurse
+localizationRating:int=44
+name:string=CastlevaniaIIIDraculasCurse
+owner:string=Konami Industry Co. Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=25
+startBugRating:int=32
+startdate:time=y=1989 m=5 d=2 h=0 mi=0
+startGenreRating:int=92
+startGraphicRating:int=44
+startrating:int=45
+startSoundRating:int=35
+textureNormal:path=images/spl_0.jpg

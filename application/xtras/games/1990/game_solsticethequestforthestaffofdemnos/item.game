@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_arcade
+genre_3=genre_puzzle
+[platforms]
+platform_0=platform_nes
+[properties]
+cash:int=822024000
+copySell:int=9786000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=10 d=17 h=0 mi=0
+famous:float=0.8
+gameIsSaling:bool=false
+internalname:string=game_solsticethequestforthestaffofdemnos
+localizationRating:int=38
+name:string=Solstice: The Quest for the Staff of Demnos
+owner:string=CSG Imagesoft Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=15
+startBugRating:int=3
+startdate:time=y=1990 m=1 d=16 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=30
+startrating:int=20
+startSoundRating:int=16
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/solstice-the-quest-for-the-staff-of-demnos

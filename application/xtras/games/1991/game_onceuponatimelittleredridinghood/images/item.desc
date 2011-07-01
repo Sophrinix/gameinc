@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_educational
+genre_3=genre_arcade
+genre_4=genre_fantasy
+[properties]
+internalname:string=game_onceuponatimelittleredridinghood
+startdate:time=y=1991 m=8 d=9 h=0 mi=0
+url:string=http://www.mobygames.com/game/once-upon-a-time-little-red-riding-hood

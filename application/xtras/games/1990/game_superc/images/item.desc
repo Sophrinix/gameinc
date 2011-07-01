@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[properties]
+internalname:string=game_superc
+startdate:time=y=1990 m=6 d=2 h=0 mi=0
+url:string=http://www.mobygames.com/game/super-c

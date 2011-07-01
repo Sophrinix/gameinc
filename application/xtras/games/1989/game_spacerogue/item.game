@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_simulation
+genre_3=genre_scifi
+genre_4=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_apple2
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_dos
+platform_5=platform_fmtowns
+platform_6=platform_unknown
+platform_7=platform_pc98
+[properties]
+cash:int=227624000
+copySell:int=3076000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=3 d=16 h=0 mi=0
+famous:float=0.8
+gameIsSaling:bool=false
+internalname:string=game_spacerogue
+localizationRating:int=65
+name:string=SpaceRogue
+owner:string=ORIGIN Systems, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=4
+startBugRating:int=23
+startdate:time=y=1989 m=7 d=12 h=0 mi=0
+startGenreRating:int=48
+startGraphicRating:int=6
+startrating:int=31
+startSoundRating:int=77
+textureNormal:path=images/spl_0.jpg

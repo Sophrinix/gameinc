@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_sports
+genre_2=genre_fishing
+genre_3=genre_managerial
+genre_4=genre_naval
+[properties]
+internalname:string=game_biggamefishing
+startdate:time=y=1991 m=9 d=6 h=0 mi=0
+url:string=http://www.mobygames.com/game/big-game-fishing

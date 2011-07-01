@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_nes
+platform_2=platform_turbografx
+platform_3=platform_wii
+[properties]
+cash:int=19818000
+copySell:int=1101000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=2 d=17 h=0 mi=0
+famous:float=0.05
+gameIsSaling:bool=false
+internalname:string=game_rivercityransom
+localizationRating:int=84
+name:string=RiverCityRansom
+owner:string=Technos Japan Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=99
+startBugRating:int=21
+startdate:time=y=1989 m=2 d=20 h=0 mi=0
+startGenreRating:int=18
+startGraphicRating:int=42
+startrating:int=51
+startSoundRating:int=75
+textureNormal:path=images/spl_0.jpg

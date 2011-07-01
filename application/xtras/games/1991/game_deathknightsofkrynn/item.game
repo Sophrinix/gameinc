@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_commodore
+platform_2=platform_dos
+platform_3=platform_pc98
+[properties]
+cash:int=32364000
+copySell:int=3596000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=1 d=15 h=0 mi=0
+famous:float=0.53
+gameIsSaling:bool=false
+internalname:string=game_deathknightsofkrynn
+localizationRating:int=60
+name:string=Death Knights of Krynn
+owner:string=Strategic Simulations, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=54
+startBugRating:int=86
+startdate:time=y=1991 m=4 d=28 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=33
+startrating:int=56
+startSoundRating:int=57
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/death-knights-of-krynn

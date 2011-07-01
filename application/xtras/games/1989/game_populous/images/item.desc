@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_realtime
+[properties]
+internalname:string=game_populous
+startdate:time=y=1989 m=1 d=5 h=0 mi=0

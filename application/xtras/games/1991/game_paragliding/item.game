@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_arcade
+genre_3=genre_flight
+genre_4=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=7693000
+copySell:int=1099000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=3 d=8 h=0 mi=0
+famous:float=0.89
+gameIsSaling:bool=false
+internalname:string=game_paragliding
+localizationRating:int=60
+name:string=Paragliding
+owner:string=Loriciel SA
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=35
+startBugRating:int=9
+startdate:time=y=1991 m=7 d=1 h=0 mi=0
+startGenreRating:int=71
+startGraphicRating:int=31
+startrating:int=33
+startSoundRating:int=19
+url:string=http://www.mobygames.com/game/paragliding

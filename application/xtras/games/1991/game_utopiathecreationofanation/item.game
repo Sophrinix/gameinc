@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_realtime
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+platform_3=platform_snes
+[properties]
+cash:int=358110000
+copySell:int=7785000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=0 d=14 h=0 mi=0
+famous:float=0.06
+gameIsSaling:bool=false
+internalname:string=game_utopiathecreationofanation
+localizationRating:int=31
+name:string=Utopia: The Creation of a Nation
+owner:string=Gremlin Graphics Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=82
+startBugRating:int=52
+startdate:time=y=1991 m=7 d=0 h=0 mi=0
+startGenreRating:int=65
+startGraphicRating:int=80
+startrating:int=58
+startSoundRating:int=14
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/utopia-the-creation-of-a-nation

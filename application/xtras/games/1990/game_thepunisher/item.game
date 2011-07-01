@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_comics
+genre_3=genre_detective
+genre_4=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=43380000
+copySell:int=1205000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=8 d=25 h=0 mi=0
+famous:float=0.23
+gameIsSaling:bool=false
+internalname:string=game_thepunisher
+localizationRating:int=21
+name:string=The Punisher
+owner:string=MicroProse Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=42
+startBugRating:int=15
+startdate:time=y=1990 m=10 d=9 h=0 mi=0
+startGenreRating:int=70
+startGraphicRating:int=80
+startrating:int=42
+startSoundRating:int=6
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/punisher

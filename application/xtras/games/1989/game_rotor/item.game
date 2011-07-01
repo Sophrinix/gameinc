@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=804924000
+copySell:int=9252000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=0 d=12 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_rotor
+localizationRating:int=47
+name:string=Rotor
+owner:string=Arcana Software Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=55
+startBugRating:int=96
+startdate:time=y=1989 m=2 d=27 h=0 mi=0
+startGenreRating:int=56
+startGraphicRating:int=45
+startrating:int=58
+startSoundRating:int=40
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/rotor

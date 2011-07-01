@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacpc
+platform_10=platform_zxspectrum
+platform_2=platform_atarist
+platform_3=platform_commodore
+platform_4=platform_fmtowns
+platform_5=platform_genesis
+platform_6=platform_nes
+platform_7=platform_segamastersystem
+platform_8=platform_turbografx
+platform_9=platform_wii
+[properties]
+cash:int=26784000
+copySell:int=372000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=0 d=22 h=0 mi=0
+famous:float=0.74
+gameIsSaling:bool=false
+internalname:string=game_thenewzealandstory
+localizationRating:int=41
+name:string=TheNewZealandStory
+owner:string=Ocean Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=31
+startBugRating:int=24
+startdate:time=y=1989 m=9 d=11 h=0 mi=0
+startGenreRating:int=68
+startGraphicRating:int=14
+startrating:int=35
+startSoundRating:int=42
+textureNormal:path=images/spl_0.jpg

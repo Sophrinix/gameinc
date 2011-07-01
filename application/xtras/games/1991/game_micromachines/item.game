@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_racing
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_unknown
+platform_2=platform_dos
+platform_3=platform_gameboy
+platform_4=platform_gamegear
+platform_5=platform_genesis
+platform_6=platform_nes
+platform_7=platform_segamastersystem
+platform_8=platform_snes
+[properties]
+cash:int=363134000
+copySell:int=5857000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=2 d=24 h=0 mi=0
+famous:float=0.68
+gameIsSaling:bool=false
+internalname:string=game_micromachines
+localizationRating:int=52
+name:string=Micro Machines
+owner:string=Camerica
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=75
+startBugRating:int=58
+startdate:time=y=1991 m=11 d=10 h=0 mi=0
+startGenreRating:int=45
+startGraphicRating:int=99
+startrating:int=64
+startSoundRating:int=46
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/micro-machines

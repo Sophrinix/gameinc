@@ -1,0 +1,35 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_naval
+[platforms]
+platform_0=platform_dos
+platform_1=platform_fmtowns
+platform_2=platform_genesis
+platform_3=platform_unknown
+platform_4=platform_msx
+platform_5=platform_nes
+platform_6=platform_pc88
+platform_7=platform_pc98
+platform_8=platform_snes
+[properties]
+cash:int=407726000
+copySell:int=4741000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=2 d=17 h=0 mi=0
+famous:float=0.75
+gameIsSaling:bool=false
+internalname:string=game_unchartedwaters
+localizationRating:int=85
+name:string=Uncharted Waters
+owner:string=KOEI Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=92
+startBugRating:int=26
+startdate:time=y=1990 m=5 d=20 h=0 mi=0
+startGenreRating:int=2
+startGraphicRating:int=47
+startrating:int=39
+startSoundRating:int=29
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/uncharted-waters

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_anime
+genre_3=genre_fantasy
+[platforms]
+platform_0=platform_segamastersystem
+[properties]
+cash:int=86100000
+copySell:int=2050000
+descriptionpath:path=desc.htm
+enddate:time=y=1994 m=5 d=24 h=0 mi=0
+famous:float=0.48
+gameIsSaling:bool=false
+internalname:string=game_goldenaxewarrior
+localizationRating:int=69
+name:string=Golden Axe Warrior
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=41
+startdate:time=y=1991 m=0 d=23 h=0 mi=0
+startGenreRating:int=55
+startGraphicRating:int=7
+startrating:int=40
+startSoundRating:int=78
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/golden-axe-warrior

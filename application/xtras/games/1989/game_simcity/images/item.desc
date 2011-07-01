@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_managerial
+[properties]
+internalname:string=game_simcity
+startdate:time=y=1989 m=6 d=10 h=0 mi=0
+url:string=http://www.mobygames.com/game/simcity

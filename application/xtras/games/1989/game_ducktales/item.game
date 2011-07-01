@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_gameboy
+platform_1=platform_nes
+[properties]
+cash:int=512820000
+copySell:int=7326000
+descriptionpath:path=desc.htm
+enddate:time=y=1992 m=0 d=24 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_ducktales
+localizationRating:int=52
+name:string=DuckTales
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=90
+startBugRating:int=97
+startdate:time=y=1989 m=4 d=5 h=0 mi=0
+startGenreRating:int=40
+startGraphicRating:int=68
+startrating:int=66
+startSoundRating:int=38
+textureNormal:path=images/spl_0.jpg

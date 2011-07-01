@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_horror
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_pc98
+[properties]
+cash:int=107661000
+copySell:int=2111000
+descriptionpath:path=desc.htm
+enddate:time=y=1993 m=7 d=12 h=0 mi=0
+famous:float=0.96
+gameIsSaling:bool=false
+internalname:string=game_elvira
+localizationRating:int=80
+name:string=Elvira
+owner:string=Accolade, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=54
+startBugRating:int=69
+startdate:time=y=1990 m=3 d=27 h=0 mi=0
+startGenreRating:int=68
+startGraphicRating:int=54
+startrating:int=49
+startSoundRating:int=1
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/elvira

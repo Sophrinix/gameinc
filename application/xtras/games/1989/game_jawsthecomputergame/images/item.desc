@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+[properties]
+internalname:string=game_jawsthecomputergame
+startdate:time=y=1989 m=1 d=1 h=0 mi=0
+url:string=http://www.mobygames.com/game/jaws-the-computer-game
