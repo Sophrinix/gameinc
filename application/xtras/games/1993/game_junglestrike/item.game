@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_helicopter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacd32
+platform_2=platform_dos
+platform_3=platform_gameboy
+platform_4=platform_genesis
+platform_5=platform_snes
+[properties]
+cash:int=342516000
+copySell:int=7446000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=9 d=27 h=0 mi=0
+famous:float=0.43
+gameIsSaling:bool=false
+internalname:string=game_junglestrike
+localizationRating:int=4
+name:string=Jungle Strike
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=23
+startBugRating:int=89
+startdate:time=y=1993 m=10 d=24 h=0 mi=0
+startGenreRating:int=48
+startGraphicRating:int=23
+startrating:int=53
+startSoundRating:int=84
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+genre_2=genre_rugby
+genre_3=genre_football
+genre_4=genre_fighting
+genre_5=genre_scifi
+[properties]
+internalname:string=game_brutalsportsfootball
+startdate:time=y=1993 m=3 d=21 h=0 mi=0

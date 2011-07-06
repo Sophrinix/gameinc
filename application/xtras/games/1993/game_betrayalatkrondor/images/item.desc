@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_turnbased
+[properties]
+internalname:string=game_betrayalatkrondor
+startdate:time=y=1993 m=4 d=11 h=0 mi=0

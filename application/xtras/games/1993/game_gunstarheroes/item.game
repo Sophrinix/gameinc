@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_arcade
+genre_3=genre_scifi
+genre_4=genre_shooter
+[platforms]
+platform_0=platform_gamegear
+platform_1=platform_genesis
+platform_2=platform_playstation3
+platform_3=platform_wii
+platform_4=platform_xbox360
+[properties]
+cash:int=726084000
+copySell:int=8748000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=2 d=10 h=0 mi=0
+famous:float=0.95
+gameIsSaling:bool=false
+internalname:string=game_gunstarheroes
+localizationRating:int=80
+name:string=Gunstar Heroes
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=65
+startdate:time=y=1993 m=7 d=13 h=0 mi=0
+startGenreRating:int=6
+startGraphicRating:int=98
+startrating:int=55
+startSoundRating:int=70
+textureNormal:path=images/spl_0.jpg

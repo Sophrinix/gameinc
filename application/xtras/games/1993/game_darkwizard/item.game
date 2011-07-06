@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_strategy
+genre_2=genre_anime
+genre_3=genre_fantasy
+genre_4=genre_turnbased
+[platforms]
+platform_0=platform_segacd
+[properties]
+cash:int=63154000
+copySell:int=9022000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=4 d=15 h=0 mi=0
+famous:float=0.06
+gameIsSaling:bool=false
+internalname:string=game_darkwizard
+localizationRating:int=84
+name:string=Dark Wizard
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=17
+startBugRating:int=75
+startdate:time=y=1993 m=10 d=20 h=0 mi=0
+startGenreRating:int=14
+startGraphicRating:int=51
+startrating:int=40
+startSoundRating:int=43
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/dark-wizard

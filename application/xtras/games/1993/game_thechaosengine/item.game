@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacd32
+platform_2=platform_atarist
+platform_3=platform_dos
+platform_4=platform_genesis
+platform_5=platform_unknown
+platform_6=platform_snes
+[properties]
+cash:int=49824000
+copySell:int=4152000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=0 d=2 h=0 mi=0
+famous:float=0.2
+gameIsSaling:bool=false
+internalname:string=game_thechaosengine
+localizationRating:int=53
+name:string=The Chaos Engine
+owner:string=Spectrum Holobyte, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=30
+startBugRating:int=72
+startdate:time=y=1993 m=10 d=21 h=0 mi=0
+startGenreRating:int=67
+startGraphicRating:int=9
+startrating:int=46
+startSoundRating:int=55
+textureNormal:path=images/spl_0.jpg

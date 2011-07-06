@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_managerial
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+[properties]
+cash:int=103455000
+copySell:int=6897000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=9 d=20 h=0 mi=0
+famous:float=0.24
+gameIsSaling:bool=false
+internalname:string=game_serfcitylifeisfeudal
+localizationRating:int=53
+name:string=Serf City: Life is Feudal
+owner:string=Blue Byte Software GmbH & Co. KG
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=10
+startBugRating:int=97
+startdate:time=y=1993 m=10 d=22 h=0 mi=0
+startGenreRating:int=43
+startGraphicRating:int=43
+startrating:int=53
+startSoundRating:int=72
+textureNormal:path=images/spl_0.jpg

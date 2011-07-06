@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[properties]
+internalname:string=game_shinobiiiireturnoftheninjamaster
+startdate:time=y=1993 m=11 d=12 h=0 mi=0

@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_educational
+genre_1=genre_strategy
+[platforms]
+platform_0=platform_apple2
+[properties]
+cash:int=11895000
+copySell:int=305000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=2 d=18 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_twistedthegameshow
+localizationRating:int=65
+name:string=Twisted: The Game Show
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=34
+startBugRating:int=47
+startdate:time=y=1993 m=2 d=2 h=0 mi=0
+startGenreRating:int=11
+startGraphicRating:int=6
+startrating:int=34
+startSoundRating:int=74
+textureNormal:path=images/spl_0.jpg

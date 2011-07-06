@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_gameboy
+[properties]
+cash:int=107806000
+copySell:int=2837000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=6 d=13 h=0 mi=0
+famous:float=0.18
+gameIsSaling:bool=false
+internalname:string=game_thelegendofzeldalinksawakening
+localizationRating:int=94
+name:string=The Legend of Zelda: Link's Awakening
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=99
+startBugRating:int=20
+startdate:time=y=1993 m=4 d=27 h=0 mi=0
+startGenreRating:int=17
+startGraphicRating:int=89
+startrating:int=62
+startSoundRating:int=87
+textureNormal:path=images/spl_0.jpg

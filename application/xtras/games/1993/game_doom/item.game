@@ -1,0 +1,36 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_horror
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_dos
+platform_2=platform_gameboyadvance
+platform_3=platform_jaguar
+platform_4=platform_linux
+platform_5=platform_pc98
+platform_6=platform_sega32x
+platform_7=platform_snes
+platform_8=platform_windows
+[properties]
+cash:int=127710000
+copySell:int=3870000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=0 d=24 h=0 mi=0
+famous:float=0.92
+gameIsSaling:bool=false
+internalname:string=game_doom
+localizationRating:int=52
+name:string=DOOM
+owner:string=id Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=83
+startBugRating:int=95
+startdate:time=y=1993 m=4 d=7 h=0 mi=0
+startGenreRating:int=59
+startGraphicRating:int=76
+startrating:int=74
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/doom

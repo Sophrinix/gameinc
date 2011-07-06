@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_anime
+genre_3=genre_fantasy
+[platforms]
+platform_0=platform_snes
+platform_1=platform_wii
+[properties]
+cash:int=157400000
+copySell:int=6296000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=2 d=17 h=0 mi=0
+famous:float=0.12
+gameIsSaling:bool=false
+internalname:string=game_secretofmana
+localizationRating:int=84
+name:string=Secret of Mana
+owner:string=Square Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=69
+startBugRating:int=37
+startdate:time=y=1993 m=8 d=20 h=0 mi=0
+startGenreRating:int=77
+startGraphicRating:int=50
+startrating:int=53
+startSoundRating:int=34
+textureNormal:path=images/spl_0.jpg

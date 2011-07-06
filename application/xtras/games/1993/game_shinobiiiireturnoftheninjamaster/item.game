@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_genesis
+platform_1=platform_wii
+platform_2=platform_windows
+[properties]
+cash:int=236810000
+copySell:int=2786000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=3 d=4 h=0 mi=0
+famous:float=0.56
+gameIsSaling:bool=false
+internalname:string=game_shinobiiiireturnoftheninjamaster
+localizationRating:int=46
+name:string=Shinobi III: Return of the Ninja Master
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=39
+startBugRating:int=51
+startdate:time=y=1993 m=11 d=12 h=0 mi=0
+startGenreRating:int=58
+startGraphicRating:int=17
+startrating:int=45
+startSoundRating:int=61
+textureNormal:path=images/spl_0.jpg

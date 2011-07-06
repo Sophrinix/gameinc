@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_ultimaunderworldiilabyrinthofworlds
+startdate:time=y=1993 m=10 d=14 h=0 mi=0

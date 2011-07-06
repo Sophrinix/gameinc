@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_apple2
+[properties]
+cash:int=97410000
+copySell:int=1146000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=4 d=19 h=0 mi=0
+famous:float=0.2
+gameIsSaling:bool=false
+internalname:string=game_crashnburn
+localizationRating:int=67
+name:string=Crash 'n Burn
+owner:string=Crystal Dynamics, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=85
+startBugRating:int=80
+startdate:time=y=1993 m=11 d=21 h=0 mi=0
+startGenreRating:int=75
+startGraphicRating:int=59
+startrating:int=77
+startSoundRating:int=90
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_gamegear
+platform_1=platform_neogeo
+platform_2=platform_neogeo
+platform_3=platform_segacd
+platform_4=platform_snes
+platform_5=platform_turbografx
+platform_6=platform_wii
+platform_7=platform_xbox360
+[properties]
+cash:int=25421000
+copySell:int=2311000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=10 d=14 h=0 mi=0
+famous:float=0.52
+gameIsSaling:bool=false
+internalname:string=game_fatalfuryspecial
+localizationRating:int=43
+name:string=Fatal Fury Special
+owner:string=JVC Musical Industries, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=40
+startBugRating:int=71
+startdate:time=y=1993 m=9 d=5 h=0 mi=0
+startGenreRating:int=34
+startGraphicRating:int=78
+startrating:int=63
+startSoundRating:int=94
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/fatal-fury-special

@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+[platforms]
+platform_0=platform_snes
+platform_1=platform_wii
+[properties]
+cash:int=100760000
+copySell:int=1145000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=10 d=25 h=0 mi=0
+famous:float=0.77
+gameIsSaling:bool=false
+internalname:string=game_streetfighteriiturbohyperfighting
+localizationRating:int=18
+name:string=Street Fighter II Turbo: Hyper Fighting
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=59
+startBugRating:int=94
+startdate:time=y=1993 m=0 d=3 h=0 mi=0
+startGenreRating:int=8
+startGraphicRating:int=19
+startrating:int=40
+startSoundRating:int=24
+textureNormal:path=images/spl_0.jpg

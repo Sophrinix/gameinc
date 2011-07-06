@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_dos
+platform_1=platform_fmtowns
+platform_2=platform_pc98
+[properties]
+cash:int=144396000
+copySell:int=6876000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=2 d=5 h=0 mi=0
+famous:float=0.64
+gameIsSaling:bool=false
+internalname:string=game_ultimaunderworldiilabyrinthofworlds
+localizationRating:int=47
+name:string=Ultima Underworld II: Labyrinth of Worlds
+owner:string=ORIGIN Systems, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=90
+startBugRating:int=71
+startdate:time=y=1993 m=10 d=14 h=0 mi=0
+startGenreRating:int=88
+startGraphicRating:int=35
+startrating:int=69
+startSoundRating:int=62
+textureNormal:path=images/spl_0.jpg

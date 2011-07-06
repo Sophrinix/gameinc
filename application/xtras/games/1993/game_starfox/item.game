@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_flight
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_snes
+[properties]
+cash:int=56240000
+copySell:int=703000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=2 d=8 h=0 mi=0
+famous:float=0.06
+gameIsSaling:bool=false
+internalname:string=game_starfox
+localizationRating:int=9
+name:string=Star Fox
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=41
+startBugRating:int=52
+startdate:time=y=1993 m=8 d=22 h=0 mi=0
+startGenreRating:int=74
+startGraphicRating:int=85
+startrating:int=55
+startSoundRating:int=25
+textureNormal:path=images/spl_0.jpg

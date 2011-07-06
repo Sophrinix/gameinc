@@ -1,0 +1,37 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_managerial
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+platform_10=platform_windows
+platform_11=platform_windows3x
+platform_2=platform_gameboyadvance
+platform_3=platform_unknown
+platform_4=platform_nintendo64
+platform_5=platform_playstation
+platform_6=platform_playstation3
+platform_7=platform_psp
+platform_8=platform_segasaturn
+platform_9=platform_snes
+[properties]
+cash:int=240656000
+copySell:int=2704000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=7 d=1 h=0 mi=0
+famous:float=0.5
+gameIsSaling:bool=false
+internalname:string=game_simcity2000
+localizationRating:int=44
+name:string=SimCity 2000
+owner:string=Maxis UK Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=66
+startdate:time=y=1993 m=9 d=5 h=0 mi=0
+startGenreRating:int=8
+startGraphicRating:int=30
+startrating:int=41
+startSoundRating:int=67
+textureNormal:path=images/spl_0.jpg

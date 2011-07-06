@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_arcade
+genre_3=genre_fighting
+genre_4=genre_martialarts
+[properties]
+internalname:string=game_streetsofrage2
+startdate:time=y=1993 m=6 d=19 h=0 mi=0

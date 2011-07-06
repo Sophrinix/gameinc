@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_football
+[properties]
+internalname:string=game_fifainternationalsoccer
+startdate:time=y=1993 m=6 d=5 h=0 mi=0

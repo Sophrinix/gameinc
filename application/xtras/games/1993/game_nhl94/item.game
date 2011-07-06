@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_hockey
+[platforms]
+platform_0=platform_dos
+platform_1=platform_genesis
+platform_2=platform_segacd
+platform_3=platform_snes
+[properties]
+cash:int=45968000
+copySell:int=2873000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=2 d=24 h=0 mi=0
+famous:float=0.55
+gameIsSaling:bool=false
+internalname:string=game_nhl94
+localizationRating:int=54
+name:string=NHL '94
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=78
+startBugRating:int=19
+startdate:time=y=1993 m=8 d=10 h=0 mi=0
+startGenreRating:int=9
+startGraphicRating:int=59
+startrating:int=34
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg

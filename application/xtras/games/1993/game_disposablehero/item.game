@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacd32
+[properties]
+cash:int=227115000
+copySell:int=4635000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=8 d=8 h=0 mi=0
+famous:float=0.7
+gameIsSaling:bool=false
+internalname:string=game_disposablehero
+localizationRating:int=19
+name:string=Disposable Hero
+owner:string=Gremlin Graphics Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=56
+startBugRating:int=35
+startdate:time=y=1993 m=5 d=9 h=0 mi=0
+startGenreRating:int=30
+startGraphicRating:int=98
+startrating:int=61
+startSoundRating:int=89
+textureNormal:path=images/spl_0.jpg

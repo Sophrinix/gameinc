@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacd32
+[properties]
+cash:int=172920000
+copySell:int=3144000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=3 d=7 h=0 mi=0
+famous:float=0.71
+gameIsSaling:bool=false
+internalname:string=game_captiveiiliberation
+localizationRating:int=27
+name:string=Captive II: Liberation
+owner:string=Mindscape International Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=8
+startBugRating:int=38
+startdate:time=y=1993 m=0 d=5 h=0 mi=0
+startGenreRating:int=97
+startGraphicRating:int=56
+startrating:int=43
+startSoundRating:int=20
+textureNormal:path=images/spl_0.jpg

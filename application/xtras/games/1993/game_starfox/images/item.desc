@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_flight
+genre_2=genre_scifi
+genre_3=genre_shooter
+[properties]
+internalname:string=game_starfox
+startdate:time=y=1993 m=8 d=22 h=0 mi=0

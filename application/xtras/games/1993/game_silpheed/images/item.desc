@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+genre_3=genre_backdrop
+[properties]
+internalname:string=game_silpheed
+startdate:time=y=1993 m=10 d=14 h=0 mi=0
+url:string=http://www.mobygames.com/game/silpheed_

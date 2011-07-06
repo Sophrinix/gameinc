@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_educational
+genre_1=genre_strategy
+[properties]
+internalname:string=game_twistedthegameshow
+startdate:time=y=1993 m=2 d=2 h=0 mi=0

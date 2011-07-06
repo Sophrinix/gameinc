@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+genre_3=genre_backdrop
+[platforms]
+platform_0=platform_segacd
+[properties]
+cash:int=17028000
+copySell:int=198000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=4 d=25 h=0 mi=0
+famous:float=0.42
+gameIsSaling:bool=false
+internalname:string=game_silpheed
+localizationRating:int=40
+name:string=Silpheed
+owner:string=Game Arts Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=33
+startBugRating:int=15
+startdate:time=y=1993 m=10 d=14 h=0 mi=0
+startGenreRating:int=30
+startGraphicRating:int=44
+startrating:int=26
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/silpheed_

@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[properties]
+internalname:string=game_thechaosengine
+startdate:time=y=1993 m=10 d=21 h=0 mi=0

@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_managerial
+genre_3=genre_realtime
+[properties]
+internalname:string=game_serfcitylifeisfeudal
+startdate:time=y=1993 m=10 d=22 h=0 mi=0

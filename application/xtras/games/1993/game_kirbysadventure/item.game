@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_nes
+platform_2=platform_wii
+[properties]
+cash:int=32171000
+copySell:int=607000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=10 d=5 h=0 mi=0
+famous:float=0.14
+gameIsSaling:bool=false
+internalname:string=game_kirbysadventure
+localizationRating:int=33
+name:string=Kirby's Adventure
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=63
+startBugRating:int=15
+startdate:time=y=1993 m=0 d=18 h=0 mi=0
+startGenreRating:int=93
+startGraphicRating:int=91
+startrating:int=56
+startSoundRating:int=21
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/kirbys-adventure

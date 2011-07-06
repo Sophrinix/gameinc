@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_turnbased
+[platforms]
+platform_0=platform_dos
+platform_1=platform_windows
+[properties]
+cash:int=339720000
+copySell:int=5960000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=3 d=18 h=0 mi=0
+famous:float=0.97
+gameIsSaling:bool=false
+internalname:string=game_betrayalatkrondor
+localizationRating:int=18
+name:string=Betrayal at Krondor
+owner:string=Dynamix, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=1
+startBugRating:int=88
+startdate:time=y=1993 m=4 d=11 h=0 mi=0
+startGenreRating:int=52
+startGraphicRating:int=72
+startrating:int=61
+startSoundRating:int=96
+textureNormal:path=images/spl_0.jpg

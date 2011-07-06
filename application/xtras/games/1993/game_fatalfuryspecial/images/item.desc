@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[properties]
+internalname:string=game_fatalfuryspecial
+startdate:time=y=1993 m=9 d=5 h=0 mi=0
+url:string=http://www.mobygames.com/game/fatal-fury-special

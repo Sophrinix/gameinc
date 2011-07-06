@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_strategy
+genre_2=genre_anime
+genre_3=genre_fantasy
+genre_4=genre_turnbased
+[properties]
+internalname:string=game_darkwizard
+startdate:time=y=1993 m=10 d=20 h=0 mi=0
+url:string=http://www.mobygames.com/game/dark-wizard

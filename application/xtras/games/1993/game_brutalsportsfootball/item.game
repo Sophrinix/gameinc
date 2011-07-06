@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+genre_2=genre_rugby
+genre_3=genre_football
+genre_4=genre_fighting
+genre_5=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacd32
+platform_2=platform_dos
+platform_3=platform_jaguar
+[properties]
+cash:int=455475000
+copySell:int=6073000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=6 d=14 h=0 mi=0
+famous:float=0.78
+gameIsSaling:bool=false
+internalname:string=game_brutalsportsfootball
+localizationRating:int=82
+name:string=Brutal Sports Football
+owner:string=Millennium Interactive Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=60
+startBugRating:int=47
+startdate:time=y=1993 m=3 d=21 h=0 mi=0
+startGenreRating:int=95
+startGraphicRating:int=27
+startrating:int=54
+startSoundRating:int=41
+textureNormal:path=images/spl_0.jpg

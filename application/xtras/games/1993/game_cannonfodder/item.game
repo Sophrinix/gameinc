@@ -1,0 +1,37 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_amiga
+platform_10=platform_symbian
+platform_11=platform_windows
+platform_2=platform_amigacd32
+platform_3=platform_atarist
+platform_4=platform_dos
+platform_5=platform_gameboycolor
+platform_6=platform_genesis
+platform_7=platform_unknown
+platform_8=platform_jaguar
+platform_9=platform_snes
+[properties]
+cash:int=228903000
+copySell:int=5583000
+descriptionpath:path=desc.htm
+enddate:time=y=1996 m=11 d=6 h=0 mi=0
+famous:float=0.19
+gameIsSaling:bool=false
+internalname:string=game_cannonfodder
+localizationRating:int=98
+name:string=Cannon Fodder
+owner:string=Virgin Interactive Entertainment (Europe) Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=58
+startBugRating:int=11
+startdate:time=y=1993 m=2 d=3 h=0 mi=0
+startGenreRating:int=73
+startGraphicRating:int=91
+startrating:int=53
+startSoundRating:int=35
+textureNormal:path=images/spl_0.jpg
