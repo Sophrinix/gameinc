@@ -1,0 +1,37 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_cyberpunk
+genre_2=genre_puzzle
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_amiga
+platform_10=platform_snes
+platform_2=platform_unknown
+platform_3=platform_dos
+platform_4=platform_fmtowns
+platform_5=platform_genesis
+platform_6=platform_iphone
+platform_7=platform_jaguar
+platform_8=platform_unknown
+platform_9=platform_segacd
+[properties]
+cash:int=500682000
+copySell:int=5502000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=7 d=21 h=0 mi=0
+famous:float=0.19
+gameIsSaling:bool=false
+internalname:string=game_flashbackthequestforidentity
+localizationRating:int=26
+name:string=Flashback: The Quest for Identity
+owner:string=U.S. Gold Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=49
+startBugRating:int=59
+startdate:time=y=1992 m=5 d=13 h=0 mi=0
+startGenreRating:int=90
+startGraphicRating:int=84
+startrating:int=60
+startSoundRating:int=19
+textureNormal:path=images/spl_0.jpg

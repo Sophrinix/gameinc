@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+[platforms]
+platform_0=platform_genesis
+[properties]
+cash:int=422131000
+copySell:int=9817000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=11 d=21 h=0 mi=0
+famous:float=0.23
+gameIsSaling:bool=false
+internalname:string=game_alisiadragoon
+localizationRating:int=93
+name:string=AlisiaDragoon
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=4
+startBugRating:int=93
+startdate:time=y=1992 m=2 d=3 h=0 mi=0
+startGenreRating:int=2
+startGraphicRating:int=95
+startrating:int=50
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_anime
+genre_3=genre_arcade
+genre_4=genre_interactivemovie
+[platforms]
+platform_0=platform_segacd
+[properties]
+cash:int=84588000
+copySell:int=4028000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=2 d=22 h=0 mi=0
+famous:float=0.55
+gameIsSaling:bool=false
+internalname:string=game_roadavenger
+localizationRating:int=45
+name:string=Road Avenger
+owner:string=Wolf Team
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=59
+startdate:time=y=1992 m=10 d=3 h=0 mi=0
+startGenreRating:int=64
+startGraphicRating:int=81
+startrating:int=62
+startSoundRating:int=70
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/road-avenger

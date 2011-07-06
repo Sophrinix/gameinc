@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_gameboy
+[properties]
+cash:int=164136000
+copySell:int=2931000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=0 d=20 h=0 mi=0
+famous:float=0.43
+gameIsSaling:bool=false
+internalname:string=game_supermarioland26goldencoins
+localizationRating:int=66
+name:string=SuperMarioLand26GoldenCoins
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=96
+startBugRating:int=45
+startdate:time=y=1992 m=8 d=21 h=0 mi=0
+startGenreRating:int=13
+startGraphicRating:int=58
+startrating:int=48
+startSoundRating:int=32
+textureNormal:path=images/spl_0.jpg

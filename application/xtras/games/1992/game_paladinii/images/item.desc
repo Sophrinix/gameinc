@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_fantasy
+[properties]
+internalname:string=game_paladinii
+startdate:time=y=1992 m=10 d=21 h=0 mi=0
+url:string=http://www.mobygames.com/game/paladin-ii

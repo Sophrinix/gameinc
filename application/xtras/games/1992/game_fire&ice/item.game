@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacd32
+platform_2=platform_atarist
+platform_3=platform_dos
+platform_4=platform_segamastersystem
+[properties]
+cash:int=532717000
+copySell:int=7951000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=11 d=28 h=0 mi=0
+famous:float=0.47
+gameIsSaling:bool=false
+internalname:string=game_fire&ice
+localizationRating:int=31
+name:string=Fire&Ice
+owner:string=Renegade Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=99
+startBugRating:int=55
+startdate:time=y=1992 m=0 d=18 h=0 mi=0
+startGenreRating:int=47
+startGraphicRating:int=35
+startrating:int=51
+startSoundRating:int=22
+textureNormal:path=images/spl_0.jpg

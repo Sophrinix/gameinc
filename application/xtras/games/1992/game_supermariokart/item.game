@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_racing
+[platforms]
+platform_0=platform_snes
+platform_1=platform_wii
+[properties]
+cash:int=576504000
+copySell:int=8007000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=2 d=15 h=0 mi=0
+famous:float=0.6
+gameIsSaling:bool=false
+internalname:string=game_supermariokart
+localizationRating:int=76
+name:string=SuperMarioKart
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=12
+startBugRating:int=59
+startdate:time=y=1992 m=11 d=5 h=0 mi=0
+startGenreRating:int=80
+startGraphicRating:int=25
+startrating:int=36
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg

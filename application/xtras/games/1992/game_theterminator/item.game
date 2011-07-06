@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_postapocalyptic
+genre_3=genre_realtime
+genre_4=genre_scifi
+[platforms]
+platform_0=platform_gamegear
+platform_1=platform_genesis
+platform_2=platform_segamastersystem
+[properties]
+cash:int=15525000
+copySell:int=1725000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=5 d=17 h=0 mi=0
+famous:float=0.64
+gameIsSaling:bool=false
+internalname:string=game_theterminator
+localizationRating:int=93
+name:string=The Terminator
+owner:string=Virgin Games, Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=20
+startBugRating:int=49
+startdate:time=y=1992 m=6 d=7 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=72
+startrating:int=40
+startSoundRating:int=10
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/terminator_

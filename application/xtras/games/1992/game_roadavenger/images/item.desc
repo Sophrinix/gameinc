@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_anime
+genre_3=genre_arcade
+genre_4=genre_interactivemovie
+[properties]
+internalname:string=game_roadavenger
+startdate:time=y=1992 m=10 d=3 h=0 mi=0
+url:string=http://www.mobygames.com/game/road-avenger

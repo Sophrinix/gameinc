@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_snes
+[properties]
+cash:int=129200000
+copySell:int=2584000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=7 d=15 h=0 mi=0
+famous:float=0.31
+gameIsSaling:bool=false
+internalname:string=game_tinytoonadventuresbusterbustsloose
+localizationRating:int=12
+name:string=TinyToonAdventuresBusterBustsLoose
+owner:string=Konami Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=73
+startBugRating:int=10
+startdate:time=y=1992 m=7 d=25 h=0 mi=0
+startGenreRating:int=46
+startGraphicRating:int=3
+startrating:int=34
+startSoundRating:int=41
+textureNormal:path=images/spl_0.jpg

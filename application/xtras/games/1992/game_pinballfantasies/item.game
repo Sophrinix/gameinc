@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_pinball
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacd32
+platform_2=platform_dos
+platform_3=platform_gameboy
+platform_4=platform_iphone
+platform_5=platform_jaguar
+platform_6=platform_playstation
+platform_7=platform_playstation3
+platform_8=platform_psp
+platform_9=platform_snes
+[properties]
+cash:int=143548000
+copySell:int=2111000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=3 d=23 h=0 mi=0
+famous:float=0.47
+gameIsSaling:bool=false
+internalname:string=game_pinballfantasies
+localizationRating:int=34
+name:string=Pinball Fantasies
+owner:string=21st Century Entertainment Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=45
+startBugRating:int=14
+startdate:time=y=1992 m=5 d=8 h=0 mi=0
+startGenreRating:int=39
+startGraphicRating:int=27
+startrating:int=43
+startSoundRating:int=90
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_snes
+platform_1=platform_wii
+[properties]
+cash:int=825552000
+copySell:int=9072000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=1 d=2 h=0 mi=0
+famous:float=0.75
+gameIsSaling:bool=false
+internalname:string=game_axelay
+localizationRating:int=97
+name:string=Axelay
+owner:string=Konami, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=68
+startBugRating:int=27
+startdate:time=y=1992 m=2 d=17 h=0 mi=0
+startGenreRating:int=16
+startGraphicRating:int=31
+startrating:int=30
+startSoundRating:int=10
+textureNormal:path=images/spl_0.jpg

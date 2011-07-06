@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_genesis
+[properties]
+cash:int=49995000
+copySell:int=5555000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=5 d=14 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_lighteningforcequestforthedarkstar
+localizationRating:int=31
+name:string=LighteningForceQuestfortheDarkstar
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=45
+startBugRating:int=37
+startdate:time=y=1992 m=10 d=26 h=0 mi=0
+startGenreRating:int=93
+startGraphicRating:int=97
+startrating:int=69
+startSoundRating:int=73
+textureNormal:path=images/spl_0.jpg

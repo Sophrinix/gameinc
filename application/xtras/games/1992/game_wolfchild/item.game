@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_gamegear
+platform_3=platform_genesis
+platform_4=platform_segacd
+platform_5=platform_segamastersystem
+platform_6=platform_snes
+[properties]
+cash:int=513057000
+copySell:int=9001000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=7 d=26 h=0 mi=0
+famous:float=0.77
+gameIsSaling:bool=false
+internalname:string=game_wolfchild
+localizationRating:int=39
+name:string=Wolfchild
+owner:string=Core Design Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=32
+startBugRating:int=0
+startdate:time=y=1992 m=9 d=25 h=0 mi=0
+startGenreRating:int=31
+startGraphicRating:int=15
+startrating:int=23
+startSoundRating:int=37
+textureNormal:path=images/spl_0.jpg

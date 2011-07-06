@@ -1,0 +1,13 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_horror
+[platforms]
+platform_0=platform_gamegear
+platform_1=platform_segamastersystem
+[properties]
+enddate:time=y=1995 m=3 d=21 h=0 mi=0
+internalname:string=game_masterofdarkness
+name:string=MasterofDarkness
+owner:string=SEGA Corporation
+startdate:time=y=1992 m=5 d=8 h=0 mi=0
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_casino
+genre_3=genre_puzzle
+[properties]
+internalname:string=game_landstalkertreasureofkingnole
+startdate:time=y=1992 m=4 d=24 h=0 mi=0

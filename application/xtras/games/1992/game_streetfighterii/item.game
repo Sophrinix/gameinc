@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_commodore
+platform_3=platform_dos
+platform_4=platform_snes
+platform_5=platform_wii
+platform_6=platform_zxspectrum
+[properties]
+cash:int=432960000
+copySell:int=4920000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=9 d=5 h=0 mi=0
+famous:float=0.81
+gameIsSaling:bool=false
+internalname:string=game_streetfighterii
+localizationRating:int=7
+name:string=StreetFighterII
+owner:string=U.S. Gold Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=32
+startBugRating:int=79
+startdate:time=y=1992 m=1 d=4 h=0 mi=0
+startGenreRating:int=7
+startGraphicRating:int=90
+startrating:int=44
+startSoundRating:int=14
+textureNormal:path=images/spl_0.jpg

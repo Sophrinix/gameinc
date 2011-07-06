@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_casino
+genre_3=genre_puzzle
+[platforms]
+platform_0=platform_genesis
+platform_1=platform_wii
+[properties]
+cash:int=313980000
+copySell:int=5233000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=1 d=27 h=0 mi=0
+famous:float=0.1
+gameIsSaling:bool=false
+internalname:string=game_landstalkertreasureofkingnole
+localizationRating:int=48
+name:string=LandstalkerTreasureofKingNole
+owner:string=SEGA Enterprises Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=77
+startBugRating:int=20
+startdate:time=y=1992 m=4 d=24 h=0 mi=0
+startGenreRating:int=70
+startGraphicRating:int=57
+startrating:int=58
+startSoundRating:int=70
+textureNormal:path=images/spl_0.jpg

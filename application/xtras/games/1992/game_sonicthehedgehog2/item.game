@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_genesis
+platform_2=platform_iphone
+platform_3=platform_wii
+platform_4=platform_xbox360
+[properties]
+cash:int=121082000
+copySell:int=4657000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=9 d=0 h=0 mi=0
+famous:float=0.8
+gameIsSaling:bool=false
+internalname:string=game_sonicthehedgehog2
+localizationRating:int=62
+name:string=SonictheHedgehog2
+owner:string=SEGA Enterprises Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=97
+startBugRating:int=91
+startdate:time=y=1992 m=11 d=25 h=0 mi=0
+startGenreRating:int=86
+startGraphicRating:int=94
+startrating:int=74
+startSoundRating:int=2
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_pool
+[properties]
+internalname:string=game_archermacleanspool
+startdate:time=y=1992 m=11 d=5 h=0 mi=0

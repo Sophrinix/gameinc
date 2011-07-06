@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_pool
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_atarist
+platform_2=platform_dos
+[properties]
+cash:int=298550000
+copySell:int=5971000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=6 d=21 h=0 mi=0
+famous:float=0.01
+gameIsSaling:bool=false
+internalname:string=game_archermacleanspool
+localizationRating:int=88
+name:string=ArcherMacleansPool
+owner:string=Virgin Games, Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=69
+startdate:time=y=1992 m=11 d=5 h=0 mi=0
+startGenreRating:int=47
+startGraphicRating:int=69
+startrating:int=62
+startSoundRating:int=34
+textureNormal:path=images/spl_0.jpg

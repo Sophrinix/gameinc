@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_turbografx
+platform_1=platform_wii
+[properties]
+cash:int=654052000
+copySell:int=6958000
+descriptionpath:path=desc.htm
+enddate:time=y=1995 m=1 d=26 h=0 mi=0
+famous:float=0.16
+gameIsSaling:bool=false
+internalname:string=game_airzonk
+localizationRating:int=9
+name:string=Air Zonk
+owner:string=Hudson Soft USA, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=64
+startBugRating:int=9
+startdate:time=y=1992 m=2 d=11 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=33
+startrating:int=32
+startSoundRating:int=8
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/air-zonk

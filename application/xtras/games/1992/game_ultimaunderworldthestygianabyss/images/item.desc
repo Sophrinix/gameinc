@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_ultimaunderworldthestygianabyss
+startdate:time=y=1992 m=8 d=2 h=0 mi=0

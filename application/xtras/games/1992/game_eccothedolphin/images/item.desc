@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[properties]
+internalname:string=game_eccothedolphin
+startdate:time=y=1992 m=4 d=4 h=0 mi=0
+url:string=http://www.mobygames.com/game/ecco-the-dolphin
