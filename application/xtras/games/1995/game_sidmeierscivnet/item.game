@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_turnbased
+[platforms]
+platform_0=platform_windows3x
+[properties]
+cash:int=16540000
+copySell:int=827000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=6 d=20 h=0 mi=0
+famous:float=0.79
+gameIsSaling:bool=false
+internalname:string=game_sidmeierscivnet
+localizationRating:int=34
+name:string=Sid Meier's CivNet
+owner:string=MicroProse Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=98
+startBugRating:int=32
+startdate:time=y=1995 m=7 d=22 h=0 mi=0
+startGenreRating:int=75
+startGraphicRating:int=54
+startrating:int=60
+startSoundRating:int=44
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/sid-meiers-civnet

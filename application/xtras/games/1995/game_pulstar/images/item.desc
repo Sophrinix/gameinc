@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[properties]
+internalname:string=game_pulstar
+startdate:time=y=1995 m=1 d=4 h=0 mi=0
+url:string=http://www.mobygames.com/game/pulstar

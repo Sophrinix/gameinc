@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+platform_2=platform_playstation
+platform_3=platform_windows
+[properties]
+cash:int=93920000
+copySell:int=5870000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=9 d=0 h=0 mi=0
+famous:float=0.34
+gameIsSaling:bool=false
+internalname:string=game_starwarsdarkforces
+localizationRating:int=72
+name:string=Star Wars: Dark Forces
+owner:string=LucasArts Entertainment Company LLC
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=24
+startBugRating:int=15
+startdate:time=y=1995 m=4 d=5 h=0 mi=0
+startGenreRating:int=61
+startGraphicRating:int=92
+startrating:int=39
+startSoundRating:int=3
+textureNormal:path=images/spl_0.jpg

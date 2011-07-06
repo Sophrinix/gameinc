@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_iphone
+platform_2=platform_unknown
+platform_3=platform_nintendods
+platform_4=platform_segacd
+platform_5=platform_windows
+[properties]
+cash:int=67470000
+copySell:int=865000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=2 d=25 h=0 mi=0
+famous:float=0.35
+gameIsSaling:bool=false
+internalname:string=game_earthwormjimspecialedition
+localizationRating:int=57
+name:string=Earthworm Jim: Special Edition
+owner:string=Interplay Entertainment Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=90
+startBugRating:int=38
+startdate:time=y=1995 m=11 d=15 h=0 mi=0
+startGenreRating:int=87
+startGraphicRating:int=10
+startrating:int=49
+startSoundRating:int=23
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_gameboy
+platform_1=platform_snes
+[properties]
+cash:int=330974000
+copySell:int=3521000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=1 d=22 h=0 mi=0
+famous:float=0.9
+gameIsSaling:bool=false
+internalname:string=game_killerinstinct
+localizationRating:int=43
+name:string=Killer Instinct
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=42
+startBugRating:int=46
+startdate:time=y=1995 m=2 d=18 h=0 mi=0
+startGenreRating:int=14
+startGraphicRating:int=41
+startrating:int=38
+startSoundRating:int=47
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/killer-instinct

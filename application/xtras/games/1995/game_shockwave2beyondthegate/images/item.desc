@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_shockwave2beyondthegate
+startdate:time=y=1995 m=10 d=28 h=0 mi=0

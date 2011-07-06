@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_apple2
+[properties]
+cash:int=392888000
+copySell:int=5864000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=9 d=25 h=0 mi=0
+famous:float=0.81
+gameIsSaling:bool=false
+internalname:string=game_bladeforce
+localizationRating:int=90
+name:string=Blade Force
+owner:string=3DO Company, The
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=84
+startBugRating:int=15
+startdate:time=y=1995 m=3 d=11 h=0 mi=0
+startGenreRating:int=76
+startGraphicRating:int=97
+startrating:int=55
+startSoundRating:int=3

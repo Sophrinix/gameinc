@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_pinball
+[properties]
+internalname:string=game_pinballillusions
+startdate:time=y=1995 m=2 d=24 h=0 mi=0

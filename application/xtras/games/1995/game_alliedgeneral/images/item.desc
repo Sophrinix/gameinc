@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+[properties]
+internalname:string=game_alliedgeneral
+startdate:time=y=1995 m=6 d=26 h=0 mi=0
+url:string=http://www.mobygames.com/game/allied-general

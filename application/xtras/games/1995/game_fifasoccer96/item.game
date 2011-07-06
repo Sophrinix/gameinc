@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_sports
+genre_2=genre_football
+genre_3=genre_managerial
+[platforms]
+platform_0=platform_dos
+platform_1=platform_gamegear
+platform_2=platform_genesis
+platform_3=platform_playstation
+platform_4=platform_sega32x
+platform_5=platform_segasaturn
+platform_6=platform_snes
+[properties]
+cash:int=86802000
+copySell:int=1173000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=6 d=22 h=0 mi=0
+famous:float=0.6
+gameIsSaling:bool=false
+internalname:string=game_fifasoccer96
+localizationRating:int=6
+name:string=FIFA Soccer 96
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=77
+startBugRating:int=39
+startdate:time=y=1995 m=2 d=8 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=49
+startrating:int=48
+startSoundRating:int=42
+textureNormal:path=images/spl_0.jpg

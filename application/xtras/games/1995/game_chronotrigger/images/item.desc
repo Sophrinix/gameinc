@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_fantasy
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[properties]
+internalname:string=game_chronotrigger
+startdate:time=y=1995 m=9 d=28 h=0 mi=0

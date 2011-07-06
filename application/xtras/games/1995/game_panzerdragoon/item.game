@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_segasaturn
+platform_1=platform_windows
+[properties]
+cash:int=427549000
+copySell:int=9943000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=3 d=23 h=0 mi=0
+famous:float=0.25
+gameIsSaling:bool=false
+internalname:string=game_panzerdragoon
+localizationRating:int=7
+name:string=Panzer Dragoon
+owner:string=SEGA Enterprises Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=18
+startBugRating:int=34
+startdate:time=y=1995 m=6 d=22 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=34
+startrating:int=38
+startSoundRating:int=69
+textureNormal:path=images/spl_0.jpg

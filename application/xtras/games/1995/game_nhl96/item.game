@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_hockey
+[platforms]
+platform_0=platform_dos
+platform_1=platform_genesis
+platform_2=platform_snes
+[properties]
+cash:int=26502000
+copySell:int=3786000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=4 d=10 h=0 mi=0
+famous:float=0.94
+gameIsSaling:bool=false
+internalname:string=game_nhl96
+localizationRating:int=89
+name:string=NHL 96
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=3
+startBugRating:int=32
+startdate:time=y=1995 m=5 d=26 h=0 mi=0
+startGenreRating:int=25
+startGraphicRating:int=69
+startrating:int=26
+startSoundRating:int=4
+textureNormal:path=images/spl_0.jpg

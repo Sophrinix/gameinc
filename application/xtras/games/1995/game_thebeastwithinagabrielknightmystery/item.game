@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_detective
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+platform_2=platform_windows
+platform_3=platform_windows3x
+[properties]
+cash:int=93688000
+copySell:int=1912000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=5 d=28 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_thebeastwithinagabrielknightmystery
+localizationRating:int=37
+name:string=The Beast Within: A Gabriel Knight Mystery
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=52
+startBugRating:int=92
+startdate:time=y=1995 m=2 d=22 h=0 mi=0
+startGenreRating:int=34
+startGraphicRating:int=19
+startrating:int=53
+startSoundRating:int=71
+textureNormal:path=images/spl_0.jpg

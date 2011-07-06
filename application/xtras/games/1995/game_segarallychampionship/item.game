@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_racing
+[platforms]
+platform_0=platform_ngage
+platform_1=platform_playstation2
+platform_2=platform_segasaturn
+platform_3=platform_windows
+[properties]
+cash:int=92580000
+copySell:int=9258000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=10 d=1 h=0 mi=0
+famous:float=0.12
+gameIsSaling:bool=false
+internalname:string=game_segarallychampionship
+localizationRating:int=71
+name:string=Sega Rally Championship
+owner:string=SEGA Enterprises Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=79
+startBugRating:int=51
+startdate:time=y=1995 m=6 d=23 h=0 mi=0
+startGenreRating:int=20
+startGraphicRating:int=43
+startrating:int=55
+startSoundRating:int=83
+textureNormal:path=images/spl_0.jpg

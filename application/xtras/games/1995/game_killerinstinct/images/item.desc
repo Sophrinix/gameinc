@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+genre_3=genre_scifi
+[properties]
+internalname:string=game_killerinstinct
+startdate:time=y=1995 m=2 d=18 h=0 mi=0
+url:string=http://www.mobygames.com/game/killer-instinct

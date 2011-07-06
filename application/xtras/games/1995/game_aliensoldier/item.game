@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_genesis
+platform_1=platform_wii
+[properties]
+cash:int=45888000
+copySell:int=5736000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=6 d=7 h=0 mi=0
+famous:float=0.11
+gameIsSaling:bool=false
+internalname:string=game_aliensoldier
+localizationRating:int=59
+name:string=Alien Soldier
+owner:string=SEGA Enterprises Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=29
+startBugRating:int=23
+startdate:time=y=1995 m=5 d=4 h=0 mi=0
+startGenreRating:int=13
+startGraphicRating:int=48
+startrating:int=41
+startSoundRating:int=96
+textureNormal:path=images/spl_0.jpg

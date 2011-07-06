@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+[properties]
+internalname:string=game_virtuafighter2
+startdate:time=y=1995 m=5 d=12 h=0 mi=0

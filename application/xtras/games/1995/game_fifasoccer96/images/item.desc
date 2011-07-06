@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_sports
+genre_2=genre_football
+genre_3=genre_managerial
+[properties]
+internalname:string=game_fifasoccer96
+startdate:time=y=1995 m=2 d=8 h=0 mi=0

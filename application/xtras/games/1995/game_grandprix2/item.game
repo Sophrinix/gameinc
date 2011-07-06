@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+genre_2=genre_sports
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=199320000
+copySell:int=6644000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=4 d=10 h=0 mi=0
+famous:float=0.84
+gameIsSaling:bool=false
+internalname:string=game_grandprix2
+localizationRating:int=45
+name:string=Grand Prix 2
+owner:string=MicroProse Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=52
+startBugRating:int=18
+startdate:time=y=1995 m=6 d=25 h=0 mi=0
+startGenreRating:int=83
+startGraphicRating:int=14
+startrating:int=50
+startSoundRating:int=86
+textureNormal:path=images/spl_0.jpg

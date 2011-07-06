@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation
+platform_2=platform_windows
+platform_3=platform_windows3x
+[properties]
+cash:int=263416000
+copySell:int=3466000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=1 d=4 h=0 mi=0
+famous:float=0.13
+gameIsSaling:bool=false
+internalname:string=game_alliedgeneral
+localizationRating:int=50
+name:string=Allied General
+owner:string=Mindscape, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=74
+startBugRating:int=6
+startdate:time=y=1995 m=6 d=26 h=0 mi=0
+startGenreRating:int=43
+startGraphicRating:int=23
+startrating:int=36
+startSoundRating:int=37
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/allied-general

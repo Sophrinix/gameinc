@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+platform_2=platform_pc98
+platform_3=platform_playstation
+[properties]
+cash:int=382850000
+copySell:int=4030000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=0 d=15 h=0 mi=0
+famous:float=0.76
+gameIsSaling:bool=false
+internalname:string=game_descent
+localizationRating:int=72
+name:string=Descent
+owner:string=Interplay Entertainment Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=47
+startBugRating:int=61
+startdate:time=y=1995 m=7 d=10 h=0 mi=0
+startGenreRating:int=16
+startGraphicRating:int=75
+startrating:int=41
+startSoundRating:int=9
+textureNormal:path=images/spl_0.jpg

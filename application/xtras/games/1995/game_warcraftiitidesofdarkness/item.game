@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+[properties]
+cash:int=581112000
+copySell:int=6918000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=11 d=4 h=0 mi=0
+famous:float=0.06
+gameIsSaling:bool=false
+internalname:string=game_warcraftiitidesofdarkness
+localizationRating:int=43
+name:string=Warcraft II: Tides of Darkness
+owner:string=Blizzard Entertainment Europe
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=42
+startBugRating:int=44
+startdate:time=y=1995 m=6 d=17 h=0 mi=0
+startGenreRating:int=58
+startGraphicRating:int=5
+startrating:int=36
+startSoundRating:int=32
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_flight
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=547398000
+copySell:int=6758000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=10 d=26 h=0 mi=0
+famous:float=0.45
+gameIsSaling:bool=false
+internalname:string=game_ef2000
+localizationRating:int=40
+name:string=EF2000
+owner:string=Ocean Software Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=11
+startBugRating:int=14
+startdate:time=y=1995 m=3 d=28 h=0 mi=0
+startGenreRating:int=18
+startGraphicRating:int=97
+startrating:int=34
+startSoundRating:int=34
+textureNormal:path=images/spl_0.jpg

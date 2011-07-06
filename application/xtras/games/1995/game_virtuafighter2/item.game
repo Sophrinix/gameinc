@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+[platforms]
+platform_0=platform_segasaturn
+platform_1=platform_windows
+[properties]
+cash:int=465104000
+copySell:int=5672000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=6 d=17 h=0 mi=0
+famous:float=0.98
+gameIsSaling:bool=false
+internalname:string=game_virtuafighter2
+localizationRating:int=32
+name:string=Virtua Fighter 2
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=47
+startBugRating:int=23
+startdate:time=y=1995 m=5 d=12 h=0 mi=0
+startGenreRating:int=13
+startGraphicRating:int=21
+startrating:int=36
+startSoundRating:int=79
+textureNormal:path=images/spl_0.jpg

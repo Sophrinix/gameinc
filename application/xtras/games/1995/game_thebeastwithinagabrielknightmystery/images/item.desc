@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_detective
+genre_2=genre_puzzle
+[properties]
+internalname:string=game_thebeastwithinagabrielknightmystery
+startdate:time=y=1995 m=2 d=22 h=0 mi=0

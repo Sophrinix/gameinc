@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_battlemech
+genre_3=genre_scifi
+genre_4=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+platform_2=platform_playstation
+platform_3=platform_segasaturn
+platform_4=platform_windows
+[properties]
+cash:int=566890000
+copySell:int=6830000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=11 d=24 h=0 mi=0
+famous:float=0.62
+gameIsSaling:bool=false
+internalname:string=game_mechwarrior231stcenturycombat
+localizationRating:int=88
+name:string=MechWarrior 2: 31st Century Combat
+owner:string=Activision, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=16
+startBugRating:int=36
+startdate:time=y=1995 m=9 d=15 h=0 mi=0
+startGenreRating:int=40
+startGraphicRating:int=68
+startrating:int=32
+startSoundRating:int=0
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_neogeo
+platform_1=platform_neogeo
+[properties]
+cash:int=18486000
+copySell:int=234000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=1 d=14 h=0 mi=0
+famous:float=0.78
+gameIsSaling:bool=false
+internalname:string=game_pulstar
+localizationRating:int=71
+name:string=Pulstar
+owner:string=SNK Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=25
+startBugRating:int=3
+startdate:time=y=1995 m=1 d=4 h=0 mi=0
+startGenreRating:int=93
+startGraphicRating:int=66
+startrating:int=55
+startSoundRating:int=92
+url:string=http://www.mobygames.com/game/pulstar

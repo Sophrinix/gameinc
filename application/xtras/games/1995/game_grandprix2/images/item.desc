@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+genre_2=genre_sports
+[properties]
+internalname:string=game_grandprix2
+startdate:time=y=1995 m=6 d=25 h=0 mi=0

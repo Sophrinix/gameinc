@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_genesis
+platform_2=platform_playstation
+platform_3=platform_segasaturn
+platform_4=platform_snes
+platform_5=platform_wii
+platform_6=platform_windows
+[properties]
+cash:int=35701000
+copySell:int=1879000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=5 d=20 h=0 mi=0
+famous:float=0.82
+gameIsSaling:bool=false
+internalname:string=game_earthwormjim2
+localizationRating:int=39
+name:string=Earthworm Jim 2
+owner:string=Playmates Interactive Entertainment, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=97
+startBugRating:int=51
+startdate:time=y=1995 m=7 d=8 h=0 mi=0
+startGenreRating:int=78
+startGraphicRating:int=93
+startrating:int=79
+startSoundRating:int=79
+textureNormal:path=images/spl_0.jpg

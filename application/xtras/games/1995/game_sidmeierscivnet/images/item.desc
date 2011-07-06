@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_turnbased
+[properties]
+internalname:string=game_sidmeierscivnet
+startdate:time=y=1995 m=7 d=22 h=0 mi=0
+url:string=http://www.mobygames.com/game/sid-meiers-civnet

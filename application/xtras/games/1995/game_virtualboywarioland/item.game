@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_virtualboy
+[properties]
+cash:int=119028000
+copySell:int=1308000
+descriptionpath:path=desc.htm
+enddate:time=y=1998 m=0 d=8 h=0 mi=0
+famous:float=0.65
+gameIsSaling:bool=false
+internalname:string=game_virtualboywarioland
+localizationRating:int=51
+name:string=Virtual Boy Wario Land
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=83
+startBugRating:int=82
+startdate:time=y=1995 m=9 d=25 h=0 mi=0
+startGenreRating:int=58
+startGraphicRating:int=29
+startrating:int=54
+startSoundRating:int=22
+textureNormal:path=images/spl_0.jpg

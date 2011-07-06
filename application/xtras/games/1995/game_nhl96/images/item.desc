@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_hockey
+[properties]
+internalname:string=game_nhl96
+startdate:time=y=1995 m=5 d=26 h=0 mi=0

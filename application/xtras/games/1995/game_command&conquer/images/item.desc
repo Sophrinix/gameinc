@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_realtime
+genre_2=genre_scifi
+[properties]
+internalname:string=game_command&conquer
+startdate:time=y=1995 m=5 d=3 h=0 mi=0
