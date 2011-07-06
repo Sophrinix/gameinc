@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_gameboy
+platform_2=platform_gameboyadvance
+platform_3=platform_gamegear
+platform_4=platform_genesis
+platform_5=platform_segamastersystem
+platform_6=platform_snes
+platform_7=platform_wii
+[properties]
+cash:int=134843000
+copySell:int=7097000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=11 d=0 h=0 mi=0
+famous:float=0.27
+gameIsSaling:bool=false
+internalname:string=game_earthwormjim
+localizationRating:int=99
+name:string=Earthworm Jim
+owner:string=Playmates Interactive Entertainment, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=20
+startdate:time=y=1994 m=11 d=26 h=0 mi=0
+startGenreRating:int=39
+startGraphicRating:int=68
+startrating:int=48
+startSoundRating:int=92
+textureNormal:path=images/spl_0.jpg

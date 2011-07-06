@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+genre_2=genre_basketball
+[platforms]
+platform_0=platform_dos
+platform_1=platform_gameboy
+platform_2=platform_gamegear
+platform_3=platform_genesis
+platform_4=platform_jaguar
+platform_5=platform_playstation
+platform_6=platform_sega32x
+platform_7=platform_segasaturn
+platform_8=platform_snes
+[properties]
+cash:int=615087000
+copySell:int=6213000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=3 d=16 h=0 mi=0
+famous:float=0.72
+gameIsSaling:bool=false
+internalname:string=game_nbajamtournamentedition
+localizationRating:int=70
+name:string=NBA Jam Tournament Edition
+owner:string=Acclaim Entertainment, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=76
+startBugRating:int=42
+startdate:time=y=1994 m=11 d=13 h=0 mi=0
+startGenreRating:int=71
+startGraphicRating:int=11
+startrating:int=46
+startSoundRating:int=30
+textureNormal:path=images/spl_0.jpg

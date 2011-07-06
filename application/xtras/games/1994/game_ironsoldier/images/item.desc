@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_battlemech
+genre_3=genre_postapocalyptic
+genre_4=genre_scifi
+[properties]
+internalname:string=game_ironsoldier
+startdate:time=y=1994 m=11 d=12 h=0 mi=0
+url:string=http://www.mobygames.com/game/iron-soldier

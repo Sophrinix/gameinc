@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_flight
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=312832000
+copySell:int=9776000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=9 d=17 h=0 mi=0
+famous:float=0.49
+gameIsSaling:bool=false
+internalname:string=game_starwarstiefighter
+localizationRating:int=84
+name:string=Star Wars: TIE Fighter
+owner:string=Softgold Computerspiele GmbH
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=26
+startdate:time=y=1994 m=8 d=13 h=0 mi=0
+startGenreRating:int=82
+startGraphicRating:int=78
+startrating:int=59
+startSoundRating:int=77
+textureNormal:path=images/spl_0.jpg

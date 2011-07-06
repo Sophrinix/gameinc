@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_jaguar
+platform_2=platform_unknown
+platform_3=platform_segasaturn
+platform_4=platform_windows
+[properties]
+cash:int=16488000
+copySell:int=458000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=9 d=5 h=0 mi=0
+famous:float=0.81
+gameIsSaling:bool=false
+internalname:string=game_tempest2000
+localizationRating:int=48
+name:string=Tempest 2000
+owner:string=Atari Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=50
+startdate:time=y=1994 m=0 d=21 h=0 mi=0
+startGenreRating:int=14
+startGraphicRating:int=12
+startrating:int=35
+startSoundRating:int=80
+textureNormal:path=images/spl_0.jpg

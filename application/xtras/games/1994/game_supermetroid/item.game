@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_snes
+platform_1=platform_wii
+[properties]
+cash:int=250174000
+copySell:int=2909000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=10 d=18 h=0 mi=0
+famous:float=0.52
+gameIsSaling:bool=false
+internalname:string=game_supermetroid
+localizationRating:int=16
+name:string=Super Metroid
+owner:string=Nintendo of Europe GmbH
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=83
+startBugRating:int=93
+startdate:time=y=1994 m=11 d=26 h=0 mi=0
+startGenreRating:int=0
+startGraphicRating:int=63
+startrating:int=62
+startSoundRating:int=75
+textureNormal:path=images/spl_0.jpg

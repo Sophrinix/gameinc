@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_flight
+genre_3=genre_interactivemovie
+genre_4=genre_scifi
+genre_5=genre_shooter
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_dos
+platform_2=platform_unknown
+platform_3=platform_playstation
+[properties]
+cash:int=392426000
+copySell:int=8531000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=9 d=15 h=0 mi=0
+famous:float=0.92
+gameIsSaling:bool=false
+internalname:string=game_wingcommanderiiiheartofthetiger
+localizationRating:int=34
+name:string=Wing Commander III: Heart of the Tiger
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=57
+startBugRating:int=58
+startdate:time=y=1994 m=2 d=16 h=0 mi=0
+startGenreRating:int=58
+startGraphicRating:int=70
+startrating:int=66
+startSoundRating:int=88
+textureNormal:path=images/spl_0.jpg

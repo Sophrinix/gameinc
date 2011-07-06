@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_fantasy
+genre_3=genre_puzzle
+[platforms]
+platform_0=platform_amigacd32
+platform_1=platform_genesis
+platform_2=platform_segacd
+[properties]
+cash:int=44064000
+copySell:int=5508000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=6 d=14 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_flink
+localizationRating:int=31
+name:string=Flink
+owner:string=Psygnosis Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=41
+startBugRating:int=52
+startdate:time=y=1994 m=11 d=2 h=0 mi=0
+startGenreRating:int=31
+startGraphicRating:int=89
+startrating:int=50
+startSoundRating:int=38
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/flink

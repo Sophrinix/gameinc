@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[properties]
+internalname:string=game_superstreetfighteriiturbo
+startdate:time=y=1994 m=2 d=20 h=0 mi=0

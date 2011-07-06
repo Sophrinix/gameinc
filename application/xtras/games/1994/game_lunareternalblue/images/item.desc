@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+[properties]
+internalname:string=game_lunareternalblue
+startdate:time=y=1994 m=0 d=12 h=0 mi=0
+url:string=http://www.mobygames.com/game/lunar-eternal-blue

@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_cyberpunk
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_amigacd32
+platform_2=platform_dos
+platform_3=platform_iphone
+platform_4=platform_windows
+[properties]
+cash:int=288720000
+copySell:int=6416000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=9 d=9 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_beneathasteelsky
+localizationRating:int=20
+name:string=Beneath a Steel Sky
+owner:string=Virgin Interactive Entertainment, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=6
+startBugRating:int=39
+startdate:time=y=1994 m=8 d=3 h=0 mi=0
+startGenreRating:int=85
+startGraphicRating:int=68
+startrating:int=49
+startSoundRating:int=51
+textureNormal:path=images/spl_0.jpg

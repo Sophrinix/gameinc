@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_racing
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_dos
+platform_2=platform_playstation
+platform_3=platform_segasaturn
+[properties]
+cash:int=30285000
+copySell:int=673000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=6 d=17 h=0 mi=0
+famous:float=0.99
+gameIsSaling:bool=false
+internalname:string=game_theneedforspeed
+localizationRating:int=13
+name:string=The Need for Speed
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=72
+startBugRating:int=26
+startdate:time=y=1994 m=5 d=1 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=70
+startrating:int=61
+startSoundRating:int=87
+textureNormal:path=images/spl_0.jpg

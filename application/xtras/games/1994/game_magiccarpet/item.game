@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_flight
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_playstation
+platform_2=platform_playstation3
+platform_3=platform_segasaturn
+[properties]
+cash:int=685976000
+copySell:int=9026000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=0 d=8 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_magiccarpet
+localizationRating:int=93
+name:string=Magic Carpet
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=82
+startBugRating:int=35
+startdate:time=y=1994 m=2 d=6 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=44
+startrating:int=55
+startSoundRating:int=79
+textureNormal:path=images/spl_0.jpg

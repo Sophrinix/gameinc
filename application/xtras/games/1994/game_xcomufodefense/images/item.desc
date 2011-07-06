@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_scifi
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_xcomufodefense
+startdate:time=y=1994 m=7 d=20 h=0 mi=0

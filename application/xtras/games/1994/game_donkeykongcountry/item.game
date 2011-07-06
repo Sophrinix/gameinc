@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_gameboycolor
+platform_2=platform_snes
+platform_3=platform_wii
+[properties]
+cash:int=16588000
+copySell:int=319000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=1 d=13 h=0 mi=0
+famous:float=0.03
+gameIsSaling:bool=false
+internalname:string=game_donkeykongcountry
+localizationRating:int=12
+name:string=Donkey Kong Country
+owner:string=Nintendo of Europe GmbH
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=82
+startBugRating:int=17
+startdate:time=y=1994 m=4 d=21 h=0 mi=0
+startGenreRating:int=64
+startGraphicRating:int=42
+startrating:int=45
+startSoundRating:int=24
+textureNormal:path=images/spl_0.jpg

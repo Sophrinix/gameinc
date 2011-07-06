@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_arcade
+[properties]
+internalname:string=game_virtuaracingdeluxe
+startdate:time=y=1994 m=5 d=23 h=0 mi=0
+url:string=http://www.mobygames.com/game/virtua-racing-deluxe

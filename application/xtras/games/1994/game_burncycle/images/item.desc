@@ -1,0 +1,12 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_cyberpunk
+genre_3=genre_interactivemovie
+genre_4=genre_puzzle
+genre_5=genre_shooter
+genre_6=genre_backdrop
+[properties]
+internalname:string=game_burncycle
+startdate:time=y=1994 m=8 d=24 h=0 mi=0
+url:string=http://www.mobygames.com/game/burncycle

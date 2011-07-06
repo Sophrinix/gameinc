@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_fighting
+genre_3=genre_martialarts
+[platforms]
+platform_0=platform_neogeo
+platform_1=platform_neogeo
+platform_2=platform_neogeo
+platform_3=platform_wii
+platform_4=platform_windows
+platform_5=platform_xbox360
+[properties]
+cash:int=35070000
+copySell:int=1002000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=0 d=3 h=0 mi=0
+famous:float=0.47
+gameIsSaling:bool=false
+internalname:string=game_samuraishodownii
+localizationRating:int=3
+name:string=Samurai Shodown II
+owner:string=SNK of America
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=57
+startBugRating:int=36
+startdate:time=y=1994 m=4 d=4 h=0 mi=0
+startGenreRating:int=64
+startGraphicRating:int=48
+startrating:int=60
+startSoundRating:int=96
+textureNormal:path=images/spl_0.jpg

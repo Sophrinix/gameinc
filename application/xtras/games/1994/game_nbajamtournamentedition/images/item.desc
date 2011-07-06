@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+genre_2=genre_basketball
+[properties]
+internalname:string=game_nbajamtournamentedition
+startdate:time=y=1994 m=11 d=13 h=0 mi=0

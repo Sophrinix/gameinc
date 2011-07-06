@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+[platforms]
+platform_0=platform_dos
+platform_1=platform_gameboyadvance
+platform_2=platform_unknown
+platform_3=platform_sega32x
+platform_4=platform_snes
+[properties]
+cash:int=160900000
+copySell:int=6436000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=0 d=25 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_blackthorne
+localizationRating:int=19
+name:string=Blackthorne
+owner:string=Interplay Productions Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=88
+startdate:time=y=1994 m=0 d=4 h=0 mi=0
+startGenreRating:int=70
+startGraphicRating:int=11
+startrating:int=39
+startSoundRating:int=6
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/blackthorne

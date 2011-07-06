@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_fantasy
+genre_3=genre_realtime
+genre_4=genre_scifi
+genre_5=genre_turnbased
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_playstation
+platform_2=platform_snes
+[properties]
+cash:int=44898000
+copySell:int=6414000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=9 d=0 h=0 mi=0
+famous:float=0.76
+gameIsSaling:bool=false
+internalname:string=game_finalfantasyiii
+localizationRating:int=75
+name:string=Final Fantasy III
+owner:string=Square Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=92
+startBugRating:int=24
+startdate:time=y=1994 m=8 d=10 h=0 mi=0
+startGenreRating:int=76
+startGraphicRating:int=1
+startrating:int=42
+startSoundRating:int=17
+textureNormal:path=images/spl_0.jpg

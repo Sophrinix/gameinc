@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+[platforms]
+platform_0=platform_genesis
+platform_1=platform_wii
+platform_2=platform_xbox360
+[properties]
+cash:int=167544000
+copySell:int=4296000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=1 d=26 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_sonicthehedgehog3
+localizationRating:int=91
+name:string=Sonic the Hedgehog 3
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=36
+startBugRating:int=44
+startdate:time=y=1994 m=5 d=24 h=0 mi=0
+startGenreRating:int=68
+startGraphicRating:int=95
+startrating:int=60
+startSoundRating:int=57
+textureNormal:path=images/spl_0.jpg

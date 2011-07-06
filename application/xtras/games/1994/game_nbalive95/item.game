@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_basketball
+[platforms]
+platform_0=platform_dos
+platform_1=platform_genesis
+platform_2=platform_snes
+[properties]
+cash:int=8704000
+copySell:int=512000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=9 d=12 h=0 mi=0
+famous:float=0.77
+gameIsSaling:bool=false
+internalname:string=game_nbalive95
+localizationRating:int=82
+name:string=NBA Live 95
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=13
+startBugRating:int=82
+startdate:time=y=1994 m=8 d=7 h=0 mi=0
+startGenreRating:int=57
+startGraphicRating:int=45
+startrating:int=57
+startSoundRating:int=89
+textureNormal:path=images/spl_0.jpg

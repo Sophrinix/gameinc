@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_genesis
+platform_1=platform_wii
+platform_2=platform_xbox360
+[properties]
+cash:int=195280000
+copySell:int=9764000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=1 d=21 h=0 mi=0
+famous:float=0.56
+gameIsSaling:bool=false
+internalname:string=game_sonic&knuckles
+localizationRating:int=95
+name:string=Sonic & Knuckles
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=14
+startBugRating:int=12
+startdate:time=y=1994 m=8 d=28 h=0 mi=0
+startGenreRating:int=18
+startGraphicRating:int=24
+startrating:int=24
+startSoundRating:int=56
+textureNormal:path=images/spl_0.jpg

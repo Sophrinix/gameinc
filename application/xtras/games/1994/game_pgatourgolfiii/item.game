@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_sports
+genre_2=genre_strategy
+genre_3=genre_golf
+[platforms]
+platform_0=platform_genesis
+[properties]
+cash:int=391986000
+copySell:int=7686000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=0 d=24 h=0 mi=0
+famous:float=0.61
+gameIsSaling:bool=false
+internalname:string=game_pgatourgolfiii
+localizationRating:int=8
+name:string=PGA Tour Golf III
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=90
+startBugRating:int=28
+startdate:time=y=1994 m=0 d=17 h=0 mi=0
+startGenreRating:int=12
+startGraphicRating:int=47
+startrating:int=47
+startSoundRating:int=61
+textureNormal:path=images/spl_0.jpg

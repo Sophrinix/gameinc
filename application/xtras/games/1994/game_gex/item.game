@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_playstation
+platform_2=platform_playstation3
+platform_3=platform_psp
+platform_4=platform_segasaturn
+platform_5=platform_windows
+[properties]
+cash:int=558656000
+copySell:int=9976000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=3 d=1 h=0 mi=0
+famous:float=0.8
+gameIsSaling:bool=false
+internalname:string=game_gex
+localizationRating:int=19
+name:string=Gex
+owner:string=Crystal Dynamics, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=69
+startBugRating:int=52
+startdate:time=y=1994 m=5 d=27 h=0 mi=0
+startGenreRating:int=36
+startGraphicRating:int=88
+startrating:int=64
+startSoundRating:int=78
+textureNormal:path=images/spl_0.jpg

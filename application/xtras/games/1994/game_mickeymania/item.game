@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_genesis
+platform_1=platform_playstation
+platform_2=platform_segacd
+platform_3=platform_snes
+[properties]
+cash:int=279916000
+copySell:int=9997000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=10 d=7 h=0 mi=0
+famous:float=0.45
+gameIsSaling:bool=false
+internalname:string=game_mickeymania
+localizationRating:int=13
+name:string=Mickey Mania
+owner:string=Sony Electronic Publishing Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=1
+startBugRating:int=99
+startdate:time=y=1994 m=5 d=20 h=0 mi=0
+startGenreRating:int=58
+startGraphicRating:int=90
+startrating:int=65
+startSoundRating:int=78
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/mickey-mania

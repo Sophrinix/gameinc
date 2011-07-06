@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_amiga
+platform_2=platform_amigacd32
+platform_3=platform_dos
+platform_4=platform_dreamcast
+[properties]
+cash:int=93875000
+copySell:int=3755000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=3 d=9 h=0 mi=0
+famous:float=0.55
+gameIsSaling:bool=false
+internalname:string=game_superstreetfighteriiturbo
+localizationRating:int=8
+name:string=Super Street Fighter II Turbo
+owner:string=Matsushita Electric Corporation of America
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=85
+startBugRating:int=60
+startdate:time=y=1994 m=2 d=20 h=0 mi=0
+startGenreRating:int=5
+startGraphicRating:int=18
+startrating:int=37
+startSoundRating:int=18
+textureNormal:path=images/spl_0.jpg

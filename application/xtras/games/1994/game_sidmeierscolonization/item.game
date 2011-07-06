@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_historicalbattle
+genre_3=genre_managerial
+genre_4=genre_turnbased
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+platform_2=platform_unknown
+platform_3=platform_windows
+[properties]
+cash:int=118776000
+copySell:int=1414000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=5 d=23 h=0 mi=0
+famous:float=0.61
+gameIsSaling:bool=false
+internalname:string=game_sidmeierscolonization
+localizationRating:int=21
+name:string=Sid Meier's Colonization
+owner:string=MicroProse Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=52
+startBugRating:int=80
+startdate:time=y=1994 m=7 d=7 h=0 mi=0
+startGenreRating:int=82
+startGraphicRating:int=31
+startrating:int=68
+startSoundRating:int=98
+textureNormal:path=images/spl_0.jpg

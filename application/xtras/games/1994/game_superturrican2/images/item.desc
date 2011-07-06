@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+[properties]
+internalname:string=game_superturrican2
+startdate:time=y=1994 m=7 d=9 h=0 mi=0

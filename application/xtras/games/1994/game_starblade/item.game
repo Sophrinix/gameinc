@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_interactivemovie
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_segacd
+[properties]
+cash:int=41932000
+copySell:int=953000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=4 d=13 h=0 mi=0
+famous:float=0.72
+gameIsSaling:bool=false
+internalname:string=game_starblade
+localizationRating:int=12
+name:string=Starblade
+owner:string=Namco Hometek Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=54
+startBugRating:int=66
+startdate:time=y=1994 m=9 d=26 h=0 mi=0
+startGenreRating:int=86
+startGraphicRating:int=97
+startrating:int=66
+startSoundRating:int=28

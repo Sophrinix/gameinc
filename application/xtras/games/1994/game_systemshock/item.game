@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_cyberpunk
+genre_2=genre_puzzle
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+platform_2=platform_pc98
+[properties]
+cash:int=848304000
+copySell:int=9864000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=0 d=13 h=0 mi=0
+famous:float=0.34
+gameIsSaling:bool=false
+internalname:string=game_systemshock
+localizationRating:int=13
+name:string=System Shock
+owner:string=Dro Soft
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=2
+startBugRating:int=85
+startdate:time=y=1994 m=1 d=22 h=0 mi=0
+startGenreRating:int=35
+startGraphicRating:int=21
+startrating:int=44
+startSoundRating:int=80
+textureNormal:path=images/spl_0.jpg

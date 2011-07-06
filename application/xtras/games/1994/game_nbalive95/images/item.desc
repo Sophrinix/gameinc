@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_basketball
+[properties]
+internalname:string=game_nbalive95
+startdate:time=y=1994 m=8 d=7 h=0 mi=0

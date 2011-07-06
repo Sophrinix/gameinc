@@ -1,0 +1,36 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+platform_10=platform_snes
+platform_2=platform_gameboy
+platform_3=platform_gamegear
+platform_4=platform_genesis
+platform_5=platform_playstation
+platform_6=platform_playstation3
+platform_7=platform_sega32x
+platform_8=platform_segamastersystem
+platform_9=platform_segasaturn
+[properties]
+cash:int=61264000
+copySell:int=8752000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=3 d=1 h=0 mi=0
+famous:float=0.85
+gameIsSaling:bool=false
+internalname:string=game_mortalkombatii
+localizationRating:int=80
+name:string=Mortal Kombat II
+owner:string=Acclaim Entertainment, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=18
+startBugRating:int=53
+startdate:time=y=1994 m=5 d=13 h=0 mi=0
+startGenreRating:int=58
+startGraphicRating:int=7
+startrating:int=30
+startSoundRating:int=17
+textureNormal:path=images/spl_0.jpg

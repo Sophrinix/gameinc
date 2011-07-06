@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[properties]
+internalname:string=game_wolfenstein3d
+startdate:time=y=1994 m=0 d=11 h=0 mi=0
+url:string=http://www.mobygames.com/game/wolfenstein-3d_

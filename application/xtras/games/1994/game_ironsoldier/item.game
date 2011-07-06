@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_battlemech
+genre_3=genre_postapocalyptic
+genre_4=genre_scifi
+[platforms]
+platform_0=platform_jaguar
+[properties]
+cash:int=436575000
+copySell:int=5821000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=10 d=15 h=0 mi=0
+famous:float=0.88
+gameIsSaling:bool=false
+internalname:string=game_ironsoldier
+localizationRating:int=94
+name:string=Iron Soldier
+owner:string=Atari Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=29
+startBugRating:int=79
+startdate:time=y=1994 m=11 d=12 h=0 mi=0
+startGenreRating:int=41
+startGraphicRating:int=95
+startrating:int=60
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/iron-soldier

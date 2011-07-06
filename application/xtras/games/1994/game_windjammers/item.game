@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_sports
+[platforms]
+platform_0=platform_neogeo
+platform_1=platform_neogeo
+[properties]
+cash:int=206034000
+copySell:int=8958000
+descriptionpath:path=desc.htm
+enddate:time=y=1997 m=9 d=2 h=0 mi=0
+famous:float=0.58
+gameIsSaling:bool=false
+internalname:string=game_windjammers
+localizationRating:int=67
+name:string=Windjammers
+owner:string=Data East Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=68
+startBugRating:int=25
+startdate:time=y=1994 m=2 d=9 h=0 mi=0
+startGenreRating:int=18
+startGraphicRating:int=69
+startrating:int=36
+startSoundRating:int=3
+url:string=http://www.mobygames.com/game/windjammers

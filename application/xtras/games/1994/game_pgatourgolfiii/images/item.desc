@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_sports
+genre_2=genre_strategy
+genre_3=genre_golf
+[properties]
+internalname:string=game_pgatourgolfiii
+startdate:time=y=1994 m=0 d=17 h=0 mi=0
