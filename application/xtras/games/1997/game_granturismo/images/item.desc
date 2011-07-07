@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+[properties]
+internalname:string=game_granturismo
+startdate:time=y=1997 m=5 d=17 h=0 mi=0

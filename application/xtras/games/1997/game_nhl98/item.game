@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_hockey
+[platforms]
+platform_0=platform_genesis
+platform_1=platform_playstation
+platform_2=platform_segasaturn
+platform_3=platform_snes
+platform_4=platform_windows
+[properties]
+cash:int=617040000
+copySell:int=8570000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=2 d=16 h=0 mi=0
+famous:float=0.3
+gameIsSaling:bool=false
+internalname:string=game_nhl98
+localizationRating:int=53
+name:string=NHL 98
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=32
+startBugRating:int=42
+startdate:time=y=1997 m=1 d=10 h=0 mi=0
+startGenreRating:int=45
+startGraphicRating:int=60
+startrating:int=50
+startSoundRating:int=74
+textureNormal:path=images/spl_0.jpg

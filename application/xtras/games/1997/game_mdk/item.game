@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+platform_2=platform_playstation
+platform_3=platform_windows
+[properties]
+cash:int=168480000
+copySell:int=4212000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=3 d=17 h=0 mi=0
+famous:float=0.48
+gameIsSaling:bool=false
+internalname:string=game_mdk
+localizationRating:int=19
+name:string=MDK
+owner:string=Playmates Interactive Entertainment, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=94
+startBugRating:int=2
+startdate:time=y=1997 m=10 d=12 h=0 mi=0
+startGenreRating:int=74
+startGraphicRating:int=12
+startrating:int=39
+startSoundRating:int=17
+textureNormal:path=images/spl_0.jpg

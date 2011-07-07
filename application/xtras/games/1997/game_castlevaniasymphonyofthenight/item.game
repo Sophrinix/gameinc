@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_horror
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_playstation3
+platform_2=platform_psp
+platform_3=platform_segasaturn
+platform_4=platform_xbox360
+[properties]
+cash:int=52689000
+copySell:int=579000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=3 d=15 h=0 mi=0
+famous:float=0.04
+gameIsSaling:bool=false
+internalname:string=game_castlevaniasymphonyofthenight
+localizationRating:int=88
+name:string=Castlevania: Symphony of the Night
+owner:string=Konami Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=61
+startBugRating:int=96
+startdate:time=y=1997 m=2 d=6 h=0 mi=0
+startGenreRating:int=68
+startGraphicRating:int=76
+startrating:int=73
+startSoundRating:int=68
+textureNormal:path=images/spl_0.jpg

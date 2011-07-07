@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_mdk
+startdate:time=y=1997 m=10 d=12 h=0 mi=0

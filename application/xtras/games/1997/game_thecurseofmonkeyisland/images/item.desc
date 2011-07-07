@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_puzzle
+[properties]
+internalname:string=game_thecurseofmonkeyisland
+startdate:time=y=1997 m=9 d=13 h=0 mi=0

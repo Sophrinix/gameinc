@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_sports
+genre_2=genre_offroad
+genre_3=genre_sailing
+[platforms]
+platform_0=platform_nintendo64
+[properties]
+cash:int=581360000
+copySell:int=6760000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=2 d=17 h=0 mi=0
+famous:float=0.19
+gameIsSaling:bool=false
+internalname:string=game_diddykongracing
+localizationRating:int=78
+name:string=Diddy Kong Racing
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=45
+startBugRating:int=82
+startdate:time=y=1997 m=1 d=12 h=0 mi=0
+startGenreRating:int=96
+startGraphicRating:int=68
+startrating:int=73
+startSoundRating:int=74
+textureNormal:path=images/spl_0.jpg

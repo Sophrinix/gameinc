@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=91190000
+copySell:int=9119000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=0 d=4 h=0 mi=0
+famous:float=0.61
+gameIsSaling:bool=false
+internalname:string=game_thecurseofmonkeyisland
+localizationRating:int=32
+name:string=The Curse of Monkey Island
+owner:string=LucasArts Entertainment Company LLC
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=31
+startBugRating:int=20
+startdate:time=y=1997 m=9 d=13 h=0 mi=0
+startGenreRating:int=34
+startGraphicRating:int=61
+startrating:int=40
+startSoundRating:int=57
+textureNormal:path=images/spl_0.jpg

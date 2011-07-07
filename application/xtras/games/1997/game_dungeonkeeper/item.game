@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_fantasy
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_dos
+platform_1=platform_windows
+[properties]
+cash:int=64144000
+copySell:int=844000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=8 d=7 h=0 mi=0
+famous:float=0.56
+gameIsSaling:bool=false
+internalname:string=game_dungeonkeeper
+localizationRating:int=37
+name:string=Dungeon Keeper
+owner:string=Tec Toy Ind?stria de Brinquedos S.A.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=67
+startBugRating:int=65
+startdate:time=y=1997 m=0 d=18 h=0 mi=0
+startGenreRating:int=32
+startGraphicRating:int=83
+startrating:int=61
+startSoundRating:int=59
+textureNormal:path=images/spl_0.jpg

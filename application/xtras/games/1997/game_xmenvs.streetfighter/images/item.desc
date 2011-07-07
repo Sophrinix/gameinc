@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+genre_2=genre_fighting
+[properties]
+internalname:string=game_xmenvs.streetfighter
+startdate:time=y=1997 m=0 d=24 h=0 mi=0

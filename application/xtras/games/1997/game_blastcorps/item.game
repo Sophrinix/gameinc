@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_nintendo64
+[properties]
+cash:int=208125000
+copySell:int=8325000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=4 d=28 h=0 mi=0
+famous:float=0.7
+gameIsSaling:bool=false
+internalname:string=game_blastcorps
+localizationRating:int=64
+name:string=Blast Corps
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=16
+startBugRating:int=76
+startdate:time=y=1997 m=9 d=27 h=0 mi=0
+startGenreRating:int=10
+startGraphicRating:int=14
+startrating:int=24
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/blast-corps

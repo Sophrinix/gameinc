@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_iphone
+platform_1=platform_unknown
+platform_2=platform_playstation
+platform_3=platform_segasaturn
+platform_4=platform_windows
+platform_5=platform_windowsmobile
+[properties]
+cash:int=87675000
+copySell:int=1169000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=1 d=7 h=0 mi=0
+famous:float=0.28
+gameIsSaling:bool=false
+internalname:string=game_riventhesequeltomyst
+localizationRating:int=92
+name:string=Riven: The Sequel to Myst
+owner:string=Red Orb Entertainment
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=78
+startBugRating:int=99
+startdate:time=y=1997 m=1 d=17 h=0 mi=0
+startGenreRating:int=13
+startGraphicRating:int=45
+startrating:int=60
+startSoundRating:int=65
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/riven-the-sequel-to-myst

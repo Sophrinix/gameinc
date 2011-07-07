@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_cyberpunk
+genre_3=genre_fantasy
+genre_4=genre_realtime
+genre_5=genre_scifi
+genre_6=genre_turnbased
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_playstation3
+platform_2=platform_psp
+platform_3=platform_windows
+[properties]
+cash:int=644468000
+copySell:int=6644000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=6 d=11 h=0 mi=0
+famous:float=0.22
+gameIsSaling:bool=false
+internalname:string=game_finalfantasyvii
+localizationRating:int=79
+name:string=Final Fantasy VII
+owner:string=Square Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=80
+startBugRating:int=18
+startdate:time=y=1997 m=8 d=21 h=0 mi=0
+startGenreRating:int=20
+startGraphicRating:int=58
+startrating:int=41
+startSoundRating:int=29
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_pinball
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+platform_2=platform_playstation
+platform_3=platform_windows
+[properties]
+cash:int=22208000
+copySell:int=347000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=11 d=5 h=0 mi=0
+famous:float=0.3
+gameIsSaling:bool=false
+internalname:string=game_propinballtimeshock
+localizationRating:int=28
+name:string=Pro Pinball: Timeshock!
+owner:string=Empire Interactive Entertainment
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=63
+startBugRating:int=60
+startdate:time=y=1997 m=6 d=23 h=0 mi=0
+startGenreRating:int=73
+startGraphicRating:int=6
+startrating:int=42
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+[platforms]
+platform_0=platform_playstation
+[properties]
+cash:int=250160000
+copySell:int=4240000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=5 d=13 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_granturismo
+localizationRating:int=52
+name:string=Gran Turismo
+owner:string=Sony Computer Entertainment Incorporated
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=43
+startBugRating:int=53
+startdate:time=y=1997 m=5 d=17 h=0 mi=0
+startGenreRating:int=19
+startGraphicRating:int=94
+startrating:int=52
+startSoundRating:int=51
+textureNormal:path=images/spl_0.jpg

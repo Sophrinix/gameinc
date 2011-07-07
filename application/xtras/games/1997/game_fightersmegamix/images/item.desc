@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+[properties]
+internalname:string=game_fightersmegamix
+startdate:time=y=1997 m=3 d=22 h=0 mi=0

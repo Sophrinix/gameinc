@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_flight
+genre_3=genre_scifi
+genre_4=genre_shooter
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_windows
+[properties]
+cash:int=7680000
+copySell:int=160000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=6 d=21 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_wingcommanderprophecy
+localizationRating:int=32
+name:string=Wing Commander: Prophecy
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=72
+startBugRating:int=43
+startdate:time=y=1997 m=7 d=8 h=0 mi=0
+startGenreRating:int=11
+startGraphicRating:int=94
+startrating:int=44
+startSoundRating:int=1
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_flight
+genre_3=genre_scifi
+[properties]
+internalname:string=game_colonywars
+startdate:time=y=1997 m=3 d=13 h=0 mi=0

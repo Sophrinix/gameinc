@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_flight
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_playstation
+[properties]
+cash:int=125466000
+copySell:int=3802000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=10 d=22 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_colonywars
+localizationRating:int=89
+name:string=Colony Wars
+owner:string=Psygnosis Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=7
+startBugRating:int=70
+startdate:time=y=1997 m=3 d=13 h=0 mi=0
+startGenreRating:int=29
+startGraphicRating:int=6
+startrating:int=36
+startSoundRating:int=68
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_postapocalyptic
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_fallout
+startdate:time=y=1997 m=3 d=16 h=0 mi=0

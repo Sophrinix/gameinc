@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_postapocalyptic
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+platform_2=platform_windows
+[properties]
+cash:int=112561000
+copySell:int=3631000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=7 d=27 h=0 mi=0
+famous:float=0.84
+gameIsSaling:bool=false
+internalname:string=game_fallout
+localizationRating:int=34
+name:string=Fallout
+owner:string=MacPlay
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=60
+startBugRating:int=2
+startdate:time=y=1997 m=3 d=16 h=0 mi=0
+startGenreRating:int=35
+startGraphicRating:int=90
+startrating:int=48
+startSoundRating:int=53
+textureNormal:path=images/spl_0.jpg

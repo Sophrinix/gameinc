@@ -1,0 +1,13 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+[platforms]
+platform_0=platform_dos
+platform_1=platform_windows
+[properties]
+enddate:time=y=2000 m=8 d=13 h=0 mi=0
+internalname:string=game_twinsensodyssey
+name:string=Twinsen's Odyssey
+owner:string=Ubi Soft Entertainment Software
+startdate:time=y=1997 m=3 d=8 h=0 mi=0
+textureNormal:path=images/spl_0.jpg

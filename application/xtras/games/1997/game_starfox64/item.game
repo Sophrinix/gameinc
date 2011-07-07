@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_flight
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_nintendo64
+platform_1=platform_wii
+[properties]
+cash:int=267658000
+copySell:int=3617000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=8 d=24 h=0 mi=0
+famous:float=0.83
+gameIsSaling:bool=false
+internalname:string=game_starfox64
+localizationRating:int=55
+name:string=Star Fox 64
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=23
+startdate:time=y=1997 m=10 d=6 h=0 mi=0
+startGenreRating:int=74
+startGraphicRating:int=87
+startrating:int=47
+startSoundRating:int=14
+textureNormal:path=images/spl_0.jpg

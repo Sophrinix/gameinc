@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_horror
+[properties]
+internalname:string=game_castlevaniasymphonyofthenight
+startdate:time=y=1997 m=2 d=6 h=0 mi=0

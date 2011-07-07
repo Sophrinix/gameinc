@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+[properties]
+internalname:string=game_riventhesequeltomyst
+startdate:time=y=1997 m=1 d=17 h=0 mi=0
+url:string=http://www.mobygames.com/game/riven-the-sequel-to-myst

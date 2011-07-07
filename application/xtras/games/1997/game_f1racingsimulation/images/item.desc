@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_sports
+[properties]
+internalname:string=game_f1racingsimulation
+startdate:time=y=1997 m=10 d=8 h=0 mi=0

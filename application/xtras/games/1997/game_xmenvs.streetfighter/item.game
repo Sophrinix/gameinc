@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_segasaturn
+[properties]
+cash:int=187816000
+copySell:int=2762000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=0 d=1 h=0 mi=0
+famous:float=0.32
+gameIsSaling:bool=false
+internalname:string=game_xmenvs.streetfighter
+localizationRating:int=99
+name:string=X-Men vs. Street Fighter
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=60
+startBugRating:int=55
+startdate:time=y=1997 m=0 d=24 h=0 mi=0
+startGenreRating:int=27
+startGraphicRating:int=37
+startrating:int=44
+startSoundRating:int=45
+textureNormal:path=images/spl_0.jpg

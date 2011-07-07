@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_football
+[platforms]
+platform_0=platform_gameboy
+platform_1=platform_genesis
+platform_2=platform_nintendo64
+platform_3=platform_playstation
+platform_4=platform_segasaturn
+platform_5=platform_snes
+platform_6=platform_windows
+[properties]
+cash:int=54309000
+copySell:int=1263000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=1 d=12 h=0 mi=0
+famous:float=0.29
+gameIsSaling:bool=false
+internalname:string=game_fifa98roadtoworldcup
+localizationRating:int=41
+name:string=FIFA 98: Road to World Cup
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=39
+startdate:time=y=1997 m=9 d=16 h=0 mi=0
+startGenreRating:int=31
+startGraphicRating:int=26
+startrating:int=32
+startSoundRating:int=29
+textureNormal:path=images/spl_0.jpg

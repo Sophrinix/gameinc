@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=101152000
+copySell:int=3488000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=9 d=28 h=0 mi=0
+famous:float=0.09
+gameIsSaling:bool=false
+internalname:string=game_myththefallenlords
+localizationRating:int=69
+name:string=Myth: The Fallen Lords
+owner:string=Eidos, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=61
+startBugRating:int=11
+startdate:time=y=1997 m=9 d=24 h=0 mi=0
+startGenreRating:int=42
+startGraphicRating:int=2
+startrating:int=30
+startSoundRating:int=37
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/myth-the-fallen-lords

@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_sports
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=448435000
+copySell:int=6899000
+descriptionpath:path=desc.htm
+enddate:time=y=2000 m=6 d=9 h=0 mi=0
+famous:float=0.43
+gameIsSaling:bool=false
+internalname:string=game_f1racingsimulation
+localizationRating:int=58
+name:string=F1 Racing Simulation
+owner:string=Ubi Soft Entertainment Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=27
+startBugRating:int=24
+startdate:time=y=1997 m=10 d=8 h=0 mi=0
+startGenreRating:int=67
+startGraphicRating:int=11
+startrating:int=28
+startSoundRating:int=13
+textureNormal:path=images/spl_0.jpg

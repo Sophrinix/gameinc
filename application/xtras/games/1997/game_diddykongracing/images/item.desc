@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_sports
+genre_2=genre_offroad
+genre_3=genre_sailing
+[properties]
+internalname:string=game_diddykongracing
+startdate:time=y=1997 m=1 d=12 h=0 mi=0
