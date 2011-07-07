@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_diablo
+startdate:time=y=1996 m=8 d=18 h=0 mi=0

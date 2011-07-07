@@ -8,8 +8,6 @@ platform_2=platform_dos
 platform_3=platform_ti994a
 platform_4=platform_trs80
 [properties]
-cash:int=193120000
-copySell:int=2720000
 descriptionpath:path=desc.htm
 enddate:time=y=1984 m=11 d=2 h=0 mi=0
 famous:float=0.89

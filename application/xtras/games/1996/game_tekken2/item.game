@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_playstation3
+platform_2=platform_psp
+platform_3=platform_zeebo
+[properties]
+cash:int=190932000
+copySell:int=2273000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=5 d=7 h=0 mi=0
+famous:float=0.23
+gameIsSaling:bool=false
+internalname:string=game_tekken2
+localizationRating:int=15
+name:string=Tekken 2
+owner:string=Namco Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=3
+startBugRating:int=78
+startdate:time=y=1996 m=9 d=4 h=0 mi=0
+startGenreRating:int=61
+startGraphicRating:int=74
+startrating:int=49
+startSoundRating:int=31
+textureNormal:path=images/spl_0.jpg

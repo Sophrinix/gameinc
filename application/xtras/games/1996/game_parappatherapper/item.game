@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_music
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_psp
+[properties]
+cash:int=671517000
+copySell:int=8721000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=6 d=5 h=0 mi=0
+famous:float=0.41
+gameIsSaling:bool=false
+internalname:string=game_parappatherapper
+localizationRating:int=60
+name:string=PaRappa the Rapper
+owner:string=Sony Computer Entertainment Incorporated
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=0
+startBugRating:int=88
+startdate:time=y=1996 m=11 d=23 h=0 mi=0
+startGenreRating:int=85
+startGraphicRating:int=34
+startrating:int=48
+startSoundRating:int=34
+textureNormal:path=images/spl_0.jpg

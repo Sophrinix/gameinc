@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_dos
+platform_1=platform_ngage
+platform_2=platform_playstation
+platform_3=platform_playstation3
+platform_4=platform_psp
+platform_5=platform_segasaturn
+platform_6=platform_windowsmobile
+[properties]
+cash:int=140976000
+copySell:int=1602000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=10 d=15 h=0 mi=0
+famous:float=0.32
+gameIsSaling:bool=false
+internalname:string=game_tombraider
+localizationRating:int=25
+name:string=Tomb Raider
+owner:string=Eidos Interactive, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=93
+startBugRating:int=61
+startdate:time=y=1996 m=1 d=3 h=0 mi=0
+startGenreRating:int=99
+startGraphicRating:int=66
+startrating:int=77
+startSoundRating:int=70
+textureNormal:path=images/spl_0.jpg

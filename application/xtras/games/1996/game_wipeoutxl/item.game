@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_arcade
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_unknown
+platform_2=platform_playstation
+platform_3=platform_segasaturn
+platform_4=platform_windows
+[properties]
+cash:int=70875000
+copySell:int=2025000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=1 d=13 h=0 mi=0
+famous:float=0.48
+gameIsSaling:bool=false
+internalname:string=game_wipeoutxl
+localizationRating:int=99
+name:string=WipEout XL
+owner:string=Psygnosis Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=44
+startBugRating:int=36
+startdate:time=y=1996 m=7 d=21 h=0 mi=0
+startGenreRating:int=94
+startGraphicRating:int=8
+startrating:int=40
+startSoundRating:int=18
+textureNormal:path=images/spl_0.jpg

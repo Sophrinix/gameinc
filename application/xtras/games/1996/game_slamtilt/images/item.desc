@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_arcade
+genre_2=genre_pinball
+[properties]
+internalname:string=game_slamtilt
+startdate:time=y=1996 m=11 d=27 h=0 mi=0

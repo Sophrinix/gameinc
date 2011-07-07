@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_sidmeierscivilizationii
+startdate:time=y=1996 m=9 d=4 h=0 mi=0

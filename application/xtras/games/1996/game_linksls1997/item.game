@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_sports
+genre_2=genre_golf
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=23787000
+copySell:int=2643000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=5 d=2 h=0 mi=0
+famous:float=0.36
+gameIsSaling:bool=false
+internalname:string=game_linksls1997
+localizationRating:int=35
+name:string=Links LS 1997
+owner:string=Eidos Interactive Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=54
+startBugRating:int=14
+startdate:time=y=1996 m=6 d=8 h=0 mi=0
+startGenreRating:int=15
+startGraphicRating:int=21
+startrating:int=40
+startSoundRating:int=97
+textureNormal:path=images/spl_0.jpg

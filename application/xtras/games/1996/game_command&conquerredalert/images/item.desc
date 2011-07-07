@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_realtime
+genre_2=genre_scifi
+[properties]
+internalname:string=game_command&conquerredalert
+startdate:time=y=1996 m=10 d=11 h=0 mi=0

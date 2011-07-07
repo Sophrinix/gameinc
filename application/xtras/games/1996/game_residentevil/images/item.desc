@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_horror
+[properties]
+internalname:string=game_residentevil
+startdate:time=y=1996 m=5 d=8 h=0 mi=0

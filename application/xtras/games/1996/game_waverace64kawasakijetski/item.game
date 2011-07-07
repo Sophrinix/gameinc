@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_sports
+genre_3=genre_sailing
+[platforms]
+platform_0=platform_nintendo64
+platform_1=platform_wii
+[properties]
+cash:int=260592000
+copySell:int=2928000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=10 d=22 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_waverace64kawasakijetski
+localizationRating:int=72
+name:string=Wave Race 64 Kawasaki Jet Ski
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=87
+startBugRating:int=65
+startdate:time=y=1996 m=3 d=25 h=0 mi=0
+startGenreRating:int=28
+startGraphicRating:int=8
+startrating:int=52
+startSoundRating:int=74
+textureNormal:path=images/spl_0.jpg

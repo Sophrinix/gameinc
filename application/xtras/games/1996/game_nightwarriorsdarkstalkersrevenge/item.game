@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_horror
+[platforms]
+platform_0=platform_segasaturn
+[properties]
+cash:int=598560000
+copySell:int=6235000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=0 d=28 h=0 mi=0
+famous:float=0.93
+gameIsSaling:bool=false
+internalname:string=game_nightwarriorsdarkstalkersrevenge
+localizationRating:int=16
+name:string=Night Warriors: Darkstalkers' Revenge
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=16
+startBugRating:int=76
+startdate:time=y=1996 m=11 d=5 h=0 mi=0
+startGenreRating:int=44
+startGraphicRating:int=44
+startrating:int=50
+startSoundRating:int=71
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/night-warriors-darkstalkers-revenge

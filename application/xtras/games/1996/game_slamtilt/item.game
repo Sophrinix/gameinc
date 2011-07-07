@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_arcade
+genre_2=genre_pinball
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_windows
+[properties]
+cash:int=463736000
+copySell:int=8281000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=5 d=14 h=0 mi=0
+famous:float=0.95
+gameIsSaling:bool=false
+internalname:string=game_slamtilt
+localizationRating:int=71
+name:string=Slam Tilt
+owner:string=21st Century Entertainment Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=30
+startBugRating:int=24
+startdate:time=y=1996 m=11 d=27 h=0 mi=0
+startGenreRating:int=34
+startGraphicRating:int=96
+startrating:int=52
+startSoundRating:int=76
+textureNormal:path=images/spl_0.jpg

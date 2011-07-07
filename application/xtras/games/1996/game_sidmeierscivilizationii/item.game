@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation
+platform_2=platform_windows
+platform_3=platform_windows3x
+[properties]
+cash:int=77000000
+copySell:int=3500000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=11 d=18 h=0 mi=0
+famous:float=0.87
+gameIsSaling:bool=false
+internalname:string=game_sidmeierscivilizationii
+localizationRating:int=86
+name:string=Sid Meier's Civilization II
+owner:string=MicroProse Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=79
+startBugRating:int=98
+startdate:time=y=1996 m=9 d=4 h=0 mi=0
+startGenreRating:int=33
+startGraphicRating:int=79
+startrating:int=66
+startSoundRating:int=42
+textureNormal:path=images/spl_0.jpg

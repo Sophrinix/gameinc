@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_horror
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_segasaturn
+platform_2=platform_windows
+[properties]
+cash:int=79182000
+copySell:int=1494000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=3 d=10 h=0 mi=0
+famous:float=0.11
+gameIsSaling:bool=false
+internalname:string=game_residentevil
+localizationRating:int=29
+name:string=Resident Evil
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=73
+startBugRating:int=76
+startdate:time=y=1996 m=5 d=8 h=0 mi=0
+startGenreRating:int=26
+startGraphicRating:int=32
+startrating:int=49
+startSoundRating:int=42
+textureNormal:path=images/spl_0.jpg

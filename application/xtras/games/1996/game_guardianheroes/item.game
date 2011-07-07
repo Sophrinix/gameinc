@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+genre_3=genre_martialarts
+genre_4=genre_fantasy
+[platforms]
+platform_0=platform_segasaturn
+[properties]
+cash:int=204941000
+copySell:int=6611000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=7 d=23 h=0 mi=0
+famous:float=0.31
+gameIsSaling:bool=false
+internalname:string=game_guardianheroes
+localizationRating:int=83
+name:string=Guardian Heroes
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=95
+startBugRating:int=72
+startdate:time=y=1996 m=7 d=1 h=0 mi=0
+startGenreRating:int=66
+startGraphicRating:int=84
+startrating:int=68
+startSoundRating:int=26
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/guardian-heroes

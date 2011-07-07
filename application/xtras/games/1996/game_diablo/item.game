@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation
+platform_2=platform_windows
+[properties]
+cash:int=22638000
+copySell:int=539000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=3 d=27 h=0 mi=0
+famous:float=0.68
+gameIsSaling:bool=false
+internalname:string=game_diablo
+localizationRating:int=87
+name:string=Diablo
+owner:string=Blizzard Entertainment Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=56
+startBugRating:int=68
+startdate:time=y=1996 m=8 d=18 h=0 mi=0
+startGenreRating:int=20
+startGraphicRating:int=42
+startrating:int=49
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg

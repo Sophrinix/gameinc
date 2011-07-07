@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_realtime
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_dos
+platform_1=platform_playstation
+platform_2=platform_playstation3
+platform_3=platform_windows
+[properties]
+cash:int=276642000
+copySell:int=5886000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=10 d=8 h=0 mi=0
+famous:float=0.72
+gameIsSaling:bool=false
+internalname:string=game_command&conquerredalert
+localizationRating:int=70
+name:string=Command & Conquer: Red Alert
+owner:string=Virgin Interactive Entertainment (Europe) Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=38
+startdate:time=y=1996 m=10 d=11 h=0 mi=0
+startGenreRating:int=65
+startGraphicRating:int=32
+startrating:int=47
+startSoundRating:int=83
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_dukenukem3datomicedition
+startdate:time=y=1996 m=9 d=6 h=0 mi=0
+url:string=http://www.mobygames.com/game/duke-nukem-3d-atomic-edition

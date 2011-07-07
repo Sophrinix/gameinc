@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_segasaturn
+platform_2=platform_windows
+[properties]
+cash:int=184808000
+copySell:int=3554000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=3 d=0 h=0 mi=0
+famous:float=0.42
+gameIsSaling:bool=false
+internalname:string=game_virtuacop2
+localizationRating:int=88
+name:string=Virtua Cop 2
+owner:string=SEGA Enterprises Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=90
+startBugRating:int=42
+startdate:time=y=1996 m=5 d=28 h=0 mi=0
+startGenreRating:int=69
+startGraphicRating:int=90
+startrating:int=76
+startSoundRating:int=89
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/virtua-cop-2

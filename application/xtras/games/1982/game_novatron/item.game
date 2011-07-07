@@ -16,6 +16,7 @@ name:string=Novatron
 readyWorkPercent:float=1.0
 startAdvFuncRating:int=50
 startBugRating:int=45
+owner:string=Novatron, Inc.
 startdate:time=y=1982 m=3 d=13 h=0 mi=0
 startGenreRating:int=39
 startGraphicRating:int=6

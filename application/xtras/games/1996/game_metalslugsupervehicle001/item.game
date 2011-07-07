@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+[platforms]
+platform_0=platform_neogeo
+platform_1=platform_playstation
+platform_2=platform_segasaturn
+platform_3=platform_wii
+[properties]
+cash:int=191048000
+copySell:int=2171000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=9 d=22 h=0 mi=0
+famous:float=0.58
+gameIsSaling:bool=false
+internalname:string=game_metalslugsupervehicle001
+localizationRating:int=81
+name:string=Metal Slug: Super Vehicle - 001
+owner:string=Nazca Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=46
+startBugRating:int=95
+startdate:time=y=1996 m=2 d=0 h=0 mi=0
+startGenreRating:int=34
+startGraphicRating:int=24
+startrating:int=43
+startSoundRating:int=18
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/metal-slug-super-vehicle-001

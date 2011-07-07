@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+genre_3=genre_martialarts
+genre_4=genre_fantasy
+[properties]
+internalname:string=game_guardianheroes
+startdate:time=y=1996 m=7 d=1 h=0 mi=0
+url:string=http://www.mobygames.com/game/guardian-heroes

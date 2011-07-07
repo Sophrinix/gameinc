@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[properties]
+internalname:string=game_supermario64
+startdate:time=y=1996 m=7 d=2 h=0 mi=0

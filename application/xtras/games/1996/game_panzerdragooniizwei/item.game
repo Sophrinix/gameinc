@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_postapocalyptic
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_segasaturn
+[properties]
+cash:int=571280000
+copySell:int=7141000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=9 d=22 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_panzerdragooniizwei
+localizationRating:int=22
+name:string=Panzer Dragoon II: Zwei
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=63
+startBugRating:int=81
+startdate:time=y=1996 m=11 d=13 h=0 mi=0
+startGenreRating:int=96
+startGraphicRating:int=74
+startrating:int=70
+startSoundRating:int=36
+textureNormal:path=images/spl_0.jpg

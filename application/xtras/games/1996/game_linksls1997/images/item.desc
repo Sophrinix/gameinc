@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_sports
+genre_2=genre_golf
+[properties]
+internalname:string=game_linksls1997
+startdate:time=y=1996 m=6 d=8 h=0 mi=0

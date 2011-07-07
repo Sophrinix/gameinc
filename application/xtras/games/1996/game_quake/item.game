@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_dos
+platform_2=platform_linux
+platform_3=platform_unknown
+platform_4=platform_nintendo64
+platform_5=platform_segasaturn
+platform_6=platform_windows
+platform_7=platform_windowsmobile
+platform_8=platform_zeebo
+[properties]
+cash:int=481308000
+copySell:int=8444000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=10 d=1 h=0 mi=0
+famous:float=0.47
+gameIsSaling:bool=false
+internalname:string=game_quake
+localizationRating:int=50
+name:string=Quake
+owner:string=id Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=63
+startBugRating:int=46
+startdate:time=y=1996 m=3 d=5 h=0 mi=0
+startGenreRating:int=61
+startGraphicRating:int=93
+startrating:int=58
+startSoundRating:int=30
+textureNormal:path=images/spl_0.jpg

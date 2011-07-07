@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+genre_3=genre_fantasy
+[properties]
+internalname:string=game_soulblade
+startdate:time=y=1996 m=11 d=8 h=0 mi=0

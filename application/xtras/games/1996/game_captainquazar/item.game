@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_apple2
+platform_1=platform_windows
+[properties]
+cash:int=316590000
+copySell:int=5190000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=4 d=20 h=0 mi=0
+famous:float=0.69
+gameIsSaling:bool=false
+internalname:string=game_captainquazar
+localizationRating:int=69
+name:string=Captain Quazar
+owner:string=3DO Company, The
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=35
+startBugRating:int=48
+startdate:time=y=1996 m=4 d=0 h=0 mi=0
+startGenreRating:int=56
+startGraphicRating:int=94
+startrating:int=50
+startSoundRating:int=20
+textureNormal:path=images/spl_0.jpg

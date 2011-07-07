@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_horror
+genre_2=genre_puzzle
+[properties]
+internalname:string=game_amberjourneysbeyond
+startdate:time=y=1996 m=2 d=25 h=0 mi=0
+url:string=http://www.mobygames.com/game/amber-journeys-beyond

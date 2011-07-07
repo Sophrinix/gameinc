@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_dos
+platform_1=platform_unknown
+platform_2=platform_windows
+[properties]
+cash:int=226144000
+copySell:int=7067000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=6 d=9 h=0 mi=0
+famous:float=0.79
+gameIsSaling:bool=false
+internalname:string=game_dukenukem3datomicedition
+localizationRating:int=51
+name:string=Duke Nukem 3D: Atomic Edition
+owner:string=GT Interactive Software Europe Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=76
+startBugRating:int=78
+startdate:time=y=1996 m=9 d=6 h=0 mi=0
+startGenreRating:int=18
+startGraphicRating:int=53
+startrating:int=47
+startSoundRating:int=14
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/duke-nukem-3d-atomic-edition

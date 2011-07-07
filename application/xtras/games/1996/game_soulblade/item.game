@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+genre_3=genre_fantasy
+[platforms]
+platform_0=platform_playstation
+[properties]
+cash:int=247925000
+copySell:int=5275000
+descriptionpath:path=desc.htm
+enddate:time=y=1999 m=1 d=16 h=0 mi=0
+famous:float=0
+gameIsSaling:bool=false
+internalname:string=game_soulblade
+localizationRating:int=46
+name:string=Soul Blade
+owner:string=Namco Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=92
+startBugRating:int=27
+startdate:time=y=1996 m=11 d=8 h=0 mi=0
+startGenreRating:int=25
+startGraphicRating:int=77
+startrating:int=48
+startSoundRating:int=23
+textureNormal:path=images/spl_0.jpg
