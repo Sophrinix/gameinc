@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_postapocalyptic
+genre_2=genre_scifi
+genre_3=genre_turnbased
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=353666000
+copySell:int=9307000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=7 d=16 h=0 mi=0
+famous:float=0.27
+gameIsSaling:bool=false
+internalname:string=game_fallout2
+localizationRating:int=4
+name:string=Fallout 2
+owner:string=Interplay Productions, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=75
+startBugRating:int=27
+startdate:time=y=1998 m=9 d=13 h=0 mi=0
+startGenreRating:int=12
+startGraphicRating:int=9
+startrating:int=26
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg

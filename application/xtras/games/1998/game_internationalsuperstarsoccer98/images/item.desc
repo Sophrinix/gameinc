@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_football
+[properties]
+internalname:string=game_internationalsuperstarsoccer98
+startdate:time=y=1998 m=10 d=8 h=0 mi=0

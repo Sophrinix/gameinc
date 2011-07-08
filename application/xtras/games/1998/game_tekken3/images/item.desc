@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[properties]
+internalname:string=game_tekken3
+startdate:time=y=1998 m=1 d=27 h=0 mi=0
+url:string=http://www.mobygames.com/game/tekken-3

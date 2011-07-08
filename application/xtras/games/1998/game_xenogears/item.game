@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_battlemech
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_playstation3
+[properties]
+cash:int=51653000
+copySell:int=1099000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=4 d=12 h=0 mi=0
+famous:float=0.74
+gameIsSaling:bool=false
+internalname:string=game_xenogears
+localizationRating:int=21
+name:string=Xenogears
+owner:string=Square Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=11
+startBugRating:int=46
+startdate:time=y=1998 m=6 d=21 h=0 mi=0
+startGenreRating:int=19
+startGraphicRating:int=61
+startrating:int=36
+startSoundRating:int=47
+textureNormal:path=images/spl_0.jpg

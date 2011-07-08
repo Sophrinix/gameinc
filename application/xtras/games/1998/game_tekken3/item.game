@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_playstation
+[properties]
+cash:int=82290000
+copySell:int=5486000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=0 d=7 h=0 mi=0
+famous:float=0.07
+gameIsSaling:bool=false
+internalname:string=game_tekken3
+localizationRating:int=42
+name:string=Tekken 3
+owner:string=Namco Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=3
+startBugRating:int=29
+startdate:time=y=1998 m=0 d=17 h=0 mi=0
+startGenreRating:int=9
+startGraphicRating:int=24
+startrating:int=26
+startSoundRating:int=65
+textureNormal:path=images/spl_0.jpg

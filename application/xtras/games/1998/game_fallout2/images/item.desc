@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_postapocalyptic
+genre_2=genre_scifi
+genre_3=genre_turnbased
+[properties]
+internalname:string=game_fallout2
+startdate:time=y=1998 m=9 d=13 h=0 mi=0

@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=138789000
+copySell:int=2203000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=11 d=17 h=0 mi=0
+famous:float=0.6
+gameIsSaling:bool=false
+internalname:string=game_grimfandango
+localizationRating:int=22
+name:string=Grim Fandango
+owner:string=LucasArts Entertainment Company LLC
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=44
+startBugRating:int=52
+startdate:time=y=1998 m=8 d=6 h=0 mi=0
+startGenreRating:int=49
+startGraphicRating:int=33
+startrating:int=50
+startSoundRating:int=73
+textureNormal:path=images/spl_0.jpg

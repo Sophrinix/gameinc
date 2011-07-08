@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_battlemech
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[properties]
+internalname:string=game_xenogears
+startdate:time=y=1998 m=6 d=21 h=0 mi=0

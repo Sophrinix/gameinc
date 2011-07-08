@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_football
+[properties]
+internalname:string=game_worldcup98
+startdate:time=y=1998 m=8 d=15 h=0 mi=0

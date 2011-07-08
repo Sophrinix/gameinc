@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+genre_3=genre_puzzle
+[platforms]
+platform_0=platform_nintendo64
+platform_1=platform_wii
+[properties]
+cash:int=25670000
+copySell:int=302000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=3 d=18 h=0 mi=0
+famous:float=0.5
+gameIsSaling:bool=false
+internalname:string=game_thelegendofzeldaocarinaoftime
+localizationRating:int=6
+name:string=The Legend of Zelda: Ocarina of Time
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=10
+startBugRating:int=83
+startdate:time=y=1998 m=3 d=8 h=0 mi=0
+startGenreRating:int=95
+startGraphicRating:int=45
+startrating:int=49
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg

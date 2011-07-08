@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_wrestling
+[platforms]
+platform_0=platform_gameboy
+platform_1=platform_nintendo64
+platform_2=platform_playstation
+[properties]
+cash:int=1548000
+copySell:int=172000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=7 d=28 h=0 mi=0
+famous:float=0.3
+gameIsSaling:bool=false
+internalname:string=game_wwfwarzone
+localizationRating:int=81
+name:string=WWF War Zone
+owner:string=Acclaim Entertainment, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=74
+startBugRating:int=98
+startdate:time=y=1998 m=4 d=17 h=0 mi=0
+startGenreRating:int=7
+startGraphicRating:int=66
+startrating:int=52
+startSoundRating:int=19
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/wwf-war-zone

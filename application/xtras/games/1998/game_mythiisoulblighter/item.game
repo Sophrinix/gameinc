@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_fantasy
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_linux
+platform_1=platform_unknown
+platform_2=platform_windows
+[properties]
+cash:int=160417000
+copySell:int=8443000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=9 d=1 h=0 mi=0
+famous:float=0.48
+gameIsSaling:bool=false
+internalname:string=game_mythiisoulblighter
+localizationRating:int=17
+name:string=Myth II: Soulblighter
+owner:string=Bungie Software Products Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=85
+startBugRating:int=0
+startdate:time=y=1998 m=3 d=14 h=0 mi=0
+startGenreRating:int=37
+startGraphicRating:int=24
+startrating:int=48
+startSoundRating:int=97
+textureNormal:path=images/spl_0.jpg

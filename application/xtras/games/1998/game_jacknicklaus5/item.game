@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_golf
+[platforms]
+platform_0=platform_windows3x
+[properties]
+cash:int=75710000
+copySell:int=7571000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=10 d=15 h=0 mi=0
+famous:float=0.06
+gameIsSaling:bool=false
+internalname:string=game_jacknicklaus5
+localizationRating:int=84
+name:string=Jack Nicklaus 5
+owner:string=Accolade, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=26
+startBugRating:int=70
+startdate:time=y=1998 m=4 d=28 h=0 mi=0
+startGenreRating:int=54
+startGraphicRating:int=38
+startrating:int=55
+startSoundRating:int=88
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/jack-nicklaus-5

@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_playstation3
+platform_2=platform_psp
+[properties]
+cash:int=128896000
+copySell:int=1696000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=2 d=24 h=0 mi=0
+famous:float=0.57
+gameIsSaling:bool=false
+internalname:string=game_crashbandicootwarped
+localizationRating:int=89
+name:string=Crash Bandicoot: Warped
+owner:string=Sony Computer Entertainment Europe Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=28
+startBugRating:int=91
+startdate:time=y=1998 m=8 d=23 h=0 mi=0
+startGenreRating:int=4
+startGraphicRating:int=91
+startrating:int=44
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg

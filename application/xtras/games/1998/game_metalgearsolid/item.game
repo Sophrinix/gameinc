@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_spy
+genre_3=genre_stealth
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_playstation3
+platform_2=platform_psp
+[properties]
+cash:int=124320000
+copySell:int=6216000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=7 d=11 h=0 mi=0
+famous:float=0.81
+gameIsSaling:bool=false
+internalname:string=game_metalgearsolid
+localizationRating:int=4
+name:string=Metal Gear Solid
+owner:string=Konami Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=88
+startBugRating:int=54
+startdate:time=y=1998 m=9 d=17 h=0 mi=0
+startGenreRating:int=30
+startGraphicRating:int=88
+startrating:int=53
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg

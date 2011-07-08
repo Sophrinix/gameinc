@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_segasaturn
+[properties]
+cash:int=416592000
+copySell:int=5786000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=1 d=17 h=0 mi=0
+famous:float=0.58
+gameIsSaling:bool=false
+internalname:string=game_panzerdragoonsaga
+localizationRating:int=58
+name:string=Panzer Dragoon Saga
+owner:string=SEGA Enterprises Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=83
+startBugRating:int=73
+startdate:time=y=1998 m=8 d=13 h=0 mi=0
+startGenreRating:int=46
+startGraphicRating:int=94
+startrating:int=64
+startSoundRating:int=24
+textureNormal:path=images/spl_0.jpg

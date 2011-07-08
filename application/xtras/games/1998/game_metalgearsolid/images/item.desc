@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_spy
+genre_3=genre_stealth
+[properties]
+internalname:string=game_metalgearsolid
+startdate:time=y=1998 m=9 d=17 h=0 mi=0

@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=194656000
+copySell:int=2212000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=1 d=23 h=0 mi=0
+famous:float=0.15
+gameIsSaling:bool=false
+internalname:string=game_unreal
+localizationRating:int=52
+name:string=Unreal
+owner:string=GT Interactive Software Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=28
+startBugRating:int=71
+startdate:time=y=1998 m=1 d=23 h=0 mi=0
+startGenreRating:int=35
+startGraphicRating:int=6
+startrating:int=32
+startSoundRating:int=20
+textureNormal:path=images/spl_0.jpg

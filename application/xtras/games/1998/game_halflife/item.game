@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=512190000
+copySell:int=5691000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=11 d=10 h=0 mi=0
+famous:float=0.67
+gameIsSaling:bool=false
+internalname:string=game_halflife
+localizationRating:int=67
+name:string=Half-Life
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=19
+startBugRating:int=33
+startdate:time=y=1998 m=2 d=10 h=0 mi=0
+startGenreRating:int=66
+startGraphicRating:int=14
+startrating:int=35
+startSoundRating:int=45
+textureNormal:path=images/spl_0.jpg

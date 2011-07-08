@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_nintendo64
+platform_1=platform_xbox360
+[properties]
+cash:int=176384000
+copySell:int=2756000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=7 d=12 h=0 mi=0
+famous:float=0.04
+gameIsSaling:bool=false
+internalname:string=game_banjokazooie
+localizationRating:int=71
+name:string=Banjo-Kazooie
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=43
+startBugRating:int=56
+startdate:time=y=1998 m=7 d=10 h=0 mi=0
+startGenreRating:int=95
+startGraphicRating:int=44
+startrating:int=64
+startSoundRating:int=83
+textureNormal:path=images/spl_0.jpg

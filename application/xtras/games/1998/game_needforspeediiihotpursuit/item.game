@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_windows
+[properties]
+cash:int=297693000
+copySell:int=3007000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=1 d=27 h=0 mi=0
+famous:float=0.46
+gameIsSaling:bool=false
+internalname:string=game_needforspeediiihotpursuit
+localizationRating:int=44
+name:string=Need for Speed III: Hot Pursuit
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=87
+startBugRating:int=49
+startdate:time=y=1998 m=4 d=4 h=0 mi=0
+startGenreRating:int=35
+startGraphicRating:int=90
+startrating:int=69
+startSoundRating:int=87
+textureNormal:path=images/spl_0.jpg

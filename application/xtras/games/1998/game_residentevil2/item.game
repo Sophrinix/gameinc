@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_horror
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation
+[properties]
+cash:int=380960000
+copySell:int=9524000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=4 d=15 h=0 mi=0
+famous:float=0.76
+gameIsSaling:bool=false
+internalname:string=game_residentevil2
+localizationRating:int=99
+name:string=Resident Evil 2
+owner:string=Tiger Electronics, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=88
+startBugRating:int=46
+startdate:time=y=1998 m=3 d=24 h=0 mi=0
+startGenreRating:int=90
+startGraphicRating:int=12
+startrating:int=51
+startSoundRating:int=23
+textureNormal:path=images/spl_0.jpg

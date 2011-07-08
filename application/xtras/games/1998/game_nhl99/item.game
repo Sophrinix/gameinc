@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_hockey
+[platforms]
+platform_0=platform_nintendo64
+platform_1=platform_playstation
+platform_2=platform_windows
+[properties]
+cash:int=223245000
+copySell:int=2255000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=0 d=3 h=0 mi=0
+famous:float=0.55
+gameIsSaling:bool=false
+internalname:string=game_nhl99
+localizationRating:int=20
+name:string=NHL 99
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=50
+startBugRating:int=71
+startdate:time=y=1998 m=1 d=22 h=0 mi=0
+startGenreRating:int=48
+startGraphicRating:int=11
+startrating:int=51
+startSoundRating:int=78
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_stealth
+[properties]
+internalname:string=game_thiefthedarkproject
+startdate:time=y=1998 m=3 d=26 h=0 mi=0

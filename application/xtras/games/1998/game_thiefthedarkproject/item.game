@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_stealth
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=668110000
+copySell:int=9410000
+descriptionpath:path=desc.htm
+enddate:time=y=2001 m=3 d=16 h=0 mi=0
+famous:float=0.5
+gameIsSaling:bool=false
+internalname:string=game_thiefthedarkproject
+localizationRating:int=66
+name:string=Thief: The Dark Project
+owner:string=Eidos Interactive, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=49
+startBugRating:int=55
+startdate:time=y=1998 m=3 d=26 h=0 mi=0
+startGenreRating:int=28
+startGraphicRating:int=43
+startrating:int=36
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg
