@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_windows
+platform_1=platform_xbox
+[properties]
+cash:int=38640000
+copySell:int=1104000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=3 d=13 h=0 mi=0
+famous:float=0.04
+gameIsSaling:bool=false
+internalname:string=game_halflifecounterstrike
+localizationRating:int=56
+name:string=Half-Life: Counter-Strike
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=32
+startBugRating:int=42
+startdate:time=y=2000 m=11 d=20 h=0 mi=0
+startGenreRating:int=86
+startGraphicRating:int=64
+startrating:int=50
+startSoundRating:int=27
+textureNormal:path=images/spl_0.jpg

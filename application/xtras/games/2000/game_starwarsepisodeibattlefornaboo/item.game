@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+[platforms]
+platform_0=platform_nintendo64
+platform_1=platform_windows
+[properties]
+cash:int=131904000
+copySell:int=5496000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=11 d=7 h=0 mi=0
+famous:float=0.04
+gameIsSaling:bool=false
+internalname:string=game_starwarsepisodeibattlefornaboo
+localizationRating:int=5
+name:string=Star Wars: Episode I - Battle for Naboo
+owner:string=LucasArts
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=13
+startBugRating:int=33
+startdate:time=y=2000 m=4 d=25 h=0 mi=0
+startGenreRating:int=16
+startGraphicRating:int=73
+startrating:int=40
+startSoundRating:int=65
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/star-wars-episode-i-battle-for-naboo

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_skateboarding
+genre_2=genre_stunts
+genre_3=genre_scifi
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_gameboyadvance
+[properties]
+cash:int=388870000
+copySell:int=5255000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=2 d=0 h=0 mi=0
+famous:float=0.94
+gameIsSaling:bool=false
+internalname:string=game_jetgrindradio
+localizationRating:int=68
+name:string=Jet Grind Radio
+owner:string=SEGA Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=33
+startBugRating:int=85
+startdate:time=y=2000 m=5 d=12 h=0 mi=0
+startGenreRating:int=82
+startGraphicRating:int=58
+startrating:int=54
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg

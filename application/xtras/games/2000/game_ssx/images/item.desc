@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_snowboarding
+genre_2=genre_stunts
+[properties]
+internalname:string=game_ssx
+startdate:time=y=2000 m=8 d=13 h=0 mi=0

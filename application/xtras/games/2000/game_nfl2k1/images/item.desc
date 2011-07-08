@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+[properties]
+internalname:string=game_nfl2k1
+startdate:time=y=2000 m=2 d=27 h=0 mi=0

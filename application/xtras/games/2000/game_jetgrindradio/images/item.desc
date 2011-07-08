@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_skateboarding
+genre_2=genre_stunts
+genre_3=genre_scifi
+[properties]
+internalname:string=game_jetgrindradio
+startdate:time=y=2000 m=5 d=12 h=0 mi=0

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+[properties]
+internalname:string=game_papermario
+startdate:time=y=2000 m=8 d=5 h=0 mi=0
+url:string=http://www.mobygames.com/game/paper-mario

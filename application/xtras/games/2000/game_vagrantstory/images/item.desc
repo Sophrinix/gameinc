@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[properties]
+internalname:string=game_vagrantstory
+startdate:time=y=2000 m=1 d=24 h=0 mi=0
+url:string=http://www.mobygames.com/game/vagrant-story

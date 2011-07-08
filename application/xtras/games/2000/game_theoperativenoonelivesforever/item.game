@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_spy
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation2
+platform_2=platform_windows
+[properties]
+cash:int=130340000
+copySell:int=1372000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=10 d=19 h=0 mi=0
+famous:float=0.68
+gameIsSaling:bool=false
+internalname:string=game_theoperativenoonelivesforever
+localizationRating:int=55
+name:string=The Operative: No One Lives Forever
+owner:string=Fox Interactive, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=53
+startBugRating:int=0
+startdate:time=y=2000 m=11 d=9 h=0 mi=0
+startGenreRating:int=34
+startGraphicRating:int=49
+startrating:int=36
+startSoundRating:int=44
+textureNormal:path=images/spl_0.jpg

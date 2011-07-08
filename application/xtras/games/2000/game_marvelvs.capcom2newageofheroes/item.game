@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_playstation2
+platform_2=platform_playstation3
+platform_3=platform_xbox
+platform_4=platform_xbox360
+[properties]
+cash:int=416064000
+copySell:int=4334000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=0 d=12 h=0 mi=0
+famous:float=0
+gameIsSaling:bool=false
+internalname:string=game_marvelvs.capcom2newageofheroes
+localizationRating:int=30
+name:string=Marvel vs. Capcom 2: New Age of Heroes
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=98
+startBugRating:int=78
+startdate:time=y=2000 m=0 d=14 h=0 mi=0
+startGenreRating:int=56
+startGraphicRating:int=8
+startrating:int=53
+startSoundRating:int=27
+textureNormal:path=images/spl_0.jpg

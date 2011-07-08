@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_gamecube
+platform_2=platform_playstation2
+platform_3=platform_playstation3
+platform_4=platform_windows
+platform_5=platform_xbox360
+[properties]
+cash:int=25836000
+copySell:int=2153000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=1 d=4 h=0 mi=0
+famous:float=0.66
+gameIsSaling:bool=false
+internalname:string=game_crazytaxi
+localizationRating:int=41
+name:string=Crazy Taxi
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=58
+startBugRating:int=16
+startdate:time=y=2000 m=1 d=11 h=0 mi=0
+startGenreRating:int=60
+startGraphicRating:int=97
+startrating:int=54
+startSoundRating:int=39
+textureNormal:path=images/spl_0.jpg

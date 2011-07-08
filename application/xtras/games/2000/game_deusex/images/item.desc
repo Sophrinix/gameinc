@@ -1,0 +1,11 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_cyberpunk
+genre_3=genre_detective
+genre_4=genre_puzzle
+genre_5=genre_scifi
+genre_6=genre_shooter
+[properties]
+internalname:string=game_deusex
+startdate:time=y=2000 m=7 d=27 h=0 mi=0

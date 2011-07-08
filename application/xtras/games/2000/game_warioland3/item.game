@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_gameboycolor
+[properties]
+cash:int=237180000
+copySell:int=7906000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=2 d=27 h=0 mi=0
+famous:float=0.96
+gameIsSaling:bool=false
+internalname:string=game_warioland3
+localizationRating:int=71
+name:string=Wario Land 3
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=70
+startBugRating:int=52
+startdate:time=y=2000 m=10 d=28 h=0 mi=0
+startGenreRating:int=68
+startGraphicRating:int=30
+startrating:int=47
+startSoundRating:int=16
+textureNormal:path=images/spl_0.jpg

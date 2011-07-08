@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_spy
+[properties]
+internalname:string=game_theoperativenoonelivesforever
+startdate:time=y=2000 m=11 d=9 h=0 mi=0

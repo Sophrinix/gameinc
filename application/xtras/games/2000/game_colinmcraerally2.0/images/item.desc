@@ -1,0 +1,10 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_simulation
+genre_3=genre_sports
+genre_4=genre_offroad
+[properties]
+internalname:string=game_colinmcraerally2.0
+startdate:time=y=2000 m=3 d=7 h=0 mi=0
+url:string=http://www.mobygames.com/game/colin-mcrae-rally-20

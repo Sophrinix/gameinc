@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_managerial
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_linux
+platform_2=platform_unknown
+platform_3=platform_playstation2
+platform_4=platform_windows
+platform_5=platform_xbox
+[properties]
+cash:int=192640000
+copySell:int=2752000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=9 d=4 h=0 mi=0
+famous:float=0.95
+gameIsSaling:bool=false
+internalname:string=game_thesims
+localizationRating:int=98
+name:string=The Sims
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=75
+startBugRating:int=71
+startdate:time=y=2000 m=1 d=18 h=0 mi=0
+startGenreRating:int=9
+startGraphicRating:int=99
+startrating:int=53
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg

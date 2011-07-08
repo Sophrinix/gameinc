@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_cyberpunk
+genre_3=genre_detective
+genre_4=genre_puzzle
+genre_5=genre_scifi
+genre_6=genre_shooter
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation2
+platform_2=platform_windows
+[properties]
+cash:int=100031000
+copySell:int=1493000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=0 d=15 h=0 mi=0
+famous:float=0.13
+gameIsSaling:bool=false
+internalname:string=game_deusex
+localizationRating:int=66
+name:string=Deus Ex
+owner:string=Eidos Interactive Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=63
+startBugRating:int=7
+startdate:time=y=2000 m=7 d=27 h=0 mi=0
+startGenreRating:int=79
+startGraphicRating:int=52
+startrating:int=50
+startSoundRating:int=51
+textureNormal:path=images/spl_0.jpg

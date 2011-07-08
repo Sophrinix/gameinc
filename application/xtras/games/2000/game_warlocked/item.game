@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_fantasy
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_gameboycolor
+[properties]
+cash:int=7636000
+copySell:int=166000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=7 d=8 h=0 mi=0
+famous:float=0.81
+gameIsSaling:bool=false
+internalname:string=game_warlocked
+localizationRating:int=59
+name:string=Warlocked
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=55
+startBugRating:int=88
+startdate:time=y=2000 m=8 d=17 h=0 mi=0
+startGenreRating:int=34
+startGraphicRating:int=56
+startrating:int=58
+startSoundRating:int=61

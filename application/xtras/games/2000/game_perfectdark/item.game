@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_nintendo64
+platform_1=platform_xbox360
+[properties]
+cash:int=177498000
+copySell:int=4671000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=4 d=23 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_perfectdark
+localizationRating:int=49
+name:string=Perfect Dark
+owner:string=Rare, Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=42
+startBugRating:int=19
+startdate:time=y=2000 m=5 d=10 h=0 mi=0
+startGenreRating:int=40
+startGraphicRating:int=78
+startrating:int=43
+startSoundRating:int=38
+textureNormal:path=images/spl_0.jpg

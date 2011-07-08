@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[properties]
+internalname:string=game_baldursgateiishadowsofamn
+startdate:time=y=2000 m=8 d=1 h=0 mi=0

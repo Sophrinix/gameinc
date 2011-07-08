@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_simulation
+genre_3=genre_sports
+genre_4=genre_offroad
+[platforms]
+platform_0=platform_gameboyadvance
+platform_1=platform_ngage
+platform_2=platform_playstation
+platform_3=platform_windows
+[properties]
+cash:int=297593000
+copySell:int=3767000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=11 d=16 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_colinmcraerally2.0
+localizationRating:int=97
+name:string=Colin McRae Rally 2.0
+owner:string=Codemasters Software Company Limited, The
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=19
+startBugRating:int=45
+startdate:time=y=2000 m=3 d=7 h=0 mi=0
+startGenreRating:int=12
+startGraphicRating:int=29
+startrating:int=39
+startSoundRating:int=94
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/colin-mcrae-rally-20

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_fighting
+[properties]
+internalname:string=game_marvelvs.capcom2newageofheroes
+startdate:time=y=2000 m=0 d=14 h=0 mi=0

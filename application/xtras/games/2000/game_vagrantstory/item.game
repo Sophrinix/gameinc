@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_playstation3
+[properties]
+cash:int=254896000
+copySell:int=2864000
+descriptionpath:path=desc.htm
+enddate:time=y=2003 m=11 d=24 h=0 mi=0
+famous:float=0.51
+gameIsSaling:bool=false
+internalname:string=game_vagrantstory
+localizationRating:int=6
+name:string=Vagrant Story
+owner:string=Square Europe, Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=34
+startdate:time=y=2000 m=8 d=16 h=0 mi=0
+startGenreRating:int=23
+startGraphicRating:int=59
+startrating:int=43
+startSoundRating:int=80
+textureNormal:path=images/spl_0.jpg
