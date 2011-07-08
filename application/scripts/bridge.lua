@@ -14,14 +14,14 @@ local company = nil
 local mainWindow = nil
 local currentCompany = nil
 
-local tblCompanies = nil
+tblCompanies = nil
 local companyLogo = nil
 local labelAcNumber = nil
 local labelAllAc = nil
 local labelSelfAc = nil
 local labelPrice = nil
-local btnChangeShare = nil
-local btnTryControl = nil
+btnChangeShare = nil
+btnTryControl = nil
 
 local function _Hide()
 	base.package.loaded[ "shareSelect" ] = false
@@ -35,16 +35,16 @@ local function _FillTableCompanies()
 		
 		if cmp.allPie > 0 then
 			local idx = tblCompanies:AddRow( tblCompanies.rowCount )
-			tblCompanies:SetCellText( idx, 0, cmp.name, 0xff, 0xff, 0, 0 )
-			tblCompanies:SetCellText( idx, 1, cmp.profitLastYear, 0xff, 0xff, 0, 0 )
-			tblCompanies:SetCellText( idx, 2, base.string.format( "%.3f", cmp.pieCost ), 0xff, 0xff, 0, 0 )
-			tblCompanies:SetCellText( idx, 3, (cmp.dividend * 100).."%", 0xff, 0xff, 0, 0 )
-			tblCompanies:SetCellText( idx, 4, rbank:GetPieCostDynamic( cmp ), 0xff, 0xff, 0, 0 )
+			tblCompanies:SetCellText( idx, 0, cmp.name, 0xff, 0xff, 0xff, 0xff )
+			tblCompanies:SetCellText( idx, 1, cmp.profitLastYear, 0xff, 0xff, 0xff, 0xff )
+			tblCompanies:SetCellText( idx, 2, base.string.format( "%.3f", cmp.pieCost ), 0xff, 0xff, 0xff, 0xff )
+			tblCompanies:SetCellText( idx, 3, (cmp.dividend * 100).."%", 0xff, 0xff, 0xff, 0xff )
+			tblCompanies:SetCellText( idx, 4, rbank:GetPieCostDynamic( cmp ), 0xff, 0xff, 0xff, 0xff )
 
 			local prc = rbank:GetShares( company.name, cmp ) / cmp.allPie * 100	
 			local selfPie = cmp.selfPie / cmp.allPie * 100
 			
-			tblCompanies:SetCellText( idx, 5, base.string.format( "%d%% (%d%%)", prc, selfPie ), 0xff, 0xff, 0, 0 )
+			tblCompanies:SetCellText( idx, 5, base.string.format( "%d%% (%d%%)", prc, selfPie ), 0xff, 0xff, 0xff, 0xff )
 		end
 	end
 end
@@ -97,9 +97,15 @@ local function _TryControl()
 	base.companyControl.Show( "", currentCompany, _EndingTryControl )
 end
 
+function ShowHelp()
+	tutorial.Update( "bridge/main" )
+end
+
 function Show()
 	rbank = base.applic.bank
 	company = base.applic.playerCompany
+	
+	base.rightPanel.AddYesNo( "Хотите узнать больше о бирже?", ShowHelp, button.CloseBlend )
 	
 	local txsBlur = base.driver:CreateBlur( "bridge.png", 2, 4 )
 	mainWindow = window.fsWindow( txsBlur.path, _Hide )

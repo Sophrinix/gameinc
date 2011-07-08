@@ -25,7 +25,7 @@ local function _GetMoney()
 	return money
 end
 
-local function _Apply()
+local function _Apply( sender )
 	if emp then
 		emp:AddLearning( btnsPlaces[ place ].name .."[".. btnsSkill[ type ].name .."]", 
 						 params[ type ], duration * 7, 
@@ -37,7 +37,7 @@ local function _Apply()
 	    base.applic.playerCompany:AddBalance( "Обучение "..emp.name, -_GetMoney() )
 	end
 	
-	mainWindow:Remove()
+	button.CloseBlend( sender )
 end
 
 local function _CheckLabel()

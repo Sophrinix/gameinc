@@ -9,8 +9,6 @@ IncludeScript( "Tutorial" )
 
 browser.page404 = "media/html/page404.htm"
 
---NrpLoadPlugins( "Plugins/" )
-
 --загрузка сцены авторизации пользователя
 NrpAddScene( "sceneLogin", "scripts/sceneLogin.lua" )
 

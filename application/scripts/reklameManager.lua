@@ -186,7 +186,7 @@ local function _ShowCampaniesManager()
 	local txsBlur = base.driver:CreateBlur( "marketing.png", 2, 4 )
 	campaniesWindow = window.fsWindow( txsBlur.path, _HideCampaniesWindow )	
 	
-	base.rightPanel.AddYesNo( "Хотите больше узнать о рекламе?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о рекламе?", ShowHelp, button.CloseBlend )
 		
 	if #reklames == 0 then _CreateReklames() end
 	
@@ -247,7 +247,7 @@ end
 function Show()
 	mainWindow = window.fsWindow( "marketing.png", _Hide )
 	
-	base.rightPanel.AddYesNo( "Хотите больше узнать о рекламе?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о рекламе?", ShowHelp, button.CloseBlend )
 	
 	--get loan
 	btnReklame = button.EqualeTexture( 534, 255, "reklameCampanies", mainWindow, -1, "", _ShowCampaniesManager )

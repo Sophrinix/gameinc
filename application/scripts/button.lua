@@ -6,6 +6,10 @@ local guienv = base.guienv
 local driver = base.driver 
 local buttonsDirectory = "media/buttons/"
 
+local function GetAbsPath( name )
+	return buttonsDirectory..name..".png"
+end
+
 local function GetNormalPath( name )
 	return buttonsDirectory..name.."_normal.png"
 end
@@ -23,6 +27,11 @@ end
 function CloseParent( mp )
 	mp = base.CLuaButton( mp ).parent
 	base.CLuaElement( mp ):Remove()
+end
+
+function CloseBlend( mp )
+	mp = base.CLuaButton( mp ).parent
+	guienv:AddBlenderAnimator( mp, 255, 10, 700, false, false, true ) 
 end
 
 function NoFunction()
@@ -53,16 +62,40 @@ function SetEqualeImage( button, texturePrefix )
 	SetImagePack( button, 0, 0, txs.width, txs.height, normalPath, selectPath )
 end
 
-function Stretch( x1, y1, x2, y2, texturePrefix, parentr, idr, textr, actionr )
+local function _StandartSound()
+	base.soundenv:Play( "mouseover.wav" )
+end
+
+function Stretch( x1, y1, x2, y2, texturePrefix, parentr, idr, textr, actionr, tooltip, sndOn, sndLv )
 	local normalPath = GetNormalPath( texturePrefix )
 	local selectPath = GetSelectPath( texturePrefix )
 	local txs = driver:GetTexture( normalPath )
 	local txsw, txsh = txs:GetSize()
 
 	local btn = guienv:AddButton( x1, y1, x2, y2, parentr, idr, textr )
-	btn.tooltip = textr
 	SetImagePack( btn, 0, 0, txsw, txsh, normalPath, selectPath )
 	btn.action = actionr
+	
+	if tooltip ~= nil then btn.tooltip = tooltip end
+	if sndOn == nil then btn.onHovered = _StandartSound end
+	if sndLv == nil then btn.onHoveredLeft = _StandartSound end
+	
+	return btn
+end
+
+function StretchGrayed( x1, y1, x2, y2, texturePrefix, parentr, idr, textr, actionr, tooltip, sndOn, sndLv )
+	local selectPath = GetAbsPath( texturePrefix )
+	local grTxs = driver:CreateGrayscale( selectPath )
+	local txs = driver:GetTexture( selectPath )
+	local txsw, txsh = txs:GetSize()
+
+	local btn = guienv:AddButton( x1, y1, x2, y2, parentr, idr, textr )
+	SetImagePack( btn, 0, 0, txsw, txsh, grTxs.path, selectPath )
+	btn.action = actionr
+	
+	if tooltip ~= nil then btn.tooltip = tooltip end
+	if sndOn == nil then btn.onHovered = _StandartSound end
+	if sndLv == nil then btn.onHoveredLeft = _StandartSound end
 	
 	return btn
 end

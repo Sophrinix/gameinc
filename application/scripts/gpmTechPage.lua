@@ -114,7 +114,7 @@ function Show()
 		local tech = project:GetTech( i-1, base.PT_ADVTECH )
 		lnk = base.gpmFunctions.LinkBox( flick, tech.name, base.PT_ADVTECH, tech, base.NDRG, _Set, _Unset )
     	lnk.defaultTexture = "media/buttons/advTechNoImage.png"
-   		base.table.insert( gpm.links, lnk 
+   		base.table.insert( gpm.links, lnk )
 	end
 	
 	gpm.ShowParams()

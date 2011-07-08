@@ -24,7 +24,7 @@ function Show( user )
 	winInfo.text = user.name
 	winInfo.draggable = false 
 
-	winInfo:Bind( base.GUIELEMENT_RMOUSE_LEFTUP, CloseUserInfoWindow )
+	winInfo:Bind( base.GUIELEMENT_RMOUSE_LEFTUP, button.CloseBlend )
 	
 	local listBox = guienv:AddListBox( 10, 20, "10e", "10e", -1, winInfo )
 	

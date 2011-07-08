@@ -180,7 +180,7 @@ end
 function Show()	
 	lab = window.fsWindow( "laboratory.png", _Hide )
 
-	base.rightPanel.AddYesNo( "Хотите узнать больше о лаборатории?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите узнать больше о лаборатории?", ShowHelp, button.CloseBlend )
 	
 	btnVideo = button.EqualeTexture( 545, 330, "techMapVideo", lab, -1, "", ShowVideoTechMap )
 	btnSound = button.EqualeTexture( 372, 213, "techMapSound", lab, -1, "", ShowSoundTechMap )

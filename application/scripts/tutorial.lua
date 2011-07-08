@@ -14,6 +14,7 @@ IncludeScript( "tutorialDevRoom" )
 IncludeScript( "tutorialReklame" )
 IncludeScript( "tutorialShop" )
 IncludeScript( "tutorialProjectManager" )
+IncludeScript( "tutorialBridge" )
 
 module("tutorial")
 

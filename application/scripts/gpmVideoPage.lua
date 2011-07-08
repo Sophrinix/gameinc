@@ -86,7 +86,7 @@ function Show()
 		local name = "Видео " .. i .. "/" .. maxProjectVideoTech
 		
 		if not tech.empty then name = tech.name end
-		base.gpmFunctions.LinkBox( flick, name, base.PT_VIDEOTECH, tech, base.NDRG, _Set, _Unset )
+		lnk = base.gpmFunctions.LinkBox( flick, name, base.PT_VIDEOTECH, tech, base.NDRG, _Set, _Unset )
 		lnk.defaultTexture = "media/buttons/videoTechNoImage.png"
 		base.table.insert( gpm.links, lnk )
 	end	

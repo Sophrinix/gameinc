@@ -42,16 +42,6 @@ local function _AddGames()
 	end
 end
 
-local function _CloseAnonceGame()
-	windowAnonce:Remove()
-end
-
-local function _StartSaling()
-	applic:AddGameToMarket( anoncePictureFlow.selectedObject )
-	_AddGames()
-	_CloseAnonceGame()	
-end
-
 local function _HaveGameNoSale()
 	for i=1, company.gameNumber do
 		local game = company:GetGame( i-1 )
@@ -81,10 +71,14 @@ local function _AnonceGame()
 	end
 	
 	local btnOk = guienv:AddButton( "25%", "70e", "24%+", "30e", windowAnonce, -1, "Начать продажи" )
-	btnOk.action = _StartSaling
+	btnOk.action = function()
+						applic:AddGameToMarket( anoncePictureFlow.selectedObject )
+						_AddGames()
+						button.CloseBlend( btnOk )	
+				   end
 	
 	local btnCancel = guienv:AddButton( "51%", "70e", "24%+", "30e", windowAnonce, -1, "Выход" )
-	btnCancel.action = _CloseAnonceGame
+	btnCancel.action = button.CloseBlend
 end
 
 local function _UpdateGameParams()
@@ -100,7 +94,8 @@ local function _UpdateGameParams()
 		prgGameplay.position = selectedGame.gameplayRating
 		prgBugs.position = selectedGame.bugsRating
 			
-		if selectedGame.company.object == company.object then
+		if company and selectedGame.company and 
+		   selectedGame.company.object == company.object then
 			btnDecreaseGamePrice.visible = true
 			btnIncreaseGamePrice.visible = true		
 			labelGamePrice.text = "Цена:" .. selectedGame.price
@@ -187,11 +182,11 @@ function Show()
 	labelGamePrice = guienv:AddLabel( "#TRANSLATE_TEXT_PRICE:", pos.x, labelAllTimeSale.bottom + 15, 
 																size.w, size.h, -1, mainWindow )
 																
-	btnDecreaseGamePrice = guienv:AddButton( pos.x, labelGamePrice.top, size.h, size.h, mainWindow, -1, "-" )
+	btnDecreaseGamePrice = guienv:AddButton( "75%", labelGamePrice.top, "12%", size.h, mainWindow, -1, "-" )
 	btnDecreaseGamePrice.visible = false
 	btnDecreaseGamePrice.action = _DecreasePrice
 											 
-	btnIncreaseGamePrice = guienv:AddButton( labelLastMonthSale.right - 30, labelGamePrice.top, size.h, size.h, 
+	btnIncreaseGamePrice = guienv:AddButton( btnDecreaseGamePrice.right + 10, labelGamePrice.top, "12%", size.h, 
 											 mainWindow, -1, "+" )
 	btnIncreaseGamePrice.action = _IncreasePrice
 	btnIncreaseGamePrice.visible = false

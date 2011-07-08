@@ -100,6 +100,7 @@ local function _ApplyBox( sender )
     --textures[ currentBoxIndex ]
     currentGame = nil
     
+    guienv:MessageBox( "Закончено создание коробки для игры "..currentGame.name, false, false, button.CloseParent, button.NoFunction )
 	window.Hide( sender )    
 end
 

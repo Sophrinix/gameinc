@@ -39,6 +39,10 @@ local function localPlantLoadBaseReklame()
 	plant:LoadReklamePrice( applic.profile )
 end
 
+function UpdateScrProgress( progress )
+	sceneManager:DrawProgress( 5, "Обработано "..progress.." % скриншотов игр" )
+end
+
 --создание новой игры
 function CreateNewProfileAndStartGame( ptr )
 	--создаем новый профиль
@@ -47,9 +51,8 @@ function CreateNewProfileAndStartGame( ptr )
 	--убираем данные из памяти
 	base.newGame.ResetData()
 	
-	applic:LoadScreenshots( updates.fileScreenshots )
-	sceneManager:DrawProgress( 5, "Ищем изображения" )
-
+	applic:LoadScreenshots( updates.fileScreenshots, "LoginFunctions.UpdateScrProgress" )
+	
 	updates.CheckNewTechs()
 	sceneManager:DrawProgress( 10, "Обновляем технологии" )
 
@@ -70,9 +73,6 @@ function CreateNewProfileAndStartGame( ptr )
 
 	updates.CheckNewGames()
 	sceneManager:DrawProgress( 40, "Обновляем базу данных по играм" )
-
-	updates.CheckNewCompanies()
-	sceneManager:DrawProgress( 45, "Создаем компании" )
 	
 	--создание рабочих
 	applic:CreateNewFreeUsers()
@@ -89,6 +89,7 @@ end
 function NewGame( ptr )
 	wndNewGame = guienv:AddWindow( "", "25%", "33%", "50%+", "33%+", -1, guienv.root )
 	wndNewGame.closeButton.visible = false
+	wndNewGame.modal = true
 	
 	editName = guienv:AddEdit(  "Player",  "10%", 40, "80%+", "20+", -1, wndNewGame )
 	editCompany = guienv:AddEdit(  "CompanyName", "10%", 70, "80%+", "20+", -1, wndNewGame )				
@@ -113,12 +114,8 @@ local function _LoadSaveGame( index )
 	sceneManager:DrawProgress( 1, "Подгружаем данные из сохранения" )
 	
 	--загружаем скриншоты для игр
-	applic:LoadScreenshots( updates.fileScreenshots )
-	sceneManager:DrawProgress( 4, "Обновляем данные для игры" )
-	
-	--загружаем линки
-	updates.LoadLinks()
-	sceneManager:DrawProgress( 8, "Создаем ресурсы" )
+	updates.LoadLinks( true )	
+	applic:LoadScreenshots( updates.fileScreenshots, "LoginFunctions.UpdateScrProgress" )
 	
 	--загружаем текущие аддоны для коробки для текущего времени
 	updates.CheckGameBoxAddons()
@@ -151,7 +148,7 @@ local function _LoadSaveGame( index )
 end
 
 function Continue()
-	applic:CreateDirectorySnapshot( "save", profiles, "profile", "profile.ini" )
+	applic:CreateDirectorySnapshot( "save", profiles, "profile", "profile.ini", "" )
 		
 	local iniFile = base.CLuaIniFile( nil, profiles )
 	local profilesNumber = iniFile:ReadInteger( "options", "profileNumber", 0 ) 

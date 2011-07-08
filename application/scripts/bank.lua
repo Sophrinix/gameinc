@@ -32,7 +32,7 @@ end
 function Show()
 	bankWindow = window.fsWindow( "bank.png", _Hide )
 	
-	base.rightPanel.AddYesNo( "Хотите узнать больше о банке?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите узнать больше о банке?", ShowHelp, button.CloseBlend )
 	
 	--get loan
 	btnLoan = button.EqualeTexture( 80, 402, "loans", bankWindow, -1, "", base.loans.Show )

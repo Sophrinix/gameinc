@@ -32,7 +32,7 @@ end
 function Show( ptr )
 	mainWindow = window.fsWindow( "director_cabinet.png", Hide )
 	
-	base.rightPanel.AddYesNo( "Хотите больше узнать об управлении предприятием?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите больше узнать об управлении предприятием?", ShowHelp, button.CloseBlend )
 	
 	btnProject = button.EqualeTexture( 0, 227, "newProject", mainWindow, -1, "", base.projectSelect.Show )
 	--employers manager

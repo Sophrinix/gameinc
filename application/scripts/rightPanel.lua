@@ -40,7 +40,11 @@ function AddYesNo( text, funcYes, funcNo )
 	wnd.drawBody = false
 	wnd.closeButton:SetPosition( 284, 18 )
 	
-	local btn = button.Stretch( "5%", "35e", "43%", "0e", "button_rp", wnd, -1, "Да", function() funcYes(); wnd:Remove() end )
+	local btn = button.Stretch( "5%", "35e", "43%", "0e", "button_rp", wnd, -1, "Да", 
+								function() funcYes(); 
+								 		   guienv:AddBlenderAnimator( wnd, 255, 10, 700, false, false, true ) 
+								end )
+															
 	btn = button.Stretch( "43%", "35e", "81%", "0e", "button_rp", wnd, -1, "Нет", funcNo )
 	
 	guienv:AddTimer( 5000, function() guienv:AddToDeletionQueue( wnd ) end, wnd.object )

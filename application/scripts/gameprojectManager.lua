@@ -10,6 +10,7 @@ IncludeScript( "gpmEndPage" )
 IncludeScript( "gpmVideoPage" )
 IncludeScript( "gpmSoundPage" )
 IncludeScript( "gpmEnginePage" )
+IncludeScript( "gpmLanguagesPage" )
 IncludeScript( "gameNames" )
 
 module( "gameprojectManager" )
@@ -115,7 +116,7 @@ local function _ShowChangeNamePage()
 	local hh = editGameName.height
 	button.StretchOne( editGameName.right - hh, editGameName.top, hh.."+", hh.."+", "", projectWindow, -1, "", _SwitchName )
 	
-	base.rightPanel.AddYesNo( "Хотите узнать больше о выборе имени?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите узнать больше о выборе имени?", ShowHelp, button.CloseBlend )
 end
 
 function NextPage()
@@ -128,7 +129,8 @@ function NextPage()
 	elseif step == "tech" then base.gpmVideoPage.Show(); return 
 	elseif step == "video" then base.gpmSoundPage.Show(); return
 	elseif step == "sound" then base.gpmPlatformPage.Show(); return
-	elseif step == "platform" then base.gpmEndPage.Show(); return end
+	elseif step == "platform" then base.gpmLanguagesPage.Show(); return
+	elseif step == "languages" then base.gpmEndPage.Show(); return end
 end
 
 function PrevPage()
@@ -141,7 +143,8 @@ function PrevPage()
 	elseif step == "video" then base.gpmTechPage.Show(); return
 	elseif step == "sound" then base.gpmVideoPage.Show(); return
 	elseif step == "platform" then base.gpmSoundPage.Show(); return 
-	elseif step == "end" then base.gpmPlatformPage.Show(); return end
+	elseif step == "languages" then base.gpmPlatformPage.Show(); return 
+	elseif step == "end" then base.gpmLanguagesPage.Show(); return end
 end
 
 local function _ClearDragObject()

@@ -24,6 +24,7 @@ mode[ base.STR_TESTERS ] = "tester"
 local modeUserView = "coder"
 local windowUpEmployer = nil
 local layoutWindows  = nil
+local layoutButtons = nil
 
 local userToUp = nil
 local company = nil
@@ -45,7 +46,7 @@ function Show()
 
 	univerWindow = base.window.fsWindow( "univer_dvor.png", _Hide )
 	
-	base.rightPanel.AddYesNo( "Хотите больше узнать о рынке труда?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о рынке труда?", ShowHelp, button.CloseBlend )
 
 	--stuff plate	
 	btnDesk = button.EqualeTexture( 122, 320, "stuffPlate", univerWindow, -1, "", ShowEmployersWindow )
@@ -85,6 +86,9 @@ function ShowAvaibleEmployers()
 	
 	usersWindow = nil
 	usersWindow = {}
+	
+	layoutWindows:Remove()
+	layoutWindows = guienv:AddLayout( "5%", layoutButtons.bottom + 10, "95%", "95%", 2, -1, windowUpEmployer )
 
 	local position=1
 	for i=1, maxuser do
@@ -101,7 +105,9 @@ function ShowAvaibleEmployers()
 	
 	for i=1, #usersWindow do
 		base.userInfo.Update( usersWindow[ i ].user, usersWindow[ i ].window )
-		button.Stretch( "30e", "30e", "0e", "0e", "button_ok", usersWindow[ i ].window, -1, "",	function () _UpEmployer( usersWindow[ i ].user ) end )
+		button.Stretch( "30e", "30e", "0e", "0e", "button_ok", 
+		                usersWindow[ i ].window, -1, "",	
+		                function () _UpEmployer( usersWindow[ i ].user ) end )
 	end
 end
 
@@ -122,14 +128,14 @@ end
 
 function ShowEmployersWindow()
 	windowUpEmployer = window.fsWindow( "stuffUpWindowBg.png", _CloseUpWindow )
-
-	layoutWindows = guienv:AddLayout( "5%", "15%", "95%", "95%", 2, -1, windowUpEmployer )
 	
-	local layout = guienv:AddLayout( 20, 20, "20e", "70+", 4, -1, windowUpEmployer ) 	
-	button.LayoutButton( "", layout, -1, base.STR_CODERS, function () _ChangeUserType( base.STR_CODERS ) end )
-	button.LayoutButton( "", layout, -1, base.STR_DESIGNERS, function () _ChangeUserType( base.STR_DESIGNERS ) end )
-	button.LayoutButton( "", layout, -1, base.STR_COMPOSERS, function () _ChangeUserType( base.STR_COMPOSERS ) end )
-	button.LayoutButton( "", layout, -1, base.STR_TESTERS, function () _ChangeUserType( base.STR_TESTERS ) end )
+	layoutButtons = guienv:AddLayout( 20, 60, "20e", "70+", 4, -1, windowUpEmployer ) 	
+	button.LayoutButton( "", layoutButtons, -1, base.STR_CODERS, function () _ChangeUserType( base.STR_CODERS ) end )
+	button.LayoutButton( "", layoutButtons, -1, base.STR_DESIGNERS, function () _ChangeUserType( base.STR_DESIGNERS ) end )
+	button.LayoutButton( "", layoutButtons, -1, base.STR_COMPOSERS, function () _ChangeUserType( base.STR_COMPOSERS ) end )
+	button.LayoutButton( "", layoutButtons, -1, base.STR_TESTERS, function () _ChangeUserType( base.STR_TESTERS ) end )
+	
+	layoutWindows = guienv:AddLayout( "5%", layoutButtons.bottom + 10, "95%", "95%", 2, -1, windowUpEmployer )
 	
 	base.univer.ShowAvaibleEmployers()
 end

@@ -34,7 +34,7 @@ function fsWindow( txs, action )
 	
 	--adding closeButton
 	base.button.Stretch( "50e", "50e", "0e", "0e", "button_down", wnd, -1, "",	Hide )
-	base.button.Stretch( "85e", "35e", "50e", "0e", "vopros", wnd, -1, "",	base.tutorial.ShowCurrentHelp )
+	base.button.StretchGrayed( "85e", "35e", "50e", "0e", "vopros", wnd, -1, "",	base.tutorial.ShowCurrentHelp )
 	
 	Show( wnd )
 	

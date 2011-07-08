@@ -18,7 +18,7 @@ local function _AddWork()
 	--изменим отношение производителя к игроку за размещение заказа
 	diskManager.ChangeProducerDiscount()
 	
-	company:AddBalance( "Оплата производства", -price )
+	diskManager.company:AddBalance( "Оплата производства", -price )
 	base.applic.plant:AddProduceWork( diskManager.produceDiskWork )
 	
 	diskManager.produceDiskWork:Remove()

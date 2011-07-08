@@ -10,13 +10,16 @@ local projectWindow = nil
 local project = nil
 local company = nil 
 local gpm = nil
+local CLuaLinkBox = base.CLuaLinkBox
+local CheckType = base.gpmFunctions.CheckType
 
-local function _PureFunc()
-
-end
+local _flickPlatform = nil
+local _flickAllPlatform = nil
 
 local function _ShowMistakeForPlatform( video, sound, cpuPercent, memPercent )
-	guienv:MessageBox( "Not all tech from engine are avaible", false, false, _PureFunc, _PureFunc )
+	guienv:MessageBox( "Not all tech from engine are avaible", 
+	                   false, false, 
+	                   button.CloseParent, button.NoFunction )
 end
 
 local function _CheckPlatformsForProject( pl )
@@ -44,39 +47,49 @@ local function _CheckPlatformsForProject( pl )
 	return result
 end
 
-local function _SelectLang( sender )
-	local lbx = base.CLuaPictureFlow( sender )
-	local selIndex = lbx.selectedIndex
+local function _SetPl( mp, sender )
+	sender = CLuaLinkBox( sender )
+	mp = CLuaLinkBox( mp )
 	
-	local lang = base.CLuaTech( lbx.selectedObject )
-		
-	--уже есть €зык, надо убрать его из списка
-	if project:IsMyTech( lang ) then 
-		project:RemoveTech( lang )
-		lbx:SetItemBlend( selIndex, 0xC0 )	
-		--такого €зыка нет в игре, надо бы добавить
-	else 
-		project:AddTech( lang )	
-		lbx:SetItemBlend( selIndex, 0xff )
-	end		
+	local redraw = false
+	if CheckType( mp, sender, base.PT_PLATFORM ) then
+		project:AddPlatform( sender.data )
+		redraw = true
+	end
+	
+	if redraw then
+		guienv:SetDragObject( nil, "" )
+		base.gpmPlatformPage.Show()
+	end
 end
 
-local function _SelectPlatform( sender )
-	local lbx = base.CLuaPictureFlow( sender )
-	local selIndex = lbx.selectedIndex
-	
-	local platform = base.CLuaPlatform( lbx.selectedObject )
-	
-	--така€ платформа за€влена в игре, игрок хочет еЄ убрать
-	if project:IsMyPlatform( platform ) then
-		project:RemovePlatform( platform )
-		lbx:SetItemBlend( selIndex, 0xC0 )				
-	else
-		if _CheckPlatformsForProject( platform ) then
-			project:AddPlatform( platform )
-			lbx:SetItemBlend( selIndex, 0xff )			
+local function _UnsetPl( mp, _ )
+	mp = base.CLuaLinkBox( mp )
+	project:RemovePlatform( mp.data )
+	guienv:SetDragObject( nil, "" )
+	base.gpmPlatformPage.Show()
+end
+
+local function _ShowAllPlatforms()
+	for i=1, applic.platformNumber do
+		local platform = applic:GetPlatform( i-1 )
+		
+		local lnk = base.gpmFunctions.LinkBox( _flickAllPlatform, platform.name, base.PT_PLATFORM, platform, base.DRG, nil, nil )
+	end
+end
+
+local function _ShowAddedPlatforms()
+	for i=1, applic.platformNumber do
+		local platform = applic:GetPlatform( i-1 )
+		
+		if project:IsMyPlatform( platform ) then
+			local lnk = base.gpmFunctions.LinkBox( _flickPlatform, platform.name, base.PT_PLATFORM, platform, base.NDRG, _SetPl, _UnsetPl )
+			base.table.insert( gpm.links, lnk )
 		end
-	end	
+	end
+	
+	local lnk = base.gpmFunctions.LinkBox( _flickPlatform, "ƒобавить", base.PT_PLATFORM, nil, base.NDRG, _SetPl, _UnsetPl )
+	base.table.insert( gpm.links, lnk )
 end
 
 function Show()
@@ -84,37 +97,14 @@ function Show()
 	gpm = base.gameprojectManager
 	project = gpm.project	
 	projectWindow = gpm.projectWindow	
+	
 	gpm.UpdateProjectWindow( "platform" )
 
-	local ge = project.gameEngine
-	picFlowLang = guienv:AddPictureFlow( "5%", "5%", "95%", "45%", -1, projectWindow )	
-	picFlowLang.onSelect = _SelectLang
+	_flickPlatform = guienv:AddFlick( "5%", "5%", "45%", "95%", 3, -1, projectWindow )
+	_flickAllPlatform = guienv:AddFlick( "55%", "5%", "95%", "95%", 3, -1, projectWindow )
 	
-	picFlowPlatform = guienv:AddPictureFlow( "5%", "55%", "95%", "95%", -1, projectWindow )
-	picFlowPlatform.onSelect = _SelectPlatform
-		
-	for i=1, applic.techNumber do
-		local tech = applic:GetTech( i-1 )
-		
-		if tech.techGroup == base.PT_LANGUAGE then
-			local index = picFlowLang:AddItem( tech.texture, tech.name, tech )
-			
-			if not project:IsMyTech( tech ) then
-				picFlowLang:SetItemBlend( index, 0xC0 )
-			else
-				picFlowLang:SetItemBlend( index, 0xFF )
-			end
-		end
-	end
+	_ShowAddedPlatforms()
+	_ShowAllPlatforms()
 	
-	for i=1, applic.platformNumber do
-		local platform = applic:GetPlatform( i-1 )
-		local index = picFlowPlatform:AddItem( platform.texture, platform.name, platform )
-		
-		if not project:IsMyPlatform( platform ) then
-			picFlowPlatform:SetItemBlend( index, 0xC0 )
-		else
-			picFlowPlatform:SetItemBlend( index, 0xFF )
-		end
-	end
+	gpm.ShowParams()
 end

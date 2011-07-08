@@ -6,13 +6,16 @@ local guienv = base.guienv
 local header 
 local text 
 local mainWindow = nil
+local applic = base.applic
 
 local lbHeader = nil
 local edText = nil
 local image = nil
+local _gameSpeed = 0
 
 local function _Hide()
 	mainWindow.visible = false
+	applic.speed = _gameSpeed
 end
 
 function Show( header, text, font, texture )
@@ -45,8 +48,9 @@ function Show( header, text, font, texture )
 		image.texture = texture
 	end
 
-	
 	mainWindow.visible = true
-	
-	guienv:BringToFront( mainWindow )
+	mainWindow.modal = true
+	--остнановим игру на время показа газеты
+	_gameSpeed = applic.speed
+	applic.speed = 1000
 end

@@ -21,8 +21,11 @@ function Show()
 	local txsBlur = base.driver:CreateBlur( "director_cabinet.png", 2, 4 )
 	_mainWindow = window.fsWindow( txsBlur.path, _Hide )
 	
-	_mapWindow = guienv:AddWindow( "worldMap.png", 0, 89, "0e", "89e", -1, _mainWindow )
+	_mapWindow = guienv:AddWindow( "worldMap.png", 0, 0, "0e", "0e", -1, _mainWindow )
 	_mapWindow.closeButton.visible = false
+	_mapWindow.draggable = false
+	_mapWindow.drawBody = false
+	guienv:SendToBack( _mapWindow )
 	
 	for i=1, questenv.numberActives do
 		local qst = questenv.GetActiveQuest( i-1 )

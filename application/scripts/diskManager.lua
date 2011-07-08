@@ -10,7 +10,6 @@ local button = base.button
 local tutorial = base.tutorial
 local window = base.window
 local guienv = base.guienv
-local company = nil
 
 local dayOfProduce = 0
 local numberMachine = 0
@@ -42,6 +41,7 @@ local windowQueryWork = nil
 
 local addons = { }
 
+company = nil
 wndDPP = nil
 currentGame = nil
 currentDiskMachine = nil

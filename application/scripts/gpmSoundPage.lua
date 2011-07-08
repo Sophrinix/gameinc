@@ -32,9 +32,6 @@ end
 local function _Set( mp, sender )
 	sender = CLuaLinkBox( sender )
 	mp = CLuaLinkBox( mp )
-	
-	sender = CLuaLinkBox( sender )
-	mp = CLuaLinkBox( mp )
 	local redraw = false
 	if CheckType( mp, sender, base.PT_SOUNDQUALITY ) then 
 		project.soundQuality = sender.data

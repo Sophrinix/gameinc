@@ -63,7 +63,7 @@ function Show()
 		base.browser:Hide()
 	end	
 	
-	base.rightPanel.AddYesNo( "Хотите больше узнать о городе?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о городе?", ShowHelp, button.CloseBlend )
 	
 	guienv:FadeAction( 20, base.FADE_OUT, true )
 	guienv:AddTimer( 520, function () 

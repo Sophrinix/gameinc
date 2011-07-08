@@ -1,6 +1,9 @@
 local base = _G
 
 IncludeScript("topGame" )
+IncludeScript("topPlatform")
+IncludeScript("topGenres")
+IncludeScript("topCompany")
 IncludeScript("journals")
 IncludeScript("saleManager")
 
@@ -23,6 +26,9 @@ btnJournals = nil
 
 function Hide()
 	base.package.loaded[ "topGame" ] = false
+	base.package.loaded[ "topPlatform" ] = false
+	base.package.loaded[ "topGenres" ] = false
+	base.package.loaded[ "topCompany" ] = false
 	base.package.loaded[ "journals" ] = false
 	base.package.loaded[ "saleManager" ] = false
 	
@@ -45,7 +51,7 @@ function Show()
 	--игровые журналы
 	btnJournals = button.EqualeTexture( 861, 268, "showMagazines", mainWindow, -1, "", base.journals.Show )
 
-	base.rightPanel.AddYesNo( "Хотите больше узнать о магазине?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о магазине?", ShowHelp, button.CloseBlend )
 	
 	base.soundenv:PlayBackground( "gameshop.wav" )
 end

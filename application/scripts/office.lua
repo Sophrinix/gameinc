@@ -34,7 +34,7 @@ end
 function Show()
 	receptionWindow = window.fsWindow( "media/maps/reception.png", _Hide )
 	
-	base.rightPanel.AddYesNo( "Хотите больше узнать о вашем офисе?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о вашем офисе?", ShowHelp, button.CloseBlend )
 
 	--directors room
 	btnDirector = button.EqualeTexture( 448, 242, "director", receptionWindow, -1, "Dbg:Director", base.director.Show )

@@ -24,7 +24,7 @@ local function _ShowHistoryReview()
 	currentGame = base.CLuaGame( lbxGames.selectedObject )
 	browser:Show()
 	browser:Navigate( currentGame.description )
-	browser:Move( "50%", 0 )
+	browser:Move( (browser.window.width+5).."e", 20 )
 	
 	prgGraphik.position = currentGame.graphikRating
 	prgSound.position = currentGame.soundRating
@@ -46,6 +46,8 @@ local function _Hide()
 	base.package.loaded[ "gameRecense" ] = false
 	
 	mainWindow = nil
+	
+	browser:Hide()
 end
 
 local function _AddProgressBar( l, t, r, b )
@@ -80,5 +82,5 @@ function Show()
 	
 	_ShowAvaibleGames()
 	
-	base.rightPanel.AddYesNo( "Хотите больше узнать о журналах?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "Хотите больше узнать о журналах?", ShowHelp, button.CloseBlend )
 end

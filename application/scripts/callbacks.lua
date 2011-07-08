@@ -5,12 +5,25 @@ function sworkAppDayChange( ptr )
 end
 
 function sworkAppMonthChange()
+	guienv:MessageBox( "Сейчас будет прозведено обновление БД. Это может занять некоторое время.", false, false, button.CloseParent, button.NoFunction )
+
+	sceneManager:DrawProgress( 10, "Обновляем рынок труда" )
 	applic:CreateNewFreeUsers()
+	
+	sceneManager:DrawProgress( 30, "Ищем новых рекламодателей" )
 	updates.CheckNewReklames( true )
+	
+	sceneManager:DrawProgress( 40, "Ищем новые технологии" )
 	updates.CheckNewTechs() 
+	
+	sceneManager:DrawProgress( 60, "Ищем новые фитюльки для коробок" )
 	updates.CheckGameBoxAddons()
+	
+	sceneManager:DrawProgress( 80, "Ищем новые игры" )
 	updates.CheckNewGames()
-	updates.CheckNewCompanies()
+	
+	--обновим данные о продажах платформ
+	updates.UpdatePlatformSales()
 	
 	PayMoneyToInventions()
 	PaySalaryToWorkers()
@@ -95,6 +108,11 @@ function sworkReklameFinished( ptrReklame )
 	local reklame = CLuaReklame( ptrReklame )
 	local rtobject = CLuaProject( reklame.reklameObject )
 	pda.Show( "Закончилась рекламная кампания " .. reklame.name .. " для " .. rtobject.name )
+end
+
+function sworkProduceFinished( ptrWork )
+	local work = CLuaPlantWork( ptrWork )
+	pda.Show( "На заводе закончено производство "..work.numberDisk.. " коробок с игрой "..work.game.name )
 end
 
 local function localChangeSpeed( keyInput )

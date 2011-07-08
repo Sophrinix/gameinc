@@ -277,5 +277,5 @@ function Show()
 		comboxProjects.itemIndex = 0
 	end 
 	
-	base.rightPanel.AddYesNo( "’отите больше узнать об управлении проектами?", ShowHelp, button.CloseParent )
+	base.rightPanel.AddYesNo( "’отите больше узнать об управлении проектами?", ShowHelp, button.CloseBlend )
 end

@@ -46,10 +46,24 @@ function Prev()
 	base.CLuaElement( animTextRunner ).text = textr
 end
 
+local function _CheckTime()
+	local year, _, _ = base.applic:GetGameTime()
+	
+	if year < 1988 then
+		mainWindow.texture = "pdaPaper.png"
+	elseif year >= 1988 and year < 1998 then
+		mainWindow.texture = "pda.png"
+	elseif year >= 1998 and year < 2011 then
+		mainWindow.texture = "futurePda.png"
+	else
+		mainWindow.texture = "noPdaTexture.png"
+	end
+end
+
 function Show( textr )
 	if mainWindow == nil then
 		base.LogScript( "pda show ofsethh=".. offsethh.. "  hh="..hh ) 
-		mainWindow = guienv:AddWindow( "pda.png", 0, hh.."e", hw, "0e", -1, guienv.root )
+		mainWindow = guienv:AddWindow( "", 0, hh.."e", hw, "0e", -1, guienv.root )
 							 		   
 		mainWindow.closeButton.visible = false
 		mainWindow.drawBody = false
@@ -69,9 +83,9 @@ function Show( textr )
 		appPda = base.applic.pda
 		
 		guienv:AddTopElement( mainWindow )
-	else
-		guienv:BringToFront( mainWindow )
 	end
+	
+	_CheckTime()
 
 	if textr ~= nil then
 		appPda:AddMessage( textr, _ToggleVisible )

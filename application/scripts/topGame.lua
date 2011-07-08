@@ -107,13 +107,13 @@ local function _AddGamesSortBy( typeSort )
 		if game == nil then return end
 		
 		local idx = tblGames:AddRow( tblGames.rowCount )
-		tblGames:SetCellText( idx, 0, game.name, 0xff, 0xff, 0, 0 )
+		tblGames:SetCellText( idx, 0, game.name, 0xff, 0xff, 0xff, 0xff )
 		if saveTypeTop == TIME_LIFE then
-			tblGames:SetCellText( idx, 1, game.allTimeSales, 0xff, 0xff, 0, 0 )
-			tblGames:SetCellText( idx, 2, game.allTimeProfit, 0xff, 0xff, 0, 0 )
+			tblGames:SetCellText( idx, 1, game.allTimeSales, 0xff, 0xff, 0xff, 0xff )
+			tblGames:SetCellText( idx, 2, game.allTimeProfit, 0xff, 0xff, 0xff, 0xff )
 		else
-			tblGames:SetCellText( idx, 1, game.lastMonthSales, 0xff, 0xff, 0, 0 )
-			tblGames:SetCellText( idx, 2, game.lastMonthProfit, 0xff, 0xff, 0, 0 )
+			tblGames:SetCellText( idx, 1, game.lastMonthSales, 0xff, 0xff, 0xff, 0xff )
+			tblGames:SetCellText( idx, 2, game.lastMonthProfit, 0xff, 0xff, 0xff, 0xff )
 		end
 	
 	end
@@ -139,9 +139,15 @@ local function _CellSelected()
 
 end
 
+function ShowHelp()
+	tutorial.Update( "shop/chartGames" )
+end
+
 function Show( typeTop )
 	saveTypeTop = typeTop
 	company = applic.playerCompany
+	
+	base.rightPanel.AddYesNo( "Хотите узнать больше об игровых чартах?", ShowHelp, button.CloseBlend )
 
 	local txsBlur = base.driver:CreateBlur( "windowShop.png", 2, 4 )
 	mainWindow = window.fsWindow( txsBlur.path, Hide )
@@ -157,7 +163,7 @@ function Show( typeTop )
 	local lb = guienv:AddLabel( "", "33%", 20, "66%", 120, -1, mainWindow )
 	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 	lb.font = "font_28"
-	lb.color = base.WHITE_COLOR
+	lb.color = base.NrpARGB( 0xff, 0xff, 0xff, 0xff  )
 	
 	if typeTop == TIME_MONTH then
 		lb.text = "Чарт месяца"
@@ -177,4 +183,12 @@ function Show( typeTop )
 	tblGames:SetColumnWidth( 2, 230 )
 			
 	_AddGamesSortBy( SORT_PROFIT )
+	
+	local layoutButtons = guienv:AddLayout( 40, tblGames.bottom + 20, "40e", "60+", 4, -1, mainWindow ) 	
+	local selfBtn = button.LayoutButton( "", layoutButtons, -1, "Игры", button.NoFunction )
+	button.LayoutButton( "", layoutButtons, -1, "Платформы", function() mainWindow:Remove(); base.topPlatform.Show( 2 ) end )
+	button.LayoutButton( "", layoutButtons, -1, "Компании", function() mainWindow:Remove(); base.topCompany.Show( 2 ) end )
+	button.LayoutButton( "", layoutButtons, -1, "Жанры", function() mainWindow:Remove(); base.topGenres.Show() end )
+	
+	selfBtn.enabled = false
 end

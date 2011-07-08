@@ -53,10 +53,6 @@ local function _ShowAvaibleEmployersToManage()
 	end
 end
 
-function CloseUserInfoWindow( ptr )
-	winInfo:Remove()
-end
-
 local function _SetNewSalary( start, stop )
 	if currentEmployer ~= nil then
 		currentEmployer:SetParam( "salary", stop )

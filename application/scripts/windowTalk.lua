@@ -4,6 +4,7 @@ module( "windowTalk" )
 
 local guienv = base.guienv
 local driver = base.driver
+local button = base.button
 local _mainWindow = nil
 local _portretWindow = nil
 local _dialogWindow = nil
@@ -37,7 +38,7 @@ function Show( txsPath, text, x, y )
 end
 
 function Hide()
-	_mainWindow:Remove()
+    guienv:AddBlenderAnimator( _mainWindow, 255, 10, 700, false, false, true ) 
 end
 
 local function _CheckDialogWidth( tblAction )
