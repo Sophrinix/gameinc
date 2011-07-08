@@ -15,7 +15,7 @@ class CNrpLaborMarket : public INrpConfig, public ILuaFunctionality
 {
 public:
 	static CNrpLaborMarket& Instance();
-
+    static const NrpText saveTemplate;
 	CNrpLaborMarket(void);
 	~CNrpLaborMarket(void);
 

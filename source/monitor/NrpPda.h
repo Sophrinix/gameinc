@@ -11,6 +11,10 @@ OPTION_NAME ACTION( "action" );
 class CPdaItem : public INrpConfig
 {
 public:
+    static const NrpText message;
+    static const NrpText action;
+    static const NrpText time;
+
 	CPdaItem( const NrpText& m, const NrpText& a, const NrpTime& t );
 
 	static NrpText ClassName();
@@ -21,6 +25,8 @@ private:
 class CNrpPda : INrpConfig
 {
 public:
+    static const CPdaItem invalidItem;
+
 	CNrpPda();
 	~CNrpPda();
 

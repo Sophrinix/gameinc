@@ -279,12 +279,14 @@ private:
 
 class INrpConfig : public INrpObject
 {
-	friend class CNrpConfigLooder;
+	friend class CNrpConfigSyncer;
 	typedef std::map< OPTION_NAME, NParam* > PARAMS;
 public:
+    static const NrpText uniqTemplate;
+
 	INrpConfig( CLASS_NAME className, SYSTEM_NAME sysName ) : INrpObject( className, sysName )
 	{
-
+        RegProperty( LOADOK, true );
 	}
 
 	INrpConfig(const INrpConfig& copy);
@@ -306,7 +308,7 @@ protected:
 	virtual NrpText Save( const NrpText& fileName );
 	virtual void Load( const NrpText& fileName );
 
-	template< class B > void Add( OPTION_NAME& name, const B& valuel )
+	template< class B > void RegProperty( OPTION_NAME& name, const B& valuel )
 	{
 		NrpText fName = name.ToLower();
 
@@ -316,7 +318,7 @@ protected:
 			_params[ fName ] = new NParam( fName, valuel );
 	}
 
-	unsigned Remove(const NrpText& key);
+	unsigned UnregProperty(const NrpText& key);
 	/// Erase the specified element of the Array
 private:
 	//! определение массива свойств

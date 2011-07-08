@@ -8,6 +8,8 @@ class INrpDevelopProject;
 class CNrpProjectModule : public IWorkingModule
 {
 public:
+    static const NrpText saveTemplate;
+
 	CNrpProjectModule( CNrpTechnology& pTech, INrpDevelopProject& pProject  );
 	CNrpProjectModule( CNrpPlatform& platform, INrpDevelopProject& project );
 	CNrpProjectModule( PROJECT_TYPE type, INrpDevelopProject& pProject );

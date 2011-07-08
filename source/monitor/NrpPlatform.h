@@ -10,9 +10,14 @@ OPTION_NAME MAXWIDTH("rwidth");
 OPTION_NAME MAXHEIGHT("rheight");
 OPTION_NAME SELLDEVICE("selldevice");
 
+class CNrpHistory;
+
 class CNrpPlatform : public INrpProject
 {
 public:
+    static const NrpText historyTemplate;
+    static const NrpText saveTemplate;
+
 	CNrpPlatform( const NrpText& fileName );
 	~CNrpPlatform(void);
 

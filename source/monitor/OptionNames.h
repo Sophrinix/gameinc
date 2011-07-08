@@ -57,5 +57,12 @@ OPTION_NAME SKILL_DRAWING( L"skill_drawing" );
 OPTION_NAME SKILL_SOUND( L"skill_sound" );
 OPTION_NAME ERRORNUMBER( L"moduleErrorNumber");
 OPTION_NAME BASEFILE( L"baseFile" );
+OPTION_NAME URL( L"url" ); 
+OPTION_NAME LOADOK( L"loadok" );
+OPTION_NAME GAME_ENGINE( L"gameEngine" );
+OPTION_NAME HISTORY( L"history" );
+OPTION_NAME COPYSELL( L"copySell" );
+OPTION_NAME GAMENUMBER( L"gameNumber" );
+OPTION_NAME PRICE( L"price" );
 
 }//end namespace nrp

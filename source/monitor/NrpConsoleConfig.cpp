@@ -12,21 +12,21 @@ CLASS_NAME CLASS_CONSOLECONFIG( L"CNrpConsoleConfig" );
 
 void CNrpConsoleConfig::_InitializeOptions()
 {
-	Add<int>( CONSOLE_INIT_KEY, '`' );
-	Add<core::dimension2df>( CONSOLE_RELATIVE_SIZE, core::dimension2df( 0.9f, 0.6f ) );
-	Add<int>( CONSOLE_LINE_SPACING, 2 );
-	Add<int>( CONSOLE_INDENT, 1 );
-	Add<NrpText>( CONSOLE_VERT_ALIGN, "top" );
-	Add<NrpText>( CONSOLE_HORT_ALIGN, "center" );
-	Add<bool>( CONSOLE_SHOW_BACKGROUND, true );
-	Add<video::SColor>( CONSOLE_BG_COLOR, video::SColor( 150,10,10,70) );
-	Add<video::SColor>( CONSOLE_FONT_COLOR, video::SColor( 200,200,200,200 ) );
-	Add<NrpText>( CONSOLE_FONTNAME, "font_8" ); 
-	Add<NrpText>( CONSOLE_PROMT, "nrp" );
-	Add<int>( CONSOLE_HISTORY_SIZE, 10 );
-	Add<int>( CONSOLE_MAX_BLEND, 128 );
-	Add<NrpText>( CONSOLE_COMMANDS_FILE, "console.commands" );
-	Add<NrpText>( CONSOLE_GUINAME, "SystemConsole" );
+	RegProperty<int>( CONSOLE_INIT_KEY, '`' );
+	RegProperty<core::dimension2df>( CONSOLE_RELATIVE_SIZE, core::dimension2df( 0.9f, 0.6f ) );
+	RegProperty<int>( CONSOLE_LINE_SPACING, 2 );
+	RegProperty<int>( CONSOLE_INDENT, 1 );
+	RegProperty<NrpText>( CONSOLE_VERT_ALIGN, "top" );
+	RegProperty<NrpText>( CONSOLE_HORT_ALIGN, "center" );
+	RegProperty<bool>( CONSOLE_SHOW_BACKGROUND, true );
+	RegProperty<video::SColor>( CONSOLE_BG_COLOR, video::SColor( 150,10,10,70) );
+	RegProperty<video::SColor>( CONSOLE_FONT_COLOR, video::SColor( 200,200,200,200 ) );
+	RegProperty<NrpText>( CONSOLE_FONTNAME, "font_8" ); 
+	RegProperty<NrpText>( CONSOLE_PROMT, "nrp" );
+	RegProperty<int>( CONSOLE_HISTORY_SIZE, 10 );
+	RegProperty<int>( CONSOLE_MAX_BLEND, 128 );
+	RegProperty<NrpText>( CONSOLE_COMMANDS_FILE, "console.commands" );
+	RegProperty<NrpText>( CONSOLE_GUINAME, "SystemConsole" );
 }
 
 CNrpConsoleConfig::CNrpConsoleConfig(void) : INrpConfig( CLASS_CONSOLECONFIG, CLASS_CONSOLECONFIG )

@@ -17,10 +17,10 @@ const NrpText CNrpQuestEngine::UnExist = "__unexist";
 
 CNrpQuestEngine::CNrpQuestEngine(void) : INrpConfig( CLASS_NRPQUESTENGINE, CLASS_NRPQUESTENGINE )
 {
-	Add<NrpText>( CLASSOBJECT, CLASS_NRPQUESTENGINE );
-	Add( ACTIVE_QUESTS_NUMBER, 0 );
-	Add( QUEST_NUMBER, 0 );
-    Add( QUEST_RESULT_NUMBER, 0 );
+	RegProperty<NrpText>( CLASSOBJECT, CLASS_NRPQUESTENGINE );
+	RegProperty( ACTIVE_QUESTS_NUMBER, 0 );
+	RegProperty( QUEST_NUMBER, 0 );
+    RegProperty( QUEST_RESULT_NUMBER, 0 );
 }
 
 CNrpQuestEngine::~CNrpQuestEngine(void)

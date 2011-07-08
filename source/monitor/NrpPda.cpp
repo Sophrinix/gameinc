@@ -8,6 +8,12 @@ namespace nrp
 CLASS_NAME CLASS_PDAITEM( "CPdaItem" );
 CLASS_NAME CLASS_CNRPPDA( "CNrpPda" );
 
+const NrpText CPdaItem::time = L"time";
+const NrpText CPdaItem::action = L"action";
+const NrpText CPdaItem::message = L"message";
+
+const CPdaItem CNrpPda::invalidItem = CPdaItem( "__errorItem", 0, NrpTime( 0. ) );
+
 CNrpPda::CNrpPda() : INrpConfig( CLASS_CNRPPDA, "" )
 {
 
@@ -35,9 +41,9 @@ NrpText CNrpPda::Save( const NrpText& fileName )
 		CPdaItem* item = _items[ k ];
 		NrpText section = CreateKeyItem( k );
 		assert( item->Text( MESSAGE ).size() > 0 );
-		sv.Set( section, "message", (NrpText)(*item)[ MESSAGE ] );
-		sv.Set( section, "time", (*item)[ STARTDATE ].As<NrpTime>() );
-		sv.Set( section, "action", (NrpText)(*item)[ ACTION ] );
+        sv.Set( section, CPdaItem::message, (NrpText)(*item)[ MESSAGE ] );
+		sv.Set( section, CPdaItem::time, (*item)[ STARTDATE ].As<NrpTime>() );
+        sv.Set( section, CPdaItem::action, (NrpText)(*item)[ ACTION ] );
 	}	
 
 	sv.Save();
@@ -54,13 +60,13 @@ void CNrpPda::Load( const NrpText& fileName )
 	for( int k=0; k < MAXDWORD; k++ )
 	{
 		NrpText section = CreateKeyItem( k );
-		NrpText mess = rv.Get( section, "message", NrpText("") );
+        NrpText mess = rv.Get( section, CPdaItem::message, NrpText("") );
 		//читаем до первого пустого сообщения))
 		if( mess.size() > 0 )
 		{
 			AddItem( mess, 
-					 rv.Get( section, "action", NrpText() ),
-					 rv.Get( section, "time", timeDef ) );
+                     rv.Get( section, CPdaItem::action, NrpText() ),
+                     rv.Get( section, CPdaItem::time, timeDef ) );
 		}
 		else 
 			break;
@@ -95,7 +101,7 @@ const CPdaItem& CNrpPda::Current()
 	bool valid =  _currentIndex >= 0 && _currentIndex < static_cast< int >( _items.size() );
 	assert( valid );
 
-	return valid ? *_items[ _currentIndex ] : CPdaItem( "", 0, NrpTime( 0. ) );
+	return valid ? *_items[ _currentIndex ] : invalidItem;
 }
 
 NrpText CNrpPda::ClassName()
@@ -113,9 +119,9 @@ CPdaItem::CPdaItem( const NrpText& m, const NrpText& a, const NrpTime& t ) : INr
 {
 	assert( m.size() > 0 );
 
-	Add<NrpText>( MESSAGE, m );
-	Add<NrpText>( ACTION, a);
-	Add( STARTDATE, t );
+	RegProperty<NrpText>( MESSAGE, m );
+	RegProperty<NrpText>( ACTION, a );
+	RegProperty( STARTDATE, t );
 }
 
 CPdaItem::CPdaItem() : INrpConfig( CLASS_PDAITEM, "" )

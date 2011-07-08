@@ -241,6 +241,8 @@ void CNrpMainScene::OnUpdate()
 			mouseSceneBLeftEvent_ = false;
 			twinLeftMouseClick_ = false;
 		}
+
+        _nrpEngine.GetDevice()->yield();
 	}
 	catch(...)
 	{

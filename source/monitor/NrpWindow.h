@@ -76,6 +76,8 @@ public:
 	virtual void setAlphaBlend( u32 new_alpha );
 
 	virtual void setModal();
+
+    virtual void setSortMode( SORT_TYPE newSort ) { _sortType = newSort; }
 protected:
 	
 	typedef enum { BTNE_CLOSE=0, BTNE_MINIMAZE, BTNE_MAXIMAZE } BUTTON_NAME;
@@ -89,6 +91,7 @@ protected:
 	SORT_TYPE _sortType;
 
 	void _ApplyStyle( CImageGUISkin* skin );
+    void addChildToEnd(IGUIElement* child);
 };
 
 } // end namespace gui

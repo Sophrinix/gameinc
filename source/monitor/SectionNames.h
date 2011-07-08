@@ -54,6 +54,7 @@ NrpText CreateKeyRecense( int index );
 NrpText CreateKeyProject( int index );
 NrpText CreateKeyEngine( int index );
 NrpText CreateKeyGame( int index );
+NrpText CreateKeyName( int index );
 
 NrpText CreateKeyType( int index );
 NrpText CreateKeyModule( int index );

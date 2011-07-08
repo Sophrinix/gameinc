@@ -20,20 +20,20 @@ CNrpGameEngine::CNrpGameEngine( const NrpText& name ) : INrpProject( CLASS_GAMEE
 
 void CNrpGameEngine::_InitialyzeOptions()
 {
-	Add<int>( AVGENRE_COUNT, 0 );
-	Add<int>( BALANCE, 0 );
-	Add<NrpText>( INTERNAL_NAME, "" ); 
-	Add<int>( TIME_ACTUAL, 0 );
-	Add<int>( GENRE_MODULE_NUMBER, 0 );
-	Add<int>( CODEVOLUME, 0 );
-	Add<int>( QUALITY, 0 );
-	Add<int>( SKILL_CODING, 0 );
-	Add<NrpText>( COMPANYNAME, "" );
-	Add<PNrpCompany>( PARENTCOMPANY, NULL );
-	Add<NrpText>( TEXTURENORMAL, "" );
-	Add( STARTDATE, NrpTime( 0. ) );
-	Add( CPU, 0.f );
-	Add( ADVTECHNUMBER, 0 );
+	RegProperty<int>( AVGENRE_COUNT, 0 );
+	RegProperty<int>( BALANCE, 0 );
+	RegProperty<NrpText>( INTERNAL_NAME, "" ); 
+	RegProperty<int>( TIME_ACTUAL, 0 );
+	RegProperty<int>( GENRE_MODULE_NUMBER, 0 );
+	RegProperty<int>( CODEVOLUME, 0 );
+	RegProperty<int>( QUALITY, 0 );
+	RegProperty<int>( SKILL_CODING, 0 );
+	RegProperty<NrpText>( COMPANYNAME, "" );
+	RegProperty<PNrpCompany>( PARENTCOMPANY, NULL );
+	RegProperty<NrpText>( TEXTURENORMAL, "" );
+	RegProperty( STARTDATE, NrpTime( 0. ) );
+	RegProperty( CPU, 0.f );
+	RegProperty( ADVTECHNUMBER, 0 );
 
 	_self[ TECHGROUP ] = static_cast< int >( PT_GAMEENGINE );
 }
@@ -64,7 +64,7 @@ bool CNrpGameEngine::IsMyTech( const NrpText& name )
 	return (_techs.find( name ) != NULL );
 }
 
-const NrpText& CNrpGameEngine::GetGenre( int index )
+NrpText CNrpGameEngine::GetGenre( int index )
 {
 	KNOWLEDGE_MAP::Iterator pIter = _techs.getIterator();
 

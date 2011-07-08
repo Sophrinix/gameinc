@@ -29,16 +29,16 @@ CNrpSoundEngine& CNrpSoundEngine::Instance()
 
 void CNrpSoundEngine::_RemoveFinishedSounds()
 {
-	for( SOUND_MAP::iterator pIter=_sounds.begin(); pIter != _sounds.end(); pIter++ )
+	for( SOUND_MAP::iterator pIter=_sounds.begin(); pIter != _sounds.end();  )
 	{
 		if( pIter->second->isFinished() )
 		{
 			pIter->second->stop();
 			pIter->second->drop();
-			SOUND_MAP::iterator delIter = pIter;
-			pIter--;
-			_sounds.erase( delIter );
+			_sounds.erase( pIter++ );
 		}
+        else
+            ++pIter;
 	}
 }
 
@@ -46,6 +46,10 @@ void CNrpSoundEngine::Play( NrpText name, const NrpText& pathToFile, bool loop )
 {
 	Remove( name );
 	_RemoveFinishedSounds();
+
+    if( !pathToFile.size() )
+        return;
+
 	NrpText realPath = _CheckFile( pathToFile );
 
 	if( OpFileSystem::IsExist( realPath ) )
@@ -56,7 +60,7 @@ void CNrpSoundEngine::Play( NrpText name, const NrpText& pathToFile, bool loop )
 		_sounds[ name ] = _engine->play2D( realPath, loop, false, true );
 	}
 	else
-		Log( HW ) << "Can't find sound " << realPath;
+		Log( HW ) << "Can't find sound " << realPath << term;
 }
 
 void CNrpSoundEngine::Play( const NrpText& name, bool play )

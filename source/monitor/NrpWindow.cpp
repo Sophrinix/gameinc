@@ -10,6 +10,7 @@
 #include <IVideoDriver.h>
 #include "ImageGUISkin.h"
 #include "nrpButton.h"
+#include <assert.h>
 
 namespace irr
 {
@@ -428,6 +429,43 @@ void CNrpWindow::setAlphaBlend( u32 new_alpha )
 		(*it)->setAlphaBlend( new_alpha );
 
 	IGUIWindow::setAlphaBlend( new_alpha );
+}
+
+void CNrpWindow::addChildToEnd(IGUIElement* child)
+{
+    assert( child );
+    if( child )
+        IGUIWindow::addChildToEnd( child );
+
+    if( _sortType == ST_NONE || Children.size() == 0 )
+        return;
+
+    bool needUpdate = true;
+    int startPos = 0;
+    while( needUpdate )
+    {
+        core::list<IGUIElement*>::Iterator swapIterr;
+        core::list<IGUIElement*>::Iterator iterr = Children.begin() + startPos;
+        int maxY = 99999;
+        for( ; iterr != Children.end(); iterr++ )
+        {
+            if( maxY >= (*iterr)->getRelativePosition().LowerRightCorner.Y )
+            {
+                maxY = (*iterr)->getRelativePosition().LowerRightCorner.Y;
+                swapIterr = iterr;
+                needUpdate = true;
+            }
+        }
+
+        if( needUpdate )
+        {
+            IGUIElement* elm = *swapIterr;
+            Children.erase( swapIterr );
+            Children.insert_after( Children.begin() + startPos, elm );
+            startPos++;
+            needUpdate = false;
+        }
+    }
 }
 
 void CNrpWindow::setModal()

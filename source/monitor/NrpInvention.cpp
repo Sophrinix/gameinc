@@ -45,7 +45,7 @@ CNrpInvention::CNrpInvention( CNrpTechnology& refTech, CNrpCompany& pCmp, NrpTim
 	_self[ STARTDATE ] = refTech[ STARTDATE ];
 	_self[ REALPRICE ] = _GetRealPrice( time );
 
-	Add( PROGNOSEDATEFINISH, NrpTime( 0. ) );
+	RegProperty( PROGNOSEDATEFINISH, NrpTime( 0. ) );
 	CheckParams( time );
 
 		CopyMapTo( _techRequires, refTech.GetTechRequires() );
@@ -61,16 +61,16 @@ CNrpInvention::CNrpInvention( const NrpText& fileName )
 
 void CNrpInvention::InitializeOptions_()
 {
-	Add( REALPRICE, 0 );
-	Add( PASSEDPRICE, 0 );
-	Add( INVESTIMENT, 1000 );
-	Add( DAYLEFT, 0 );
-	Add( INVENTIONSPEED, 0 );
-	Add( USERNUMBER, 0 );
-	Add( COMPANYNAME, NrpText( "" ) );
-	Add( PROGNOSEDATEFINISH, NrpTime( 0. ) );
-	Add( USERSTARTDATE, NrpTime( 0. ) );
-	Add( MONEY_TODECREASE, 0 );
+	RegProperty( REALPRICE, 0 );
+	RegProperty( PASSEDPRICE, 0 );
+	RegProperty( INVESTIMENT, 1000 );
+	RegProperty( DAYLEFT, 0 );
+	RegProperty( INVENTIONSPEED, 0 );
+	RegProperty( USERNUMBER, 0 );
+	RegProperty( COMPANYNAME, NrpText( "" ) );
+	RegProperty( PROGNOSEDATEFINISH, NrpTime( 0. ) );
+	RegProperty( USERSTARTDATE, NrpTime( 0. ) );
+	RegProperty( MONEY_TODECREASE, 0 );
 }
 
 void CNrpInvention::CheckParams( NrpTime time )

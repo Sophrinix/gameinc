@@ -215,13 +215,13 @@ void CNrpGuiLink::draw()
 	{
 		rect = AbsoluteRect;
 
-		int color = overrideColorEnabled_ ? overrideColor_.color : 0xff00ff00;
+        video::SColor color = overrideColorEnabled_ ? overrideColor_ : video::SColor( AlphaBlend, 0x00, 0xff, 0x0 );
 
 		if( IsEnabled )
-			color &= ( (Environment->isHovered( this ) || pressed_) ? 0xffffffff : 0x80ffffff );
+			color.setAlpha( (Environment->isHovered( this ) || pressed_) ? AlphaBlend : AlphaBlend / 2 );
 		else
-			color &= 0xff707070;
-		
+			color.color &= 0x70707070;
+	
 		if (font)
 			font->draw(Text.c_str(), rect,
 			video::SColor( color ), true, true, 

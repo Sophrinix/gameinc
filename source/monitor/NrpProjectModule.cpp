@@ -13,6 +13,8 @@ namespace nrp
 {
 CLASS_NAME CLASS_PROJECTMODULE( "CNrpProjectModule" );
 
+const NrpText CNrpProjectModule::saveTemplate = L".devmod";
+
 CNrpProjectModule::CNrpProjectModule( CNrpTechnology& refTech, INrpDevelopProject& pProject )
 	: IWorkingModule( PROJECT_TYPE( (int)refTech[ TECHGROUP ] ), CLASS_PROJECTMODULE )
 {
@@ -72,15 +74,15 @@ void CNrpProjectModule::_UpdateProgress( NParam& rr ) { _self[ READYWORKPERCENT 
 
 void CNrpProjectModule::_InitializeOptions()
 {
-	Add<CNrpUser*>( LASTWORKER, NULL );
-	Add<CNrpUser*>( COMPONENTLIDER, NULL );
-	Add( CODEVOLUME, 0 );
-	Add( CODEPASSED, 0 );
-	Add( ERRORNUMBER, 0 );
-	Add( USERNUMBER, 0 );
-	Add( MONEYONDEVELOP, 0 );
-	Remove( PARENT );
-	Add<INrpDevelopProject*>( PARENT, NULL );
+	RegProperty<CNrpUser*>( LASTWORKER, NULL );
+	RegProperty<CNrpUser*>( COMPONENTLIDER, NULL );
+	RegProperty( CODEVOLUME, 0 );
+	RegProperty( CODEPASSED, 0 );
+	RegProperty( ERRORNUMBER, 0 );
+	RegProperty( USERNUMBER, 0 );
+	RegProperty( MONEYONDEVELOP, 0 );
+	UnregProperty( PARENT );
+	RegProperty<INrpDevelopProject*>( PARENT, NULL );
 
 	_self[ CODEPASSED ].AddNotification( "checkPercent", this, &CNrpProjectModule::_UpdateProgress );
 }
@@ -163,7 +165,7 @@ NrpText CNrpProjectModule::Save( const NrpText& saveFolder )
 {
 	OpFileSystem::CreateDirectory( saveFolder );
 
-	NrpText fileName = saveFolder + Text( INTERNAL_NAME ) + ".devmod";
+	NrpText fileName = saveFolder + Text( INTERNAL_NAME ) + saveTemplate;
 	assert( !OpFileSystem::IsExist( fileName ) );
 
 	INrpProject::Save( fileName );

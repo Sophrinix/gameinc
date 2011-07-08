@@ -140,35 +140,9 @@ void CNrpImageSkinLoader::Load( io::IFileSystem* fileSystem,
     
         const core::array< core::stringc >& items = cfg->GetControls();
 
-        for( int i=0; i < items.size(); i++ )
+        for( u32 i=0; i < items.size(); i++ )
             ParseGUIElementStyle_( driver, cfg, skin_config, items[ i ], context );
-        /*
-        ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::Button ], "Button", context );
-        ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ButtonPressed ], "ButtonPressed", context );
-        ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ButtonHovered ], "ButtonHovered", context );
-        ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ButtonDisabled ], "ButtonDisabled", context );
-
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::SunkenPane ], "SunkenPane", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::Window ], "Window", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::WindowCaption ], "WindowCaption", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ProgressBar ], "ProgressBar", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ProgressBarFilled ], "ProgressBarFilled", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::CheckBox ], "CheckBox", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::CheckBoxChecked ], "CheckBoxChecked", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::CheckBoxDisabled ], "CheckBoxDisabled", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::CheckBoxDisabled ], "CheckBoxHovered", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::EditBox ], "EditBox", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::EditBoxHovered ], "EditBoxFocused", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::EditBoxDisabled ], "EditBoxDisabled", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ComboBox ], "ComboBox", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ComboBoxHovered ], "ComboBoxFocused", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ComboBoxDisabled ], "ComboBoxDisabled", context );
-		//ParseGUIElementStyle( driver, cfg, skin.ListBox, "ListBox", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::ContextMenu ], "ContextMenu", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::WindowCloseButton ], "WindowCloseButton", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::WindowCloseHoveredButton ], "WindowCloseHoveredButton", context );
-		ParseGUIElementStyle_( driver, cfg, skin_config.configs[ SImageGUISkinConfig::WindowClosePressedButton ], "WindowClosePressedButton", context );
-*/
+        
 		delete cfg;
 	}
 	catch(...)

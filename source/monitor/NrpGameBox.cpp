@@ -9,6 +9,8 @@
 
 namespace nrp
 {
+const NrpText CNrpGameBox::saveTemplate = L"box.ini";
+
 CLASS_NAME CLASS_GAMEBOX( "CNrpGameBox" );
 
 CNrpGameBox::~CNrpGameBox(void)
@@ -133,12 +135,12 @@ NrpText CNrpGameBox::ClassName()
 nrp::CNrpGameBox::CNrpGameBox( CNrpGame* ptrGame ) : INrpConfig( CLASS_GAMEBOX, "" )
 {
 	assert( ptrGame != NULL );
-	Add<NrpText>( NAME, ptrGame ? ptrGame->Text( NAME ) : "" );
-	Add<PNrpGame>( GAME, ptrGame );
-	Add<int>( NUMBERADDON, 0 );
-	Add<int>( LEVEL, 0 );
-	Add<int>( BOXNUMBER, 0 );
-	Add<int>( PRICE, 18 );
+	RegProperty<NrpText>( NAME, ptrGame ? ptrGame->Text( NAME ) : "" );
+	RegProperty<PNrpGame>( GAME, ptrGame );
+	RegProperty( NUMBERADDON, 0 );
+	RegProperty( LEVEL, 0 );
+	RegProperty( BOXNUMBER, 0 );
+	RegProperty( PRICE, 18 );
 }
 
 }//end of namespace nrp

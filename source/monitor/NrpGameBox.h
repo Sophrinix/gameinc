@@ -16,6 +16,8 @@ OPTION_NAME NUMBERADDON( "numberAddon" );
 class CNrpGameBox : public INrpConfig
 {
 public:
+    static const NrpText saveTemplate;
+
 	CNrpGameBox( CNrpGame* ptrGame );
 	bool IsMyAddon( const NrpText& name );
 	void RemoveAddon( const NrpText& name );

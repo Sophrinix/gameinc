@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "nrpConfig.h"
-#include "NrpConfigLooder.h"
+#include "NrpConfigSyncer.h"
 
 namespace nrp
 {
+
+const NrpText INrpConfig::uniqTemplate = L"internalname:string";
 //Проверка совпадения типов
 bool CheckClassesType( const type_info& type1, const type_info& type2 )
 {
@@ -19,14 +21,22 @@ bool CheckClassesType( const type_info& type1, const type_info& type2 )
 //Загрузка параметров из файла
 void INrpConfig::Load( const NrpText& fileName )
 {
-	CNrpConfigLooder p( this );
-	p.Load( fileName );
+    try
+    {
+    	CNrpConfigSyncer p( this );
+	    p.Load( fileName );
+    }
+    catch(...)
+    {
+        Log( HW ) << "Error INrpConfig:Load can't load config from " << fileName << term;
+        _self[ LOADOK ] = false;
+    }
 }
 
 //Созранение конфига в файл
 NrpText INrpConfig::Save( const NrpText& fileName )
 {
-	CNrpConfigLooder p( this );
+	CNrpConfigSyncer p( this );
 	p.Save( fileName );
 
 	return fileName;
@@ -39,7 +49,7 @@ bool INrpConfig::IsExist(const NrpText& key) const
 }
 
 //Удаление параметра из карты
-unsigned INrpConfig::Remove(const NrpText& key) 
+unsigned INrpConfig::UnregProperty(const NrpText& key) 
 {
 	PARAMS::iterator node = _params.find( key.ToLower() );
 	if( node != _params.end() )

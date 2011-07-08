@@ -40,10 +40,10 @@ int _SaveWorks( R& arrayt, int startNum, NrpText (*func)(int), const NrpText& fi
 
 CNrpPlant::CNrpPlant(void) : INrpConfig( CLASS_NRPPLANT, "" )
 {
-	Add<int>( WORKNUMBER, 0 );
-	Add<int>( BASEREKLAMENUMBER, 0 );
-	Add<int>( REKLAMENUMBER, 0 );
-	Add<int>( DISKMACHINENUMBER, 0 );
+	RegProperty<int>( WORKNUMBER, 0 );
+	RegProperty<int>( BASEREKLAMENUMBER, 0 );
+	RegProperty<int>( REKLAMENUMBER, 0 );
+	RegProperty<int>( DISKMACHINENUMBER, 0 );
 }
 
 CNrpPlant::~CNrpPlant(void)
@@ -106,8 +106,10 @@ void CNrpPlant::BeginNewDay()
 	for( u32 k=0; k < _works.size(); k++ )
 	{
 		 _works[ k ]->BeginNewDay();
-		 if( (bool)_works[ k ]->Param( FINISHED ) )
-		 { //если это задание закончилось
+		 if( (bool)(*_works[ k ])[ FINISHED ] )
+		 { 
+             _nrpApp.PCall( APP_PRODUCE_FINISHED, _works[ k ] );
+             //если это задание закончилось
 			 delete _works[ k ];
 			 _works.erase( k );
 			 //удалим его из списка
@@ -244,12 +246,18 @@ CNrpDiskMachine* CNrpPlant::GetDiskMachine( size_t index )
 void CNrpPlant::AddDiskMachine( CNrpDiskMachine* pDm )
 {
 	_diskMachines.push_back( pDm );
-	Param( DISKMACHINENUMBER) = static_cast< int >( _diskMachines.size() );
+	_self[ DISKMACHINENUMBER ] = static_cast< int >( _diskMachines.size() );
 }
 
 NrpText CNrpPlant::ClassName()
 {
 	return CLASS_NRPPLANT;
+}
+
+CNrpPlantWork* CNrpPlant::GetWork( u32 index )
+{
+    assert( index < _works.size() );
+    return index < _works.size() ? _works[ index ] : NULL;
 }
 
 }//end namespace nrp

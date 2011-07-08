@@ -6,6 +6,8 @@ namespace nrp
 {
 OPTION_NAME HISTORY_SIZE( "historySize" );
 
+class IniFile;
+
 class CNrpHistoryStep : public INrpConfig
 {
 	CNrpHistoryStep();
@@ -16,12 +18,16 @@ public:
 	void AddValue( const NrpText& name, T amount )
 	{
 		if( !IsExist( name ) )
-			Add<T>( name, amount );
+			RegProperty<T>( name, amount );
 		else
 		{
 			_self[ name ].As<T>() += amount;
 		}
 	}
+
+private:
+    NrpText Save( const NrpText& fileName ) { assert( false && "no function" ); return ""; };
+    void Load( const NrpText& fileName ) {};
 };
 
 typedef std::map< int, CNrpHistoryStep* > HISTORY_MAP;

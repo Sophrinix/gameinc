@@ -20,10 +20,19 @@ CNrpGuiLinkBox::CNrpGuiLinkBox( IGUIEnvironment* environment,
 						  s32 id, 
 						  const core::recti& rectangle, 
 						  bool noclip)
-			: CNrpButton( environment, parent, id, rectangle), _defaultImage( NULL )
+			: CNrpButton( environment, parent, id, rectangle), _defaultImage( NULL ),
+              _relTextAlign( RTA_CENTER ) 
 {
 	moduleType_ = nrp::PT_UNKNOWN;
 	data_ = NULL;
+
+    if( CImageGUISkin* skin = dynamic_cast< CImageGUISkin* >( environment->getSkin() ) )
+    {
+        setImage( skin->Config.GetConfig( this, SImageGUISkinConfig::LinkBox, SImageGUISkinConfig::Normal ).texture );
+        setHoveredImage( skin->Config.GetConfig( this, SImageGUISkinConfig::LinkBox, SImageGUISkinConfig::Hovered ).texture );
+        setPressedImage( skin->Config.GetConfig( this, SImageGUISkinConfig::LinkBox, SImageGUISkinConfig::Pressed ).texture );
+        setScaleImage( true );
+    }
 }
 
 gui::EGUI_ELEMENT_TYPE CNrpGuiLinkBox::getType()
@@ -222,11 +231,28 @@ void CNrpGuiLinkBox::draw()
 	if (Text.size())
 	{
 		rect = AbsoluteRect;
-     	rect.UpperLeftCorner.Y += 2 * pressed_;
+        bool hcenter=true, vcenter=true;
+        switch( _relTextAlign )
+        {
+        case RTA_LEFT: 
+                AbsoluteRect -= core::position2di( AbsoluteRect.getWidth(), 0 );                    
+        break;
+        case RTA_BOTTOM: 
+                vcenter = false; 
+                AbsoluteRect += core::position2di( 0, AbsoluteRect.getHeight() );
+        break;
+        case RTA_TOP: 
+                AbsoluteRect -= core::position2di( 0, AbsoluteRect.getHeight() / 2 );
+        break;
+
+        case RTA_RIGHT:
+                AbsoluteRect += core::position2di( AbsoluteRect.getWidth() );
+        break;        
+        }
 
 		if (font)
 			font->draw(Text.c_str(), rect,
-			overrideColorEnabled_ ? overrideColor_ : Environment->getSkin()->getColor(IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT), true, true, 
+			overrideColorEnabled_ ? overrideColor_ : Environment->getSkin()->getColor(IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT), hcenter, vcenter, 
 			0 );
 	}
 
@@ -249,6 +275,11 @@ void CNrpGuiLinkBox::setDefaultImage( video::ITexture* image )
 
 	if (_defaultImage)
 		_defaultImage->grab();}
+
+void CNrpGuiLinkBox::setTextPos( REL_TEXT_ALIGN align )
+{
+       _relTextAlign = align;
+}
 
 }//namespace gui
 

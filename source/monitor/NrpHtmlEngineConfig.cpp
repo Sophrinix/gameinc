@@ -6,10 +6,12 @@ namespace nrp
 {
 CLASS_NAME CLASS_HTMLENGCONFIG( "CNrpHtmlEngineConfig" );
 
+const NrpText CNrpHtmlEngineConfig::defaultConfig = L"config/html.ini";
+
 CNrpHtmlEngineConfig::CNrpHtmlEngineConfig(void) : INrpConfig( CLASS_HTMLENGCONFIG, CLASS_HTMLENGCONFIG )
 {
-	Add(BASEDIR, NrpText(""));
-	Load( "config/html.ini" );
+	RegProperty(BASEDIR, NrpText(""));
+	Load( defaultConfig );
 	assert( Param(BASEDIR).As<NrpText>().size() > 0 );
 }
 
@@ -26,4 +28,4 @@ NrpText CNrpHtmlEngineConfig::ClassName()
 	return CLASS_HTMLENGCONFIG;
 }
 
-}//namespace nrp
+}

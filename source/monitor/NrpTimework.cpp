@@ -37,16 +37,16 @@ NrpTimework::NrpTimework( CNrpUser& user, const NrpTime& startDate, const NrpTim
 
 void NrpTimework::_InitializeOptions()
 {
-	Add<CNrpUser*>( LASTWORKER, NULL );
-	Add<int>( USERNUMBER, 0 );
-	Add<int>( MONEYONDEVELOP, 0 );
-	Add<NrpTime>( STARTDATE, NrpTime( 0. ) );
-	Add<NrpText>( PARAMNAME, NrpText("") );
-	Add<NrpTime>( LASTTIMEUPDATE, NrpTime( 0. ) );
-	Add<int>( DURATION, 0 );
-	Add<int>( OFFSET, 0 );
-	Remove( PARENT );
-	Add<INrpDevelopProject*>( PARENT, NULL );
+	RegProperty<CNrpUser*>( LASTWORKER, NULL );
+	RegProperty( USERNUMBER, 0 );
+	RegProperty( MONEYONDEVELOP, 0 );
+	RegProperty( STARTDATE, NrpTime( 0. ) );
+	RegProperty( PARAMNAME, NrpText("") );
+	RegProperty( LASTTIMEUPDATE, NrpTime( 0. ) );
+	RegProperty( DURATION, 0 );
+	RegProperty( OFFSET, 0 );
+	UnregProperty( PARENT );
+	RegProperty<INrpDevelopProject*>( PARENT, NULL );
 }
 
 void NrpTimework::Update( CNrpUser& ptrUser, const NrpTime& time )

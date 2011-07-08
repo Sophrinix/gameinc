@@ -48,8 +48,7 @@ public:
 	NrpText operator+( const NrpText& ) const;
 	NrpText operator+( int amount ) const;
 
-	void Conv2Hex();
-	NrpText& FromHex( const char* ptr_hex );
+	NrpText ToHex();
 
 	//представление строки в виде трехмерного вектора
 	vector3df ToVector3df();
@@ -57,8 +56,10 @@ public:
 	dimension2df ToDim2df();
 	dimension2du ToDim2du();
 	NrpText ToLower();
+    NrpText Replace( NrpText src, NrpText dst ) const;
 	NrpText ToLower() const;
 	recti ToRect();
+    NrpText Translit() const;
 	
 	//перевод широкой строки в число
 	bool IsNumber();
@@ -67,13 +68,17 @@ public:
 	int ToInt();											//перевод строки в число
 	bool ToBool();
 
+    s32 find( const NrpText& str );
+
 	const char* ToStr();
 	const wchar_t* ToWide() { return stringw::c_str(); }
 	const wchar_t* ToWide() const { return stringw::c_str(); }
+    NrpText ToUtf8( const NrpText& pref=NrpText(), const NrpText& pstf=NrpText() );
 
 	static NrpText LuaString( const NrpText& luaVarName );
 	static float LuaNumber( const NrpText& luaVarName );
-
+    static NrpText FromUtf8( const NrpText& text );
+    static NrpText FromHex( const char* ptr_hex );
 private:
 	void _FromStr( const char* str );
 	const wchar_t* c_str() { return stringw::c_str(); }

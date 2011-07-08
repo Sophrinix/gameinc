@@ -16,11 +16,11 @@ static nrp::CNrpLaborMarket* globalLaborMarket = NULL;
 namespace nrp
 {
 CLASS_NAME CLASS_NRPLABORMARKET( "CNrpLaborMarket" );
-static const NrpText MY_SAVE( L"users.list" );
+const NrpText CNrpLaborMarket::saveTemplate( L"users.list" );
 
 CNrpLaborMarket::CNrpLaborMarket(void) : INrpConfig( CLASS_NRPLABORMARKET, CLASS_NRPLABORMARKET )
 {
-	Add( USERNUMBER, (int)0 );
+	RegProperty( USERNUMBER, (int)0 );
 }
 
 CNrpLaborMarket::~CNrpLaborMarket(void)
@@ -224,7 +224,7 @@ NrpText CNrpLaborMarket::Save( const NrpText& folderName )
 {
 	assert( OpFileSystem::IsExist( folderName ) );
 
-	NrpText fileName = OpFileSystem::CheckEndSlash( folderName ) + MY_SAVE;
+	NrpText fileName = OpFileSystem::CheckEndSlash( folderName ) + saveTemplate;
 
 	INrpConfig::Save( fileName );
 
@@ -245,7 +245,7 @@ NrpText CNrpLaborMarket::Save( const NrpText& folderName )
 void CNrpLaborMarket::Load( const NrpText& folderName )
 {
 	assert( OpFileSystem::IsExist(folderName) );
-	NrpText fileName = OpFileSystem::CheckEndSlash(folderName) + MY_SAVE;
+	NrpText fileName = OpFileSystem::CheckEndSlash(folderName) + saveTemplate;
 
 	INrpConfig::Load( fileName );
 

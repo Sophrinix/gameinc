@@ -15,6 +15,9 @@ class CNrpDevelopGame : public INrpDevelopProject
 	CNrpDevelopGame();
 
 public:
+    static const NrpText saveTemplate;
+    static const NrpText extNameTemplate;
+
 	CNrpDevelopGame( const NrpText& name, CNrpCompany* ptrCompany );
 	CNrpDevelopGame( CNrpGameProject& nProject, CNrpCompany& ptrCompany );
 	CNrpDevelopGame( const NrpText& fileName );

@@ -8,7 +8,6 @@ namespace nrp
 OPTION_NAME CEO( L"ceo");
 OPTION_NAME ENGINES_NUMBER( L"engineNumber" );
 OPTION_NAME PROJECTNUMBER( L"projectNumber" );
-OPTION_NAME GAMENUMBER( L"gameNumber" );
 OPTION_NAME OBJECTSINPORTFELLE( L"objectInPortfelle" );
 OPTION_NAME DEVELOPPROJECTS_NUMBER( L"developProjectsNumber" );
 OPTION_NAME INVENTIONSNUMBER( L"inventionsNumber" );
@@ -23,6 +22,10 @@ OPTION_NAME SELF_PIE_NUMBER( L"self_pie" );
 class CNrpCompany : public INrpConfig
 {
 public:
+    static const NrpText postfix;
+    static const NrpText saveTemplate;
+    static const NrpText historyTemplate;
+
 	CNrpCompany( const NrpText& name, CNrpUser* ceo );
 	CNrpCompany( const NrpText& fileName );
 	~CNrpCompany(void);
@@ -37,7 +40,7 @@ public:
 	INrpConfig* GetFromPortfelle( size_t index ) const;
 	void RemoveFromPortfelle( const INrpConfig* ptrObject );
 	void AddToPortfelle( INrpConfig* ptrObject );
-	float GetUserModificatorForGame( CNrpGame* game );
+	float GetUserModificatorForGame( CNrpGame& game );
 
 	void AddDevelopProject( INrpDevelopProject* ptrDevProject );
 	INrpDevelopProject* GetDevelopProject( const NrpText& name ) const;
@@ -55,7 +58,7 @@ public:
 	CNrpInvention* GetInvention( int index );
 	void RemoveInvention( CNrpInvention& inv );
 
-	void AddUser( CNrpUser* user );
+	void AddUser( CNrpUser& user );
 	void RemoveUser( const NrpText& name );
 	CNrpUser* GetUser( int index ) const;
 	CNrpUser* GetUser( const NrpText& name ) const;
@@ -88,6 +91,7 @@ private:
 	void _UpdateGameProjectState();
 	void _InitialyzeOptions();
 	void _LoadArray( const NrpText& section, const NrpText& fileName, const NrpText& condition );
+    void _CreateHistory();
 }; 
 
 typedef CNrpCompany* PNrpCompany;

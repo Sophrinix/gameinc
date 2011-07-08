@@ -35,22 +35,39 @@ CNrpGuiBlendAnimator::CNrpGuiBlendAnimator( IGUIEnvironment* environment,
 void CNrpGuiBlendAnimator::draw()
 {
 	if( _currentAlpha >= _start && _currentAlpha <= _stop )  //проверяем границы работы аниматора
-		_currentAlpha += _step;
-	else												   //вышли за границы рабоыт
-	{
-		Parent->setVisible( _visOnStop );				   //установим значение видимости элемента	
+        _currentAlpha += _step;
 
-		if( _remSelf )										//удалим аниматор если надо
-			dynamic_cast< CNrpGUIEnvironment* >( Environment )->addToDeletionQueue( this );
+    bool mayDelete = false;
+    if( _currentAlpha < _start )
+    {
+        _currentAlpha = _start;
+        mayDelete = true;
+    }
+
+    if( _currentAlpha > _stop )
+    {
+        _currentAlpha = _stop;
+        mayDelete = true;
+    }
 	
-		if( _remParent )									//удалим родителя, если установлен такой флаг
-			dynamic_cast< CNrpGUIEnvironment* >( Environment )->addToDeletionQueue( Parent );
+ 	if( Parent )
+        Parent->setAlphaBlend( static_cast<u32>( _currentAlpha ) );			//установим новое значение прозрачности элемента
 
-		return;
-	}
+    if( mayDelete )//вышли за границы рабоыт
+    {
+        Parent->setVisible( _visOnStop );				   //установим значение видимости элемента	
 
-	if( Parent )
-		Parent->setAlphaBlend( static_cast<u32>( _currentAlpha ) );			//установим новое значение прозрачности элемента
+        if( CNrpGUIEnvironment* env = dynamic_cast< CNrpGUIEnvironment* >( Environment ) )
+        {
+            if( _remSelf )										//удалим аниматор если надо
+                env->addToDeletionQueue( this );
+
+            if( _remParent )									//удалим родителя, если установлен такой флаг
+                env->addToDeletionQueue( Parent );
+        }
+
+        return;
+    }
 }
 
 }//namespace gui

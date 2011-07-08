@@ -7,7 +7,7 @@ CLASS_NAME CLASS_SCENARIO( "CNrpScenario" );
 
 CNrpScenario::CNrpScenario( const NrpText& saveFile ) : INrpProject( CLASS_SCENARIO, "" )
 {
-	Add<NrpText>( NAME, "" );
+	RegProperty<NrpText>( NAME, "" );
 
 	Load( saveFile );
 }

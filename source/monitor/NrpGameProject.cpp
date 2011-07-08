@@ -10,6 +10,7 @@
 #include "OpFileSystem.h"
 #include "IniFile.h"
 #include "NrpPlatform.h"
+#include "NrpGameMarket.h"
 
 #include <errno.h>
 
@@ -51,7 +52,9 @@ void CNrpGameProject::SetGameEngine( CNrpGameEngine* gameEng )
 	_self[ GAME_ENGINE ] = (PNrpGameEngine)gameEng;
 	int modNumber = gameEng ? (int)(*gameEng)[ GENRE_MODULE_NUMBER ] : 0;
 	_self[ GENRE_MODULE_NUMBER ] = modNumber;
-	_self[ BASE_CODEVOLUME ] = gameEng ? (int)(*gameEng)[ CODEVOLUME ] : 0;
+    //см€гчаем услови€ выживани€ в игре
+    int engineCodeVolume = (int)(*gameEng)[ CODEVOLUME ] / (float)_nrpApp[ DEV_FORCE ];
+	_self[ BASE_CODEVOLUME ] = gameEng ? engineCodeVolume : 0;
 	_self[ BASEQUALITY ] = gameEng ? (int)(*gameEng)[ QUALITY ] : 0;
 
 	_genres.clear();
@@ -245,11 +248,11 @@ void CNrpGameProject::Load( const NrpText& loadFolder )
 	lv.Get( SECTION_GENRES, CreateKeyTech, _self[ GENRE_MODULE_NUMBER ], _genres, &CNrpApplication::GetTechnology,&_nrpApp );
 	lv.Get( SECTION_VIDEO, CreateKeyTech, _self[ VIDEOTECHNUMBER ], _video, &CNrpApplication::GetTechnology, &_nrpApp );	
 	lv.Get( SECTION_SOUND, CreateKeyTech, _self[ SOUNDTECHNUMBER ], _sound, &CNrpApplication::GetTechnology, &_nrpApp );
-	lv.Get( SECTION_PLATFORMS, CreateKeyTech, _self[ PLATFORMNUMBER ], _platforms, &CNrpApplication::GetPlatform, &_nrpApp );
+    lv.Get( SECTION_PLATFORMS, CreateKeyTech, _self[ PLATFORMNUMBER ], _platforms, &CNrpGameMarket::GetPlatform, &CNrpGameMarket::Instance() );
 	lv.Get( SECTION_LANGUGAGES, CreateKeyTech, _self[ LANGNUMBER ], _languages, &CNrpApplication::GetTechnology, &_nrpApp );
 
 	NrpText name = lv.Get( SECTION_PROPERTIES, GAME_ENGINE, NrpText("") );
-	_self[ GAME_ENGINE ] = _nrpApp.GetGameEngine( name );
+    _self[ GAME_ENGINE ] = CNrpGameMarket::Instance().GetGameEngine( name );
 
 	name = lv.Get( SECTION_PROPERTIES, SCENARIO, NrpText("") );
 	PNrpScenario scenario = new CNrpScenario( name );
@@ -269,36 +272,36 @@ void CNrpGameProject::_InitializeOptions( const NrpText& name )
 {
 	_self[ TECHGROUP ] = (int)PT_GAME;
 	_self[ NAME ] = name;
-	Add( GAME_ENGINE, (PNrpGameEngine)NULL );
-	Add( GENRE_MODULE_NUMBER, (int)0 );
-	Add( PREV_GAME, (PNrpGame)NULL );
-	Add( CODEVOLUME, (int)0 );
-	Add( BASE_CODEVOLUME, (int)0 );
-	Add<PNrpScenario>( SCENARIO, NULL );
-	Add<PNrpLicense>( GLICENSE, NULL ); 
-	Add<PNrpTechnology>( SCRIPTENGINE, NULL );
-	Add<PNrpTechnology>( MINIGAMEENGINE, NULL );
-	Add<PNrpTechnology>( PHYSICSENGINE, NULL );
-	Add<PNrpTechnology>( GRAPHICQUALITY, NULL );
-	Add( VIDEOTECHNUMBER, 0 );
-	Add<PNrpTechnology>( SOUNDQUALITY, NULL );
-	Add( SOUNDTECHNUMBER, 0 );
-	Add( LANGNUMBER, 0 );
-	Add( PLATFORMNUMBER, 0 );
-	Add( BASEQUALITY, 0 );
-	Add( ADVTECHNUMBER, 0 );
-	Add( ENGINE_CODEVOLUME, 0 );
-	Add( QUALITY, 0 );
-	Add<NrpText>( COMPANYNAME, "" );
-	Add<PNrpCompany>( PARENTCOMPANY, NULL );
-	Add( PLATFORMSUPPORTCODE, 0 );
-	Add( LANGUAGESUPPORTCODE, 0 );
-	Add<PNrpTechnology>( ENGINEEXTENDED, NULL );
-	Add( MONEYONDEVELOP, (int)0 );
-	Add( PROJECTREADY, false );
-	Add( FAMOUS, 0.f );
-	Add( CPU, 0.f );
-	Add( RAM, 0.f );
+	RegProperty( GAME_ENGINE, (PNrpGameEngine)NULL );
+	RegProperty( GENRE_MODULE_NUMBER, (int)0 );
+	RegProperty( PREV_GAME, (PNrpGame)NULL );
+	RegProperty( CODEVOLUME, (int)0 );
+	RegProperty( BASE_CODEVOLUME, (int)0 );
+	RegProperty<PNrpScenario>( SCENARIO, NULL );
+	RegProperty<PNrpLicense>( GLICENSE, NULL ); 
+	RegProperty<PNrpTechnology>( SCRIPTENGINE, NULL );
+	RegProperty<PNrpTechnology>( MINIGAMEENGINE, NULL );
+	RegProperty<PNrpTechnology>( PHYSICSENGINE, NULL );
+	RegProperty<PNrpTechnology>( GRAPHICQUALITY, NULL );
+	RegProperty( VIDEOTECHNUMBER, 0 );
+	RegProperty<PNrpTechnology>( SOUNDQUALITY, NULL );
+	RegProperty( SOUNDTECHNUMBER, 0 );
+	RegProperty( LANGNUMBER, 0 );
+	RegProperty( PLATFORMNUMBER, 0 );
+	RegProperty( BASEQUALITY, 0 );
+	RegProperty( ADVTECHNUMBER, 0 );
+	RegProperty( ENGINE_CODEVOLUME, 0 );
+	RegProperty( QUALITY, 0 );
+	RegProperty<NrpText>( COMPANYNAME, "" );
+	RegProperty<PNrpCompany>( PARENTCOMPANY, NULL );
+	RegProperty( PLATFORMSUPPORTCODE, 0 );
+	RegProperty( LANGUAGESUPPORTCODE, 0 );
+	RegProperty<PNrpTechnology>( ENGINEEXTENDED, NULL );
+	RegProperty( MONEYONDEVELOP, (int)0 );
+	RegProperty( PROJECTREADY, false );
+	RegProperty( FAMOUS, 0.f );
+	RegProperty( CPU, 0.f );
+	RegProperty( RAM, 0.f );
 }
 
 void CNrpGameProject::_GetAllTech( TECHS& techList )

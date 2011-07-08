@@ -74,8 +74,8 @@ namespace nrp
 CLASS_NAME CLASS_NRPSCRIPT( "CNrpScript" );
 CNrpScript::CNrpScript() : INrpConfig( CLASS_NRPSCRIPT, CLASS_NRPSCRIPT ), vm_(0)
 {
-	Add<NrpText>( LOAD_FUNCTIONS_FILENAME, "" );
-	Add<bool>( SHOW_CALL_FUNCTION_NAME, true );
+	RegProperty<NrpText>( LOAD_FUNCTIONS_FILENAME, "" );
+	RegProperty<bool>( SHOW_CALL_FUNCTION_NAME, true );
 
 	// NULL если была ошибка аллокации памяти
 	if (!(vm_ = luaL_newstate()))

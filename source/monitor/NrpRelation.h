@@ -14,9 +14,9 @@ class CNrpRelation : public INrpConfig
 public:
 	CNrpRelation( const NrpText& name, float valuel ) : INrpConfig( "CNrpRelation", "" )
 	{
-		Add<NrpText>( NAME, name );
-		Add<float>( REL_VALUE, valuel );
-		Add<NrpTime>( REL_TIME, NrpTime::FromLocalTime() );
+		RegProperty<NrpText>( NAME, name );
+		RegProperty<float>( REL_VALUE, valuel );
+		RegProperty<NrpTime>( REL_TIME, NrpTime::FromLocalTime() );
 	}
 
 	static NrpText ClassName();

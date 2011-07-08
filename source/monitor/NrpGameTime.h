@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _INCLUDE_GAMETIME_
+#define _INCLUDE_GAMETIME_
 
 namespace nrp
 {
@@ -19,3 +20,5 @@ private:
 };
 
 }//end namespace nrp
+
+#endif

@@ -8,17 +8,17 @@ CLASS_NAME CLASS_LOAN( "CNrpLoan" );
 
 void CNrpLoan::_InitOptions()
 {
-	Add<NrpText>( COMPANYNAME, "" );
-	Add( YEARPERCENT, 0.f );
-	Add( STARTDATE, NrpTime( 0. ) );
-	Add( ENDDATE, NrpTime( 0. ) );
-	Add( MONEY, 0 );
-	Add( STARTMONEY, 0 );
-	Add( MONEYPAY, 0 );
-	Add( CLOSESHTRAF, 0 );
-	Add( LOANTYPE, (int)TL_FREEMONEY );
-	Add( ID, 0 );
-	Add( MONTHLEFT, 0 );
+	RegProperty<NrpText>( COMPANYNAME, "" );
+	RegProperty( YEARPERCENT, 0.f );
+	RegProperty( STARTDATE, NrpTime( 0. ) );
+	RegProperty( ENDDATE, NrpTime( 0. ) );
+	RegProperty( MONEY, 0 );
+	RegProperty( STARTMONEY, 0 );
+	RegProperty( MONEYPAY, 0 );
+	RegProperty( CLOSESHTRAF, 0 );
+	RegProperty( LOANTYPE, (int)TL_FREEMONEY );
+	RegProperty( ID, 0 );
+	RegProperty( MONTHLEFT, 0 );
 }
 	
 CNrpLoan::CNrpLoan( int id ) : INrpConfig( CLASS_LOAN, "" )

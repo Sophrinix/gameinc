@@ -4,7 +4,7 @@
 #include "NrpGameProject.h"
 #include "NrpTechnology.h"
 #include "NrpGameBox.h"
-#include "NrpScreenshot.h"
+#include "NrpExtInfo.h"
 #include "NrpApplication.h"
 #include "NrpDevelopGame.h"
 #include "NrpProjectModule.h"
@@ -15,6 +15,8 @@
 #include "IniFile.h"
 #include "NrpTime.h"
 #include "NrpLaborMarket.h"
+#include "NrpScreenshotHolder.h"
+#include "NrpGameMarket.h"
 
 #include <errno.h>
 #include <OleAuto.h>
@@ -22,54 +24,60 @@
 namespace nrp
 {
 CLASS_NAME CLASS_NRPGAME( "CNrpGame" );
+
+const NrpText CNrpGame::saveTemplate = L"item.game";
+const NrpText CNrpGame::historyTemplate = L"game.history";
+const NrpText CNrpGame::extension = L".game";
 	
 void CNrpGame::_InitializeOptions()
 {
-	Add<PNrpCompany>( PARENTCOMPANY, NULL );
-	Add<NrpText>( CLASSOBJECT, CLASS_NRPGAME );
-	Add<NrpText>( COMPANYNAME, "" );
-	Add<NrpText>( NAME, "" );
-	Add<NrpText>( INTERNAL_NAME, "" );
-	Add<NrpTime>( STARTDATE, NrpTime( 0. ) );
-	Add<NrpTime>( ENDDATE, NrpTime( 0. ) );
-	Add<int>( MONEYONDEVELOP, 0 );
-	Add<int>( CASH, 0 );
-	Add<NrpText>( OWNER, "" );
-	Add<int>( COPYSELL, 0 );
-	Add<int>( STARTRATING, 0 );
-	Add<int>( STARTGAMERATING, 0 );
-	Add<int>( STARTGRAPHICRATING, 0 );
-	Add<int>( STARTGENRERATING, 0 );
-	Add<int>( STARTSOUNDRATING, 0 );
-	Add<int>( STARTADVFUNCRATING, 0 );
-	Add<int>( CURRENTADVFUNCRATING, 0 );
-	Add<int>( STARTBUGRATING, 0 );
-	Add<int>( CURRENTGAMERATING, 0 );
-	Add<int>( CURRENTGRAPHICRATING, 0 );
-	Add<int>( CURRENTGENRERATING, 0 );
-	Add<int>( CURRENTSOUNDRATING, 0 );
-	Add<int>( LOCALIZATIONRATING, 0 );
-	Add<int>( CURRENTBUGRATING, 0 );	
-	Add<NrpText>( GAME_ENGINE, "" );
-	Add<NrpText>( PREV_GAME, "" );
-	Add<int>( GENRE_MODULE_NUMBER, 0 );
-	Add<PNrpGameBox>( GBOX, NULL );
-	Add<float>( FAMOUS, 0 );
-	Add<bool>( GAMEISSALING, false );
-	Add<CNrpExtInfo*>( EXTINFO, NULL );
-	Add<NrpText>( EXTINFOLINK, "" );
-	Add<NrpText>( GAMERETAILER, "" );
-	Add<int>( PLATFORMNUMBER, 0 );
-	Add<int>( MODULE_NUMBER, 0 );
-	Add<int>( USERNUMBER, 0 );
-	Add<NrpText>( DESCRIPTIONPATH, "" );
-	Add<NrpText>( TEXTURENORMAL, "" );
-	Add<float>( READYWORKPERCENT, 1.f );
-	Add<NrpText>( VIEWIMAGE, "" );
-	Add<NrpText>( RECENSE, "" );
-	Add<bool>( NPC_GAME, false );
-	Add<bool>( LOADOK, false );
-	Add<bool>( BESTSALER, false );
+	RegProperty<PNrpCompany>( PARENTCOMPANY, NULL );
+	RegProperty<NrpText>( CLASSOBJECT, CLASS_NRPGAME );
+	RegProperty<NrpText>( COMPANYNAME, "" );
+	RegProperty<NrpText>( NAME, "" );
+	RegProperty<NrpText>( INTERNAL_NAME, "" );
+	RegProperty<NrpTime>( STARTDATE, NrpTime( 0. ) );
+	RegProperty<NrpTime>( ENDDATE, NrpTime( 0. ) );
+	RegProperty( MONEYONDEVELOP, 0 );
+	RegProperty( CASH, 0 );
+	RegProperty<NrpText>( OWNER, "" );
+	RegProperty( COPYSELL, 0 );
+	RegProperty( STARTRATING, 0 );
+	RegProperty( STARTGAMERATING, 0 );
+	RegProperty( STARTGRAPHICRATING, 0 );
+	RegProperty( STARTGENRERATING, 0 );
+	RegProperty( STARTSOUNDRATING, 0 );
+	RegProperty( STARTADVFUNCRATING, 0 );
+	RegProperty( CURRENTADVFUNCRATING, 0 );
+	RegProperty( STARTBUGRATING, 0 );
+	RegProperty( CURRENTGAMERATING, 0 );
+	RegProperty( CURRENTGRAPHICRATING, 0 );
+	RegProperty( CURRENTGENRERATING, 0 );
+	RegProperty( CURRENTSOUNDRATING, 0 );
+	RegProperty( LOCALIZATIONRATING, 0 );
+	RegProperty( CURRENTBUGRATING, 0 );	
+    RegProperty( OLDGAME, false );
+	RegProperty<NrpText>( GAME_ENGINE, "" );
+	RegProperty<NrpText>( PREV_GAME, "" );
+	RegProperty( GENRE_MODULE_NUMBER, 0 );
+	RegProperty<PNrpGameBox>( GBOX, NULL );
+	RegProperty( FAMOUS, 0.f );
+	RegProperty( GAMEISSALING, false );
+	RegProperty<CNrpExtInfo*>( EXTINFO, NULL );
+	RegProperty<NrpText>( EXTINFOLINK, "" );
+	RegProperty<NrpText>( GAMERETAILER, "" );
+	RegProperty( PLATFORMNUMBER, 0 );
+	RegProperty( MODULE_NUMBER, 0 );
+	RegProperty( USERNUMBER, 0 );
+	RegProperty<NrpText>( DESCRIPTIONPATH, "" );
+	RegProperty<NrpText>( TEXTURENORMAL, "" );
+	RegProperty( READYWORKPERCENT, 1.f );
+	RegProperty<NrpText>( VIEWIMAGE, "" );
+	RegProperty<NrpText>( RECENSE, "" );
+	RegProperty( NPC_GAME, false );
+	RegProperty( LOADOK, false );
+	RegProperty( BESTSALER, false );
+    RegProperty( URL, NrpText() );
 	_history = NULL;
 }
 
@@ -106,7 +114,7 @@ CNrpGame::CNrpGame( const CNrpDevelopGame& devGame, CNrpCompany* ptrCompany ) : 
 	for( int cnt=0; cnt < (int)_self[ MODULE_NUMBER ]; cnt++ )
 		 _techs.push_back( (*devGame.GetModule( cnt ))[ INTERNAL_NAME ] );
 
-	_self[ EXTINFOLINK ] = _nrpApp.GetFreeInternalName( *this );
+	_self[ EXTINFOLINK ] = _nrpScreenshots.GetFreeInternalName( *this );
 	CNrpExtInfo* extInfo = _SearchExtInfo();
 	assert( extInfo != NULL );
 	if( extInfo != NULL )
@@ -141,16 +149,16 @@ NrpText CNrpGame::Save( const NrpText& saveFolder )
 	if( !upDirExist )
 		return "";
 	
-	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder ) + Text( NAME ); //директория куда сохраняем
+	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder ) + Text( INTERNAL_NAME ); //директория куда сохраняем
 	localFolder = OpFileSystem::CheckEndSlash( localFolder ); //добавляем слеш в конец
-	NrpText saveFile = localFolder + "item.game";
+    NrpText saveFile = localFolder + CNrpGame::saveTemplate;
 
 	OpFileSystem::CreateDirectory( localFolder );
 	INrpConfig::Save( saveFile );
 
-	if( PNrpGameBox box = Param( GBOX ).As<PNrpGameBox>() )
+	if( PNrpGameBox box = _self[ GBOX ].As<PNrpGameBox>() )
 	{
-		box->Save( localFolder + "box.ini" );
+        box->Save( localFolder + CNrpGameBox::saveTemplate );
 	}
 
 	IniFile sv( saveFile );
@@ -158,24 +166,24 @@ NrpText CNrpGame::Save( const NrpText& saveFolder )
 	sv.Set( SECTION_GENRES, CreateKeyGenre, _genres);
 	sv.Set( SECTION_PLATFORMS, CreateKeyPlatform, _platforms );
 
-	assert( _history );
-	if( _history )
-		_history->Save( localFolder + "game.history" );
-
 	sv.Save();
+
+    assert( _history );
+    if( _history )
+        _history->Save( localFolder + CNrpGame::historyTemplate );
 
 	return localFolder;
 }
 
 CNrpExtInfo* CNrpGame::_SearchExtInfo()
 {
-	CNrpExtInfo* info = _nrpApp.GetExtInfo( _self[ INTERNAL_NAME ] );
+	CNrpExtInfo* info = _nrpScreenshots.GetExtInfo( _self[ INTERNAL_NAME ] );
 
 	if( !info )
-		info = _nrpApp.GetExtInfo( _self[ NAME ] );
+		info = _nrpScreenshots.GetExtInfo( _self[ NAME ] );
 
 	if( !info )
-		info = _nrpApp.GetExtInfo( _self[ EXTINFOLINK ] );
+		info = _nrpScreenshots.GetExtInfo( _self[ EXTINFOLINK ] );
 
 	return info;
 }
@@ -193,12 +201,12 @@ void CNrpGame::Load( const NrpText& loadPath )
 	{
 		loadFolder = loadPath; 
 		//стандартное имя
-		loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + "item.game";
+        loadFile = OpFileSystem::CheckEndSlash( loadFolder ) + CNrpGame::saveTemplate;
 	}
 	else 
 	{
-		assert( OpFileSystem::GetExtension( loadPath ).equals_ignore_case( ".game" ) );
-		if( OpFileSystem::GetExtension( loadPath ).equals_ignore_case( ".game" ) )
+        assert( OpFileSystem::GetExtension( loadPath ).equals_ignore_case( CNrpGame::extension ) );
+        if( OpFileSystem::GetExtension( loadPath ).equals_ignore_case( CNrpGame::extension ) )
 		{
 			loadFile = loadPath;
 			loadFolder = OpFileSystem::UpDir( loadPath );
@@ -219,7 +227,7 @@ void CNrpGame::Load( const NrpText& loadPath )
 	rv.Get( SECTION_PLATFORMS, CreateKeyPlatform, -1, _platforms );
 	_self[ PLATFORMNUMBER ] = static_cast< int >( _platforms.size() );
 
-	NrpText boxIni = loadFolder + "box.ini";
+    NrpText boxIni = loadFolder + CNrpGameBox::saveTemplate;
 	if( OpFileSystem::IsExist( boxIni ) )
 	{
 		PNrpGameBox box = new CNrpGameBox( this );
@@ -227,11 +235,13 @@ void CNrpGame::Load( const NrpText& loadPath )
 		_self[ GBOX ] = box;
 	}
 
-	NrpText historyIni = loadFolder + "game.history";
-	if( OpFileSystem::IsExist( historyIni ) )
-		_history = new CNrpHistory( historyIni );
+    int cs = _self[ COPYSELL ];
+    NrpText historyIni = loadFolder + CNrpGame::historyTemplate;
+	_history = new CNrpHistory();
+    if( OpFileSystem::IsExist( historyIni ) )
+        _history->Load( historyIni );
 	else
-		_CreateHistory();
+        Log( HW ) << "Can't find history for game " << (NrpText)_self[ NAME ] << term;
 
 	CNrpExtInfo* pgList = _SearchExtInfo();
 	if( !pgList )
@@ -250,29 +260,6 @@ void CNrpGame::Load( const NrpText& loadPath )
 
 	//конфиг файл был нормально загружен
 	_self[ LOADOK ] = true;
-}
-
-void CNrpGame::_CreateHistory()
-{
-	_history = new CNrpHistory();
-	assert( _history );
-
-	int fMonth = NrpTime( _self[ STARTDATE ] ).GetMonthToDate( _self[ ENDDATE ].As<NrpTime>() );//полное количество месяцев жизни игры
-	int sale = _self[ COPYSELL ];
-	int profit = _self[ CASH ];
-
-	//стандартный расчет для продаж игры
-	//продажи максимальны на старте и уменьшаются с каждым месяцем
-	float step = 1.f / fMonth;
-	for( int i=0; i < fMonth; i++ )
-	{
-		NrpTime ft( _self[ STARTDATE ] );
-		CNrpHistoryStep* historyStep = _history->AddStep( ft.AppendMonth( i ) );
-		//вычисляем коеффициент продаж в этом месяце
-		float percent = ( 1 - i * step ) * step * 2;
-		(*historyStep)[ BOXNUMBER ] = static_cast< int >( sale * percent );
-		(*historyStep)[ BALANCE ] = static_cast< int >( profit * percent );
-	}
 }
 
 float CNrpGame::GetAuthorFamous()
@@ -300,39 +287,68 @@ NrpText CNrpGame::GetTechName( size_t index )
     return index < _techs.size() ? _techs[ index ] : "";
 }
 
-void CNrpGame::GameBoxSaling( int number )
+void CNrpGame::_AddSalesToCompany( int number, int profit, NrpTime& curTime )
+{
+    PNrpCompany cmp = _self[ PARENTCOMPANY ].As<PNrpCompany>();
+    if( cmp )
+    {
+        (*cmp)[ BALANCE ] += profit;
+        if( CNrpHistory* hs = (*cmp)[ HISTORY ].As<CNrpHistory*>() )
+        {
+            CNrpHistoryStep* step = hs->AddStep( curTime );
+            assert( step && "history step must be exist" );
+            step->AddValue( BOXNUMBER, number );
+            step->AddValue( BALANCE, profit );
+        }
+    }
+}
+
+void CNrpGame::AddSales( int number, NrpTime& curTime, int defPrice )
 {
 	PNrpGameBox gameBox = _self[ GBOX ].As<PNrpGameBox>();
-	Log(HW) << "gameBox == NULL " << Text( INTERNAL_NAME ) << term;
+    int price = defPrice;
+    int profit = 0;
+    
+    if( !_self[ NPC_GAME ] )
+    {
+	    Log(HW) << "gameBox == NULL " << Text( INTERNAL_NAME ) << term;
+    }
 
 	if( gameBox != NULL )
 	{
 		CNrpGameBox& refBox = *gameBox;
 		int boxNumber = refBox[ BOXNUMBER ];
-		number = number > boxNumber ? boxNumber : number;
+        price = refBox[ PRICE ];
+        number = (std::min)( number, boxNumber );
 		
 		refBox[ BOXNUMBER ] -= number;
-		int price = refBox[ PRICE ];
-
-		_self[ CASH ] += price * number;
-		_self[ COPYSELL ] += number;
-
-		PNrpCompany cmp = _self[ PARENTCOMPANY ].As<PNrpCompany>();
-		if( cmp )
-			(*cmp)[ BALANCE ] += price * number;
-
-		NrpTime curTime =_nrpApp[ CURRENTTIME ].As<NrpTime>();
-
-		assert( _history );
-		if( _history )
-		{
-			if( CNrpHistoryStep* step = _history->AddStep( curTime ) )
-			{
-				step->AddValue( BOXNUMBER, number );
-				step->AddValue( BALANCE,  price * number );
-			}
-		}
 	}
+    else
+    {
+        if( (bool)_self[ NPC_GAME ] && _history )
+            if( CNrpHistoryStep* step = _history->GetLast() )
+                price = CNrpGameMarket::CalcAmpChange( (*step)[ PRICE ], 10, 10 ); 
+    }
+
+    assert( price > 0 );
+    profit = price * number;
+
+    assert( _history );
+    if( _history )
+    {
+        if( CNrpHistoryStep* step = _history->AddStep( curTime ) )
+        {
+            step->AddValue( BOXNUMBER, number );
+            step->AddValue( BALANCE, profit );
+            int lp = step->IsExist( PRICE ) ? (*step)[ PRICE ] : price;
+            step->AddValue<int>( PRICE, (price + lp) / 2 );
+        }
+    }
+  
+    _self[ CASH ] += profit;
+    _self[ COPYSELL ] += number;	
+
+    _AddSalesToCompany( number, profit, curTime );
 }
 
 bool CNrpGame::IsGenreAvaible( const NrpText& name ) const
@@ -355,4 +371,8 @@ NrpText CNrpGame::ClassName()
 	return CLASS_NRPGAME;
 }
 
+NrpText CNrpGame::GetPlatformName( size_t index )
+{
+    return index < _platforms.size() ? _platforms[ index ] : "";
+}
 }//namespace nrp

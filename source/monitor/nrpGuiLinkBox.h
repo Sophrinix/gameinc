@@ -15,6 +15,8 @@ class CNrpGuiLinkBox : public CNrpButton
 {
 public:
 
+    typedef enum { RTA_TOP=1, RTA_LEFT=2, RTA_BOTTOM=4, RTA_RIGHT=8, RTA_CENTER=0x10, RTA_COUNT } REL_TEXT_ALIGN;
+
 	//! constructor
 	CNrpGuiLinkBox( IGUIEnvironment* guienv, 
 					gui::IGUIElement* parent,
@@ -56,6 +58,8 @@ public:
 		moduleType_ = typen;
 	}
 
+    void setTextPos( REL_TEXT_ALIGN align );
+
 	gui::EGUI_ELEMENT_TYPE getType();
 
 	virtual const c8* getTypeName() const
@@ -72,6 +76,7 @@ protected:
 
 	int moduleType_;
 	bool isDraggable_;
+    REL_TEXT_ALIGN _relTextAlign;
 
 	bool _ButtonMouseUp( const irr::SEvent& event );
 	bool _ButtonLMouseDown( const irr::SEvent& event );

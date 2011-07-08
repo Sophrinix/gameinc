@@ -20,22 +20,22 @@ CNrpReklameWork::CNrpReklameWork( const NrpText& typeName,
 
 void CNrpReklameWork::InitializeOptions_()
 {
-	Add<NrpText>( CLASSOBJECT, CLASS_REKLAMEWORK );
-	Add( NUMBERDAY, 0 );
-	Add( LEVEL, 0 );
-	Add<NrpText>( NAME, "" );
-	Add( DAYCOST, 0 );
-	Add( QUALITY, 0.f );
-	Add( MAXQUALITY, 0.f );
-	Add<NrpText>( GAMENAME, "" );
-	Add( FINISHED, false );
-	Add<NrpText>( TEXTURENORMAL, "" );
-	Add( BALANCE, 0 );
-	Add<NrpText>( COMPANYNAME, "" );
-	Add<NrpText>( TYPEOBJECT, "" );
-	Add( POPULARITY, 0 );
-	Add<NrpText>( INTERNAL_NAME, "" );
-	Add( STARTDATE, NrpTime( 0. ) );
+	RegProperty<NrpText>( CLASSOBJECT, CLASS_REKLAMEWORK );
+	RegProperty( NUMBERDAY, 0 );
+	RegProperty( LEVEL, 0 );
+	RegProperty<NrpText>( NAME, "" );
+	RegProperty( DAYCOST, 0 );
+	RegProperty( QUALITY, 0.f );
+	RegProperty( MAXQUALITY, 0.f );
+	RegProperty<NrpText>( GAMENAME, "" );
+	RegProperty( FINISHED, false );
+	RegProperty<NrpText>( TEXTURENORMAL, "" );
+	RegProperty( BALANCE, 0 );
+	RegProperty<NrpText>( COMPANYNAME, "" );
+	RegProperty<NrpText>( TYPEOBJECT, "" );
+	RegProperty( POPULARITY, 0 );
+	RegProperty<NrpText>( INTERNAL_NAME, "" );
+	RegProperty( STARTDATE, NrpTime( 0. ) );
 }
 
 CNrpReklameWork::CNrpReklameWork( const CNrpReklameWork& p ) : INrpConfig( CLASS_REKLAMEWORK, "" )

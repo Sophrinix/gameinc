@@ -2,10 +2,7 @@
 #include "NrpHistory.h"
 #include "NrpTime.h"
 #include "IniFile.h"
-
-static const NrpText KEY_SALE( L"sale" );
-static const NrpText KEY_PROFIT( L"profit" );
-static const NrpText KEY_TIME( L"time" );
+#include "NrpConfigSyncer.h"
 
 namespace nrp
 {
@@ -23,7 +20,7 @@ CNrpHistory::CNrpHistory() : INrpConfig( CLASS_NRPHISTORY, "" )
 
 void CNrpHistory::_InitialyzeOptions()
 {
-	Add<int>( HISTORY_SIZE, 0 );
+	RegProperty<int>( HISTORY_SIZE, 0 );
 }
 
 CNrpHistory::CNrpHistory( const NrpText& fileName ) : INrpConfig( CLASS_NRPHISTORY, "" )
@@ -47,10 +44,8 @@ NrpText CNrpHistory::Save( const NrpText& fileName )
 
 	for( int index=0; pIter != _steps.end(); pIter++, index++ )
 	{
-		NrpText section = CreateSectionStep( index );
-		sf.Set( section, KEY_TIME, (int)pIter->first );
-		sf.Set( section, KEY_SALE, (int)pIter->second->Param( BOXNUMBER ) );
-		sf.Set( section, KEY_PROFIT, (int)pIter->second->Param( BALANCE ) );
+        CNrpConfigSyncer svr( pIter->second );
+        svr.Save( sf, CreateSectionStep( index ) );
 	}
 
 	sf.Save();
@@ -66,18 +61,21 @@ void CNrpHistory::Load( const NrpText& fileName )
 	for( int index=0; index < size; index++ )
 	{
 		NrpText section = CreateSectionStep( index );
-		double dblTime = lf.Get( section, KEY_TIME, (int)0 );
+        NrpTime time = lf.Get( section, STARTDATE + ":" + CNrpConfigSyncer::t_time, NrpTime( 0. ) );
 
-		CNrpHistoryStep* step = AddStep( NrpTime( dblTime ) );
-		assert( step );
-		(*step)[ BALANCE ] =  lf.Get( section, KEY_PROFIT, 0 );
-		(*step)[ BOXNUMBER ] = lf.Get( section, KEY_SALE, 0 );
+		CNrpHistoryStep* step = AddStep( time );
+		assert( step && "step must be exist on load" );
+        if( step )
+        {
+            CNrpConfigSyncer ldr( step );
+            ldr.Load( lf, section );
+        }
 	}
 }
 
 CNrpHistoryStep* CNrpHistory::AddStep( NrpTime time )
 {
-	int ret = static_cast< int >( time.GetDate().ToDouble() );
+	s32 ret = floor32( (float)time.GetDate().ToDouble() );
 	HISTORY_MAP::iterator pIter = _steps.find( ret );
 
 	if( pIter == _steps.end() )
@@ -109,10 +107,10 @@ int CNrpHistory::GetSummFor( const OPTION_NAME& name, NrpTime time )
 		HISTORY_MAP::iterator pIter = _steps.begin();
 		while( pIter != _steps.end() )
 		{	
-			NrpTime stepTime = pIter->second->Param( STARTDATE );
+			NrpTime stepTime = (*pIter->second)[ STARTDATE ];
 
 			if( stepTime.Equale( time ) == -1 )
-				summ += (int)(pIter->second->Param( name ));
+				summ += (int)(*pIter->second)[ name ];
 
 			pIter++;
 		}
@@ -123,9 +121,9 @@ int CNrpHistory::GetSummFor( const OPTION_NAME& name, NrpTime time )
 
 CNrpHistoryStep::CNrpHistoryStep( const NrpTime& time ) : INrpConfig( CLASS_HISTORYSTEP, "" )
 {
-	Add<NrpTime>( STARTDATE, time );
-	Add<int>( BOXNUMBER, 0 );
-	Add<int>( BALANCE, 0 );
+	RegProperty<NrpTime>( STARTDATE, time );
+	RegProperty<int>( BOXNUMBER, 0 );
+	RegProperty<int>( BALANCE, 0 );
 }
 
 CNrpHistoryStep::CNrpHistoryStep() : INrpConfig( CLASS_HISTORYSTEP, "" )

@@ -26,6 +26,8 @@ class CNrpGuiLink;
 class CNrpGUIEnvironment : public irr::gui::IGUIEnvironment
 {
 public:
+    static const NrpText config;
+
 	CNrpGUIEnvironment( gui::IGUIEnvironment* native_gui, ICursorControl* cursor );
 	~CNrpGUIEnvironment();
 
@@ -146,7 +148,7 @@ public:
 	gui::IGUIFont* getFont( const io::path& filename );
 	gui::IGUIFont* getBuiltInFont() const;
 
-	gui::IGUIAnimator* addBlendAnimator( IGUIElement* parent, u32 min, u32 max, f32 step,
+	gui::IGUIAnimator* addBlendAnimator( IGUIElement* parent, u32 min, u32 max, f32 time,
 										 bool visOnStop, bool remSelf, bool remParent );
 
 	gui::IGUIAnimator* addHoveredAnimator( IGUIElement* parent, u32 min, u32 max, u32 step,

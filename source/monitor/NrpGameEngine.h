@@ -15,7 +15,7 @@ public:
 
 	void AddGenre( const NrpText& typen );
 	int GetGenreCount() { return _techs.size(); }
-	const NrpText& GetGenre( int index );
+	NrpText GetGenre( int index );
 	bool IsMyTech( const NrpText& typen );
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& loadFolder );

@@ -8,15 +8,15 @@ CLASS_NAME CLASS_NRPQUEST( "CNrpQuest" );
 	
 CNrpQuest::CNrpQuest(void) : INrpConfig( CLASS_NRPQUEST, "" )
 {
-	Add<NrpText>( CLASSOBJECT, CLASS_NRPQUEST );
-	Add( POSX, 0 );
-	Add( POSY, 0 );
-	Add<NrpText>( INTERNAL_NAME, "" );
-	Add<NrpText>( NAME, "" );
-    Add<bool>( OBSOLETE, false );
-	Add( STARTFUNCREF, -1 );
-	Add<NrpText>( BASEFILE, "" );
-    Add<bool>( ACTIVE, false );
+	RegProperty<NrpText>( CLASSOBJECT, CLASS_NRPQUEST );
+	RegProperty( POSX, 0 );
+	RegProperty( POSY, 0 );
+	RegProperty<NrpText>( INTERNAL_NAME, "" );
+	RegProperty<NrpText>( NAME, "" );
+    RegProperty<bool>( OBSOLETE, false );
+	RegProperty( STARTFUNCREF, -1 );
+	RegProperty<NrpText>( BASEFILE, "" );
+    RegProperty<bool>( ACTIVE, false );
 }
 
 CNrpQuest::~CNrpQuest(void)

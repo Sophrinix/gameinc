@@ -7,6 +7,7 @@
 #include "NrpApplication.h"
 #include "NrpPlant.h"
 #include "OpFileSystem.h"
+#include "NrpGameMarket.h"
 
 namespace nrp
 {
@@ -24,22 +25,23 @@ CNrpPlantWork::~CNrpPlantWork(void)
 
 void CNrpPlantWork::_InitializeOptions()
 {
-	Add<NrpText>( NAME, "" );
-	Add<PNrpDiskMachine>( PRODUCETYPE, NULL ); _self[ PRODUCETYPE ].AddNotification( "calc", this, &CNrpPlantWork::_CalcParams );
-	Add<int>( NUMBERMACHINE, 0 );			   _self[ NUMBERMACHINE ].AddNotification( "calc", this, &CNrpPlantWork::_CalcParams );
-	Add<int>( NUMBERDAY, 0 );				   _self[ NUMBERDAY ].AddNotification( "calc", this, &CNrpPlantWork::_CalcParams );
-	Add<int>( DISKNUMBER, 0 );
-	Add<float>( DISKPRICE, 0 );
-	Add<int>( FINALPRICE, 0 );
-	Add<PNrpGame>( PARENT, NULL );
-	Add<NrpText>( COMPANYNAME, "" );
-	Add<NrpText>( GAMENAME, "" );
-	Add<NrpText>( DISKMACHINENAME, "" );
-	Add<int>( DISKINDAY, 0 );
-	Add<int>( LEFTPRODUCEDISK, 0 );
-	Add<int>( DAYCOST, 0 );
-	Add<bool>( FINISHED, false );
-	Add<int>( RENTPRICE, 0 );
+	RegProperty<NrpText>( NAME, "" );
+	RegProperty<PNrpDiskMachine>( PRODUCETYPE, NULL ); _self[ PRODUCETYPE ].AddNotification( "calc", this, &CNrpPlantWork::_CalcParams );
+	RegProperty( NUMBERMACHINE, 0 );			   _self[ NUMBERMACHINE ].AddNotification( "calc", this, &CNrpPlantWork::_CalcParams );
+	RegProperty( NUMBERDAY, 0 );				   _self[ NUMBERDAY ].AddNotification( "calc", this, &CNrpPlantWork::_CalcParams );
+	RegProperty( DISKNUMBER, 0 );
+    RegProperty( ALLDISK, 0 );
+	RegProperty( DISKPRICE, 0.f );
+	RegProperty( FINALPRICE, 0 );
+	RegProperty<PNrpGame>( PARENT, NULL );
+	RegProperty<NrpText>( COMPANYNAME, "" );
+	RegProperty<NrpText>( GAMENAME, "" );
+	RegProperty<NrpText>( DISKMACHINENAME, "" );
+	RegProperty( DISKINDAY, 0 );
+	RegProperty( LEFTPRODUCEDISK, 0 );
+	RegProperty( DAYCOST, 0 );
+	RegProperty( FINISHED, false );
+	RegProperty( RENTPRICE, 0 );
 }
 
 CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPLANTWORK, "" )
@@ -50,6 +52,7 @@ CNrpPlantWork::CNrpPlantWork( const CNrpPlantWork& p ) : INrpConfig( CLASS_NRPPL
 	_self[ NUMBERMACHINE ] = p[ NUMBERMACHINE ];
 	_self[ NUMBERDAY ] = p[ NUMBERDAY ];
 	_self[ DISKNUMBER ]=  p[ DISKNUMBER ];
+    _self[ ALLDISK ] = p[ DISKNUMBER ];
 	_self[ DISKPRICE ] = p[ DISKPRICE ];
 	_self[ FINALPRICE ] = p[  FINALPRICE ];
 	_self[ PARENT ] = p[ PARENT ];
@@ -70,7 +73,7 @@ CNrpPlantWork::CNrpPlantWork( const NrpText& fileName, bool load ) : INrpConfig(
 void CNrpPlantWork::Load( const NrpText& fileName )
 {
 	INrpConfig::Load( fileName );
-	CNrpGame* pGame = _nrpApp.GetGame( Text( GAMENAME ) );
+    CNrpGame* pGame = CNrpGameMarket::Instance().GetGame( Text( GAMENAME ) );
 	assert( pGame != NULL );
 	_self[ PARENT ] = pGame;
 

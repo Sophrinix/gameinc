@@ -48,33 +48,33 @@ CNrpTechnology::CNrpTechnology( const CNrpTechnology& p ) : INrpProject( CLASS_T
 
 void CNrpTechnology::_InitializeOptions()
 {
-	Add<NrpText>( NAME, "" );
-	Add<NrpText>( INTERNAL_NAME, "" );
-	Add<int>( TECHGROUP, 0 );
-	Add<float>( BASE_CODE, 0 );
-	Add<float>( ENGINE_CODE, 0 );
-	Add<int>( LEVEL, 0 );
-	Add<NrpText>( COMPANYNAME, "" );
-	Add<int>( QUALITY, 100 );
-	Add<PNrpCompany>( PARENTCOMPANY, NULL );
-	Add<NrpText>( PARENT, "" );
-	Add<NrpText>( BASEFILE, "" );
-	Add( STARTDATE, NrpTime( 0. ) );
-	Add( ENDDATE, NrpTime( 0. ) );
-	Add<float>( PRICE, 0 );
-	Add<NrpText>( TEXTURENORMAL, "" );
-	Add<NrpText>( TEXTUREHOVER, "" );
-	Add<NrpText>( DESCRIPTIONPATH, "" );
-	Add<float>( INTEREST, 1 );
-	Add<int>( STATUS, TS_UNKNOWN );
-	Add<int>( BALANCE, 0 );
-	Add<int>( CODEPASSED, 0 );
-	Add<CNrpUser*>( COMPONENTLIDER, NULL );
-	Add<int>( ERRORNUMBER, 0 );
-	Add<float>( READYWORKPERCENT, 0.f );
-	Add<int>( CODEVOLUME, 0 );
-	Add<int>( NEXTTECHNUMBER, 0 );
-	Add<PNrpTechnology>( REQUIRETECH, NULL );
+	RegProperty<NrpText>( NAME, "" );
+	RegProperty<NrpText>( INTERNAL_NAME, "" );
+	RegProperty<int>( TECHGROUP, 0 );
+	RegProperty<float>( BASE_CODE, 0 );
+	RegProperty<float>( ENGINE_CODE, 0 );
+	RegProperty<int>( LEVEL, 0 );
+	RegProperty<NrpText>( COMPANYNAME, "" );
+	RegProperty<int>( QUALITY, 100 );
+	RegProperty<PNrpCompany>( PARENTCOMPANY, NULL );
+	RegProperty<NrpText>( PARENT, "" );
+	RegProperty<NrpText>( BASEFILE, "" );
+	RegProperty( STARTDATE, NrpTime( 0. ) );
+	RegProperty( ENDDATE, NrpTime( 0. ) );
+	RegProperty<float>( PRICE, 0 );
+	RegProperty<NrpText>( TEXTURENORMAL, "" );
+	RegProperty<NrpText>( TEXTUREHOVER, "" );
+	RegProperty<NrpText>( DESCRIPTIONPATH, "" );
+	RegProperty<float>( INTEREST, 1 );
+	RegProperty<int>( STATUS, TS_UNKNOWN );
+	RegProperty<int>( BALANCE, 0 );
+	RegProperty<int>( CODEPASSED, 0 );
+	RegProperty<CNrpUser*>( COMPONENTLIDER, NULL );
+	RegProperty<int>( ERRORNUMBER, 0 );
+	RegProperty<float>( READYWORKPERCENT, 0.f );
+	RegProperty<int>( CODEVOLUME, 0 );
+	RegProperty<int>( NEXTTECHNUMBER, 0 );
+	RegProperty<PNrpTechnology>( REQUIRETECH, NULL );
 }
 
 CNrpTechnology::~CNrpTechnology(void)

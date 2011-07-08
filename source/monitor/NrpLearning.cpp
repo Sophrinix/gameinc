@@ -36,16 +36,16 @@ NrpLearning::NrpLearning( CNrpUser& user, const NrpTime& startDate, const NrpTim
 
 void NrpLearning::_InitializeOptions()
 {
-	Add<CNrpUser*>( LASTWORKER, NULL );
-	Add<int>( USERNUMBER, 0 );
-	Add<int>( MONEYONDEVELOP, 0 );
-	Add<NrpTime>( STARTDATE, NrpTime( 0. ) );
-	Add<NrpText>( PARAMNAME, NrpText("") );
-	Add<NrpTime>( LASTTIMEUPDATE, NrpTime( 0. ) );
-	Add<int>( DURATION, 0 );
-	Add<int>( OFFSET, 0 );
-	Remove( PARENT );
-	Add<INrpDevelopProject*>( PARENT, NULL );
+	RegProperty<CNrpUser*>( LASTWORKER, NULL );
+	RegProperty<int>( USERNUMBER, 0 );
+	RegProperty<int>( MONEYONDEVELOP, 0 );
+	RegProperty<NrpTime>( STARTDATE, NrpTime( 0. ) );
+	RegProperty<NrpText>( PARAMNAME, NrpText("") );
+	RegProperty<NrpTime>( LASTTIMEUPDATE, NrpTime( 0. ) );
+	RegProperty<int>( DURATION, 0 );
+	RegProperty<int>( OFFSET, 0 );
+	UnregProperty( PARENT );
+	RegProperty<INrpDevelopProject*>( PARENT, NULL );
 }
 
 void NrpLearning::Update( CNrpUser& ptrUser, const NrpTime& time )

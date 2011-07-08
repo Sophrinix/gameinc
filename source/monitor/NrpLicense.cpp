@@ -7,7 +7,7 @@ CLASS_NAME CLASS_LICENSE( "CNrpLicense" );
 
 CNrpLicense::CNrpLicense( const NrpText& saveFile ) : INrpProject( CLASS_LICENSE, "" )
 {
-	Add<NrpText>( NAME, "" );
+	RegProperty<NrpText>( NAME, "" );
 
 	Load( saveFile );
 }

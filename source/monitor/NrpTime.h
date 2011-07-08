@@ -2,6 +2,7 @@
 
 #include <OleAuto.h>
 #include <assert.h>
+#include "NrpText.h"
 
 namespace nrp
 {
@@ -44,6 +45,17 @@ public:
 		_date.wSecond = 0;
 		_date.wMilliseconds = 0;
 	}
+
+    NrpText ToText( const NrpText& format )
+    {
+        NrpText out = format;
+
+        out.Replace( "HHHH", NrpText( _date.wYear ) );
+        out.Replace( "HH", NrpText( _date.wYear % 100 ) );
+        out.Replace( "MM", NrpText( _date.wMonth ) );
+        out.Replace( "DD", NrpText( _date.wDay ) );
+        return out;
+    }
 
 	NrpTime( double val )
 	{

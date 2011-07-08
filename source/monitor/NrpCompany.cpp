@@ -13,6 +13,8 @@
 #include "NrpTester.h"
 #include "NrpBookKeeping.h"
 #include "NrpLaborMarket.h"
+#include "NrpGameMarket.h"
+#include "NrpHistory.h"
 
 #include <errno.h>
 #include <assert.h>
@@ -21,32 +23,37 @@ namespace nrp
 {
 CLASS_NAME CLASS_NRPCOMPANY( "CNrpCompany" );
 
+const NrpText CNrpCompany::postfix = L"_company";
+const NrpText CNrpCompany::saveTemplate = L"item.company";
+const NrpText CNrpCompany::historyTemplate = L"company.history";
+
 void CNrpCompany::_InitialyzeOptions()
 {
-	Add( BALANCE, 100000 );
-	Add<NrpText>( NAME, "" );
-	Add<PUser>( CEO, NULL );
-	Add( ENGINES_NUMBER, 0 );
-	Add( TECHNUMBER, 0 );
-	Add( USERNUMBER, 0 );
-	Add( PROJECTNUMBER, 0 );
-	Add( GAMENUMBER, 0 );
-	Add<NrpText>( INTERNAL_NAME, "" );
-	Add( OBJECTSINPORTFELLE, 0 );
-	Add( DEVELOPPROJECTS_NUMBER, 0 );
-	Add( FAMOUS, 0.1f );
-	Add( INVENTIONSNUMBER, 0 );
-	Add( MONEY_ON_PIE, 0.f );
-	Add( DIVIDEND, 0.f );
-	Add( PROFIT_LASTYEAR, 0 );
-	Add( PIE_NUMBER, 0 );
-	Add( PIE_COST, 0.f );
-	Add( ENDDATE, NrpTime( 0. ) );
-	Add( STARTDATE, NrpTime( 0. ) );
-	Add( SELF_PIE_NUMBER, 0 );
-	Add<NrpText>( TEXTURENORMAL, "" );
-	Add<CNrpBookKeeping*>( BOOKKEEPING, NULL );
-	Add<int>( INVESTMENT_EXPECTATIONS, 0 );
+	RegProperty( BALANCE, 100000 );
+	RegProperty<NrpText>( NAME, "" );
+	RegProperty<PUser>( CEO, NULL );
+	RegProperty( ENGINES_NUMBER, 0 );
+	RegProperty( TECHNUMBER, 0 );
+	RegProperty( USERNUMBER, 0 );
+	RegProperty( PROJECTNUMBER, 0 );
+	RegProperty( GAMENUMBER, 0 );
+	RegProperty<NrpText>( INTERNAL_NAME, "" );
+	RegProperty( OBJECTSINPORTFELLE, 0 );
+	RegProperty( DEVELOPPROJECTS_NUMBER, 0 );
+	RegProperty( FAMOUS, 0.1f );
+	RegProperty( INVENTIONSNUMBER, 0 );
+	RegProperty( MONEY_ON_PIE, 0.f );
+	RegProperty( DIVIDEND, 0.f );
+	RegProperty( PROFIT_LASTYEAR, 0 );
+	RegProperty( PIE_NUMBER, 0 );
+	RegProperty( PIE_COST, 0.f );
+	RegProperty( ENDDATE, NrpTime( 0. ) );
+	RegProperty( STARTDATE, NrpTime( 0. ) );
+	RegProperty( SELF_PIE_NUMBER, 0 );
+	RegProperty<NrpText>( TEXTURENORMAL, "" );
+	RegProperty<CNrpBookKeeping*>( BOOKKEEPING, NULL );
+	RegProperty<int>( INVESTMENT_EXPECTATIONS, 0 );
+    RegProperty( HISTORY, new CNrpHistory() );
 }
 
 CNrpCompany::CNrpCompany( const NrpText& name, CNrpUser* ceo ) : INrpConfig( CLASS_NRPCOMPANY, name)
@@ -54,7 +61,14 @@ CNrpCompany::CNrpCompany( const NrpText& name, CNrpUser* ceo ) : INrpConfig( CLA
 	_InitialyzeOptions();
 
 	_self[ NAME ] = name;
-	_self[ INTERNAL_NAME ] = name + "_company";
+    NrpText internalName = name;
+    internalName = internalName.ToLower();
+    internalName = internalName.Replace( " ", "" );
+    internalName = internalName.Replace( ":", "" );
+    internalName = internalName.Replace( ",", "" );
+    internalName = internalName.Replace( ".", "" );
+    internalName = internalName.Replace( "?", "" );
+    _self[ INTERNAL_NAME ] = internalName + CNrpCompany::postfix;
 	_self[ CEO ] = ceo;
 }
 
@@ -86,7 +100,7 @@ void CNrpCompany::AddGameEngine( CNrpGameEngine* ptrEng )
 	{
 		_engines.push_back( ptrEng );
 		_self[ ENGINES_NUMBER ] = static_cast< int >( _engines.size() );
-		(*ptrEng)[ COMPANYNAME ] = Text( NAME );
+		(*ptrEng)[ COMPANYNAME ] = _self[ NAME ];
 		(*ptrEng)[ PARENTCOMPANY ] = this;
 	}
 }
@@ -112,18 +126,17 @@ void CNrpCompany::AddProject( INrpProject* ptrProject )
 	{
 		_projects.push_back( ptrProject );
 		_self[ PROJECTNUMBER ] = static_cast< int >( _projects.size() );
-		(*ptrProject)[ COMPANYNAME ] = Text( NAME );
+		(*ptrProject)[ COMPANYNAME ] = _self[ NAME ];
 	}
 }
 
-void CNrpCompany::AddUser( CNrpUser* user )
+void CNrpCompany::AddUser( CNrpUser& user )
 {
-	assert( user );
-	if( user && !GetUser( user->Text( NAME ) ) )
+	if( !GetUser( (NrpText)user[ NAME ] ) )
 	{
-		_employers.push_back( user );
-		(*user)[ SALARY ] = (*user)[ WANTMONEY ];
-		(*user)[ PARENTCOMPANY ] = this;
+		_employers.push_back( &user );
+		user[ SALARY ] = user[ WANTMONEY ];
+		user[ PARENTCOMPANY ] = this;
 		_self[ USERNUMBER ] = static_cast< int >( _employers.size() );
 	}
 }
@@ -143,12 +156,12 @@ NrpText CNrpCompany::Save( const NrpText& saveFolder )
 	//переданная директория должна существовать
 	assert( OpFileSystem::IsExist( saveFolder ) );
 
-	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder + Text( NAME ) );
+	NrpText localFolder = OpFileSystem::CheckEndSlash( saveFolder + Text( INTERNAL_NAME ) );
 
 	//если нет директории в которую надо сохранять данные
 	OpFileSystem::CreateDirectory( localFolder );
 
-	NrpText saveFile = localFolder + "item.company";
+    NrpText saveFile = localFolder + CNrpCompany::saveTemplate;
 
 	assert( !OpFileSystem::IsExist( saveFile ) );
 	INrpConfig::Save( saveFile );
@@ -166,6 +179,10 @@ NrpText CNrpCompany::Save( const NrpText& saveFolder )
 
 	rv.Save();
 
+    assert( _self[ HISTORY ].As<CNrpHistory*>() && "history must be exist" );
+    if( _self[ HISTORY ].As<CNrpHistory*>() )
+        _self[ HISTORY ].As<CNrpHistory*>()->Save( localFolder + CNrpCompany::historyTemplate );
+
 	return saveFile;
 }
 
@@ -182,12 +199,15 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		INrpConfig* conf = NULL;
 		if( type == CNrpGameEngine::ClassName() )
 		{
-			AddGameEngine( _nrpApp.GetGameEngine( rName ) );
+            AddGameEngine( CNrpGameMarket::Instance().GetGameEngine( rName ) );
 		}
 		else if( type == CNrpUser::ClassName() || type == NrpCoder::ClassName() || type == NrpDesigner::ClassName()
 				 || type == NrpComposer::ClassName() || type == NrpTester::ClassName())
 		{
-			AddUser( _nrpLaborMarkt.GetUser( rName ) );
+            CNrpUser* user = _nrpLaborMarkt.GetUser( rName );
+            assert( user );
+            if( user )
+			    AddUser( *user );
 		}
 		else if( type == CNrpTechnology::ClassName() )
 		{
@@ -195,7 +215,7 @@ void CNrpCompany::_LoadArray( const NrpText& section, const NrpText& fileName, c
 		}
 		else if( type == CNrpGame::ClassName() )
 		{
-			AddGame( _nrpApp.GetGame( rName ) );
+            AddGame( CNrpGameMarket::Instance().GetGame( rName ) );
 		}
 		else if( type == CNrpInvention::ClassName() )
 		{
@@ -225,7 +245,7 @@ void CNrpCompany::Load( const NrpText& pathTo )
 	NrpText loadFile = pathTo;
 
 	if( OpFileSystem::IsFolder( pathTo ) )
-		loadFile = OpFileSystem::CheckEndSlash( pathTo ) + "item.company";
+        loadFile = OpFileSystem::CheckEndSlash( pathTo ) + CNrpCompany::saveTemplate;
 
 	assert( OpFileSystem::IsExist( loadFile ) );
 
@@ -256,6 +276,22 @@ void CNrpCompany::Load( const NrpText& pathTo )
 		if( typeName == CNrpDevelopGame::ClassName() )
 			AddToPortfelle( GetDevelopProject( prjName ) );
 	}
+
+    NrpText historyIni = OpFileSystem::CheckEndSlash( pathTo ) + CNrpCompany::historyTemplate;
+    if( OpFileSystem::IsExist( historyIni ) )
+        _self[ HISTORY ].As<CNrpHistory*>()->Load( historyIni );
+    else
+        _CreateHistory();
+}
+
+void CNrpCompany::_CreateHistory()
+{
+   CNrpHistory* hs  = _self[ HISTORY ].As<CNrpHistory*>();
+
+   CNrpHistoryStep* historyStep = hs->AddStep( _nrpApp[ CURRENTTIME ].As<NrpTime>() );
+   //вычисляем коеффициент продаж в этом месяце
+   (*historyStep)[ BOXNUMBER ] = static_cast< int >( 0 );
+   (*historyStep)[ BALANCE ] = static_cast< int >( 0 );
 }
 
 CNrpGame* CNrpCompany::GetGame( const NrpText& gameName ) const 
@@ -333,8 +369,9 @@ void CNrpCompany::AddGame( CNrpGame* game )
 CNrpGame* CNrpCompany::CreateGame( const CNrpDevelopGame& devGame )
 {
 	CNrpGame* ptrGame = new CNrpGame( devGame, this );
+    assert( ptrGame && "new game must be exist" );
 	(*ptrGame)[ STARTDATE ] = _nrpApp[ CURRENTTIME ];
-	_nrpApp.AddGame( ptrGame );
+    CNrpGameMarket::Instance().AddGame( *ptrGame );
 	//!!!!!!!!!!!!!!!!RemoveFromPortfelle( devGame );
 
 	_games.push_back( ptrGame );
@@ -369,7 +406,7 @@ INrpConfig* CNrpCompany::GetFromPortfelle( size_t index ) const
 	return index < _portfelle.size() ? _portfelle[ index ] : NULL;	
 }
 
-float CNrpCompany::GetUserModificatorForGame( CNrpGame* game )
+float CNrpCompany::GetUserModificatorForGame( CNrpGame& game )
 {
 	return 1;
 }

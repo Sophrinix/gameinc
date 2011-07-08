@@ -11,7 +11,6 @@ class CNrpHistory;
 class CNrpExtInfo;
 
 OPTION_NAME CASH( L"cash" );
-OPTION_NAME COPYSELL( L"copySell" );
 OPTION_NAME STARTRATING( L"startRating" );
 OPTION_NAME STARTGAMERATING( L"startGameRating" );
 OPTION_NAME STARTGRAPHICRATING( L"startGraphicRating" );
@@ -34,14 +33,20 @@ OPTION_NAME VIEWIMAGE( L"viewImage" );
 OPTION_NAME GAMERETAILER( L"gameRetailer" );
 OPTION_NAME RECENSE( L"recense" );
 OPTION_NAME NPC_GAME( L"npcGame" );
-OPTION_NAME LOADOK( L"loadok" );
 OPTION_NAME BESTSALER( L"bestsaler" );
+OPTION_NAME OLDGAME( L"oldgame" );
+
+class NrpTime;
 
 class CNrpGame : public INrpConfig
 {
 public:
 	typedef irr::core::array< NrpText > STRINGS;
 public:
+    static const NrpText saveTemplate;
+    static const NrpText historyTemplate;
+    static const NrpText extension;
+
 	CNrpGame( const NrpText& fileName );
 	~CNrpGame(void);
 
@@ -49,12 +54,13 @@ public:
 
 	NrpText GetTechName( size_t index );
 	NrpText GetGenreName( size_t index );
+    NrpText GetPlatformName( size_t index );
 	bool IsGenreAvaible( const NrpText& name ) const;
 
 	float GetAuthorFamous();
 
 	CNrpHistory* GetHistory();
-	void GameBoxSaling( int number );
+	void AddSales( int number, NrpTime& curTime, int price=0 );
 
 	NrpText Save( const NrpText& saveFolder );
 	void Load( const NrpText& loadFolder );
@@ -62,11 +68,11 @@ public:
 	static NrpText ClassName();
 private:
 	void _InitializeOptions();
-	void _CreateHistory();
 	CNrpExtInfo* _SearchExtInfo();
+    void _AddSalesToCompany( int number, int profit, NrpTime& curTime );
 
-	CNrpGame();;
-
+	CNrpGame();
+    
 	STRINGS _developers;
 	STRINGS _genres;
 	STRINGS _techs;

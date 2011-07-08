@@ -19,8 +19,8 @@ CLASS_NAME CLASS_HUDCONFIG( L"CNrpHUDConfig" );
 
 CNrpHUDConfig::CNrpHUDConfig() : INrpConfig(CLASS_HUDCONFIG, CLASS_HUDCONFIG)
 {		
-	Add( FONT_SIMPLE, NrpText("") );
-	Add( FONT_TOOLTIP, NrpText("") );
+	RegProperty( FONT_SIMPLE, NrpText("") );
+	RegProperty( FONT_TOOLTIP, NrpText("") );
 
 	Load( L"config/hud.ini" );
 }
@@ -53,7 +53,7 @@ void CNrpHUDConfig::Load( const NrpText& fileName )
         const IniSection::KeyIndexA& keys = fonts->GetKeys();
         for( IniSection::KeyIndexA::const_iterator pIter = keys.begin();
              pIter != keys.end(); pIter++ )
-             Add<NrpText>( (*pIter)->GetShortKey().c_str(), (*pIter)->GetValue().c_str() );
+             RegProperty<NrpText>( (*pIter)->GetShortKey().c_str(), (*pIter)->GetValue().c_str() );
     }
     else
         Log( HW ) << "Can't find section \"fonts\" in " << fileName << term;

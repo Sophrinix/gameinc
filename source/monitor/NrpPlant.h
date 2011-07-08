@@ -42,8 +42,7 @@ public:
 									const NrpText& company );
 
 	void AddWork( CNrpPlantWork* work );
-	CNrpPlantWork* GetWork( int index );
-	CNrpPlantWork* GetWork( NrpText name );
+	CNrpPlantWork* GetWork( u32 index );
 	void RemoveWork( CNrpPlantWork* work );
 
 	CNrpDiskMachine* GetDiskMachine( const NrpText& name );

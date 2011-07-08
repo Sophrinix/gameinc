@@ -16,15 +16,15 @@ CNrpGuiHoveredAnimator::CNrpGuiHoveredAnimator( IGUIEnvironment* environment,
 												IGUIElement* node, 
 												u32 min_blend, 
 												u32 max_blend, 
-												u32 step,
+												u32 time,
 												bool visOnStop, 
 												bool remSelf,
 												bool remParent )
 : IGUIAnimator( environment, node ), 
-  min_( min_blend ), max_( max_blend ), step_( step ),
+  min_( min_blend ), max_( max_blend ), _time( time ),
   visOnStop_( visOnStop ), remSelf_( remSelf ), remParent_( remParent )
 {
-
+    
 }
 
 void CNrpGuiHoveredAnimator::draw()
@@ -43,19 +43,20 @@ void CNrpGuiHoveredAnimator::draw()
 			}
 	}
 
-	u32 ab = Parent->getAlphaBlend();
+    int step = ceil( abs( (int)(max_ - min_) ) * _time / (float)Environment->getVideoDriver()->getFPS() );
+
 	bool workStop = false;
 	if( up )
 	{
-		if( ab < max_ )
-			ab+=core::s32_min( step_, max_ - ab );
+		if( _currentAlpha < max_ )
+			_currentAlpha+=core::s32_min( step, max_ - _currentAlpha );
 		else
 			workStop = true;
 	}
 	else
 	{
-		if( ab > min_ )
-			ab-=core::s32_min( step_, ab - min_ );
+		if( _currentAlpha > min_ )
+			_currentAlpha -=core::s32_min( step, _currentAlpha - min_ );
 		else
 			workStop = true;
 	}
@@ -72,7 +73,7 @@ void CNrpGuiHoveredAnimator::draw()
 
 	}
 
-	Parent->setAlphaBlend( ab );
+	Parent->setAlphaBlend( _currentAlpha );
 }
 
 }//namespace gui

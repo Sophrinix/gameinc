@@ -4,12 +4,20 @@
 #include "nrpEngine.h"
 #include "IniFile.h"
 #include "NrpApplication.h"
+#include "nrpScript.h"
 
 #include <io.h>
+#include <sys/stat.h>
 #include <assert.h>
 
 namespace nrp
 {
+
+const NrpText OpFileSystem::anyFile = L"*.*";
+const NrpText OpFileSystem::firstEntry = L".";
+const NrpText OpFileSystem::secondEntry = L"..";
+const NrpText OpFileSystem::numTemplate = L"Number";
+int OpFileSystem::lastTimeUpdate = 0;
 	
 OpFileSystem::OpFileSystem(void)
 {
@@ -32,10 +40,10 @@ void OpFileSystem::Remove( const NrpText& pathTo )
 		assert( IsExist( mStr ) );
 		if( IsExist( mStr ) )
 		{
-			hFile = _wfindfirst( ( mStr+ NrpText("*.*") ).ToWide(), &fdata);
+			hFile = _wfindfirst( ( mStr + anyFile ).ToWide(), &fdata);
 			while( hFile > 0 )
 			{
-				if ( !( wcscmp( fdata.name, L".") == 0 || wcscmp( fdata.name, L".." ) == 0 ) )// это удалять не надо
+				if ( !( firstEntry == fdata.name || secondEntry == fdata.name ) )// это удалять не надо
 					if ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ))// найдена папка
 					{
 						Remove( CheckEndSlash( mStr ) + NrpText( fdata.name ) );
@@ -50,12 +58,13 @@ void OpFileSystem::Remove( const NrpText& pathTo )
 			}
 
 			_findclose( hFile );
-			if( !RemoveDirectoryW( RemoveEndSlash( mStr ).ToWide() ) )
-			{
-				int rr = GetLastError();
-				rr = rr;
-			}
 		}
+
+        if( !RemoveDirectoryW( RemoveEndSlash( mStr ).ToWide() ) )
+        {
+            int rr = GetLastError();
+            rr = rr;
+        }
 	}
 }
 
@@ -71,12 +80,12 @@ void OpFileSystem::Copy( const NrpText& pathOld, const NrpText& pathNew )
 	assert( IsExist( pathOld ) );
 	if( IsExist( pathOld ) )
 	{
-		hFile = _wfindfirst( ( CheckEndSlash( pathOld )+ NrpText("*.*") ).ToWide(), &fdata);
+		hFile = _wfindfirst( ( CheckEndSlash( pathOld )+ anyFile ).ToWide(), &fdata);
 		while( hFile > 0 )
 		{
 			if ( fdata.attrib & _A_SUBDIR )  // если нашли папку
 			{
-				if( !(wcscmp( fdata.name, L"." ) == 0 || wcscmp( fdata.name, L".." ) == 0) )
+				if( !( firstEntry == fdata.name || secondEntry == fdata.name ) )
 				{
 					Copy( CheckEndSlash( pathOld ) + NrpText( fdata.name ),
 						  CheckEndSlash( pathNew ) + NrpText( fdata.name ) );// Рекурсивный вызов
@@ -98,7 +107,7 @@ void OpFileSystem::Copy( const NrpText& pathOld, const NrpText& pathNew )
 }
 
 void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory, const NrpText& templateName,
-											const NrpText& itemName, IniFile* ini )
+											const NrpText& itemName, IniFile* ini, const NrpText& funcUpdate )
 {
 	_wfinddata_t fdata;	
 	intptr_t hFile;
@@ -106,13 +115,13 @@ void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory, const NrpT
 	assert( directory.size() );
 	if( directory.size() )
 	{
-		hFile = _wfindfirst( directory + L"\\*.*", &fdata);
+		hFile = _wfindfirst( ( CheckEndSlash( directory )+ anyFile ).ToWide(), &fdata);
 		while( hFile )
 		{
-			if ( !( wcscmp( fdata.name, L".") == 0 || wcscmp( fdata.name, L".." ) == 0 ) )// это удалять не надо
+			if ( !( firstEntry == fdata.name || secondEntry == fdata.name ) )// это удалять не надо
 				if ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ))// найдена папка
 				{
-					CreateDirectorySnapshot( CheckEndSlash( directory ) + NrpText( fdata.name ), templateName, itemName, ini );
+					CreateDirectorySnapshot( CheckEndSlash( directory ) + NrpText( fdata.name ), templateName, itemName, ini, funcUpdate );
 				}
 				else// иначе найден файл
 				{
@@ -121,12 +130,18 @@ void OpFileSystem::CreateDirectorySnapshot( const NrpText& directory, const NrpT
 						NrpText fileName = CheckEndSlash( directory )+ fdata.name;
 						IniFile rv( fileName );
 
-						int number= ini->Get( "options", templateName + L"Number", (int)0 );
+						int number= ini->Get( SECTION_OPTIONS, templateName + numTemplate, (int)0 );
 
-						NrpText intName = rv.Get( "properties", "internalname:string", NrpText( "" ) );
-						ini->Set( L"options", NrpText( "name" ) + NrpText( (int)number ), intName );
-						ini->Set( L"options", templateName + NrpText( (int)number ), fileName );
-						ini->Set( L"options", templateName + L"Number", number+1 );
+                        NrpText intName = rv.Get( SECTION_PROPERTIES, INrpConfig::uniqTemplate, NrpText( "" ) );
+						ini->Set( SECTION_OPTIONS, CreateKeyName( number ), intName );
+						ini->Set( SECTION_OPTIONS, templateName + NrpText( (int)number ), fileName );
+						ini->Set( SECTION_OPTIONS, templateName + numTemplate, number+1 );
+
+                        if( funcUpdate.size() && GetTickCount() - lastTimeUpdate > 500 )
+                        {
+                            lastTimeUpdate = GetTickCount();
+                            CNrpScript::Instance().DoString( funcUpdate + "(" + NrpText( number ) + ")" );
+                        }
 					}
 				}
 			
@@ -158,28 +173,56 @@ NrpText OpFileSystem::RemoveEndSlash( NrpText pathTo )
 
 void OpFileSystem::CreateDirectory( NrpText pathTo )
 {
-	pathTo = CheckEndSlash( pathTo );
-	if( !IsExist( pathTo ) )
-		::CreateDirectoryW( RemoveEndSlash( pathTo ), NULL );
+    if( IsExist( pathTo ) )
+        return;
 
-	assert( IsExist( pathTo ) );
+    for( int i=0; i < 5; i++ )
+    {
+	    BOOL created = CreateDirectoryW( RemoveEndSlash( pathTo ).ToWide(), NULL );
+
+        assert( created );
+
+        if( !created )
+        {
+            Log( HW ) << "Can't create directory " << pathTo << term;
+            Sleep( 500 );
+        }
+        else
+            return;
+    }
 }
 
 bool OpFileSystem::IsExist( const NrpText& pathTo )
 {
-	bool ex = ( _waccess( pathTo.ToWide(), 0 ) != -1 );
+    struct stat stFileInfo; 
+    bool blnReturn; 
+    int intStat; 
 
-/*
-#ifdef _DEBUG
-	if( !ex )
-		Log(SCRIPT) << "Указанный файл не существует " <<  pathTo << term;
-#endif
-*/
-	return ex;
+    // Attempt to get the file attributes 
+    intStat = stat( const_cast< NrpText& >( RemoveEndSlash( pathTo ) ).ToStr(), &stFileInfo); 
+    if(intStat == 0) 
+    { 
+        // We were able to get the file attributes 
+        // so the file obviously exists. 
+        blnReturn = true; 
+    } 
+    else 
+    { 
+        // We were not able to get the file attributes. 
+        // This may mean that we don't have permission to 
+        // access the folder which contains this file. If you 
+        // need to do that level of checking, lookup the 
+        // return values of stat which will give you 
+        // more details on why stat failed. 
+        blnReturn = false; 
+    } 
+
+    return(blnReturn);
 }
 
 bool OpFileSystem::IsFolder( const NrpText& pathTo )
 {
+    bool ret = false;
 	NrpText myPath = RemoveEndSlash( pathTo );
 	if( !IsExist( myPath ) )
         Log( HW ) << "Try delete unexisting file " << myPath << term;
@@ -190,10 +233,12 @@ bool OpFileSystem::IsFolder( const NrpText& pathTo )
 	hFile = _wfindfirst( myPath, &fdata);
 	if( hFile != -1 )
 	{
-		return ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ));// это папка
+		ret = ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR ));// это папка
 	}
 
-	return false;
+    _findclose( hFile );
+
+	return ret;
 }
 
 NrpText OpFileSystem::GetExtension( const NrpText& pathTo )
@@ -245,5 +290,44 @@ void OpFileSystem::Rename( const NrpText& pathOld, const NrpText& pathNew )
     assert( IsExist( pathOld ) );
 
     _wrename( pathOld.ToWide(), pathNew.ToWide() );
+}
+
+NrpText OpFileSystem::CheckAbsolutePath( const NrpText& relPath )
+{
+    NrpText outPath = relPath;
+    if( outPath.find( L':' ) > 0 )
+        return outPath;
+
+    return CheckEndSlash( _nrpApp[ WORKDIR ] ) + outPath;
+}
+
+FolderEntries OpFileSystem::GetEntries( NrpText& pathToDir, bool fileOnly )
+{
+    _wfinddata_t fdata;	
+    intptr_t hFile;
+
+    FolderEntries ret;
+
+    assert( pathToDir.size() );
+    if( pathToDir.size() )
+    {
+        hFile = _wfindfirst( ( CheckEndSlash( pathToDir )+ anyFile ).ToWide(), &fdata);
+        while( hFile )
+        {
+            NrpText absPath = CheckEndSlash( pathToDir )+ fdata.name;
+            if ( !( firstEntry == fdata.name || secondEntry == fdata.name ) )// это удалять не надо
+                if( !fileOnly && ((( fdata.attrib & _A_SUBDIR ) == _A_SUBDIR ) || ( fdata.attrib == _A_SUBDIR )) )// найдена папка
+                    ret.push_back( FolderEntry( true, fdata.name, absPath ) );
+                else// иначе найден файл
+                    ret.push_back( FolderEntry( false, fdata.name, absPath ) );
+ 
+                if( _wfindnext( hFile, &fdata) != 0 )
+                    break;
+        }
+    }
+
+    _findclose( hFile );
+
+    return ret;
 }
 }//end namespace nrp

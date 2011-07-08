@@ -4,10 +4,14 @@
 #include "NrpApplication.h"
 #include "NrpTechnology.h"
 #include "OpFileSystem.h"
+#include "NrpHistory.h"
 
 namespace nrp
 {
 CLASS_NAME CLASS_PLATFORM( "CNrpPlatform" );
+
+const NrpText CNrpPlatform::historyTemplate = L"platform.history";
+const NrpText CNrpPlatform::saveTemplate = L"item.platform";
 
 CNrpPlatform::CNrpPlatform( const NrpText& fileName ) : INrpProject( CLASS_PLATFORM, "" )
 {
@@ -27,21 +31,22 @@ CNrpPlatform::~CNrpPlatform(void)
 
 void CNrpPlatform::_InitialyzeOptions()
 {
-	Add( RAM, 0.f );
-	Add( CPU, 0.f );
-	Add( INTERNAL_NAME, NrpText() );
-	Add( MAXWIDTH, 0 );
-	Add( MAXHEIGHT, 0 );
-	Add( SELLDEVICE, 0 );
-	Add( TEXTURENORMAL, NrpText() );
-	Add( TECHNUMBER, 0 );
-	Add( BASE_CODE, 0.f );
-	Add( ENGINE_CODE, 0.f );
-	Add( LEVEL, 0 );
-	Add( QUALITY, 100 );
-	Add( STARTDATE, NrpTime( 0. ) );
-	Add( ENDDATE, NrpTime( 0. ) );
-
+	RegProperty( RAM, 0.f );
+	RegProperty( CPU, 0.f );
+	RegProperty( INTERNAL_NAME, NrpText() );
+	RegProperty( MAXWIDTH, 0 );
+	RegProperty( MAXHEIGHT, 0 );
+	RegProperty( SELLDEVICE, 0 );
+	RegProperty( TEXTURENORMAL, NrpText() );
+	RegProperty( TECHNUMBER, 0 );
+	RegProperty( BASE_CODE, 0.f );
+	RegProperty( ENGINE_CODE, 0.f );
+	RegProperty( LEVEL, 0 );
+    RegProperty( PRICE, 0 );
+	RegProperty( QUALITY, 100 );
+	RegProperty( STARTDATE, NrpTime( 0. ) );
+	RegProperty( ENDDATE, NrpTime( 0. ) );
+    RegProperty( HISTORY, (CNrpHistory*)NULL );
 }
 
 NrpText CNrpPlatform::ClassName()
@@ -57,13 +62,17 @@ NrpText CNrpPlatform::Save( const NrpText& pathTo )
 
 	OpFileSystem::CreateDirectory( localFolder );
 
-	NrpText fileName = localFolder + "item.platform";
+    NrpText fileName = localFolder + CNrpPlatform::saveTemplate;
 	INrpProject::Save( fileName );
 
 	IniFile sv( fileName );
 	sv.Set( SECTION_TECHS, _techs, CreateKeyTech, INTERNAL_NAME );
 
 	sv.Save();
+
+    assert( _self[ HISTORY ].As<CNrpHistory*>() );
+    if( _self[ HISTORY ].As<CNrpHistory*>() )
+        _self[ HISTORY ].As<CNrpHistory*>()->Save( localFolder + CNrpPlatform::historyTemplate );
 
 	return fileName;
 }
@@ -75,6 +84,9 @@ void CNrpPlatform::Load( const NrpText& pathTo )
 	IniFile lv( pathTo );
 
 	lv.Get( SECTION_TECHS, CreateKeyTech, _self[ TECHNUMBER ], _techs, &CNrpApplication::GetTechnology, &_nrpApp );
+
+    NrpText historyIni = OpFileSystem::UpDir( pathTo ) + CNrpPlatform::historyTemplate;
+    _self[ HISTORY ] = OpFileSystem::IsExist( historyIni ) ? new CNrpHistory( historyIni ) : new CNrpHistory();
 }
 
 CNrpTechnology* CNrpPlatform::GetTech( const NrpText& name )

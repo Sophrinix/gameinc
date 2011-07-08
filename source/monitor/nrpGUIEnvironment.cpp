@@ -35,17 +35,19 @@ namespace irr
 namespace gui
 {
 
+const NrpText CNrpGUIEnvironment::config = "skin/guiskin.cfg";
+
 bool CNrpGUIEnvironment::CreateSkin_()
 {
 	SImageGUISkinConfig guicfg;
 	CNrpImageSkinLoader::Load( getFileSystem(), 
 	 						   getVideoDriver(), 
-							   "skin/guiskin.cfg",
+                               CNrpGUIEnvironment::config,
 							   guicfg );  //файл конфигурации скина
 	CImageGUISkin* adv_skin = new CImageGUISkin( this );
 	adv_skin->LoadConfig( guicfg );													//инициализируем скин										
     
-	_nativeEnv->setSkin( adv_skin );													//заменяем дефолтовый обработчик	
+	_nativeEnv->setSkin( adv_skin );												//заменяем дефолтовый обработчик	
 
 	LoadFonts_();  //получаем шрифты для работы	
 						
@@ -630,10 +632,10 @@ IGUIWindow* CNrpGUIEnvironment::addWindow( video::ITexture* texture,
 	return window;
 }
 
-gui::IGUIAnimator* CNrpGUIEnvironment::addBlendAnimator( IGUIElement* parent, u32 min, u32 max, f32 step,
+gui::IGUIAnimator* CNrpGUIEnvironment::addBlendAnimator( IGUIElement* parent, u32 min, u32 max, f32 time,
 														  bool visOnStop, bool remSelf, bool remParent )
 {
-	IGUIAnimator* anim = new CNrpGuiBlendAnimator( this, parent, min, max, step, visOnStop, remSelf, remParent  );
+	IGUIAnimator* anim = new CNrpGuiBlendAnimator( this, parent, min, max, time, visOnStop, remSelf, remParent  );
 
 	return anim;
 }
@@ -709,9 +711,9 @@ void CNrpGUIEnvironment::addToDeletionQueue( IGUIElement* ptrElement )
 	{}
 }
 
-gui::IGUIAnimator* CNrpGUIEnvironment::addHoveredAnimator( IGUIElement* parent, u32 min, u32 max, u32 step, bool visOnStop, bool remSelf, bool remParent )
+gui::IGUIAnimator* CNrpGUIEnvironment::addHoveredAnimator( IGUIElement* parent, u32 min, u32 max, u32 time, bool visOnStop, bool remSelf, bool remParent )
 {
-	IGUIAnimator* anim = new CNrpGuiHoveredAnimator( this, parent, min, max, step, visOnStop, remSelf, remParent );
+	IGUIAnimator* anim = new CNrpGuiHoveredAnimator( this, parent, min, max, time, visOnStop, remSelf, remParent );
 
 	return anim;
 }
@@ -733,10 +735,6 @@ gui::IGUIElement* CNrpGUIEnvironment::addProgressBar( IGUIElement* parent, s32 i
 gui::CNrpGuiLinkBox* CNrpGUIEnvironment::addLinkBox( IGUIElement* parent, s32 id, core::recti rectangle )
 {
 	gui::CNrpGuiLinkBox* elm = new CNrpGuiLinkBox( this, parent, id, rectangle, false );
-	elm->setImage( _nativeEnv->getVideoDriver()->getTexture( "skin/combobox.png" ) );
-	elm->setHoveredImage( _nativeEnv->getVideoDriver()->getTexture( "skin/combobox_focused.png" ) );
-	elm->setPressedImage( _nativeEnv->getVideoDriver()->getTexture( "skin/combobox_disabled.png" ) );
-	elm->setScaleImage( true );
 
 	return elm;
 }
