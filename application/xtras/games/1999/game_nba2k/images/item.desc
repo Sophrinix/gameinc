@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_basketball
+[properties]
+internalname:string=game_nba2k
+startdate:time=y=1999 m=11 d=19 h=0 mi=0

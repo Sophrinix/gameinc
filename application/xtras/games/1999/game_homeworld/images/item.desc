@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_realtime
+genre_2=genre_scifi
+[properties]
+internalname:string=game_homeworld
+startdate:time=y=1999 m=8 d=24 h=0 mi=0

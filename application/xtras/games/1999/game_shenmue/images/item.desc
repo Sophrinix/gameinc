@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_rpg
+genre_3=genre_fighting
+genre_4=genre_martialarts
+[properties]
+internalname:string=game_shenmue
+startdate:time=y=1999 m=7 d=20 h=0 mi=0

@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_football
+[properties]
+internalname:string=game_fifa2000majorleaguesoccer
+startdate:time=y=1999 m=6 d=20 h=0 mi=0

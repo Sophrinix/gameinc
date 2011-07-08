@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_football
+[platforms]
+platform_0=platform_gameboycolor
+platform_1=platform_playstation
+platform_2=platform_windows
+[properties]
+cash:int=91494000
+copySell:int=1989000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=2 d=19 h=0 mi=0
+famous:float=0.45
+gameIsSaling:bool=false
+internalname:string=game_fifa2000majorleaguesoccer
+localizationRating:int=82
+name:string=FIFA 2000: Major League Soccer
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=33
+startBugRating:int=40
+startdate:time=y=1999 m=6 d=20 h=0 mi=0
+startGenreRating:int=92
+startGraphicRating:int=71
+startrating:int=50
+startSoundRating:int=15
+textureNormal:path=images/spl_0.jpg

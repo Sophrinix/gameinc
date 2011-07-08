@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation2
+platform_2=platform_windows
+[properties]
+cash:int=183960000
+copySell:int=2555000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=8 d=15 h=0 mi=0
+famous:float=0.56
+gameIsSaling:bool=false
+internalname:string=game_ageofempiresiitheageofkings
+localizationRating:int=55
+name:string=Age of Empires II: The Age of Kings
+owner:string=Microsoft Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=53
+startBugRating:int=42
+startdate:time=y=1999 m=5 d=3 h=0 mi=0
+startGenreRating:int=33
+startGraphicRating:int=76
+startrating:int=44
+startSoundRating:int=17
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_xbox360
+[properties]
+cash:int=781064000
+copySell:int=8776000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=9 d=15 h=0 mi=0
+famous:float=0.15
+gameIsSaling:bool=false
+internalname:string=game_soulcalibur
+localizationRating:int=85
+name:string=SoulCalibur
+owner:string=Namco Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=27
+startBugRating:int=33
+startdate:time=y=1999 m=1 d=16 h=0 mi=0
+startGenreRating:int=63
+startGraphicRating:int=29
+startrating:int=40
+startSoundRating:int=50
+textureNormal:path=images/spl_0.jpg

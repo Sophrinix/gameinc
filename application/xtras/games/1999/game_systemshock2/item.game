@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_cyberpunk
+genre_3=genre_shooter
+genre_4=genre_horror
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=194348000
+copySell:int=4417000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=7 d=18 h=0 mi=0
+famous:float=0.64
+gameIsSaling:bool=false
+internalname:string=game_systemshock2
+localizationRating:int=59
+name:string=System Shock 2
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=31
+startBugRating:int=68
+startdate:time=y=1999 m=8 d=26 h=0 mi=0
+startGenreRating:int=2
+startGraphicRating:int=66
+startrating:int=47
+startSoundRating:int=72
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_managerial
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=114954000
+copySell:int=3381000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=7 d=4 h=0 mi=0
+famous:float=0.85
+gameIsSaling:bool=false
+internalname:string=game_sidmeiersalphacentauri
+localizationRating:int=98
+name:string=Sid Meier's Alpha Centauri
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=56
+startBugRating:int=63
+startdate:time=y=1999 m=3 d=18 h=0 mi=0
+startGenreRating:int=40
+startGraphicRating:int=72
+startrating:int=61
+startSoundRating:int=78
+textureNormal:path=images/spl_0.jpg

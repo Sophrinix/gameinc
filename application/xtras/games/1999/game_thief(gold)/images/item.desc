@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_stealth
+[properties]
+internalname:string=game_thief(gold)
+startdate:time=y=1999 m=2 d=6 h=0 mi=0

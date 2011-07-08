@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_realtime
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=219245000
+copySell:int=3373000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=3 d=8 h=0 mi=0
+famous:float=0.94
+gameIsSaling:bool=false
+internalname:string=game_homeworld
+localizationRating:int=28
+name:string=Homeworld
+owner:string=Sierra On-Line, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=26
+startBugRating:int=26
+startdate:time=y=1999 m=8 d=24 h=0 mi=0
+startGenreRating:int=64
+startGraphicRating:int=70
+startrating:int=38
+startSoundRating:int=7
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_basketball
+[platforms]
+platform_0=platform_dreamcast
+[properties]
+cash:int=527450000
+copySell:int=9590000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=7 d=19 h=0 mi=0
+famous:float=0.02
+gameIsSaling:bool=false
+internalname:string=game_nba2k
+localizationRating:int=56
+name:string=NBA 2K
+owner:string=SEGA Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=72
+startBugRating:int=69
+startdate:time=y=1999 m=11 d=19 h=0 mi=0
+startGenreRating:int=16
+startGraphicRating:int=78
+startrating:int=66
+startSoundRating:int=98
+textureNormal:path=images/spl_0.jpg

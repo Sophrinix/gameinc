@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_simulation
+genre_1=genre_strategy
+genre_2=genre_managerial
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[properties]
+internalname:string=game_sidmeiersalphacentauri
+startdate:time=y=1999 m=3 d=18 h=0 mi=0

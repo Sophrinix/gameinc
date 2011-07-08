@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_fantasy
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[platforms]
+platform_0=platform_playstation
+[properties]
+cash:int=25152000
+copySell:int=2096000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=10 d=2 h=0 mi=0
+famous:float=0.05
+gameIsSaling:bool=false
+internalname:string=game_chronocross
+localizationRating:int=29
+name:string=Chrono Cross
+owner:string=Square Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=28
+startBugRating:int=43
+startdate:time=y=1999 m=3 d=19 h=0 mi=0
+startGenreRating:int=32
+startGraphicRating:int=18
+startrating:int=24
+startSoundRating:int=0
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_fantasy
+genre_3=genre_realtime
+genre_4=genre_scifi
+genre_5=genre_turnbased
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_playstation3
+platform_2=platform_psp
+platform_3=platform_windows
+[properties]
+cash:int=133308000
+copySell:int=2898000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=10 d=1 h=0 mi=0
+famous:float=0.12
+gameIsSaling:bool=false
+internalname:string=game_finalfantasyviii
+localizationRating:int=71
+name:string=Final Fantasy VIII
+owner:string=Sony Computer Entertainment Incorporated
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=6
+startBugRating:int=65
+startdate:time=y=1999 m=10 d=26 h=0 mi=0
+startGenreRating:int=39
+startGraphicRating:int=2
+startrating:int=22
+startSoundRating:int=1
+textureNormal:path=images/spl_0.jpg

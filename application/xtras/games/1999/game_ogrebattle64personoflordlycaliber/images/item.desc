@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_strategy
+genre_2=genre_fantasy
+genre_3=genre_turnbased
+[properties]
+internalname:string=game_ogrebattle64personoflordlycaliber
+startdate:time=y=1999 m=10 d=0 h=0 mi=0
+url:string=http://www.mobygames.com/game/ogre-battle-64-person-of-lordly-caliber

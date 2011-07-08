@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_gameboycolor
+[properties]
+cash:int=308686000
+copySell:int=9079000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=4 d=9 h=0 mi=0
+famous:float=0.41
+gameIsSaling:bool=false
+internalname:string=game_supermariobros.deluxe
+localizationRating:int=87
+name:string=Super Mario Bros. Deluxe
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=32
+startBugRating:int=78
+startdate:time=y=1999 m=1 d=1 h=0 mi=0
+startGenreRating:int=82
+startGraphicRating:int=84
+startrating:int=72
+startSoundRating:int=84
+textureNormal:path=images/spl_0.jpg

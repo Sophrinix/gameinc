@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_quakeiiiarena
+startdate:time=y=1999 m=10 d=1 h=0 mi=0
+url:string=http://www.mobygames.com/game/quake-iii-arena

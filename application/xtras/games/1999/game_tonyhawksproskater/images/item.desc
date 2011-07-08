@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_skateboarding
+genre_2=genre_stunts
+[properties]
+internalname:string=game_tonyhawksproskater
+startdate:time=y=1999 m=4 d=9 h=0 mi=0

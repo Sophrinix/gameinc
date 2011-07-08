@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+[properties]
+internalname:string=game_maddennfl2000
+startdate:time=y=1999 m=8 d=18 h=0 mi=0

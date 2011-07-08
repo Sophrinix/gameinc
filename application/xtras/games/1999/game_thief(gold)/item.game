@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_stealth
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=318736000
+copySell:int=3622000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=3 d=23 h=0 mi=0
+famous:float=0.76
+gameIsSaling:bool=false
+internalname:string=game_thief(gold)
+localizationRating:int=60
+name:string=Thief (Gold)
+owner:string=Eidos Interactive Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=76
+startBugRating:int=57
+startdate:time=y=1999 m=2 d=6 h=0 mi=0
+startGenreRating:int=42
+startGraphicRating:int=2
+startrating:int=38
+startSoundRating:int=16
+textureNormal:path=images/spl_0.jpg

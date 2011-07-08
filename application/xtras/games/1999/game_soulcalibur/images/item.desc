@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[properties]
+internalname:string=game_soulcalibur
+startdate:time=y=1999 m=1 d=16 h=0 mi=0

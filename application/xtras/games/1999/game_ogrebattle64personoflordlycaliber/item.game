@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_strategy
+genre_2=genre_fantasy
+genre_3=genre_turnbased
+[platforms]
+platform_0=platform_nintendo64
+platform_1=platform_wii
+[properties]
+cash:int=73619000
+copySell:int=5663000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=5 d=25 h=0 mi=0
+famous:float=0.53
+gameIsSaling:bool=false
+internalname:string=game_ogrebattle64personoflordlycaliber
+localizationRating:int=13
+name:string=Ogre Battle 64: Person of Lordly Caliber
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=74
+startBugRating:int=24
+startdate:time=y=1999 m=10 d=0 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=71
+startrating:int=51
+startSoundRating:int=37
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/ogre-battle-64-person-of-lordly-caliber

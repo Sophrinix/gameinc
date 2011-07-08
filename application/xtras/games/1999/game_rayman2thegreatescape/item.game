@@ -1,0 +1,20 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_iphone
+platform_2=platform_nintendo64
+platform_3=platform_nintendo3ds
+platform_4=platform_nintendods
+platform_5=platform_playstation
+platform_6=platform_playstation2
+platform_7=platform_playstation3
+platform_8=platform_psp
+platform_9=platform_windows
+[properties]
+enddate:time=y=2002 m=7 d=4 h=0 mi=0
+internalname:string=game_rayman2thegreatescape
+name:string=Rayman 2: The Great Escape
+owner:string=Ubi Soft Entertainment Software
+startdate:time=y=1999 m=8 d=7 h=0 mi=0
+textureNormal:path=images/spl_0.jpg

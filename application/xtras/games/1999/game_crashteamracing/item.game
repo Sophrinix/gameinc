@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_racing
+[platforms]
+platform_0=platform_playstation
+platform_1=platform_playstation3
+[properties]
+cash:int=14950000
+copySell:int=1495000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=5 d=26 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_crashteamracing
+localizationRating:int=36
+name:string=Crash Team Racing
+owner:string=Sony Computer Entertainment America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=29
+startBugRating:int=57
+startdate:time=y=1999 m=0 d=28 h=0 mi=0
+startGenreRating:int=2
+startGraphicRating:int=55
+startrating:int=45
+startSoundRating:int=82
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_skateboarding
+genre_2=genre_stunts
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_ngage
+platform_2=platform_nintendo64
+platform_3=platform_playstation
+[properties]
+cash:int=83330000
+copySell:int=8333000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=9 d=17 h=0 mi=0
+famous:float=0.74
+gameIsSaling:bool=false
+internalname:string=game_tonyhawksproskater
+localizationRating:int=50
+name:string=Tony Hawk's Pro Skater
+owner:string=Activision, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=83
+startdate:time=y=1999 m=4 d=9 h=0 mi=0
+startGenreRating:int=41
+startGraphicRating:int=70
+startrating:int=53
+startSoundRating:int=36
+textureNormal:path=images/spl_0.jpg

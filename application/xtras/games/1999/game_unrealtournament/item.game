@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_cyberpunk
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_linux
+platform_2=platform_unknown
+platform_3=platform_playstation2
+platform_4=platform_windows
+[properties]
+cash:int=257136000
+copySell:int=5357000
+descriptionpath:path=desc.htm
+enddate:time=y=2002 m=0 d=10 h=0 mi=0
+famous:float=0.45
+gameIsSaling:bool=false
+internalname:string=game_unrealtournament
+localizationRating:int=52
+name:string=Unreal Tournament
+owner:string=GT Interactive Software Corp.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=27
+startBugRating:int=13
+startdate:time=y=1999 m=7 d=14 h=0 mi=0
+startGenreRating:int=94
+startGraphicRating:int=27
+startrating:int=46
+startSoundRating:int=70
+textureNormal:path=images/spl_0.jpg
