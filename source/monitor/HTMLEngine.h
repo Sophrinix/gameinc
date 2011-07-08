@@ -22,10 +22,15 @@ namespace nrp
 /*! Класс веб-движка Gecko 1.8.1
 	Описывает взаимодействие с движком и выполняемые ункции
 */
+class CNrpGame;
 
 class HTMLEngine : public LLEmbeddedBrowserWindowObserver
 {
 public:
+    static const NrpText nofollowScheme;
+    static const NrpText fileScheme;
+    static const NrpText screenshotSrcTemplate;
+    static const int maxScrNumber;
 	//*! Инициализация движка при первом вызове
 	static HTMLEngine& Instance();
 	
@@ -57,6 +62,8 @@ public:
 	void SetFocus( bool focus );
 	void KeyPress( int key );
 	void MouseMoved( size_t x, size_t y );
+
+    void CreateDescription( const NrpText& templateFile, const NrpText& fileName, const CNrpGame& game );
 
 	static NrpText ClassName() { return "CHtmlEngine"; }
 private:

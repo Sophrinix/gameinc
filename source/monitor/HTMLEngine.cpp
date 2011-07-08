@@ -1,21 +1,36 @@
+
 #include "stdafx.h"
 #include "HTMLEngine.h"
 #include "NrpBrowserWindow.h"
 #include "NrpHtmlEngineConfig.h"
 #include "nrpEngine.h"
 #include "nrpScript.h"
+#include "NrpGame.h"
+#include "NrpApplication.h"
+#include "OpFileSystem.h"
+#include "NrpTime.h"
+#include "NrpPlatform.h"
+#include "NrpTechnology.h"
+#include "NrpGameMarket.h"
+#include "NrpExtInfo.h"
 
-#include <cassert>
+#include <iostream>
+#include <fstream>
+#include <assert.h>
 //*! создаем один экземпл€р класса дл€ работы
-static nrp::HTMLEngine* HTMLRenderer = 0;
+static nrp::HTMLEngine* HTMLRenderer = NULL;
 
 const NrpText CARET_RESPONSE( "\n" );
-#define NRP_NOFOLLOW_SCHEME "nrpscript://"
 
 using namespace irr;
 
 namespace nrp
 {
+
+const NrpText HTMLEngine::nofollowScheme = L"nrpscript://";
+const NrpText HTMLEngine::fileScheme = L"file://";
+const NrpText HTMLEngine::screenshotSrcTemplate = L"#screenshot_src";
+const int HTMLEngine::maxScrNumber=8;
 
 HTMLEngine& HTMLEngine::Instance()
 {
@@ -80,7 +95,7 @@ gui::CNrpBrowserWindow& HTMLEngine::GetBrowserWindow(irr::core::dimension2du siz
 
 		llmozlib_->focusBrowser(browserWindowId_, true);
 		browserWindow_->SetTexture( pageTexture_ );
-		llmozlib_->setNoFollowScheme( browserWindowId_, NRP_NOFOLLOW_SCHEME );
+		llmozlib_->setNoFollowScheme( browserWindowId_, const_cast< NrpText& >( nofollowScheme ).ToStr() );
 	}
 
 	return *browserWindow_;
@@ -243,27 +258,13 @@ void HTMLEngine::onClickLinkHref( const LLEmbeddedBrowserWindowEvent& eventIn )
 		_firstMessage = true;
 }
 
-NrpText DecodeUrl( const NrpText& url )
-{
-	NrpText decodeStr;
-	for( u32 pos=0; pos < url.size(); pos++ )
-		if( url[ pos ] != L'%' )
-			decodeStr.append( url[ pos ] ); 
-		else
-		{
-			decodeStr.append( (( url[ pos+1 ] - 0x30 ) << 4) + ( url[ pos + 2 ] - 0x30 ) );
-			pos += 2;
-		}
-
-	return decodeStr;
-}
 
 void HTMLEngine::onClickLinkNoFollow( const LLEmbeddedBrowserWindowEvent& eventIn )
 {
 	if( _noFollowLinkExec )
 	{
 		NrpText action = eventIn.getStringValue().c_str();
-		action = DecodeUrl( action.subString( strlen( NRP_NOFOLLOW_SCHEME ), action.size() ) );
+        action = NrpText::FromUtf8( action.subString( nofollowScheme.size(), action.size() ) );
 		
 		CNrpScript::Instance().DoString( action );
 		_noFollowLinkExec = false;
@@ -281,4 +282,80 @@ void HTMLEngine::SetPage404( const NrpText& pageUrl )
 	llmozlib_->set404RedirectUrl( browserWindowId_, const_cast< NrpText& >( pageUrl ).ToStr() );
 	_page404 = pageUrl;
 }
+
+void HTMLEngine::CreateDescription( const NrpText& templateFile, const NrpText& fileName, const CNrpGame& game )
+{
+    irr::io::IFileSystem* fs = _nrpEngine.GetFileSystem();
+    if( !fs )
+        return;
+
+    irr::io::IReadFile* file = fs->createAndOpenFile( templateFile );
+    
+    if( !file )
+        return;
+
+    char* buf = new char[ file->getSize() + 5 ];
+    memset( buf, 0, file->getSize() + 5 );
+    file->read( buf, file->getSize() );
+
+    NrpText templateText( buf ); 
+    file->drop();
+
+    templateText = templateText.Replace( L"#game_title", game[ NAME ] );
+    templateText = templateText.Replace( L"#cover_title", game[ NAME ] );
+    NrpText coverImgPath = OpFileSystem::CheckEndSlash( _nrpApp[ WORKDIR ] ) + (NrpText)game[ TEXTURENORMAL ];
+    templateText = templateText.Replace( L"#cover_img_path", fileScheme + coverImgPath );
+    templateText = templateText.Replace( L"#owner_title", game[ OWNER ] );
+    //outText = outText.Replace( L"#developer_title", "" );
+    wchar_t timeStr[ MAX_PATH ] = { 0 };
+    NrpTime& startTime = game[ STARTDATE ].As<NrpTime>();
+    swprintf( timeStr, MAX_PATH, L"%04d.%02d.%02d", startTime.RYear(), startTime.RMonth(), startTime.RDay() );
+  
+    templateText = templateText.Replace( L"#date_released", timeStr );
+
+    NrpText platformStr, plName;
+    for( int i=0; i < (int)game[ PLATFORMNUMBER ]; i++ )
+    {
+         plName = const_cast< CNrpGame& >( game ).GetPlatformName( i );
+         CNrpPlatform* pl = CNrpGameMarket::Instance().GetPlatform( plName );
+             
+         platformStr.append( pl ? (NrpText)(*pl)[ NAME ] : plName );
+         platformStr.append( i < (int)game[ PLATFORMNUMBER ]-1 ? ",\n" : "." );
+    }
+
+    templateText = templateText.Replace( L"#platforms_title", platformStr );
+
+    NrpText genreStr, gnName;
+    for( int i=0; i < (int)game[ GENRE_MODULE_NUMBER ]; i++ )
+    {
+        gnName = const_cast< CNrpGame& >( game ).GetGenreName( i );
+        CNrpTechnology* gnr = _nrpApp.GetTechnology( gnName );
+
+        genreStr.append( gnr ? (NrpText)(*gnr)[ NAME ] : gnName );
+        genreStr.append( i < (int)game[ GENRE_MODULE_NUMBER ]-1 ? ",\n" : "." );
+    }
+
+    templateText = templateText.Replace( L"#genres_title", genreStr );
+    templateText = templateText.Replace( L"#rank_title", NrpText( (int)game[ STARTRATING ] ) );
+
+    if( CNrpExtInfo* extInfo = game[ EXTINFO ].As< CNrpExtInfo*>() )
+    {
+        const STRINGS& images = extInfo->GetImages();
+        for( u32 i=0; i < images.size(), i < maxScrNumber; i++ )
+        {
+            int randomIndex = rand() % images.size();
+            templateText = templateText.Replace( screenshotSrcTemplate + NrpText( (int)i ), fileScheme + OpFileSystem::CheckAbsolutePath( images[ randomIndex ] ) );
+        }
+    }
+
+  
+    irr::io::IWriteFile* wrFile = fs->createAndWriteFile( fileName );
+    if( !wrFile )
+        return;
+    
+    templateText = templateText.ToUtf8( "&#x04", ";" );
+    wrFile->write( templateText.ToStr(), templateText.size() );
+    wrFile->drop();
+}
+
 }
