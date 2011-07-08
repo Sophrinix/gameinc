@@ -67,6 +67,8 @@ struct SImageGUISkinConfig							//карта элементов которые может отрисовывать ск
 	static const core::stringc ComboBox;					//выпадаюзий список
 	static const core::stringc ContextMenu;				//контекстное меню
 	static const core::stringc ListBox;					//список
+    static const core::stringc LinkBox;
+    static const core::stringc WindowBrowserViewer;
 
     SImageGUISkinConfig();
 
@@ -314,7 +316,7 @@ private:
 																	//		
 	bool UseGradient;
 
-	void CImageGUISkin::draw3DButtonPostEffect( IGUIElement* element, const core::rect<s32>& r, const core::rect<s32>* clip );
+	void CImageGUISkin::draw3DButtonPostEffect( IGUIElement* element, const core::rect<s32>& r, const core::rect<s32>* clip, int maxAb );
 };
 
 } //namespace gui

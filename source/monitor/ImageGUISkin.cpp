@@ -14,13 +14,14 @@ namespace gui
 {
 
 #define INIT_SIMCONFIG_CONSTANT( name ) const core::stringc SImageGUISkinConfig::name = #name;
+//стандартные состояния
 const core::stringc SImageGUISkinConfig::Normal = "";
 INIT_SIMCONFIG_CONSTANT( Hovered )
 INIT_SIMCONFIG_CONSTANT( Pressed )
 INIT_SIMCONFIG_CONSTANT( Disabled )
 INIT_SIMCONFIG_CONSTANT( Checked )
 INIT_SIMCONFIG_CONSTANT( Filled )
-
+//стандартные элементы 
 INIT_SIMCONFIG_CONSTANT( ElementUnknown )
 INIT_SIMCONFIG_CONSTANT( SunkenPane )				//обычная панель	
 INIT_SIMCONFIG_CONSTANT( Window )					//окно
@@ -33,6 +34,8 @@ INIT_SIMCONFIG_CONSTANT( EditBox )					//поле ввода
 INIT_SIMCONFIG_CONSTANT( ComboBox )					//выпадающий список
 INIT_SIMCONFIG_CONSTANT( ContextMenu )				//контекстное меню
 INIT_SIMCONFIG_CONSTANT( ListBox )					//список
+INIT_SIMCONFIG_CONSTANT( LinkBox )
+INIT_SIMCONFIG_CONSTANT( WindowBrowserViewer )
 
 CImageGUISkin::CImageGUISkin( IGUIEnvironment* env )				//конструктор расширенного скина
 {
@@ -146,7 +149,7 @@ void CImageGUISkin::draw3DButtonPaneStandard( IGUIElement* element,
 	if (!driver)									//нельзя работать с пустым драйвером
 		return;
 
-    SImageGUIElementStyle& style = Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Normal );	//этот элемент отрисуется если не будет замен	
+    SImageGUIElementStyle style = Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Normal );	//этот элемент отрисуется если не будет замен	
 	bool need_posteffect = false;					//пост эффекты для кнопок, чтобы было плавное угасание ховеред текстуры
 
 	if(  element->getType() == EGUIET_BUTTON )		//если элемент, который пытается отрисоваться кнопка
@@ -160,7 +163,7 @@ void CImageGUISkin::draw3DButtonPaneStandard( IGUIElement* element,
                 style = Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Pressed );		//если нажат ставим соответсвующий конфиг	
 		}
 
-		need_posteffect = true;						//нужен постэффект для кнопки
+        need_posteffect = true;						//нужен постэффект для кнопки
 	}
 
 	if ( !style.texture )											//рисованная текстура отсутсвует
@@ -170,17 +173,19 @@ void CImageGUISkin::draw3DButtonPaneStandard( IGUIElement* element,
 	}
 	else
 	{
-		video::SColor color( 0xff, 0xff, 0xff, 0xff );				//видна вся текстура
+        int maxAb = element->getParent() ? element->getParent()->getAlphaBlend() : 0xff;
+		video::SColor color( maxAb, 0xff, 0xff, 0xff );				//видна вся текстура
 		drawElementStyle( element, style, r, clip, &color  );		//рисуем текстуру из конфига
 
         if( need_posteffect && Config.GetConfig( element, SImageGUISkinConfig::Button, SImageGUISkinConfig::Hovered ).texture )       //добавляем свистелок
-			draw3DButtonPostEffect( element, r, clip );				//	
+			draw3DButtonPostEffect( element, r, clip, maxAb );				//	
 	}
 }
 
 void CImageGUISkin::draw3DButtonPostEffect(	 IGUIElement* element,		//свистелка для кнопки... плавное угасание ховеред текстуры
 											 const core::rect<s32>& r,
-											 const core::rect<s32>* clip )
+											 const core::rect<s32>* clip,
+                                             int maxAb )
 {
 	if( !element->isEnabled() )
 		return; 
@@ -192,7 +197,7 @@ void CImageGUISkin::draw3DButtonPostEffect(	 IGUIElement* element,		//свистелка 
 	s32 ab = element->getAlphaBlend();									//получаем прозрачность кнопки
 	if( up )
 	{
-		if( ab < 0xff )	ab+=core::s32_min( 3, 0xff - ab );											//изменяем прозрачность
+		if( ab < maxAb )	ab+=core::s32_min( 3, maxAb - ab );											//изменяем прозрачность
 	}
 	else
 	{
@@ -200,7 +205,7 @@ void CImageGUISkin::draw3DButtonPostEffect(	 IGUIElement* element,		//свистелка 
 	}
 
 	element->setAlphaBlend( ab );										//запоминаем прозрачность, чтобы потом её модно было использовать
-	if( ab <= 0xff && ab >= 5 )
+	if( ab <= maxAb && ab >= 5 )
 	{
 		core::dimension2di half_size;									//рассчитываем на сколько надо сдвинуть границы элемента
 																		//чтобы центр остался на месте, если разные размеры
@@ -778,7 +783,7 @@ SImageGUIElementStyle& SImageGUISkinConfig::GetConfig( IGUIElement* elm, const c
             nrp::Log( nrp::HW ) << "style for " << fullName.c_str() << " not found " << nrp::term;
     }
 
-    return haveDefaultConf ? configs[ defaultName ] : configs[ ElementUnknown ];
+    return haveDefaultConf ? configs[ fullName ] : configs[ ElementUnknown ];
 }
 
 SImageGUISkinConfig::SImageGUISkinConfig()
