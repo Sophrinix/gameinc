@@ -1,0 +1,428 @@
+/* 
+  MobyGames Copyright (c) 1999-2010 All rights reserved. Do not duplicate 
+  or redistribute in any form 
+*/
+body { margin: 0px; padding: 0; background-color: white; }
+body, table, tr, td, th { font-size: 9pt; color: black; font-family: Verdana, Arial, Helvetica, sans-serif; }
+body.emm { background-color: #eee; margin: 0px; padding: 0px; width: auto; }
+body.if { margin: 0px; padding: 0px; width: auto; }
+p { margin: 0 0 1em 0; }
+.left { text-align: left; }
+.right { text-align: right; }
+.center { text-align: center; }
+.small { font-size: 90%; }
+.big { font-size: 110%; }
+.nowrap { white-space: nowrap; }
+A:link, A:visited { color: black; }
+A:hover, A:active { text-decoration: underline; color: #111; }
+.color1 { color: black; background-color: white; }
+.color1 > A:link { color: black; }
+.color1 > A:visited { color: black; }
+.color1 > A:hover { color: #111; }
+.color1 > A:active { color: #111; }
+.color2 > A:link { color: black; }
+.color2 > A:visited { color: black; }
+.color2 > A:hover { color: #111; }
+.color2 > A:active { color: #111; }
+.color3 > A:link { color: black; }
+.color3 > A:visited { color: black; }
+.color3 > A:hover { color: #111; }
+.color3 > A:active { color: #111; }
+.border1 { border: 1px solid #ffffff; }
+.border2 { border: 1px solid #eee; }
+.border3 { border: 1px solid #C7D1E5; }
+.border4 { border: 1px solid #0F6BC0; }
+.color2 { color: black; background-color: #eee; }
+.color3 { color: black; background-color: #C7D1E5; }
+.color4 { color: #dddddd; background-color: #0F6BC0; }
+.color4 > A:link { color: #dddddd; }
+.color4 > A:visited { color: #dddddd; }
+.color4 > A:hover { color: white; }
+.color4 > A:active { color: white; }
+div.buttonPanel { text-align: center; padding: 0.5em 1em; margin: 1em 0em 0em 0em; border: 1px solid #eee; background-color: #F8F8F8; }
+.noSelect { -moz-user-select: none; -khtml-user-select: none; user-select: none; }
+UL { margin: 1em 0 1em 0; padding: 0px 0px 0px 40px; }
+h1 { font-size: 13pt; }
+h2 { font-size: 11pt; }
+h3 { font-size: 10pt; }
+h4 { font-size: 9pt; }
+div.platformGroupName { text-align: center; font-size: 13pt; font-weight: normal; margin-bottom: 1em; }
+h1.m5 { border: 0; color: black; background-color: inherit; margin: 0px 0px 1.5em 0px; padding: 0px 0px 0px 0px; text-align: left; font-size: 150%; font-weight: normal; }
+h1.m5 A:link, h1.m5 A:visited, h1.m5 A:active, h1.m5 A:hover, h1.m5 A { text-decoration: none; }
+h2.m5 { font-size: 11pt; font-weight: bold; text-align: left; border-bottom: 1px solid #ccc; color: #0A1C5B; margin: 0px 0px 1em 0px; padding: 1px 2px 1px 0px; }
+h3.m5 { font-size: 9pt; text-align: left; margin: 1em 0px 0.5em 0px; padding: 0px 2px 0px 2px; color: black; border-bottom: 1px solid #0A1C5B; font-weight: normal; }
+div.m5 { margin: 1em 0px 0.5em 0px; padding: 0; border: 1px solid #031465; }
+div.m5 h4 { font-size: 10pt; text-align: left; color: black; margin: 0; border: 1px solid #dae1ef; background-color: #C7D1E5; font-weight: normal; padding: 0.25em 0.5em; }
+blockquote { margin-top: 0; margin-bottom: 0.5em; border: 0; }
+DIV.formContents { border: 0; padding: 0; margin: 0; }
+form { padding: 0; border: 0; margin: 0; }
+table.pct100 { width: 100%; padding: 0; margin: 0; }
+table.pct100 thead tr td { padding: 0; margin: 0; }
+table { border: 0; border-collapse: separate; border-spacing: 0px; empty-cells: show; }
+tfoot th { font-weight: normal; }
+th, td { text-align: left; }
+.clearBoth { clear: both; }
+DIV.mmhBorder { padding: 0px 0px 0px 0px; margin: 0px 0px 1em 0px; border-top: 1px solid #043690; }
+SPAN.mmhIndent { margin: 0px; padding-left: 15px; padding-right: 0px; padding-top: 0px; padding-bottom: 0px; }
+div.mmhSubHeading { color: black; font-size: 8pt; margin-top: 0px; margin-bottom: 0px; padding-top: 1px; padding-bottom: 1px; padding-left: 6px; padding-right: 6px; border-width: 0px; border-style: none; }
+.oAuto { overflow: auto; }
+.oNone { overflow: hidden; }
+.hidden { visibility: hidden; }
+div.mmhBullet { display: none; }
+div.bulletMenu { border-top: 1px solid #dae1ef; }
+div.bulletMenu A { display: block; color: black; font-size: 8pt; margin: 0; padding: 1px 3px; text-decoration: none; white-space: nowrap; }
+DIV.bulletMenu A:link, DIV.bulletMenu A:visited, DIV.bulletMenu A:active { color: black; }
+DIV.bulletMenu A:hover { text-decoration: none; background-color: #0F6BC0; color: #DDDDDD; padding: 0px 2px; border: 1px solid black; }
+div.bulletMenu h3.m5 { font-weight: bold; padding: 2px 2px 0px 2px; margin: 0; border: 0; color: black; text-align: left; background-color: transparent; }
+ul.mmhBody { list-style:none; margin: 0; padding: 0 0 0 1em; }
+ul.mmhBody li { font-size: 8pt; margin: 0; padding: 0px 6px; border: 0; }
+ul.mmhBody li div.mmhInactive { margin: 0; padding: 1px 3px; color: #888; }
+li.mmhSelected { }
+.dottedRule { border-top: 1px dotted #ccc; height: 0px; overflow: hidden; margin: 0.25em 0; padding: 0; }
+hr { height: 1px; margin-top: 5px; margin-bottom: 5px; margin-right: 0px; margin-left: 0px; padding: 0px; color: black; border: 0px none; border-top-width: 1px; border-top-style: solid; border-top-color: black; }
+div#coreGameInfo { margin-top: 1em; }
+div#coreGameCover { padding-right: 0.5em; }
+div#coreGameRelease { min-height: 160px; padding: 3px 0.5em 0 0.5em; border-left: 1px dotted #ccc; }
+div#coreGameGenre { min-height: 160px; padding: 3px 0.5em 0 0.5em; border-left: 1px dotted #ccc; }
+div#coreGameScore { border-top: 1px dotted #ccc; margin: 1em 0 0 0; padding: 1em 0 0 0; }
+div#coreGameRank { min-width: 240px; min-height: 160px; padding-left: 0.5em; border-left: 1px dotted #ccc; }
+.sb { border-width: 1px; border-style: solid; border-color: #000; }
+.sbL { border-width: 1px; border-left-style: solid; border-color: #000; }
+.sbR { border-width: 1px; border-right-style: solid; border-color: #000; }
+tr.sbT th, tr.sbT td, .sbT { border-width: 1px; border-top-style: solid; border-color: #000; }
+tr.sbB th, tr.sbB td, .sbB { border-width: 1px; border-bottom-style: solid; border-color: #000; }
+.offsetBG { background-color: black; }
+td.rightPanelAd { border: 0px; vertical-align: top; }
+div.gameCore { padding-bottom: 1em; }
+div.rightPanelHeader { text-align: left; }
+div.rightPanelFooter { text-align: left; border-top: 1px dotted #ccc; padding: 1em 1em 0.5em 1em; margin: 0; }
+div.rightPanelBody { margin: auto; }
+div.leftPanel { overflow: hidden; width: 145px; max-width: 145px; min-width: 145px; padding: 20px 1px 0 0; background-image: url(lp-t0000.gif); background-position: top right; background-repeat: no-repeat; }
+td.leftPanel { text-align: left; padding: 0; margin: 0; vertical-align: top; color: black; background-color: #c7d1e5; max-width: 146px; background-image: url(vb000000.png); background-position: top right; background-repeat: repeat-y; border: 0; }
+td.rightPanel { width: 100%; background-image: url(rp-tb000.png); background-position: top left; background-repeat: repeat-x; border: 0; }
+div.rightPanel { text-align: left; padding: 1em 1em 2em 1em; margin: 0; border: 0; background-image: url(rp-tl000.gif); background-position: top left; background-repeat: no-repeat; }
+div.rightPanelMain { padding-top: 1em; }
+div.rightPanelSide { padding-top: 1em; padding-left: 1em; }
+td.rightSideBar { border: 0; }
+div.rightSideBar { text-align: left; margin: 1em 1em 0em 0em; padding: 0; border: 0; }
+div.docContents { max-width: 165em; margin: 0; padding: 0; border: 0; }
+IMG#mobylogo { border: 0px; padding: 0px; margin: 0px 3px 0px 3px; }
+div.topPanelNavLinks { margin: 0; border: 0; height: 28px; padding: 0; background-color: transparent; text-align: right; clear: both; font-size: 8pt; color: black; overflow: hidden; }
+div.topPanelNavLinks p { margin: 0; padding: 0; line-height: 28px; }
+div.topPanelNavLinks A { font-size: 8pt; text-decoration: none }
+div.topPanelNavLinks A:hover, div.topPanelNavLinks A:active { color: #111; text-decoration: underline; }
+div.topPanel { border: 0px; overflow:hidden; height:90px; color: black; background-color: #c7d1e5; padding: 0px; margin: 0px; border-right: 1px solid #1b5790; border-left: 1px solid #1b5790; background-image: url(tp000000.gif); background-position: bottom left; background-repeat: repeat-x; }
+div.topPanelAcctLinks { padding: 0px 0px 3px 0px; margin: 0px 0px 5px 0px; border-bottom: 2px solid #1E73c1; }
+div.topPanelAcctLinks A { text-decoration: none; color: black; }
+div.topPanelAcctLinks A:hover, div.topPanelAcctLinks A:active { text-decoration: underline; color: #111; }
+TD.topPanelMiddle { vertical-align: top; }
+DIV.topPanelAcct * A:link { color: silver; }
+DIV.topPanelAcct * A:visited { color: silver; }
+DIV.topPanelAcct * A:hover { color: white; }
+DIV.topPanelAcct * A:active { color: white; }
+DIV.topPanelAcct { width: 23em; height: 55px; background-color: transparent; vertical-align: middle; text-align: left; color: silver; border: 0px; float: right; padding: 5px 3px 0px 0px; margin: 0; overflow: hidden; }
+td.topPanelLeft { border: 0; margin: 0; padding: 0; }
+div.topPanelLeft { width: 225px; height: 90px; border: 0; margin: 0; padding: 0; background-color: #c7d1e5; background-image: url(tpl00000.gif); background-position: bottom right; background-repeat: repeat-x; }
+div.topPanelLogo { padding: 20px 0px 0px 5px; margin: 0; }
+TD.topPanelRight IMG { vertical-align: bottom; border: 1px solid white; margin: 2px 0px; padding: 0; }
+TD.topPanelRight A { border: 0; margin: 0; padding: 0; overflow: hidden; font-size: 9px; text-decoration: none; color: silver; }
+TD.topPanelRight A:link { color: black; }
+TD.topPanelRight A:visited { color: black; }
+TD.topPanelRight A:hover { color: silver; }
+TD.topPanelRight A:active { color: silver; }
+TD.topPanelRight { padding-right:5px; padding-bottom:0px; padding-top:5px; padding-left:5px; margin: 0px; border: 0px; text-align: center; border-color: black; color: white; }
+DIV.break { height: 0px; overflow: hidden; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; border: 0; clear: both; }
+TD.topPanelLogo { border: 0px; padding: 1px 0px 0px 10px; margin: 0px; }
+div.bottomPanel { padding-top: 10px; padding-bottom: 20px; text-align: center; font-size: 8pt; border-width: 1px; border-top-color: black; border-top-style: solid; }
+.windowTitleBG { background-color: #0f6bc0; }
+.windowTitle { color: #ddd; font-size: 110%; font-weight: bold; }
+.sectionSeparator { font-weight: bold; color: black; border-bottom: 1px solid #6ED567; }
+.curveUpperRight { background:url("ul000000.gif") no-repeat left top; border-right: 2px solid #6ED567; background-color: #C7D1E5; white-space: nowrap; padding-right: 1em; padding-left: 3em; padding-bottom: 0px; padding-top: 0px; }
+.curveUpperLeft { background:url("http://pics.mobygames.com/images/s/1/ur.gif") no-repeat right top; border-left: 2px solid #6ED567; background-color: #C7D1E5; white-space: nowrap; padding-right: 3em; padding-left: 1em; padding-bottom: 0px; padding-top: 0px; }
+DIV.boxAd { width: 310px; border: 0px; background-color: white; float:right; clear:both; padding: 12px 5px 5px 5px; margin: 5px 0px 0px 2em; font-size: 8pt; margin-bottom: 1em; }
+.width125 { max-width: 12em; min-width: 12em; width: 12em; }
+.width200 { max-width: 18em; min-width: 18em; width: 18em; }
+.width250 { max-width: 23em; min-width: 23em; width: 23em; }
+.width325 { max-width: 300px; min-width: 300px; width: 300px; }
+DIV.sideBar { overflow: hidden; padding: 0px; margin: 0 0 1em 0; font-size: 8pt; }
+div.sideBar h3 { color: #0A1C5B; border-bottom: 2px solid #ddd; }
+div.links { padding-top: 0.5em; font-size: 8pt; }
+div.sideBarLinks { text-align: right; padding-top: 0.5em; font-size: 8pt; }
+DIV.sideBarContent { text-align: left; padding: 5px; border: 1px solid #12348f; }
+.sideBarContent ul { margin: 0; padding: 5px 0 5px 20px; list-style-type: square; }
+.sideBarContent ul li { margin-bottom: 0.33em; }
+div.sideBarTitle { margin: 0; padding: 0 10px 0 0; background-image: url(sbt00000.gif); background-position: top right; background-repeat: no-repeat; }
+div.sideBarTitle h2 { text-align: center; color: white; font-weight: bold; margin: 0; padding: 0; background-image: url(sbt00000.gif); background-position: top left; background-repeat: no-repeat; font-size: 125%; }
+.googleBuyBoxAd { height: 70px; margin-left: 0px; margin-right: 10px; border: 1px solid #0F6BC0; padding: 0px; }
+DIV.googleRightSideAd { padding: 0px; margin: 2px; border: 0px; }
+.windowPadding { padding: 4px; }
+.mb1 { background-color: #dddddd; }
+.mb2 { background-color: #eee; }
+.mb3 { color: #000000; }
+table.reviewList { border-collapse: collapse; }
+table.reviewList tbody { border: 1px solid #c2c2c2; }
+table.reviewList td { padding-left: 2px; border: 1px solid #c2c2c2; }
+table.reviewList tfoot td { border: 0; padding-left: 2px; }
+DIV.thumbnailContainer { margin: 0; width: 100%; border: 0; padding: 0; }
+DIV.thumbnailContainer DIV { float: left; overflow: hidden; border: 0; margin: 0.5em 2em 0.5em 0em; padding: 0; }
+DIV.thumbnailContainer DIV DIV { border: 0; text-align: center; padding: 0; margin: 0; float: none; }
+DIV.thumbnailContainer DIV IMG { display: block; padding: 0; margin: 0 auto; }
+DIV.thumbnailContainer DIV P { padding: 1px 2px 1px 2px; margin: 1px 0px 1px 0px; border: 0; font-size: 90%; overflow: hidden; text-align: left; }
+DIV.lc90 { width: 90%; padding: 0 5% 0 5%; margin: 0; }
+.coverHeading { margin: 0; padding-left: 10px; padding-right: 10px; border-style: solid; border-width: 1px; border-color: #6699cc; background-color: #ffffff; }
+div.browseTableList { overflow: auto; height: 30em; padding: 2px; margin: 0px 0px 0px 1em; border-width: 1px; border-style: solid; border-color: #6699cc; }
+.browseTableList UL { margin-top: 0px; margin-left: 1.5em; margin-bottom: 0px; padding: 0px; list-style-type: disc; }
+.browseTableList LI { padding-top: 0px; padding-bottom: 1px; padding-right: 3px; padding-left: 3px; margin-top: 0px; margin-bottom: 0px; margin-right: 0px; margin-left: 0px; }
+.browseTableList A { color: black; font-weight: normal; text-decoration: none; }
+.browseTableList A:hover, .browseTableList A:active { color: #111; text-decoration: underline; }
+.browseTable { padding-left: 1em; padding-right: 0; }
+.browseTable A { color: black; font-weight: normal; text-decoration: none; }
+.browseTable A:link, .browseTable A:visited { color: black; }
+.browseTable A:hover, .browseTable A:active { color: #111; text-decoration: underline; }
+TD.creditPanel { width: 125px; border-width: 0px 0px 0px 1px; text-align: center; padding: 5px; border-left-style: solid; border-color: #000; }
+DIV.moBrowse { width: 100%; background-color: white; border: 1px solid #0F6BC0; padding: 0px; margin: 0px; }
+DIV.mobList { border: 0px none; margin: 0px; padding: 0px; }
+div.molistGroupHeading { color: black; font-size: 12pt; font-weight: bold; margin: 0px 0px 0px 0px; padding-top: 6px; padding-bottom: 1px; border-bottom: 2px solid black; }
+span.molistGroupComment { font-size: 9pt; font-weight: normal; }
+.molist td { color: black; }
+div.molist table { width: 100%; border-width: 0px; border-style: none; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; }
+div.molist table tr:hover { background-color: #dddddd; }
+div.mobFooter { color: black; font-size: 90%; background-color: #C7D1E5; font-weight: normal; border-top: 1px solid #0F6BC0; border-bottom: 0px none; border-left: 0px none; border-right: 0px none; margin: 0px; padding: 3px 0.5em 3px 0.5em; }
+div.mobIndexHeader { margin: 0; padding: 0; border: 0; }
+div.mobIndexHeader span { font-size: 8pt; padding: 2px 10px 0px 0px; float: left; white-space: nowrap; }
+ul.mobIndexItem { margin: 0px; padding: 0px; display: inline; list-style:none; }
+ul.mobIndexItem * a { padding: 1px 3px; font-size: 8pt; margin: 0px; display: block; }
+ul.mobIndexItem * a:link, ul.mobIndexItem * a:visited { text-decoration: none; background-color: transparent; border: 1px solid #0F6BC0; }
+ul.mobIndexItem * a:hover, ul.mobIndexItem * a:active { text-decoration: underline; border: 1px solid black; background-color: #FFC; }
+ul.mobIndexItem * a:link.current, ul.mobIndexItem * a:visited.current { background-color: #eee; }
+ul.mobIndexItem li { border: none; padding: 1px 2px; float: left; white-space: nowrap; display: inline; }
+.mobFooter SPAN { padding: 0px; margin: 0px; }
+.mobFooter A { text-decoration: none; }
+.mobFooter A:visited, .mobFooter A:link { color: black; }
+.mobFooter A:active, .mobFooter A:hover { text-decoration: underline; color: darkblue; }
+TABLE.molist TBODY TR TD { margin: 0px 0px 0px 0px; padding: 0in 0.5em 0in 0.5em; border-top: 0px none; border-bottom: 1px solid #dddddd; border-left: 0px none; border-right: 0px none; }
+DIV.mobTitle { margin: 0px 0px 0px 0px; padding: 0.2em 0.5em 0.2em 0.5em; color: black; color: black; background-color: #C7D1E5; font-weight: normal; text-align: center; font-size: 110%; border-right: 0px none; border-left: 0px none; border-top: 0px none; border-bottom: 1px solid black; }
+DIV.mobHeader { margin: 0px 0px 0px 0px; padding: 0px; color: black; background-color: #C7D1E5; font-weight: normal; border-right: 0px none; border-left: 0px none; border-top: 0px none; border-bottom: 0px none; }
+DIV.mobHeader TABLE { margin: 0px; padding: 0px; background-color: #C7D1E5; width: 100%; border: 0px none; }
+DIV.mobHeader TABLE TR TD{ color: black; padding: 0.2em 0.5em 0.2em 0.5em; }
+TD.mobHeaderPage { text-align: left; }
+TD.mobHeaderItems { text-align: center; }
+TD.mobHeaderNav { text-align: right; }
+.mobHeader A, TABLE.molist * A { text-decoration: none; }
+.mobHeader A:hover, .mobHeader A:active, TABLE.molist * A:hover, TABLE.molist * A:active { text-decoration: underline; color: darkblue; }
+TABLE.molist THEAD * A:visited { color: #dddddd; }
+TABLE.molist THEAD * A:link { color: #dddddd; }
+TABLE.molist THEAD * A:hover { color: white; }
+TABLE.molist THEAD * A:active { color: white; }
+TABLE.molist THEAD TR TD { padding: 0in 0.5em 0in 0.5em; margin: 0px 0px 0px 0px; background-color: #0F6BC0; border-top: 1px solid black; color: #DDDDDD; white-space: nowrap; font-weight: bold; }
+img.aSheetLI { border: 0px; margin: 0px 10px 2px 0px; }
+.aSheetPM { border-left: 1px dotted #ccc; padding: 0px 0px 1em 1em; margin: 0; }
+.aSheetAD { border: 0px none; padding: 0px 1em 1em 0px; margin: 0; }
+div.mofSimpleNotice { background-image: url(http://pics.mobygames.com/images/icons/lightbulb.png); background-position: 0.5em 10px; background-repeat: no-repeat; background-color: #A5CC7A; min-height: 30px; padding-left: 30px; padding-right: 10px; padding-top: 0.75em; padding-bottom: 0.25em; margin: 0px 0px 1em 0px; border: 1px solid #224B0A; text-align: left; color: #224B0A; }
+div.mofSimpleNotice a { color: #000000; }
+div.mofSimpleError { background-image: url(http://pics.mobygames.com/images/warning.gif); background-position: 10px 10px; background-repeat: no-repeat; background-color: #FFCC00; min-height: 50px; padding-left: 50px; padding-right: 10px; padding-top: 0.5em; padding-bottom: 0.25em; margin: 0px 0px 0px 0px; border: 3px solid #DDAA00; text-align: left; color: #000000; }
+DIV.mofSimpleError * { color: black; }
+.PADDED { padding: 4px }
+.smallFont { font-size: 8pt; font-weight: normal; }
+.bigFont { font-size: 13pt; font-weight: normal; }
+SPAN.darksep { color: black; font-size: 100%; font-weight: normal; }
+DIV.bigTitle { font-size: 13pt; font-weight: normal; text-align: center; }
+#qsearchButton { vertical-align: middle; margin: 0; padding: 0px 0px 3px 4px; }
+#qsearch { margin: 0; padding: 0; font-family: arial, sans-serif; font-size: 8pt; width: 125px; font-weight: normal; color: #999; }
+#qsearch:focus { color: #000; }
+.redRow { background-color: red; color: black; }
+.greenRow { background-color: green; color: black; }
+.upload { background-color: blue; color: red; }
+.FormLt3 { margin: 0; padding: 0; font-family: arial, sans-serif; font-size: 10pt; font-weight: normal; }
+.FormLt2 { font-family: arial, sans-serif; font-size: 11px; font-weight: normal; }
+.FormLt1 { font-family: arial, sans-serif; font-size: 11px; font-weight: normal; }
+UL.wipReminders { list-style:none; }
+SPAN.sn { font-size: 8pt; font-weight: normal; white-space: nowrap; }
+SPAN.sn A { font-size: 8pt; font-weight: normal; }
+UL.nobr { margin: 0px; padding: 0px; border-style: none; }
+UL.nobr LI { white-space: nowrap; display: inline; }
+.techinfo A { white-space: nowrap; }
+table.techInfo * A { color: black; text-decoration: none; }
+table.techInfo * A:hover, table.techInfo * A:active { text-decoration: underline; }
+TABLE.techInfo { margin: 0px; width: 500px; border: 2px solid black; background-color: white; color: black; }
+TABLE.techInfo TD { padding-left: 1em; padding-right: 1em; border: 1px solid black; background-color: white; color: black; }
+TABLE.techInfo TR { vertical-align: top; }
+TABLE.techInfo THEAD TR TD { background-color: black; text-align: center; font-weight: bold; font-size: 110%; color: white; }
+TABLE.techInfoChild { margin: 0.5em 0 0 0; padding: 0 0 0 0; border: 0; background-color: white; color: black; }
+TABLE.techInfoChild TD { padding: 0px 1em 0px 0px; margin: 0px 0px 0px 0px; border: 0; font-size: 90%; background-color: white; color: black; }
+TABLE.techInfoChild TR { vertical-align: top; }
+TABLE.scoreWindow { border: 1px solid #000; }
+TABLE.scoreWindow TD { padding-right: 5px; padding-left: 5px; border-right: 1px solid #000; }
+TABLE.gspsel { border: 1px solid black; }
+SPAN.gspselSelected { text-align: center; white-space: nowrap; line-height: 1.75em; padding-top: 1px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; background-color: #C7D1E5; border: 1px solid #0F6BC0; }
+SPAN.gspselSelectable { border-width: 0px; text-align: center; white-space: nowrap; line-height: 1.75em; margin: 0px; padding-top: 1px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; }
+DIV.newsItem { border: 1px solid #000; background-color: white; padding: 0; margin: 0em 0em 1.5em 0em; }
+DIV.newsTitle { font-size: 110%; padding-top: 2px; padding-right: 0.25em; padding-bottom: 2px; padding-left: 0.25em; margin: 0em 0em 0em 0em; color: black; background-color: #c7d1e5; border-bottom: 1px solid #ccc; }
+DIV.newsStatusBar { padding-top: 0.1em; padding-bottom: 0.1em; padding-right: 0.25em; padding-left: 0.25em; margin: 0em 0em 0em 0em; border-top: 1px solid #ccc; background-color: #eee; }
+DIV.newsTime { padding-right: 0.25em; padding-left: 0.25em; background-color: #eee; border-bottom: 1px solid #ccc; }
+DIV.newsAbstract { border: 0px; padding-right: 0.25em; padding-left: 0.25em; padding-top: 0.25em; padding-bottom: 0.25em; margin: 0em 0em 0em 0em; background-color: white; }
+DIV.jsSelectBox { overflow: auto; overflow-x: hidden; width: 100%; padding: 0px; margin: 0px; border: 1px solid #000; }
+TR.jsSelectGroup { padding: 0; border: 0; }
+TR.jsSelectGroup TD { border-top: 0; border-bottom: 1px solid #000; border-right: 0; border-left: 0; padding: 2px 0px 2px 2px; margin: 0px; font-weight: bold; background-color: #eee; }
+SPAN.jsSelectLabel { display: block; border: 0; padding: 0; }
+TR.jsSelectSelected TD { background-color: #ffffd9; padding: 0px 0px 0px 10px; color: black; border-bottom: 1px solid #aaaaaa; }
+TR.jsSelectSelectable TD { background-color: #ffffff; padding: 0px 0px 0px 10px; color: black; border-bottom: 1px solid #aaaaaa; }
+DIV.gameReviewContents { border: 0px; max-width: 800px; padding: 0px; margin: 0px; }
+DIV.noCoverArt { width: 115px; height: 140px; padding: 5px; text-align: center; }
+div.adLeader { color: white; border: 0; margin: 0; padding: 2px; text-align: center; background-color: #010F6D; }
+.button1 { overflow: hidden; position: relative; font-size: 8pt; margin: 0em 0.75em; }
+div.button1 { max-height: 35px; }
+div.button1 a { display: block; padding-top: 0.25em; padding-bottom: 0.25em; }
+.button1 a { color: #000; text-align: center; font-size: 90%; padding-left: 1em; padding-right: 1em; border-top: 1px solid #cecece; border-left: 1px solid #cecece; border-bottom: 2px solid #4a4a4a; border-right: 2px solid #4a4a4a; background-image: url(http://pics.mobygames.com/images/s/2/button1-bg.gif); background-position: center left; background-repeat: repeat-x; }
+.button1 a:link, .button1 a:visited { color: #000; text-decoration: none; }
+.button1 a:active, .button1 a:hover { color: #000; background-color: #ddd; text-decoration: underline; background-image: url(http://pics.mobygames.com/images/s/2/button1-active-bg.gif); background-position: center left; background-repeat: repeat-x; }
+.fl { float: left; }
+.fr { float: right; }
+.floatholder:after { content: "."; display: block; max-height: 0px; height: 0px; clear: both; visibility: hidden; }
+.diffPlus { background-color: #bdf; color: black; }
+.diffMinus { background-color: #500; color: silver; }
+.diffChange { background-color: #0A0; color: black; }
+div.diffLegend { border: 1px solid black; width: 10em; padding: 0; float: right; }
+div.relInfo { padding: 0 0 0 10em; border: 0; margin: 0; }
+div.relInfoTitle { float: left; width: 10em; font-size: 90%; }
+div.relInfoDetails { margin-left: 10em; font-size: 90%; }
+div.relInfoDetails span { white-space: nowrap; }
+ul.hpbtPub, ul.hpbtYear, ul.hpbtPlatform, ul.hpbtGenre { margin: 0 1em; padding: 0; }
+ul.hpbtPub li { float: left; width: 18em; height: 1.25em; overflow: hidden; }
+ul.hpbtYear li { float: left; width: 6em; height: 1.25em; overflow: hidden; }
+ul.hpbtPlatform li { float: left; width: 12em; height: 1.25em; overflow: hidden; }
+div.hpbtContainer { padding-left: 40px; }
+ul.hpbtGenre li { float: left; width: 12em; height: 1.25em; overflow: hidden; }
+h1.gameHeader { margin: 0 0 0.5em -10px; padding: 0; font-size: 150%; font-weight: normal; }
+h1.gameHeader A:link, h1.gameHeader A:visited, h1.gameHeader A:active, h1.gameHeader A:hover, h1.gameHeader A { text-decoration: none; }
+div#gameTitle { padding-left: 10px; }
+div#gamePlatform { float: right; padding-left: 3em; }
+div.faImageLeft { float: left; overflow: hidden; margin-right: 1em; margin-top: 0.25em; margin-bottom: 0.5em; margin-left: 0em; clear: both; background-color: #eee; border: 1px solid #ddd; }
+div.faImageRight { float: right; overflow: hidden; margin-top: 0.25em; margin-left: 1em; margin-bottom: 0.5em; margin-right: 0em; clear: both; background-color: #eee; border: 1px solid #ddd; }
+div.faImageLeft img, div.faImageRight img { display: block; text-align: center; padding-left: 1em; padding-right: 1em; margin-right: auto; margin-left: auto; margin-top: 1em; margin-bottom: 1em; }
+div.faImageRight p, div.faImageLeft p { text-align: center; font-size: 90%; padding-right: 1em; padding-left: 1em; padding-bottom: 5px; font-weight: bold; }
+div.pastNewsYearMonth div.pastNewsYear { font-weight: bold; }
+div.pastNewsYearMonth div.pastNewsMonth { margin-right: 1em; margin-left: 1em; margin-bottom: 1em; }
+div.permalinks { float: left; }
+div.permalinks img { margin-right: 1em; }
+div.permalinkTip div { font-weight: bold; padding-bottom: 2px; margin-bottom: 2px; border-bottom: 1px solid green; }
+div.permalinkTip div a { font-weight: normal; font-size: 90%; color: black; }
+div.permalinkTip p { font-size: 90%; }
+#tpMenu ul li { width: auto; }
+#rmDev { background-image: url(http://pics.mobygames.com/images/dev.png); width: 100%; height: 4096; z-index: -10000; opacity: 0.25; overflow: hidden; position: fixed; }
+#rmQA { background-image: url(http://pics.mobygames.com/images/qa.png); width: 100%; height: 4096; z-index: -10000; opacity: 0.25; overflow: hidden; position: fixed; }
+div.bottomPanel h3#gamefly_media { background: url(GFMLogo0.png) no-repeat scroll 50% 0; background-position:center; display:block; height:30px; margin:0; text-indent:-5000px; }
+
+div.mobyrank {
+}
+
+div.scoreBoxBig {
+  font-size: 19pt; 
+  width: 2.75em; 
+  padding: 0.50em 0 0.75em 0; 
+  height: 1em; 
+  text-align: center; 
+  font-weight: bold; 
+}
+
+div.scoreBoxMed {
+  font-size: 15pt; 
+  width: 2.75em; 
+  padding: 0.50em 0 0.75em 0; 
+  height: 1em; 
+  text-align: center; 
+  font-weight: bold; 
+}
+
+div.scoreBoxSmall {
+  font-size: 12pt; 
+  width: 2.25em; 
+  padding: 0.33em 0 0.50em 0; 
+  height: 1em; 
+  text-align: center; 
+  font-weight: bold; 
+}
+
+div.scoreHi {
+  color: white; 
+  background-color: #0033FF;
+}
+
+div.scoreBorderHi {
+  border-bottom: 2px solid #0033ff;
+}
+
+div.scoreMed {
+  color: white; 
+  background-color: #FF6600;
+}
+
+div.scoreBorderMed 
+{
+  border-bottom: 2px solid #FF6600;
+}
+
+div.scoreLow {
+  color: white; 
+  background-color: #333333;
+}
+
+div.scoreBorderLow 
+{
+  border-bottom: 2px solid #333333;
+}
+
+
+div.scoreNone {
+  background-color: #330000;
+  color: white; 
+}
+
+
+div.scoresource {
+  margin-top: 2em;
+  padding-top: 5px;
+/*  border-bottom: 1px solid black; */
+}
+
+div.mobyrank div.scoreBoxMed { margin-right: 1em; }
+
+div.mobyrank div.holder {
+  border: 1px solid darkgreen;
+}
+
+div.mobyrank div.source {
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+div.mobyrank div.citation {
+  margin-left: 0em;
+}
+
+div.mobyrank div.score {
+  float: left;
+  width: 4em;
+  text-align: center;
+  font-size: 16pt;
+}
+
+div.mobyrank div.url {
+  text-align: right;
+}
+
+/* special css instructions for opera */
+
+DIV.mobIndexHeader {
+  padding-bottom: 0px;
+}
+
+/* doesn't work with IE or Mozilla, but might as well use it here */
+.dgMessageListThreadName DIV {
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+  white-space: nowrap; 
+}
+
+
