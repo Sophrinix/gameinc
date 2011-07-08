@@ -5,6 +5,7 @@
 #include "NrpBrowserWindow.h"
 #include "NrpApplication.h"
 #include "nrpEngine.h"
+#include "LuaWindow.h"
 
 #include <assert.h>
 #include <irrlicht.h>
@@ -103,9 +104,15 @@ int CLuaBrowser::Move( lua_State *L )
 int CLuaBrowser::GetWindow( lua_State *L )
 {
 	irr::gui::CNrpBrowserWindow* wnd = NULL;
-	IF_OBJECT_NOT_NULL_THEN wnd = &(_object->GetBrowserWindow());
+	IF_OBJECT_NOT_NULL_THEN
+    {
+        wnd = &(_object->GetBrowserWindow());
+    	lua_pushlightuserdata( L, wnd );
+        Luna< CLuaWindow >::constructor( L );
+        return 1;
+    }
 
-	lua_pushlightuserdata( L, wnd );
+    lua_pushnil( L );
 	return 1;	
 }
 

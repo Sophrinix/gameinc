@@ -28,33 +28,33 @@ CLASS_NAME CLASS_COMPOSER( "composer" );
 CNrpUser::CNrpUser(const NrpText& className, const NrpText& systemName ) : INrpConfig( className.size() ? className : CLASS_USER, systemName )
 {
 	assert( systemName.size() );
-	Add<NrpText>( NAME, systemName ); //имя
-	Add<int>( WORK_SPEED, 0 );	//скорость работы
-	Add<int>( WORK_QUALITY, 0 ); //качество работы
-	Add<int>( WORK_QUALITY_AWARD, 0 );	//ожидаемая награда за качество работы
-	Add<int>( KNOWLEDGE_LEVEL, 0 );	//уровень знаний
-	Add<NrpText>( INTERNAL_NAME, systemName );	//внутреннее имя
-	Add<NrpText>( TECHGROUP, className );	//класс разработчика
-	Add<int>( TALANT, 0 );			//собственно одаренность разраба
-	Add<int>( STAMINA, 0 );			//выносливость
-	Add<int>( MOOD, 100 );			//настроение
-	Add<int>( POPULARITY, 0 );		//известность разраба
-	Add<int>( SALARY, 0 );			//зарплата
-	Add<int>( STABILITY, 0 );		//уравновешенность
-	Add<int>( BALANCE, 0 );			//наличка
-	Add<int>( CHARACTER, 0 );		//тип характера
-	Add<int>( WANTMONEY, 0 );		//сколько денег хочет за свои услуги
-	Add<int>( CONTRACTMONEY, 0 );		//сколько денег попросит при заключении контракта
-	Add<int>( WORKNUMBER, 0 );		//проекты у разраба
-	Add<int>( LAST_AWARD, 0 );			//ожидание премии
-	Add<NrpText>( USERSTATE, "readyToWork" );		
-	Add<NrpText>( ROOMSTATE, "unknown" );
-	Add<int>( HANGRY, 100 );			//голод
-	Add<PNrpCompany>( PARENTCOMPANY, NULL );	//компания в которой работает
-	Add<int>( EXPERIENCE, 0 );			//общий опыт
-	Add<NrpText>( TEXTURENORMAL, "" );		//лицо
-	Add<int>( ALL_SKILL_SUMM, 0 );		
-	Add<int>( ALCOHOL, 0 );				//отношение к выпивке
+	RegProperty<NrpText>( NAME, systemName ); //имя
+	RegProperty<int>( WORK_SPEED, 0 );	//скорость работы
+	RegProperty<int>( WORK_QUALITY, 0 ); //качество работы
+	RegProperty<int>( WORK_QUALITY_AWARD, 0 );	//ожидаемая награда за качество работы
+	RegProperty<int>( KNOWLEDGE_LEVEL, 0 );	//уровень знаний
+	RegProperty<NrpText>( INTERNAL_NAME, systemName );	//внутреннее имя
+	RegProperty<NrpText>( TECHGROUP, className );	//класс разработчика
+	RegProperty<int>( TALANT, 0 );			//собственно одаренность разраба
+	RegProperty<int>( STAMINA, 0 );			//выносливость
+	RegProperty<int>( MOOD, 100 );			//настроение
+	RegProperty<int>( POPULARITY, 0 );		//известность разраба
+	RegProperty<int>( SALARY, 0 );			//зарплата
+	RegProperty<int>( STABILITY, 0 );		//уравновешенность
+	RegProperty<int>( BALANCE, 0 );			//наличка
+	RegProperty<int>( CHARACTER, 0 );		//тип характера
+	RegProperty<int>( WANTMONEY, 0 );		//сколько денег хочет за свои услуги
+	RegProperty<int>( CONTRACTMONEY, 0 );		//сколько денег попросит при заключении контракта
+	RegProperty<int>( WORKNUMBER, 0 );		//проекты у разраба
+	RegProperty<int>( LAST_AWARD, 0 );			//ожидание премии
+	RegProperty<NrpText>( USERSTATE, "readyToWork" );		
+	RegProperty<NrpText>( ROOMSTATE, "unknown" );
+	RegProperty<int>( HANGRY, 100 );			//голод
+	RegProperty<PNrpCompany>( PARENTCOMPANY, NULL );	//компания в которой работает
+	RegProperty<int>( EXPERIENCE, 0 );			//общий опыт
+	RegProperty<NrpText>( TEXTURENORMAL, "" );		//лицо
+	RegProperty<int>( ALL_SKILL_SUMM, 0 );		
+	RegProperty<int>( ALCOHOL, 0 );				//отношение к выпивке
 }
 
 CNrpUser::~CNrpUser(void)

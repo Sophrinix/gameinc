@@ -100,9 +100,19 @@ NrpTime IniFile::Get( NrpText section, NrpText key, const NrpTime& def_value )
 	NrpTime result( def_value );
 
 	NrpText str_pars = Get( section, key, NrpText( L"y=0 m=0 d=0 h=0 mi=0 s=0" ) );
+    int mnth, day;
 	swscanf_s( str_pars.ToWide(), L"y=%04d m=%02d d=%02d h=%02d mi=%02d s=%02d", 
-								  &result.RYear(), &result.RMonth(), &result.RDay(),
+								  &result.RYear(), &mnth, &day,
 								  &result.RHour(), &result.RMinute(), &result.RSecond() );
+
+    result.RMonth() = (std::max)( 1, (int)mnth );
+    if( mnth < 1 || mnth > 12 )
+        Log( HW ) << "IniFile: Time key:" << key  << " not correct int file " << _fileName << term;
+
+    result.RDay() = (std::max)( 1, (int)day );
+    if( day < 1 || day > 31 )
+        Log( HW ) << "IniFile: Time key:" << key  << " not correct int file " << _fileName << term;
+
 	result.RSecond() = 0;
 
 	return result;	

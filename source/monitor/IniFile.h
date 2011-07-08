@@ -32,6 +32,8 @@ public:
 	IniKey* GetKey( NrpText section, NrpText key );
 	IniSection* GetSection( NrpText section );
 
+    const NrpText& GetFileName() { return _fileName; }
+
 	//! Функция записывает в конфигурационный файл целочисленное значение
 	/*! 
 		\param section	название секции, где будет размещен параметр

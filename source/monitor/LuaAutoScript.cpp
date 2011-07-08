@@ -7,6 +7,7 @@
 #include "NrpProjectModule.h"
 #include "INrpDevelopProject.h"
 #include "NrpLaborMarket.h"
+#include "NrpGameMarket.h"
 
 #include <assert.h>
 
@@ -77,7 +78,7 @@ int CLuaAutoScript::AddGameEngineToCompany( lua_State* L )
 	NrpText engineName = lua_tostring( L, 2 );
 	NrpText companyName = lua_tostring( L, 3 );
 
-	CNrpGameEngine* engine = _nrpApp.GetGameEngine( engineName );
+    CNrpGameEngine* engine = CNrpGameMarket::Instance().GetGameEngine( engineName );
 	PNrpCompany cmp = _nrpApp.GetCompany( companyName );
 	assert( cmp != NULL && engine != NULL );
 

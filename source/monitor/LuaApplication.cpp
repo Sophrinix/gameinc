@@ -8,7 +8,7 @@
 #include "NrpBank.h"
 #include "NrpGameProject.h"
 #include "NrpTechnology.h"
-#include "NrpScreenshot.h"
+#include "NrpExtInfo.h"
 #include "NrpGameTime.h"
 #include "NrpPlatform.h"
 #include "NrpPlant.h"
@@ -16,6 +16,9 @@
 #include "NrpSoundEngine.h"
 #include "NrpQuestEngine.h"
 #include "NrpLaborMarket.h"
+#include "NrpLinkHolder.h"
+#include "NrpScreenshotHolder.h"
+#include "NrpGameMarket.h"
 
 #include "LuaCompany.h"
 #include "LuaUser.h"
@@ -91,7 +94,7 @@ BEGIN_LUNA_PROPERTIES(CLuaApplication)
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "pda", GetPda, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "speed", GetPauseBetweenStep, SetPauseBetweenStep )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "plant", GetPlant, PureFunction )
-	LUNA_AUTONAME_PROPERTY( CLuaApplication, "complexity", PureFunction, SetDevForce )
+	LUNA_AUTONAME_PROPERTY( CLuaApplication, "difficult", PureFunction, SetDevForce )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "soundEngine", GetSoundEngine, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaApplication, "questEngine", GetQuestEngine, PureFunction )
 END_LUNA_PROPERTIES
@@ -324,7 +327,7 @@ int CLuaApplication::GetCurrentProfile( lua_State* L )
 
 int CLuaApplication::GetCurrentProfileCompany( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, "GetCurrentProfileCompany", PROFILECOMPANY, "" ) );
+	lua_pushstring( L, GetParam_<NrpText>( L, PROP, PROFILECOMPANY, "" ) );
 	return 1;
 }
 
@@ -391,18 +394,19 @@ int CLuaApplication::GetCompany( lua_State* L )
 
 	assert( lua_isnumber( L, 2 ) );
 	int cmpNumber = lua_tointeger( L, 2 );
-	CNrpCompany* ptrCompany = NULL;
 
-	IF_OBJECT_NOT_NULL_THEN ptrCompany = _object->GetCompany( cmpNumber );
+	IF_OBJECT_NOT_NULL_THEN 
+    {
+        CNrpCompany* ptrCompany = _object->GetCompany( cmpNumber );
+        if( ptrCompany )
+        {
+            lua_pushlightuserdata( L, ptrCompany );
+            Luna< CLuaCompany >::constructor( L );
+            return 1;
+        }
+    }
 
-	if( ptrCompany )
-	{
-		lua_pushlightuserdata( L, ptrCompany );
-		Luna< CLuaCompany >::constructor( L );
-	}
-	else
-		lua_pushnil( L );
-
+    lua_pushnil( L );
 	return 1;
 }
 
@@ -555,7 +559,7 @@ int CLuaApplication::SaveBoxAddonsPrice( lua_State* L )
 
 int CLuaApplication::GetGamesNumber( lua_State* L )
 {
-	lua_pushinteger( L, GetParam_<int>( L, PROP, GAMENUMBER, 0 ) );
+    lua_pushinteger( L, (int)CNrpGameMarket::Instance()[ GAMENUMBER ] );
 	return 1;
 }
 
@@ -569,12 +573,12 @@ int CLuaApplication::GetGame( lua_State* L )
 	{
 		int index = lua_tointeger( L, 2 );
 		assert( index >= 0 );
-		IF_OBJECT_NOT_NULL_THEN	game = _object->GetGame( index );
+        IF_OBJECT_NOT_NULL_THEN	game = CNrpGameMarket::Instance().GetGame( index );
 	}
 	else if( lua_isstring( L, 2 ) )
 	{
 		NrpText name = lua_tostring( L, 2 );
-		IF_OBJECT_NOT_NULL_THEN game = _object->GetGame( name );
+        IF_OBJECT_NOT_NULL_THEN game = CNrpGameMarket::Instance().GetGame( name );
 	}
 
 	if( game )
@@ -596,7 +600,7 @@ int CLuaApplication::AddGameToMarket( lua_State* L )
 	CNrpGame* game = _GetLuaObject< CNrpGame, CLuaGame >( L, 2, false );
 	assert( game != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN _object->AddGameToMarket( *game );
+    IF_OBJECT_NOT_NULL_THEN CNrpGameMarket::Instance().StartSale( *game );
 
 	return 0;	
 }
@@ -604,13 +608,15 @@ int CLuaApplication::AddGameToMarket( lua_State* L )
 int CLuaApplication::LoadScreenshots( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:LoadScreenshots need string parameter" );
+	luaL_argcheck(L, argc == 3, 3, "Function CLuaApplication:LoadScreenshots need string, funcName parameter" );
 
 	NrpText imageListName( lua_tostring( L, 2 ) );
+    NrpText funcName( lua_tostring( L, 3 ) );
+
 	if( !imageListName.size() )
 		return 1;
 
-	IF_OBJECT_NOT_NULL_THEN _object->LoadScreenshot( imageListName );
+	_nrpScreenshots.Load( imageListName, funcName );
 
 	return 0;		
 }
@@ -664,17 +670,18 @@ int CLuaApplication::GetInvention( lua_State* L )
 int CLuaApplication::CreateDirectorySnapshot( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 5, 5, "Function CLuaApplication:CreateDirectorySnapshot need directory, saveFile, itemName, itemTemplate in parameters" );
+	luaL_argcheck(L, argc == 6, 6, "Function CLuaApplication:CreateDirectorySnapshot need directory, saveFile, itemName, itemTemplate, funcUpdate in parameters" );
 
 	NrpText directory( lua_tostring( L, 2 ) );
 	NrpText saveFile( lua_tostring( L, 3 ) );
 	NrpText itemTemplate( lua_tostring( L, 4 ) );
 	NrpText itemName( lua_tostring( L, 5 ) );
+    NrpText funcUpdate( lua_tostring( L, 6 ) );
 
 	OpFileSystem::Remove( saveFile );
 
 	IniFile ini( saveFile );
-	OpFileSystem::CreateDirectorySnapshot( directory, itemTemplate, itemName, &ini );
+	OpFileSystem::CreateDirectorySnapshot( directory, itemTemplate, itemName, &ini, funcUpdate );
 
 	ini.Save();
 	return 0;
@@ -740,7 +747,7 @@ int CLuaApplication::GetPlatformNumber( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		lua_pushinteger( L, GetParam_<int>( L, PROP, PLATFORMNUMBER, 0 ) );
+        lua_pushinteger( L, (int)CNrpGameMarket::Instance()[ PLATFORMNUMBER ] );
 		return 1;
 	}
 
@@ -757,7 +764,7 @@ int CLuaApplication::GetPlatform( lua_State* L )
 	CNrpPlatform* plt = NULL;
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		plt = _object->GetPlatform( index );
+        plt = CNrpGameMarket::Instance().GetPlatform( index );
 
 		//lua_pop( L, argc );
 		lua_pushlightuserdata( L, plt );
@@ -781,16 +788,21 @@ int CLuaApplication::LoadPlatform( lua_State* L )
 	{	
 		IniFile r( pathTo );
 
-		NrpText plName = r.Get( SECTION_PROPERTIES, "internalname:string", NrpText("") );
-		if( !_object->GetPlatform( plName ) )
+        NrpText plName = r.Get( SECTION_PROPERTIES, INrpConfig::uniqTemplate, NrpText("") );
+        if( !CNrpGameMarket::Instance().GetPlatform( plName ) )
 		{
 			CNrpPlatform* plt = new CNrpPlatform( pathTo );
 			plt->Load( pathTo );
-			ret = _object->AddPlatform( plt );
+			ret = CNrpGameMarket::Instance().AddPlatform( plt );
+
+            assert( ret );
+            lua_pushlightuserdata( L, plt );
+            Luna< CLuaPlatform >::constructor( L );
+            return 1;
 		}
 	}
 
-	lua_pushboolean( L, ret );
+	lua_pushnil( L );
 	return 1;		
 }
 
@@ -802,23 +814,31 @@ int CLuaApplication::LoadLinks( lua_State* L )
 	NrpText pathTo = lua_tostring( L, 2 );
 	NrpText tmpName = lua_tostring( L, 3 );
 
-	IF_OBJECT_NOT_NULL_THEN _object->LoadLinks( pathTo, tmpName );
+	_nrpLinks.Load( pathTo, tmpName );
 	return 0;
 }
 
 int CLuaApplication::SinceCompany( lua_State* L )
 {
 	int argc = lua_gettop(L);
-	luaL_argcheck(L, argc == 2, 2, "Function CLuaApplication:SinceCompany need PathToFile parameter" );
+	luaL_argcheck(L, argc == 5, 5, "Function CLuaApplication:SinceCompany need PathToFile parameter" );
 
-	NrpText pathTo = lua_tostring( L, 2 );
+	NrpText name = lua_tostring( L, 2 );
+    int balance = lua_tointeger( L, 3 );
+    int selfPie = lua_tointeger( L, 4 );
+    int allPie = lua_tointeger( L, 5 );
 
 	IF_OBJECT_NOT_NULL_THEN 
 	{
-		CNrpCompany* cmp = new CNrpCompany( pathTo );
-		CNrpUser* user = _nrpLaborMarkt.CreateRandomUser( CNrpAiUser::ClassName() );
-		_nrpLaborMarkt.AddUser( user );
-		(*cmp)[ CEO ] = user;
+        CNrpUser* user = _nrpLaborMarkt.CreateRandomUser( CNrpAiUser::ClassName() );
+        _nrpLaborMarkt.AddUser( user );
+		
+        CNrpCompany* cmp = new CNrpCompany( name, user );
+        (*cmp)[ BALANCE ] = balance;
+        (*cmp)[ SELF_PIE_NUMBER ] = selfPie;
+        (*cmp)[ PIE_NUMBER ] = allPie;
+        (*cmp)[ STARTDATE ] = _nrpApp[ CURRENTTIME ];
+
 		_object->AddCompany( cmp );
 		CNrpBridge::Instance().Update();
 

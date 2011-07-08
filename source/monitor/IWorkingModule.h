@@ -17,7 +17,7 @@ public:
 	{
 		CNrpTechnology::_InitializeOptions();
 
-		Add<float>( READYWORKPERCENT, 0 );
+		RegProperty<float>( READYWORKPERCENT, 0 );
 	}
 
 	virtual void Update( CNrpUser& ptrUser, const NrpTime& time ) = 0;
