@@ -9,6 +9,8 @@
 
 using namespace nrp;
 
+#define NERPA_SDK_VERSION "0.1.0-beta"
+
 int APIENTRY _tWinMain(HINSTANCE hInstance,
                        HINSTANCE hPrevInstance,
                        LPTSTR    lpCmdLine,
@@ -16,7 +18,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 {
 	Logger::Instance();
 
-	Log(LOG) << "Система логов запущена!" << term;
+	Log(LOG) << "Nerpa Engine version" << NERPA_SDK_VERSION << term;
 	CNrpEngine::Instance();
 	
 	_nrpApp.Init();

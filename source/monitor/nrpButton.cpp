@@ -23,7 +23,7 @@ CNrpButton::CNrpButton( IGUIEnvironment* environment,
 			: IGUIButton( environment, parent, id, rectangle), pressed_(false),
 			isPushButton_(false), useAlphaChannel_(false), border_(true),
 			clickTime_(0), spriteBank_(0), overrideFont_(0), image_(0), pressedImage_(0), hoveredImage_(NULL),
-			_alphaImage( NULL )
+			_alphaImage( NULL ), HoverAlphaBlend( 0 )
 {
 	pressed_ = false;
 	setNotClipped(noclip);
@@ -128,12 +128,23 @@ bool CNrpButton::OnEvent(const SEvent& event)
 			}
 			break;
 	case EET_GUI_EVENT:
-		if (event.GUIEvent.EventType == EGET_ELEMENT_FOCUS_LOST)
+		switch(event.GUIEvent.EventType)
 		{
+        case EGET_ELEMENT_FOCUS_LOST:
 			if (event.GUIEvent.Caller == this && !isPushButton_)
 				setPressed(false);
+        break;
+
+        case EGET_ELEMENT_HOVERED:
+            PCall( GUIELEMENT_HOVERED, this );
+        break;
+
+        case EGET_ELEMENT_LEFT:
+            PCall( GUIELEMENT_HOVERED_LEFT, this );
+        break;
 		}
-		break;
+	break;
+
 	case EET_MOUSE_INPUT_EVENT:
 		switch( event.MouseInput.Event  )
 		{
@@ -271,20 +282,22 @@ void CNrpButton::draw()
 
 	if( texImage != NULL )
 	{
-		driver->draw2DImage( texImage, AbsoluteRect, txsRect, &AbsoluteClippingRect, 0, true  );	
+        video::SColor color( AlphaBlend, 0xff, 0xff, 0xff );
+        video::SColor colors[] = { color, color, color, color };
+		driver->draw2DImage( texImage, AbsoluteRect, txsRect, &AbsoluteClippingRect, colors, true  );	
 
 		if( isHovered )
 		{
-			if( AlphaBlend < 0xff )	AlphaBlend+=core::s32_min( fps, 0xff - AlphaBlend );
+			if( HoverAlphaBlend < AlphaBlend )	HoverAlphaBlend+=core::s32_min( fps, 0xff - HoverAlphaBlend );
 		}
 		else
 		{
-			if( AlphaBlend > 0 ) AlphaBlend-=core::s32_min( fps, AlphaBlend - fps );
+			if( HoverAlphaBlend > 0 ) HoverAlphaBlend-=core::s32_min( fps, HoverAlphaBlend - fps );
 		}
 
-		if( AlphaBlend <= 0xff && AlphaBlend >= 5 && hoveredImage_ != NULL )
+		if( HoverAlphaBlend <= AlphaBlend && HoverAlphaBlend >= 5 && hoveredImage_ != NULL )
 		{
-			video::SColor color( AlphaBlend, 0xff, 0xff, 0xff );
+			video::SColor color( HoverAlphaBlend, 0xff, 0xff, 0xff );
 			video::SColor colors[4] = { color, color, color, color };		
 			driver->draw2DImage( hoveredImage_, AbsoluteRect, hoveredImageRect_, &AbsoluteClippingRect, colors, true  );	
 		}
@@ -310,9 +323,15 @@ void CNrpButton::draw()
 		rect = AbsoluteRect;
      	rect.UpperLeftCorner.Y += 2 * pressed_;
 
+        video::SColor color = overrideColorEnabled_ 
+                                    ? overrideColor_ 
+                                    : Environment->getSkin()->getColor(IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT);
+
+        color.setAlpha( Parent ? Parent->getAlphaBlend() : 0xff );
+
 		if (font)
 			font->draw(Text.c_str(), rect,
-			overrideColorEnabled_ ? overrideColor_ : Environment->getSkin()->getColor(IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT), true, true, 
+			color, true, true, 
 			&AbsoluteClippingRect);
 	}
 

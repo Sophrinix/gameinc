@@ -9,6 +9,11 @@ namespace nrp
 class CLuaLinkBox : public ILuaGuiElement<irr::gui::CNrpGuiLinkBox>
 {
 public:
+    static const NrpText rta_top;
+    static const NrpText rta_left;
+    static const NrpText rta_bottom;
+    static const NrpText rta_right;
+    static const NrpText rta_center;
 	DEFINE_PROPERTIES_AND_METHODS(CLuaLinkBox)
 
 	static const char* ClassName();
@@ -29,11 +34,13 @@ public:
 	int SetFunction( lua_State* L );
 	int UnsetFunction( lua_State* L );
 	int SetColor( lua_State* L );
+    int SetTextPos( lua_State* L );
+    int SetDragStartFunction( lua_State* L );
 
 private:
 	typedef enum { TI_IMAGE=0, TI_HOVER, TI_PRESSED } TYPE_IMAGE;
 	int AddRemLuaFunction_( lua_State* L, const NrpText& funcName, bool add );
-	int SetDragStartFunction( lua_State* L );
+	
 };
 
 }//namespace nrp

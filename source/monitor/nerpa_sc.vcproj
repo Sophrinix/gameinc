@@ -362,11 +362,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NrpConfigLooder.cpp"
+				RelativePath=".\NrpConfigSyncer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NrpConfigLooder.h"
+				RelativePath=".\NrpConfigSyncer.h"
 				>
 			</File>
 			<File
@@ -623,14 +623,6 @@
 					</File>
 					<File
 						RelativePath=".\NrpAdvancedListBox.h"
-						>
-					</File>
-					<File
-						RelativePath=".\NrpBrowserWindow.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\NrpBrowserWindow.h"
 						>
 					</File>
 					<File
@@ -1616,15 +1608,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\application\scripts\magazine.lua"
-				>
-			</File>
-			<File
 				RelativePath="..\..\application\scripts\mail.lua"
-				>
-			</File>
-			<File
-				RelativePath="..\..\application\scripts\phone.lua"
 				>
 			</File>
 			<File
@@ -1656,6 +1640,10 @@
 				</File>
 				<File
 					RelativePath="..\..\application\scripts\tutorialBank.lua"
+					>
+				</File>
+				<File
+					RelativePath="..\..\application\scripts\tutorialBridge.lua"
 					>
 				</File>
 				<File
@@ -1798,7 +1786,19 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\application\scripts\topCompany.lua"
+						>
+					</File>
+					<File
 						RelativePath="..\..\application\scripts\topGame.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\topGenres.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\topPlatform.lua"
 						>
 					</File>
 				</Filter>
@@ -1867,6 +1867,10 @@
 					>
 					<File
 						RelativePath="..\..\application\scripts\plantrd.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\plantWorks.lua"
 						>
 					</File>
 					<Filter
@@ -2006,6 +2010,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\application\scripts\gpmLanguagesPage.lua"
+						>
+					</File>
+					<File
 						RelativePath="..\..\application\scripts\gpmPlatformPage.lua"
 						>
 					</File>
@@ -2083,6 +2091,18 @@
 					>
 					<File
 						RelativePath="..\..\application\scripts\pda.lua"
+						>
+					</File>
+					<File
+						RelativePath="..\..\application\scripts\phone.lua"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="magazine"
+					>
+					<File
+						RelativePath="..\..\application\scripts\magazine.lua"
 						>
 					</File>
 				</Filter>
@@ -2192,6 +2212,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NrpGameMarket.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpGameMarket.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NrpGameTime.cpp"
 				>
 			</File>
@@ -2205,6 +2233,22 @@
 			</File>
 			<File
 				RelativePath=".\NrpLaborMarket.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpLinkHolder.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpLinkHolder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpScreenshotHolder.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpScreenshotHolder.h"
 				>
 			</File>
 			<Filter
@@ -2251,6 +2295,14 @@
 				Name="game"
 				>
 				<File
+					RelativePath=".\NrpExtInfo.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NrpExtInfo.h"
+					>
+				</File>
+				<File
 					RelativePath=".\NrpGame.cpp"
 					>
 				</File>
@@ -2274,14 +2326,6 @@
 					RelativePath=".\NrpPlatform.h"
 					>
 				</File>
-				<File
-					RelativePath=".\NrpScreenshot.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\NrpScreenshot.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -2293,6 +2337,14 @@
 			</File>
 			<File
 				RelativePath=".\HTMLEngine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpBrowserWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NrpBrowserWindow.h"
 				>
 			</File>
 			<Filter

@@ -8,16 +8,17 @@
 
 static nrp::CNrpBank* globalBankPointer=NULL;
 
-static const NrpText MY_SAVE( L"bank.ini" );
-
 namespace nrp
 {
 CLASS_NAME CLASS_BANK( L"CNrpBank" );
 
+const NrpText CNrpBank::saveTemplate = L"bank.ini";
+const NrpText CNrpBank::loanTemplate = L".loan";
+
 CNrpBank::CNrpBank(void) : INrpConfig( CLASS_BANK, "systemBank" )
 {
 	loanId_ = 0;
-	Add<int>( LOANNUMBER, 0 );
+	RegProperty( LOANNUMBER, 0 );
 }
 
 CNrpBank::~CNrpBank(void)
@@ -98,7 +99,7 @@ int CNrpBank::GetLoanMoney( const NrpText& name )
 NrpText CNrpBank::_GetLoanSaveFileName( int index )
 {
 	NrpText cmpName = (*_loans[ index ])[ COMPANYNAME ];
-	return cmpName + NrpText( index ) + ".loan";
+    return cmpName + NrpText( index ) + CNrpBank::loanTemplate;
 }
 
 NrpText CNrpBank::Save( const NrpText& saveFolder )
@@ -111,7 +112,7 @@ NrpText CNrpBank::Save( const NrpText& saveFolder )
 	//если нет директории в которую надо сохранять данные
 	OpFileSystem::CreateDirectory( localFolder );
 
-	NrpText saveFile = localFolder + MY_SAVE;
+    NrpText saveFile = localFolder + CNrpBank::saveTemplate;
 
 	assert( !OpFileSystem::IsExist( saveFile ) );
 	INrpConfig::Save( saveFile );
@@ -131,7 +132,7 @@ NrpText CNrpBank::Save( const NrpText& saveFolder )
 
 void CNrpBank::Load( const NrpText& saveFolder )
 {
-	NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + MY_SAVE;
+    NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + CNrpBank::saveTemplate;
 	if( OpFileSystem::IsExist( fileName) )
 	{
 		INrpConfig::Load( fileName );

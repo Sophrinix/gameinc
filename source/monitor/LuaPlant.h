@@ -26,7 +26,9 @@ public:
 	int GetDiskMachineNumber( lua_State* L );
 	int GetDiskMachine( lua_State* L );
 	int GetCampaniesNumber( lua_State* L );
-																//нажатии на эту кнопку
+    int GetWorksNumber( lua_State* L );
+    int GetProduceWork( lua_State* L );
+															
 	static const char* ClassName();
 };
 

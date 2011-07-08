@@ -6,10 +6,17 @@
 #include "nrpEngine.h"
 
 using namespace irr;
+using irr::gui::CNrpGuiLinkBox;
 
 namespace nrp
 {
 CLASS_NAME CLASS_LINKBOX( "CLuaLinkBox" );
+
+const NrpText CLuaLinkBox::rta_top = L"top";
+const NrpText CLuaLinkBox::rta_left = L"left";
+const NrpText CLuaLinkBox::rta_bottom = L"bottom";
+const NrpText CLuaLinkBox::rta_right = L"right";
+const NrpText CLuaLinkBox::rta_center = L"center";
 
 BEGIN_LUNA_METHODS(CLuaLinkBox)
 	LUNA_ILUAGUIELEMENT_HEADER( CLuaLinkBox )
@@ -27,6 +34,7 @@ BEGIN_LUNA_PROPERTIES(CLuaLinkBox)
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "unsetFunction", PureFunction, UnsetFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "dragStartFunction", PureFunction, SetDragStartFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "color", PureFunction, SetColor )
+    LUNA_AUTONAME_PROPERTY( CLuaLinkBox, "textPos", PureFunction, SetTextPos )
 END_LUNA_PROPERTIES
 
 CLuaLinkBox::CLuaLinkBox(lua_State *L, bool ex)	: ILuaGuiElement(L, CLASS_LINKBOX, ex )							//конструктор
@@ -149,6 +157,29 @@ int CLuaLinkBox::SetTexture( lua_State* L )
 
 	return 0;	
 }
+
+int CLuaLinkBox::SetTextPos( lua_State* L )
+{
+    assert( lua_isstring( L, -1 ) );
+    if( lua_isstring( L, -1 ) )
+    {
+        NrpText text = lua_tostring( L, -1 );
+
+        std::map< NrpText, CNrpGuiLinkBox::REL_TEXT_ALIGN > types; 
+        types[ rta_top ] = CNrpGuiLinkBox::RTA_TOP;
+        types[ rta_left ] = CNrpGuiLinkBox::RTA_LEFT;
+        types[ rta_right ] = CNrpGuiLinkBox::RTA_RIGHT;
+        types[ rta_bottom ] = CNrpGuiLinkBox::RTA_BOTTOM;
+        types[ rta_center ] = CNrpGuiLinkBox::RTA_CENTER;
+
+        std::map< NrpText, CNrpGuiLinkBox::REL_TEXT_ALIGN >::iterator iterr = types.find( text );
+        
+        IF_OBJECT_NOT_NULL_THEN	_object->setTextPos( iterr != types.end() ? iterr->second : CNrpGuiLinkBox::RTA_CENTER );
+    }
+
+    return 0;	
+}
+
 
 int CLuaLinkBox::GetTexture( lua_State* L )
 {

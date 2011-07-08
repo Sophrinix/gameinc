@@ -47,12 +47,16 @@ class CNrpGameEngine;
 class CNrpInvention;
 class INrpDevelopProject;
 class CNrpBridge;
+class IniFile;
 class CNrpLaborMarket;
 	
 class CNrpApplication : public INrpConfig, public ILuaFunctionality
 {
 	friend class CNrpGameTime;
 public:
+    static const NrpText oldTemplate;
+    static const NrpText bakTemplate;
+
 	static CNrpApplication& Instance();
 
 	void ResetData();
@@ -70,15 +74,6 @@ public:
 	void RemoveDevelopProject( const NrpText& name );
 	INrpDevelopProject* GetDevelopProject( const NrpText& name ); 
 
-	void AddGameEngine( nrp::CNrpGameEngine* ptrEngine );
-	CNrpGameEngine* GetGameEngine( const NrpText& name );
-	void RemoveGameEngine( nrp::CNrpGameEngine* ptrEngine );
-
-	CNrpGame* GetGame( const NrpText& name );
-	CNrpGame* GetGame( u32 index );
-	const GAMES& GetGames() { return _games; }
-	void AddGame( CNrpGame* ptrGame );
-
 	void AddProject( nrp::INrpProject* project );
 	INrpProject* GetProject( const NrpText& name );
 
@@ -90,26 +85,9 @@ public:
 	void AddTechnology( CNrpTechnology* ptrTech );
 	void RemoveTechnology( CNrpTechnology* ptrTech );
 
-	bool AddPlatform( CNrpPlatform* platform );
-	void RemovePlatform( const NrpText& name );
-	CNrpPlatform* GetPlatform( const NrpText& name );
-	CNrpPlatform* GetPlatform( size_t index );
-
 	CNrpTechnology* GetBoxAddon( size_t index ) { return index < _boxAddons.size() ? _boxAddons[ index ] : NULL; }
 	CNrpTechnology* GetBoxAddon( const NrpText& name );
 	bool AddBoxAddon( CNrpTechnology* tech );
-
-	void AddGameToMarket( CNrpGame& game );
-
-	CNrpRetailer* GetRetailer( const NrpText& name );
-	void RemoveRetailer( const NrpText& name );
-
-	NrpText GetFreeInternalName( const CNrpGame& game );
-
-	CNrpExtInfo* GetExtInfo( const NrpText& name );
-	void LoadScreenshot( const NrpText& fileName );
-
-	float GetGameGenreInterest( CNrpGame* game );
 
 	void AddInvention( const NrpText& startTech, CNrpCompany& parentCompany );
 	void InventionFinished( CNrpInvention& ptrInvention );
@@ -117,41 +95,29 @@ public:
 	CNrpInvention* GetInvention( const NrpText& name, const NrpText& companyName );
 	void Init();
 
-	void SetLink( const NrpText& name, const NrpText& pathto );
-	NrpText GetLink( const NrpText& name );
-	void LoadLinks( const NrpText& fileName, const NrpText& templateName );
-
 	static NrpText ClassName();
 
-    static const NrpText FileName;
+    static const NrpText saveTemplate;
 private:
 	CNrpApplication(void);
 	~CNrpApplication(void);
 
 	COMPANIES _companies;
-	SCREENSHOTS _screenshots;
 	TECHS _technologies;					//хранит все технологии игрового мира
 	INVENTIONS _inventions;
 	TECHS _boxAddons;
-	GAMES _games;
-	PLATFORMS _platforms;
-	RETAILERS _retailers;
-	ENGINES _engines;
 	PROJECTS _projects;
 	DEVPROJECTS _devProjects;
-	LINK_MAP _links;
+	
 
 	void _BeginNewHour();
 	void _BeginNewDay();
 	void _BeginNewMonth();
-	void _UpdateMarketGames();
-	int _GetFreePlatformNumberForGame( CNrpGame* game );
-	int _GetSalesNumber( CNrpGame* game );
 	void _UpdateInvention();
 
 	void _InitialyzeSaveDirectories( const NrpText& profileName );
-	void _UpdateGameRating( CNrpGame& ptrGame );
 	void _CreateDirectoriesMapForSave();
+    void _LoadCompanies( IniFile& ini );
 };
 
 #define _nrpApp CNrpApplication::Instance()

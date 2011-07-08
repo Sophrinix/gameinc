@@ -37,6 +37,9 @@ public:
 	int SetPushButton( lua_State* L );
 	int SetTooltip( lua_State* L );
 	int SetPressed( lua_State* L );
+    int SetOnHovered( lua_State* L );
+    int SetOnLeft( lua_State* L );
+
 	static const char* ClassName();
 																//нажатии на эту кнопку
 private:

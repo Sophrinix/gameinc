@@ -12,6 +12,9 @@ class CNrpBank : public INrpConfig
 public:
 	static CNrpBank& Instance();
 
+    static const NrpText saveTemplate;
+    static const NrpText loanTemplate;
+
 	CNrpLoan* GetLoan( u32 index ) { return _loans[ index ]; }
 	int GetLoanMoney( const NrpText& name );
 	size_t GetMaxCompanyLoan( const NrpText& companyName );

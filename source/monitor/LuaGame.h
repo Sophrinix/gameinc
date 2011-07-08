@@ -13,6 +13,9 @@ public:
 	DEFINE_PROPERTIES_AND_METHODS(CLuaGame)				
 	static const char* ClassName();
 
+    static const NrpText defaultDescSave;
+    static const NrpText defaultDescTemplate;
+
 	CLuaGame(lua_State *L, bool );		
 	int Create( lua_State* L );
 	int HaveBox( lua_State* L );
@@ -47,12 +50,19 @@ public:
 	int GetSoundRating( lua_State* L );
 	int GetGameplayRating( lua_State* L );
 	int GetBugsRating( lua_State* L );
+    int GetCompanyName( lua_State* L );
+    int SetCompanyName( lua_State* L );
+    int SetCompany( lua_State* L );
+    int GetNpcGame( lua_State* L );
+    int SetNpcGame( lua_State* L );
+    int CreateHistory( lua_State* L );
 
 private:
 	template< class R > R GetImageLisParam_( lua_State* L, 
 		                                     const NrpText& funcName, 
 											 OPTION_NAME& name, R defValue );
 	int GetImagePath_( lua_State* L, const NrpText& funcName, OPTION_NAME& nameParam );
+
 };
 
 }//namespace nrp

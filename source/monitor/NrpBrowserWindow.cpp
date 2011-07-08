@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include <irrlicht.h>
 #include "NrpBrowserWindow.h"
+#include "ImageGUISkin.h"
 #include "HTMLEngine.h"
 
 using namespace nrp;
@@ -22,19 +23,33 @@ CNrpBrowserWindow::CNrpBrowserWindow( gui::IGUIEnvironment* env,
 									  core::dimension2du size ) : CNrpWindow( env, env->getRootGUIElement(), texture, id, 
 																			  core::recti( pos, size+core::dimension2du( 10, 25 ) ) )
 {
-	setRelativePosition( core::recti( 0, 0, size.Width + 50, size.Height + 75 ) );
-	image_ = Environment->addImage( core::recti( 23, 45, size.Width + 23, size.Height + 45 ), this, -1, 0 );
-	image_->setScaleImage( true );
+	 _ApplyViewerStyle( size, dynamic_cast< CImageGUISkin* >( Environment->getSkin() ) );
 	bringToFront( getCloseButton() );
 		
 	setDraggable( true );
 	drop();
+
+   
+}
+
+void CNrpBrowserWindow::_ApplyViewerStyle( core::dimension2du size, CImageGUISkin* skin )
+{
+    SImageGUIElementStyle::SBorder margins;
+    if( skin )
+    {
+        SImageGUIElementStyle& style = skin->Config.GetConfig( this, SImageGUISkinConfig::WindowBrowserViewer, SImageGUISkinConfig::Normal );
+        margins = style.margin;
+    }
+
+    setRelativePosition( core::recti( 0, 0, size.Width + margins.Left + margins.Right, size.Height + margins.Top + margins.Bottom ) );
+    _image = Environment->addImage( core::recti( margins.Left, margins.Top, size.Width + margins.Left, size.Height + margins.Top), this, -1, 0 );
+    _image->setScaleImage( true );
 }
 
 CNrpBrowserWindow::~CNrpBrowserWindow(void)
 {
 	HTMLEngine::Instance().SetBrowserWindow( NULL );
-	image_->remove();
+	_image->remove();
 }
 
 bool CNrpBrowserWindow::OnEvent(const SEvent& event)
@@ -47,7 +62,7 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 	case EET_MOUSE_INPUT_EVENT:
 	{
 		core::position2di absPos(event.MouseInput.X, event.MouseInput.Y);
-		core::position2di mousePos = absPos - image_->getAbsolutePosition().UpperLeftCorner;
+		core::position2di mousePos = absPos - _image->getAbsolutePosition().UpperLeftCorner;
 
 		switch(event.MouseInput.Event)
 		{
@@ -68,7 +83,7 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 		break;
 		}
 
-		if( image_->getRelativePosition().isPointInside( mousePos) )
+		if( _image->getRelativePosition().isPointInside( mousePos) )
 			return true;
 	}
 	break;
@@ -81,7 +96,7 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 			return true;
 		}
 
-		if( event.GUIEvent.EventType == EGET_ELEMENT_LEFT && event.GUIEvent.Caller == image_ )
+		if( event.GUIEvent.EventType == EGET_ELEMENT_LEFT && event.GUIEvent.Caller == _image )
 		{
 			HTMLEngine::Instance().SetFocus( false );
 			return true;
@@ -108,7 +123,7 @@ bool CNrpBrowserWindow::OnEvent(const SEvent& event)
 
 void CNrpBrowserWindow::SetTexture( video::ITexture* texture )
 {
-	image_->setImage( texture );
+	_image->setImage( texture );
 }
 
 void CNrpBrowserWindow::draw()

@@ -25,6 +25,8 @@ END_LUNA_METHODS
 BEGIN_LUNA_PROPERTIES(CLuaButton)
 	LUNA_ILUAGUIELEMENT_PROPERTIES( CLuaButton )
 	LUNA_AUTONAME_PROPERTY( CLuaButton, "action", PureFunction, SetAction )
+    LUNA_AUTONAME_PROPERTY( CLuaButton, "onHovered", PureFunction, SetOnHovered )
+    LUNA_AUTONAME_PROPERTY( CLuaButton, "onHoveredLeft", PureFunction, SetOnLeft )
 	LUNA_AUTONAME_PROPERTY( CLuaButton, "pushButton", PureFunction, SetPushButton )
 	LUNA_AUTONAME_PROPERTY( CLuaButton, "pressed", PureFunction, SetPressed )
 	LUNA_AUTONAME_PROPERTY( CLuaButton, "tooltip", PureFunction, SetTooltip )
@@ -85,6 +87,22 @@ int CLuaButton::SetAction( lua_State *L )									//устанавливает имя новой функ
 		dynamic_cast< gui::CNrpButton* >( _object )->setOnClickAction( _GetRef( L, -1 ) );
 
 	return 0;
+}
+
+int CLuaButton::SetOnHovered( lua_State* L )
+{
+    IF_OBJECT_NOT_NULL_THEN
+        dynamic_cast< gui::CNrpButton* >( _object )->Bind( GUIELEMENT_HOVERED, _GetRef( L, -1 ) );
+
+    return 0;
+}
+
+int CLuaButton::SetOnLeft( lua_State* L )
+{
+    IF_OBJECT_NOT_NULL_THEN
+        dynamic_cast< gui::CNrpButton* >( _object )->Bind( GUIELEMENT_HOVERED_LEFT, _GetRef( L, -1 ) );
+
+    return 0;
 }
 
 int CLuaButton::SetImage_( lua_State* L, const NrpText& funcName, TYPE_IMAGE typeimg )

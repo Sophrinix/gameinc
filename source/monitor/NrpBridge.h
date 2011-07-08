@@ -18,6 +18,8 @@ public:
 
 	NrpText Save( const NrpText& fileName );
 
+    static const NrpText extension;
+
 private:
 	void _InitOptions();
 };
@@ -30,6 +32,8 @@ private:
 public:
 	static CNrpBridge& Instance();
 	static NrpText ClassName();
+
+    static const NrpText saveTemplate;
 
 	CShareholder* GetShares( const NrpText& name, CNrpCompany& cmp );
 	int GetAvaibleShares( CNrpCompany& cmp );

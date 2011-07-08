@@ -477,7 +477,7 @@ int CLuaUser::AddParam( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		if( !_object->IsExist( name ) && createValue )
-			_object->Add<int>( name, 0 );
+			_object->RegProperty<int>( name, 0 );
 
 		(*_object)[ name ] += addvalue;
 	}

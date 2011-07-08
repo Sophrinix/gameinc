@@ -180,17 +180,17 @@ int CLuaGuiEnvironment::AddWindow( lua_State *vm )
 int CLuaGuiEnvironment::AddBlenderAnimator( lua_State *vm )
 {
 	int argc = lua_gettop(vm);
-	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddBlenderAnimator need 7 parameter");
+	luaL_argcheck(vm, argc == 8, 8, "Function CLuaGuiEnvironment:AddfBlenderAnimator need 7 parameter");
 
 	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
 	s32 minb = lua_tointeger( vm, 3 );
 	s32 maxb = lua_tointeger( vm, 4 );
-	f32 stepb = static_cast< f32 >( lua_tonumber( vm, 5 ));
+	f32 time = static_cast< f32 >( lua_tonumber( vm, 5 ));
 	bool visibleOnEnd = lua_toboolean( vm, 6 ) > 0; 
 	bool removeSelf = lua_toboolean( vm, 7 ) > 0;
 	bool removeParent = lua_toboolean( vm, 8 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN _object->addBlendAnimator( parentElem, minb, maxb, stepb,
+	IF_OBJECT_NOT_NULL_THEN _object->addBlendAnimator( parentElem, minb, maxb, time,
 													   visibleOnEnd, removeSelf, removeParent );
 
 	return 1;
@@ -204,12 +204,12 @@ int CLuaGuiEnvironment::AddHoveredAnimator( lua_State *vm )
 	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( vm, 2, true );
 	u32 minb = lua_tointeger( vm, 3 );
 	u32 maxb = lua_tointeger( vm, 4 );
-	u32 stepb = lua_tointeger( vm, 5 );
+	u32 time = lua_tointeger( vm, 5 );
 	bool visibleOnEnd = lua_toboolean( vm, 6 ) > 0; 
 	bool removeSelf = lua_toboolean( vm, 7 ) > 0;
 	bool removeParent = lua_toboolean( vm, 8 ) > 0;
 
-	IF_OBJECT_NOT_NULL_THEN _object->addHoveredAnimator( parentElem, minb, maxb, stepb,
+	IF_OBJECT_NOT_NULL_THEN _object->addHoveredAnimator( parentElem, minb, maxb, time,
 														 visibleOnEnd, removeSelf, removeParent );
 
 	return 1;
@@ -925,7 +925,7 @@ int CLuaGuiEnvironment::AddTimer( lua_State* L )
 	int time = lua_tointeger( L, 2 );
 	assert( lua_isfunction( L, 3 ) );
 	int action = _GetRef( L, 3 );
-	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 4 );
+	gui::IGUIElement* elm = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 4, true );
 
 	gui::CNrpTimer* timer = NULL;
 	IF_OBJECT_NOT_NULL_THEN 
@@ -1018,13 +1018,16 @@ int CLuaGuiEnvironment::AddLayout( lua_State* L )
 	gui::IGUIElement* parentElem = _GetLuaObject< gui::IGUIElement, ILuaObject >( L, 8, true );
 	core::recti rectangle = _ReadRect( L, 2, parentElem );
 
-	gui::CNrpLayout* elm = NULL;
-	IF_OBJECT_NOT_NULL_THEN elm = new gui::CNrpLayout( _object, parentElem, rectangle, column, id );
+	IF_OBJECT_NOT_NULL_THEN 
+    {
+        gui::CNrpLayout* elm = new gui::CNrpLayout( _object, parentElem, rectangle, column, id );
+        lua_pushlightuserdata( L, elm );
+        Luna< CLuaElement >::constructor( L );
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, elm );
-	Luna< CLuaElement >::constructor( L );
+        return 1;
+    }
 
+    lua_pushnil( L );
 	return 1;
 }
 

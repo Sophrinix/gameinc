@@ -16,6 +16,7 @@
 #include "LuaGameEngine.h"
 #include "LuaGameProject.h"
 #include "NrpLaborMarket.h"
+#include "NrpHistory.h"
 
 namespace nrp
 {
@@ -44,7 +45,10 @@ END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaCompany)
 	LUNA_ILUAOBJECT_PROPERTIES( CLuaCompany )
-	LUNA_AUTONAME_PROPERTY( CLuaCompany, "profitLastYear", GetProfitLastYear, PureFunction )
+    LUNA_AUTONAME_PROPERTY( CLuaCompany, "allTimeSales", GetAllTimeSales, PureFunction )
+    LUNA_AUTONAME_PROPERTY( CLuaCompany, "lastMonthSales", GetLastMonthSales, PureFunction )
+    LUNA_AUTONAME_PROPERTY( CLuaCompany, "profitLastYear", GetProfitLastYear, PureFunction )
+    LUNA_AUTONAME_PROPERTY( CLuaCompany, "lastMonthProfit", GetLastMonthProfit, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "pieCost", GetPieCost, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "dividend", GetDividend, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "enginesNumber", GetEnginesNumber, PureFunction )
@@ -57,9 +61,9 @@ BEGIN_LUNA_PROPERTIES(CLuaCompany)
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "projectNumber", GetProjectNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "gameNumber", GetGameNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "inventionNumber", GetInventionNumber, PureFunction )
-	LUNA_AUTONAME_PROPERTY( CLuaCompany, "allPie", GetAllPie, PureFunction )
-	LUNA_AUTONAME_PROPERTY( CLuaCompany, "selfPie", GetSelfPie, PureFunction )
-	LUNA_AUTONAME_PROPERTY( CLuaCompany, "texture", GetTexture, PureFunction )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "allPie", GetAllPie, SetAllPie )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "selfPie", GetSelfPie, SetSelfPie )
+	LUNA_AUTONAME_PROPERTY( CLuaCompany, "texture", GetTexture, SetTexture )
 	LUNA_AUTONAME_PROPERTY( CLuaCompany, "invexp", GetInvExp, SetInvExp )
 END_LUNA_PROPERTIES
 
@@ -90,16 +94,75 @@ int CLuaCompany::Create( lua_State* L )
 	return 1;
 }
 
+int CLuaCompany::GetAllTimeSales( lua_State* L )
+{
+    IF_OBJECT_NOT_NULL_THEN 
+        if( CNrpHistory* history = (*_object)[ HISTORY ].As<CNrpHistory*>() )
+        {
+            lua_pushinteger( L, history->GetSummFor( BOXNUMBER, _nrpApp[ CURRENTTIME ].As<NrpTime>() ) );
+            return 1;
+        }
+
+        lua_pushnil( L );
+        return 1;		
+}
+
+int CLuaCompany::GetLastMonthSales( lua_State* L )
+{
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        if( CNrpHistory* history = (*_object)[ HISTORY ].As<CNrpHistory*>() )
+        {
+            int sales = 0;
+            if( CNrpHistoryStep* step = history->GetLast() )
+                sales = (*step)[ BOXNUMBER ];
+
+            lua_pushinteger( L, sales );
+            return 1;
+        }
+    }
+
+    lua_pushnil( L );
+    return 1;
+}
+
 int CLuaCompany::GetAllPie( lua_State* L )
 {
 	lua_pushinteger( L, GetParam_<int>( L, PROP, PIE_NUMBER, 0 ) );
 	return 1;
 }
 
+int CLuaCompany::SetAllPie( lua_State* L )
+{
+    assert( lua_isnumber( L, -1 ) );
+    IF_OBJECT_NOT_NULL_THEN
+        (*_object)[ PIE_NUMBER ] = (int)lua_tointeger( L, -1 );
+
+    return 0;
+}
+
 int CLuaCompany::GetSelfPie( lua_State* L )
 {
 	lua_pushinteger( L, GetParam_<int>( L, PROP, SELF_PIE_NUMBER, 0 ) );
 	return 1;
+}
+
+int CLuaCompany::SetTexture( lua_State* L )
+{
+    assert( lua_isstring( L, -1 ) );
+    IF_OBJECT_NOT_NULL_THEN
+        (*_object)[ TEXTURENORMAL ] = NrpText( lua_tostring( L, -1 ) );
+
+    return 0;
+}
+
+int CLuaCompany::SetSelfPie( lua_State* L )
+{
+    assert( lua_isnumber( L, -1 ) );
+    IF_OBJECT_NOT_NULL_THEN
+        (*_object)[ SELF_PIE_NUMBER ] = (int)lua_tointeger( L, -1 );
+
+    return 0;
 }
 
 int CLuaCompany::SetCEO( lua_State* L )
@@ -220,7 +283,11 @@ int CLuaCompany::AddUser( lua_State* L )
 	CNrpUser* ptrData = _GetLuaObject< CNrpUser, CLuaUser >( L, 2, false );
 	assert( ptrData != NULL );
 
-	IF_OBJECT_NOT_NULL_THEN	_object->AddUser( ptrData );
+	IF_OBJECT_NOT_NULL_THEN	
+    {
+        if( ptrData )
+            _object->AddUser( *ptrData );
+    }
 
 	return 1;		
 }
@@ -431,6 +498,26 @@ const char* CLuaCompany::ClassName()
 {
 	return ( CLASS_LUACOMPANY );
 }
+
+int CLuaCompany::GetLastMonthProfit( lua_State* L )
+{
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        int sales = 0;
+        if( CNrpHistory* history = (*_object)[ HISTORY ].As<CNrpHistory*>() )
+        {
+            if( CNrpHistoryStep* step = history->GetLast() )
+            {
+                lua_pushinteger( L, (*step)[ BALANCE ] );
+                return 1;
+            }
+        }
+    }
+
+    lua_pushnil( L );
+    return 1;
+}
+
 
 int CLuaCompany::GetProfitLastYear( lua_State* L )
 {

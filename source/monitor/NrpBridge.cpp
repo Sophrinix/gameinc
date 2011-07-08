@@ -10,17 +10,18 @@
 using namespace irr;
 static nrp::CNrpBridge * globalBridgeInstance = 0;
 
-static const NrpText MY_SAVE( L"bridge.ini" );
-
 namespace nrp 
 {
 CLASS_NAME CLASS_NRPBRIDGE( L"CNrpBridge" );
 
+const NrpText CNrpBridge::saveTemplate = L"bridge.ini";
+const NrpText CShareholder::extension = L".share";
+
 CNrpBridge::CNrpBridge(void) : INrpConfig( CLASS_NRPBRIDGE, CLASS_NRPBRIDGE )
 {
-	Add<int>( COMPANIESNUMBER, 0 );
-	Add<int>( SHARES_NUMBER, 0 );
-	Add<NrpTime>( LASTTIMEUPDATE, _nrpApp[ CURRENTTIME ] );
+	RegProperty<int>( COMPANIESNUMBER, 0 );
+	RegProperty<int>( SHARES_NUMBER, 0 );
+	RegProperty<NrpTime>( LASTTIMEUPDATE, _nrpApp[ CURRENTTIME ] );
 }
 
 CNrpBridge& CNrpBridge::Instance()
@@ -205,7 +206,7 @@ CShareholder* CNrpBridge::GetShares( const NrpText& name, CNrpCompany& cmp )
 
 void CNrpBridge::Load( const NrpText& saveFolder )
 {
-	NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + MY_SAVE;
+    NrpText fileName = OpFileSystem::CheckEndSlash( saveFolder ) + CNrpBridge::saveTemplate;
 	assert( OpFileSystem::IsExist( fileName) );
 	if( OpFileSystem::IsExist( fileName) )
 	{
@@ -243,7 +244,7 @@ NrpText CNrpBridge::Save( const NrpText& saveFolder )
 	//если нет директории в которую надо сохранять данные
 	OpFileSystem::CreateDirectory( localFolder );
 
-	NrpText saveFile = localFolder + MY_SAVE;
+    NrpText saveFile = localFolder + CNrpBridge::saveTemplate;
 
 	assert( !OpFileSystem::IsExist( saveFile ) );
 	INrpConfig::Save( saveFile );
@@ -253,15 +254,21 @@ NrpText CNrpBridge::Save( const NrpText& saveFolder )
 	int sequenceNum = 0;
 	for( OWNER_MAP::iterator rIter=_stocks.begin(); rIter != _stocks.end(); rIter++ )
 	{
-		NrpText shareDir =  OpFileSystem::CheckEndSlash( localFolder + rIter->first );
+        CNrpCompany* cmpOwner = _nrpApp.GetCompany( rIter->first );
+        assert( cmpOwner );
+
+		NrpText shareDir =  OpFileSystem::CheckEndSlash( localFolder + (NrpText)(*cmpOwner)[ INTERNAL_NAME ] );
 		//если нет директории в которую надо сохранять данные
 		OpFileSystem::CreateDirectory( shareDir );
 
 		STOCK_MAP::iterator share = rIter->second.begin();
 		for( ; share != rIter->second.end(); share++, sequenceNum++ )
 		{
-			 NrpText ret = share->second->Save( shareDir + rIter->first + (NrpText)(*(share->second))[ COMPANYNAME ] + ".share" );
-			 sv.Set( SECTION_SHARES, CreateKeyItem( sequenceNum ), ret );
+            CNrpCompany* holder = (*(share->second))[ PARENTCOMPANY ].As<CNrpCompany*>();
+
+            assert( holder && "holder must be exsist" );
+            NrpText ret = share->second->Save( shareDir + (NrpText)(*holder)[ INTERNAL_NAME ] + CShareholder::extension );
+			sv.Set( SECTION_SHARES, CreateKeyItem( sequenceNum ), ret );
 		}
 	}
 
@@ -359,10 +366,10 @@ CLASS_NAME CLASS_CSHAREHOLDER( L"CShareholder" );
 
 void CShareholder::_InitOptions()
 {
-	Add<PNrpCompany>( PARENTCOMPANY, NULL );
-	Add<NrpText>( COMPANYNAME, L"" );
-	Add<NrpText>( OWNER, L"" );
-	Add( PIE_NUMBER, 0 );
+	RegProperty<PNrpCompany>( PARENTCOMPANY, NULL );
+	RegProperty<NrpText>( COMPANYNAME, L"" );
+	RegProperty<NrpText>( OWNER, L"" );
+	RegProperty( PIE_NUMBER, 0 );
 }
 
 CShareholder::CShareholder( const NrpText& name, CNrpCompany* cmp ) : INrpConfig( CLASS_CSHAREHOLDER, "" )

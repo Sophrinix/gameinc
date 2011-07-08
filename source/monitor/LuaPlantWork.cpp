@@ -268,9 +268,14 @@ int CLuaPlantWork::GetGame( lua_State* L )
 	IF_OBJECT_NOT_NULL_THEN 
 	{
 		CNrpGame* game = (*_object)[ PARENT ].As<CNrpGame*>();
-		lua_pushlightuserdata( L, game );
-		Luna< CLuaGame >::constructor( L );
-		return 1;
+
+        assert( game && "CNrpPlantWork::Game must be exist ");
+        if( game )
+        {
+		    lua_pushlightuserdata( L, game );
+		    Luna< CLuaGame >::constructor( L );
+		    return 1;
+        }
 	}
 
 	lua_pushnil( L );

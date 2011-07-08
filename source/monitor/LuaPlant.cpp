@@ -23,6 +23,7 @@ BEGIN_LUNA_METHODS(CLuaPlant)
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, AddReklameWork )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, Save )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetReklame )
+    LUNA_AUTONAME_FUNCTION( CLuaPlant, GetProduceWork )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetBaseReklame )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, LoadDiskMachine )
 	LUNA_AUTONAME_FUNCTION( CLuaPlant, GetDiskMachine )
@@ -33,6 +34,7 @@ BEGIN_LUNA_PROPERTIES(CLuaPlant)
 	LUNA_AUTONAME_PROPERTY( CLuaPlant, "machineNumber", GetDiskMachineNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPlant, "reklameNumber", GetBaseReklameNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaPlant, "campaniesNumber", GetCampaniesNumber, PureFunction )
+    LUNA_AUTONAME_PROPERTY( CLuaPlant, "worksNumber", GetWorksNumber, PureFunction )
 END_LUNA_PROPERTIES
 
 CLuaPlant::CLuaPlant(lua_State *L, bool ex)	: ILuaBaseProject(L, CLASS_LUAPLANT, ex )							//конструктор
@@ -51,6 +53,30 @@ int CLuaPlant::Load( lua_State* L )
 	return 0;
 }
 
+int CLuaPlant::GetProduceWork( lua_State* L )
+{
+    int argc = lua_gettop(L);
+    luaL_argcheck(L, argc == 2, 2, "Function CLuaPlant:GetProduceWork need integer parameter" );
+
+    assert( lua_isnumber( L, 2 ) );
+
+    int workNumber = lua_tointeger( L, 2 );
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        CNrpPlantWork* work = _object->GetWork( workNumber );
+
+        if( work )
+        {
+            lua_pushlightuserdata( L, work );
+            Luna< CLuaPlantWork >::constructor( L );
+            return 1;
+        }
+    }
+
+    lua_pushnil( L );
+    return 1;	
+}
+
 int CLuaPlant::GetDiskMachine( lua_State* L )
 {
 	int argc = lua_gettop(L);
@@ -63,13 +89,22 @@ int CLuaPlant::GetDiskMachine( lua_State* L )
 	{
 		CNrpDiskMachine* dm = _object->GetDiskMachine( dmNumber );
 
-		lua_pushlightuserdata( L, dm );
-		Luna< CLuaDiskMachine >::constructor( L );
-		return 1;
+        if( dm )
+        {
+		    lua_pushlightuserdata( L, dm );
+		    Luna< CLuaDiskMachine >::constructor( L );
+		    return 1;
+        }
 	}
 
 	lua_pushnil( L );
 	return 1;	
+}
+
+int CLuaPlant::GetWorksNumber( lua_State* L )
+{
+    lua_pushinteger( L, GetParam_<int>( L, PROP, WORKNUMBER, 0 ) );
+    return 1;
 }
 
 int CLuaPlant::GetCampaniesNumber( lua_State* L )

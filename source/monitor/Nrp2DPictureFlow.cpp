@@ -148,7 +148,7 @@ void CNrp2DPictureFlow::_UpdateImages()
 
 	offsetx = 0;
 	core::recti rRect = tmpRect;
-	for( size_t k=min(_activeIndex+1, _images.size()); k < _images.size(); k++ )
+	for( s32 k=min(_activeIndex+1, _images.size()); k < _images.size(); k++ )
 	{
 		offsetx += static_cast< s32 >( offsetWidth * (0.7f - (k-_activeIndex)*0.1f) );
 		core::dimension2di sides( 0.7f * rRect.getWidth(), 0.7f * rRect.getHeight() ); 
@@ -177,20 +177,21 @@ void CNrp2DPictureFlow::_DrawPairImage( CNrpImageDescription* pDesk )
 	core::recti rectangle( pDesk->currentRect.UpperLeftCorner.X, pDesk->currentRect.UpperLeftCorner.Y,
 						   pDesk->currentRect.LowerRightCorner.X, pDesk->currentRect.LowerRightCorner.Y );
 
-	video::SColor clr( pDesk->blend, pDesk->blend, pDesk->blend, pDesk->blend );
+    int blend = ( pDesk->blend + AlphaBlend ) / 2;
+	video::SColor clr( blend, blend, blend, blend );
 	video::SColor colorsA[] = { clr, clr, clr, clr};
 	_DrawAny( pDesk->GetTexture(), rectangle, colorsA );
 
 	colorsA[ 1 ] = colorsA[ 2 ] = 0;
-	colorsA[ 3 ] = colorsA[ 0 ] = 0xC0C0C0C0C0;
+    blend = ( AlphaBlend + 0xC0 ) / 2;
+    colorsA[ 3 ] = colorsA[ 0 ] = video::SColor( blend, blend, blend, blend );
 	_DrawAny( pDesk->GetDownTexture(), pDesk->downRect, colorsA );
 
 	if( gui::IGUIFont* font = Environment->getBuiltInFont() )
 	{
 		core::recti clipRect = AbsoluteRect;
-		font->draw( pDesk->GetText().ToWide(), rectangle, video::SColor( 0xff000000 ), true, true, &clipRect );
+		font->draw( pDesk->GetText().ToWide(), rectangle, video::SColor( AlphaBlend, 0, 0, 0 ), true, true, &clipRect );
 	}
-	
 }
 
 void CNrp2DPictureFlow::draw()
@@ -207,14 +208,14 @@ void CNrp2DPictureFlow::draw()
 	_UpdatePositions();
 
 	if( _drawBackground )
-		Environment->getVideoDriver()->draw2DRectangle( video::SColor( 0xff000000 ), AbsoluteRect, &AbsoluteClippingRect );
+		Environment->getVideoDriver()->draw2DRectangle( video::SColor( AlphaBlend, 0, 0, 0 ), AbsoluteRect, &AbsoluteClippingRect );
 
 	if( _images.size() > 0 )
 	{
 		for( int pos=max( 0, _activeIndex-6 ); pos < _activeIndex; pos++ )
 			_DrawPairImage( _images[ pos ] );
 
-		for( size_t pos=min( _activeIndex + 6, _images.size()-1); pos > _activeIndex; pos-- )
+		for( u32 pos=min( _activeIndex + 6, _images.size()-1); pos > _activeIndex; pos-- )
 			 _DrawPairImage( _images[ pos ] );
 
 		if( _activeIndex < static_cast< int >( _images.size() ) )

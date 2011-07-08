@@ -4,6 +4,7 @@
 #include "NrpTechnology.h"
 #include "LuaTechnology.h"
 #include "NrpApplication.h"
+#include "NrpGameMarket.h"
 
 using namespace irr;
 
@@ -36,7 +37,7 @@ int CLuaGameEngine::Create( lua_State* L )
 	NrpText name = lua_tostring( L, 2 );
 
 	_object = new CNrpGameEngine( name );
-	_nrpApp.AddGameEngine( _object );
+    CNrpGameMarket::Instance().AddGameEngine( _object );
 
 	lua_pushlightuserdata(L, _object );
 	return 1;

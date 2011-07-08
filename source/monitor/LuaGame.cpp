@@ -6,18 +6,23 @@
 #include "NrpGameBox.h"
 #include "NrpTechnology.h"
 #include "NrpGameBox.h"
-#include "NrpScreenshot.h"
+#include "NrpExtInfo.h"
 #include "LuaTechnology.h"
 #include "LuaCompany.h"
 #include "NrpHistory.h"
 #include "NrpTime.h"
 #include "NrpApplication.h"
+#include "HTMLEngine.h"
+#include "NrpGameMarket.h"
 
 using namespace irr;
 
 namespace nrp
 {
 CLASS_NAME CLASS_LUAGAME( "CLuaGame" );
+
+const NrpText CLuaGame::defaultDescSave = "media/html/desc.htm";
+const NrpText CLuaGame::defaultDescTemplate = "media/html/fish.htm";
 
 BEGIN_LUNA_METHODS(CLuaGame)
 	LUNA_AUTONAME_FUNCTION( CLuaGame, IsMyBoxAddon )
@@ -29,6 +34,7 @@ BEGIN_LUNA_METHODS(CLuaGame)
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetBoxImage )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, GetScreenshot )
 	LUNA_AUTONAME_FUNCTION( CLuaGame, Create )
+    LUNA_AUTONAME_FUNCTION( CLuaGame, CreateHistory )
 END_LUNA_METHODS
 
 BEGIN_LUNA_PROPERTIES(CLuaGame)
@@ -37,11 +43,13 @@ BEGIN_LUNA_PROPERTIES(CLuaGame)
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "boxImageNumber", GetBoxImageNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "screenshotNumber", GetScreenshotNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "inSale", IsSaling, PureFunction )
+    LUNA_AUTONAME_PROPERTY( CLuaGame, "npc", GetNpcGame, SetNpcGame )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "name", GetName, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "haveBox", HaveBox, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "boxLevel", GetBoxLevel, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "viewImage", GetViewImage, SetViewImage )
-	LUNA_AUTONAME_PROPERTY( CLuaGame, "company", GetCompany, PureFunction )
+    LUNA_AUTONAME_PROPERTY( CLuaGame, "companyName", GetCompanyName, SetCompanyName )
+	LUNA_AUTONAME_PROPERTY( CLuaGame, "company", GetCompany, SetCompany )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "lastMonthSales", GetLastMonthSales, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "price", GetPrice, SetPrice )
 	LUNA_AUTONAME_PROPERTY( CLuaGame, "lastMonthProfit", GetLastMonthProfit, PureFunction )
@@ -63,6 +71,17 @@ int CLuaGame::HaveBox( lua_State* L )
 {
 	lua_pushboolean( L, GetParam_<PNrpGameBox>( L, PROP, GBOX, NULL ) != NULL );
 	return 1;	
+}
+
+int CLuaGame::SetCompany( lua_State* L )
+{
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        CNrpCompany* cmp = _GetLuaObject< CNrpCompany, ILuaObject >( L, -1, true );
+        (*_object)[ PARENTCOMPANY ] = cmp;
+    }
+
+    return 0;
 }
 
 int CLuaGame::GetName( lua_State* L )
@@ -208,19 +227,26 @@ int CLuaGame::GetBoxAddon( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaGame:GetBoxAddon need int parameter" );
 
 	int index = lua_tointeger( L, 2 );
-	CNrpTechnology* tech = NULL;
 	IF_OBJECT_NOT_NULL_THEN
 	{
 		PNrpGameBox box = (*_object)[ GBOX ].As<PNrpGameBox>();
 		if( box )
-			tech = box->GetAddon( index );
+        {
+			CNrpTechnology* tech = box->GetAddon( index );
+            lua_pushlightuserdata( L, tech );
+            Luna< CLuaTechnology >::constructor( L );
+            return 1;
+        }
 	}
 
-	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, tech );
-	Luna< CLuaTechnology >::constructor( L );
-
+    lua_pushnil( L );
 	return 1;		
+}
+
+int CLuaGame::GetNpcGame( lua_State* L )
+{
+    lua_pushboolean( L, GetParam_<bool>( L, PROP, NPC_GAME, true ) );
+    return 1;		
 }
 
 int CLuaGame::IsSaling( lua_State* L )
@@ -309,12 +335,11 @@ int CLuaGame::GetLastMonthProfit( lua_State* L )
 		if( CNrpHistory* history = _object->GetHistory() )
 		{
 			if( CNrpHistoryStep* step = history->GetLast() )
+            {
 				lua_pushinteger( L, (*step)[ BALANCE ] );
-		}
-		else
-			lua_pushnil( L );		
-
-		return 1;
+		    	return 1;
+            }
+        }
 	}
 
 	lua_pushnil( L );
@@ -332,11 +357,8 @@ int CLuaGame::GetLastMonthSales( lua_State* L )
 				sales = (*step)[ BOXNUMBER ];
 
 			lua_pushinteger( L, sales );
+            return 1;
 		}
-		else
-			lua_pushnil( L );		
-
-		return 1;
 	}
 
 	lua_pushnil( L );
@@ -346,13 +368,11 @@ int CLuaGame::GetLastMonthSales( lua_State* L )
 int CLuaGame::GetAllTimeSales( lua_State* L )
 {
 	IF_OBJECT_NOT_NULL_THEN 
-	{
 		if( CNrpHistory* history = _object->GetHistory() )
+        {
 			lua_pushinteger( L, history->GetSummFor( BOXNUMBER, _nrpApp[ CURRENTTIME ].As<NrpTime>() ) );
-		else
-			lua_pushnil( L );
-		return 1;
-	}
+	  	    return 1;
+        }
 
 	lua_pushnil( L );
 	return 1;		
@@ -376,6 +396,13 @@ int CLuaGame::GetPrice( lua_State* L )
 	return 1;		
 }
 
+int CLuaGame::SetNpcGame( lua_State* L )
+{
+    assert( lua_isboolean( L, -1 ) );
+    IF_OBJECT_NOT_NULL_THEN (*_object)[ NPC_GAME ] = lua_toboolean( L, -1 ) != 0;
+    return 0;		
+}
+
 int CLuaGame::SetPrice( lua_State* L )
 {
 	assert( lua_isnumber( L, -1 ) );
@@ -390,6 +417,33 @@ int CLuaGame::SetPrice( lua_State* L )
 	}
 
 	return 0;		
+}
+
+int CLuaGame::SetCompanyName( lua_State* L )
+{
+    assert( lua_isstring( L, -1 ) );
+    IF_OBJECT_NOT_NULL_THEN 
+    {
+        NrpText cmpName = lua_tostring( L, -1 );
+        CNrpCompany* cmp = _nrpApp.GetCompany( cmpName );
+        assert( cmp );
+        (*_object)[ PARENTCOMPANY ] = cmp;
+    }
+
+    return 0;		
+}
+
+int CLuaGame::GetCompanyName( lua_State* L )
+{
+    IF_OBJECT_NOT_NULL_THEN 
+    {
+        NrpText cmpName = (*_object)[ OWNER ];
+        lua_pushstring( L, cmpName );
+        return 1;
+    }
+
+    lua_pushnil( L );
+    return 1;		
 }
 
 int CLuaGame::GetCompany( lua_State* L )
@@ -408,6 +462,57 @@ int CLuaGame::GetCompany( lua_State* L )
 	return 1;		
 }
 
+int CLuaGame::CreateHistory( lua_State* L )
+{
+    int argc = lua_gettop(L);
+    luaL_argcheck(L, argc == 1, 1, "Function CLuaGame:CreateHistory not need any parameter" );
+
+    CNrpGame& game = *_object;
+    int fMonth = NrpTime( game[ STARTDATE ] ).GetMonthToDate( _nrpApp[ CURRENTTIME ].As<NrpTime>() );//полное количество месяцев жизни игры
+    int price = ( rand() % 90 ) + 10;
+
+    CNrpGameMarket& market = CNrpGameMarket::Instance();
+
+    //стандартный расчет для продаж игры
+    //продажи максимальны на старте и уменьшаются с каждым месяцем
+    int plNumber = market[ PLATFORMNUMBER ];
+
+    //не для все платформ покупается игра + уравниваем шансы для платформ
+    int lastSale = market.GetPlatformSales( game, game[ STARTDATE ] ) / (int)game[ PLATFORMNUMBER ];
+
+    game[ COPYSELL ] = 0;
+    float step = 1.f / fMonth;
+    for( int i=0; i < fMonth; i++ )
+    {
+        NrpTime ft( game[ STARTDATE ] );
+        ft = ft.AppendMonth( i );
+
+        //получим сколько всего платформ для этой игры продано
+        int numBox = market.GetPlatformSales( game, ft );
+
+        //вычтем из общего количества число копий игры
+        numBox -= (int)game[ COPYSELL ];
+        if( numBox < 0 )
+            Log( HW ) << ft.ToText( "HHHH/MM/DD" ) << ":Negative sale(" << NrpText( numBox ) << ") for game " << (NrpText)game[ NAME ] << term;
+
+        numBox = (std::max)( 0, numBox );
+        if( numBox > 0 )
+        {
+            numBox /= (int)game[ PLATFORMNUMBER ];
+
+            lastSale = market.CalcAmpChange( numBox, 20, lastSale * 0.9 );
+            numBox = ( numBox + lastSale ) / 2;
+
+            //снижение цены каждый месяц продаж
+            price = CNrpGameMarket::CalcAmpChange( price, 10, 10 );
+        }
+
+        game.AddSales( numBox, ft, price );
+    }
+
+    return 0;
+}
+
 int CLuaGame::Create( lua_State* L )
 {
 	int argc = lua_gettop(L);
@@ -418,6 +523,9 @@ int CLuaGame::Create( lua_State* L )
 	if( fileName != NULL )
 	{
 		_object = new CNrpGame( fileName  );
+        CNrpCompany* cmp = _nrpApp.GetCompany( (NrpText)(*_object)[ OWNER ] );
+        assert( cmp && "company must be exist");
+        (*_object)[ PARENTCOMPANY ] = cmp;
 		(*_object)[ NPC_GAME ] = true;
 
 		lua_pushlightuserdata( L, _object );
@@ -431,8 +539,16 @@ int CLuaGame::Create( lua_State* L )
 
 int CLuaGame::GetDescriptionLink( lua_State* L )
 {
-	lua_pushstring( L, GetParam_<NrpText>( L, PROP, DESCRIPTIONPATH, "" ) );
-	return 1;	
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        HTMLEngine::Instance().CreateDescription( CLuaGame::defaultDescTemplate, CLuaGame::defaultDescSave, *_object );
+
+        lua_pushstring( L, const_cast< NrpText& >( CLuaGame::defaultDescSave ).ToStr() );
+        return 1;	
+    }
+
+    lua_pushnil( L );
+    return 1;
 }
 
 const char* CLuaGame::ClassName()

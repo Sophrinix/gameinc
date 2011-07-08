@@ -57,6 +57,12 @@ public:
 	int GetSelfPie( lua_State* L );
 	int SetInvExp( lua_State* L );
 	int GetInvExp( lua_State* L );
+    int GetLastMonthSales( lua_State* L );
+    int GetAllTimeSales( lua_State* L );
+    int GetLastMonthProfit( lua_State* L );
+    int SetSelfPie( lua_State* L );
+    int SetAllPie( lua_State* L );
+    int SetTexture( lua_State* L );
 };
 
 }//namespace nrp

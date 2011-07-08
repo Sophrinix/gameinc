@@ -25,8 +25,9 @@ public:
 	void draw();
 private:
 	CNrpBrowserWindow(void);
-	
-	gui::IGUIImage* image_;
+    void _ApplyViewerStyle( core::dimension2du size, CImageGUISkin* skin );
+
+	gui::IGUIImage* _image;
 };
 
 }//namespace gui

@@ -121,6 +121,7 @@ protected:
 	bool useAlphaChannel_;
 
 	bool border_;
+    int HoverAlphaBlend;
 
 	u32 clickTime_;
 

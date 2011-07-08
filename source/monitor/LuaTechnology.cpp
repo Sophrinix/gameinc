@@ -5,7 +5,7 @@
 #include "LuaTechnology.h"
 #include "NrpTechnology.h"
 #include "IUser.h"
-#include "NrpApplication.h"
+#include "NrpLinkHolder.h"
 #include "LuaCompany.h"
 #include "OpFileSystem.h"
 #include "NrpCompany.h"
@@ -35,6 +35,7 @@ BEGIN_LUNA_PROPERTIES(CLuaTechnology)
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "techGrpoup", GetTechGroup, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "baseCode", PureFunction, SetBaseCode )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "quality", PureFunction, SetQuality )
+    LUNA_AUTONAME_PROPERTY( CLuaTechnology, "interest", GetInterest, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "ftNumber", GetFutureTechNumber, PureFunction )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "engineCode", PureFunction, SetAddingEngineCode )
 	LUNA_AUTONAME_PROPERTY( CLuaTechnology, "haveRequireTech", HaveRequireTech, PureFunction )
@@ -47,6 +48,12 @@ int CLuaTechnology::GetTechGroup( lua_State* L )
 { 
 	lua_pushinteger( L, GetParam_<int>( L, PROP, TECHGROUP, 0 ) ); 
 	return 1; 
+}
+
+int CLuaTechnology::GetInterest( lua_State* L ) 
+{ 
+    lua_pushnumber( L, GetParam_<float>( L, PROP, INTEREST, 0 ) ); 
+    return 1; 
 }
 
 int CLuaTechnology::SetBaseCode( lua_State* L )
@@ -94,7 +101,7 @@ int CLuaTechnology::Create( lua_State* L )
 	{
 		NrpText fileName = lua_tostring( L, 2 );
 		if( !OpFileSystem::IsExist( fileName ) )
-			fileName = CNrpApplication::Instance().GetLink( fileName );
+			fileName = _nrpLinks.Get( fileName );
 
 		_object = new CNrpTechnology( PROJECT_TYPE(0) );
 		(*_object)[ STATUS ] = static_cast< int >( TS_READY );
@@ -156,7 +163,7 @@ int CLuaTechnology::Load( lua_State* L )
 
 	NrpText name = lua_tostring( L, 2 );
 	if( !OpFileSystem::IsExist( name ) )
-		name = CNrpApplication::Instance().GetLink( name );
+		name = _nrpLinks.Get( name );
 
 	assert( name.size() );
 	IF_OBJECT_NOT_NULL_THEN	_object->Load( name );
