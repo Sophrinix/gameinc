@@ -71,9 +71,13 @@ public:
 	}
 
 	//! Set value of alpha blend
-	void setAlphaBlend( u32 new_alpha )
+	virtual void setAlphaBlend( u32 new_alpha  )
 	{	
 		AlphaBlend = new_alpha;
+
+        core::list<IGUIElement*>::Iterator it = Children.begin();
+        for (; it != Children.end(); ++it)
+            (*it)->setAlphaBlend( new_alpha ) ;
 	}
 
 	//! Returns parent of this element.

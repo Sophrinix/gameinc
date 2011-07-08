@@ -147,6 +147,11 @@ void CGUIImage::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWri
 	setScaleImage(in->getAttributeAsBool("ScaleImage"));
 }
 
+void CGUIImage::setAlphaBlend( u32 new_alpha )
+{
+    Color.setAlpha( new_alpha );
+    AlphaBlend = new_alpha;
+}
 
 } // end namespace gui
 } // end namespace irr

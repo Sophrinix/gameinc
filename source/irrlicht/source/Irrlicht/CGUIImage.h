@@ -52,6 +52,8 @@ namespace gui
 		//! Reads attributes of the element
 		virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options);
 
+        virtual void setAlphaBlend( u32 new_alpha );
+
 	private:
 		video::ITexture* Texture;
 		video::SColor Color;
