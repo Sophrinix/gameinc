@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+[properties]
+internalname:string=game_granturismo3aspec
+startdate:time=y=2001 m=3 d=27 h=0 mi=0

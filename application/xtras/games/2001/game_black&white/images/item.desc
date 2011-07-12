@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_simulation
+genre_2=genre_strategy
+genre_3=genre_managerial
+genre_4=genre_realtime
+[properties]
+internalname:string=game_black&white
+startdate:time=y=2001 m=10 d=22 h=0 mi=0

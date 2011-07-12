@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_fantasy
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[properties]
+internalname:string=game_finalfantasyx
+startdate:time=y=2001 m=11 d=20 h=0 mi=0

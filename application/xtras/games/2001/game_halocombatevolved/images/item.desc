@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_halocombatevolved
+startdate:time=y=2001 m=1 d=8 h=0 mi=0

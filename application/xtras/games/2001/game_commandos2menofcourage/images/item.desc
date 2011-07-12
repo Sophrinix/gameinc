@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_historicalbattle
+genre_3=genre_realtime
+genre_4=genre_stealth
+[properties]
+internalname:string=game_commandos2menofcourage
+startdate:time=y=2001 m=6 d=6 h=0 mi=0

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_anime
+genre_2=genre_fantasy
+genre_3=genre_scifi
+genre_4=genre_turnbased
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=188415000
+copySell:int=2385000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=4 d=8 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_finalfantasyx
+localizationRating:int=83
+name:string=Final Fantasy X
+owner:string=Square Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=3
+startBugRating:int=61
+startdate:time=y=2001 m=11 d=20 h=0 mi=0
+startGenreRating:int=37
+startGraphicRating:int=18
+startrating:int=37
+startSoundRating:int=68
+textureNormal:path=images/spl_0.jpg

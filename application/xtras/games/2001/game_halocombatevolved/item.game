@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+platform_2=platform_xbox
+platform_3=platform_xbox360
+[properties]
+cash:int=147392000
+copySell:int=2303000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=5 d=12 h=0 mi=0
+famous:float=0.75
+gameIsSaling:bool=false
+internalname:string=game_halocombatevolved
+localizationRating:int=18
+name:string=Halo: Combat Evolved
+owner:string=Microsoft Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=28
+startBugRating:int=19
+startdate:time=y=2001 m=1 d=8 h=0 mi=0
+startGenreRating:int=15
+startGraphicRating:int=83
+startrating:int=30
+startSoundRating:int=8
+textureNormal:path=images/spl_0.jpg

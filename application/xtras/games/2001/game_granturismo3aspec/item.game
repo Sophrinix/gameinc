@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_simulation
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=124000000
+copySell:int=6200000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=6 d=11 h=0 mi=0
+famous:float=0.13
+gameIsSaling:bool=false
+internalname:string=game_granturismo3aspec
+localizationRating:int=65
+name:string=Gran Turismo 3 A-Spec
+owner:string=Sony Computer Entertainment Incorporated
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=2
+startBugRating:int=45
+startdate:time=y=2001 m=3 d=27 h=0 mi=0
+startGenreRating:int=52
+startGraphicRating:int=29
+startrating:int=29
+startSoundRating:int=17
+textureNormal:path=images/spl_0.jpg

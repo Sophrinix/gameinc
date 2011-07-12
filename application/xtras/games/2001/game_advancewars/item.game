@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_turnbased
+[platforms]
+platform_0=platform_gameboyadvance
+[properties]
+cash:int=26487000
+copySell:int=2943000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=1 d=3 h=0 mi=0
+famous:float=0.9
+gameIsSaling:bool=false
+internalname:string=game_advancewars
+localizationRating:int=96
+name:string=Advance Wars
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=84
+startBugRating:int=92
+startdate:time=y=2001 m=9 d=25 h=0 mi=0
+startGenreRating:int=95
+startGraphicRating:int=32
+startrating:int=69
+startSoundRating:int=44
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_simulation
+genre_2=genre_strategy
+genre_3=genre_managerial
+genre_4=genre_realtime
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=47432000
+copySell:int=4312000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=2 d=13 h=0 mi=0
+famous:float=0.23
+gameIsSaling:bool=false
+internalname:string=game_black&white
+localizationRating:int=38
+name:string=Black & White
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=24
+startBugRating:int=80
+startdate:time=y=2001 m=10 d=22 h=0 mi=0
+startGenreRating:int=34
+startGraphicRating:int=8
+startrating:int=45
+startSoundRating:int=80
+textureNormal:path=images/spl_0.jpg

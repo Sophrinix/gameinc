@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_shooter
+[properties]
+internalname:string=game_grandtheftautoiii
+startdate:time=y=2001 m=2 d=15 h=0 mi=0

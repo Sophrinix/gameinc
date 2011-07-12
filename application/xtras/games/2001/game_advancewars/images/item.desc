@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_turnbased
+[properties]
+internalname:string=game_advancewars
+startdate:time=y=2001 m=9 d=25 h=0 mi=0

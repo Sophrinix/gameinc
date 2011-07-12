@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_horror
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=4250000
+copySell:int=425000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=10 d=24 h=0 mi=0
+famous:float=0.2
+gameIsSaling:bool=false
+internalname:string=game_devilmaycry
+localizationRating:int=56
+name:string=Devil May Cry
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=96
+startBugRating:int=29
+startdate:time=y=2001 m=11 d=17 h=0 mi=0
+startGenreRating:int=7
+startGraphicRating:int=29
+startrating:int=40
+startSoundRating:int=39
+textureNormal:path=images/spl_0.jpg

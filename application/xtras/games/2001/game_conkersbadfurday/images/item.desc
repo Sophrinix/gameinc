@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_scifi
+genre_3=genre_shooter
+[properties]
+internalname:string=game_conkersbadfurday
+startdate:time=y=2001 m=10 d=13 h=0 mi=0
+url:string=http://www.mobygames.com/game/conkers-bad-fur-day
