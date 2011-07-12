@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation3
+platform_2=platform_windows
+platform_3=platform_xbox360
+[properties]
+cash:int=21424000
+copySell:int=1339000
+descriptionpath:path=desc.htm
+enddate:time=y=2010 m=6 d=16 h=0 mi=0
+famous:float=0.17
+gameIsSaling:bool=false
+internalname:string=game_bioshock
+localizationRating:int=87
+name:string=BioShock
+owner:string=2K Games
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=96
+startBugRating:int=1
+startdate:time=y=2007 m=11 d=12 h=0 mi=0
+startGenreRating:int=69
+startGraphicRating:int=7
+startrating:int=35
+startSoundRating:int=3
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/bioshock

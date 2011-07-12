@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation3
+platform_2=platform_windows
+platform_3=platform_xbox360
+[properties]
+cash:int=475678000
+copySell:int=7798000
+descriptionpath:path=desc.htm
+enddate:time=y=2011 m=9 d=28 h=0 mi=0
+famous:float=0.24
+gameIsSaling:bool=false
+internalname:string=game_braid
+localizationRating:int=64
+name:string=Braid
+owner:string=Microsoft Game Studios
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=72
+startBugRating:int=90
+startdate:time=y=2008 m=7 d=22 h=0 mi=0
+startGenreRating:int=59
+startGraphicRating:int=19
+startrating:int=53
+startSoundRating:int=26
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/braid

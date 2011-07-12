@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_puzzle
+genre_2=genre_music
+[properties]
+internalname:string=game_alida
+startdate:time=y=2004 m=1 d=4 h=0 mi=0
+url:string=http://www.mobygames.com/game/alida

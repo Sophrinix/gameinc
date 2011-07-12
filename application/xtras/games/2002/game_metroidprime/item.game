@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_wii
+[properties]
+cash:int=144032000
+copySell:int=9002000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=0 d=2 h=0 mi=0
+famous:float=0.03
+gameIsSaling:bool=false
+internalname:string=game_metroidprime
+localizationRating:int=16
+name:string=Metroid Prime
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=41
+startBugRating:int=52
+startdate:time=y=2002 m=10 d=27 h=0 mi=0
+startGenreRating:int=29
+startGraphicRating:int=7
+startrating:int=41
+startSoundRating:int=80
+textureNormal:path=images/spl_0.jpg

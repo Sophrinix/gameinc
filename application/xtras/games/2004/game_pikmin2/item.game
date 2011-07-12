@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_puzzle
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_wii
+[properties]
+cash:int=167596000
+copySell:int=7618000
+descriptionpath:path=desc.htm
+enddate:time=y=2007 m=8 d=21 h=0 mi=0
+famous:float=0.54
+gameIsSaling:bool=false
+internalname:string=game_pikmin2
+localizationRating:int=59
+name:string=Pikmin 2
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=9
+startBugRating:int=21
+startdate:time=y=2004 m=10 d=6 h=0 mi=0
+startGenreRating:int=5
+startGraphicRating:int=85
+startrating:int=43
+startSoundRating:int=97
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/pikmin-2

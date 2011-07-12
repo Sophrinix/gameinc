@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+genre_2=genre_stealth
+[properties]
+internalname:string=game_batmanarkhamasylum
+startdate:time=y=2009 m=1 d=25 h=0 mi=0
+url:string=http://www.mobygames.com/game/batman-arkham-asylum

@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+genre_2=genre_managerial
+[properties]
+internalname:string=game_ncaafootball2003
+startdate:time=y=2002 m=6 d=23 h=0 mi=0

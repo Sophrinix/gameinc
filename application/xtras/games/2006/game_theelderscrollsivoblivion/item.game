@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_playstation3
+platform_1=platform_windows
+platform_2=platform_xbox360
+[properties]
+cash:int=102680000
+copySell:int=3020000
+descriptionpath:path=desc.htm
+enddate:time=y=2009 m=3 d=15 h=0 mi=0
+famous:float=0.64
+gameIsSaling:bool=false
+internalname:string=game_theelderscrollsivoblivion
+localizationRating:int=3
+name:string=The Elder Scrolls IV: Oblivion
+owner:string=2K Games
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=16
+startBugRating:int=20
+startdate:time=y=2006 m=2 d=4 h=0 mi=0
+startGenreRating:int=26
+startGraphicRating:int=87
+startrating:int=33
+startSoundRating:int=18
+textureNormal:path=images/spl_0.jpg

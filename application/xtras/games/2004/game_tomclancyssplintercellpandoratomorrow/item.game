@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_spy
+genre_2=genre_stealth
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+platform_2=platform_windows
+platform_3=platform_xbox
+[properties]
+cash:int=54450000
+copySell:int=1650000
+descriptionpath:path=desc.htm
+enddate:time=y=2007 m=11 d=12 h=0 mi=0
+famous:float=0.06
+gameIsSaling:bool=false
+internalname:string=game_tomclancyssplintercellpandoratomorrow
+localizationRating:int=47
+name:string=Tom Clancy's Splinter Cell: Pandora Tomorrow
+owner:string=Ubisoft Entertainment SA
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=70
+startBugRating:int=21
+startdate:time=y=2004 m=11 d=24 h=0 mi=0
+startGenreRating:int=42
+startGraphicRating:int=3
+startrating:int=35
+startSoundRating:int=41
+textureNormal:path=images/spl_0.jpg

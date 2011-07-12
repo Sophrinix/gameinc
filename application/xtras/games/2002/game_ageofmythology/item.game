@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=54444000
+copySell:int=4537000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=8 d=19 h=0 mi=0
+famous:float=0.04
+gameIsSaling:bool=false
+internalname:string=game_ageofmythology
+localizationRating:int=75
+name:string=Age of Mythology
+owner:string=Microsoft Game Studios
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=13
+startBugRating:int=41
+startdate:time=y=2002 m=11 d=25 h=0 mi=0
+startGenreRating:int=17
+startGraphicRating:int=91
+startrating:int=38
+startSoundRating:int=28
+textureNormal:path=images/spl_0.jpg

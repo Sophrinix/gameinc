@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_spy
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=282200000
+copySell:int=7055000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=4 d=8 h=0 mi=0
+famous:float=0.09
+gameIsSaling:bool=false
+internalname:string=game_noonelivesforever2aspyinh.a.r.m.sway
+localizationRating:int=19
+name:string=No One Lives Forever 2: A Spy in H.A.R.M.'s Way
+owner:string=Fox Interactive, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=60
+startBugRating:int=80
+startdate:time=y=2002 m=2 d=8 h=0 mi=0
+startGenreRating:int=93
+startGraphicRating:int=22
+startrating:int=61
+startSoundRating:int=50
+textureNormal:path=images/spl_0.jpg

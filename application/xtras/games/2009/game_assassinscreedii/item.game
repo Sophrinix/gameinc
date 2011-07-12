@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+genre_3=genre_stealth
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_playstation3
+platform_2=platform_windows
+platform_3=platform_xbox360
+[properties]
+cash:int=49419000
+copySell:int=2907000
+descriptionpath:path=desc.htm
+enddate:time=y=2012 m=2 d=28 h=0 mi=0
+famous:float=0.32
+gameIsSaling:bool=false
+internalname:string=game_assassinscreedii
+localizationRating:int=87
+name:string=Assassin's Creed II
+owner:string=Ubisoft, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=52
+startBugRating:int=73
+startdate:time=y=2009 m=2 d=13 h=0 mi=0
+startGenreRating:int=67
+startGraphicRating:int=89
+startrating:int=57
+startSoundRating:int=5
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/assassins-creed-ii

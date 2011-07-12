@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=253115000
+copySell:int=8165000
+descriptionpath:path=desc.htm
+enddate:time=y=2007 m=11 d=14 h=0 mi=0
+famous:float=0.99
+gameIsSaling:bool=false
+internalname:string=game_farcry
+localizationRating:int=39
+name:string=Far Cry
+owner:string=Ubisoft Entertainment SA
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=68
+startBugRating:int=59
+startdate:time=y=2004 m=9 d=23 h=0 mi=0
+startGenreRating:int=89
+startGraphicRating:int=52
+startrating:int=56
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg

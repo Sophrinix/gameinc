@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adult
+genre_2=genre_fighting
+genre_3=genre_fantasy
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=180558000
+copySell:int=4299000
+descriptionpath:path=desc.htm
+enddate:time=y=2008 m=1 d=17 h=0 mi=0
+famous:float=0.75
+gameIsSaling:bool=false
+internalname:string=game_godofwar
+localizationRating:int=99
+name:string=God of War
+owner:string=Sony Computer Entertainment America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=64
+startBugRating:int=14
+startdate:time=y=2005 m=7 d=13 h=0 mi=0
+startGenreRating:int=64
+startGraphicRating:int=66
+startrating:int=51
+startSoundRating:int=50
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_gamecube
+platform_2=platform_xbox360
+[properties]
+cash:int=393000000
+copySell:int=5240000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=1 d=3 h=0 mi=0
+famous:float=0.41
+gameIsSaling:bool=false
+internalname:string=game_ikaruga
+localizationRating:int=39
+name:string=Ikaruga
+owner:string=ESP
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=79
+startBugRating:int=18
+startdate:time=y=2002 m=1 d=14 h=0 mi=0
+startGenreRating:int=40
+startGraphicRating:int=38
+startrating:int=43
+startSoundRating:int=40
+textureNormal:path=images/spl_0.jpg

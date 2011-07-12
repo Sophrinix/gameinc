@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_spy
+genre_2=genre_stealth
+[properties]
+internalname:string=game_tomclancyssplintercellpandoratomorrow
+startdate:time=y=2004 m=11 d=24 h=0 mi=0

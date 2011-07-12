@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_historicalbattle
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+platform_2=platform_xbox
+[properties]
+cash:int=131208000
+copySell:int=2982000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=2 d=0 h=0 mi=0
+famous:float=0.37
+gameIsSaling:bool=false
+internalname:string=game_medalofhonorfrontline
+localizationRating:int=44
+name:string=Medal of Honor: Frontline
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=2
+startBugRating:int=16
+startdate:time=y=2002 m=7 d=23 h=0 mi=0
+startGenreRating:int=27
+startGraphicRating:int=15
+startrating:int=16
+startSoundRating:int=23
+textureNormal:path=images/spl_0.jpg

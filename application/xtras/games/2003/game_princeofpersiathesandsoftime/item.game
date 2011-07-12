@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+platform_2=platform_windows
+platform_3=platform_xbox
+[properties]
+cash:int=55804000
+copySell:int=3986000
+descriptionpath:path=desc.htm
+enddate:time=y=2006 m=10 d=26 h=0 mi=0
+famous:float=0.65
+gameIsSaling:bool=false
+internalname:string=game_princeofpersiathesandsoftime
+localizationRating:int=4
+name:string=Prince of Persia: The Sands of Time
+owner:string=Ubisoft Entertainment SA
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=84
+startBugRating:int=16
+startdate:time=y=2003 m=1 d=21 h=0 mi=0
+startGenreRating:int=28
+startGraphicRating:int=96
+startrating:int=45
+startSoundRating:int=3
+textureNormal:path=images/spl_0.jpg

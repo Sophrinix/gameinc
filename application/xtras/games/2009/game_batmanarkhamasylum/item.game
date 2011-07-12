@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+genre_2=genre_stealth
+[platforms]
+platform_0=platform_playstation3
+platform_1=platform_windows
+platform_2=platform_xbox360
+[properties]
+cash:int=820758000
+copySell:int=9222000
+descriptionpath:path=desc.htm
+enddate:time=y=2012 m=6 d=25 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_batmanarkhamasylum
+localizationRating:int=12
+name:string=Batman: Arkham Asylum
+owner:string=Eidos Interactive Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=55
+startBugRating:int=25
+startdate:time=y=2009 m=1 d=25 h=0 mi=0
+startGenreRating:int=86
+startGraphicRating:int=45
+startrating:int=44
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/batman-arkham-asylum

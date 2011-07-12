@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=42336000
+copySell:int=1512000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=2 d=6 h=0 mi=0
+famous:float=0.06
+gameIsSaling:bool=false
+internalname:string=game_virtuafighter4
+localizationRating:int=37
+name:string=Virtua Fighter 4
+owner:string=SEGA Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=39
+startBugRating:int=53
+startdate:time=y=2002 m=6 d=24 h=0 mi=0
+startGenreRating:int=78
+startGraphicRating:int=92
+startrating:int=61
+startSoundRating:int=44
+textureNormal:path=images/spl_0.jpg

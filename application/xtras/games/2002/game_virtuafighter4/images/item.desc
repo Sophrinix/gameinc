@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_martialarts
+[properties]
+internalname:string=game_virtuafighter4
+startdate:time=y=2002 m=6 d=24 h=0 mi=0

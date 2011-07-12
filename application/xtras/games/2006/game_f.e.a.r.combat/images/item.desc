@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_f.e.a.r.combat
+startdate:time=y=2006 m=11 d=3 h=0 mi=0

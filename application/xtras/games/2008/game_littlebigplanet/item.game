@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+[platforms]
+platform_0=platform_playstation3
+[properties]
+cash:int=164120000
+copySell:int=8206000
+descriptionpath:path=desc.htm
+enddate:time=y=2011 m=2 d=14 h=0 mi=0
+famous:float=0.14
+gameIsSaling:bool=false
+internalname:string=game_littlebigplanet
+localizationRating:int=20
+name:string=LittleBigPlanet
+owner:string=Sony Computer Entertainment America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=86
+startBugRating:int=81
+startdate:time=y=2008 m=4 d=16 h=0 mi=0
+startGenreRating:int=85
+startGraphicRating:int=80
+startrating:int=85
+startSoundRating:int=95
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/littlebigplanet

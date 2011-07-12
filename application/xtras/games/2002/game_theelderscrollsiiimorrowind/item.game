@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_windows
+platform_1=platform_xbox
+[properties]
+cash:int=2227000
+copySell:int=131000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=4 d=16 h=0 mi=0
+famous:float=0.38
+gameIsSaling:bool=false
+internalname:string=game_theelderscrollsiiimorrowind
+localizationRating:int=89
+name:string=The Elder Scrolls III: Morrowind
+owner:string=Ubi Soft Entertainment Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=70
+startBugRating:int=43
+startdate:time=y=2002 m=3 d=7 h=0 mi=0
+startGenreRating:int=11
+startGraphicRating:int=99
+startrating:int=59
+startSoundRating:int=75
+textureNormal:path=images/spl_0.jpg

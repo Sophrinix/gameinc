@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_playstation3
+[properties]
+cash:int=490539000
+copySell:int=10011000
+descriptionpath:path=desc.htm
+enddate:time=y=2012 m=11 d=16 h=0 mi=0
+famous:float=0.11
+gameIsSaling:bool=false
+internalname:string=game_demonssouls
+localizationRating:int=37
+name:string=Demon's Souls
+owner:string=Sony Computer Entertainment Incorporated
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=1
+startBugRating:int=3
+startdate:time=y=2009 m=8 d=4 h=0 mi=0
+startGenreRating:int=3
+startGraphicRating:int=57
+startrating:int=25
+startSoundRating:int=64
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/demons-souls

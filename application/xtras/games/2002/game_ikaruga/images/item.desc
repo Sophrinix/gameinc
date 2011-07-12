@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[properties]
+internalname:string=game_ikaruga
+startdate:time=y=2002 m=1 d=14 h=0 mi=0

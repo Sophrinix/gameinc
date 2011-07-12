@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_fighting
+genre_3=genre_martialarts
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+platform_2=platform_xbox
+[properties]
+cash:int=158328000
+copySell:int=2199000
+descriptionpath:path=desc.htm
+enddate:time=y=2006 m=9 d=27 h=0 mi=0
+famous:float=0.15
+gameIsSaling:bool=false
+internalname:string=game_soulcaliburii
+localizationRating:int=18
+name:string=SoulCalibur II
+owner:string=Namco Europe Limited
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=38
+startBugRating:int=49
+startdate:time=y=2003 m=8 d=18 h=0 mi=0
+startGenreRating:int=23
+startGraphicRating:int=90
+startrating:int=48
+startSoundRating:int=41
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/soulcalibur-ii

@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adult
+genre_2=genre_fantasy
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=54825000
+copySell:int=731000
+descriptionpath:path=desc.htm
+enddate:time=y=2010 m=2 d=5 h=0 mi=0
+famous:float=0.93
+gameIsSaling:bool=false
+internalname:string=game_godofwarii
+localizationRating:int=88
+name:string=God of War II
+owner:string=Sony Computer Entertainment Europe Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=70
+startBugRating:int=40
+startdate:time=y=2007 m=9 d=27 h=0 mi=0
+startGenreRating:int=53
+startGraphicRating:int=90
+startrating:int=60
+startSoundRating:int=48
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/god-of-war-ii

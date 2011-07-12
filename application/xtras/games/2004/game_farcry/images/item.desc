@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[properties]
+internalname:string=game_farcry
+startdate:time=y=2004 m=9 d=23 h=0 mi=0

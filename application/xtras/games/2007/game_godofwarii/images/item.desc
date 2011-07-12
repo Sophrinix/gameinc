@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adult
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_godofwarii
+startdate:time=y=2007 m=9 d=27 h=0 mi=0
+url:string=http://www.mobygames.com/game/god-of-war-ii

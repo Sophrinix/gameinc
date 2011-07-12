@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+[properties]
+internalname:string=game_burnout3takedown
+startdate:time=y=2004 m=9 d=4 h=0 mi=0

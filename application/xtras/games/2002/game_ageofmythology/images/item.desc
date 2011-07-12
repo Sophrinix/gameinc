@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_fantasy
+genre_2=genre_realtime
+[properties]
+internalname:string=game_ageofmythology
+startdate:time=y=2002 m=11 d=25 h=0 mi=0

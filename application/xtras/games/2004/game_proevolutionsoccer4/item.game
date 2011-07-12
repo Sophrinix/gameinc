@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_football
+[platforms]
+platform_0=platform_playstation2
+platform_1=platform_windows
+platform_2=platform_xbox
+[properties]
+cash:int=146700000
+copySell:int=1956000
+descriptionpath:path=desc.htm
+enddate:time=y=2007 m=4 d=24 h=0 mi=0
+famous:float=0.94
+gameIsSaling:bool=false
+internalname:string=game_proevolutionsoccer4
+localizationRating:int=17
+name:string=Pro Evolution Soccer 4
+owner:string=Konami Digital Entertainment GmbH
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=22
+startBugRating:int=90
+startdate:time=y=2004 m=4 d=24 h=0 mi=0
+startGenreRating:int=54
+startGraphicRating:int=18
+startrating:int=46
+startSoundRating:int=46
+textureNormal:path=images/spl_0.jpg

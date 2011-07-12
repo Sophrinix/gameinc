@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_realtime
+genre_2=genre_scifi
+[properties]
+internalname:string=game_starwarsknightsoftheoldrepublic
+startdate:time=y=2003 m=9 d=21 h=0 mi=0

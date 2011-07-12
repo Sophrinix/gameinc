@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_fantasy
+genre_2=genre_realtime
+genre_3=genre_turnbased
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=690781000
+copySell:int=7591000
+descriptionpath:path=desc.htm
+enddate:time=y=2010 m=8 d=15 h=0 mi=0
+famous:float=0.85
+gameIsSaling:bool=false
+internalname:string=game_finalfantasyxii
+localizationRating:int=0
+name:string=Final Fantasy XII
+owner:string=Square Enix Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=84
+startBugRating:int=88
+startdate:time=y=2007 m=6 d=23 h=0 mi=0
+startGenreRating:int=98
+startGraphicRating:int=96
+startrating:int=89
+startSoundRating:int=82
+textureNormal:path=images/spl_0.jpg

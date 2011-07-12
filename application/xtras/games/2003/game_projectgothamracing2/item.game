@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_racing
+genre_1=genre_arcade
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_xbox
+[properties]
+cash:int=719255000
+copySell:int=7415000
+descriptionpath:path=desc.htm
+enddate:time=y=2006 m=5 d=26 h=0 mi=0
+famous:float=0.97
+gameIsSaling:bool=false
+internalname:string=game_projectgothamracing2
+localizationRating:int=16
+name:string=Project Gotham Racing 2
+owner:string=Microsoft Game Studios
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=23
+startBugRating:int=20
+startdate:time=y=2003 m=11 d=19 h=0 mi=0
+startGenreRating:int=31
+startGraphicRating:int=83
+startrating:int=31
+startSoundRating:int=1
+textureNormal:path=images/spl_0.jpg

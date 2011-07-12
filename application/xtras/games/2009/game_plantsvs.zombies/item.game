@@ -1,0 +1,34 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_horror
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_ipad
+platform_2=platform_iphone
+platform_3=platform_unknown
+platform_4=platform_nintendods
+platform_5=platform_playstation3
+platform_6=platform_windows
+platform_7=platform_xbox360
+[properties]
+cash:int=177960000
+copySell:int=8898000
+descriptionpath:path=desc.htm
+enddate:time=y=2012 m=11 d=18 h=0 mi=0
+famous:float=0.8
+gameIsSaling:bool=false
+internalname:string=game_plantsvs.zombies
+localizationRating:int=88
+name:string=Plants vs. Zombies
+owner:string=PopCap Games, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=48
+startBugRating:int=95
+startdate:time=y=2009 m=11 d=7 h=0 mi=0
+startGenreRating:int=93
+startGraphicRating:int=77
+startrating:int=77
+startSoundRating:int=72
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/plants-vs-zombies

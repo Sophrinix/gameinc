@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+genre_3=genre_puzzle
+[properties]
+internalname:string=game_thelegendofzeldatwilightprincess
+startdate:time=y=2006 m=11 d=12 h=0 mi=0

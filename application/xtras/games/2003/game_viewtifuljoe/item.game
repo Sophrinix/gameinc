@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+genre_2=genre_fighting
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+[properties]
+cash:int=33480000
+copySell:int=1860000
+descriptionpath:path=desc.htm
+enddate:time=y=2006 m=9 d=11 h=0 mi=0
+famous:float=0.7
+gameIsSaling:bool=false
+internalname:string=game_viewtifuljoe
+localizationRating:int=13
+name:string=Viewtiful Joe
+owner:string=Capcom Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=92
+startBugRating:int=14
+startdate:time=y=2003 m=5 d=4 h=0 mi=0
+startGenreRating:int=95
+startGraphicRating:int=54
+startrating:int=63
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/viewtiful-joe

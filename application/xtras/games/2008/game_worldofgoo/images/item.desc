@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_puzzle
+genre_3=genre_realtime
+[properties]
+internalname:string=game_worldofgoo
+startdate:time=y=2008 m=0 d=24 h=0 mi=0
+url:string=http://www.mobygames.com/game/world-of-goo

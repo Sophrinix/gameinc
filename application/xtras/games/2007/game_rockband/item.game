@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_music
+[platforms]
+platform_0=platform_playstation2
+platform_1=platform_playstation3
+platform_2=platform_wii
+platform_3=platform_xbox360
+[properties]
+cash:int=463050000
+copySell:int=9261000
+descriptionpath:path=desc.htm
+enddate:time=y=2010 m=3 d=14 h=0 mi=0
+famous:float=0.31
+gameIsSaling:bool=false
+internalname:string=game_rockband
+localizationRating:int=55
+name:string=Rock Band
+owner:string=MTV Games
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=64
+startBugRating:int=80
+startdate:time=y=2007 m=2 d=18 h=0 mi=0
+startGenreRating:int=38
+startGraphicRating:int=22
+startrating:int=41
+startSoundRating:int=3
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/rock-band

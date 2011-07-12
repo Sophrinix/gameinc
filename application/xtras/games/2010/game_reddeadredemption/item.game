@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_cards
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_playstation3
+platform_1=platform_xbox360
+[properties]
+cash:int=620158000
+copySell:int=8054000
+descriptionpath:path=desc.htm
+enddate:time=y=2013 m=5 d=2 h=0 mi=0
+famous:float=0.07
+gameIsSaling:bool=false
+internalname:string=game_reddeadredemption
+localizationRating:int=24
+name:string=Red Dead Redemption
+owner:string=Rockstar Games, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=35
+startBugRating:int=31
+startdate:time=y=2010 m=4 d=17 h=0 mi=0
+startGenreRating:int=42
+startGraphicRating:int=93
+startrating:int=41
+startSoundRating:int=6
+textureNormal:path=images/spl_0.jpg

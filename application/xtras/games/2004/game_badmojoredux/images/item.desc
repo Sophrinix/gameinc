@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_adventure
+genre_1=genre_puzzle
+[properties]
+internalname:string=game_badmojoredux
+startdate:time=y=2004 m=9 d=5 h=0 mi=0
+url:string=http://www.mobygames.com/game/bad-mojo-redux

@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_shooter
+genre_3=genre_horror
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+platform_2=platform_wii
+platform_3=platform_windows
+[properties]
+cash:int=540330000
+copySell:int=6510000
+descriptionpath:path=desc.htm
+enddate:time=y=2008 m=1 d=20 h=0 mi=0
+famous:float=0.48
+gameIsSaling:bool=false
+internalname:string=game_residentevil4
+localizationRating:int=26
+name:string=Resident Evil 4
+owner:string=Capcom Entertainment, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=99
+startBugRating:int=15
+startdate:time=y=2005 m=8 d=5 h=0 mi=0
+startGenreRating:int=30
+startGraphicRating:int=49
+startrating:int=40
+startSoundRating:int=11
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_arcade
+genre_2=genre_cyberpunk
+genre_3=genre_realtime
+genre_4=genre_scifi
+genre_5=genre_shooter
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+platform_2=platform_xbox
+[properties]
+cash:int=221963000
+copySell:int=5999000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=1 d=14 h=0 mi=0
+famous:float=0.43
+gameIsSaling:bool=false
+internalname:string=game_timesplitters2
+localizationRating:int=87
+name:string=TimeSplitters 2
+owner:string=Eidos Interactive Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=92
+startBugRating:int=8
+startdate:time=y=2002 m=2 d=1 h=0 mi=0
+startGenreRating:int=52
+startGraphicRating:int=11
+startrating:int=46
+startSoundRating:int=71
+textureNormal:path=images/spl_0.jpg

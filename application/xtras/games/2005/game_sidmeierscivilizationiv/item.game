@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_turnbased
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=263908000
+copySell:int=7762000
+descriptionpath:path=desc.htm
+enddate:time=y=2008 m=0 d=8 h=0 mi=0
+famous:float=0.65
+gameIsSaling:bool=false
+internalname:string=game_sidmeierscivilizationiv
+localizationRating:int=4
+name:string=Sid Meier's Civilization IV
+owner:string=2K Games
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=83
+startBugRating:int=73
+startdate:time=y=2005 m=10 d=27 h=0 mi=0
+startGenreRating:int=44
+startGraphicRating:int=87
+startrating:int=72
+startSoundRating:int=73
+textureNormal:path=images/spl_0.jpg

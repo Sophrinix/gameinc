@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_horror
+[platforms]
+platform_0=platform_gamecube
+[properties]
+cash:int=259077000
+copySell:int=3549000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=7 d=11 h=0 mi=0
+famous:float=0.22
+gameIsSaling:bool=false
+internalname:string=game_eternaldarknesssanitysrequiem
+localizationRating:int=5
+name:string=Eternal Darkness: Sanity's Requiem
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=44
+startBugRating:int=61
+startdate:time=y=2002 m=0 d=21 h=0 mi=0
+startGenreRating:int=92
+startGraphicRating:int=54
+startrating:int=57
+startSoundRating:int=38
+textureNormal:path=images/spl_0.jpg

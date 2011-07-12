@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adult
+genre_2=genre_fighting
+genre_3=genre_fantasy
+[properties]
+internalname:string=game_godofwar
+startdate:time=y=2005 m=7 d=13 h=0 mi=0

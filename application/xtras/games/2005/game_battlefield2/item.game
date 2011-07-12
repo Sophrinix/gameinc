@@ -1,0 +1,25 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=118085000
+copySell:int=6215000
+descriptionpath:path=desc.htm
+enddate:time=y=2008 m=10 d=22 h=0 mi=0
+famous:float=0.72
+gameIsSaling:bool=false
+internalname:string=game_battlefield2
+localizationRating:int=57
+name:string=Battlefield 2
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=47
+startBugRating:int=83
+startdate:time=y=2005 m=8 d=16 h=0 mi=0
+startGenreRating:int=86
+startGraphicRating:int=76
+startrating:int=64
+startSoundRating:int=31
+textureNormal:path=images/spl_0.jpg

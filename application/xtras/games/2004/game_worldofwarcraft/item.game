@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+genre_3=genre_persuniverse
+genre_4=genre_realtime
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=84123000
+copySell:int=2157000
+descriptionpath:path=desc.htm
+enddate:time=y=2007 m=8 d=17 h=0 mi=0
+famous:float=0.27
+gameIsSaling:bool=false
+internalname:string=game_worldofwarcraft
+localizationRating:int=74
+name:string=World of Warcraft
+owner:string=Blizzard Entertainment Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=52
+startBugRating:int=71
+startdate:time=y=2004 m=2 d=4 h=0 mi=0
+startGenreRating:int=48
+startGraphicRating:int=71
+startrating:int=57
+startSoundRating:int=46
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+genre_2=genre_managerial
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+platform_2=platform_xbox
+[properties]
+cash:int=52637000
+copySell:int=4049000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=2 d=1 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_ncaafootball2003
+localizationRating:int=82
+name:string=NCAA Football 2003
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=80
+startBugRating:int=86
+startdate:time=y=2002 m=6 d=23 h=0 mi=0
+startGenreRating:int=97
+startGraphicRating:int=77
+startrating:int=86
+startSoundRating:int=91
+textureNormal:path=images/spl_0.jpg

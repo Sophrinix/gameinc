@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_music
+[properties]
+internalname:string=game_guitarhero
+startdate:time=y=2005 m=0 d=19 h=0 mi=0

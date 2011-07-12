@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_horror
+genre_2=genre_realtime
+[properties]
+internalname:string=game_plantsvs.zombies
+startdate:time=y=2009 m=11 d=7 h=0 mi=0
+url:string=http://www.mobygames.com/game/plants-vs-zombies

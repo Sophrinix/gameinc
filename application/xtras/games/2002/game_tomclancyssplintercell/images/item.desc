@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_spy
+genre_2=genre_stealth
+[properties]
+internalname:string=game_tomclancyssplintercell
+startdate:time=y=2002 m=3 d=13 h=0 mi=0

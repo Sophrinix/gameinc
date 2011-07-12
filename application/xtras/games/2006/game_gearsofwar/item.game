@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_xbox360
+[properties]
+cash:int=717216000
+copySell:int=7712000
+descriptionpath:path=desc.htm
+enddate:time=y=2009 m=6 d=17 h=0 mi=0
+famous:float=0.38
+gameIsSaling:bool=false
+internalname:string=game_gearsofwar
+localizationRating:int=9
+name:string=Gears of War
+owner:string=Microsoft Game Studios
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=2
+startBugRating:int=0
+startdate:time=y=2006 m=9 d=12 h=0 mi=0
+startGenreRating:int=49
+startGraphicRating:int=34
+startrating:int=20
+startSoundRating:int=16
+textureNormal:path=images/spl_0.jpg

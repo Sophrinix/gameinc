@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_puzzle
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_amiga
+platform_1=platform_linux
+platform_2=platform_unknown
+platform_3=platform_nintendods
+platform_4=platform_wii
+platform_5=platform_windows
+[properties]
+cash:int=116014000
+copySell:int=1349000
+descriptionpath:path=desc.htm
+enddate:time=y=2008 m=4 d=0 h=0 mi=0
+famous:float=0.96
+gameIsSaling:bool=false
+internalname:string=game_cavestory
+localizationRating:int=64
+name:string=Cave Story
+owner:string=Studio Pixel
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=68
+startBugRating:int=83
+startdate:time=y=2005 m=11 d=1 h=0 mi=0
+startGenreRating:int=24
+startGraphicRating:int=94
+startrating:int=64
+startSoundRating:int=52
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_golf
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_gameboyadvance
+platform_2=platform_ngage
+platform_3=platform_playstation2
+platform_4=platform_windows
+platform_5=platform_xbox
+[properties]
+cash:int=566027000
+copySell:int=7351000
+descriptionpath:path=desc.htm
+enddate:time=y=2006 m=3 d=20 h=0 mi=0
+famous:float=0.71
+gameIsSaling:bool=false
+internalname:string=game_tigerwoodspgatour2004
+localizationRating:int=74
+name:string=Tiger Woods PGA Tour 2004
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=48
+startBugRating:int=62
+startdate:time=y=2003 m=2 d=5 h=0 mi=0
+startGenreRating:int=71
+startGraphicRating:int=75
+startrating:int=57
+startSoundRating:int=32
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/tiger-woods-pga-tour-2004

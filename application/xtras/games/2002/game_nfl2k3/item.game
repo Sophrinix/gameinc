@@ -1,0 +1,14 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+platform_2=platform_xbox
+[properties]
+enddate:time=y=2005 m=7 d=25 h=0 mi=0
+internalname:string=game_nfl2k3
+name:string=NFL 2K3
+owner:string=SEGA Corporation
+startdate:time=y=2002 m=1 d=5 h=0 mi=0
+textureNormal:path=images/spl_0.jpg

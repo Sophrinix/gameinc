@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_windows
+platform_1=platform_xbox
+[properties]
+cash:int=476126000
+copySell:int=6706000
+descriptionpath:path=desc.htm
+enddate:time=y=2007 m=4 d=15 h=0 mi=0
+famous:float=0.14
+gameIsSaling:bool=false
+internalname:string=game_halo2
+localizationRating:int=7
+name:string=Halo 2
+owner:string=Microsoft Game Studios
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=26
+startBugRating:int=10
+startdate:time=y=2004 m=11 d=27 h=0 mi=0
+startGenreRating:int=7
+startGraphicRating:int=61
+startrating:int=38
+startSoundRating:int=88
+textureNormal:path=images/spl_0.jpg

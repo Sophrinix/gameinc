@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_puzzle
+genre_3=genre_realtime
+[properties]
+internalname:string=game_pikmin2
+startdate:time=y=2004 m=10 d=6 h=0 mi=0
+url:string=http://www.mobygames.com/game/pikmin-2

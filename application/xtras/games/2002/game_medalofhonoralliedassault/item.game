@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_historicalbattle
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_linux
+platform_1=platform_unknown
+platform_2=platform_windows
+[properties]
+cash:int=208656000
+copySell:int=3024000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=4 d=8 h=0 mi=0
+famous:float=0.6
+gameIsSaling:bool=false
+internalname:string=game_medalofhonoralliedassault
+localizationRating:int=20
+name:string=Medal of Honor: Allied Assault
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=70
+startBugRating:int=14
+startdate:time=y=2002 m=10 d=6 h=0 mi=0
+startGenreRating:int=94
+startGraphicRating:int=95
+startrating:int=64
+startSoundRating:int=49
+textureNormal:path=images/spl_0.jpg

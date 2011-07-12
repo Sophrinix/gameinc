@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adult
+genre_2=genre_fantasy
+genre_3=genre_puzzle
+[platforms]
+platform_0=platform_playstation3
+[properties]
+cash:int=548948000
+copySell:int=8854000
+descriptionpath:path=desc.htm
+enddate:time=y=2013 m=7 d=12 h=0 mi=0
+famous:float=0.76
+gameIsSaling:bool=false
+internalname:string=game_godofwariii
+localizationRating:int=83
+name:string=God of War III
+owner:string=Sony Computer Entertainment America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=33
+startBugRating:int=26
+startdate:time=y=2010 m=0 d=7 h=0 mi=0
+startGenreRating:int=85
+startGraphicRating:int=35
+startrating:int=36
+startSoundRating:int=4
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/god-of-war-iii

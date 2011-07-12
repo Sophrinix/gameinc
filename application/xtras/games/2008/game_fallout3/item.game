@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_postapocalyptic
+genre_3=genre_scifi
+genre_4=genre_shooter
+[platforms]
+platform_0=platform_playstation3
+platform_1=platform_windows
+platform_2=platform_xbox360
+[properties]
+cash:int=39924000
+copySell:int=2218000
+descriptionpath:path=desc.htm
+enddate:time=y=2011 m=5 d=19 h=0 mi=0
+famous:float=0.62
+gameIsSaling:bool=false
+internalname:string=game_fallout3
+localizationRating:int=85
+name:string=Fallout 3
+owner:string=Bethesda Softworks LLC
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=59
+startBugRating:int=7
+startdate:time=y=2008 m=10 d=12 h=0 mi=0
+startGenreRating:int=90
+startGraphicRating:int=59
+startrating:int=51
+startSoundRating:int=40
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/fallout-3

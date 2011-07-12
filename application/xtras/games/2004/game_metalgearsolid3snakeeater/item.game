@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_spy
+genre_3=genre_stealth
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=81750000
+copySell:int=8175000
+descriptionpath:path=desc.htm
+enddate:time=y=2007 m=11 d=7 h=0 mi=0
+famous:float=0.28
+gameIsSaling:bool=false
+internalname:string=game_metalgearsolid3snakeeater
+localizationRating:int=85
+name:string=Metal Gear Solid 3: Snake Eater
+owner:string=Konami Digital Entertainment, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=17
+startBugRating:int=56
+startdate:time=y=2004 m=2 d=13 h=0 mi=0
+startGenreRating:int=19
+startGraphicRating:int=81
+startrating:int=51
+startSoundRating:int=83
+textureNormal:path=images/spl_0.jpg

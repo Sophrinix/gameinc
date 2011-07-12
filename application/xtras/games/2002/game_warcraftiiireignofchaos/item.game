@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_rpg
+genre_1=genre_strategy
+genre_2=genre_fantasy
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_windows
+[properties]
+cash:int=290450000
+copySell:int=5809000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=4 d=9 h=0 mi=0
+famous:float=0.26
+gameIsSaling:bool=false
+internalname:string=game_warcraftiiireignofchaos
+localizationRating:int=40
+name:string=Warcraft III: Reign of Chaos
+owner:string=Blizzard Entertainment Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=21
+startBugRating:int=63
+startdate:time=y=2002 m=2 d=7 h=0 mi=0
+startGenreRating:int=16
+startGraphicRating:int=9
+startrating:int=22
+startSoundRating:int=1
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fighting
+genre_2=genre_puzzle
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_playstation3
+[properties]
+cash:int=136170000
+copySell:int=2670000
+descriptionpath:path=desc.htm
+enddate:time=y=2012 m=11 d=17 h=0 mi=0
+famous:float=0.36
+gameIsSaling:bool=false
+internalname:string=game_uncharted2amongthieves
+localizationRating:int=57
+name:string=Uncharted 2: Among Thieves
+owner:string=Sony Computer Entertainment America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=78
+startBugRating:int=95
+startdate:time=y=2009 m=5 d=17 h=0 mi=0
+startGenreRating:int=91
+startGraphicRating:int=24
+startrating:int=75
+startSoundRating:int=87
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/uncharted-2-among-thieves

@@ -1,0 +1,33 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_strategy
+genre_2=genre_puzzle
+genre_3=genre_realtime
+[platforms]
+platform_0=platform_ipad
+platform_1=platform_iphone
+platform_2=platform_linux
+platform_3=platform_unknown
+platform_4=platform_wii
+platform_5=platform_windows
+[properties]
+cash:int=44190000
+copySell:int=2946000
+descriptionpath:path=desc.htm
+enddate:time=y=2011 m=4 d=12 h=0 mi=0
+famous:float=0.35
+gameIsSaling:bool=false
+internalname:string=game_worldofgoo
+localizationRating:int=98
+name:string=World of Goo
+owner:string=2D Boy
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=76
+startBugRating:int=76
+startdate:time=y=2008 m=0 d=24 h=0 mi=0
+startGenreRating:int=12
+startGraphicRating:int=62
+startrating:int=63
+startSoundRating:int=89
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/world-of-goo

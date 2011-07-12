@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_theelderscrollsivoblivion
+startdate:time=y=2006 m=2 d=4 h=0 mi=0

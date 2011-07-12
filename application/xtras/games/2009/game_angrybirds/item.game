@@ -1,0 +1,32 @@
+[genres]
+genre_0=genre_strategy
+[platforms]
+platform_0=platform_unknown
+platform_1=platform_ipad
+platform_2=platform_iphone
+platform_3=platform_unknown
+platform_4=platform_playstation3
+platform_5=platform_psp
+platform_6=platform_symbian
+platform_7=platform_windows
+[properties]
+cash:int=537705000
+copySell:int=8535000
+descriptionpath:path=desc.htm
+enddate:time=y=2012 m=10 d=13 h=0 mi=0
+famous:float=0.6
+gameIsSaling:bool=false
+internalname:string=game_angrybirds
+localizationRating:int=6
+name:string=Angry Birds
+owner:string=Clickgamer Technologies Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=13
+startBugRating:int=98
+startdate:time=y=2009 m=8 d=16 h=0 mi=0
+startGenreRating:int=14
+startGraphicRating:int=1
+startrating:int=44
+startSoundRating:int=96
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/angry-birds

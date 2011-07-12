@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_music
+[platforms]
+platform_0=platform_playstation2
+platform_1=platform_xbox360
+[properties]
+cash:int=87219000
+copySell:int=9691000
+descriptionpath:path=desc.htm
+enddate:time=y=2009 m=1 d=7 h=0 mi=0
+famous:float=0.02
+gameIsSaling:bool=false
+internalname:string=game_guitarheroii
+localizationRating:int=18
+name:string=Guitar Hero II
+owner:string=Activision Publishing, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=12
+startBugRating:int=9
+startdate:time=y=2006 m=0 d=10 h=0 mi=0
+startGenreRating:int=60
+startGraphicRating:int=59
+startrating:int=45
+startSoundRating:int=89
+textureNormal:path=images/spl_0.jpg

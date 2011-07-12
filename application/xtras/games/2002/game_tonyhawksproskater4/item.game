@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_skateboarding
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_unknown
+platform_2=platform_playstation
+platform_3=platform_playstation2
+platform_4=platform_windows
+platform_5=platform_xbox
+[properties]
+cash:int=120186000
+copySell:int=1821000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=11 d=20 h=0 mi=0
+famous:float=0.58
+gameIsSaling:bool=false
+internalname:string=game_tonyhawksproskater4
+localizationRating:int=1
+name:string=Tony Hawk's Pro Skater 4
+owner:string=Activision Publishing, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=31
+startBugRating:int=49
+startdate:time=y=2002 m=1 d=21 h=0 mi=0
+startGenreRating:int=76
+startGraphicRating:int=82
+startrating:int=56
+startSoundRating:int=45
+textureNormal:path=images/spl_0.jpg

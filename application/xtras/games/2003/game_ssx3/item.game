@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_snowboarding
+genre_2=genre_stunts
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_playstation2
+platform_2=platform_xbox
+[properties]
+cash:int=221646000
+copySell:int=2703000
+descriptionpath:path=desc.htm
+enddate:time=y=2006 m=4 d=14 h=0 mi=0
+famous:float=0.98
+gameIsSaling:bool=false
+internalname:string=game_ssx3
+localizationRating:int=60
+name:string=SSX 3
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=40
+startBugRating:int=5
+startdate:time=y=2003 m=7 d=2 h=0 mi=0
+startGenreRating:int=46
+startGraphicRating:int=6
+startrating:int=28
+startSoundRating:int=44
+textureNormal:path=images/spl_0.jpg

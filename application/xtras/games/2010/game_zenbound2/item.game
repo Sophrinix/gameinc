@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_zen
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_ipad
+platform_1=platform_iphone
+platform_2=platform_unknown
+platform_3=platform_windows
+[properties]
+cash:int=502546000
+copySell:int=9482000
+descriptionpath:path=desc.htm
+enddate:time=y=2013 m=11 d=23 h=0 mi=0
+famous:float=0.55
+gameIsSaling:bool=false
+internalname:string=game_zenbound2
+localizationRating:int=21
+name:string=Zen Bound 2
+owner:string=Secret Exit Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=55
+startBugRating:int=55
+startdate:time=y=2010 m=9 d=14 h=0 mi=0
+startGenreRating:int=21
+startGraphicRating:int=5
+startrating:int=43
+startSoundRating:int=81
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/zen-bound-2

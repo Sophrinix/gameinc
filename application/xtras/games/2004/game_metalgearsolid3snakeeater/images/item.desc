@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_spy
+genre_3=genre_stealth
+[properties]
+internalname:string=game_metalgearsolid3snakeeater
+startdate:time=y=2004 m=2 d=13 h=0 mi=0

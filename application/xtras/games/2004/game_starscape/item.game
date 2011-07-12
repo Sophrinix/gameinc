@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_anime
+genre_2=genre_arcade
+genre_3=genre_scifi
+genre_4=genre_shooter
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=267769000
+copySell:int=7237000
+descriptionpath:path=desc.htm
+enddate:time=y=2007 m=9 d=7 h=0 mi=0
+famous:float=0.65
+gameIsSaling:bool=false
+internalname:string=game_starscape
+localizationRating:int=29
+name:string=Starscape
+owner:string=1C Company
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=76
+startBugRating:int=95
+startdate:time=y=2004 m=1 d=25 h=0 mi=0
+startGenreRating:int=96
+startGraphicRating:int=54
+startrating:int=66
+startSoundRating:int=11
+textureNormal:path=images/spl_0.jpg

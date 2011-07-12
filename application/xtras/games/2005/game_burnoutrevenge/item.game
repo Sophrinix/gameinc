@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+[platforms]
+platform_0=platform_playstation2
+platform_1=platform_xbox
+platform_2=platform_xbox360
+[properties]
+cash:int=65240000
+copySell:int=2330000
+descriptionpath:path=desc.htm
+enddate:time=y=2008 m=5 d=19 h=0 mi=0
+famous:float=0.55
+gameIsSaling:bool=false
+internalname:string=game_burnoutrevenge
+localizationRating:int=91
+name:string=Burnout Revenge
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=69
+startBugRating:int=65
+startdate:time=y=2005 m=10 d=24 h=0 mi=0
+startGenreRating:int=84
+startGraphicRating:int=26
+startrating:int=50
+startSoundRating:int=6
+textureNormal:path=images/spl_0.jpg

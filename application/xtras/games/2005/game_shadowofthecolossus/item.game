@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=33374000
+copySell:int=902000
+descriptionpath:path=desc.htm
+enddate:time=y=2008 m=0 d=26 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_shadowofthecolossus
+localizationRating:int=98
+name:string=Shadow of the Colossus
+owner:string=Sony Computer Entertainment America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=15
+startBugRating:int=22
+startdate:time=y=2005 m=5 d=25 h=0 mi=0
+startGenreRating:int=9
+startGraphicRating:int=79
+startrating:int=33
+startSoundRating:int=43
+textureNormal:path=images/spl_0.jpg

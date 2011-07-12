@@ -1,0 +1,12 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_fighting
+genre_3=genre_puzzle
+genre_4=genre_scifi
+genre_5=genre_shooter
+genre_6=genre_spy
+[properties]
+internalname:string=game_beyondgood&evil
+startdate:time=y=2003 m=4 d=12 h=0 mi=0
+url:string=http://www.mobygames.com/game/beyond-good-evil

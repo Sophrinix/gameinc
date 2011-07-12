@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+genre_2=genre_realtime
+[properties]
+internalname:string=game_companyofheroes
+startdate:time=y=2006 m=8 d=5 h=0 mi=0

@@ -1,0 +1,9 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adult
+genre_2=genre_fantasy
+genre_3=genre_puzzle
+[properties]
+internalname:string=game_godofwariii
+startdate:time=y=2010 m=0 d=7 h=0 mi=0
+url:string=http://www.mobygames.com/game/god-of-war-iii

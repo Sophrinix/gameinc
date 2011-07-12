@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_spy
+genre_2=genre_stealth
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_unknown
+platform_2=platform_playstation2
+platform_3=platform_windows
+platform_4=platform_xbox
+[properties]
+cash:int=161115000
+copySell:int=7005000
+descriptionpath:path=desc.htm
+enddate:time=y=2005 m=10 d=10 h=0 mi=0
+famous:float=0.67
+gameIsSaling:bool=false
+internalname:string=game_tomclancyssplintercell
+localizationRating:int=47
+name:string=Tom Clancy's Splinter Cell
+owner:string=Ubi Soft Entertainment Software
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=71
+startBugRating:int=91
+startdate:time=y=2002 m=3 d=13 h=0 mi=0
+startGenreRating:int=46
+startGraphicRating:int=53
+startrating:int=67
+startSoundRating:int=75
+textureNormal:path=images/spl_0.jpg

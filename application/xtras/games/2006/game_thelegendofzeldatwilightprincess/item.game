@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+genre_3=genre_puzzle
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_wii
+[properties]
+cash:int=19239000
+copySell:int=1749000
+descriptionpath:path=desc.htm
+enddate:time=y=2009 m=8 d=7 h=0 mi=0
+famous:float=0.03
+gameIsSaling:bool=false
+internalname:string=game_thelegendofzeldatwilightprincess
+localizationRating:int=8
+name:string=The Legend of Zelda: Twilight Princess
+owner:string=Nintendo of America Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=97
+startBugRating:int=73
+startdate:time=y=2006 m=11 d=12 h=0 mi=0
+startGenreRating:int=50
+startGraphicRating:int=79
+startrating:int=62
+startSoundRating:int=12
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+genre_3=genre_persuniverse
+[properties]
+internalname:string=game_guildwars
+startdate:time=y=2005 m=4 d=8 h=0 mi=0

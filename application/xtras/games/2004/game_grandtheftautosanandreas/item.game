@@ -1,0 +1,30 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_racing
+genre_2=genre_adult
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_playstation2
+platform_1=platform_windows
+platform_2=platform_xbox
+platform_3=platform_xbox360
+[properties]
+cash:int=114432000
+copySell:int=3576000
+descriptionpath:path=desc.htm
+enddate:time=y=2007 m=4 d=4 h=0 mi=0
+famous:float=0.5
+gameIsSaling:bool=false
+internalname:string=game_grandtheftautosanandreas
+localizationRating:int=15
+name:string=Grand Theft Auto: San Andreas
+owner:string=Rockstar Games, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=65
+startBugRating:int=0
+startdate:time=y=2004 m=2 d=20 h=0 mi=0
+startGenreRating:int=47
+startGraphicRating:int=23
+startrating:int=40
+startSoundRating:int=69
+textureNormal:path=images/spl_0.jpg

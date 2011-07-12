@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_ratchet&clankupyourarsenal
+startdate:time=y=2004 m=3 d=1 h=0 mi=0

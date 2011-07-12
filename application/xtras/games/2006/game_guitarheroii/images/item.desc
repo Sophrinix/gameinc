@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_music
+[properties]
+internalname:string=game_guitarheroii
+startdate:time=y=2006 m=0 d=10 h=0 mi=0

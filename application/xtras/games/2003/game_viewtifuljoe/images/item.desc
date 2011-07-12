@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_comics
+genre_2=genre_fighting
+[properties]
+internalname:string=game_viewtifuljoe
+startdate:time=y=2003 m=5 d=4 h=0 mi=0
+url:string=http://www.mobygames.com/game/viewtiful-joe

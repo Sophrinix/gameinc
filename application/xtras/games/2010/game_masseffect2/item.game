@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_scifi
+genre_3=genre_shooter
+[platforms]
+platform_0=platform_windows
+platform_1=platform_xbox360
+[properties]
+cash:int=448608000
+copySell:int=9346000
+descriptionpath:path=desc.htm
+enddate:time=y=2013 m=9 d=17 h=0 mi=0
+famous:float=0.39
+gameIsSaling:bool=false
+internalname:string=game_masseffect2
+localizationRating:int=92
+name:string=Mass Effect 2
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=95
+startBugRating:int=60
+startdate:time=y=2010 m=11 d=17 h=0 mi=0
+startGenreRating:int=34
+startGraphicRating:int=54
+startrating:int=53
+startSoundRating:int=26
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/mass-effect-2

@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_historicalbattle
+genre_2=genre_realtime
+[platforms]
+platform_0=platform_windows
+[properties]
+cash:int=144420000
+copySell:int=7221000
+descriptionpath:path=desc.htm
+enddate:time=y=2009 m=10 d=27 h=0 mi=0
+famous:float=0.98
+gameIsSaling:bool=false
+internalname:string=game_companyofheroes
+localizationRating:int=74
+name:string=Company of Heroes
+owner:string=Buka Entertainment
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=96
+startBugRating:int=26
+startdate:time=y=2006 m=8 d=5 h=0 mi=0
+startGenreRating:int=17
+startGraphicRating:int=18
+startrating:int=31
+startSoundRating:int=1
+textureNormal:path=images/spl_0.jpg

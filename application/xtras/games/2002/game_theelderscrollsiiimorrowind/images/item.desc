@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_rpg
+genre_2=genre_fantasy
+[properties]
+internalname:string=game_theelderscrollsiiimorrowind
+startdate:time=y=2002 m=3 d=7 h=0 mi=0

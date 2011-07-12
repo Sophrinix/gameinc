@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_simulation
+genre_2=genre_music
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=277780000
+copySell:int=3268000
+descriptionpath:path=desc.htm
+enddate:time=y=2008 m=9 d=4 h=0 mi=0
+famous:float=0.43
+gameIsSaling:bool=false
+internalname:string=game_guitarhero
+localizationRating:int=78
+name:string=Guitar Hero
+owner:string=RedOctane, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=34
+startBugRating:int=25
+startdate:time=y=2005 m=0 d=19 h=0 mi=0
+startGenreRating:int=97
+startGraphicRating:int=2
+startrating:int=47
+startSoundRating:int=79
+textureNormal:path=images/spl_0.jpg

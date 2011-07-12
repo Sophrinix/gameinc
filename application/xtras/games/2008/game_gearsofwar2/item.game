@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[platforms]
+platform_0=platform_xbox360
+[properties]
+cash:int=212625000
+copySell:int=2835000
+descriptionpath:path=desc.htm
+enddate:time=y=2011 m=4 d=6 h=0 mi=0
+famous:float=0.1
+gameIsSaling:bool=false
+internalname:string=game_gearsofwar2
+localizationRating:int=69
+name:string=Gears of War 2
+owner:string=Microsoft Game Studios
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=58
+startBugRating:int=7
+startdate:time=y=2008 m=3 d=24 h=0 mi=0
+startGenreRating:int=79
+startGraphicRating:int=79
+startrating:int=57
+startSoundRating:int=64
+textureNormal:path=images/spl_0.jpg
+url:string=http://www.mobygames.com/game/gears-of-war-2

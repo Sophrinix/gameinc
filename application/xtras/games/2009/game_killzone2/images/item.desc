@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_scifi
+genre_2=genre_shooter
+[properties]
+internalname:string=game_killzone2
+startdate:time=y=2009 m=4 d=20 h=0 mi=0
+url:string=http://www.mobygames.com/game/killzone-2

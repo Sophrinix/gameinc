@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_turnbased
+[properties]
+internalname:string=game_sidmeierscivilizationiv
+startdate:time=y=2005 m=10 d=27 h=0 mi=0
