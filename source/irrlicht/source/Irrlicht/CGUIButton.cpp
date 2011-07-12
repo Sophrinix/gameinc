@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -108,7 +108,7 @@ void CGUIButton::setSprite(EGUI_BUTTON_STATE state, s32 index, video::SColor col
 //! called if an event happened.
 bool CGUIButton::OnEvent(const SEvent& event)
 {
-	if (!IsEnabled)
+	if (!isEnabled())
 		return IGUIElement::OnEvent(event);
 
 	switch(event.EventType)
@@ -287,9 +287,7 @@ void CGUIButton::draw()
 
 	if (Text.size())
 	{
-		IGUIFont* font = OverrideFont;
-		if (!OverrideFont)
-			font = skin->getFont(EGDF_BUTTON);
+		IGUIFont* font = getActiveFont();
 
 		core::rect<s32> rect = AbsoluteRect;
 		if (Pressed)
@@ -297,7 +295,7 @@ void CGUIButton::draw()
 
 		if (font)
 			font->draw(Text.c_str(), rect,
-				skin->getColor(IsEnabled ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT),
+				skin->getColor(isEnabled() ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT),
 				true, true, &AbsoluteClippingRect);
 	}
 
@@ -320,6 +318,22 @@ void CGUIButton::setOverrideFont(IGUIFont* font)
 		OverrideFont->grab();
 }
 
+//! Gets the override font (if any)
+IGUIFont * CGUIButton::getOverrideFont() const
+{
+	return OverrideFont;
+}
+
+//! Get the font which is used right now for drawing
+IGUIFont* CGUIButton::getActiveFont() const
+{
+	if ( OverrideFont )
+		return OverrideFont;
+	IGUISkin* skin = Environment->getSkin();
+	if (skin)
+		return skin->getFont();
+	return 0;
+}
 
 //! Sets an image which should be displayed on the button when it is in normal state.
 void CGUIButton::setImage(video::ITexture* image)
