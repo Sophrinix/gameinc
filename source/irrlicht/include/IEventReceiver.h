@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -6,7 +6,6 @@
 #define __I_EVENT_RECEIVER_H_INCLUDED__
 
 #include "ILogger.h"
-#include "position2d.h"
 #include "Keycodes.h"
 #include "irrString.h"
 
@@ -161,9 +160,11 @@ namespace irr
 			EGET_ELEMENT_FOCUSED,
 
 			//! The mouse cursor hovered over a gui element.
+			/** If an element has sub-elements you also get this message for the subelements */
 			EGET_ELEMENT_HOVERED,
 
 			//! The mouse cursor left the hovered element.
+			/** If an element has sub-elements you also get this message for the subelements */
 			EGET_ELEMENT_LEFT,
 
 			//! An element would like to close.
@@ -245,7 +246,11 @@ namespace irr
 			EGET_TREEVIEW_NODE_EXPAND,
 
 			//! A tree view node was collapsed. See IGUITreeView::getLastEventNode().
-			EGET_TREEVIEW_NODE_COLLAPS,
+			EGET_TREEVIEW_NODE_COLLAPSE,
+
+			//! deprecated - use EGET_TREEVIEW_NODE_COLLAPSE instead. This 
+			//! may be removed by Irrlicht 1.9 
+			EGET_TREEVIEW_NODE_COLLAPS = EGET_TREEVIEW_NODE_COLLAPSE,
 
 			//! No real event. Just for convenience to get number of events
 			EGET_COUNT
@@ -279,7 +284,7 @@ struct SEvent
 		//! Y position of mouse cursor
 		s32 Y;
 
-		//! mouse wheel delta, usually 1.0 or -1.0.
+		//! mouse wheel delta, often 1.0 or -1.0, but can have other values < 0.f or > 0.f;
 		/** Only valid if event was EMIE_MOUSE_WHEEL */
 		f32 Wheel;
 

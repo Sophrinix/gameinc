@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Christian Stehno
+// Copyright (C) 2009-2011 Christian Stehno
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -67,7 +67,7 @@ namespace scene
 			video::SColor high) : Threshold(threshold), Low(low), High(high) {}
 		void operator()(video::S3DVertex& vertex) const
 		{
-			vertex.Color = (vertex.Color.getAverage()>Threshold)?High:Low;
+			vertex.Color = ((u8)vertex.Color.getAverage()>Threshold)?High:Low;
 		}
 	private:
 		u8 Threshold;

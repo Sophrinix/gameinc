@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -192,14 +192,14 @@ public:
 
 		if ( Y > 0)
 			if (X > 0)
-				return atan(Y/X) * RADTODEG64;
+				return atan((irr::f64)Y/(irr::f64)X) * RADTODEG64;
 			else
-				return 180.0-atan(Y/-X) * RADTODEG64;
+				return 180.0-atan((irr::f64)Y/-(irr::f64)X) * RADTODEG64;
 		else
 			if (X > 0)
-				return 360.0-atan(-Y/X) * RADTODEG64;
+				return 360.0-atan(-(irr::f64)Y/(irr::f64)X) * RADTODEG64;
 			else
-				return 180.0+atan(-Y/-X) * RADTODEG64;
+				return 180.0+atan(-(irr::f64)Y/-(irr::f64)X) * RADTODEG64;
 	}
 
 	//! Calculates the angle of this vector in degrees in the counter trigonometric sense.
@@ -213,22 +213,23 @@ public:
 			return Y < 0 ? 90 : 270;
 
 		// don't use getLength here to avoid precision loss with s32 vectors
-		f64 tmp = Y / sqrt((f64)(X*X + Y*Y));
-		tmp = atan( core::squareroot(1 - tmp*tmp) / tmp) * RADTODEG64;
+		// avoid floating-point trouble as sqrt(y*y) is occasionally larger than y, so clamp
+		const f64 tmp = core::clamp(Y / sqrt((f64)(X*X + Y*Y)), -1.0, 1.0);
+		const f64 angle = atan( core::squareroot(1 - tmp*tmp) / tmp) * RADTODEG64;
 
 		if (X>0 && Y>0)
-			return tmp + 270;
+			return angle + 270;
 		else
 		if (X>0 && Y<0)
-			return tmp + 90;
+			return angle + 90;
 		else
 		if (X<0 && Y<0)
-			return 90 - tmp;
+			return 90 - angle;
 		else
 		if (X<0 && Y>0)
-			return 270 - tmp;
+			return 270 - angle;
 
-		return tmp;
+		return angle;
 	}
 
 	//! Calculates the angle between this vector and another one in degree.
@@ -244,6 +245,8 @@ public:
 		tmp = tmp / core::squareroot((f64)((X*X + Y*Y) * (b.X*b.X + b.Y*b.Y)));
 		if (tmp < 0.0)
 			tmp = -tmp;
+		if ( tmp > 1.0 ) //   avoid floating-point trouble
+			tmp = 1.0;			
 
 		return atan(sqrt(1 - tmp*tmp) / tmp) * RADTODEG64;
 	}

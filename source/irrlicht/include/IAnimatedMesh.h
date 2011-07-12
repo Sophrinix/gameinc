@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -46,6 +46,9 @@ namespace scene
 		/** The oct file format contains 3D geometry and lightmaps and
 		can be loaded directly by Irrlicht */
 		EAMT_OCT,
+
+		//! Halflife MDL model file
+		EAMT_MDL_HALFLIFE,
 
 		//! generic skinned mesh
 		EAMT_SKINNED

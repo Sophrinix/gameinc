@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -22,16 +22,15 @@
 //#define USE_MATRIX_TEST_DEBUG
 
 #if defined( USE_MATRIX_TEST_DEBUG )
-	#include <windows.h>
 
-	struct MatrixTest
-	{
-		MatrixTest () : ID(0), Calls(0) {}
-		char buf[256];
-		int Calls;
-		int ID;
-	};
-	static MatrixTest MTest;
+struct MatrixTest
+{
+	MatrixTest () : ID(0), Calls(0) {}
+	char buf[256];
+	int Calls;
+	int ID;
+};
+static MatrixTest MTest;
 
 #endif
 
@@ -64,7 +63,7 @@ namespace core
 			//! Copy constructor
 			/** \param other Other matrix to copy from
 			\param constructor Choose the initialization style */
-			CMatrix4( const CMatrix4<T>& other,eConstructor constructor = EM4CONST_COPY);
+			CMatrix4(const CMatrix4<T>& other, eConstructor constructor = EM4CONST_COPY);
 
 			//! Simple operator for directly accessing every element of the matrix.
 			T& operator()(const s32 row, const s32 col)
@@ -125,17 +124,20 @@ namespace core
 			CMatrix4<T>& operator-=(const CMatrix4<T>& other);
 
 			//! set this matrix to the product of two matrices
+			/** Calculate b*a */
 			inline CMatrix4<T>& setbyproduct(const CMatrix4<T>& other_a,const CMatrix4<T>& other_b );
 
 			//! Set this matrix to the product of two matrices
-			/** no optimization used,
+			/** Calculate b*a, no optimization used,
 			use it if you know you never have a identity matrix */
 			CMatrix4<T>& setbyproduct_nocheck(const CMatrix4<T>& other_a,const CMatrix4<T>& other_b );
 
 			//! Multiply by another matrix.
+			/** Calculate other*this */
 			CMatrix4<T> operator*(const CMatrix4<T>& other) const;
 
 			//! Multiply by another matrix.
+			/** Calculate and return other*this */
 			CMatrix4<T>& operator*=(const CMatrix4<T>& other);
 
 			//! Multiply by scalar.
@@ -215,6 +217,7 @@ namespace core
 
 			//! An alternate transform vector method, writing into an array of 4 floats
 			void transformVect(T *out,const core::vector3df &in) const;
+			void transformVec3(T *out, const T * in) const;
 
 			//! Translate a vector by the translation part of this matrix.
 			void translateVect( vector3df& vect ) const;
@@ -293,7 +296,7 @@ namespace core
 			CMatrix4<T>& buildShadowMatrix(const core::vector3df& light, core::plane3df plane, f32 point=1.0f);
 
 			//! Builds a matrix which transforms a normalized Device Coordinate to Device Coordinates.
-			/** Used to scale <-1,-1><1,1> to viewport, for example from von <-1,-1> <1,1> to the viewport <0,0><0,640> */
+			/** Used to scale <-1,-1><1,1> to viewport, for example from <-1,-1> <1,1> to the viewport <0,0><0,640> */
 			CMatrix4<T>& buildNDCToDCMatrix( const core::rect<s32>& area, f32 zScale);
 
 			//! Creates a new matrix as interpolated matrix from two other ones.
@@ -775,11 +778,11 @@ namespace core
 	}
 
 	//! Returns the absolute values of the scales of the matrix.
-	/** 
-	Note that this always returns the absolute (positive) values.  Unfortunately it
-	does not appear to be possible to extract any original negative values.  The best
-	that we could do would be to arbitrarily make one scale negative if one or three
-	of them were negative.
+	/**
+	Note that this returns the absolute (positive) values unless only scale is set.
+	Unfortunately it does not appear to be possible to extract any original negative
+	values. The best that we could do would be to arbitrarily make one scale
+	negative if one or three of them were negative.
 	FIXME - return the original values.
 	*/
 	template <class T>
@@ -851,7 +854,23 @@ namespace core
 	inline core::vector3d<T> CMatrix4<T>::getRotationDegrees() const
 	{
 		const CMatrix4<T> &mat = *this;
-		const core::vector3d<T> scale = getScale();
+		core::vector3d<T> scale = getScale();
+		// we need to check for negative scale on to axes, which would bring up wrong results
+		if (scale.Y<0 && scale.Z<0)
+		{
+			scale.Y =-scale.Y;
+			scale.Z =-scale.Z;
+		}
+		else if (scale.X<0 && scale.Z<0)
+		{
+			scale.X =-scale.X;
+			scale.Z =-scale.Z;
+		}
+		else if (scale.X<0 && scale.Y<0)
+		{
+			scale.X =-scale.X;
+			scale.Y =-scale.Y;
+		}
 		const core::vector3d<f64> invScale(core::reciprocal(scale.X),core::reciprocal(scale.Y),core::reciprocal(scale.Z));
 
 		f64 Y = -asin(core::clamp(mat[2]*invScale.X, -1.0, 1.0));
@@ -879,8 +898,6 @@ namespace core
 		}
 
 		// fix values that get below zero
-		// before it would set (!) values to 360
-		// that were above 360:
 		if (X < 0.0) X += 360.0;
 		if (Y < 0.0) Y += 360.0;
 		if (Z < 0.0) Z += 360.0;
@@ -945,17 +962,29 @@ namespace core
 		if (definitelyIdentityMatrix)
 			return true;
 #endif
+		if (!core::equals( M[12], (T)0 ) || !core::equals( M[13], (T)0 ) || !core::equals( M[14], (T)0 ) || !core::equals( M[15], (T)1 ))
+			return false;
+
+		if (!core::equals( M[ 0], (T)1 ) || !core::equals( M[ 1], (T)0 ) || !core::equals( M[ 2], (T)0 ) || !core::equals( M[ 3], (T)0 ))
+			return false;
+
+		if (!core::equals( M[ 4], (T)0 ) || !core::equals( M[ 5], (T)1 ) || !core::equals( M[ 6], (T)0 ) || !core::equals( M[ 7], (T)0 ))
+			return false;
+
+		if (!core::equals( M[ 8], (T)0 ) || !core::equals( M[ 9], (T)0 ) || !core::equals( M[10], (T)1 ) || !core::equals( M[11], (T)0 ))
+			return false;
+/*
 		if (!core::equals( M[ 0], (T)1 ) ||
-				!core::equals( M[ 5], (T)1 ) ||
-				!core::equals( M[10], (T)1 ) ||
-				!core::equals( M[15], (T)1 ))
+			!core::equals( M[ 5], (T)1 ) ||
+			!core::equals( M[10], (T)1 ) ||
+			!core::equals( M[15], (T)1 ))
 			return false;
 
 		for (s32 i=0; i<4; ++i)
 			for (s32 j=0; j<4; ++j)
 				if ((j != i) && (!iszero((*this)(i,j))))
 					return false;
-
+*/
 #if defined ( USE_MATRIX_TEST )
 		definitelyIdentityMatrix=true;
 #endif
@@ -1093,6 +1122,14 @@ namespace core
 		out[1] = in.X*M[1] + in.Y*M[5] + in.Z*M[9] + M[13];
 		out[2] = in.X*M[2] + in.Y*M[6] + in.Z*M[10] + M[14];
 		out[3] = in.X*M[3] + in.Y*M[7] + in.Z*M[11] + M[15];
+	}
+
+	template <class T>
+	inline void CMatrix4<T>::transformVec3(T *out, const T * in) const
+	{
+		out[0] = in[0]*M[0] + in[1]*M[4] + in[2]*M[8] + M[12];
+		out[1] = in[0]*M[1] + in[1]*M[5] + in[2]*M[9] + M[13];
+		out[2] = in[0]*M[2] + in[1]*M[6] + in[2]*M[10] + M[14];
 	}
 
 
@@ -1416,7 +1453,7 @@ namespace core
 	{
 		const f64 h = reciprocal(tan(fieldOfViewRadians*0.5));
 		_IRR_DEBUG_BREAK_IF(aspectRatio==0.f); //divide by zero
-		const T w = h / aspectRatio;
+		const T w = static_cast<T>(h / aspectRatio);
 
 		_IRR_DEBUG_BREAK_IF(zNear==zFar); //divide by zero
 		M[0] = w;
@@ -1455,7 +1492,7 @@ namespace core
 	{
 		const f64 h = reciprocal(tan(fieldOfViewRadians*0.5));
 		_IRR_DEBUG_BREAK_IF(aspectRatio==0.f); //divide by zero
-		const T w = (T)(h / aspectRatio);
+		const T w = static_cast<T>(h / aspectRatio);
 
 		_IRR_DEBUG_BREAK_IF(zNear==zFar); //divide by zero
 		M[0] = w;
@@ -1492,7 +1529,7 @@ namespace core
 	{
 		const f64 h = reciprocal(tan(fieldOfViewRadians*0.5));
 		_IRR_DEBUG_BREAK_IF(aspectRatio==0.f); //divide by zero
-		const T w = (T)(h / aspectRatio);
+		const T w = static_cast<T>(h / aspectRatio);
 
 		M[0] = w;
 		M[1] = 0;

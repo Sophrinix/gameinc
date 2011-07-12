@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -27,8 +27,6 @@ public:
 
 	//! sets the color of the text
 	virtual void setTextColor(video::SColor color) = 0;
-
-	virtual const wchar_t* getText() const = 0;
 };
 
 } // end namespace scene
