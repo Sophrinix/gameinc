@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -32,7 +32,7 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 		IGUIEnvironment* environment, IGUIElement* parent, s32 id,
 		const core::rect<s32>& rectangle)
 	: IGUIEditBox(environment, parent, id, rectangle), MouseMarking(false),
-	Border(border), OverrideColorEnabled(false), MarkBegin(0), MarkEnd(0),
+	Border(border), Background(true), OverrideColorEnabled(false), MarkBegin(0), MarkEnd(0),
 	OverrideColor(video::SColor(101,255,255,255)), OverrideFont(0), LastBreakFont(0),
 	Operator(0), BlinkStartTime(0), CursorPos(0), HScrollPos(0), VScrollPos(0), Max(0),
 	WordWrap(false), MultiLine(false), AutoScroll(true), PasswordBox(false),
@@ -55,17 +55,7 @@ CGUIEditBox::CGUIEditBox(const wchar_t* text, bool border,
 	setTabStop(true);
 	setTabOrder(-1);
 
-	IGUISkin *skin = 0;
-	if (Environment)
-		skin = Environment->getSkin();
-	if (Border && skin)
-	{
-		FrameRect.UpperLeftCorner.X += skin->getSize(EGDS_TEXT_DISTANCE_X)+1;
-		FrameRect.UpperLeftCorner.Y += skin->getSize(EGDS_TEXT_DISTANCE_Y)+1;
-		FrameRect.LowerRightCorner.X -= skin->getSize(EGDS_TEXT_DISTANCE_X)+1;
-		FrameRect.LowerRightCorner.Y -= skin->getSize(EGDS_TEXT_DISTANCE_Y)+1;
-	}
-
+	calculateFrameRect();
 	breakText();
 
 	calculateScrollPos();
@@ -100,6 +90,22 @@ void CGUIEditBox::setOverrideFont(IGUIFont* font)
 	breakText();
 }
 
+//! Gets the override font (if any)
+IGUIFont * CGUIEditBox::getOverrideFont() const
+{
+	return OverrideFont;
+}
+
+//! Get the font which is used right now for drawing
+IGUIFont* CGUIEditBox::getActiveFont() const
+{
+	if ( OverrideFont )
+		return OverrideFont;
+	IGUISkin* skin = Environment->getSkin();
+	if (skin)
+		return skin->getFont();
+	return 0;
+}
 
 //! Sets another color for the text.
 void CGUIEditBox::setOverrideColor(video::SColor color)
@@ -109,12 +115,23 @@ void CGUIEditBox::setOverrideColor(video::SColor color)
 }
 
 
+video::SColor const& CGUIEditBox::getOverrideColor() const
+{
+	return OverrideColor;
+}
+
+
 //! Turns the border on or off
 void CGUIEditBox::setDrawBorder(bool border)
 {
 	Border = border;
 }
 
+//! Sets whether to draw the background
+void CGUIEditBox::setDrawBackground(bool draw)
+{
+	Background = draw;
+}
 
 //! Sets if the text should use the overide color or the color in the gui skin.
 void CGUIEditBox::enableOverrideColor(bool enable)
@@ -122,6 +139,11 @@ void CGUIEditBox::enableOverrideColor(bool enable)
 	OverrideColorEnabled = enable;
 }
 
+bool CGUIEditBox::isOverrideColorEnabled() const
+{
+	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
+	return OverrideColorEnabled;
+}
 
 //! Enables or disables word wrap
 void CGUIEditBox::setWordWrap(bool enable)
@@ -137,7 +159,9 @@ void CGUIEditBox::updateAbsolutePosition()
 	IGUIElement::updateAbsolutePosition();
 	if ( oldAbsoluteRect != AbsoluteRect )
 	{
+		calculateFrameRect();
         breakText();
+        calculateScrollPos();
 	}
 }
 
@@ -196,7 +220,7 @@ void CGUIEditBox::setTextAlignment(EGUI_ALIGNMENT horizontal, EGUI_ALIGNMENT ver
 //! called if an event happened.
 bool CGUIEditBox::OnEvent(const SEvent& event)
 {
-	if (IsEnabled)
+	if (isEnabled())
 	{
 
 		switch(event.EventType)
@@ -279,7 +303,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 				sc = Text.subString(realmbgn, realmend - realmbgn).c_str();
 				Operator->copyToClipboard(sc.c_str());
 
-				if (IsEnabled)
+				if (isEnabled())
 				{
 					// delete
 					core::stringw s;
@@ -295,7 +319,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 			}
 			break;
 		case KEY_KEY_V:
-			if ( !IsEnabled )
+			if ( !isEnabled() )
 				break;
 
 			// paste from the clipboard
@@ -551,7 +575,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 		break;
 
 	case KEY_BACK:
-		if ( !this->IsEnabled )
+		if ( !isEnabled() )
 			break;
 
 		if (Text.size())
@@ -591,7 +615,7 @@ bool CGUIEditBox::processKey(const SEvent& event)
 		}
 		break;
 	case KEY_DELETE:
-		if ( !this->IsEnabled )
+		if ( !isEnabled() )
 			break;
 
 		if (Text.size() != 0)
@@ -691,28 +715,29 @@ void CGUIEditBox::draw()
 	if (!skin)
 		return;
 
-	FrameRect = AbsoluteRect;
+	EGUI_DEFAULT_COLOR bgCol = EGDC_GRAY_EDITABLE;
+	if ( isEnabled() )
+		bgCol = focus ? EGDC_FOCUSED_EDITABLE : EGDC_EDITABLE;
 
-	// draw the border
+	if (!Border && Background)
+	{
+		skin->draw2DRectangle(this, skin->getColor(bgCol), AbsoluteRect, &AbsoluteClippingRect);
+	}
 
 	if (Border)
 	{
-		skin->draw3DSunkenPane(this, skin->getColor(EGDC_WINDOW),
-			false, true, FrameRect, &AbsoluteClippingRect);
+		// draw the border
+		skin->draw3DSunkenPane(this, skin->getColor(bgCol), false, Background, AbsoluteRect, &AbsoluteClippingRect);
 
-		FrameRect.UpperLeftCorner.X += skin->getSize(EGDS_TEXT_DISTANCE_X)+1;
-		FrameRect.UpperLeftCorner.Y += skin->getSize(EGDS_TEXT_DISTANCE_Y)+1;
-		FrameRect.LowerRightCorner.X -= skin->getSize(EGDS_TEXT_DISTANCE_X)+1;
-		FrameRect.LowerRightCorner.Y -= skin->getSize(EGDS_TEXT_DISTANCE_Y)+1;
+		calculateFrameRect();
 	}
+
 	core::rect<s32> localClipRect = FrameRect;
 	localClipRect.clipAgainst(AbsoluteClippingRect);
 
 	// draw the text
 
-	IGUIFont* font = OverrideFont;
-	if (!OverrideFont)
-		font = skin->getFont();
+	IGUIFont* font = getActiveFont();
 
 	s32 cursorLine = 0;
 	s32 charcursorpos = 0;
@@ -746,7 +771,7 @@ void CGUIEditBox::draw()
 
 		if (Text.size())
 		{
-			if (!IsEnabled && !OverrideColorEnabled)
+			if (!isEnabled() && !OverrideColorEnabled)
 			{
 				OverrideColorEnabled = true;
 				OverrideColor = skin->getColor(EGDC_GRAY_TEXT);
@@ -1010,10 +1035,7 @@ bool CGUIEditBox::processMouse(const SEvent& event)
 
 s32 CGUIEditBox::getCursorPos(s32 x, s32 y)
 {
-	IGUIFont* font = OverrideFont;
-	IGUISkin* skin = Environment->getSkin();
-	if (!OverrideFont)
-		font = skin->getFont();
+	IGUIFont* font = getActiveFont();
 
 	const u32 lineCount = (WordWrap || MultiLine) ? BrokenText.size() : 1;
 
@@ -1042,7 +1064,10 @@ s32 CGUIEditBox::getCursorPos(s32 x, s32 y)
 	if (x < CurrentTextRect.UpperLeftCorner.X)
 		x = CurrentTextRect.UpperLeftCorner.X;
 
-	s32 idx = font->getCharacterFromPos(Text.c_str(), x - CurrentTextRect.UpperLeftCorner.X);
+	if ( !txtLine )
+		return 0;
+
+	s32 idx = font->getCharacterFromPos(txtLine->c_str(), x - CurrentTextRect.UpperLeftCorner.X);
 
 	// click was on or left of the line
 	if (idx != -1)
@@ -1056,18 +1081,13 @@ s32 CGUIEditBox::getCursorPos(s32 x, s32 y)
 //! Breaks the single text line.
 void CGUIEditBox::breakText()
 {
-	IGUISkin* skin = Environment->getSkin();
-
-	if ((!WordWrap && !MultiLine) || !skin)
+	if ((!WordWrap && !MultiLine))
 		return;
 
 	BrokenText.clear(); // need to reallocate :/
 	BrokenTextPositions.set_used(0);
 
-	IGUIFont* font = OverrideFont;
-	if (!OverrideFont)
-		font = skin->getFont();
-
+	IGUIFont* font = getActiveFont();
 	if (!font)
 		return;
 
@@ -1090,7 +1110,7 @@ void CGUIEditBox::breakText()
 		if (c == L'\r') // Mac or Windows breaks
 		{
 			lineBreak = true;
-			c = ' ';
+			c = 0;
 			if (Text[i+1] == L'\n') // Windows breaks
 			{
 				Text.erase(i+1);
@@ -1100,7 +1120,7 @@ void CGUIEditBox::breakText()
 		else if (c == L'\n') // Unix breaks
 		{
 			lineBreak = true;
-			c = ' ';
+			c = 0;
 		}
 
 		// don't break if we're not a multi-line edit box
@@ -1109,35 +1129,35 @@ void CGUIEditBox::breakText()
 
 		if (c == L' ' || c == 0 || i == (size-1))
 		{
-			if (word.size())
+			// here comes the next whitespace, look if
+			// we can break the last word to the next line
+			// We also break whitespace, otherwise cursor would vanish beside the right border.
+			s32 whitelgth = font->getDimension(whitespace.c_str()).Width;
+			s32 worldlgth = font->getDimension(word.c_str()).Width;
+
+			if (WordWrap && length + worldlgth + whitelgth > elWidth)
 			{
-				// here comes the next whitespace, look if
-				// we can break the last word to the next line.
-				s32 whitelgth = font->getDimension(whitespace.c_str()).Width;
-				s32 worldlgth = font->getDimension(word.c_str()).Width;
-
-				if (WordWrap && length + worldlgth + whitelgth > elWidth)
-				{
-					// break to next line
-					length = worldlgth;
-					BrokenText.push_back(line);
-					BrokenTextPositions.push_back(lastLineStart);
-					lastLineStart = i - (s32)word.size();
-					line = word;
-				}
-				else
-				{
-					// add word to line
-					line += whitespace;
-					line += word;
-					length += whitelgth + worldlgth;
-				}
-
-				word = L"";
-				whitespace = L"";
+				// break to next line
+				length = worldlgth;
+				BrokenText.push_back(line);
+				BrokenTextPositions.push_back(lastLineStart);
+				lastLineStart = i - (s32)word.size();
+				line = word;
+			}
+			else
+			{
+				// add word to line
+				line += whitespace;
+				line += word;
+				length += whitelgth + worldlgth;
 			}
 
-			whitespace += c;
+			word = L"";
+			whitespace = L"";
+
+
+			if ( c )
+				whitespace += c;
 
 			// compute line break
 			if (lineBreak)
@@ -1169,16 +1189,14 @@ void CGUIEditBox::breakText()
 
 void CGUIEditBox::setTextRect(s32 line)
 {
-	core::dimension2du d;
-
-	IGUISkin* skin = Environment->getSkin();
-	if (!skin)
+	if ( line < 0 )
 		return;
 
-	IGUIFont* font = OverrideFont ? OverrideFont : skin->getFont();
-
+	IGUIFont* font = getActiveFont();
 	if (!font)
 		return;
+
+	core::dimension2du d;
 
 	// get text dimension
 	const u32 lineCount = (WordWrap || MultiLine) ? BrokenText.size() : 1;
@@ -1259,7 +1277,7 @@ s32 CGUIEditBox::getLineFromPos(s32 pos)
 
 void CGUIEditBox::inputChar(wchar_t c)
 {
-	if (!IsEnabled)
+	if (!isEnabled())
 		return;
 
 	if (c != 0)
@@ -1307,16 +1325,15 @@ void CGUIEditBox::calculateScrollPos()
 
 	// calculate horizontal scroll position
 	s32 cursLine = getLineFromPos(CursorPos);
+	if ( cursLine < 0 )
+		return;
 	setTextRect(cursLine);
 
 	// don't do horizontal scrolling when wordwrap is enabled.
 	if (!WordWrap)
 	{
 		// get cursor position
-		IGUISkin* skin = Environment->getSkin();
-		if (!skin)
-			return;
-		IGUIFont* font = OverrideFont ? OverrideFont : skin->getFont();
+		IGUIFont* font = getActiveFont();
 		if (!font)
 			return;
 
@@ -1350,6 +1367,21 @@ void CGUIEditBox::calculateScrollPos()
 	// todo: adjust scrollbar
 }
 
+void CGUIEditBox::calculateFrameRect()
+{
+	FrameRect = AbsoluteRect;
+	IGUISkin *skin = 0;
+	if (Environment)
+		skin = Environment->getSkin();
+	if (Border && skin)
+	{
+		FrameRect.UpperLeftCorner.X += skin->getSize(EGDS_TEXT_DISTANCE_X)+1;
+		FrameRect.UpperLeftCorner.Y += skin->getSize(EGDS_TEXT_DISTANCE_Y)+1;
+		FrameRect.LowerRightCorner.X -= skin->getSize(EGDS_TEXT_DISTANCE_X)+1;
+		FrameRect.LowerRightCorner.Y -= skin->getSize(EGDS_TEXT_DISTANCE_Y)+1;
+	}
+}
+
 //! set text markers
 void CGUIEditBox::setTextMarkers(s32 begin, s32 end)
 {
@@ -1381,6 +1413,8 @@ void CGUIEditBox::serializeAttributes(io::IAttributes* out, io::SAttributeReadWr
 {
 	// IGUIEditBox::serializeAttributes(out,options);
 
+	out->addBool  ("Border", 			  Border);
+	out->addBool  ("Background", 		  Background);
 	out->addBool  ("OverrideColorEnabled",OverrideColorEnabled );
 	out->addColor ("OverrideColor",       OverrideColor);
 	// out->addFont("OverrideFont",OverrideFont);
@@ -1404,6 +1438,8 @@ void CGUIEditBox::deserializeAttributes(io::IAttributes* in, io::SAttributeReadW
 {
 	IGUIEditBox::deserializeAttributes(in,options);
 
+	setDrawBorder( in->getAttributeAsBool("Border") );
+	setDrawBackground( in->getAttributeAsBool("Background") );
 	setOverrideColor(in->getAttributeAsColor("OverrideColor"));
 	enableOverrideColor(in->getAttributeAsBool("OverrideColorEnabled"));
 	setMax(in->getAttributeAsInt("MaxChars"));

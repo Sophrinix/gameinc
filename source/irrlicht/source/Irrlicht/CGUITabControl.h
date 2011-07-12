@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -65,11 +65,14 @@ namespace gui
 		//! Reads attributes of the element
 		virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options);
 
+		//! only for internal use by CGUITabControl
+		void refreshSkinColors();
 
 	private:
 
 		s32 Number;
 		video::SColor BackColor;
+		bool OverrideTextColorEnabled;
 		video::SColor TextColor;
 		bool DrawBackground;
 	};
@@ -94,6 +97,15 @@ namespace gui
 		//! Adds a tab that has already been created
 		virtual void addTab(CGUITab* tab);
 
+		//! Insert the tab at the given index
+		virtual IGUITab* insertTab(s32 idx, const wchar_t* caption, s32 id=-1);
+
+		//! Removes a tab from the tabcontrol
+		virtual void removeTab(s32 idx);
+
+		//! Clears the tabcontrol removing all tabs
+		virtual void clear();
+
 		//! Returns amount of tabs in the tabcontrol
 		virtual s32 getTabCount() const;
 
@@ -104,10 +116,13 @@ namespace gui
 		virtual bool setActiveTab(s32 idx);
 
 		//! Brings a tab to front.
-		virtual bool setActiveTab(IGUIElement *tab);
+		virtual bool setActiveTab(IGUITab *tab);
 
 		//! Returns which tab is currently active
 		virtual s32 getActiveTab() const;
+
+		//! get the the id of the tab at the given absolute coordinates
+		virtual s32 getTabAt(s32 xpos, s32 ypos) const;
 
 		//! called if an event happened.
 		virtual bool OnEvent(const SEvent& event);
@@ -125,16 +140,16 @@ namespace gui
 
 		//! Reads attributes of the element
 		virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options);
-		
+
 		//! Get the height of the tabs
 		virtual s32 getTabHeight() const;
 
 		//! set the maximal width of a tab. Per default width is 0 which means "no width restriction".
 		virtual void setTabMaxWidth(s32 width );
-			
+
 		//! get the maximal width of a tab
 		virtual s32 getTabMaxWidth() const;
-		
+
 		//! Set the alignment of the tabs
 		//! note: EGUIA_CENTER is not an option
 		virtual void setTabVerticalAlignment( gui::EGUI_ALIGNMENT alignment );
@@ -153,16 +168,17 @@ namespace gui
 
 	private:
 
-		bool selectTab(core::position2d<s32> p);
 		void scrollLeft();
 		void scrollRight();
 		bool needScrollControl( s32 startIndex=0, bool withScrollControl=false );
-		s32 calcTabWidth(s32 pos, IGUIFont* font, const wchar_t* text, bool withScrollControl );
+		s32 calcTabWidth(s32 pos, IGUIFont* font, const wchar_t* text, bool withScrollControl ) const;
+		core::rect<s32> calcTabPos();
 
 		void recalculateScrollButtonPlacement();
 		void recalculateScrollBar();
+		void refreshSprites();
 
-		core::array<CGUITab*> Tabs;
+		core::array<CGUITab*> Tabs;	// CGUITab* because we need setNumber (which is certainly not nice)
 		s32 ActiveTab;
 		bool Border;
 		bool FillBackground;

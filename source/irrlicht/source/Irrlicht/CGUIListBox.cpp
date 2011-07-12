@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -36,7 +36,7 @@ CGUIListBox::CGUIListBox(IGUIEnvironment* environment, IGUIElement* parent,
 	IGUISkin* skin = Environment->getSkin();
 	const s32 s = skin->getSize(EGDS_SCROLLBAR_SIZE);
 
-	ScrollBar = new CGUIScrollBar(false, Environment, this, 0,
+	ScrollBar = new CGUIScrollBar(false, Environment, this, -1,
 		core::rect<s32>(RelativeRect.getWidth() - s, 0, RelativeRect.getWidth(), RelativeRect.getHeight()),
 		!clip);
 	ScrollBar->setSubElement(true);
@@ -125,6 +125,23 @@ void CGUIListBox::removeItem(u32 id)
 }
 
 
+s32 CGUIListBox::getItemAt(s32 xpos, s32 ypos) const
+{
+	if ( 	xpos < AbsoluteRect.UpperLeftCorner.X || xpos >= AbsoluteRect.LowerRightCorner.X
+		||	ypos < AbsoluteRect.UpperLeftCorner.Y || ypos >= AbsoluteRect.LowerRightCorner.Y
+		)
+		return -1;
+
+	if ( ItemHeight == 0 )
+		return -1;
+
+	s32 item = ((ypos - AbsoluteRect.UpperLeftCorner.Y - 1) + ScrollBar->getPos()) / ItemHeight;
+	if ( item < 0 || item >= (s32)Items.size())
+		return -1;
+
+	return item;
+}
+
 //! clears the list
 void CGUIListBox::clear()
 {
@@ -162,7 +179,7 @@ void CGUIListBox::recalculateItemHeight()
 	}
 
 	TotalItemHeight = ItemHeight * Items.size();
-	ScrollBar->setMax(TotalItemHeight - AbsoluteRect.getHeight());
+	ScrollBar->setMax( core::max_(0, TotalItemHeight - AbsoluteRect.getHeight()) );
 	s32 minItemHeight = ItemHeight > 0 ? ItemHeight : 1;
 	ScrollBar->setSmallStep ( minItemHeight );
 	ScrollBar->setLargeStep ( 2*minItemHeight );
@@ -213,7 +230,7 @@ void CGUIListBox::setSelected(const wchar_t *item)
 //! called if an event happened.
 bool CGUIListBox::OnEvent(const SEvent& event)
 {
-	if (IsEnabled)
+	if (isEnabled())
 	{
 		switch(event.EventType)
 		{
@@ -388,7 +405,7 @@ bool CGUIListBox::OnEvent(const SEvent& event)
 				switch(event.MouseInput.Event)
 				{
 				case EMIE_MOUSE_WHEEL:
-					ScrollBar->setPos(ScrollBar->getPos() + (s32)event.MouseInput.Wheel*-ItemHeight/2);
+					ScrollBar->setPos(ScrollBar->getPos() + (event.MouseInput.Wheel < 0 ? -1 : 1)*-ItemHeight/2);
 					return true;
 
 				case EMIE_LMOUSE_PRESSED_DOWN:
@@ -450,6 +467,8 @@ void CGUIListBox::selectNew(s32 ypos, bool onlyHover)
 
 	recalculateScrollPos();
 
+	gui::EGUI_EVENT_TYPE eventType = (Selected == oldSelected && now < selectTime + 500) ? EGET_LISTBOX_SELECTED_AGAIN : EGET_LISTBOX_CHANGED;
+	selectTime = now;
 	// post the news
 	if (Parent && !onlyHover)
 	{
@@ -457,10 +476,9 @@ void CGUIListBox::selectNew(s32 ypos, bool onlyHover)
 		event.EventType = EET_GUI_EVENT;
 		event.GUIEvent.Caller = this;
 		event.GUIEvent.Element = 0;
-		event.GUIEvent.EventType = (Selected == oldSelected && now < selectTime + 500) ? EGET_LISTBOX_SELECTED_AGAIN : EGET_LISTBOX_CHANGED;
+		event.GUIEvent.EventType = eventType;
 		Parent->OnEvent(event);
 	}
-	selectTime = now;
 }
 
 
@@ -523,9 +541,6 @@ void CGUIListBox::draw()
 		{
 			if (i == Selected && hl)
 				skin->draw2DRectangle(this, skin->getColor(EGDC_HIGH_LIGHT), frameRect, &clientClip);
-			else
-				if( Items[ i ].OverrideColors[ EGUI_LBC_BACKGROUND ].Use )
-					skin->draw2DRectangle(this, Items[ i ].OverrideColors[ EGUI_LBC_BACKGROUND ].Color, frameRect, &clientClip);
 
 			core::rect<s32> textRect = frameRect;
 			textRect.UpperLeftCorner.X += 3;

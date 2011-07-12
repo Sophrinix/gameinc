@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -25,7 +25,7 @@ public:
 
 	//! constructor
 	CParticleSystemSceneNode(bool createDefaultEmitter,
-		ISceneNode* parent, ISceneManager* mgr, s32 id, 
+		ISceneNode* parent, ISceneManager* mgr, s32 id,
 		const core::vector3df& position,
 		const core::vector3df& rotation,
 		const core::vector3df& scale);
@@ -41,6 +41,9 @@ public:
 
 	//! Adds new particle affector to the particle system.
 	virtual void addAffector(IParticleAffector* affector);
+
+	//! Get a list of all particle affectors.
+	virtual const core::list<IParticleAffector*>& getAffectors() const;
 
 	//! Removes all particle affectors in the particle system.
 	virtual void removeAllAffectors();
@@ -77,7 +80,7 @@ public:
 	//! Creates a box particle emitter.
 	virtual IParticleBoxEmitter* createBoxEmitter(
 		const core::aabbox3df& box = core::aabbox3d<f32>(-10,0,-10,5,30,10),
-		const core::vector3df& direction = core::vector3df(0.0f,0.03f,0.0f), 
+		const core::vector3df& direction = core::vector3df(0.0f,0.03f,0.0f),
 		u32 minParticlesPerSecond = 5,
 		u32 maxParticlesPerSecond = 10,
 		const video::SColor& minStartColor = video::SColor(255,0,0,0),
@@ -117,7 +120,7 @@ public:
 
 	//! Creates a point particle emitter.
 	virtual IParticlePointEmitter* createPointEmitter(
-		const core::vector3df& direction = core::vector3df(0.0f,0.03f,0.0f), 
+		const core::vector3df& direction = core::vector3df(0.0f,0.03f,0.0f),
 		u32 minParticlesPerSecond = 5,
 		u32 maxParticlesPerSecond = 10,
 		const video::SColor& minStartColor = video::SColor(255,0,0,0),
@@ -187,6 +190,14 @@ public:
 	//! ignore it. Default is true.
 	virtual void setParticlesAreGlobal(bool global=true);
 
+	//! Remove all currently visible particles
+	virtual void clearParticles();
+
+	//! Do manually update the particles.
+ 	//! This should only be called when you want to render the node outside the scenegraph,
+ 	//! as the node will care about this otherwise automatically.
+	virtual void doParticleSystem(u32 time);
+
 	//! Writes attributes of the scene node.
 	virtual void serializeAttributes(io::IAttributes* out, io::SAttributeReadWriteOptions* options=0) const;
 
@@ -198,7 +209,6 @@ public:
 
 private:
 
-	void doParticleSystem(u32 time);
 	void reallocateBuffers();
 
 	core::list<IParticleAffector*> AffectorList;

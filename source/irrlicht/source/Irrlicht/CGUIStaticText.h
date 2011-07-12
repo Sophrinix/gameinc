@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -34,7 +34,10 @@ namespace gui
 		virtual void setOverrideFont(IGUIFont* font=0);
 
 		//! Gets the override font (if any)
-		virtual IGUIFont * getOverrideFont() const;
+		virtual IGUIFont* getOverrideFont() const;
+
+		//! Get the font which is used right now for drawing
+		virtual IGUIFont* getActiveFont() const;
 
 		//! Sets another color for the text.
 		virtual void setOverrideColor(video::SColor color);
@@ -44,9 +47,6 @@ namespace gui
 
 		//! Sets whether to draw the background
 		virtual void setDrawBackground(bool draw);
-
-		//! Return background draw
-		virtual bool getDrawBackground() { return Background; }
 
 		//! Sets whether to draw the border
 		virtual void setDrawBorder(bool draw);
@@ -63,6 +63,12 @@ namespace gui
 
 		//! Checks if an override color is enabled
 		virtual bool isOverrideColorEnabled() const;
+
+		//! Set whether the text in this label should be clipped if it goes outside bounds
+		virtual void setTextRestrainedInside(bool restrainedInside);
+
+		//! Checks if the text in this label should be clipped if it goes outside bounds
+		virtual bool isTextRestrainedInside() const;
 
 		//! Enables or disables word wrap for using the static text as
 		//! multiline text control.
@@ -83,6 +89,17 @@ namespace gui
 		//! Updates the absolute position, splits text if word wrap is enabled
 		virtual void updateAbsolutePosition();
 
+		//! Set whether the string should be interpreted as right-to-left (RTL) text
+		/** \note This component does not implement the Unicode bidi standard, the
+		text of the component should be already RTL if you call this. The
+		main difference when RTL is enabled is that the linebreaks for multiline
+		elements are performed starting from the end.
+		*/
+		virtual void setRightToLeft(bool rtl);
+
+		//! Checks if the text should be interpreted as right-to-left text
+		virtual bool isRightToLeft() const;
+
 		//! Writes attributes of the element.
 		virtual void serializeAttributes(io::IAttributes* out, io::SAttributeReadWriteOptions* options) const;
 
@@ -97,8 +114,11 @@ namespace gui
 		EGUI_ALIGNMENT HAlign, VAlign;
 		bool Border;
 		bool OverrideColorEnabled;
+		bool OverrideBGColorEnabled;
 		bool WordWrap;
 		bool Background;
+		bool RestrainTextInside;
+		bool RightToLeft;
 
 		video::SColor OverrideColor, BGColor;
 		gui::IGUIFont* OverrideFont;

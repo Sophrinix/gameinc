@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -15,7 +15,11 @@
 #endif
 
 #include "CNullDriver.h"
+#include "SIrrCreationParameters.h"
 #include "IMaterialRendererServices.h"
+#if defined(__BORLANDC__) || defined (__BCPLUSPLUS__)
+#include "irrMath.h"    // needed by borland for sqrtf define
+#endif
 #include <d3d9.h>
 
 namespace irr
@@ -47,8 +51,7 @@ namespace video
 		friend class CD3D9Texture;
 
 		//! constructor
-		CD3D9Driver(const core::dimension2d<u32>& screenSize, HWND window, bool fullscreen,
-			bool stencibuffer, io::IFileSystem* io, bool pureSoftware=false);
+		CD3D9Driver(const SIrrlichtCreationParameters& params, io::IFileSystem* io);
 
 		//! destructor
 		virtual ~CD3D9Driver();
@@ -116,6 +119,30 @@ namespace video
 		//! Draw hardware buffer
 		virtual void drawHardwareBuffer(SHWBufferLink *HWBuffer);
 
+		//! Create occlusion query.
+		/** Use node for identification and mesh for occlusion test. */
+		virtual void addOcclusionQuery(scene::ISceneNode* node,
+				const scene::IMesh* mesh=0);
+
+		//! Remove occlusion query.
+		virtual void removeOcclusionQuery(scene::ISceneNode* node);
+
+		//! Run occlusion query. Draws mesh stored in query.
+		/** If the mesh shall not be rendered visible, use
+		overrideMaterial to disable the color and depth buffer. */
+		virtual void runOcclusionQuery(scene::ISceneNode* node, bool visible=false);
+
+		//! Update occlusion query. Retrieves results from GPU.
+		/** If the query shall not block, set the flag to false.
+		Update might not occur in this case, though */
+		virtual void updateOcclusionQuery(scene::ISceneNode* node, bool block=true);
+
+		//! Return query result.
+		/** Return value is the number of visible pixels/fragments.
+		The value is a safe approximation, i.e. can be larger then the
+		actual value of pixels. */
+		virtual u32 getOcclusionQueryResult(scene::ISceneNode* node) const;
+
 		//! draws a vertex primitive list
 		virtual void drawVertexPrimitiveList(const void* vertices, u32 vertexCount,
 				const void* indexList, u32 primitiveCount,
@@ -164,9 +191,7 @@ namespace video
 			const core::vector3df& end, SColor color = SColor(255,255,255,255));
 
 		//! initialises the Direct3D API
-		bool initDriver(const core::dimension2d<u32>& screenSize, HWND hwnd,
-				u32 bits, bool fullScreen, bool pureSoftware,
-				bool highPrecisionFPU, bool vsync, u8 antiAlias);
+		bool initDriver(HWND hwnd, bool pureSoftware);
 
 		//! \return Returns the name of the video driver. Example: In case of the DIRECT3D8
 		//! driver, it would return "Direct3D8.1".
@@ -253,7 +278,7 @@ namespace video
 		virtual void clearZBuffer();
 
 		//! Returns an image created from the last rendered frame.
-		virtual IImage* createScreenShot();
+		virtual IImage* createScreenShot(video::ECOLOR_FORMAT format=video::ECF_UNKNOWN, video::E_RENDER_TARGET target=video::ERT_FRAME_BUFFER);
 
 		//! Set/unset a clipping plane.
 		virtual bool setClipPlane(u32 index, const core::plane3df& plane, bool enable=false);
@@ -385,8 +410,6 @@ namespace video
 		SMaterial Material, LastMaterial;
 		bool ResetRenderStates; // bool to make all renderstates be reseted if set.
 		bool Transformation3DChanged;
-		bool StencilBuffer;
-		u8 AntiAliasing;
 		const ITexture* CurrentTexture[MATERIAL_MAX_TEXTURES];
 		bool LastTextureMipMapsAvailable[MATERIAL_MAX_TEXTURES];
 		core::matrix4 Matrices[ETS_COUNT]; // matrizes of the 3d mode we need to restore when we switch back from the 2d mode.
@@ -397,12 +420,13 @@ namespace video
 
 		IDirect3DSurface9* PrevRenderTarget;
 		core::dimension2d<u32> CurrentRendertargetSize;
-		core::dimension2d<u32> CurrentDepthBufferSize;
 
 		HWND WindowId;
 		core::rect<s32>* SceneSourceRect;
 
 		D3DCAPS9 Caps;
+
+		SIrrlichtCreationParameters Params;
 
 		E_VERTEX_TYPE LastVertexType;
 
@@ -415,6 +439,8 @@ namespace video
 
 		u32 MaxTextureUnits;
 		u32 MaxUserClipPlanes;
+		u32 MaxMRTs;
+		u32 NumSetMRTs;
 		f32 MaxLightDistance;
 		s32 LastSetLight;
 
@@ -425,13 +451,11 @@ namespace video
 			EC2D_ALPHA_CHANNEL = 0x4
 		};
 
-		u32 Cached2DModeSignature;
-
 		ECOLOR_FORMAT ColorFormat;
 		D3DFORMAT D3DColorFormat;
 		bool DeviceLost;
-		bool Fullscreen;
 		bool DriverWasReset;
+		bool OcclusionQuerySupport;
 		bool AlphaToCoverageSupport;
 	};
 

@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -31,10 +31,10 @@ CGUIModalScreen::CGUIModalScreen(IGUIEnvironment* environment, IGUIElement* pare
 
 bool CGUIModalScreen::canTakeFocus(IGUIElement* target) const
 {
-    return (target && (target == this // this element can take it
-                        || isMyChild(target)    // own childs also
+    return (target && ((const IGUIElement*)target == this // this element can take it
+                        || isMyChild(target)    // own children also
                         || (target->getType() == EGUIET_MODAL_SCREEN )// other modals also fine
-                        || (target->getParent() && target->getParent()->getType() == EGUIET_MODAL_SCREEN )))   // childs of other modals will do
+                        || (target->getParent() && target->getParent()->getType() == EGUIET_MODAL_SCREEN )))   // children of other modals will do
             ;
 }
 
@@ -77,7 +77,7 @@ bool CGUIModalScreen::isPointInside(const core::position2d<s32>& point) const
 //! called if an event happened.
 bool CGUIModalScreen::OnEvent(const SEvent& event)
 {
-    if (!IsEnabled || !isVisible() )
+    if (!isEnabled() || !isVisible() )
         return IGUIElement::OnEvent(event);
 
     switch(event.EventType)
@@ -88,14 +88,27 @@ bool CGUIModalScreen::OnEvent(const SEvent& event)
 		case EGET_ELEMENT_FOCUSED:
 			if ( !canTakeFocus(event.GUIEvent.Caller))
 			{
-				Environment->setFocus(this);
+				if ( !Children.empty() )
+					Environment->setFocus(*(Children.begin()));
+				else
+					Environment->setFocus(this);
 			}
 			IGUIElement::OnEvent(event);
 			return false;
 		case EGET_ELEMENT_FOCUS_LOST:
 			if ( !canTakeFocus(event.GUIEvent.Element))
             {
-				MouseDownTime = os::Timer::getTime();
+            	if ( isMyChild(event.GUIEvent.Caller) )
+				{
+					if ( !Children.empty() )
+						Environment->setFocus(*(Children.begin()));
+					else
+						Environment->setFocus(this);
+				}
+				else
+				{
+					MouseDownTime = os::Timer::getTime();
+				}
 				return true;
 			}
 			else
@@ -118,7 +131,7 @@ bool CGUIModalScreen::OnEvent(const SEvent& event)
 		break;
 	}
 
-	IGUIElement::OnEvent(event);
+	IGUIElement::OnEvent(event);	// anyone knows why events are passed on here? Causes p.e. problems when this is child of a CGUIWindow.
 
 	return true; // absorb everything else
 }

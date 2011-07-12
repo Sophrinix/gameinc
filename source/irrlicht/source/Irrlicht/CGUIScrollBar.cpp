@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -59,7 +59,7 @@ CGUIScrollBar::~CGUIScrollBar()
 //! called if an event happened.
 bool CGUIScrollBar::OnEvent(const SEvent& event)
 {
-	if (IsEnabled)
+	if (isEnabled())
 	{
 
 		switch(event.EventType)
@@ -141,12 +141,12 @@ bool CGUIScrollBar::OnEvent(const SEvent& event)
 			{
 			case EMIE_MOUSE_WHEEL:
 				if (Environment->hasFocus(this))
-				{ 
+				{
 					// thanks to a bug report by REAPER
 					// thanks to tommi by tommi for another bugfix
 					// everybody needs a little thanking. hallo niko!;-)
-					setPos(	getPos() + 
-							( (s32)event.MouseInput.Wheel * SmallStep * (Horizontal ? 1 : -1 ) )
+					setPos(	getPos() +
+							( (event.MouseInput.Wheel < 0 ? -1 : 1) * SmallStep * (Horizontal ? 1 : -1 ) )
 							);
 
 					SEvent newEvent;
@@ -178,7 +178,11 @@ bool CGUIScrollBar::OnEvent(const SEvent& event)
 					Dragging = false;
 
 				if ( !Dragging )
+				{
+					if ( event.MouseInput.Event == EMIE_MOUSE_MOVED )
+						break;
 					return isInside;
+				}
 
 				if ( event.MouseInput.Event == EMIE_LMOUSE_LEFT_UP )
 					Dragging = false;
@@ -205,7 +209,7 @@ bool CGUIScrollBar::OnEvent(const SEvent& event)
 							return isInside;
 					}
 				}
-				
+
 				if (DraggedBySlider)
 				{
 					setPos(newPos);
@@ -278,6 +282,13 @@ void CGUIScrollBar::draw()
 	IGUISkin* skin = Environment->getSkin();
 	if (!skin)
 		return;
+
+
+	video::SColor iconColor = skin->getColor(isEnabled() ? EGDC_WINDOW_SYMBOL : EGDC_GRAY_WINDOW_SYMBOL);
+	if ( iconColor != CurrentIconColor )
+	{
+		refreshControls();
+	}
 
 
 	SliderRect = AbsoluteRect;
@@ -399,7 +410,9 @@ s32 CGUIScrollBar::getMax() const
 //! sets the maximum value of the scrollbar.
 void CGUIScrollBar::setMax(s32 max)
 {
-	Max = core::max_ ( max, Min );
+	Max = max;
+	if ( Min > Max )
+		Min = Max;
 
 	bool enable = core::isnotzero ( range() );
 	UpButton->setEnabled(enable);
@@ -407,7 +420,7 @@ void CGUIScrollBar::setMax(s32 max)
 	setPos(Pos);
 }
 
-//! gets the maximum value of the scrollbar.
+//! gets the minimum value of the scrollbar.
 s32 CGUIScrollBar::getMin() const
 {
 	return Min;
@@ -417,7 +430,10 @@ s32 CGUIScrollBar::getMin() const
 //! sets the minimum value of the scrollbar.
 void CGUIScrollBar::setMin(s32 min)
 {
-	Min = core::min_ ( min, Max );
+	Min = min;
+	if ( Max < Min )
+		Max = Min;
+
 
 	bool enable = core::isnotzero ( range() );
 	UpButton->setEnabled(enable);
@@ -436,7 +452,7 @@ s32 CGUIScrollBar::getPos() const
 //! refreshes the position and text on child buttons
 void CGUIScrollBar::refreshControls()
 {
-	video::SColor color(255,255,255,255);
+	CurrentIconColor = video::SColor(255,255,255,255);
 
 	IGUISkin* skin = Environment->getSkin();
 	IGUISpriteBank* sprites = 0;
@@ -444,7 +460,7 @@ void CGUIScrollBar::refreshControls()
 	if (skin)
 	{
 		sprites = skin->getSpriteBank();
-		color = skin->getColor(EGDC_WINDOW_SYMBOL);
+		CurrentIconColor = skin->getColor(isEnabled() ? EGDC_WINDOW_SYMBOL : EGDC_GRAY_WINDOW_SYMBOL);
 	}
 
 	if (Horizontal)
@@ -459,8 +475,8 @@ void CGUIScrollBar::refreshControls()
 		if (sprites)
 		{
 			UpButton->setSpriteBank(sprites);
-			UpButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_LEFT), color);
-			UpButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_LEFT), color);
+			UpButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_LEFT), CurrentIconColor);
+			UpButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_LEFT), CurrentIconColor);
 		}
 		UpButton->setRelativePosition(core::rect<s32>(0,0, h, h));
 		UpButton->setAlignment(EGUIA_UPPERLEFT, EGUIA_UPPERLEFT, EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT);
@@ -473,8 +489,8 @@ void CGUIScrollBar::refreshControls()
 		if (sprites)
 		{
 			DownButton->setSpriteBank(sprites);
-			DownButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_RIGHT), color);
-			DownButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_RIGHT), color);
+			DownButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_RIGHT), CurrentIconColor);
+			DownButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_RIGHT), CurrentIconColor);
 		}
 		DownButton->setRelativePosition(core::rect<s32>(RelativeRect.getWidth()-h, 0, RelativeRect.getWidth(), h));
 		DownButton->setAlignment(EGUIA_LOWERRIGHT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT);
@@ -491,8 +507,8 @@ void CGUIScrollBar::refreshControls()
 		if (sprites)
 		{
 			UpButton->setSpriteBank(sprites);
-			UpButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_UP), color);
-			UpButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_UP), color);
+			UpButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_UP), CurrentIconColor);
+			UpButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_UP), CurrentIconColor);
 		}
 		UpButton->setRelativePosition(core::rect<s32>(0,0, w, w));
 		UpButton->setAlignment(EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_UPPERLEFT);
@@ -505,8 +521,8 @@ void CGUIScrollBar::refreshControls()
 		if (sprites)
 		{
 			DownButton->setSpriteBank(sprites);
-			DownButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_DOWN), color);
-			DownButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_DOWN), color);
+			DownButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_DOWN), CurrentIconColor);
+			DownButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_DOWN), CurrentIconColor);
 		}
 		DownButton->setRelativePosition(core::rect<s32>(0,RelativeRect.getHeight()-w, w, RelativeRect.getHeight()));
 		DownButton->setAlignment(EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT, EGUIA_LOWERRIGHT, EGUIA_LOWERRIGHT);
@@ -525,6 +541,7 @@ void CGUIScrollBar::serializeAttributes(io::IAttributes* out, io::SAttributeRead
 	out->addInt ("Max",			Max);
 	out->addInt ("SmallStep",	SmallStep);
 	out->addInt ("LargeStep",	LargeStep);
+	// CurrentIconColor - not serialized as continuiously updated
 }
 
 
@@ -539,6 +556,7 @@ void CGUIScrollBar::deserializeAttributes(io::IAttributes* in, io::SAttributeRea
 	setPos(in->getAttributeAsInt("Value"));
 	setSmallStep(in->getAttributeAsInt("SmallStep"));
 	setLargeStep(in->getAttributeAsInt("LargeStep"));
+	// CurrentIconColor - not serialized as continuiously updated
 
 	refreshControls();
 }

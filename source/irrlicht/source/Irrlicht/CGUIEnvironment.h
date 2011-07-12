@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -28,7 +28,7 @@ class CGUIEnvironment : public IGUIEnvironment, public IGUIElement
 public:
 
 	//! constructor
-	CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op, ICursorControl* cursor );
+	CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op);
 
 	//! destructor
 	virtual ~CGUIEnvironment();
@@ -82,6 +82,9 @@ public:
 
 	//! add an externally loaded font
 	virtual IGUIFont* addFont(const io::path& name, IGUIFont* font);
+
+	//! remove loaded font
+	virtual void removeFont(IGUIFont* font);
 
 	//! returns default font
 	virtual IGUIFont* getBuiltInFont() const;
@@ -289,7 +292,9 @@ private:
 	{
 		IGUIStaticText* Element;
 		u32 LastTime;
+		u32 EnterTime;
 		u32 LaunchTime;
+		u32 RelaunchTime;
 	};
 
 	SToolTip ToolTip;
@@ -300,8 +305,8 @@ private:
 	core::array<SSpriteBank> Banks;
 	video::IVideoDriver* Driver;
 	IGUIElement* Hovered;
+	IGUIElement* HoveredNoSubelement;	// subelements replaced by their parent, so you only have 'real' elements here
 	IGUIElement* Focus;
-	ICursorControl* _cursor;
 	core::position2d<s32> LastHoveredMousePos;
 	IGUISkin* CurrentSkin;
 	io::IFileSystem* FileSystem;

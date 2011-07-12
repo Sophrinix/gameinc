@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -56,6 +56,9 @@ namespace gui
 
 		//! set a column width
 		virtual void setColumnWidth(u32 columnIndex, u32 width);
+
+		//! Get the width of a column
+		virtual u32 getColumnWidth(u32 columnIndex) const;
 
 		//! columns can be resized by drag 'n drop
 		virtual void setResizableColumns(bool resizable);
@@ -133,13 +136,12 @@ namespace gui
 
 		//! draws the element and its children
 		virtual void draw();
+
 		//! Set flags, as defined in EGUI_TABLE_DRAW_FLAGS, which influence the layout
 		virtual void setDrawFlags(s32 flags);
 
 		//! Get the flags, as defined in EGUI_TABLE_DRAW_FLAGS, which influence the layout
 		virtual s32 getDrawFlags() const;
-
-		virtual void SetItemHeight( s32 height );
 
 		//! Writes attributes of the object.
 		//! Implement this to expose the attributes of your scene node animator for
@@ -159,9 +161,10 @@ namespace gui
 
 		struct Cell
 		{
-			Cell() : Data(0) {}
+			Cell() : IsOverrideColor(false), Data(0)  {}
 			core::stringw Text;
 			core::stringw BrokenText;
+			bool IsOverrideColor;
 			video::SColor Color;
 			void *Data;
 		};
@@ -176,7 +179,6 @@ namespace gui
 		{
 			Column() : Width(0), OrderingMode(EGCO_NONE) {}
 			core::stringw Name;
-			video::SColor TextColor;
 			u32 Width;
 			EGUI_COLUMN_ORDERING OrderingMode;
 		};
@@ -203,7 +205,6 @@ namespace gui
 		bool ResizableColumns;
 
 		s32 ItemHeight;
-		s32 overItemHeight_;
 		s32 TotalItemHeight;
 		s32 TotalItemWidth;
 		s32 Selected;

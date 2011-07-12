@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -131,9 +131,12 @@ struct SColladaMaterial
 //! Collada effect (materials, shaders, and programs)
 struct SColladaEffect
 {
-	video::SMaterial Mat;
 	core::stringc Id;
 	f32 Transparency;
+	core::array<core::stringc> Textures;
+	video::SMaterial Mat;
+	// TODO: Parameters looks somewhat lazy workaround, I think we should really read all parameters correct.
+	io::IAttributes * Parameters;	
 
 	inline bool operator< (const SColladaEffect & other) const
 	{
@@ -213,7 +216,7 @@ private:
 	void readAssetSection(io::IXMLReaderUTF8* reader);
 
 	//! reads a <node> section and its content
-	//! if a prefab pointer is passed the nodes are created as scene prefabs childs of that prefab
+	//! if a prefab pointer is passed the nodes are created as scene prefabs children of that prefab
 	void readNodeSection(io::IXMLReaderUTF8* reader, scene::ISceneNode* parent, CScenePrefab* p=0);
 
 	//! reads a <lookat> element and its content and creates a matrix from it
@@ -297,7 +300,7 @@ private:
 	//! clears all loaded data
 	void clearData();
 
-	//! parses all collada parameters inside an element and stores them in Parameters
+	//! parses all collada parameters inside an element and stores them in ColladaParameters
 	void readColladaParameters(io::IXMLReaderUTF8* reader, const core::stringc& parentName);
 
 	//! returns a collada parameter or none if not found
@@ -331,10 +334,10 @@ private:
 	void readBindMaterialSection(io::IXMLReaderUTF8* reader, const core::stringc & id);
 
 	//! create an Irrlicht texture from the SColladaImage
-	video::ITexture* getTextureFromImage(core::stringc uri);
+	video::ITexture* getTextureFromImage(core::stringc uri, SColladaEffect * effect);
 
 	//! read a parameter and value
-	void readParameter(io::IXMLReaderUTF8* reader);
+	void readParameter(io::IXMLReaderUTF8* reader, io::IAttributes* parameters);
 
 	scene::ISceneManager* SceneManager;
 	io::IFileSystem* FileSystem;
@@ -355,9 +358,10 @@ private:
 	core::array<SColladaMaterial> Materials;
 	core::array<SColladaInput> Inputs;
 	core::array<SColladaEffect> Effects;
+	//! meshbuffer reference ("geomid/matname") -> index into MeshesToBind
 	core::map<core::stringc,u32> MaterialsToBind;
+	//! Array of buffers for each material binding
 	core::array< core::array<irr::scene::IMeshBuffer*> > MeshesToBind;
-	io::CAttributes Parameters;
 
 	bool CreateInstances;
 };

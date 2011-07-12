@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt / Thomas Alten
+// Copyright (C) 2002-2011 Nikolaus Gebhardt / Thomas Alten
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -52,7 +52,10 @@ void CImage::initData()
 	Pitch = BytesPerPixel * Size.Width;
 
 	if (!Data)
+	{
+		DeleteMemory=true;
 		Data = new u8[Size.Height * Pitch];
+	}
 }
 
 
@@ -445,56 +448,6 @@ inline SColor CImage::getPixelBox( s32 x, s32 y, s32 fx, s32 fy, s32 bias ) cons
 
 	c.set( a, r, g, b );
 	return c;
-}
-
-
-// Methods for Software drivers, non-virtual and not necessary to copy into other image classes
-//! draws a rectangle
-void CImage::drawRectangle(const core::rect<s32>& rect, const SColor &color)
-{
-	Blit(color.getAlpha() == 0xFF ? BLITTER_COLOR : BLITTER_COLOR_ALPHA,
-			this, 0, &rect.UpperLeftCorner, 0, &rect, color.color);
-}
-
-
-//! draws a line from to with color
-void CImage::drawLine(const core::position2d<s32>& from, const core::position2d<s32>& to, const SColor &color)
-{
-	AbsRectangle clip;
-	GetClip( clip, this );
-
-	core::position2d<s32> p[2];
-
-	if ( ClipLine( clip, p[0], p[1], from, to ) )
-	{
-		u32 alpha = extractAlpha( color.color );
-
-		switch ( Format )
-		{
-			case ECF_A1R5G5B5:
-				if ( alpha == 256 )
-				{
-					RenderLine16_Decal( this, p[0], p[1], video::A8R8G8B8toA1R5G5B5( color.color ) );
-				}
-				else
-				{
-					RenderLine16_Blend( this, p[0], p[1], video::A8R8G8B8toA1R5G5B5( color.color ), alpha >> 3 );
-				}
-				break;
-			case ECF_A8R8G8B8:
-				if ( alpha == 256 )
-				{
-					RenderLine32_Decal( this, p[0], p[1], color.color );
-				}
-				else
-				{
-					RenderLine32_Blend( this, p[0], p[1], color.color, alpha );
-				}
-				break;
-			default:
-				break;
-		}
-	}
 }
 
 

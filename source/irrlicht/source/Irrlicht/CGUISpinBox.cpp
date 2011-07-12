@@ -1,4 +1,4 @@
-// Copyright (C) 2006-2009 Michael Zeilfelder
+// Copyright (C) 2006-2011 Michael Zeilfelder
 // This file uses the licence of the Irrlicht Engine.
 
 #include "CGUISpinBox.h"
@@ -29,6 +29,7 @@ CGUISpinBox::CGUISpinBox(const wchar_t* text, bool border,IGUIEnvironment* envir
 	setDebugName("CGUISpinBox");
 	#endif
 
+	CurrentIconColor = video::SColor(255,255,255,255);
 	s32 ButtonWidth = 16;
 	IGUISpriteBank *sb = 0;
 	if (environment && environment->getSkin())
@@ -52,27 +53,14 @@ CGUISpinBox::CGUISpinBox(const wchar_t* text, bool border,IGUIEnvironment* envir
 	ButtonSpinUp->setSubElement(true);
 	ButtonSpinUp->setTabStop(false);
 	ButtonSpinUp->setAlignment(EGUIA_LOWERRIGHT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_CENTER);
-	if (sb)
-	{
-		IGUISkin *skin = environment->getSkin();
-		ButtonSpinDown->setSpriteBank(sb);
-		ButtonSpinDown->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_SMALL_CURSOR_DOWN), skin->getColor(EGDC_WINDOW_SYMBOL));
-		ButtonSpinDown->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_SMALL_CURSOR_DOWN), skin->getColor(EGDC_WINDOW_SYMBOL));
-		ButtonSpinUp->setSpriteBank(sb);
-		ButtonSpinUp->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_SMALL_CURSOR_UP), skin->getColor(EGDC_WINDOW_SYMBOL));
-		ButtonSpinUp->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_SMALL_CURSOR_UP), skin->getColor(EGDC_WINDOW_SYMBOL));
-	}
-	else
-	{
-		ButtonSpinDown->setText(L"-");
-		ButtonSpinUp->setText(L"+");
-	}
 
 	const core::rect<s32> rectEdit(0, 0, rectangle.getWidth() - ButtonWidth - 1, rectangle.getHeight());
 	EditBox = Environment->addEditBox(text, rectEdit, border, this, -1);
 	EditBox->grab();
 	EditBox->setSubElement(true);
 	EditBox->setAlignment(EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT);
+
+	refreshSprites();
 }
 
 
@@ -87,6 +75,31 @@ CGUISpinBox::~CGUISpinBox()
 		EditBox->drop();
 }
 
+void CGUISpinBox::refreshSprites()
+{
+	IGUISpriteBank *sb = 0;
+	if (Environment && Environment->getSkin())
+	{
+		sb = Environment->getSkin()->getSpriteBank();
+	}
+
+	if (sb)
+	{
+		IGUISkin * skin = Environment->getSkin();
+		CurrentIconColor = skin->getColor(isEnabled() ? EGDC_WINDOW_SYMBOL : EGDC_GRAY_WINDOW_SYMBOL);
+		ButtonSpinDown->setSpriteBank(sb);
+		ButtonSpinDown->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_SMALL_CURSOR_DOWN), CurrentIconColor);
+		ButtonSpinDown->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_SMALL_CURSOR_DOWN), CurrentIconColor);
+		ButtonSpinUp->setSpriteBank(sb);
+		ButtonSpinUp->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_SMALL_CURSOR_UP), CurrentIconColor);
+		ButtonSpinUp->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_SMALL_CURSOR_UP), CurrentIconColor);
+	}
+	else
+	{
+		ButtonSpinDown->setText(L"-");
+		ButtonSpinUp->setText(L"+");
+	}
+}
 
 IGUIEditBox* CGUISpinBox::getEditBox() const
 {
@@ -116,6 +129,8 @@ f32 CGUISpinBox::getValue() const
 
 void CGUISpinBox::setRange(f32 min, f32 max)
 {
+	if (max<min)
+		core::swap(min, max);
 	RangeMin = min;
 	RangeMax = max;
 	verifyValueRange();
@@ -174,7 +189,7 @@ bool CGUISpinBox::OnEvent(const SEvent& event)
 			{
 			case EMIE_MOUSE_WHEEL:
 				{
-					f32 val = getValue() + (StepSize * event.MouseInput.Wheel);
+					f32 val = getValue() + (StepSize * (event.MouseInput.Wheel < 0 ? -1.f : 1.f));
 					setValue(val);
 					changeEvent = true;
 				}
@@ -202,7 +217,7 @@ bool CGUISpinBox::OnEvent(const SEvent& event)
 					changeEvent = true;
 				}
 			}
-			if ( event.GUIEvent.EventType == EGET_EDITBOX_CHANGED )
+			if (event.GUIEvent.EventType == EGET_EDITBOX_CHANGED || event.GUIEvent.EventType == EGET_EDITBOX_ENTER)
 			{
 				if (event.GUIEvent.Caller == EditBox)
 				{
@@ -232,6 +247,24 @@ bool CGUISpinBox::OnEvent(const SEvent& event)
 	return IGUIElement::OnEvent(event);
 }
 
+
+void CGUISpinBox::draw()
+{
+	if ( !isVisible() )
+		return;
+
+	IGUISkin* skin = Environment->getSkin();
+	if (!skin)
+		return;
+
+	video::SColor iconColor = skin->getColor(isEnabled() ? EGDC_WINDOW_SYMBOL : EGDC_GRAY_WINDOW_SYMBOL);
+	if ( iconColor != CurrentIconColor )
+	{
+		refreshSprites();
+	}
+
+	IGUISpinBox::draw();
+}
 
 void CGUISpinBox::verifyValueRange()
 {

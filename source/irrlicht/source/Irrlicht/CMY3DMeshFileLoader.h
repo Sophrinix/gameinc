@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 //
@@ -6,7 +6,6 @@
 // I (Nikolaus Gebhardt) did some few changes to this:
 // - replaced logging calls to their os:: counterparts
 // - removed some logging calls
-// - enabled image dropping of CImage again, because that bug has been fixed now
 // - removed setTexture path and replaced it with the directory of the mesh
 // - added EAMT_MY3D file type
 // - fixed a memory leak when decompressing RLE data.

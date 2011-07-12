@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -10,6 +10,9 @@
 
 #include "ITexture.h"
 #include "IImage.h"
+#if defined(__BORLANDC__) || defined (__BCPLUSPLUS__)
+#include "irrMath.h"    // needed by borland for sqrtf define
+#endif
 #include <d3d9.h>
 
 namespace irr
@@ -39,7 +42,7 @@ public:
 	virtual ~CD3D9Texture();
 
 	//! lock function
-	virtual void* lock(bool readOnly = false, u32 mipmapLevel=0);
+	virtual void* lock(E_TEXTURE_LOCK_MODE mode=ETLM_READ_WRITE, u32 mipmapLevel=0);
 
 	//! unlock function
 	virtual void unlock();

@@ -740,6 +740,12 @@ void CNullDriver::draw2DImage(const video::ITexture* texture, const core::positi
 {
 }
 
+void CNullDriver::draw2DImage( const video::ITexture* texture, const core::position2d<s32>& pos, 
+                                      const core::rect<s32>& sourceRect, const f32 rotation, 
+                                      const bool filtering, const core::vector2df scale, SColor color, bool useAlphaChannelOfTexture )
+{
+}
+
 
 //! Draws the outline of a 2d rectangle
 void CNullDriver::draw2DRectangleOutline(const core::recti& pos, SColor color)

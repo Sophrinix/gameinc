@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -27,7 +27,7 @@ CGUITab::CGUITab(s32 number, IGUIEnvironment* environment,
 	IGUIElement* parent, const core::rect<s32>& rectangle,
 	s32 id)
 	: IGUITab(environment, parent, id, rectangle), Number(number),
-		BackColor(0,0,0,0), TextColor(255,0,0,0),
+		BackColor(0,0,0,0), OverrideTextColorEnabled(false), TextColor(255,0,0,0),
 		DrawBackground(false)
 {
 	#ifdef _DEBUG
@@ -54,6 +54,13 @@ void CGUITab::setNumber(s32 n)
 	Number = n;
 }
 
+void CGUITab::refreshSkinColors()
+{
+	if ( !OverrideTextColorEnabled )
+	{
+		TextColor = Environment->getSkin()->getColor(EGDC_BUTTON_TEXT);
+	}
+}
 
 //! draws the element and its children
 void CGUITab::draw()
@@ -87,6 +94,7 @@ void CGUITab::setBackgroundColor(video::SColor c)
 //! sets the color of the text
 void CGUITab::setTextColor(video::SColor c)
 {
+	OverrideTextColorEnabled = true;
 	TextColor = c;
 }
 
@@ -120,6 +128,7 @@ void CGUITab::serializeAttributes(io::IAttributes* out, io::SAttributeReadWriteO
 	out->addInt		("TabNumber",		Number);
 	out->addBool	("DrawBackground",	DrawBackground);
 	out->addColor	("BackColor",		BackColor);
+	out->addBool	("OverrideTextColorEnabled", OverrideTextColorEnabled);
 	out->addColor	("TextColor",		TextColor);
 
 }
@@ -133,7 +142,12 @@ void CGUITab::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWrite
 	setNumber(in->getAttributeAsInt("TabNumber"));
 	setDrawBackground(in->getAttributeAsBool("DrawBackground"));
 	setBackgroundColor(in->getAttributeAsColor("BackColor"));
+	bool override = in->getAttributeAsBool("OverrideTextColorEnabled");
 	setTextColor(in->getAttributeAsColor("TextColor"));
+	if ( !override )
+	{
+		OverrideTextColorEnabled = false;
+	}
 
 	if (Parent && Parent->getType() == EGUIET_TAB_CONTROL)
 	{
@@ -160,7 +174,6 @@ CGUITabControl::CGUITabControl(IGUIEnvironment* environment,
 	setDebugName("CGUITabControl");
 	#endif
 
-	video::SColor color(255,255,255,255);
 	IGUISkin* skin = Environment->getSkin();
 	IGUISpriteBank* sprites = 0;
 
@@ -169,7 +182,6 @@ CGUITabControl::CGUITabControl(IGUIEnvironment* environment,
 	if (skin)
 	{
 		sprites = skin->getSpriteBank();
-		color = skin->getColor(EGDC_WINDOW_SYMBOL);
 		TabHeight = skin->getSize(gui::EGDS_BUTTON_HEIGHT) + 2;
 	}
 
@@ -178,8 +190,6 @@ CGUITabControl::CGUITabControl(IGUIEnvironment* environment,
 	if (UpButton)
 	{
 		UpButton->setSpriteBank(sprites);
-		UpButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_LEFT), color);
-		UpButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_LEFT), color);
 		UpButton->setVisible(false);
 		UpButton->setSubElement(true);
 		UpButton->setAlignment(EGUIA_LOWERRIGHT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_UPPERLEFT);
@@ -192,8 +202,6 @@ CGUITabControl::CGUITabControl(IGUIEnvironment* environment,
 	if (DownButton)
 	{
 		DownButton->setSpriteBank(sprites);
-		DownButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_RIGHT), color);
-		DownButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_RIGHT), color);
 		DownButton->setVisible(false);
 		DownButton->setSubElement(true);
 		DownButton->setAlignment(EGUIA_LOWERRIGHT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_UPPERLEFT);
@@ -202,8 +210,8 @@ CGUITabControl::CGUITabControl(IGUIEnvironment* environment,
 	}
 
 	setTabVerticalAlignment(EGUIA_UPPERLEFT);
+	refreshSprites();
 }
-
 
 //! destructor
 CGUITabControl::~CGUITabControl()
@@ -221,33 +229,32 @@ CGUITabControl::~CGUITabControl()
 		DownButton->drop();
 }
 
+void CGUITabControl::refreshSprites()
+{
+	video::SColor color(255,255,255,255);
+	IGUISkin* skin = Environment->getSkin();
+	if (skin)
+	{
+		color = skin->getColor(isEnabled() ? EGDC_WINDOW_SYMBOL : EGDC_GRAY_WINDOW_SYMBOL);
+	}
+
+	if (UpButton)
+	{
+		UpButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_LEFT), color);
+		UpButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_LEFT), color);
+	}
+
+	if (DownButton)
+	{
+		DownButton->setSprite(EGBS_BUTTON_UP, skin->getIcon(EGDI_CURSOR_RIGHT), color);
+		DownButton->setSprite(EGBS_BUTTON_DOWN, skin->getIcon(EGDI_CURSOR_RIGHT), color);
+	}
+}
 
 //! Adds a tab
 IGUITab* CGUITabControl::addTab(const wchar_t* caption, s32 id)
 {
-	IGUISkin* skin = Environment->getSkin();
-	if (!skin)
-		return 0;
-
-	core::rect<s32> r;
-	if ( VerticalAlignment == EGUIA_UPPERLEFT )
-	{
-		r.UpperLeftCorner.X = 1;
-		r.UpperLeftCorner.Y = TabHeight;
-
-		r.LowerRightCorner.X = AbsoluteRect.getWidth()-1;
-		r.LowerRightCorner.Y = AbsoluteRect.getHeight()-1;
-	}
-	else
-	{
-		r.UpperLeftCorner.X = 1;
-		r.UpperLeftCorner.Y = 1;
-
-		r.LowerRightCorner.X = AbsoluteRect.getWidth()-1;
-		r.LowerRightCorner.Y = AbsoluteRect.getHeight()-TabHeight;
-	}
-
-	CGUITab* tab = new CGUITab(Tabs.size(), Environment, this, r, id);
+	CGUITab* tab = new CGUITab(Tabs.size(), Environment, this, calcTabPos(), id);
 
 	tab->setText(caption);
 	tab->setAlignment(EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT);
@@ -304,6 +311,59 @@ void CGUITabControl::addTab(CGUITab* tab)
 	}
 }
 
+//! Insert the tab at the given index
+IGUITab* CGUITabControl::insertTab(s32 idx, const wchar_t* caption, s32 id)
+{
+	if ( idx < 0 || idx > (s32)Tabs.size() )	// idx == Tabs.size() is indeed ok here as core::array can handle that
+		return NULL;
+
+	CGUITab* tab = new CGUITab(idx, Environment, this, calcTabPos(), id);
+
+	tab->setText(caption);
+	tab->setAlignment(EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT, EGUIA_UPPERLEFT, EGUIA_LOWERRIGHT);
+	tab->setVisible(false);
+	Tabs.insert(tab, (u32)idx);
+
+	if (ActiveTab == -1)
+	{
+		ActiveTab = 0;
+		tab->setVisible(true);
+	}
+
+	for ( u32 i=(u32)idx+1; i < Tabs.size(); ++i )
+	{
+		Tabs[i]->setNumber(i);
+	}
+
+	recalculateScrollBar();
+
+	return tab;
+}
+
+//! Removes a tab from the tabcontrol
+void CGUITabControl::removeTab(s32 idx)
+{
+	if ( idx < 0 || idx >= (s32)Tabs.size() )
+		return;
+
+	Tabs[(u32)idx]->drop();
+	Tabs.erase((u32)idx);
+	for ( u32 i=(u32)idx; i < Tabs.size(); ++i )
+	{
+		Tabs[i]->setNumber(i);
+	}
+}
+
+//! Clears the tabcontrol removing all tabs
+void CGUITabControl::clear()
+{
+	for (u32 i=0; i<Tabs.size(); ++i)
+	{
+		if (Tabs[i])
+			Tabs[i]->drop();
+	}
+	Tabs.clear();
+}
 
 //! Returns amount of tabs in the tabcontrol
 s32 CGUITabControl::getTabCount() const
@@ -325,7 +385,7 @@ IGUITab* CGUITabControl::getTab(s32 idx) const
 //! called if an event happened.
 bool CGUITabControl::OnEvent(const SEvent& event)
 {
-	if (IsEnabled)
+	if (isEnabled())
 	{
 
 		switch(event.EventType)
@@ -357,9 +417,15 @@ bool CGUITabControl::OnEvent(const SEvent& event)
 				// todo: dragging tabs around
 				return true;
 			case EMIE_LMOUSE_LEFT_UP:
-				if (selectTab(core::position2d<s32>(event.MouseInput.X, event.MouseInput.Y)))
+			{
+				s32 idx = getTabAt(event.MouseInput.X, event.MouseInput.Y);
+				if ( idx >= 0 )
+				{
+					setActiveTab(idx);
 					return true;
+				}
 				break;
+			}
 			default:
 				break;
 			}
@@ -391,22 +457,22 @@ void CGUITabControl::scrollRight()
 	recalculateScrollBar();
 }
 
-s32 CGUITabControl::calcTabWidth(s32 pos, IGUIFont* font, const wchar_t* text, bool withScrollControl)
+s32 CGUITabControl::calcTabWidth(s32 pos, IGUIFont* font, const wchar_t* text, bool withScrollControl) const
 {
 	if ( !font )
 		return 0;
-	
+
 	s32 len = font->getDimension(text).Width + TabExtraWidth;
 	if ( TabMaxWidth > 0 && len > TabMaxWidth )
 		len = TabMaxWidth;
-	
+
 	// check if we miss the place to draw the tab-button
 	if ( withScrollControl && ScrollControl && pos+len > UpButton->getAbsolutePosition().UpperLeftCorner.X - 2 )
 	{
 		s32 tabMinWidth = font->getDimension(L"A").Width;
 		if ( TabExtraWidth > 0 && TabExtraWidth > tabMinWidth )
 			tabMinWidth = TabExtraWidth;
-		
+
 		if ( ScrollControl && pos+tabMinWidth <= UpButton->getAbsolutePosition().UpperLeftCorner.X - 2 )
 		{
 			len = UpButton->getAbsolutePosition().UpperLeftCorner.X - 2 - pos;
@@ -444,12 +510,7 @@ bool CGUITabControl::needScrollControl(s32 startIndex, bool withScrollControl)
 		// get Text
 		const wchar_t* text = 0;
 		if (Tabs[i])
-		{
 			text = Tabs[i]->getText();
-			font = Tabs[ i ]->getRFont();
-			if( !font )
-				font = skin->getFont();
-		}
 
 		// get text length
 		s32 len = calcTabWidth(pos, font, text, false);	// always without withScrollControl here or len would be shortened
@@ -471,57 +532,37 @@ bool CGUITabControl::needScrollControl(s32 startIndex, bool withScrollControl)
 }
 
 
-bool CGUITabControl::selectTab(core::position2d<s32> p)
+core::rect<s32> CGUITabControl::calcTabPos()
 {
-	IGUISkin* skin = Environment->getSkin();
-	IGUIFont* font = skin->getFont();
-
-	core::rect<s32> frameRect(AbsoluteRect);
+	core::rect<s32> r;
+	r.UpperLeftCorner.X = 0;
+	r.LowerRightCorner.X = AbsoluteRect.getWidth();
+	if ( Border )
+	{
+		++r.UpperLeftCorner.X;
+		--r.LowerRightCorner.X;
+	}
 
 	if ( VerticalAlignment == EGUIA_UPPERLEFT )
 	{
-		frameRect.UpperLeftCorner.Y += 2;
-		frameRect.LowerRightCorner.Y = frameRect.UpperLeftCorner.Y + TabHeight;
+		r.UpperLeftCorner.Y = TabHeight+2;
+		r.LowerRightCorner.Y = AbsoluteRect.getHeight()-1;
+		if ( Border )
+		{
+			--r.LowerRightCorner.Y;
+		}
 	}
 	else
 	{
-		frameRect.UpperLeftCorner.Y = frameRect.LowerRightCorner.Y - TabHeight;
-	}
-
-	s32 pos = frameRect.UpperLeftCorner.X + 2;
-
-	if (!frameRect.isPointInside(p))
-		return false;
-
-	for (s32 i=CurrentScrollTabIndex; i<(s32)Tabs.size(); ++i)
-	{
-		// get Text
-		const wchar_t* text = 0;
-		if (Tabs[i])
+		r.UpperLeftCorner.Y = 0;
+		r.LowerRightCorner.Y = AbsoluteRect.getHeight()-(TabHeight+2);
+		if ( Border )
 		{
-			text = Tabs[ i ]->getText();
-			font = Tabs[ i ]->getRFont();
-			if( !font )
-				font = skin->getFont();
-		}
-
-		// get text length
-		s32 len = calcTabWidth(pos, font, text, true);
-		if ( ScrollControl && pos+len > UpButton->getAbsolutePosition().UpperLeftCorner.X - 2 )
-			return false;
-		
-		frameRect.UpperLeftCorner.X = pos;
-		frameRect.LowerRightCorner.X = frameRect.UpperLeftCorner.X + len;
-
-		pos += len;
-
-		if (frameRect.isPointInside(p))
-		{
-			setActiveTab(i);
-			return true;
+			++r.UpperLeftCorner.Y;
 		}
 	}
-	return false;
+
+	return r;
 }
 
 
@@ -562,7 +603,7 @@ void CGUITabControl::draw()
 
 	bool needLeftScroll = CurrentScrollTabIndex > 0;
 	bool needRightScroll = false;
-	
+
 	// left and right pos of the active tab
 	s32 left = 0;
 	s32 right = 0;
@@ -575,13 +616,7 @@ void CGUITabControl::draw()
 		// get Text
 		const wchar_t* text = 0;
 		if (Tabs[i])
-		{
 			text = Tabs[i]->getText();
-			font = Tabs[i]->getRFont();
-			if( !font )
-				font = skin->getFont();
-
-		}
 
 		// get text length
 		s32 len = calcTabWidth(pos, font, text, true);
@@ -597,6 +632,9 @@ void CGUITabControl::draw()
 
 		pos += len;
 
+		if ( text )
+			Tabs[i]->refreshSkinColors();
+
 		if ((s32)i == ActiveTab)
 		{
 			left = frameRect.UpperLeftCorner.X;
@@ -609,18 +647,16 @@ void CGUITabControl::draw()
 			skin->draw3DTabButton(this, false, frameRect, &AbsoluteClippingRect, VerticalAlignment);
 
 			// draw text
-			font->draw( text, frameRect, Tabs[i]->getTextColor(),
-						true, true, &frameRect);
+			core::rect<s32> textClipRect(frameRect);	// TODO: exact size depends on borders in draw3DTabButton which we don't get with current interface
+			textClipRect.clipAgainst(AbsoluteClippingRect);
+			font->draw(text, frameRect, Tabs[i]->getTextColor(),
+				true, true, &textClipRect);
 		}
 	}
 
 	// draw active tab
 	if (left != 0 && right != 0 && activeTab != 0)
 	{
-		font = activeTab->getRFont();
-		if( font == NULL )
-			font = skin->getFont();
-
 		// draw upper highlight frame
 		if ( VerticalAlignment == EGUIA_UPPERLEFT )
 		{
@@ -631,8 +667,10 @@ void CGUITabControl::draw()
 			skin->draw3DTabButton(this, true, frameRect, &AbsoluteClippingRect, VerticalAlignment);
 
 			// draw text
+			core::rect<s32> textClipRect(frameRect);	// TODO: exact size depends on borders in draw3DTabButton which we don't get with current interface
+			textClipRect.clipAgainst(AbsoluteClippingRect);
 			font->draw(activeTab->getText(), frameRect, activeTab->getTextColor(),
-				        true, true, &frameRect);
+				true, true, &textClipRect);
 
 			tr.UpperLeftCorner.X = AbsoluteRect.UpperLeftCorner.X;
 			tr.LowerRightCorner.X = left - 1;
@@ -689,12 +727,13 @@ void CGUITabControl::draw()
 	}
 
 	skin->draw3DTabBody(this, Border, FillBackground, AbsoluteRect, &AbsoluteClippingRect, TabHeight, VerticalAlignment);
-	
+
 	// enable scrollcontrols on need
 	if ( UpButton )
 		UpButton->setEnabled(needLeftScroll);
 	if ( DownButton )
 		DownButton->setEnabled(needRightScroll);
+	refreshSprites();
 
 	IGUIElement::draw();
 }
@@ -724,7 +763,7 @@ void CGUITabControl::setTabMaxWidth(s32 width )
 {
 	TabMaxWidth = width;
 }
-	
+
 //! get the maximal width of a tab
 s32 CGUITabControl::getTabMaxWidth() const
 {
@@ -773,7 +812,6 @@ void CGUITabControl::recalculateScrollBar()
 	bringToFront( DownButton );
 }
 
-
 //! Set the alignment of the tabs
 void CGUITabControl::setTabVerticalAlignment( EGUI_ALIGNMENT alignment )
 {
@@ -781,6 +819,12 @@ void CGUITabControl::setTabVerticalAlignment( EGUI_ALIGNMENT alignment )
 
 	recalculateScrollButtonPlacement();
 	recalculateScrollBar();
+
+	core::rect<s32> r(calcTabPos());
+	for ( u32 i=0; i<Tabs.size(); ++i )
+	{
+		Tabs[i]->setRelativePosition(r);
+	}
 }
 
 void CGUITabControl::recalculateScrollButtonPlacement()
@@ -825,6 +869,54 @@ EGUI_ALIGNMENT CGUITabControl::getTabVerticalAlignment() const
 }
 
 
+s32 CGUITabControl::getTabAt(s32 xpos, s32 ypos) const
+{
+	core::position2di p(xpos, ypos);
+	IGUISkin* skin = Environment->getSkin();
+	IGUIFont* font = skin->getFont();
+
+	core::rect<s32> frameRect(AbsoluteRect);
+
+	if ( VerticalAlignment == EGUIA_UPPERLEFT )
+	{
+		frameRect.UpperLeftCorner.Y += 2;
+		frameRect.LowerRightCorner.Y = frameRect.UpperLeftCorner.Y + TabHeight;
+	}
+	else
+	{
+		frameRect.UpperLeftCorner.Y = frameRect.LowerRightCorner.Y - TabHeight;
+	}
+
+	s32 pos = frameRect.UpperLeftCorner.X + 2;
+
+	if (!frameRect.isPointInside(p))
+		return -1;
+
+	for (s32 i=CurrentScrollTabIndex; i<(s32)Tabs.size(); ++i)
+	{
+		// get Text
+		const wchar_t* text = 0;
+		if (Tabs[i])
+			text = Tabs[i]->getText();
+
+		// get text length
+		s32 len = calcTabWidth(pos, font, text, true);
+		if ( ScrollControl && pos+len > UpButton->getAbsolutePosition().UpperLeftCorner.X - 2 )
+			return -1;
+
+		frameRect.UpperLeftCorner.X = pos;
+		frameRect.LowerRightCorner.X = frameRect.UpperLeftCorner.X + len;
+
+		pos += len;
+
+		if (frameRect.isPointInside(p))
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 //! Returns which tab is currently active
 s32 CGUITabControl::getActiveTab() const
 {
@@ -860,7 +952,7 @@ bool CGUITabControl::setActiveTab(s32 idx)
 }
 
 
-bool CGUITabControl::setActiveTab(IGUIElement *tab)
+bool CGUITabControl::setActiveTab(IGUITab *tab)
 {
 	for (s32 i=0; i<(s32)Tabs.size(); ++i)
 		if (Tabs[i] == tab)
