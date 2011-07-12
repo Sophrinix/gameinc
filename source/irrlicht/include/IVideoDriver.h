@@ -822,6 +822,27 @@ namespace video
 			const core::rect<s32>& sourceRect, const core::rect<s32>* clipRect =0,
 			const video::SColor * const colors=0, bool useAlphaChannelOfTexture=false) =0;
 
+        //! Draws a part of the texture into the rectangle. Note that colors must be an array of 4 colors if used.
+        /** Suggested and first implemented by zola.
+        \param texture The texture to draw from
+        \param destRect The rectangle to draw into
+        \param sourceRect The rectangle denoting a part of the texture
+        \param clipRect Clips the destination rectangle (may be 0)
+        \param colors Array of 4 colors denoting the color values of
+        the corners of the destRect
+        \param useAlphaChannelOfTexture True if alpha channel will be blended. 
+        \param angle angle to rotate
+        */
+        virtual void draw2DImage(const video::ITexture* texture,
+            const core::position2d<s32>& pos,
+            const core::rect<s32>& sourceRect,
+            const f32 rotation,
+            const bool filtering,
+            const core::vector2df scale,
+            SColor color,
+            bool useAlphaChannelOfTexture) =0;
+
+
 		//! Draws a 2d rectangle.
 		/** \param color Color of the rectangle to draw. The alpha
 		component will not be ignored and specifies how transparent the

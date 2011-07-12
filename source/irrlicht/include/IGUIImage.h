@@ -34,6 +34,10 @@ namespace gui
 		//! Sets if the image should scale to fit the element
 		virtual void setScaleImage(bool scale) = 0;
 
+        virtual void setRotate( f32 angle ) = 0;
+
+        virtual f32 getRotate() const = 0;
+
 		//! Sets if the image should use its alpha channel to draw itself
 		virtual void setUseAlphaChannel(bool use) = 0;
 
