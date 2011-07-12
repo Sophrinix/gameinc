@@ -740,12 +740,6 @@ void CNullDriver::draw2DImage(const video::ITexture* texture, const core::positi
 {
 }
 
-void CNullDriver::draw2DImage( const video::ITexture* texture, const core::position2d<s32>& pos, 
-                                      const core::rect<s32>& sourceRect, const f32 rotation, 
-                                      const bool filtering, const core::vector2df scale, SColor color, bool useAlphaChannelOfTexture )
-{
-}
-
 
 //! Draws the outline of a 2d rectangle
 void CNullDriver::draw2DRectangleOutline(const core::recti& pos, SColor color)
@@ -2199,6 +2193,28 @@ core::dimension2du CNullDriver::getMaxTextureSize() const
 	return core::dimension2du(0x10000,0x10000); // maybe large enough
 }
 
+void CNullDriver::addResourceDirectory( const io::path& dir )
+{
+    for( u32 i=0; i < _directories.size(); i++ )
+        if( _directories[ i ] == dir )
+            return;
 
+    _directories.push_back( dir );
+}
+
+io::path CNullDriver::checkFile( const io::path& name )
+{
+    if( FileSystem->existFile( name ) )
+        return name;
+
+    for( u32 i=0; i < _directories.size(); i++ )
+    {
+        io::path tmp = _directories[ i ] + "/" + name;
+        if( FileSystem->existFile( tmp ) )
+            return tmp;
+    }
+
+    return name;
+}
 } // end namespace
 } // end namespace
