@@ -16,4 +16,4 @@ volumecode:int=10000
 textureNormal:path=image.png
 advTechNumber:int=2
 [genres]
-genre_skill=1
+genre_action=1
