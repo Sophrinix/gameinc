@@ -45,9 +45,9 @@ CNrpConfigSyncer::~CNrpConfigSyncer(void)
 {
 }
 
-void CNrpConfigSyncer::_WriteInt( const NParam& prop, const NrpText& key, IniFile& ini )
+void CNrpConfigSyncer::_WriteInt( const NParam& prop, const NrpText& key, IniFile& ini, const NrpText& section )
 {
-	ini.Set( SECTION_PROPERTIES, key + _d( t_int ), (int)prop );
+	ini.Set( section, key + _d( t_int ), (int)prop );
 }
 
 void CNrpConfigSyncer::Save( const NrpText& fileName, SECTION_NAME& section ) 
@@ -72,9 +72,9 @@ void CNrpConfigSyncer::Save( IniFile& ini, SECTION_NAME& section )
         WRITERS_MAP::Node* wIter = _writers.find( prop->GetType() );
 
         if( wIter )
-            (this->*(wIter->getValue()))( *prop, paIter->first, ini );		
+            (this->*(wIter->getValue()))( *prop, paIter->first, ini, section );		
         else
-            _WriteUnknown( *prop, paIter->first, ini );		
+            _WriteUnknown( *prop, paIter->first, ini, section );		
     }
 }
 
@@ -89,7 +89,7 @@ void CNrpConfigSyncer::Load( const NrpText& fileName, SECTION_NAME& section )
 
 void CNrpConfigSyncer::Load( IniFile& ini, SECTION_NAME& section )
 {
-    const IniSection::KeyIndexA& indexes = ini.GetSection( SECTION_PROPERTIES )->GetKeys();
+    const IniSection::KeyIndexA& indexes = ini.GetSection( section )->GetKeys();
 
     for( IniSection::KeyIndexA::const_iterator pIter = indexes.begin(); pIter != indexes.end(); pIter++ )
     {
@@ -188,52 +188,52 @@ void CNrpConfigSyncer::_ReadTechnology( IniKey* p )
 		(*_config)[ p->GetShortKey().c_str() ] = tech;
 }
 
-void CNrpConfigSyncer::_WriteUnknown( const NParam& prop, const NrpText& key, IniFile& ini )
+void CNrpConfigSyncer::_WriteUnknown( const NParam& prop, const NrpText& key, IniFile& ini, const NrpText& section )
 {
 	NrpText dd = const_cast< NParam& >( prop ).GetType();
 	if( dd.find( L"enum" ) == 0 )
 	{
-		_WriteInt( prop, key, ini );
+		_WriteInt( prop, key, ini, section );
 	}
 	else 
-		ini.Set( SECTION_PROPERTIES, key + _d( t_unknown ), NrpText("") );	
+		ini.Set( section, key + _d( t_unknown ), NrpText("") );	
 }
 
-void CNrpConfigSyncer::_WriteTechnology( const NParam& prop, const NrpText& key, IniFile& ini )
+void CNrpConfigSyncer::_WriteTechnology( const NParam& prop, const NrpText& key, IniFile& ini, const NrpText& section )
 {
 	const CNrpTechnology& tech = *(prop.As<PNrpTechnology>());
 	
 	if( _nrpApp.GetTechnology( tech[ NAME ].As<NrpText>() ) )
 	{
-		ini.Set( SECTION_PROPERTIES, key + _d( t_tech ), (NrpText)tech[ NAME ] );
+		ini.Set( section, key + _d( t_tech ), (NrpText)tech[ NAME ] );
 	}
 }
 
-void CNrpConfigSyncer::_WriteUser( const NParam& prop, const NrpText& key, IniFile& ini )
+void CNrpConfigSyncer::_WriteUser( const NParam& prop, const NrpText& key, IniFile& ini, const NrpText& section )
 {
 	const PUser user = prop.As<PUser>();
 	if( user )
-		ini.Set( SECTION_PROPERTIES, key + _d( t_user ), (NrpText)(*user)[ NAME ] );
+		ini.Set( section, key + _d( t_user ), (NrpText)(*user)[ NAME ] );
 }
 
-void CNrpConfigSyncer::_WriteFloat( const NParam& prop, const NrpText& key, IniFile& ini )
+void CNrpConfigSyncer::_WriteFloat( const NParam& prop, const NrpText& key, IniFile& ini, const NrpText& section )
 {
-	ini.Set( SECTION_PROPERTIES, key + _d( t_float ), prop.As<float>() );
+	ini.Set( section, key + _d( t_float ), prop.As<float>() );
 }
 
-void CNrpConfigSyncer::_WriteTime( const NParam& prop, const NrpText& key, IniFile& ini )
+void CNrpConfigSyncer::_WriteTime( const NParam& prop, const NrpText& key, IniFile& ini, const NrpText& section )
 {
-	ini.Set( SECTION_PROPERTIES, key + _d( t_time ), prop.As<NrpTime>() );
+	ini.Set( section, key + _d( t_time ), prop.As<NrpTime>() );
 }
 
-void CNrpConfigSyncer::_WriteString( const NParam& prop, const NrpText& key, IniFile& ini)
+void CNrpConfigSyncer::_WriteString( const NParam& prop, const NrpText& key, IniFile& ini, const NrpText& section )
 {
-	ini.Set( SECTION_PROPERTIES, key + _d( t_string ), prop.As<NrpText>() );
+	ini.Set( section, key + _d( t_string ), prop.As<NrpText>() );
 }
 
-void CNrpConfigSyncer::_WriteBool( const NParam& prop, const NrpText& key, IniFile& ini )
+void CNrpConfigSyncer::_WriteBool( const NParam& prop, const NrpText& key, IniFile& ini, const NrpText& section )
 {
-	ini.Set( SECTION_PROPERTIES, key + _d( t_bool ), prop.As<bool>() );
+	ini.Set( section, key + _d( t_bool ), prop.As<bool>() );
 }
 
 void CNrpConfigSyncer::_ReadUnknown( IniKey* p )

@@ -239,7 +239,6 @@ void CNrpButton::draw()
 		return;
 
 	video::IVideoDriver* driver = Environment->getVideoDriver();
-	IGUIFont* font = overrideFont_ != NULL ? overrideFont_ : Environment->getSkin()->getFont(EGDF_BUTTON);
 	core::rect<s32> rect = AbsoluteRect;
 	bool isHovered = Environment->isHovered( this );
 
@@ -329,13 +328,25 @@ void CNrpButton::draw()
 
         color.setAlpha( Parent ? Parent->getAlphaBlend() : 0xff );
 
-		if (font)
+        IGUIFont* font = getActiveFont();
+		if(font)
 			font->draw(Text.c_str(), rect,
 			color, true, true, 
 			&AbsoluteClippingRect);
 	}
 
 	IGUIElement::draw();
+}
+
+//! Get the font which is used right now for drawing
+IGUIFont* CNrpButton::getActiveFont() const
+{
+    if ( overrideFont_ )
+        return overrideFont_;
+    IGUISkin* skin = Environment->getSkin();
+    if (skin)
+        return skin->getFont();
+    return 0;
 }
 
 //! Sets another color for the text.

@@ -96,7 +96,7 @@ NrpText CNrpScreenshotHolder::GetFreeInternalName( const CNrpGame& game )
             checkYearStrFw = _ToYearStr( year + 1);
 
     //если у игры есть движок, то возьмем год его выпуска... +-1 год
-    if( CNrpGameEngine* ge = CNrpGameMarket::Instance().GetGameEngine( game[ GAME_ENGINE ].As<NrpText>() ) )
+    if( CNrpGameEngine* ge = CNrpGameMarket::Instance().GetGameEngine( (NrpText)game[ GAME_ENGINE_NAME ] ) )
         year = (*ge)[ STARTDATE ].As<NrpTime>().RYear();
 
     for( SCREENSHOTS_MAP::iterator iterr=_screenshots.begin(); iterr != _screenshots.end(); iterr++ )

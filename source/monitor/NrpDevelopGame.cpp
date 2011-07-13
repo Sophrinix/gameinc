@@ -221,6 +221,7 @@ void CNrpDevelopGame::Load( const NrpText& loadFolder )
 	}
 
     _self[ GAME_ENGINE ] = CNrpGameMarket::Instance().GetGameEngine( (NrpText)_self[ GAME_ENGINE_NAME ] );
+    assert( _self[ GAME_ENGINE ].As<CNrpGameEngine*>() && "Game Engine for develop game must be exist" );
 	_self[ SCENARIO ] = new CNrpScenario( (NrpText)_self[ LICENSE_NAME ] );
 	_self[ GLICENSE ] = new CNrpLicense( (NrpText)_self[ SCENARIO_NAME ] );
 }

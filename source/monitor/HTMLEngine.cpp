@@ -103,7 +103,7 @@ gui::CNrpBrowserWindow& HTMLEngine::GetBrowserWindow(irr::core::dimension2du siz
 
 void HTMLEngine::Update()
 {
-	if( !dataUpdated_ && GetTickCount() - _lastTimeUpdate < 50 )
+	if( !dataUpdated_ || GetTickCount() - _lastTimeUpdate < 50 )
 		return;
 
 	const unsigned char* pixels = llmozlib_->grabBrowserWindow( browserWindowId_ );

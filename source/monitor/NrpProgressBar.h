@@ -23,6 +23,8 @@ public:
 	virtual void setFillImage( video::ITexture* image );
 	virtual void setPosition( u32 pos );
 	virtual int	 getPosition() const;
+    virtual void setRotate( f32 angle );
+    virtual f32 getRotate() const;
 	//virtual void setPostfixText( const wchar_t* text );
 	//virtual void setPrefixText( const wchar_t* text );
 	//virtual void setTextVisible( bool visible );

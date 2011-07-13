@@ -306,21 +306,6 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 		_technologies.push_back( tech );
 	}
 
-	for( int i=0; i < (int)_self[ DEVELOPPROJECTS_NUMBER ]; i++ )
-	{
-		NrpText type = rv.Get( SECTION_DEVPROJECTS, CreateKeyType( i ), NrpText("") );
-		NrpText saveFile = rv.Get( SECTION_DEVPROJECTS, CreateKeyProject( i ), NrpText("") );
-		if( type == CNrpDevelopGame::ClassName() )
-		{
-			CNrpDevelopGame* game = new CNrpDevelopGame( saveFile );
-			_devProjects.push_back( game );
-		}
-		else if( type == NrpText("devengine") )
-		{
-			//
-		}
-	}
-
 	for( int i=0; i < (int)_self[ PROJECTNUMBER ]; i++ )
 	{
 		NrpText fileName = rv.Get( SECTION_PROJECTS, CreateKeyProject( i ), NrpText("") );
@@ -345,13 +330,33 @@ void CNrpApplication::Load( const NrpText& profileName, const NrpText& companyNa
 
 	
     CNrpGameMarket::Instance().Load( _self[ SAVEDIR_PROFILE ] );
+
+    _LoadDevProjects( rv );
+    _LoadCompanies( rv );
+
     CNrpBridge::Instance().Load( _self[ SAVEDIR_BRIDGE ] );
 	CNrpBank::Instance().Load( _self[ SAVEDIR_BANK ] );
     CNrpQuestEngine::Instance().Load( (NrpText)_self[ SAVEDIR_PROFILE ] );	
-
-    _LoadCompanies( rv );
     
     CNrpScript::Instance().TemporaryScript( AFTER_LOAD_SCRIPT, CNrpScript::SA_EXEC );
+}
+
+void CNrpApplication::_LoadDevProjects( IniFile& ini )
+{
+    for( int i=0; i < (int)_self[ DEVELOPPROJECTS_NUMBER ]; i++ )
+    {
+        NrpText type = ini.Get( SECTION_DEVPROJECTS, CreateKeyType( i ), NrpText("") );
+        NrpText saveFile = ini.Get( SECTION_DEVPROJECTS, CreateKeyProject( i ), NrpText("") );
+        if( type == CNrpDevelopGame::ClassName() )
+        {
+            CNrpDevelopGame* game = new CNrpDevelopGame( saveFile );
+            _devProjects.push_back( game );
+        }
+        else if( type == NrpText("devengine") )
+        {
+            //
+        }
+    }
 }
 
 void CNrpApplication::_LoadCompanies( IniFile& ini )

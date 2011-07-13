@@ -37,14 +37,10 @@ public:
 	int SetImage( lua_State *L );
 	int SetScaleImage( lua_State *L );
 	int SetUseAlphaChannel( lua_State* L );
-	//************************************
-	// Method:    ClassName
-	// FullName:  nrp::CLuaImage::ClassName
-	// Access:    public static 
-	// Returns:   const char*
-	// Qualifier:
-	//************************************
+    int SetRotate( lua_State *L );
+
 	static const char* ClassName();							
+    
 };
 
 }//namespace nrp

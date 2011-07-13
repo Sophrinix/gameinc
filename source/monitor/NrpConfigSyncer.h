@@ -42,7 +42,7 @@ private:
 	CNrpConfigSyncer(void);
 	
 	typedef void (CNrpConfigSyncer::*SomeReader)( IniKey* );
-	typedef void (CNrpConfigSyncer::*SomeWriter)( const NParam&, const NrpText&, IniFile& );
+	typedef void (CNrpConfigSyncer::*SomeWriter)( const NParam&, const NrpText&, IniFile&, const NrpText& );
 
 	typedef map< NrpText, SomeReader > READERS_MAP;
 	typedef map< NrpText, SomeWriter > WRITERS_MAP;
@@ -64,14 +64,14 @@ private:
 	void _ReadDim2u( IniKey* p );
 	void _ReadPath( IniKey* p );
 
-	void _WriteInt( const NParam&, const NrpText&, IniFile& );
-	void _WriteString( const NParam&, const NrpText&, IniFile& );
-	void _WriteBool( const NParam&, const NrpText& , IniFile&  );
-	void _WriteTime( const NParam&, const NrpText& , IniFile&  );
-	void _WriteFloat( const NParam&, const NrpText&, IniFile& );
-	void _WriteUser( const NParam&, const NrpText& , IniFile&  );
-	void _WriteUnknown( const NParam&,  const NrpText& , IniFile&  );
-	void _WriteTechnology( const NParam&, const NrpText&, IniFile& );
+	void _WriteInt( const NParam&, const NrpText&, IniFile&, const NrpText& );
+	void _WriteString( const NParam&, const NrpText&, IniFile&, const NrpText& );
+	void _WriteBool( const NParam&, const NrpText& , IniFile&, const NrpText&  );
+	void _WriteTime( const NParam&, const NrpText& , IniFile&, const NrpText&  );
+	void _WriteFloat( const NParam&, const NrpText&, IniFile&, const NrpText& );
+	void _WriteUser( const NParam&, const NrpText& , IniFile&, const NrpText&  );
+	void _WriteUnknown( const NParam&,  const NrpText& , IniFile&, const NrpText&  );
+	void _WriteTechnology( const NParam&, const NrpText&, IniFile&, const NrpText& );
 	INrpConfig* _config;
 	NrpText _fileName;
 };

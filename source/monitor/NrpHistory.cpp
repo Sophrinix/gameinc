@@ -124,6 +124,8 @@ CNrpHistoryStep::CNrpHistoryStep( const NrpTime& time ) : INrpConfig( CLASS_HIST
 	RegProperty<NrpTime>( STARTDATE, time );
 	RegProperty<int>( BOXNUMBER, 0 );
 	RegProperty<int>( BALANCE, 0 );
+    RegProperty<int>( COPYSELL, 0 );
+    RegProperty<int>( PRICE, 0 );
 }
 
 CNrpHistoryStep::CNrpHistoryStep() : INrpConfig( CLASS_HISTORYSTEP, "" )

@@ -63,6 +63,7 @@ public:
     int SetSelfPie( lua_State* L );
     int SetAllPie( lua_State* L );
     int SetTexture( lua_State* L );
+    int AddGame( lua_State* L );
 };
 
 }//namespace nrp

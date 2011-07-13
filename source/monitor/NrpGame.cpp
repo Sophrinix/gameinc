@@ -92,7 +92,7 @@ CNrpGame::CNrpGame( const CNrpDevelopGame& devGame, CNrpCompany* ptrCompany ) : 
 	_self[ MONEYONDEVELOP ] = devGame[ MONEYONDEVELOP ];
 	CNrpGameEngine* ge = devGame[ GAME_ENGINE ].As<CNrpGameEngine*>();
 	if( ge )
-		_self[ GAME_ENGINE ] = (*ge)[ NAME ];
+		_self[ GAME_ENGINE_NAME ] = (*ge)[ NAME ];
 
 	_self[ FAMOUS ] = devGame[ FAMOUS ];
 	assert( devGame[ PLATFORMNUMBER ] != (int)0 );

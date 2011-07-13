@@ -27,9 +27,7 @@ CNrpBrowserWindow::CNrpBrowserWindow( gui::IGUIEnvironment* env,
 	bringToFront( getCloseButton() );
 		
 	setDraggable( true );
-	drop();
-
-   
+	drop();  
 }
 
 void CNrpBrowserWindow::_ApplyViewerStyle( core::dimension2du size, CImageGUISkin* skin )

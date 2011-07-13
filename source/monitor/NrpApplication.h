@@ -118,6 +118,7 @@ private:
 	void _InitialyzeSaveDirectories( const NrpText& profileName );
 	void _CreateDirectoriesMapForSave();
     void _LoadCompanies( IniFile& ini );
+    void _LoadDevProjects( IniFile& ini );
 };
 
 #define _nrpApp CNrpApplication::Instance()

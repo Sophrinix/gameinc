@@ -14,6 +14,7 @@
 #include "NrpApplication.h"
 #include "HTMLEngine.h"
 #include "NrpGameMarket.h"
+#include "NrpCompany.h"
 
 using namespace irr;
 
@@ -527,6 +528,7 @@ int CLuaGame::Create( lua_State* L )
         assert( cmp && "company must be exist");
         (*_object)[ PARENTCOMPANY ] = cmp;
 		(*_object)[ NPC_GAME ] = true;
+        cmp->AddGame( _object );
 
 		lua_pushlightuserdata( L, _object );
 		Luna< CLuaGame >::constructor( L );

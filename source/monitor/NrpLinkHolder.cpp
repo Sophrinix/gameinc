@@ -36,7 +36,7 @@ void CNrpLinkHolder::Set( NrpText& name, NrpText& pathto )
     IniKey* key = _general->GetKey( const_cast< NrpText& >( SECTION_OPTIONS ).ToStr(), name.ToStr() );
     if( key )
     {
-        assert( !key  );
+        assert( false && "key also exist" );
         Log( HW ) << "Link with internal name " << name << " also exist in " << key->GetValue() << term;
     }
     else

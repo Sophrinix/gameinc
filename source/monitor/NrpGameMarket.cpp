@@ -213,6 +213,8 @@ void CNrpGameMarket::Load( const NrpText& folderName )
 {
     NrpText profileIni = OpFileSystem::CheckEndSlash( folderName ) + CNrpGameMarket::saveTemplate;
 
+    INrpConfig::Load( profileIni );
+
     IniFile rv( profileIni );
 
     for( int i=0; i < (int)_self[ PLATFORMNUMBER ]; i++ )
@@ -251,7 +253,7 @@ void CNrpGameMarket::_UpdateGameRating( CNrpGame& game )
     std::map< int, int > qualityMap;
 
     //вычисляем сколько месяцев на рынке игра понижаем рейтинг из-за времени на рынке
-    int monthInMarket = game[ STARTDATE ].As<NrpTime>().GetMonthToDate( _self[ CURRENTTIME ].As<NrpTime>() ) + 1;
+    int monthInMarket = game[ STARTDATE ].As<NrpTime>().GetMonthToDate( _nrpApp[ CURRENTTIME ].As<NrpTime>() ) + 1;
     int bs = (bool)game[ BESTSALER ] ? 50 : 0;
 
     if( (bool)game[ NPC_GAME ] )
@@ -282,7 +284,7 @@ void CNrpGameMarket::_UpdateGameRating( CNrpGame& game )
     }
 
     //результат подсчета рейтинга
-    if( CNrpHistoryStep* step = game.GetHistory()->AddStep( _self[ CURRENTTIME ].As<NrpTime>() ) )
+    if( CNrpHistoryStep* step = game.GetHistory()->AddStep( _nrpApp[ CURRENTTIME ].As<NrpTime>() ) )
     {
         //занесем рейтинг в историю игры
         //если игрушка хитовая, то её рейтинг не опускается ниже 50%

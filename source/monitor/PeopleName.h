@@ -45,7 +45,7 @@ nrp::NrpText GlobalPeopleSurname[PEOPLE_SURNAME_COUNT] =
 	"Carter",	"Nash",	 "Chandter",	"Nathan",	"Chapman",	"Neal",	
 	"Charlson",	"Nelson",	"Chesterton",	"Nevill",	"Clapton",	"Nicholson",	
 	"Clifford",	"Nyman", "Coleman",	"Oakman",	"Conors",	"Ogden",	
-	"Cook",		"Oldman",	"Cramer",	"Oldridge",	"Крайтон",	"Croftoon",	
+	"Cook",		"Oldman",	"Cramer",	"Oldridge",	"Craiton",	"Croftoon",	
 	"Osborne",	"Crossman",	"Oswald",	"Daniels",	"Otis",	"Davidson",	
 	"Owen",	"Day",	"Page",	"Dean",	"Palmer",	"Derrick",	
 	"Parkinson", "Dickinson",	"Parson",	"Dodson",	"Pass",	"Donaldson",

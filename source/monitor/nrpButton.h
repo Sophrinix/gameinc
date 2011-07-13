@@ -76,6 +76,8 @@ public:
 	//! Sets if the button should use the skin to draw its border
 	virtual void setDrawBorder(bool border);
 
+    IGUIFont* getActiveFont() const;
+
 	//! Sets if the alpha channel should be used for drawing images on the button (default is false)
 	virtual void setUseAlphaChannel(bool useAlphaChannel);
 

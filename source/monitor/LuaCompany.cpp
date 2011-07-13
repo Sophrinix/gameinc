@@ -38,6 +38,7 @@ BEGIN_LUNA_METHODS(CLuaCompany)
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetObjectsInPortfelle )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetFromPortfelle )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetGame )
+    LUNA_AUTONAME_FUNCTION( CLuaCompany, AddGame )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, Create )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, StartInvention )
 	LUNA_AUTONAME_FUNCTION( CLuaCompany, GetInvention )
@@ -206,13 +207,16 @@ int CLuaCompany::GetEngine( lua_State* L )
 	luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:GetEngine need int parameter" );
 
 	int idx = lua_tointeger( L, 2 );
-	CNrpGameEngine* eng = NULL;
-	IF_OBJECT_NOT_NULL_THEN	eng = _object->GetGameEngine( idx );
+	IF_OBJECT_NOT_NULL_THEN
+    {
+        CNrpGameEngine* eng = _object->GetGameEngine( idx );
 
+        lua_pushlightuserdata( L, eng );
+        Luna< CLuaGameEngine >::constructor( L );
+        return 1;
+    }
 	//lua_pop( L, argc );
-	lua_pushlightuserdata( L, eng );
-	Luna< CLuaGameEngine >::constructor( L );
-
+	lua_pushnil( L );
 	return 1;
 }
 
@@ -225,7 +229,19 @@ int CLuaCompany::AddGameEngine( lua_State* L )
 
 	IF_OBJECT_NOT_NULL_THEN _object->AddGameEngine( ptrGameEng );
 
-	return 1;
+	return 0;
+}
+
+int CLuaCompany::AddGame( lua_State* L )
+{
+    int argc = lua_gettop(L);
+    luaL_argcheck(L, argc == 2, 2, "Function CLuaCompany:AddGame need CNrpGame* parameter" );
+
+    CNrpGame* ptrGame = _GetLuaObject< CNrpGame, ILuaObject >( L, 2, true );
+
+    IF_OBJECT_NOT_NULL_THEN _object->AddGame( ptrGame );
+
+    return 0;
 }
 
 int CLuaCompany::GetTechNumber( lua_State* L )

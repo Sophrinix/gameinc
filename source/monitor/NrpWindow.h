@@ -25,6 +25,8 @@ public:
 	//! called if an event happened.
 	virtual bool OnEvent(const SEvent& event);
 
+    virtual void addChildToEnd( IGUIElement* elm );
+
 	//! update absolute position
 	virtual void updateAbsolutePosition();
 
@@ -91,7 +93,6 @@ protected:
 	SORT_TYPE _sortType;
 
 	void _ApplyStyle( CImageGUISkin* skin );
-    void addChildToEnd(IGUIElement* child);
 };
 
 } // end namespace gui

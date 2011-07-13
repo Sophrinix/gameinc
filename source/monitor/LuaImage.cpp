@@ -20,6 +20,7 @@ BEGIN_LUNA_PROPERTIES(CLuaImage)
 	LUNA_ILUAGUIELEMENT_PROPERTIES( CLuaImage )
 	LUNA_AUTONAME_PROPERTY( CLuaImage, "texture", PureFunction, SetImage )
 	LUNA_AUTONAME_PROPERTY( CLuaImage, "scale", PureFunction, SetScaleImage )
+    LUNA_AUTONAME_PROPERTY( CLuaImage, "rotate", PureFunction, SetRotate )
 	LUNA_AUTONAME_PROPERTY( CLuaImage, "alphaChannel", PureFunction, SetUseAlphaChannel )
 END_LUNA_PROPERTIES
 
@@ -56,6 +57,18 @@ int CLuaImage::SetScaleImage( lua_State *L )
 	}
 
 	return 0;
+}
+
+int CLuaImage::SetRotate( lua_State *L )
+{
+    assert( lua_isnumber( L, -1 ) );
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        float rotate = lua_tonumber( L, -1 );
+        _object->setRotate( 180 + rotate );
+    }
+
+    return 0;
 }
 
 int CLuaImage::SetUseAlphaChannel( lua_State* L )

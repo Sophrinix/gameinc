@@ -187,6 +187,17 @@ int CNrpProgressBar::getPosition() const
 {
 	return position_;
 }
+
+void CNrpProgressBar::setRotate( f32 angle )
+{
+
+}
+
+irr::f32 CNrpProgressBar::getRotate() const
+{
+    return 0;
+}
+
 }//namespace gui
 
 }//namespace irr

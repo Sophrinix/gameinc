@@ -27,7 +27,7 @@ public:
 
 private:
     NrpText Save( const NrpText& fileName ) { assert( false && "no function" ); return ""; };
-    void Load( const NrpText& fileName ) {};
+    void Load( const NrpText& fileName ) {};    
 };
 
 typedef std::map< int, CNrpHistoryStep* > HISTORY_MAP;

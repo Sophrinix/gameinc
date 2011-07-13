@@ -119,7 +119,7 @@ NrpText CNrpReklameWork::Save( const NrpText& saveFolder )
 	assert( OpFileSystem::IsExist( saveFolder ) );
 	//должно получиться что-то вроде Компания_Продукт.Тип
 	NrpText fileName  = OpFileSystem::CheckEndSlash( saveFolder ) + Text( COMPANYNAME ) + "_";
-	fileName += (Text( GAMENAME ) + "." + Text( INTERNAL_NAME ));
+	fileName += (Text( GAMENAME ).Translit() + "." + Text( INTERNAL_NAME ));
 	
 	INrpConfig::Save( fileName );
 

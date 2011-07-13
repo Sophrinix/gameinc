@@ -30,6 +30,7 @@ BEGIN_LUNA_PROPERTIES(CLuaWindow)
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "onRemove", PureFunction, SetOnRemove )
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "onLmbClick", PureFunction, SetOnLmbClick )
 	LUNA_AUTONAME_PROPERTY( CLuaWindow, "onKeyEvent", PureFunction, SetOnKeyEvent )
+    LUNA_AUTONAME_PROPERTY( CLuaWindow, "sortType", PureFunction, SetSortMode )
 END_LUNA_PROPERTIES
 
 CLuaWindow::CLuaWindow(lua_State *L, bool exist) : ILuaGuiElement(L, CLASS_LUAWINDOW, exist )
@@ -186,4 +187,14 @@ int CLuaWindow::SetModal( lua_State* L )
 	return 0;
 }
 
+int CLuaWindow::SetSortMode( lua_State* L )
+{
+    assert( lua_isnumber( L, -1 ) );
+    IF_OBJECT_NOT_NULL_THEN
+    {
+        _object->setSortMode( gui::CNrpWindow::SORT_TYPE( lua_tointeger( L, -1 ) ) );
+    }
+
+    return 0;
+}
 }//namespace nrp

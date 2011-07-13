@@ -431,39 +431,36 @@ void CNrpWindow::setAlphaBlend( u32 new_alpha )
 	IGUIWindow::setAlphaBlend( new_alpha );
 }
 
-void CNrpWindow::addChildToEnd(IGUIElement* child)
+void CNrpWindow::addChildToEnd( IGUIElement* elm )
 {
-    assert( child );
-    if( child )
-        IGUIWindow::addChildToEnd( child );
-
-    if( _sortType == ST_NONE || Children.size() == 0 )
-        return;
-
-    bool needUpdate = true;
-    int startPos = 0;
-    while( needUpdate )
+    assert( elm && "element must be exist" );
+    IGUIWindow::addChildToEnd( elm );
+    if( _sortType == ST_25D )
     {
-        core::list<IGUIElement*>::Iterator swapIterr;
-        core::list<IGUIElement*>::Iterator iterr = Children.begin() + startPos;
-        int maxY = 99999;
-        for( ; iterr != Children.end(); iterr++ )
-        {
-            if( maxY >= (*iterr)->getRelativePosition().LowerRightCorner.Y )
-            {
-                maxY = (*iterr)->getRelativePosition().LowerRightCorner.Y;
-                swapIterr = iterr;
-                needUpdate = true;
+        core::list< IGUIElement* >::Iterator pIter, dIter;
+        bool repeat = true;
+        int endIndex = 0;
+        while( repeat ) 
+        { 
+            repeat = false;
+            // сравниваем два соседних элемента.
+            pIter = Children.begin();
+            for( dIter = Children.begin() + 1; dIter != Children.getLast() - endIndex; dIter++) 
+            {  
+                if( (*pIter)->getRelativePosition().LowerRightCorner.Y < (*dIter)->getRelativePosition().LowerRightCorner.Y ) 
+                {            
+                    pIter = dIter;
+                    repeat = true;
+                }                
             }
-        }
 
-        if( needUpdate )
-        {
-            IGUIElement* elm = *swapIterr;
-            Children.erase( swapIterr );
-            Children.insert_after( Children.begin() + startPos, elm );
-            startPos++;
-            needUpdate = false;
+            if( repeat )
+            {
+                IGUIElement* elm = *pIter;
+                Children.erase( pIter );
+                Children.insert_after( Children.getLast() - endIndex, elm );
+                endIndex++;
+            }
         }
     }
 }

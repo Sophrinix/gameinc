@@ -30,6 +30,7 @@ public:
 	int SetOnLmbClick( lua_State* L );
 	int SetOnKeyEvent( lua_State* L );
 	int SetModal( lua_State* L );
+    int SetSortMode( lua_State* L );
 
 	int SetTexture( lua_State* L );
 	int GetTexture( lua_State* L );

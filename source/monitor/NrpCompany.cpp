@@ -61,13 +61,11 @@ CNrpCompany::CNrpCompany( const NrpText& name, CNrpUser* ceo ) : INrpConfig( CLA
 	_InitialyzeOptions();
 
 	_self[ NAME ] = name;
-    NrpText internalName = name;
-    internalName = internalName.ToLower();
-    internalName = internalName.Replace( " ", "" );
-    internalName = internalName.Replace( ":", "" );
-    internalName = internalName.Replace( ",", "" );
-    internalName = internalName.Replace( ".", "" );
-    internalName = internalName.Replace( "?", "" );
+    NrpText internalName = "";
+    for( int index=0; index < name.size(); index++ )
+        if( isalpha( name[ index ] ) || core::isdigit( name[ index ] ) )
+            internalName += name[ index ];
+        
     _self[ INTERNAL_NAME ] = internalName + CNrpCompany::postfix;
 	_self[ CEO ] = ceo;
 }
