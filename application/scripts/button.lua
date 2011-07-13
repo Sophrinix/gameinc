@@ -128,7 +128,7 @@ function ArrowToElement( elm, textureName, w, h, time )
 	image.texture = textureName
 	image.scale = true
 	image.alphaChannel = true
-	guienv:AddDestructor( image, time )
+	guienv:AddBlenderAnimator( image, 255, 10, time, false, true, false ) 
 	
 	return image
 end

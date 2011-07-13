@@ -182,8 +182,8 @@ function Show()
 
 	base.rightPanel.AddYesNo( "Хотите узнать больше о лаборатории?", ShowHelp, button.CloseBlend )
 	
-	btnVideo = button.EqualeTexture( 545, 330, "techMapVideo", lab, -1, "", ShowVideoTechMap )
-	btnSound = button.EqualeTexture( 372, 213, "techMapSound", lab, -1, "", ShowSoundTechMap )
-	btnTech  = button.EqualeTexture( 749, 222,  "techMapAdvTech", lab, -1, "", ShowAdvancedTechMap )
-	btnGenre = button.EqualeTexture( 73, 202,  "techMapGenre", lab, -1, "", ShowGenreTechMap )
+	btnVideo = button.EqualeTexture( 545, 330, "techMapVideo", lab, -1, "Видео", ShowVideoTechMap )
+	btnSound = button.EqualeTexture( 372, 213, "techMapSound", lab, -1, "Звук", ShowSoundTechMap )
+	btnTech  = button.EqualeTexture( 750, 222,  "techMapAdvTech", lab, -1, "Технологии", ShowAdvancedTechMap )
+	btnGenre = button.EqualeTexture( 73, 202,  "techMapGenre", lab, -1, "Жанры", ShowGenreTechMap )
 end

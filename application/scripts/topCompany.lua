@@ -1,6 +1,6 @@
 local base = _G
 
-module( "topGame" )
+module( "topCompany" )
 
 local guienv = base.guienv
 
@@ -13,11 +13,11 @@ local applic = base.applic
 local mainWindow = nil
 
 local company = nil
-local tblGames = nil
-local gamesChart = nil
-local games = nil
+local tblCompanies = nil
+local companiesChart = nil
+local companies = nil
 
-local maxGameInChart = 10
+local maxCompanyInChart = 10
 local saveTypeTop = 2 
 
 local SORT_PROFIT = 2
@@ -31,16 +31,16 @@ local function _SortByAllTime( typeSort )
 	local index = 0
 	
 	if typeSort == SORT_PROFIT then
-		for i=1, #games do
-			if games[ i ].allTimeProfit > maxSort then
-				maxSort = games[ i ].allTimeProfit
+		for i=1, #companies do
+			if companies[ i ].profitLastYear > maxSort then
+				maxSort = companies[ i ].profitLastYear
 				index = i
 			end
 		end
 	else
-		for i=1, #games do
-			if games[ i ].allTimeSales > maxSort then
-				maxSort = games[ i ].allTimeSales
+		for i=1, #companies do
+			if companies[ i ].allTimeSales > maxSort then
+				maxSort = companies[ i ].allTimeSales
 				index = i
 			end
 		end		
@@ -54,16 +54,16 @@ local function _SortByMonth( typeSort )
 	local index = 0
 	
 	if typeSort == SORT_PROFIT then
-		for i=1, #games do
-			if games[ i ].lastMonthProfit > maxSort then
-				maxSort = games[ i ].lastMonthProfit
+		for i=1, #companies do
+			if companies[ i ].lastMonthProfit > maxSort then
+				maxSort = companies[ i ].lastMonthProfit
 				index = i
 			end
 		end
 	else
-		for i=1, #games do
-			if games[ i ].lastMonthSales > maxSort then
-				maxSort = games[ i ].lastMonthSales
+		for i=1, #companies do
+			if companies[ i ].lastMonthSales > maxSort then
+				maxSort = companies[ i ].lastMonthSales
 				index = i
 			end
 		end		
@@ -73,24 +73,24 @@ local function _SortByMonth( typeSort )
 end
 
 
-local function _AddGamesSortBy( typeSort )
+local function _AddCompaniesSortBy( typeSort )
 	base.LogScript( " sort by "..typeSort.."  time by "..saveTypeTop )
-	tblGames:ClearRows()
+	tblCompanies:ClearRows()
 	
-	gamesChart = nil
-	gamesChart = {}
+	companiesChart = nil
+	companiesChart = {}
 	
-	games = nil
-	games = {}
+	companies = nil
+	companies = {}
 	
-	for i=1, applic.gamesNumber do
-		base.table.insert( games, applic:GetGame( i-1 ) )
+	for i=1, applic.companyNumber do
+		base.table.insert( companies, applic:GetCompany( i-1 ) )
 	end
 	
-	for pos=1, maxGameInChart do
+	for pos=1, maxCompanyInChart do
 		local index = 0
 
-		if #games == 0 then break end
+		if #companies == 0 then break end
 		
 		if saveTypeTop == TIME_LIFE then
 			index = _SortByAllTime( typeSort )
@@ -98,34 +98,34 @@ local function _AddGamesSortBy( typeSort )
 			index = _SortByMonth( typeSort )
 		end
 		
-		base.table.insert( gamesChart, games[ index ] )
-		base.table.remove( games, index )
+		base.table.insert( companiesChart, companies[ index ] )
+		base.table.remove( companies, index )
 	end
 		
-	for i=1, #gamesChart do
-		local game = gamesChart[ i ]
-		if game == nil then return end
+	for i=1, #companiesChart do
+		local company = companiesChart[ i ]
+		if company == nil then return end
 		
-		local idx = tblGames:AddRow( tblGames.rowCount )
-		tblGames:SetCellText( idx, 0, game.name, 0xff, 0xff, 0xff, 0xff )
+		local idx = tblCompanies:AddRow( tblCompanies.rowCount )
+		tblCompanies:SetCellText( idx, 0, company.name, 0xff, 0xff, 0xff, 0xff )
 		if saveTypeTop == TIME_LIFE then
-			tblGames:SetCellText( idx, 1, game.allTimeSales, 0xff, 0xff, 0xff, 0xff )
-			tblGames:SetCellText( idx, 2, game.allTimeProfit, 0xff, 0xff, 0xff, 0xff )
+			tblCompanies:SetCellText( idx, 1, company.allTimeSales, 0xff, 0xff, 0xff, 0xff )
+			tblCompanies:SetCellText( idx, 2, company.profitLastYear, 0xff, 0xff, 0xff, 0xff )
 		else
-			tblGames:SetCellText( idx, 1, game.lastMonthSales, 0xff, 0xff, 0xff, 0xff )
-			tblGames:SetCellText( idx, 2, game.lastMonthProfit, 0xff, 0xff, 0xff, 0xff )
+			tblCompanies:SetCellText( idx, 1, company.lastMonthSales, 0xff, 0xff, 0xff, 0xff )
+			tblCompanies:SetCellText( idx, 2, company.lastMonthProfit, 0xff, 0xff, 0xff, 0xff )
 		end
 	
 	end
 end
 
 local function _HeaderSelected()
-	local activeColumn = tblGames.activeColumn
+	local activeColumn = tblCompanies.activeColumn
 	
 	if activeColumn == SORT_PROFIT then
-		_AddGamesSortBy( SORT_PROFIT, saveTypeTop )
+		_AddCompaniesSortBy( SORT_PROFIT, saveTypeTop )
 	else
-		_AddGamesSortBy( SORT_SALE, saveTypeTop )
+		_AddCompaniesSortBy( SORT_SALE, saveTypeTop )
 	end
 end
 
@@ -140,7 +140,7 @@ local function _CellSelected()
 end
 
 function ShowHelp()
-	tutorial.Update( "shop/chartGames" )
+	tutorial.Update( "bridge/main" )
 end
 
 function Show( typeTop )
@@ -163,32 +163,32 @@ function Show( typeTop )
 	local lb = guienv:AddLabel( "", "33%", 20, "66%", 120, -1, mainWindow )
 	lb:SetTextAlignment( base.EGUIA_CENTER, base.EGUIA_CENTER )
 	lb.font = "font_28"
-	lb.color = base.NrpARGB( 0xff, 0xff, 0xff, 0xff  )
+	lb.color = base.NrpARGB( 0xff, 0xff, 0xff, 0xff )
 	
 	if typeTop == TIME_MONTH then
-		lb.text = "Игровой чарт месяца"
-	else
-		lb.text = "Игровой чарт за все время"
+		lb.text = "Рынок компаний за месяц"
 		lb.font = "font_20"
+	else
+		lb.text = "Топ-лист компаний"
 	end
 	
 	--добавим окно с листбоксом
 	--в листбоксе поместим список игр, которые щас в продаже
-	tblGames = guienv:AddTable( 90, 150, 935, 530, -1, mainWindow )
-	tblGames.rowHeight = 24
-	tblGames:AddColumn( "Название", -1 )
-	tblGames:SetColumnWidth( 0, 282 )
-	tblGames:AddColumn( "Продано копий", -1 )
-	tblGames:SetColumnWidth( 1, 335 )
-	tblGames:AddColumn( "Прибыль", -1 )
-	tblGames:SetColumnWidth( 2, 230 )
+	tblCompanies = guienv:AddTable( 90, 150, 935, 530, -1, mainWindow )
+	tblCompanies.rowHeight = 24
+	tblCompanies:AddColumn( "Название", -1 )
+	tblCompanies:SetColumnWidth( 0, 282 )
+	tblCompanies:AddColumn( "Продано игр", -1 )
+	tblCompanies:SetColumnWidth( 1, 335 )
+	tblCompanies:AddColumn( "Прибыль", -1 )
+	tblCompanies:SetColumnWidth( 2, 230 )
 			
-	_AddGamesSortBy( SORT_PROFIT )
+	_AddCompaniesSortBy( SORT_PROFIT )
 	
-	local layoutButtons = guienv:AddLayout( 40, tblGames.bottom + 20, "40e", "60+", 4, -1, mainWindow ) 	
-	local selfBtn = button.LayoutButton( "", layoutButtons, -1, "Игры", button.NoFunction )
+	local layoutButtons =  guienv:AddLayout( 40, tblCompanies.bottom + 20, "40e", "60+", 4, -1, mainWindow )
+	button.LayoutButton( "", layoutButtons, -1, "Игры", function() mainWindow:Remove(); base.topGame.Show( 2 ) end )
 	button.LayoutButton( "", layoutButtons, -1, "Платформы", function() mainWindow:Remove(); base.topPlatform.Show( 2 ) end )
-	button.LayoutButton( "", layoutButtons, -1, "Компании", function() mainWindow:Remove(); base.topCompany.Show( 2 ) end )
+	local selfBtn = button.LayoutButton( "", layoutButtons, -1, "Компании", button.NoFunction )
 	button.LayoutButton( "", layoutButtons, -1, "Жанры", function() mainWindow:Remove(); base.topGenres.Show() end )
 	
 	selfBtn.enabled = false

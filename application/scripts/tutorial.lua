@@ -22,6 +22,7 @@ local guienv = base.guienv
 local browser = base.browser
 local table = base.table
 local currentStep = nil
+local _arrow = nil
 
 startGameWithTutorial = true
 
@@ -34,10 +35,13 @@ local function _ShowPage()
 end
 
 function ArrowToElm( elm )
+	if _arrow ~= nil then 
+		_arrow:Remove()
+	end
 	
-	local elm = base.button.ArrowToElement( elm, "TutorialArrow.png", 52, 56, 5000 )
-	guienv:AddSpringAnimator( elm, elm.left + 10, elm.top - 20, elm.right - 10, elm.bottom,
-								   elm.left - 10, elm.top + 20, elm.right + 10, elm.bottom, 1 )
+	_arrow = base.button.ArrowToElement( elm, "TutorialArrow.png", 52, 56, 5000 )
+	guienv:AddSpringAnimator( _arrow, _arrow.left + 10, _arrow.top - 20, _arrow.right - 10, _arrow.bottom,
+								   _arrow.left - 10, _arrow.top + 20, _arrow.right + 10, _arrow.bottom, 1 )
 	base.browser:Move( elm.screenLeft, elm.screenBottom )
 end
 

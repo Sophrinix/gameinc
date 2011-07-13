@@ -12,10 +12,10 @@ local guienv = base.guienv
 local LogScript = base.LogScript
 
 local mode = { }
-mode[ base.STR_CODERS ] = "coder"
-mode[ base.STR_DESIGNERS ] = "designer"
-mode[ base.STR_COMPOSERS ] = "composer"
-mode[ base.STR_TESTERS ] = "tester"
+mode[ base.STR_CODERS ] = { name="coder", btn=nil }
+mode[ base.STR_DESIGNERS ] = { name="designer", btn=nil }
+mode[ base.STR_COMPOSERS ] = { name="composer", btn=nil }
+mode[ base.STR_TESTERS ] = { name="tester", btn=nil }
 --"coder" "designer" "composer" "tester"
 local modeUserView = "coder"
 local OUTPUT_ALL = base.ODS|base.CON
@@ -96,7 +96,15 @@ local function ShowAvaibleCompanyUsers()
 end
 
 function UpdateUsersListBox( newMode )
-	modeUserView = mode[ newMode ] 
+	modeUserView = mode[ newMode ].name
+	
+	mode[ base.STR_CODERS ].btn.enabled = true
+	mode[ base.STR_DESIGNERS ].btn.enabled = true
+	mode[ base.STR_COMPOSERS ].btn.enabled = true
+	mode[ base.STR_TESTERS ].btn.enabled = true
+	
+	mode[ newMode ].btn.enabled = false
+	
 	currentEmployer = nil
 	currentComponent = nil
 	ShowAvaibleCompanyUsers()
@@ -263,10 +271,10 @@ function Show()
 	
 	--coders
 	layoutUserTypes = guienv:AddLayout( "50%", 50, "140e", "15%", 10, -1, windowProjectManager )
-	button.LayoutButton( "", layoutUserTypes, -1, base.STR_CODERS, function () UpdateUsersListBox( base.STR_CODERS ) end )
-	button.LayoutButton( "", layoutUserTypes, -1, base.STR_DESIGNERS, function () UpdateUsersListBox( base.STR_DESIGNERS ) end )
-	button.LayoutButton( "", layoutUserTypes, -1, base.STR_COMPOSERS, function () UpdateUsersListBox( base.STR_COMPOSERS ) end )
-	button.LayoutButton( "", layoutUserTypes, -1, base.STR_TESTERS, function () UpdateUsersListBox( base.STR_TESTERS ) end )
+	mode[ base.STR_CODERS ].btn = button.LayoutButton( "", layoutUserTypes, -1, base.STR_CODERS, function () UpdateUsersListBox( base.STR_CODERS ) end )
+	mode[ base.STR_DESIGNERS ].btn = button.LayoutButton( "", layoutUserTypes, -1, base.STR_DESIGNERS, function () UpdateUsersListBox( base.STR_DESIGNERS ) end )
+	mode[ base.STR_COMPOSERS ].btn = button.LayoutButton( "", layoutUserTypes, -1, base.STR_COMPOSERS, function () UpdateUsersListBox( base.STR_COMPOSERS ) end )
+	mode[ base.STR_TESTERS ].btn = button.LayoutButton( "", layoutUserTypes, -1, base.STR_TESTERS, function () UpdateUsersListBox( base.STR_TESTERS ) end )
 	--поставим для просмотра первого кодера
 	UpdateUsersListBox( base.STR_CODERS )	
 	

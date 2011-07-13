@@ -12,6 +12,7 @@ local listInventionStuff = nil
 local labelInventionName = nil
 local labelInventionMonthMoney = nil
 local currentInvention = nil
+local layoutActions = nil
 
 local selectedUser = nil
 local window_UserSelect = nil
@@ -146,8 +147,7 @@ function Show( techName, companyName )
 	
 	base.LogScript( "Окрыто окно для исследования="..techName.. "  компания="..company.name )
 	local txsBlur = base.driver:CreateBlur( "laboratory.png", 2, 4 )
-	windowIM = guienv:AddWindow( txsBlur.path, 0, 0, "0e", "0e", -1, guienv.root )
-	windowIM.draggable = false
+	windowIM = guienv:fsWindow( txsBlur.path, _Hide )
 	
 	picFlowInvention = guienv:AddPictureFlow( 60, 10, "10e", "66%", -1, windowIM )
 	picFlowInvention:SetPictureRect( 0, 0, "33%", "33%" )
@@ -163,59 +163,48 @@ function Show( techName, companyName )
 		end
 	end
 	
-	local btnWidth = scrWidth / 3
-	local ypos = scrHeight / 3
-
+	local stdSize = "30+"
+	local lbWidth = "50%"
+	local lbLeft = 45
 	--кнопки изменения финансирования и метка с текущим финансированием в месяц
-	local btnPlus = guienv:AddButton( 10, ypos, "30+", "30+", windowIM, -1, "+")
+	local lb = _AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT", lbLeft, "36%", lbWidth, stdSize )
+	labelInvestiment = _AddLabel( "", lbLeft, lb.bottom + 10, lbWidth, stdSize )													
+
+	local btnPlus = guienv:AddButton( labelInvestiment.left, labelInvestiment.top, 
+									  stdSize, labelInvestiment.bottom, windowIM, -1, "+")
 	btnPlus.action = _IncreaseInvestiment
 	
-	local btnMinus = guienv:AddButton( btnWidth - 30, ypos, "30+", "30+", windowIM, -1, "-" )
+	local btnMinus = guienv:AddButton( labelInvestiment.left - 30, labelInvestiment.top, 
+									   stdSize, labelInvestiment.bottom, windowIM, -1, "-" )
 	btnMinus.action = _DecreaseInvestiment
-	
-	_AddLabel(  "#TRANSLATE_TEXT_INVESTIMENT", 45, ypos - 15, btnWidth - 45, ypos + 15 )
-	labelInvestiment = _AddLabel( "", 45, ypos + 16, btnWidth - 45, ypos + 46 )													
-
-	ypos = ypos + 55
 	--метка с отображением скорости исследований
-	labelInventionSpeed = _AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED", 10, ypos, btnWidth, ypos + 30 )
-	
-	ypos = ypos + 55
+	labelInventionSpeed = _AddLabel( "#TRANSLATE_TEXT_INVENTIONSPEED", lbLeft, labelInvestiment.bottom+10, lbWidth, stdSize )
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionPrognoseFinish = _AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", 10, ypos, btnWidth, ypos + 30 )
-													
-	ypos = ypos + 55
+	labelInventionPrognoseFinish = _AddLabel( "#TRANSLATE_TEXT_INVENTIONPROGNOSEFINISH", lbLeft, labelInventionSpeed.bottom + 10, lbWidth, stdSize )
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionDayLeft = _AddLabel( "#TRANSLATE_TEXT_INVENTIONDAYLEFT", 10, ypos, btnWidth, ypos + 30 )													    
-												    
-	ypos = ypos + 55
+	labelInventionDayLeft = _AddLabel( "#TRANSLATE_TEXT_INVENTIONDAYLEFT", lbLeft, labelInventionPrognoseFinish.bottom + 10, lbWidth, stdSize )													    												   
 	--метка с датой примерного завершения работ при текущем финансировании
-	labelInventionMoneyPassed = _AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", 10, ypos, btnWidth, ypos + 30 )										      
-	
-	ypos = ypos + 55
+	labelInventionMoneyPassed = _AddLabel( "#TRANSLATE_TEXT_INVENTIONMONEYPASSED", lbLeft, labelInventionDayLeft.bottom + 10, lbWidth, stdSize )										      
 	--метка месячным финансированием
-	labelInventionMonthMoney = _AddLabel( "#TRANSLATE_TEXT_MONTHPAY", 10, ypos, btnWidth, ypos + 30 )
+	labelInventionMonthMoney = _AddLabel( "#TRANSLATE_TEXT_MONTHPAY", lbLeft, labelInventionMoneyPassed.bottom + 10, lbWidth, stdSize )
 
-	labelInventionName = _AddLabel( "", btnWidth + 10, scrHeight / 3 + 10, "0e", scrHeight / 3 + 40 )
-
+	labelInventionName = _AddLabel( "", "25%", "33%", "25%+", "40+" )
 	
 	--список подключенных к проекту людей 
-	listInventionStuff = guienv:AddComponentListBox( btnWidth + 10, scrHeight / 3 + 50, scrWidth - 10, scrHeight - 45, -1, windowIM )
+	listInventionStuff = guienv:AddComponentListBox( "55%", labelInvestiment.top, "10e", "45e", -1, windowIM )
 	listInventionStuff.itemHeigth = 80
 	_FillListInvnentionStuff()
 	
-	--показать данные по изобретению
-	local btnShowInfo = guienv:AddButton( btnWidth + 10,  "40e", "120+", "10e", windowIM, -1, "Инфо" )
-	btnShowInfo.action = _ShowInfoAboutInvention
-
+	
+	layoutActions = guienv:AddLayout( labelInvestiment.left, labelInvestiment.bottom, 
+										labelInvestiment.right, stdSize, 10, -1, windowIM )
+	--показать данные по изобретению										
+	button.LayoutButton( "", layoutActions, -1, "Инфо", _ShowInfoAboutInvention )
 	--кнопка добавления людей к исследованию, по которой показывается список со служащими 
 	--и возможность добавления выделенного человека
-	local btnAddPeople = guienv:AddButton( btnWidth + 130, "40e", "250+", "10e", windowIM, -1, "Добавить" )
-	btnAddPeople.action = _AddPeopleToInvention
-
+	button.LayoutButton( "", layoutActions, -1, "Добавить", _AddPeopleToInvention )
 	--удаление людей из списка
-	local btnRemPeople = guienv:AddButton( btnWidth + 260, "40e", "10e",  "10e", windowIM, -1, "Убрать" )
-	btnRemPeople.action = _RemPeopleFromInvention
+	button.LayoutButton( "", layoutActions, -1, "Убрать", _RemPeopleFromInvention )
 	
 	--обновление надписей
 	guienv:AddLoopTimer( 1000, _UpdateLabels, windowIM )

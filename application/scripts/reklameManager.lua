@@ -155,6 +155,8 @@ local function _ApplyNewWork( mp )
 	
 	soundenv:Play( "gold.wav" )
 	
+	_UpdateLabels()
+	
 	button.CloseParent( mp )
 end
 
@@ -165,7 +167,6 @@ local function _QuerryUserToApplyWork()
 		text = text .. "Стоимость:" .. currentWork.dayCost * currentWork.numberDay .. "\n"
 		text = text .. "Длительность:" .. currentWork.numberDay
 		guienv:MessageBox( text, true, true, _ApplyNewWork, button.CloseParent )
-		_UpdateLabels()
 	else
 		guienv:MessageBox( "Выберите количество дней кампании", false, false, nil, nil )
 	end
@@ -222,7 +223,7 @@ local function _ShowCampaniesManager()
 		picflowReklames:AddItem( reklames[ y ].texture, reklames[ y ].name, reklames[ y ].object )
 	end
 
-	btnApplyWork = guienv:AddButton( "12%", "70e", "26%", "20e", campaniesWindow, -1, base.STR_STARTREKLAME )
+	btnApplyWork = guienv:AddButton( "25%", "70e", "12%+", "20e", campaniesWindow, -1, base.STR_STARTREKLAME )
 	btnApplyWork.action = _QuerryUserToApplyWork
 	btnApplyWork.visible = false
 	

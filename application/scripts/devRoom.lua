@@ -32,7 +32,7 @@ function Show( ptr )
 	
 	btnTester = button.EqualeTexture( 820, 384, "devComp", mainWindow, -1, "", base.testerComp.Show )
 	btnProgress = button.Stretch( "9%", "22%", "28%", "62%", "btnProjectProgress", mainWindow, -1, "", base.projectManager.Show ) 
-	btnManagers = button.Stretch( "67.7%", "44%", "82.5%", "69%", "btnProjectChiefs", mainWindow, -1, "", base.projectChief.Show )
+	btnManagers = button.Stretch( "67.7%", "44%", "82%", "69%", "btnProjectChiefs", mainWindow, -1, "", base.projectChief.Show )
 	--employers manager
 end
 

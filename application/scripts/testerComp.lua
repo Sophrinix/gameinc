@@ -50,10 +50,13 @@ local function _SelectGame()
 end
 
 function Show( ptr )
-	local txs = base.driver:CreateBlur( "testComp.png", 2, 4 )	
+
+	local txs = base.driver:CreateBlur( "developers.png", 2, 4 )	
 	mainWindow = window.fsWindow( txs.path, _Hide )
 	
 	lbDesc = guienv:AddLabel( "", 278, 417, 770, 655, -1, mainWindow )
+	img = guienv:AddImage( 0, 0, "0e", "0e", mainWindow, -1, "" );
+	img.texture = "testComp.png"
 	
 	picflowGames = guienv:AddPictureFlow( 350, 70, 680, 310, -1, mainWindow )
 	picflowGames.drawBody = false

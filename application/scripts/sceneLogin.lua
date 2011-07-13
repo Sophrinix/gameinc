@@ -36,6 +36,7 @@ function Splash1()
 	nrpImg = guienv:AddImage( "33%", "33%", "256+", "128+", splashWnd, -1, "" )
 	nrpImg.texture = "nerpaEngine.png"
 	nrpImg.alphaChannel = true
+	nrpImg.rotate = 45
 	guienv:AddTimer( 1050, function() guienv:AddBlenderAnimator( nrpImg, 255, 0, 4000, false, true, false ) end, nil )
 	
 	guienv:AddTimer( 2150, Splash2, splashWnd )	

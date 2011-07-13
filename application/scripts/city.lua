@@ -45,7 +45,7 @@ local function _CreateButtons()
 	--pizza	
 	--btnPizza = button.EqualeTexture( 105, 42, "pizza", mainWindow, -1, "", base.pizza.Show )
 	--univer	
-	btnUniver = button.EqualeTexture( 0, 287, "univer", mainWindow, -1, "", base.univer.Show )
+	btnUniver = button.EqualeTexture( 0, 287, "univerN", mainWindow, -1, "", base.univer.Show )
 	--reklame
 	btnReklame = button.EqualeTexture( 0, 94, "reklame", mainWindow, -1, "", base.reklameManager.Show )
 end
@@ -58,6 +58,7 @@ function Show()
 		mainWindow.draggable = false
 		mainWindow.closeButton.visible = false
 		mainWindow.visible = false
+		mainWindow.sortType = 1
 		
 		_CreateButtons()
 		base.browser:Hide()

@@ -39,5 +39,5 @@ function Show()
 	--directors room
 	btnDirector = button.EqualeTexture( 448, 242, "director", receptionWindow, -1, "Dbg:Director", base.director.Show )
 	btnDevRoom = button.EqualeTexture( 355, 249, "developers", receptionWindow, -1, "Dbg:DevRoom", base.devRoom.Show )
-	btnResearch = button.EqualeTexture( 0, 157, "button_laboratory", receptionWindow, -1, "Dbg:Research", OpenLabRoom )
+	btnResearch = button.EqualeTexture( 0, 162, "button_laboratory", receptionWindow, -1, "Dbg:Research", OpenLabRoom )
 end

@@ -246,20 +246,14 @@ end
 
 local function _CreateCompanyByGame( cmpName )
 	--если нет компании, то по умолчанию ставим имя игры
-	if cmpName == "" then
-		cmpName = game.name..", Ltd."
-	end
-
 	local company = applic:GetCompanyByName( cmpName )
-	
-	base.LogDebug( "find new company "..cmpName )
 	
 	if company == nil or company.empty then
 		local balance = base.math.random( 0, 1000000 )
 		local selfPie = 5000;
 		local allPie = 11000;
 		company = applic:SinceCompany( cmpName, balance, selfPie, allPie )
-		company.texture = "media/companies/"..cmpName..".jpg"
+		company.texture = "media/companies/"..cmpName..".png"
 		
 		if base.pda then
 			base.pda.Show( "На рынке появилась новая компания "..company.name )
@@ -267,7 +261,6 @@ local function _CreateCompanyByGame( cmpName )
 	end
 	
 	base.LogScript( "Since company "..company.name )
-	return company
 end
 
 function CheckNewGames()
