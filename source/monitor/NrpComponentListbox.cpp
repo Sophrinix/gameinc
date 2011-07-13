@@ -1045,6 +1045,12 @@ void CNrpComponentListbox::lunchToolTip()
 	PCall( GUIELEMENT_TOOLTIP_LAUNCHED, this, NULL );
 }
 
+irr::s32 CNrpComponentListbox::getItemAt( s32 xpos, s32 ypos ) const
+{
+    assert( false && "func not supported" );
+    return -1;
+}
+
 }
 
 }

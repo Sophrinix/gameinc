@@ -2200,7 +2200,6 @@ void COpenGLDriver::draw2DImage( const video::ITexture* texture,
             //Just cap it for logical reasons.
             lRotation = fmodf(lRotation, 360.0f);
         }
-
         //Rotate the points seperately
 
         topLeft.rotateBy(rotation, destCenter);
@@ -2208,12 +2207,14 @@ void COpenGLDriver::draw2DImage( const video::ITexture* texture,
         bottomLeft.rotateBy(rotation, destCenter);
         bottomRight.rotateBy(rotation, destCenter);
 
-      /*  core::rectf newRect( topLeft, bottomRight );
-        core::position2df correctPos = newRect.getCenter() - destCenter;
-        topLeft -= correctPos;
-        topRight -= correctPos;
-        bottomRight -= correctPos;
-        bottomLeft -= correctPos; */
+        core::rectf newRect( topLeft, bottomRight );
+        core::position2df ttp(pos.X, pos.Y);
+        topLeft = ttp + (newRect.getCenter() - topLeft);
+        bottomRight = ttp + (newRect.getCenter() - bottomRight);
+        newRect =  core::rectf( topRight, bottomLeft );
+        topRight = ttp + (newRect.getCenter() - topRight);
+        bottomLeft = ttp + (newRect.getCenter() - bottomLeft);
+
     }
 
     //FuzzYspo0N :: Some clarity on the clipping. Dont draw when its off screen, when it was offscreen it was "shifted". 

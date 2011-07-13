@@ -824,6 +824,10 @@ gui::CNrpGuiLink* CNrpGUIEnvironment::addLink( const core::recti& rectangle, gui
 	return link;
 }
 
+void CNrpGUIEnvironment::removeFont( IGUIFont* font )
+{
+    return _nativeEnv->removeFont( font );
+}
 }//namespace gui
 
 }//namespace irr

@@ -345,7 +345,7 @@ IGUIFont* CNrpButton::getActiveFont() const
         return overrideFont_;
     IGUISkin* skin = Environment->getSkin();
     if (skin)
-        return skin->getFont();
+        return skin->getFont(EGDF_BUTTON);
     return 0;
 }
 

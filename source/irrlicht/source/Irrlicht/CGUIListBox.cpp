@@ -127,8 +127,8 @@ void CGUIListBox::removeItem(u32 id)
 
 s32 CGUIListBox::getItemAt(s32 xpos, s32 ypos) const
 {
-	if ( 	xpos < AbsoluteRect.UpperLeftCorner.X || xpos >= AbsoluteRect.LowerRightCorner.X
-		||	ypos < AbsoluteRect.UpperLeftCorner.Y || ypos >= AbsoluteRect.LowerRightCorner.Y
+	if ( xpos < AbsoluteRect.UpperLeftCorner.X || xpos >= AbsoluteRect.LowerRightCorner.X
+		 ||	ypos < AbsoluteRect.UpperLeftCorner.Y || ypos >= AbsoluteRect.LowerRightCorner.Y
 		)
 		return -1;
 

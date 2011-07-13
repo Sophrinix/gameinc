@@ -43,6 +43,10 @@ public:
 	virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options);
 	virtual void setOverrideColor(video::SColor color);
 
+    virtual IGUIFont* getOverrideFont() const { return overrideFont_; }
+
+    IGUIFont* getActiveFont() const;
+
 	virtual inline void enableOverrideColor( bool bvalue ) { overrideColorEnabled_ = bvalue; }
 
 	virtual void setOnClickAction( int funcRef );

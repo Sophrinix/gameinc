@@ -109,6 +109,8 @@ public:
 
 	virtual video::ITexture* getImage() { return image_; }
 
+    virtual IGUIFont* getOverrideFont() const { return overrideFont_;}
+
 protected:
 
 	struct ButtonSprite

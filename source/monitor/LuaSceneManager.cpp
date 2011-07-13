@@ -433,7 +433,7 @@ int CLuaSceneManager::GetRayFromCursorCollisionWithTerrains( lua_State* vm )
 	core::vector3df collisionPos( 0, 0, 0 );
 
 	//это объект сцены с которым было пересечение
-	const scene::ISceneNode* outNode=NULL;
+	scene::ISceneNode* outNode=NULL;
 	//это флаг пересечения
 	bool isCollision = false;
 
@@ -476,8 +476,8 @@ int CLuaSceneManager::GetMarkText( lua_State* L )
 	NrpText text("");
 
 	scene::ISceneNode* node = GetTextSceneNode_( ptrNode );
-	if( node != NULL )
-		text = ((scene::ITextSceneNode*)node)->getText();
+	/*if( node != NULL )
+		text = ((scene::ITextSceneNode*)node)->getText();*/
 
 	lua_pushstring( L, text );
 

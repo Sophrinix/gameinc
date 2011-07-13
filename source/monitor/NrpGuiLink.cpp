@@ -184,7 +184,7 @@ void CNrpGuiLink::draw()
 		return;
 
 	video::IVideoDriver* driver = Environment->getVideoDriver();
-	IGUIFont* font = overrideFont_ != NULL ? overrideFont_ : Environment->getSkin()->getFont(EGDF_BUTTON);
+	IGUIFont* font = getActiveFont();
 	core::rect<s32> rect = AbsoluteRect;
 	bool isHovered = Environment->isHovered( this );
 
@@ -371,6 +371,18 @@ void CNrpGuiLink::setOnClickAction( int funcRef )
 {
 	Bind( EGET_BUTTON_CLICKED, funcRef );
 }
+
+//! Get the font which is used right now for drawing
+IGUIFont* CNrpGuiLink::getActiveFont() const
+{
+    if ( overrideFont_ )
+        return overrideFont_;
+    IGUISkin* skin = Environment->getSkin();
+    if (skin)
+        return skin->getFont(EGDF_BUTTON);
+    return 0;
+}
+
 
 }//namespace gui
 

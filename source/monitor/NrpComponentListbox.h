@@ -73,6 +73,8 @@ public:
 	virtual irr::u32 addItem(const wchar_t* text, nrp::INrpObject* ptrObject, irr::s32 icon);
 	virtual irr::u32 addItem(const wchar_t* text, irr::s32 icon);
 
+    virtual s32 getItemAt(s32 xpos, s32 ypos) const;
+
 	//! Returns the icon of an item
 	virtual irr::s32 getIcon(irr::u32 id) const;
 	virtual void* getObject( irr::u32 id ) const;

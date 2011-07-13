@@ -239,6 +239,7 @@ public:
 	gui::IGUIAnimator* addCursorPosAnimator( IGUIElement* parent, core::position2di offset );
 
 	gui::IGUIFont* addFont(const io::path& name, IGUIFont* font);
+    void removeFont( IGUIFont* font );
 
 	virtual IGUIElementFactory* getDefaultGUIElementFactory() const;
 	virtual void registerGUIElementFactory(IGUIElementFactory* factoryToAdd);

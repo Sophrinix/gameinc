@@ -117,6 +117,7 @@ private:
 	bool hasItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType) const { return false; }
 	video::SColor getItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType) const {return 0;}
 	video::SColor getItemDefaultColor(EGUI_LISTBOX_COLOR colorType) const { return 0; }
+    virtual s32 getItemAt(s32 xpos, s32 ypos) const;
 	void setItem(u32 index, const wchar_t* text, s32 icon) {}
 	void setItemOverrideColor(u32 index, const video::SColor &color) {}
 	void setItemOverrideColor(u32 index, EGUI_LISTBOX_COLOR colorType, const video::SColor &color) {};

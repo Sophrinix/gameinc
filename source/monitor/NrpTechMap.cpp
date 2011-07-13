@@ -1394,6 +1394,10 @@ bool CNrpTechMap::IsTechHaveUnknownChild( nrp::CNrpTechnology* parent )
 	return false;
 }
 
+irr::u32 CNrpTechMap::getColumnWidth( u32 columnIndex ) const
+{
+    return Columns[columnIndex].Width;
+}
 } // end namespace gui
 
 } // end namespace irr

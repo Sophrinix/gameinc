@@ -109,6 +109,8 @@ public:
 	//! set a column width
 	virtual void setColumnWidth(u32 width);
 
+    virtual u32 getColumnWidth(u32 columnIndex) const;
+
 	//! columns can be resized by drag 'n drop
 	virtual void setResizableColumns(bool resizable);
 

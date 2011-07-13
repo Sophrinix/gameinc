@@ -25,6 +25,8 @@ public:
 	virtual int	 getPosition() const;
     virtual void setRotate( f32 angle );
     virtual f32 getRotate() const;
+    virtual video::ITexture* getImage() const { return Texture; }
+    virtual video::SColor getColor() const { return 0; }
 	//virtual void setPostfixText( const wchar_t* text );
 	//virtual void setPrefixText( const wchar_t* text );
 	//virtual void setTextVisible( bool visible );

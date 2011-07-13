@@ -194,18 +194,7 @@ dimension2du NrpText::ToDim2du()
 NrpText NrpText::Replace( NrpText src, NrpText dst ) const
 {
     stringw tmp( *this );
-    stringw postStr;
-    for(s32 index=0; index=tmp.find(src.ToWide(), index), index != -1;)
-    {
-        postStr = tmp.subString( index+src.size(), tmp.size() );
-        tmp = tmp.subString( 0, index );
-        tmp.append( dst );
-        tmp.append( postStr );
-
-        index += dst.size();
-    }
-
-    return tmp;
+    return tmp.replace( src, dst );
 }
 
 recti NrpText::ToRect()

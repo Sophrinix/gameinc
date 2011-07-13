@@ -434,6 +434,12 @@ void CNrp2DPictureFlow::setItemBlend( u32 index, int blend )
 	if( index < _images.size() )
 		_images[ index ]->blend = blend;
 }
+
+irr::s32 CNrp2DPictureFlow::getItemAt( s32 xpos, s32 ypos ) const
+{
+    assert( false && "func not supported" );
+    return -1;
+}
 }//end namespace gui
 
 }//end namespace irr
