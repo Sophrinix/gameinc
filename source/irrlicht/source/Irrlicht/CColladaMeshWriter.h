@@ -157,11 +157,27 @@ protected:
 		{
 		}
 
+        void SetMaterialWriten( bool wr )
+        {
+           MaterialWritten = wr; 
+        }
+
+        void SetEffectWritten( bool ew )
+        {
+            EffectWritten = ew;
+        }
+
+        void SetGeometryWritten( bool gw )
+        {
+            GeometryWritten = gw;
+        }
+
 		irr::core::stringw Name;
 		bool MaterialWritten;
 		bool EffectWritten;
 		bool GeometryWritten;
 	};
+
 	typedef core::map<IMesh*, ColladaMesh>::Node MeshNode;
 	core::map<IMesh*, ColladaMesh> Meshes;
 

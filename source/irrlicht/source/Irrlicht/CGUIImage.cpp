@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2011 Nikolaus Gebhardt
+// Copyright (C) 2002-2009 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -18,7 +18,7 @@ namespace gui
 //! constructor
 CGUIImage::CGUIImage(IGUIEnvironment* environment, IGUIElement* parent, s32 id, core::rect<s32> rectangle)
 : IGUIImage(environment, parent, id, rectangle), Texture(0), Color(255,255,255,255),
-	UseAlphaChannel(false), ScaleImage(false)
+	UseAlphaChannel(false), ScaleImage(false), _rotate(0)
 {
 	#ifdef _DEBUG
 	setDebugName("CGUIImage");
@@ -80,7 +80,16 @@ void CGUIImage::draw()
 
 	if (Texture)
 	{
-		if (ScaleImage)
+        if( _rotate != 0 )
+        {
+            core::recti txsRect = core::recti(core::position2d<s32>(0,0), core::dimension2di(Texture->getOriginalSize()));
+            core::vector2df scale(  AbsoluteRect.getWidth() / f32( txsRect.getWidth() ), 
+                                    AbsoluteRect.getHeight() / f32( txsRect.getHeight() ) );
+            driver->draw2DImage( Texture, AbsoluteRect.getCenter(),
+                                 txsRect,
+                                 _rotate, true, scale, Color, UseAlphaChannel );
+        }
+		else if (ScaleImage)
 		{
 			const video::SColor Colors[] = {Color,Color,Color,Color};
 
@@ -157,7 +166,16 @@ void CGUIImage::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWri
 	setScaleImage(in->getAttributeAsBool("ScaleImage"));
 }
 
+void CGUIImage::setAlphaBlend( u32 new_alpha )
+{
+    Color.setAlpha( new_alpha );
+    AlphaBlend = new_alpha;
+}
 
+void CGUIImage::setRotate( f32 angle )
+{
+    _rotate = angle;
+}
 } // end namespace gui
 } // end namespace irr
 

@@ -48,6 +48,9 @@ namespace gui
 		//! Sets whether to draw the background
 		virtual void setDrawBackground(bool draw);
 
+		//! Return background draw
+		virtual bool getDrawBackground() { return Background; }
+
 		//! Sets whether to draw the border
 		virtual void setDrawBorder(bool draw);
 

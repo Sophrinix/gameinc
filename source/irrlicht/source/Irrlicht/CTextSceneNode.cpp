@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2009 Nikolaus Gebhardt
+// Copyright (C) 2002-2011 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -84,10 +84,6 @@ void CTextSceneNode::setTextColor(video::SColor color)
 	Color = color;
 }
 
-const wchar_t* CTextSceneNode::getText() const
-{
-	return Text.c_str();
-}
 
 //!--------------------------------- CBillboardTextSceneNode ----------------------------------------------
 
@@ -158,6 +154,9 @@ CBillboardTextSceneNode::~CBillboardTextSceneNode()
 //! sets the text string
 void CBillboardTextSceneNode::setText(const wchar_t* text)
 {
+	if ( !Mesh )
+		return;
+
 	Text = text;
 
 	Symbol.clear();
@@ -237,7 +236,7 @@ void CBillboardTextSceneNode::setText(const wchar_t* text)
 
 
 //! pre render event
-void CBillboardTextSceneNode::OnRegisterSceneNode()
+void CBillboardTextSceneNode::OnAnimate(u32 timeMs)
 {
 	if (!IsVisible || !Font || !Mesh)
 		return;
@@ -257,7 +256,7 @@ void CBillboardTextSceneNode::OnRegisterSceneNode()
 	if (textLength<0.0f)
 		textLength=1.0f;
 
-//	const core::matrix4 &m = camera->getViewFrustum()->Matrices[ video::ETS_VIEW ];
+	//const core::matrix4 &m = camera->getViewFrustum()->Matrices[ video::ETS_VIEW ];
 
 	// make billboard look to camera
 	core::vector3df pos = getAbsolutePosition();
@@ -320,7 +319,10 @@ void CBillboardTextSceneNode::OnRegisterSceneNode()
 	BBox = Mesh->getBoundingBox();
 	core::matrix4 mat( getAbsoluteTransformation(), core::matrix4::EM4CONST_INVERSE );
 	mat.transformBoxEx(BBox);
+}
 
+void CBillboardTextSceneNode::OnRegisterSceneNode()
+{
 	SceneManager->registerNodeForRendering(this, ESNRP_TRANSPARENT);
 	ISceneNode::OnRegisterSceneNode();
 }
@@ -329,6 +331,9 @@ void CBillboardTextSceneNode::OnRegisterSceneNode()
 //! render
 void CBillboardTextSceneNode::render()
 {
+	if ( !Mesh )
+		return;
+
 	video::IVideoDriver* driver = SceneManager->getVideoDriver();
 
 	// draw
@@ -412,6 +417,9 @@ void CBillboardTextSceneNode::setTextColor(video::SColor color)
 //! \param overallColor: the color to set
 void CBillboardTextSceneNode::setColor(const video::SColor & overallColor)
 {
+	if ( !Mesh )
+		return;
+
 	for ( u32 i = 0; i != Text.size (); ++i )
 	{
 		const SSymbolInfo &info = Symbol[i];
@@ -429,6 +437,9 @@ void CBillboardTextSceneNode::setColor(const video::SColor & overallColor)
 //! \param bottomColor: the color to set the bottom vertices
 void CBillboardTextSceneNode::setColor(const video::SColor & topColor, const video::SColor & bottomColor)
 {
+	if ( !Mesh )
+		return;
+
 	ColorBottom = bottomColor;
 	ColorTop = topColor;
 	for ( u32 i = 0; i != Text.size (); ++i )

@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2011 Nikolaus Gebhardt
+// Copyright (C) 2002-2009 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -28,7 +28,7 @@ class CGUIEnvironment : public IGUIEnvironment, public IGUIElement
 public:
 
 	//! constructor
-	CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op);
+	CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op, ICursorControl* cursor );
 
 	//! destructor
 	virtual ~CGUIEnvironment();
@@ -307,6 +307,7 @@ private:
 	IGUIElement* Hovered;
 	IGUIElement* HoveredNoSubelement;	// subelements replaced by their parent, so you only have 'real' elements here
 	IGUIElement* Focus;
+	ICursorControl* _cursor;
 	core::position2d<s32> LastHoveredMousePos;
 	IGUISkin* CurrentSkin;
 	io::IFileSystem* FileSystem;

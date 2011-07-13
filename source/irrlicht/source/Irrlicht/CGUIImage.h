@@ -1,4 +1,4 @@
-// Copyright (C) 2002-2011 Nikolaus Gebhardt
+// Copyright (C) 2002-2009 Nikolaus Gebhardt
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
@@ -58,11 +58,18 @@ namespace gui
 		//! Reads attributes of the element
 		virtual void deserializeAttributes(io::IAttributes* in, io::SAttributeReadWriteOptions* options);
 
+        virtual void setAlphaBlend( u32 new_alpha );
+
+        virtual void setRotate( f32 angle );
+
+        virtual f32 getRotate() const { return _rotate; }
+
 	private:
 		video::ITexture* Texture;
 		video::SColor Color;
 		bool UseAlphaChannel;
 		bool ScaleImage;
+        f32 _rotate;
 
 	};
 

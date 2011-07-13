@@ -30,7 +30,7 @@ CGUITable::CGUITable(IGUIEnvironment* environment, IGUIElement* parent,
 	VerticalScrollBar(0), HorizontalScrollBar(0),
 	Clip(clip), DrawBack(drawBack), MoveOverSelect(moveOverSelect),
 	Selecting(false), CurrentResizedColumn(-1), ResizeStart(0), ResizableColumns(true),
-	ItemHeight(0), TotalItemHeight(0), TotalItemWidth(0), Selected(-1),
+	ItemHeight(0), overItemHeight_(0), TotalItemHeight(0), TotalItemWidth(0), Selected(-1),
 	CellHeightPadding(2), CellWidthPadding(5), ActiveTab(-1),
 	CurrentOrdering(EGOM_NONE), DrawFlags(EGTDF_ROWS | EGTDF_COLUMNS | EGTDF_ACTIVE_ROW )
 {
@@ -427,7 +427,7 @@ void CGUITable::recalculateHeights()
 
 		if(Font)
 		{
-			ItemHeight = Font->getDimension(L"A").Height + (CellHeightPadding * 2);
+			ItemHeight = overItemHeight_ == 0 ? Font->getDimension(L"A").Height + (CellHeightPadding * 2) : overItemHeight_;
 			Font->grab();
 		}
 	}
@@ -1249,6 +1249,11 @@ void CGUITable::deserializeAttributes(io::IAttributes* in, io::SAttributeReadWri
 	refreshControls();
 }
 
+void CGUITable::SetItemHeight( s32 height )
+{
+	overItemHeight_ = height;
+	ItemHeight = overItemHeight_ == 0 ? Font->getDimension(L"A").Height + (CellHeightPadding * 2) : overItemHeight_;
+}
 } // end namespace gui
 } // end namespace irr
 

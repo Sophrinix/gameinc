@@ -205,7 +205,8 @@ public:
 	}
 
 
-	//! The alignment defines how the borders of this element will be positioned when the parent element is resized.	void setAlignment(EGUI_ALIGNMENT left, EGUI_ALIGNMENT right, EGUI_ALIGNMENT top, EGUI_ALIGNMENT bottom)
+	//! The alignment defines how the borders of this element will be positioned when the parent element is resized.	
+    void setAlignment(EGUI_ALIGNMENT left, EGUI_ALIGNMENT right, EGUI_ALIGNMENT top, EGUI_ALIGNMENT bottom)
 	{
 		AlignLeft = left;
 		AlignRight = right;
@@ -472,7 +473,11 @@ public:
 
 
 	//! Returns true if element is enabled
-	/** Currently elements do _not_ care about parent-states.		So if you want to affect childs you have to enable/disable them all.		The only exception to this are sub-elements which also check their parent.	*/	virtual bool isEnabled() const
+	/** Currently elements do _not_ care about parent-states.		
+		So if you want to affect childs you have to enable/disable them all.		
+		The only exception to this are sub-elements which also check their parent.	
+	*/	
+	virtual bool isEnabled() const
 	{
 		if ( isSubElement() && IsEnabled && getParent() )			return getParent()->isEnabled();		_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
 		return IsEnabled;
@@ -578,7 +583,10 @@ public:
 	}
 
 
-	//! Moves a child to the back, so it's siblings are drawn on top of it	/** \return True if successful, false if not. */	virtual bool sendToBack(IGUIElement* child)	{
+	//! Moves a child to the back, so it's siblings are drawn on top of it	
+    /** \return True if successful, false if not. */	
+    virtual bool sendToBack(IGUIElement* child)
+	{
 		core::list<IGUIElement*>::Iterator it = Children.begin();
 		if (child == (*it))	// already there			return true;		for (; it != Children.end(); ++it)
 		{
@@ -761,6 +769,16 @@ public:
 		return Type;
 	}
 
+	void setRFont( gui::IGUIFont* newFont )
+	{
+		RFont = newFont;
+	}
+
+	gui::IGUIFont* getRFont()
+	{
+		return RFont;
+	}
+
 	//! Returns true if the gui element supports the given type.
 	/** This is mostly used to check if you can cast a gui element to the class that goes with the type.
 	Most gui elements will only support their own type, but if you derive your own classes from interfaces
@@ -836,6 +854,8 @@ public:
 
 		setNotClipped(in->getAttributeAsBool("NoClip"));
 	}
+
+	virtual void lunchToolTip() {};
 
 protected:
 	// not virtual because needed in constructor
@@ -1028,6 +1048,10 @@ protected:
 	//! tooltip
 	core::stringw ToolTipText;
 
+	//Unique name
+	core::stringw Name;
+    core::stringw _styleName;
+
 	//! id
 	s32 ID;
 
@@ -1036,6 +1060,11 @@ protected:
 
 	//! tab order
 	s32 TabOrder;
+
+	//! AlphaBlend Value
+	u32 AlphaBlend;
+
+	IGUIFont* RFont;
 
 	//! tab groups are containers like windows, use ctrl+tab to navigate
 	bool IsTabGroup;

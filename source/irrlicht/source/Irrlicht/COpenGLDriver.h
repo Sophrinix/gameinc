@@ -187,7 +187,16 @@ namespace video
 		virtual void draw2DImage(const video::ITexture* texture, const core::rect<s32>& destRect,
 			const core::rect<s32>& sourceRect, const core::rect<s32>* clipRect = 0,
 			const video::SColor* const colors=0, bool useAlphaChannelOfTexture=false);
-
+       
+        //! Draws a part of the texture into the rectangle with rotate.
+        void COpenGLDriver::draw2DImage( const video::ITexture* texture,  
+                                         const core::position2d<s32>& pos, 
+                                         const core::rect<s32>& sourceRect, 
+                                         const f32 rotation, 
+                                         const bool filtering, 
+                                         const core::vector2df scale, 
+                                         SColor color, 
+                                         bool useAlphaChannelOfTexture );
 		//! draw an 2d rectangle
 		virtual void draw2DRectangle(SColor color, const core::rect<s32>& pos,
 			const core::rect<s32>* clip = 0);

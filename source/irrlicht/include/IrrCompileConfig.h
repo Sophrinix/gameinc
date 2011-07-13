@@ -107,7 +107,7 @@
 
 
 //! Define _IRR_COMPILE_WITH_JOYSTICK_SUPPORT_ if you want joystick events.
-#define _IRR_COMPILE_WITH_JOYSTICK_EVENTS_
+//#define _IRR_COMPILE_WITH_JOYSTICK_EVENTS_
 #ifdef NO_IRR_COMPILE_WITH_JOYSTICK_EVENTS_
 #undef _IRR_COMPILE_WITH_JOYSTICK_EVENTS_
 #endif
@@ -181,8 +181,8 @@ comment this define out */
 /** If you do not wish the engine to be compiled with X11, comment this
 define out. */
 // Only used in LinuxDevice.
-#define _IRR_COMPILE_WITH_X11_
-// #ifdef NO_IRR_COMPILE_WITH_X11_
+//#define _IRR_COMPILE_WITH_X11_
+#ifdef NO_IRR_COMPILE_WITH_X11_
 #undef _IRR_COMPILE_WITH_X11_
 #endif
 
@@ -313,7 +313,7 @@ tool <http://developer.nvidia.com/object/nvperfhud_home.html>. */
 			16Bit + SubPixel/SubTexel Correct + ZBuffer
 */
 
-#define BURNINGVIDEO_RENDERER_BEAUTIFUL
+//#define BURNINGVIDEO_RENDERER_BEAUTIFUL
 //#define BURNINGVIDEO_RENDERER_FAST
 //#define BURNINGVIDEO_RENDERER_ULTRA_FAST
 //#define BURNINGVIDEO_RENDERER_CE

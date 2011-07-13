@@ -2125,6 +2125,165 @@ void COpenGLDriver::draw2DImage(const video::ITexture* texture,
 	glEnd();
 }
 
+void COpenGLDriver::draw2DImage( const video::ITexture* texture,
+                                const core::position2d<s32>& pos,
+                                const core::rect<s32>& sourceRect,
+                                const f32 rotation,
+                                const bool filtering,
+                                const core::vector2df scale,
+                                SColor color,
+                                bool useAlphaChannelOfTexture )
+{
+    if (!texture)
+        return;
+
+    if (!sourceRect.isValid())
+        return;
+
+    core::position2d<s32> targetPos(pos);
+    core::position2d<s32> sourcePos(sourceRect.UpperLeftCorner);
+    // This needs to be signed as it may go negative.
+    core::dimension2d<s32> sourceSize(sourceRect.getSize());
+
+    //FuzzYspo0N :: Needed for scaling the image.
+    core::vector2df vSourceSize = core::vector2df(f32(sourceSize.Width), f32(sourceSize.Height));
+
+    //FuzzYspo0N :: Start at the origin (thanks Josie)
+    core::rectf imageRect = core::rectf(0, 0, vSourceSize.X, vSourceSize.Y);
+    core::rectf scaleRect = imageRect;
+    core::vector2df destCenter = /*imageRect.getCenter() +*/ core::vector2df(f32(targetPos.X), f32(targetPos.Y));
+
+    //FuzzYspo0N :: Points for rendering
+    core::vector2df topLeft = core::vector2df();
+    core::vector2df topRight = core::vector2df();
+    core::vector2df bottomLeft = core::vector2df();
+    core::vector2df bottomRight = core::vector2df();
+
+    //FuzzYspo0N :: Handle scaling of the verts 
+    if(!scale.equals(core::vector2df(1.0f, 1.0f))) 
+    {
+        //FuzzYspo0N :: Resize the rectangle
+        imageRect.LowerRightCorner.X *= scale.X;
+        imageRect.LowerRightCorner.Y *= scale.Y;
+
+        //FuzzYspo0N :: Update the translation
+        imageRect += core::vector2df(f32(destCenter.X - (imageRect.getWidth() / 2.0f)), f32(destCenter.Y - (imageRect.getHeight() / 2.0f)));
+
+        scaleRect.UpperLeftCorner = imageRect.UpperLeftCorner;
+        scaleRect.LowerRightCorner = imageRect.LowerRightCorner;
+
+        //FuzzYspo0N :: Adjust rendering coords
+        topLeft = scaleRect.UpperLeftCorner;
+        bottomRight = scaleRect.LowerRightCorner;
+
+        topRight = core::vector2df(scaleRect.LowerRightCorner.X, scaleRect.UpperLeftCorner.Y);
+        bottomLeft = core::vector2df(scaleRect.UpperLeftCorner.X, scaleRect.LowerRightCorner.Y);
+    }
+    else
+    {
+        scaleRect += core::vector2df(f32(targetPos.X), f32(targetPos.Y));
+
+        //FuzzYspo0N :: Adjust rendering coords
+        topLeft = scaleRect.UpperLeftCorner;
+        bottomRight = scaleRect.LowerRightCorner;
+
+        topRight = core::vector2df(scaleRect.LowerRightCorner.X, scaleRect.UpperLeftCorner.Y);
+        bottomLeft = core::vector2df(scaleRect.UpperLeftCorner.X, scaleRect.LowerRightCorner.Y);
+    }
+
+    //FuzzYspo0N :: Simple rotation of the verts.
+    f32 lRotation = rotation; // Local rotation
+    if(lRotation > 0.0f)
+    {
+        if(lRotation > 360.0f)
+        {
+            //Just cap it for logical reasons.
+            lRotation = fmodf(lRotation, 360.0f);
+        }
+
+        //Rotate the points seperately
+
+        topLeft.rotateBy(rotation, destCenter);
+        topRight.rotateBy(rotation, destCenter);
+        bottomLeft.rotateBy(rotation, destCenter);
+        bottomRight.rotateBy(rotation, destCenter);
+
+      /*  core::rectf newRect( topLeft, bottomRight );
+        core::position2df correctPos = newRect.getCenter() - destCenter;
+        topLeft -= correctPos;
+        topRight -= correctPos;
+        bottomRight -= correctPos;
+        bottomLeft -= correctPos; */
+    }
+
+    //FuzzYspo0N :: Some clarity on the clipping. Dont draw when its off screen, when it was offscreen it was "shifted". 
+
+    const core::dimension2d<u32>& renderTargetSize = getCurrentRenderTargetSize();
+    core::rectf renderSize = core::rectf(0.0f, 0.0f, f32(renderTargetSize.Width), f32(renderTargetSize.Height));
+
+    if(!renderSize.isPointInside(topLeft) && !renderSize.isPointInside(topRight) && !renderSize.isPointInside(bottomLeft) && !renderSize.isPointInside(bottomRight))
+    {
+        //FuzzYspo0N :: Offscreen , dont bother rendering
+        return;
+    }
+
+    // ok, we've clipped everything.
+    // now draw it.
+
+    // texcoords need to be flipped horizontally for RTTs
+    const bool isRTT = texture->isRenderTarget();
+    const core::dimension2d<u32>& ss = texture->getOriginalSize();
+    const f32 invW = 1.f / static_cast<f32>(ss.Width);
+    const f32 invH = 1.f / static_cast<f32>(ss.Height);
+    const core::rect<f32> tcoords(
+        sourcePos.X * invW,
+        (isRTT?(sourcePos.Y + sourceSize.Height):sourcePos.Y) * invH,
+        (sourcePos.X + sourceSize.Width) * invW,
+        (isRTT?sourcePos.Y:(sourcePos.Y + sourceSize.Height)) * invH);
+
+    const core::rect<s32> poss(targetPos, sourceSize);
+
+    disableTextures(1);
+    if (!setActiveTexture(0, texture))
+        return;
+    setRenderStates2DMode(color.getAlpha()<255, true, useAlphaChannelOfTexture);
+
+    //FuzzYspo0N :: Adding filtering option, default in irrlicht is DISABLED, so enabling it only causes a state change, and back (at the end)
+    if(filtering)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+
+    glColor4ub(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+    glBegin(GL_QUADS);
+
+    //Upper left
+    glTexCoord2f(tcoords.UpperLeftCorner.X, tcoords.UpperLeftCorner.Y);
+    glVertex2f(GLfloat(topLeft.X), GLfloat(topLeft.Y));
+
+    //Top right
+    glTexCoord2f(tcoords.LowerRightCorner.X, tcoords.UpperLeftCorner.Y);
+    glVertex2f(GLfloat(topRight.X), GLfloat(topRight.Y));
+
+    //Bottom right
+    glTexCoord2f(tcoords.LowerRightCorner.X, tcoords.LowerRightCorner.Y);
+    glVertex2f(GLfloat(bottomRight.X), GLfloat(bottomRight.Y));
+
+    //Bottom left
+    glTexCoord2f(tcoords.UpperLeftCorner.X, tcoords.LowerRightCorner.Y);
+    glVertex2f(GLfloat(bottomLeft.X), GLfloat(bottomLeft.Y));
+
+    glEnd();
+
+    //FuzzYspo0N :: Reset the states
+    if(filtering)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    }
+}
+
 
 //! The same, but with a four element array of colors, one for each vertex
 void COpenGLDriver::draw2DImage(const video::ITexture* texture, const core::rect<s32>& destRect,

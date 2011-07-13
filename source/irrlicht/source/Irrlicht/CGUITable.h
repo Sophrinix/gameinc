@@ -143,6 +143,8 @@ namespace gui
 		//! Get the flags, as defined in EGUI_TABLE_DRAW_FLAGS, which influence the layout
 		virtual s32 getDrawFlags() const;
 
+		virtual void SetItemHeight( s32 height );
+
 		//! Writes attributes of the object.
 		//! Implement this to expose the attributes of your scene node animator for
 		//! scripting languages, editors, debuggers or xml serialization purposes.
@@ -205,6 +207,7 @@ namespace gui
 		bool ResizableColumns;
 
 		s32 ItemHeight;
+		s32 overItemHeight_;
 		s32 TotalItemHeight;
 		s32 TotalItemWidth;
 		s32 Selected;

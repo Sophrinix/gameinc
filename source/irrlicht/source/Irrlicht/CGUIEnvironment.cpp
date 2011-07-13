@@ -53,10 +53,10 @@ const wchar_t* IRR_XML_FORMAT_GUI_ELEMENT		= L"element";
 const wchar_t* IRR_XML_FORMAT_GUI_ELEMENT_ATTR_TYPE	= L"type";
 
 //! constructor
-CGUIEnvironment::CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op)
+CGUIEnvironment::CGUIEnvironment(io::IFileSystem* fs, video::IVideoDriver* driver, IOSOperator* op, ICursorControl* cursor )
 : IGUIElement(EGUIET_ROOT, 0, 0, 0, core::rect<s32>(core::position2d<s32>(0,0), driver ? core::dimension2d<s32>(driver->getScreenSize()) : core::dimension2d<s32>(0,0))),
 	Driver(driver), Hovered(0), HoveredNoSubelement(0), Focus(0), LastHoveredMousePos(0,0), CurrentSkin(0),
-	FileSystem(fs), UserReceiver(0), Operator(op)
+	FileSystem(fs), UserReceiver(0), Operator(op), _cursor( cursor )
 {
 	if (Driver)
 		Driver->grab();
@@ -411,7 +411,7 @@ void CGUIEnvironment::OnPostRender( u32 time )
 		getSkin()->getFont(EGDF_TOOLTIP)
 		)
 	{
-		hoveredNonSub->lunchToolTip();
+		HoveredNoSubelement->lunchToolTip();
 		core::rect<s32> pos;
 
 		pos.UpperLeftCorner = LastHoveredMousePos;

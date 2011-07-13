@@ -1457,6 +1457,8 @@ namespace video
 		//! Get the maximum texture size supported.
 		virtual core::dimension2du getMaxTextureSize() const =0;
 
+		virtual void addResourceDirectory( const io::path& dir )=0;
+
 		//! Color conversion convenience function
 		/** Convert an image (as array of pixels) from source to destination
 		array, thereby converting the color format. The pixel size is
