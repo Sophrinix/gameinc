@@ -1,0 +1,31 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_footbalusa
+[platforms]
+platform_0=platform_gamecube
+platform_1=platform_gameboyadvance
+platform_2=platform_nintendo64
+platform_3=platform_playstation
+platform_4=platform_playstation2
+platform_5=platform_windows
+platform_6=platform_xbox
+[properties]
+cash:int=477834000
+copySell:int=7707000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=9 d=12 h=0 mi=0
+famous:float=0.89
+gameIsSaling:bool=false
+internalname:string=game_maddennfl2002
+localizationRating:int=81
+name:string=Madden NFL 2002
+owner:string=Electronic Arts, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=90
+startBugRating:int=7
+startdate:time=y=2001 m=3 d=14 h=0 mi=0
+startGenreRating:int=49
+startGraphicRating:int=21
+startrating:int=44
+startSoundRating:int=53
+textureNormal:path=images/spl_0.jpg

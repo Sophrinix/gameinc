@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=164331000
+copySell:int=1767000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=6 d=15 h=0 mi=0
+famous:float=0.68
+gameIsSaling:bool=false
+internalname:string=game_jakanddaxtertheprecursorlegacy
+localizationRating:int=54
+name:string=Jak and Daxter: The Precursor Legacy
+owner:string=Sony Computer Entertainment Europe Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=76
+startBugRating:int=99
+startdate:time=y=2001 m=3 d=17 h=0 mi=0
+startGenreRating:int=8
+startGraphicRating:int=21
+startrating:int=51
+startSoundRating:int=51
+textureNormal:path=images/spl_0.jpg

@@ -1,0 +1,24 @@
+[genres]
+genre_0=genre_action
+[platforms]
+platform_0=platform_gameboycolor
+[properties]
+cash:int=335412000
+copySell:int=7986000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=1 d=19 h=0 mi=0
+famous:float=0.85
+gameIsSaling:bool=false
+internalname:string=game_thelegendofzeldaoracleofages
+localizationRating:int=67
+name:string=The Legend of Zelda: Oracle of Ages
+owner:string=Nintendo Co., Ltd.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=81
+startBugRating:int=10
+startdate:time=y=2001 m=2 d=2 h=0 mi=0
+startGenreRating:int=13
+startGraphicRating:int=68
+startrating:int=51
+startSoundRating:int=87
+textureNormal:path=images/spl_0.jpg

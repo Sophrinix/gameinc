@@ -1,0 +1,6 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_basketball
+[properties]
+internalname:string=game_nba2k2
+startdate:time=y=2001 m=5 d=7 h=0 mi=0

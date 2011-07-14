@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_strategy
+genre_1=genre_managerial
+genre_2=genre_scifi
+[platforms]
+platform_0=platform_dos
+[properties]
+cash:int=78925000
+copySell:int=2255000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=1 d=26 h=0 mi=0
+famous:float=0.31
+gameIsSaling:bool=false
+internalname:string=game_starlords
+localizationRating:int=9
+name:string=Star Lords
+owner:string=Quicksilver Software, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=59
+startBugRating:int=22
+startdate:time=y=2001 m=10 d=14 h=0 mi=0
+startGenreRating:int=20
+startGraphicRating:int=17
+startrating:int=24
+startSoundRating:int=4
+url:string=http://www.mobygames.com/game/dos/star-lords

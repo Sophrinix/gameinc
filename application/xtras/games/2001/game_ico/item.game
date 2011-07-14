@@ -1,0 +1,26 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=12000000
+copySell:int=300000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=8 d=25 h=0 mi=0
+famous:float=0.89
+gameIsSaling:bool=false
+internalname:string=game_ico
+localizationRating:int=2
+name:string=ICO
+owner:string=Sony Computer Entertainment America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=55
+startBugRating:int=69
+startdate:time=y=2001 m=6 d=3 h=0 mi=0
+startGenreRating:int=43
+startGraphicRating:int=42
+startrating:int=45
+startSoundRating:int=17
+textureNormal:path=images/spl_0.jpg

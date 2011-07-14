@@ -1,0 +1,8 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_spy
+genre_3=genre_stealth
+[properties]
+internalname:string=game_metalgearsolid2sonsofliberty
+startdate:time=y=2001 m=5 d=26 h=0 mi=0

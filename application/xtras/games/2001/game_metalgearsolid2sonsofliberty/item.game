@@ -1,0 +1,27 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_shooter
+genre_2=genre_spy
+genre_3=genre_stealth
+[platforms]
+platform_0=platform_playstation2
+[properties]
+cash:int=143640000
+copySell:int=7980000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=2 d=10 h=0 mi=0
+famous:float=0.78
+gameIsSaling:bool=false
+internalname:string=game_metalgearsolid2sonsofliberty
+localizationRating:int=39
+name:string=Metal Gear Solid 2: Sons of Liberty
+owner:string=Konami of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=12
+startBugRating:int=84
+startdate:time=y=2001 m=5 d=26 h=0 mi=0
+startGenreRating:int=87
+startGraphicRating:int=20
+startrating:int=58
+startSoundRating:int=88
+textureNormal:path=images/spl_0.jpg

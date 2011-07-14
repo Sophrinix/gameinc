@@ -1,0 +1,28 @@
+[genres]
+genre_0=genre_sports
+genre_1=genre_basketball
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_gamecube
+platform_2=platform_playstation2
+platform_3=platform_xbox
+[properties]
+cash:int=373911000
+copySell:int=5419000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=5 d=2 h=0 mi=0
+famous:float=0.27
+gameIsSaling:bool=false
+internalname:string=game_nba2k2
+localizationRating:int=30
+name:string=NBA 2K2
+owner:string=SEGA of America, Inc.
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=37
+startBugRating:int=53
+startdate:time=y=2001 m=5 d=7 h=0 mi=0
+startGenreRating:int=84
+startGraphicRating:int=65
+startrating:int=66
+startSoundRating:int=92
+textureNormal:path=images/spl_0.jpg

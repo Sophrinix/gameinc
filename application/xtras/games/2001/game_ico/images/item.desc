@@ -1,0 +1,7 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_fantasy
+genre_2=genre_puzzle
+[properties]
+internalname:string=game_ico
+startdate:time=y=2001 m=6 d=3 h=0 mi=0

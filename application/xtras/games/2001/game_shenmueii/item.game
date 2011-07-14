@@ -1,0 +1,29 @@
+[genres]
+genre_0=genre_action
+genre_1=genre_adventure
+genre_2=genre_rpg
+genre_3=genre_fighting
+genre_4=genre_martialarts
+[platforms]
+platform_0=platform_dreamcast
+platform_1=platform_xbox
+[properties]
+cash:int=104192000
+copySell:int=1628000
+descriptionpath:path=desc.htm
+enddate:time=y=2004 m=9 d=7 h=0 mi=0
+famous:float=0.44
+gameIsSaling:bool=false
+internalname:string=game_shenmueii
+localizationRating:int=65
+name:string=Shenmue II
+owner:string=SEGA Corporation
+readyWorkPercent:float=1.0
+startAdvFuncRating:int=57
+startBugRating:int=9
+startdate:time=y=2001 m=1 d=8 h=0 mi=0
+startGenreRating:int=14
+startGraphicRating:int=64
+startrating:int=40
+startSoundRating:int=60
+textureNormal:path=images/spl_0.jpg
